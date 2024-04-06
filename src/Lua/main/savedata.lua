@@ -22,6 +22,12 @@ addHook("NetVars", function(net)
 	serverid = net($)
 end)
 
+local function stringfile(str)
+	return string.gsub(str, "%W", function(d)
+		return tonumber(d) and d or "" 
+	end)
+end
+
 local function genRNGUsername(pname)
     if type(pname) == "string" then
         local extra = ""
@@ -33,16 +39,10 @@ local function genRNGUsername(pname)
             extra = $ + chartoget
         end
 
-        return pname.."_"..extra
+        return stringfile(pname).."_"..extra
     end
 
     return
-end
-
-local function stringfile(str)
-	return string.gsub(str, "%W", function(d)
-		return tonumber(d) and d or "" 
-	end)
 end
 
 local function GenerateRandomChars(input_extranum)
@@ -141,7 +141,7 @@ COM_AddCommand("z_registeraccount", function(player, tplayer)
         if not (target_player.registered) then
 		
 			
-            local gen_username = stringfile(genRNGUsername(target_player.name))
+            local gen_username = genRNGUsername(target_player.name)
             local gen_password = GenerateRandomChars()
 			
 			
