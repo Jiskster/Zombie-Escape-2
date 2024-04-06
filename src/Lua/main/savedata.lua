@@ -280,12 +280,14 @@ COM_AddCommand("z_jsonimport", function(player, playernum, jsondata, token)
 end, 1)
 
 COM_AddCommand("z_setserverid", function(player, input_serverid, token)
-	print("command sent")
 	if (player ~= server) then return end
 	if (tonumber(token) ~= commandtoken) then return end
 	
 	serverid = input_serverid
-	print("new serverid: "..serverid)
+	
+	if isserver then
+		print("Set serverid to: "..serverid)
+	end
 end, 1)
 
 addHook("PlayerCmd", function(player,cmd) -- auto login / register
