@@ -72,13 +72,16 @@ local function isRegisteredUser(player)
 	return player.registered_user and player.registered
 end
 
-local function saveRubies(player)
-	if isRegisteredUser(player) and player.rubies then
-		local rubypath = "SRBZDATA/"..player.registered_user.."/rubies.sav2"
-		local rubyfile = io.openlocal(rubypath, "w+")
-		if rubyfile then
-			rubyfile:write(player.rubies)
-			rubyfile:close()
+local function saveData(player)
+	if isRegisteredUser(player) and player.rubies ~= nil then
+		local gspath = "SRBZDATA/"..player.registered_user.."/gamesave.sav2"
+		local gsfile = io.openlocal(gspath, "w+")
+		if gsfile then
+			gsfile:write(json.encode({
+				rubies = player.rubies or 0,
+				prevname = player.name
+			}))
+			gsfile:close()
 		end
 	end
 end
@@ -145,19 +148,23 @@ COM_AddCommand("z_registeraccount", function(player, tplayer)
 			
             if (isserver) or (isdedicatedserver) then -- Server
                 local server_passpath = "SRBZDATA/"..gen_username.."/password.sav2"
-                local server_rubypath = "SRBZDATA/"..gen_username.."/rubies.sav2"
+                local server_gspath = "SRBZDATA/"..gen_username.."/gamesave.sav2"
 				
                 local passfile = io.openlocal(server_passpath, "w+")
-                local rubyfile = io.openlocal(server_rubypath, "w+")
+                local gsfile = io.openlocal(server_gspath, "w+")
 				
 				if passfile then
 					passfile:write(gen_password)
 					passfile:close()
 				end
 				
-				if rubyfile then
-					rubyfile:write(player.rubies or 0)
-					rubyfile:close()
+				
+				if gsfile then
+					gsfile:write(json.encode({
+						rubies = player.rubies or 0,
+						prevname = player.name
+					}))
+					gsfile:close()
 				end
             end
 
@@ -214,15 +221,17 @@ COM_AddCommand("z_importdata", function(player, playernum, username, token) -- m
 			local target_player = players[tonumber(playernum)]
 			
             if ((isserver) or (isdedicatedserver)) then
-                local rubypath = "SRBZDATA/"..username.."/rubies.sav2"
-                local rubyfile = io.openlocal(rubypath, "r")
-				
-                if rubyfile then
-                    local rubyread = rubyfile:read("*a")
-                    if rubyread then 
-						COM_BufInsertText(server, "z_forcerubies "..#target_player.." "..rubyread.." "..commandtoken)
+                local gspath = "SRBZDATA/"..username.."/gamesave.sav2"
+                local gsfile = io.openlocal(gspath, "r")
+
+                if gsfile then
+                    local gsread = gsfile:read("*a")
+                    if gsread then
+						local command_format = string.format("z_jsonimport %s %s %s", playernum, gsread:gsub('"',"'"), commandtoken)
+						COM_BufInsertText(player, command_format)
                     end
-					rubyfile:close()
+					
+					gsfile:close()
                 end
 			end
         end
@@ -239,24 +248,28 @@ end, 1)
 
 addHook("PlayerQuit", function(player)
 	if (isserver) then
-		saveRubies(player)
+		saveData(player)
 	end
 end)
 
 addHook("GameQuit", function(quitting)
     if (isserver) then
         for player in players.iterate do 
-            saveRubies(player)
+            saveData(player)
         end
     end
 end)
 
-COM_AddCommand("z_forcerubies", function(player, playernum, rubies, token)
-	if player == server and rubies ~= nil and token ~= nil and 
+COM_AddCommand("z_jsonimport", function(player, playernum, jsondata, token)
+	if player == server and jsondata ~= nil and token ~= nil and 
 	playernum ~= nil and (tonumber(token) == commandtoken) then
 		if players[tonumber(playernum)] then
 			local target_player = players[tonumber(playernum)]
-			target_player.rubies = tonumber(rubies)
+			local decoded_data = json.decode(jsondata:gsub("'",'"'))
+			
+			if decoded_data.rubies ~= nil then
+				player.rubies = decoded_data.rubies
+			end
 		end
 	end
 end, 1)
@@ -272,7 +285,7 @@ end, 1)
 
 addHook("PlayerCmd", function(player,cmd) -- auto login / register
 	if (cmd.buttons or cmd.forwardmove) and (not (player.registered) 
-	and not (player.registered_user)) and SRBZ.autologin.value then
+	and not (player.registered_user)) and SRBZ.autologin.value and serverid then
 		local clientpath = "client/SRBZ/"..serverid.."/account.sav2"
         local file = io.openlocal(clientpath, "r")
 		if file then

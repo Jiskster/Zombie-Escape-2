@@ -1,3 +1,5 @@
+-- Edited for Sonic Robo Blast 2's Needs.
+-- Edited by Jisk.
 --
 -- json.lua
 --
@@ -259,7 +261,7 @@ local function parse_number(str, i)
   local x = next_char(str, i, delim_chars)
   local s = str:sub(i, x - 1)
   local n = tonumber(s)
-  if not n then
+  if n == nil then
     decode_error(str, i, "invalid number '" .. s .. "'")
   end
   return n, x
@@ -342,6 +344,7 @@ end
 
 local char_func_map = {
   [ '"' ] = parse_string,
+  [ "'" ] = parse_string,
   [ "0" ] = parse_number,
   [ "1" ] = parse_number,
   [ "2" ] = parse_number,
