@@ -8,16 +8,18 @@
 ]]--
 local _rchars_ = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 local commandtoken = P_RandomKey(FRACUNIT)
+local serverid
 
 SRBZ.autologin = CV_RegisterVar({
 	name = "z_autologin",
-	defaultvalue = "Off",
+	defaultvalue = "On",
 	PossibleValue = CV_OnOff,
 	flags = CV_NETVAR,
 })
 
 addHook("NetVars", function(net)
     commandtoken = net($)
+	serverid = net($)
 end)
 
 local function genRNGUsername(pname)
@@ -43,9 +45,9 @@ local function stringfile(str)
 	end)
 end
 
-local function genRNGPassword()
+local function GenerateRandomChars(input_extranum)
     local extra = ""
-    local extranum = 25
+    local extranum = input_extranum == nil and 25 or input_extranum
 
     for i=1,extranum do
         local nc = P_RandomKey(#_rchars_)+1
@@ -60,6 +62,59 @@ local function usernameLoggedIn(username)
 		if player.registered_user == username then
 			print(player.name)
 			return true
+		end
+	end
+	
+	return false
+end
+
+local function isRegisteredUser(player)
+	return player.registered_user and player.registered
+end
+
+local function saveRubies(player)
+	if isRegisteredUser(player) and player.rubies then
+		local rubypath = "SRBZDATA/"..player.registered_user.."/rubies.sav2"
+		local rubyfile = io.openlocal(rubypath, "w+")
+		if rubyfile then
+			rubyfile:write(player.rubies)
+			rubyfile:close()
+		end
+	end
+end
+
+local function GetServerIDFromFile()
+	if isserver then
+		local server_id_path = "SRBZDATA/serverid.sav2"
+		
+		local serveridfile = io.openlocal(server_id_path, "r")
+		
+		if serveridfile then
+			local content = tostring(serveridfile:read("*a"))
+			
+			serveridfile:close()
+			
+			return content
+		end
+	end
+	
+	return false
+end
+
+local function SetFileServerID(input_serverid)
+	if isserver then
+		local server_id_path = "SRBZDATA/serverid.sav2"
+		
+		local serveridfile = io.openlocal(server_id_path, "w")
+		
+		if serveridfile then
+			local content = tostring(serveridfile:read("*a"))
+			
+			serveridfile:write(input_serverid)
+			
+			serveridfile:close()
+			
+			return content
 		end
 	end
 	
@@ -85,7 +140,7 @@ COM_AddCommand("z_registeraccount", function(player, tplayer)
 		
 			
             local gen_username = stringfile(genRNGUsername(target_player.name))
-            local gen_password = genRNGPassword()
+            local gen_password = GenerateRandomChars()
 			
 			
             if (isserver) or (isdedicatedserver) then -- Server
@@ -107,7 +162,7 @@ COM_AddCommand("z_registeraccount", function(player, tplayer)
             end
 
             if (target_player == consoleplayer) then -- Client
-                local clientpath = "client/SRBZ/account.sav2"
+                local clientpath = "client/SRBZ/"..serverid.."/account.sav2"
                 local file = io.openlocal(clientpath, "w+")
 
                 local clientpath_content = ('z_loginaccount '.. '"'.. gen_username ..'" '.. '"'.. gen_password ..'"')
@@ -135,7 +190,6 @@ COM_AddCommand("z_loginaccount", function(player, username, password)
 			end
 			
             if (isserver) or (isdedicatedserver) then
-			
 				local passpath = "SRBZDATA/"..username.."/password.sav2"
 				local passfile = io.openlocal(passpath)
 				
@@ -149,9 +203,7 @@ COM_AddCommand("z_loginaccount", function(player, username, password)
 					print(player.name.." tried to login as an invalid account. Registering the user.")
 					COM_BufInsertText(server, "z_registeraccount "..#player)
 				end
-
 			end
-			
         end
     end
 end)
@@ -186,16 +238,17 @@ COM_AddCommand("z_importdata", function(player, playernum, username, token) -- m
 end, 1)
 
 addHook("PlayerQuit", function(player)
-	if ((isserver) or (isdedicatedserver)) then
-		if player.registered_user and player.registered then
-			local rubypath = "SRBZDATA/"..player.registered_user.."/rubies.sav2"
-			local rubyfile = io.openlocal(rubypath, "w+")
-			if rubyfile then
-				rubyfile:write(player.rubies)
-				rubyfile:close()
-			end
-		end
+	if (isserver) then
+		saveRubies(player)
 	end
+end)
+
+addHook("GameQuit", function(quitting)
+    if (isserver) then
+        for player in players.iterate do 
+            saveRubies(player)
+        end
+    end
 end)
 
 COM_AddCommand("z_forcerubies", function(player, playernum, rubies, token)
@@ -208,16 +261,33 @@ COM_AddCommand("z_forcerubies", function(player, playernum, rubies, token)
 	end
 end, 1)
 
+COM_AddCommand("z_setserverid", function(player, input_serverid, token)
+	print("command sent")
+	if (player ~= server) then return end
+	if (tonumber(token) ~= commandtoken) then return end
+	
+	serverid = input_serverid
+	print("new serverid: "..serverid)
+end, 1)
+
 addHook("PlayerCmd", function(player,cmd) -- auto login / register
 	if (cmd.buttons or cmd.forwardmove) and (not (player.registered) 
 	and not (player.registered_user)) and SRBZ.autologin.value then
-		local clientpath = "client/SRBZ/account.sav2"
+		local clientpath = "client/SRBZ/"..serverid.."/account.sav2"
         local file = io.openlocal(clientpath, "r")
 		if file then
 			COM_BufInsertText(player, file:read("*a"))
 			file:close()
-		else
+		elseif (leveltime % 3) == 0 then
 			COM_BufInsertText(player, "z_registeraccount")
 		end
+	end
+end)
+
+addHook("MapLoad", function()
+	if not serverid then
+		local new_serverid = GetServerIDFromFile() or GenerateRandomChars(32)
+		SetFileServerID(new_serverid)
+		COM_BufInsertText(server, "z_setserverid ".. new_serverid.. " ".. commandtoken)
 	end
 end)
