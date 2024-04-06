@@ -1,11 +1,3 @@
--- dont overlook this script. you will get ignored
-
---[[
-    Todo:
-
-    Write rubies when making an account
-    Auto Log in when walking
-]]--
 local _rchars_ = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 local commandtoken = P_RandomKey(FRACUNIT)
 local serverid
@@ -88,7 +80,6 @@ end
 local function GetServerIDFromFile()
 	if isserver then
 		local server_id_path = "SRBZDATA/serverid.sav2"
-		
 		local serveridfile = io.openlocal(server_id_path, "r")
 		
 		if serveridfile then
@@ -106,7 +97,6 @@ end
 local function SetFileServerID(input_serverid)
 	if isserver then
 		local server_id_path = "SRBZDATA/serverid.sav2"
-		
 		local serveridfile = io.openlocal(server_id_path, "w")
 		
 		if serveridfile then
