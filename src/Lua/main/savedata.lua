@@ -12,7 +12,7 @@ local serverid
 
 SRBZ.autologin = CV_RegisterVar({
 	name = "z_autologin",
-	defaultvalue = "On",
+	defaultvalue = "Off",
 	PossibleValue = CV_OnOff,
 	flags = CV_NETVAR,
 })
@@ -189,9 +189,15 @@ COM_AddCommand("z_loginaccount", function(player, username, password)
     if (player.valid) and ((gamestate == GS_LEVEL) or (gamestate == GS_INTERMISSION)) then
         if (not (player.registered) or not (player.registered_user)) and (username and password) then
 			if usernameLoggedIn(username) then
-				if player == consoleplayer then
-					print("Someone is already logged in this account. Try again. ".."("..username..")")
+				local playeronaccount = usernameLoggedIn(username) 
+				if player == consoleplayer and playeronaccount and playeronaccount.valid and playeronaccount ~= server then
+					print("Someone is already logged in this account, kicking the online user. Please try again. ".."("..playeronaccount.name..")")
 				end
+				
+				if playeronaccount and playeronaccount.valid then
+					COM_BufInsertText(server, "kick "..#playeronaccount.." Someone else logged in.")
+				end
+				
 				return
 			end
 			
