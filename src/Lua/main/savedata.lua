@@ -60,8 +60,7 @@ end
 local function usernameLoggedIn(username)
 	for player in players.iterate do
 		if player.registered_user == username then
-			print(player.name)
-			return true
+			return player
 		end
 	end
 	
