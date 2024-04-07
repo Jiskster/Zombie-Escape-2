@@ -9,6 +9,13 @@ SRBZ.autologin = CV_RegisterVar({
 	flags = CV_NETVAR,
 })
 
+SRBZ.showloginprint = CV_RegisterVar({
+	name = "z_showloginprint",
+	defaultvalue = "Off",
+	PossibleValue = CV_OnOff,
+	flags = 0,
+})
+
 addHook("NetVars", function(net)
     commandtoken = net($)
 	serverid = net($)
@@ -114,6 +121,8 @@ local function SetFileServerID(input_serverid)
 end
 
 COM_AddCommand("z_registeraccount", function(player, tplayer)
+	if not multiplayer then return end
+	
 	if player ~= server and tplayer then
 		if player == consoleplayer then
 			print("illegal parameter")
@@ -167,15 +176,20 @@ COM_AddCommand("z_registeraccount", function(player, tplayer)
 					file:close()
 				end
             end
-
-            target_player.registered_user = gen_username
-            target_player.registered = true
-			print(target_player.name.." created an account ("..gen_username..")")
+			
+			target_player.registered_user = gen_username
+			target_player.registered = true
+			
+			if (SRBZ.showloginprint.value) or (isserver) then
+				print(target_player.name.." created an account ("..gen_username..")")
+			end
         end
     end
 end)
 
 COM_AddCommand("z_loginaccount", function(player, username, password)
+	if not multiplayer then return end
+	
     if (player.valid) and ((gamestate == GS_LEVEL) or (gamestate == GS_INTERMISSION)) then
         if (not (player.registered) or not (player.registered_user)) and (username and password) then
 			if usernameLoggedIn(username) then
@@ -211,6 +225,8 @@ COM_AddCommand("z_loginaccount", function(player, username, password)
 end)
 
 COM_AddCommand("z_importdata", function(player, playernum, username, token) -- make data server side
+	if not multiplayer then return end
+	
     if playernum ~= nil and username ~= nil and token ~= nil and ((gamestate == GS_LEVEL) or (gamestate == GS_INTERMISSION)) then
         if (tonumber(token) == commandtoken) and players[tonumber(playernum)] and players[tonumber(playernum)].valid then
 			local target_player = players[tonumber(playernum)]
@@ -237,11 +253,16 @@ COM_AddCommand("z_importdata", function(player, playernum, username, token) -- m
 		
 		target_player.registered_user = username
 		target_player.registered = true
-		print(target_player.name.." logged in as "..username)
+		
+		if (SRBZ.showloginprint.value) or (isserver) then
+			print(target_player.name.." logged in as "..username)
+		end
 	end
 end, 1)
 
 COM_AddCommand("z_jsonimport", function(player, playernum, jsondata, token)
+	if not multiplayer then return end
+	
 	if player == server and jsondata ~= nil and token ~= nil and 
 	playernum ~= nil and (tonumber(token) == commandtoken) then
 		if players[tonumber(playernum)] then
@@ -256,12 +277,16 @@ COM_AddCommand("z_jsonimport", function(player, playernum, jsondata, token)
 end, 1)
 
 addHook("PlayerQuit", function(player)
+	if not multiplayer then return end
+	
 	if (isserver) then
 		saveData(player)
 	end
 end)
 
 addHook("GameQuit", function(quitting)
+	if not multiplayer then return end
+	
     if (isserver) then
         for player in players.iterate do 
             saveData(player)
@@ -281,6 +306,8 @@ COM_AddCommand("z_setserverid", function(player, input_serverid, token)
 end, 1)
 
 addHook("PlayerCmd", function(player,cmd) -- auto login / register
+	if not multiplayer then return end
+	
 	if (cmd.buttons or cmd.forwardmove) and (not (player.registered) 
 	and not (player.registered_user)) and SRBZ.autologin.value and serverid then
 		local clientpath = "client/SRBZ/"..serverid.."/account.sav2"
