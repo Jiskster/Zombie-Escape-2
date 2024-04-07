@@ -241,20 +241,6 @@ COM_AddCommand("z_importdata", function(player, playernum, username, token) -- m
 	end
 end, 1)
 
-addHook("PlayerQuit", function(player)
-	if (isserver) then
-		saveData(player)
-	end
-end)
-
-addHook("GameQuit", function(quitting)
-    if (isserver) then
-        for player in players.iterate do 
-            saveData(player)
-        end
-    end
-end)
-
 COM_AddCommand("z_jsonimport", function(player, playernum, jsondata, token)
 	if player == server and jsondata ~= nil and token ~= nil and 
 	playernum ~= nil and (tonumber(token) == commandtoken) then
@@ -268,6 +254,20 @@ COM_AddCommand("z_jsonimport", function(player, playernum, jsondata, token)
 		end
 	end
 end, 1)
+
+addHook("PlayerQuit", function(player)
+	if (isserver) then
+		saveData(player)
+	end
+end)
+
+addHook("GameQuit", function(quitting)
+    if (isserver) then
+        for player in players.iterate do 
+            saveData(player)
+        end
+    end
+end)
 
 COM_AddCommand("z_setserverid", function(player, input_serverid, token)
 	if (player ~= server) then return end
