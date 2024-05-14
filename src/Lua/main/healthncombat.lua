@@ -75,10 +75,9 @@ addHook("MobjDamage", function(mo, inf, src, dmg)
 				P_Thrust(mo, inf.angle, knockback)
 			end
 			
-			
 			S_StartSound(mo, chosen_hurtsound)
 		end
-	elseif mobjinfo[mo.type].npc_name
+	elseif mobjinfo[mo.type].npc_name then
 		if (not mo.target) and (inf or src.player) then --enemies wake up if you hit them from behind
 			mo.target = src
 			mo.state = mo.info.seestate
@@ -91,10 +90,9 @@ addHook("MobjDamage", function(mo, inf, src, dmg)
 		if inf and inf.valid then
 			P_Thrust(mo, inf.angle, knockback)
 		end
-	
 	end
 	
-	if (not inf) or (not inf.iteminfo) then
+	if ((not inf) or (not inf.iteminfo)) and (not dmg) then
 		if ((mobjinfo[src.type].npc_name) and (mo.player)) 
 		or ((src.player) and mobjinfo[mo.type].npc_name) then
 			dmg = P_RandomKey(9)+3
@@ -113,6 +111,7 @@ addHook("MobjDamage", function(mo, inf, src, dmg)
 				A_RubyDrop(mo, killaward)
 			end
 		end
+		
 		P_KillMobj(mo,inf)
 		return true
 	end
@@ -122,6 +121,7 @@ addHook("MobjDamage", function(mo, inf, src, dmg)
 		 A_RubyDrop(mo, mo.rubiesholding/3)
 		 mo.rubiesholding = $ - mo.rubiesholding/3
 	end
+	
 	mo.health = $ - dmg -- fake damage i guess
 	
 	return true
@@ -169,7 +169,7 @@ function SRBZ.DoPlayerFire(player, iteminfo)
 		return
 	end
 
-	if iteminfo.object
+	if iteminfo.object then
 		ring = P_SPMAngle(player.mo, iteminfo.object, player.mo.angle, 1, iteminfo.flags2)
 	end
 	
@@ -189,7 +189,6 @@ function SRBZ.DoPlayerFire(player, iteminfo)
 	end
 
 	if ring then
-	
 		ring.shotbyplayer = true
 		
 		if iteminfo.color ~= nil then

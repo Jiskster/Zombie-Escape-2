@@ -1,4 +1,4 @@
-local raildmg = 40
+local raildmg = 60
 local railkb = 160*FRACUNIT
 
 freeslot("MT_SRBZ_RAILSHOT")
@@ -12,9 +12,6 @@ mobjinfo[MT_SRBZ_RAILSHOT] = {
 	height = 32*FRACUNIT,
 	flags = MF_NOBLOCKMAP|MF_MISSILE|MF_NOGRAVITY,
 }
-
-mobjinfo[MT_SRBZ_RAILSHOT].forcedamage = raildmg
-mobjinfo[MT_SRBZ_RAILSHOT].forceknockback = railkb
 
 local ring = function(x,y,z,scale,angle)
 	local th = P_SpawnMobj(x, y, z, MT_THOK)
