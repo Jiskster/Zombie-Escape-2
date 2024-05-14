@@ -1,4 +1,4 @@
-local raildmg = 50
+local raildmg = 40
 local railkb = 160*FRACUNIT
 
 freeslot("MT_SRBZ_RAILSHOT")
@@ -32,6 +32,70 @@ local ring = function(x,y,z,scale,angle)
 		th.tics = 6
 	end
 end
+	
+local function trigger_func(player, wpinfo)
+	local mo = player.mo
+	mo.momx = $ / 3
+	mo.momy = $ / 3
+	P_SetObjectMomZ(mo, 2*FRACUNIT, false)
+	mo.state = S_PLAY_SPRING
+	mo.player.pflags = $ & ~(PF_JUMPED | PF_SPINNING)
+	S_StartSound(mo, sfx_rail1)
+	local rail = P_SPMAngle(mo, MT_SRBZ_RAILSHOT, mo.angle, 1, MF2_DONTDRAW)
+	
+	if rail and rail.valid then
+		rail.forcedamage = SRBZ:FetchInventorySlot(player).damage
+		rail.forceknockback = SRBZ:FetchInventorySlot(player).knockback
+		rail.weaponinfo = wpinfo
+		
+		local range = 16
+		
+		for i = 0, range do
+			if i % 2 == 0
+				local spark = P_SpawnMobj(rail.x, rail.y, rail.z, MT_SPARK)
+				
+				if spark and spark.valid
+					spark.forcedamage = SRBZ:FetchInventorySlot(player).damage
+					spark.forceknockback = SRBZ:FetchInventorySlot(player).knockback
+					
+					if i % 3 == 0
+						spark.color = player.skincolor
+						spark.colorized = true
+					else
+						spark.scale = $ * 3/4
+					end
+				
+					if (i - 2) % 10 == 0
+						ring(rail.x,rail.y,rail.z,rail.scale/2,rail.angle)
+					end
+				end
+			end
+			
+			if rail.momx or rail.momy
+				P_XYMovement(rail)
+				if not rail.valid
+					break
+				end
+			end
+			
+			if rail.momz
+				P_ZMovement(rail)
+				if not rail.valid
+					break
+				end
+			end
+			
+			if (not rail.valid) or (xx == rail.x and y == rail.y and z == rail.z)
+				break
+			end
+		end
+
+		if rail and rail.valid then
+			ring(rail.x,rail.y,rail.z,rail.scale,rail.angle)
+			P_KillMobj(rail)
+		end
+	end
+end
 
 SRBZ:CreateItem("Rail Ring", {
 	shake = 20,
@@ -42,67 +106,8 @@ SRBZ:CreateItem("Rail Ring", {
 	price = 1460,
 	ammo = 2,
 	reload_time = 7*TICRATE,
-	ontrigger = function(player, wpinfo)
-		local mo = player.mo
-		mo.momx = $ / 3
-		mo.momy = $ / 3
-		P_SetObjectMomZ(mo, 2*FRACUNIT, false)
-		mo.state = S_PLAY_SPRING
-		mo.player.pflags = $ & ~(PF_JUMPED | PF_SPINNING)
-		S_StartSound(mo, sfx_rail1)
-		local rail = P_SPMAngle(mo, MT_SRBZ_RAILSHOT, mo.angle, 1, MF2_DONTDRAW)
-		
-		if rail and rail.valid then
-			rail.forcedamage = SRBZ:FetchInventorySlot(player).damage
-			rail.forceknockback = SRBZ:FetchInventorySlot(player).knockback
-			local range = 16
-			for i = 0, range do
-				local ang = P_RandomRange(0, 359) * ANG1
-				if i % 2 == 0
-					local spark = P_SpawnMobj(rail.x, rail.y, rail.z, MT_SPARK)
-					if spark and spark.valid
-						spark.forcedamage = SRBZ:FetchInventorySlot(player).damage
-						spark.forceknockback = SRBZ:FetchInventorySlot(player).knockback
-						spark.weaponinfo = wpinfo
-						if i % 3 == 0
-							spark.color = player.skincolor
-							spark.colorized = true
-						else
-							spark.scale = $ * 3/4
-						end
-					
-						if (i - 2) % 10 == 0
-							ring(rail.x,rail.y,rail.z,rail.scale/2,rail.angle)
-						end
-					end
-				end
-				
-				local prevx = rail.x
-				local prevy = rail.y
-				local prevz = rail.z
-				
-				if rail.momx or rail.momy
-					P_XYMovement(rail)
-					if not rail.valid
-						break
-					end
-				end
-				if rail.momz
-					P_ZMovement(rail)
-					if not rail.valid
-						break
-					end
-				end
-				
-				if (not rail.valid) or (xx == rail.x and y == rail.y and z == rail.z)
-					break
-				end
-			end
-
-			if rail and rail.valid then
-				ring(rail.x,rail.y,rail.z,rail.scale,rail.angle)
-				P_KillMobj(rail)
-			end
-		end
-	end
+	ontrigger = trigger_func,
+	onhit = function(mo, hit)
+		print(1)
+	end,
 })
