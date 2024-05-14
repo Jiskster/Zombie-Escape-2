@@ -48,41 +48,38 @@ local function trigger_func(player, wpinfo)
 		local range = 16
 		
 		for i = 0, range do
-			if i % 2 == 0
+			if i % 2 == 0 then
 				local spark = P_SpawnMobj(rail.x, rail.y, rail.z, MT_SPARK)
 				
-				if spark and spark.valid
-					spark.forcedamage = SRBZ:FetchInventorySlot(player).damage
-					spark.forceknockback = SRBZ:FetchInventorySlot(player).knockback
-					
-					if i % 3 == 0
+				if spark and spark.valid then
+					if i % 3 == 0 then
 						spark.color = player.skincolor
 						spark.colorized = true
 					else
 						spark.scale = $ * 3/4
 					end
 				
-					if (i - 2) % 10 == 0
+					if (i - 2) % 10 == 0 then
 						ring(rail.x,rail.y,rail.z,rail.scale/2,rail.angle)
 					end
 				end
 			end
 			
-			if rail.momx or rail.momy
+			if rail.momx or rail.momy then
 				P_XYMovement(rail)
-				if not rail.valid
+				if not rail.valid then
 					break
 				end
 			end
 			
-			if rail.momz
+			if rail.momz then
 				P_ZMovement(rail)
-				if not rail.valid
+				if not rail.valid then
 					break
 				end
 			end
 			
-			if (not rail.valid) or (xx == rail.x and y == rail.y and z == rail.z)
+			if (not rail.valid) or (xx == rail.x and y == rail.y and z == rail.z) then
 				break
 			end
 		end

@@ -1,3 +1,11 @@
+-- Fang's Cork Bullet
+mobjinfo[MT_CORK].forcedamage = 10
+mobjinfo[MT_CORK].forceknockback = 20*FU
+
+-- Amy's Hammer Hearts
+mobjinfo[MT_LHRT].forcedamage = 3
+mobjinfo[MT_LHRT].forceknockback = 8*FU
+
 SRBZ.survinvtics = CV_RegisterVar({
 	name = "z_survinvtics",
 	defaultvalue = "25",
@@ -92,15 +100,17 @@ addHook("MobjDamage", function(mo, inf, src, dmg)
 		end
 	end
 	
+	if inf and inf.info.forcedamage then
+		dmg = inf.info.forcedamage
+	end
+	
 	if ((not inf) or (not inf.iteminfo)) and (not dmg) then
 		if ((mobjinfo[src.type].npc_name) and (mo.player)) 
 		or ((src.player) and mobjinfo[mo.type].npc_name) then
 			dmg = P_RandomKey(9)+3
-			if inf and inf.info.forcedamage then
-				dmg = inf.info.forcedamage
-			end
 		end
 	end
+	
 	if dmg >= mo.health then
 		if mo.player and mo.player.valid then
 			local player = mo.player 
