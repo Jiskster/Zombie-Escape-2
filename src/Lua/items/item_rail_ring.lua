@@ -30,7 +30,7 @@ local ring = function(x,y,z,scale,angle)
 	end
 end
 	
-local function trigger_func(player, wpinfo)
+local function trigger_func(player, iteminfo)
 	local mo = player.mo
 	mo.momx = $ / 3
 	mo.momy = $ / 3
@@ -43,7 +43,7 @@ local function trigger_func(player, wpinfo)
 	if rail and rail.valid then
 		rail.forcedamage = SRBZ:FetchInventorySlot(player).damage
 		rail.forceknockback = SRBZ:FetchInventorySlot(player).knockback
-		rail.weaponinfo = wpinfo
+		rail.iteminfo = iteminfo
 		
 		local range = 16
 		
@@ -101,7 +101,4 @@ SRBZ:CreateItem("Rail Ring", {
 	ammo = 2,
 	reload_time = 7*TICRATE,
 	ontrigger = trigger_func,
-	onhit = function(mo, hit)
-		print(1)
-	end,
 })
