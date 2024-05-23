@@ -1,12 +1,5 @@
 -- Get SRBZ.MapVoteStartFrame from init/gametype.lua
 
-SRBZ.server_intermissionmusic = CV_RegisterVar({
-	name = "server_intermissionmusic",
-	defaultvalue = "Off",
-	PossibleValue = CV_OnOff,
-	flags = CV_NETVAR,
-})
-
 local function allequals(...)
 	local args = {...}
 	local success = true

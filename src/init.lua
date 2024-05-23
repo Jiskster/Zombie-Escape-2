@@ -36,6 +36,7 @@ dofile "main/characterselect_logic.lua"
 dofile "main/baseplayer.lua"
 dofile "main/characterconfigs.lua"
 
+dofile "main/console.lua"
 dofile "main/healthncombat.lua" -- main stuff 
 
 dofile "main/enemies.lua"
