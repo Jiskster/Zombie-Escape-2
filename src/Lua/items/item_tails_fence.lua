@@ -51,10 +51,12 @@ SRBZ:CreateItem("Tails' fence", {
 })
 
 addHook("MobjCollide", function(mo,pmo)
-	if pmo.skin ~= "zzombie" then
-		P_SetObjectMomZ(mo,mo.scale*0)
-		return false
-	else
-		P_SetObjectMomZ(mo,mo.scale*-128)
+	if pmo.type == MT_PLAYER then
+		if pmo.skin ~= "zzombie" then
+			P_SetObjectMomZ(mo,mo.scale*0)
+			return false
+		else
+			P_SetObjectMomZ(mo,mo.scale*-128)
+		end
 	end
 end, MT_PROPWOOD)
