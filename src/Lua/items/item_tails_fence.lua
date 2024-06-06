@@ -15,7 +15,7 @@ mobjinfo[MT_PROPWOOD] = {
 }
 
 mobjinfo[MT_PROPWOOD].npc_name = "Wood Fence"
-mobjinfo[MT_PROPWOOD].npc_spawnhealth = {5,15}
+mobjinfo[MT_PROPWOOD].npc_spawnhealth = {50,100}
 mobjinfo[MT_PROPWOOD].npc_name_color = SKINCOLOR_BROWN
 
 states[S_PROP1] = {
@@ -53,10 +53,7 @@ SRBZ:CreateItem("Tails' fence", {
 addHook("MobjCollide", function(mo,pmo)
 	if pmo.type == MT_PLAYER then
 		if pmo.skin ~= "zzombie" then
-			P_SetObjectMomZ(mo,mo.scale*0)
 			return false
-		else
-			P_SetObjectMomZ(mo,mo.scale*-128)
 		end
 	end
 end, MT_PROPWOOD)
