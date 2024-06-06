@@ -16,22 +16,22 @@ SRBZ.LimitMobjHealth = function(mobj)
 	end
 end
 
-addHook("MobjDamage", function(mo, inf, src, dmg)
+addHook("ShouldDamage", function(mo, inf, src, dmg)
 	if (gametype ~= GT_SRBZ) return end
-	if SRBZ.game_ended then return true end
+	if SRBZ.game_ended then return false end
 	
 	local knockback = 0
 	
 	if inf and inf.player and mo and mo.player then
 		if mo.player.zteam == inf.player.zteam then
-			return true
+			return false
 		end
 	end
 	
 	
 	if src and src.player and mo and mo.player then
 		if mo.player.zteam == src.player.zteam then
-			return true
+			return false
 		end
 	end
 
@@ -49,8 +49,12 @@ addHook("MobjDamage", function(mo, inf, src, dmg)
 			knockback = inf.forceknockback
 		end
 		
-		if inf.iteminfo and SRBZ.ItemPresets[inf.iteminfo.item_id] and SRBZ.ItemPresets[inf.iteminfo.item_id].onhit and inf.target then
-			SRBZ.ItemPresets[inf.iteminfo.item_id].onhit(inf.target, mo, inf)
+		if inf.iteminfo and SRBZ.ItemPresets[inf.iteminfo.item_id] and SRBZ.ItemPresets[inf.iteminfo.item_id].onhit and (inf.target or src) then
+			if inf.target then
+				SRBZ.ItemPresets[inf.iteminfo.item_id].onhit(inf.target, mo, inf)
+			elseif src then
+				SRBZ.ItemPresets[inf.iteminfo.item_id].onhit(src, mo, inf)
+			end
 		end
 	end
 	
@@ -116,7 +120,7 @@ addHook("MobjDamage", function(mo, inf, src, dmg)
 		end
 		
 		P_KillMobj(mo,inf)
-		return true
+		return false
 	end
 
 
@@ -127,7 +131,7 @@ addHook("MobjDamage", function(mo, inf, src, dmg)
 	
 	mo.health = $ - dmg -- fake damage i guess
 	
-	return true
+	return false
 end)
 
 --ram into players as zombie
