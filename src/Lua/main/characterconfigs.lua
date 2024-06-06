@@ -274,7 +274,7 @@ SRBZ.AddConfig("amy", {
 	normalspeed = 11 * FRACUNIT,
 	health = 45,
 	charability = CA_TWINSPIN,
-	charability2 = CA2_MELEE,
+	charability2 = CA2_NONE,
 	jumpfactor = 20 * FRACUNIT / 19,
 	desc1 = "Pink Pink Pink.",
 	desc2 = "WIP ABILITIES"
@@ -284,7 +284,7 @@ SRBZ.AddConfig("fang", {
 	normalspeed = 11 * FRACUNIT,
 	health = 85,
 	charability = CA_BOUNCE,
-	charability2 = CA2_GUNSLINGER,
+	charability2 = CA2_NONE,
 	jumpfactor = 20 * FRACUNIT / 19,
 	desc1 = "He shoots the shooty shoot.",
 	desc2 = "Have less momentum to shoot."
