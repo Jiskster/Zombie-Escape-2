@@ -66,14 +66,13 @@ SRBZ.sprint_thinker = function(player)
 	local decrement = FRACUNIT/3
 	
 	if player.zteam == 1 then
-		if (player.speed > 5*FRACUNIT) and (cmd.buttons & BT_CUSTOM1) then
+		if P_GetPlayerControlDirection(player) == 1 and (cmd.buttons & BT_SPIN) then
 			
-			player.sprintmeter = $ - decrement
-			if player.sprintmeter - decrement < 0 then
-				player.sprintmeter = 0
-			end
+			SRBZ:DecrementSprint(player, decrement)
 			
 			player.isSprinting = true
+
+			-- Running Animation
 			if player.sprintmeter == 0 then
 				player.runspeed = 32000*FRACUNIT
 			else
@@ -83,18 +82,18 @@ SRBZ.sprint_thinker = function(player)
 				end
 			end
 		else
-			
-			player.sprintmeter = $ + increment
-			if player.sprintmeter > 100*FRACUNIT or player.sprintmeter + increment > 100*FRACUNIT then
-				player.sprintmeter = 100*FRACUNIT
-			end
+			SRBZ:IncrementSprint(player, increment)
 			
 			player.isSprinting = false
+			
+			-- Force Walking Animation
 			player.runspeed = 32000*FRACUNIT
 		end
 	else
 		player.isSprinting = false
 	end
+	
+	cmd.buttons = $ & ~BT_SPIN
 end
 
 addHook("JumpSpecial", function(player)

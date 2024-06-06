@@ -3,7 +3,11 @@ addHook("PlayerSpawn", SRBZ.init_player)
 
 addHook("TouchSpecial", SRBZ.HitMegaHP, MT_MEGAHP)
 
-addHook("PlayerThink", SRBZ.sprint_thinker)
+addHook("PreThinkFrame", function()
+	for player in players.iterate do
+		SRBZ.sprint_thinker(player)
+	end
+end)
 
 addHook("PlayerThink", SRBZ.giveplayerflags)
 
