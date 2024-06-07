@@ -303,8 +303,6 @@ addHook("PreThinkFrame", function()
 			voted = false,
 			vote_leftpressed = false,
 			vote_rightpressed = false,
-			vote_selectpressed = false,
-			vote_deselectpressed = false,
 
 			shop_selection = 1,
 			shop_leftpressed = false,
@@ -348,51 +346,32 @@ addHook("PreThinkFrame", function()
 		
 		if not ZE2.game_ended and not player["ze2_info"].ghostmode then 
 			if not player.choosing then
-				if (cmd.buttons & BT_WEAPONPREV) then
-					if not player["ze2_info"].pressedprev then
-						if player["ze2_info"].inventory_selection - 1 <= 0 then
-							player["ze2_info"].inventory_selection = ZE2:FetchInventoryLimit(player)
-						else
-							player["ze2_info"].inventory_selection = $ - 1
-						end
-						
-						S_StartSound(nil,sfx_mnu1a,player)
-						
-						player["ze2_info"].reload = 0
+				if (cmd.buttons & BT_WEAPONPREV) and not (player.lastbuttons & BT_WEAPONPREV)  then
+					if player["ze2_info"].inventory_selection - 1 <= 0 then
+						player["ze2_info"].inventory_selection = ZE2:FetchInventoryLimit(player)
+					else
+						player["ze2_info"].inventory_selection = $ - 1
 					end
-				
-					player["ze2_info"].pressedprev = true
-				else
-					player["ze2_info"].pressedprev = false
+					
+					S_StartSound(nil,sfx_mnu1a,player)
+					
+					player["ze2_info"].reload = 0
 				end
 			
-				if (cmd.buttons & BT_WEAPONNEXT) then
-					if not player["ze2_info"].pressednext then
-					
-						if player["ze2_info"].inventory_selection + 1 > ZE2:FetchInventoryLimit(player) then
-							player["ze2_info"].inventory_selection = 1
-						else
-							player["ze2_info"].inventory_selection = $ + 1
-						end
-
-						S_StartSound(nil,sfx_mnu1a,player)
-						
-						player["ze2_info"].reload = 0
+				if (cmd.buttons & BT_WEAPONNEXT) and not (player.lastbuttons & BT_WEAPONNEXT) then				
+					if player["ze2_info"].inventory_selection + 1 > ZE2:FetchInventoryLimit(player) then
+						player["ze2_info"].inventory_selection = 1
+					else
+						player["ze2_info"].inventory_selection = $ + 1
 					end
+
+					S_StartSound(nil,sfx_mnu1a,player)
 					
-					player["ze2_info"].pressednext = true
-				else
-					player["ze2_info"].pressednext = false	
+					player["ze2_info"].reload = 0
 				end
 				
-				if (cmd.buttons & BT_FIRENORMAL) then
-					if not player["ze2_info"].pressed_reload then
-						ZE2.DoPlayerReload(player)
-					end
-					
-					player["ze2_info"].pressed_reload = true
-				else
-					player["ze2_info"].pressed_reload = false	
+				if (cmd.buttons & BT_FIRENORMAL) and not (player.lastbuttons & BT_FIRENORMAL)  then
+					ZE2.DoPlayerReload(player)
 				end
 				
 				if (cmd.buttons & BT_ATTACK) then
@@ -432,6 +411,7 @@ addHook("PreThinkFrame", function()
 						iteminfo.ammo = $ - 1
 					end
 					
+					-- Auto Reload
 					if iteminfo.ammo <= 0 and not player["ze2_info"].reload then
 						ZE2.DoPlayerReload(player)
 					end

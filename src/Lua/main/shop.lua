@@ -252,6 +252,7 @@ addHook("PreThinkFrame", do
                         elseif player["ze2_info"].shop_confirmscreen and hasrequiredrubies then 
 							-- actually buy
                             player.rubies = $ - player.shop_person.shop[player["ze2_info"].shop_selection][1]
+							
                             -- copied from ZE2:FetchInventory()
                             if player["ze2_info"].survivor_inventory and player.zteam == 1 then
                                 if ZE2:IsInventoryFull(player) or (player.cmd.buttons & BT_CUSTOM1) then
@@ -265,15 +266,22 @@ addHook("PreThinkFrame", do
                                 else
                                     table.insert(player["ze2_info"].zombie_inventory, player.shop_person.shop[player["ze2_info"].shop_selection][2])
                                 end
-                            else error("Could not fetch inventory.",2) end
+                            else
+								error("Could not fetch inventory.",2) 
+							end
+							
                             S_StartSound(nil, sfx_s3kb8, player)
                             player["ze2_info"].shop_confirmscreen = false
                             player.shop_person.shop[player["ze2_info"].shop_selection][2] = nil
-                        else S_StartSound(nil, sfx_lose, player) end
+                        else
+							S_StartSound(nil, sfx_lose, player)
+						end
                         
                         player["ze2_info"].shop_selectpressed  = true
                     end
-                else player["ze2_info"].shop_selectpressed = false end
+                else 
+					player["ze2_info"].shop_selectpressed = false
+				end
 
                 cmd.buttons = 0
                 cmd.forwardmove = 0

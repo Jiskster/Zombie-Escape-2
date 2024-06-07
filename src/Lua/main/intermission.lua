@@ -96,35 +96,27 @@ addHook("PreThinkFrame", function()
 						player["ze2_info"].vote_rightpressed = false
 					end
 				
-					if (cmd.buttons & BT_JUMP) then
-						if not player["ze2_info"].vote_selectpressed and not player["ze2_info"].voted then
-						
+					if (cmd.buttons & BT_JUMP) and not (player.lastbuttons & BT_JUMP) then
+						if not player["ze2_info"].voted then
 							S_StartSound(nil, sfx_s3kad, player)
 							player["ze2_info"].voted = true
-							player["ze2_info"].vote_selectpressed = true
 							local sel = player["ze2_info"].vote_selection
 							local seltomapnum = ZE2.MapsOnVote[sel]
 
 							ZE2.MapsOnVote[player["ze2_info"].vote_selection][1] = $ + 1
 						end
-					else
-						player["ze2_info"].vote_selectpressed = false
 					end
 					
-					if (cmd.buttons & BT_SPIN) then
-						if not player["ze2_info"].vote_deselectpressed and player["ze2_info"].voted then
-						
+					if (cmd.buttons & BT_SPIN) and not (player.lastbuttons & BT_SPIN) then
+						if player["ze2_info"].voted then
 							S_StartSound(nil, sfx_s3kc3s, player)
 							player["ze2_info"].voted = false
-							player["ze2_info"].vote_deselectpressed = true
 							
 							local sel = player["ze2_info"].vote_selection
 							local seltomapnum = ZE2.MapsOnVote[sel]
 
 							ZE2.MapsOnVote[player["ze2_info"].vote_selection][1] = $ - 1
 						end
-					else
-						player["ze2_info"].vote_deselectpressed = false
 					end	
 				end
 				
