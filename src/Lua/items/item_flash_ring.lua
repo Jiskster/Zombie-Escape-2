@@ -3,7 +3,7 @@
 local flashdmg = 30
 local flashkb = 70*FRACUNIT
 
-freeslot("MT_SRBZ_FLASHSHOT", "S_SRBZ_FLASHBURST", "sfx_wp_vol")
+freeslot("MT_ZE2_FLASHSHOT", "S_ZE2_FLASHBURST", "sfx_wp_vol")
 
 freeslot("S_NEWBOOM")
 states[S_NEWBOOM] = {SPR_BARX, FF_ANIMATE|FF_TRANS50|A, 9, nil, 3, 3, S_NULL}
@@ -64,9 +64,9 @@ end
 
 
 
-mobjinfo[MT_SRBZ_FLASHSHOT] = {
+mobjinfo[MT_ZE2_FLASHSHOT] = {
 	spawnstate = S_RRNG1,
-	deathstate = S_SRBZ_FLASHBURST,
+	deathstate = S_ZE2_FLASHBURST,
 	deathsound = sfx_s3k33,
 	speed = 43*FRACUNIT,
 	radius = 6*FRACUNIT,
@@ -74,16 +74,16 @@ mobjinfo[MT_SRBZ_FLASHSHOT] = {
 	painchance = 165*FRACUNIT,
 	flags = MF_NOBLOCKMAP|MF_MISSILE,
 }
-states[S_SRBZ_FLASHBURST] = {
+states[S_ZE2_FLASHBURST] = {
 	tics = 0,
 	action = A_FlashBurst
 }
 
-mobjinfo[MT_SRBZ_FLASHSHOT].forcedamage = flashdmg
-mobjinfo[MT_SRBZ_FLASHSHOT].forceknockback = flashkb
+mobjinfo[MT_ZE2_FLASHSHOT].forcedamage = flashdmg
+mobjinfo[MT_ZE2_FLASHSHOT].forceknockback = flashkb
 
 
-SRBZ:CreateItem("Flash Ring", {
+ZE2:CreateItem("Flash Ring", {
 	shake = 15,
 	icon = "BLININD",
 	firerate = 40,
@@ -100,11 +100,11 @@ SRBZ:CreateItem("Flash Ring", {
 		mo.state = S_PLAY_SPRING
 		mo.player.pflags = $ & ~(PF_JUMPED | PF_SPINNING)
 		S_StartSound(mo, sfx_wp_vol)
-		local rail = P_SPMAngle(mo, MT_SRBZ_FLASHSHOT, mo.angle, 1, MF2_DONTDRAW)
+		local rail = P_SPMAngle(mo, MT_ZE2_FLASHSHOT, mo.angle, 1, MF2_DONTDRAW)
 		
 		if rail and rail.valid then
-			rail.forcedamage = SRBZ:FetchInventorySlot(player).damage
-			rail.forceknockback = SRBZ:FetchInventorySlot(player).knockback
+			rail.forcedamage = ZE2:FetchInventorySlot(player).damage
+			rail.forceknockback = ZE2:FetchInventorySlot(player).knockback
 			local range = 16
 			for i = 0, range do
 				local ang = P_RandomRange(0, 359) * ANG1

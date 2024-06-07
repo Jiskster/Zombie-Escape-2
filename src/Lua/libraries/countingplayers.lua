@@ -1,4 +1,4 @@
-SRBZ.SurvivorCount = function()
+ZE2.SurvivorCount = function()
 	local c = 0
 	for player in players.iterate do 
 		if player.zteam ~= nil and player.zteam == 1 and not player.spectator then 
@@ -8,7 +8,7 @@ SRBZ.SurvivorCount = function()
 	return c
 end
 
-SRBZ.ZombieCount = function()
+ZE2.ZombieCount = function()
 	local c = 0
 	for player in players.iterate do 
 		if player.zteam ~= nil and player.zteam == 2 and not player.spectator then 
@@ -18,7 +18,7 @@ SRBZ.ZombieCount = function()
 	return c
 end
 
-SRBZ.PlayerCount = function()
+ZE2.PlayerCount = function()
 	local c = 0
 	for player in players.iterate do 
 		if not player.spectator then

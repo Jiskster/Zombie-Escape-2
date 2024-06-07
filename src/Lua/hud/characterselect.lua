@@ -8,17 +8,17 @@ addHook("MapLoad", function()
 	end
 end)
 
-SRBZ.getCharacterSelection = function(player)
+ZE2.getCharacterSelection = function(player)
 	return player.selection or 1
 end
 
-SRBZ.getSkinFromCharSelect = function(player)
-	return skins[SRBZ.getSkinNames(player, true)[player.selection]] or skins["sonic"]
+ZE2.getSkinFromCharSelect = function(player)
+	return skins[ZE2.getSkinNames(player, true)[player.selection]] or skins["sonic"]
 end
 
-SRBZ.characterselecthud = function(v, player, c)
-	if SRBZ.round_active then return end 
-	if gametype ~= GT_SRBZ then return end
+ZE2.characterselecthud = function(v, player, c)
+	if ZE2.round_active then return end 
+	if gametype ~= GT_ZE2 then return end
     local pmo = player.mo 
     if not pmo then 
         return
@@ -26,20 +26,20 @@ SRBZ.characterselecthud = function(v, player, c)
 
     local cursorpatch = v.cachePatch("CURWEAP")
 	local barpatch = v.cachePatch("DABARR")
-    local skincount = #SRBZ.getSkinNums(player,true)
+    local skincount = #ZE2.getSkinNums(player,true)
 	
 	if player.chosecharacter then
 		return
 	end
 
-	local cc = SRBZ.CharacterConfig
+	local cc = ZE2.CharacterConfig
 	
 	--Blue Bar
 	v.drawStretched(0, 17*FRACUNIT, 1500*FRACUNIT, FRACUNIT*3, barpatch, V_SNAPTOTOP|V_SNAPTOLEFT)
 	
 	--Icons
-    for i,skinname in ipairs(SRBZ.getSkinNames(player,true)) do
-        local sel = SRBZ.getCharacterSelection(player)
+    for i,skinname in ipairs(ZE2.getSkinNames(player,true)) do
+        local sel = ZE2.getCharacterSelection(player)
 		local x
 		if player.selection_anim ~= nil and player.prevselection then
 			local ese = ease.outexpo(FixedDiv(player.selection_anim*FRACUNIT, ((TICRATE/2)*FRACUNIT)), 
@@ -55,7 +55,7 @@ SRBZ.characterselecthud = function(v, player, c)
         local skinpatch = v.getSprite2Patch(skinname, SPR2_LIFE)
         
         local flags = V_SNAPTOTOP
-		local colormap = v.getColormap(skinname, skins[SRBZ.getSkinNums(player,true)[i]].prefcolor)
+		local colormap = v.getColormap(skinname, skins[ZE2.getSkinNums(player,true)[i]].prefcolor)
         v.drawScaled(x, y, scale, skinpatch, flags, colormap)
 		
 		--
@@ -63,7 +63,7 @@ SRBZ.characterselecthud = function(v, player, c)
 
 	--Selection Square
     do
-        local skincount = #SRBZ.getSkinNums(player,true)
+        local skincount = #ZE2.getSkinNums(player,true)
 		
         local x = ( (145) ) * FU --- skincount*25
         local y = 20*FU
@@ -76,21 +76,21 @@ SRBZ.characterselecthud = function(v, player, c)
         v.drawScaled(x, y, scale, cursorpatch, flags)
     end
 	
-	local the_color = SRBZ.getSkinFromCharSelect(player).prefcolor
-	local the_name = SRBZ.getSkinFromCharSelect(player).realname
+	local the_color = ZE2.getSkinFromCharSelect(player).prefcolor
+	local the_name = ZE2.getSkinFromCharSelect(player).realname
 	customhud.CustomFontString(v, 160*FU, 0, the_name, "STCFC", (V_SNAPTOTOP), "center" , 2*FRACUNIT, the_color)
 
 	local charinfo_text = {
 		[1] = {
-			textcolor = SRBZ.getSkinFromCharSelect(player).prefcolor,
-			text = SRBZ.getSkinFromCharSelect(player).realname
+			textcolor = ZE2.getSkinFromCharSelect(player).prefcolor,
+			text = ZE2.getSkinFromCharSelect(player).realname
 		},
 		[2] = {
 			textcolor = SKINCOLOR_GREEN,
 			text = "Spawn HP: ".. (
-				(cc[SRBZ.getSkinFromCharSelect(player).name] and cc[SRBZ.getSkinFromCharSelect(player).name].health) 
+				(cc[ZE2.getSkinFromCharSelect(player).name] and cc[ZE2.getSkinFromCharSelect(player).name].health) 
 				
-				and cc[SRBZ.getSkinFromCharSelect(player).name].health 
+				and cc[ZE2.getSkinFromCharSelect(player).name].health 
 				
 				or "[UNREGISTERED HP]"
 			)
@@ -98,9 +98,9 @@ SRBZ.characterselecthud = function(v, player, c)
 		[3] = {
 			textcolor = SKINCOLOR_TEAL,
 			text = "Speed: ^".. (
-				(cc[SRBZ.getSkinFromCharSelect(player).name] and cc[SRBZ.getSkinFromCharSelect(player).name].normalspeed) 
+				(cc[ZE2.getSkinFromCharSelect(player).name] and cc[ZE2.getSkinFromCharSelect(player).name].normalspeed) 
 				
-				and L_FixedDecimal(cc[SRBZ.getSkinFromCharSelect(player).name].normalspeed,2)
+				and L_FixedDecimal(cc[ZE2.getSkinFromCharSelect(player).name].normalspeed,2)
 				
 				or "[UNREGISTERED SPEED]"
 			)
@@ -108,9 +108,9 @@ SRBZ.characterselecthud = function(v, player, c)
 		[4] = {
 			textcolor = SKINCOLOR_ICY,
 			text = "Sprint Increment: +".. (
-				(cc[SRBZ.getSkinFromCharSelect(player).name] and cc[SRBZ.getSkinFromCharSelect(player).name].sprintboost) 
+				(cc[ZE2.getSkinFromCharSelect(player).name] and cc[ZE2.getSkinFromCharSelect(player).name].sprintboost) 
 				
-				and L_FixedDecimal(cc[SRBZ.getSkinFromCharSelect(player).name].sprintboost,2)
+				and L_FixedDecimal(cc[ZE2.getSkinFromCharSelect(player).name].sprintboost,2)
 				
 				or "[UNREGISTERED SPRINT SPEED]"
 			)
@@ -118,9 +118,9 @@ SRBZ.characterselecthud = function(v, player, c)
 		[5] = {
 			textcolor = SKINCOLOR_YELLOW,
 			text = (
-				(cc[SRBZ.getSkinFromCharSelect(player).name] and cc[SRBZ.getSkinFromCharSelect(player).name].desc1) 
+				(cc[ZE2.getSkinFromCharSelect(player).name] and cc[ZE2.getSkinFromCharSelect(player).name].desc1) 
 				
-				and cc[SRBZ.getSkinFromCharSelect(player).name].desc1
+				and cc[ZE2.getSkinFromCharSelect(player).name].desc1
 				
 				or ""
 			)
@@ -128,9 +128,9 @@ SRBZ.characterselecthud = function(v, player, c)
 		[6] = {
 			textcolor = SKINCOLOR_LIME,
 			text = (
-				(cc[SRBZ.getSkinFromCharSelect(player).name] and cc[SRBZ.getSkinFromCharSelect(player).name].desc2) 
+				(cc[ZE2.getSkinFromCharSelect(player).name] and cc[ZE2.getSkinFromCharSelect(player).name].desc2) 
 				
-				and cc[SRBZ.getSkinFromCharSelect(player).name].desc2
+				and cc[ZE2.getSkinFromCharSelect(player).name].desc2
 				
 				or ""
 			)
@@ -138,9 +138,9 @@ SRBZ.characterselecthud = function(v, player, c)
 		[7] = {
 			textcolor = SKINCOLOR_PERIDOT,
 			text = (
-				(cc[SRBZ.getSkinFromCharSelect(player).name] and cc[SRBZ.getSkinFromCharSelect(player).name].desc3) 
+				(cc[ZE2.getSkinFromCharSelect(player).name] and cc[ZE2.getSkinFromCharSelect(player).name].desc3) 
 				
-				and cc[SRBZ.getSkinFromCharSelect(player).name].desc3
+				and cc[ZE2.getSkinFromCharSelect(player).name].desc3
 				
 				or ""
 			)
@@ -156,7 +156,7 @@ SRBZ.characterselecthud = function(v, player, c)
 		customhud.CustomFontString(v, t_ese, 50*FU + (i*(8*FU)), output_text, "TNYFC", (V_SNAPTORIGHT|V_SNAPTOTOP), "right", FU, output_color)
 	end
 
-	if leveltime > SRBZ.charselect_waittime	then
+	if leveltime > ZE2.charselect_waittime	then
 		local offset = sin(ANG1*(leveltime*3))*3 
 		local offset2 = cos(ANG1*(leveltime*3))*3
 		local x = (160*FU) + offset

@@ -1,4 +1,4 @@
-SRBZ:CreateItem("Red Ring",  {
+ZE2:CreateItem("Red Ring",  {
 	object = MT_REDRING,
 	icon = "RINGIND",
 	firerate = 17,

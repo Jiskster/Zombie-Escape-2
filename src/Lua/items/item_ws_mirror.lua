@@ -13,7 +13,7 @@ mobjinfo[MT_MIRRORCLONE] = {
 mobjinfo[MT_MIRRORCLONE].npc_name = "Mirror Clone"
 mobjinfo[MT_MIRRORCLONE].npc_spawnhealth = {100,100}
 
-SRBZ:CreateItem("W's mirror", {
+ZE2:CreateItem("W's mirror", {
 	icon = "MIRRORIND",
 	firerate = TICRATE*5,
 	sound = sfx_mrr12,
@@ -29,7 +29,7 @@ SRBZ:CreateItem("W's mirror", {
 		mirrorclone.maxhealth = player.mo.maxhealth
 		mirrorclone.alias = player.name
 		mirrorclone.angle = player.mo.angle
-		mirrorclone.forcedamage = SRBZ:FetchInventorySlot(player).damage
+		mirrorclone.forcedamage = ZE2:FetchInventorySlot(player).damage
 	end
 })
 

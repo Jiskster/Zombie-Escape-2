@@ -1,6 +1,6 @@
 freeslot("sfx_gulpy")
 
-SRBZ:CreateItem("Milk", {
+ZE2:CreateItem("Milk", {
 	icon = "MILKIND",
 	iconscale = FU/2,
 	firerate = 32,
@@ -8,8 +8,8 @@ SRBZ:CreateItem("Milk", {
 	limited = true,
 	count = 12,
 	ontrigger = function(player)
-		SRBZ:ChangeStamina(player, 25*FRACUNIT)
-		SRBZ:ChangeHealth(player.mo, 4)
+		ZE2:ChangeStamina(player, 25*FRACUNIT)
+		ZE2:ChangeHealth(player.mo, 4)
 	end,
 	price = 110,
 })

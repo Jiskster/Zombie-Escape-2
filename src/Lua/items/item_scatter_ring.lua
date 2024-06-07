@@ -1,14 +1,14 @@
 -- Ported From RSNEO
 
 freeslot(
-"MT_SRBZ_THROWNSCATTER",
-"S_SRBZ_THROWNSCATTER1",
-"S_SRBZ_THROWNSCATTER2",
-"S_SRBZ_THROWNSCATTER3",
-"S_SRBZ_THROWNSCATTER4",
-"S_SRBZ_THROWNSCATTER5",
-"S_SRBZ_THROWNSCATTER6",
-"S_SRBZ_THROWNSCATTER7"
+"MT_ZE2_THROWNSCATTER",
+"S_ZE2_THROWNSCATTER1",
+"S_ZE2_THROWNSCATTER2",
+"S_ZE2_THROWNSCATTER3",
+"S_ZE2_THROWNSCATTER4",
+"S_ZE2_THROWNSCATTER5",
+"S_ZE2_THROWNSCATTER6",
+"S_ZE2_THROWNSCATTER7"
 )
 
 freeslot("sfx_shgn")
@@ -16,8 +16,8 @@ freeslot("sfx_shgn")
 sfxinfo[sfx_shgn].caption = "Shotgun"
 
 -- totally not from ringslinger neo
-mobjinfo[MT_SRBZ_THROWNSCATTER] = { 
-	spawnstate = S_SRBZ_THROWNSCATTER1,
+mobjinfo[MT_ZE2_THROWNSCATTER] = { 
+	spawnstate = S_ZE2_THROWNSCATTER1,
 	--activesound = sfx_shgn,
 	deathstate = S_SPRK1,
 	xdeathstate = S_SPRK1,
@@ -27,50 +27,50 @@ mobjinfo[MT_SRBZ_THROWNSCATTER] = {
 	flags = MF_NOBLOCKMAP|MF_MISSILE|MF_NOGRAVITY
 }
 
-states[S_SRBZ_THROWNSCATTER1] = {
-	nextstate = S_SRBZ_THROWNSCATTER2,
+states[S_ZE2_THROWNSCATTER1] = {
+	nextstate = S_ZE2_THROWNSCATTER2,
 	sprite = SPR_TSCR,
 	frame = FF_FULLBRIGHT,
 	tics = 1,
 }
-states[S_SRBZ_THROWNSCATTER2] = {
-	nextstate = S_SRBZ_THROWNSCATTER3,
+states[S_ZE2_THROWNSCATTER2] = {
+	nextstate = S_ZE2_THROWNSCATTER3,
 	sprite = SPR_TSCR,
 	frame = FF_FULLBRIGHT,
 	tics = 1,
 }
-states[S_SRBZ_THROWNSCATTER3] = {
-	nextstate = S_SRBZ_THROWNSCATTER4,
+states[S_ZE2_THROWNSCATTER3] = {
+	nextstate = S_ZE2_THROWNSCATTER4,
 	sprite = SPR_TSCR,
 	frame = FF_FULLBRIGHT,
 	tics = 1,
 }
-states[S_SRBZ_THROWNSCATTER4] = {
-	nextstate = S_SRBZ_THROWNSCATTER5,
+states[S_ZE2_THROWNSCATTER4] = {
+	nextstate = S_ZE2_THROWNSCATTER5,
 	sprite = SPR_TSCR,
 	frame = FF_FULLBRIGHT,
 	tics = 1,
 }
-states[S_SRBZ_THROWNSCATTER5] = {
-	nextstate = S_SRBZ_THROWNSCATTER6,
+states[S_ZE2_THROWNSCATTER5] = {
+	nextstate = S_ZE2_THROWNSCATTER6,
 	sprite = SPR_TSCR,
 	frame = FF_FULLBRIGHT,
 	tics = 1,
 }
-states[S_SRBZ_THROWNSCATTER6] = {
-	nextstate = S_SRBZ_THROWNSCATTER7,
+states[S_ZE2_THROWNSCATTER6] = {
+	nextstate = S_ZE2_THROWNSCATTER7,
 	sprite = SPR_TSCR,
 	frame = FF_FULLBRIGHT,
 	tics = 1,
 }
-states[S_SRBZ_THROWNSCATTER7] = {
-	nextstate = S_SRBZ_THROWNSCATTER1,
+states[S_ZE2_THROWNSCATTER7] = {
+	nextstate = S_ZE2_THROWNSCATTER1,
 	sprite = SPR_TSCR,
 	frame = FF_FULLBRIGHT,
 	tics = 1,
 }
 
-SRBZ:CreateItem("Scatter Ring",  {
+ZE2:CreateItem("Scatter Ring",  {
 	icon = "SCATIND",
 	firerate = TICRATE,
 	sound = sfx_shgn,
@@ -82,17 +82,17 @@ SRBZ:CreateItem("Scatter Ring",  {
 	ammo = 15,
 	reload_time = 3*TICRATE,
 	ontrigger = function(player)
-		local mt = MT_SRBZ_THROWNSCATTER
+		local mt = MT_ZE2_THROWNSCATTER
 		local mo = player.mo
 		local spread = 4
 		--S_StartSound(mo, sfx_shgn)
 		for i = -1, 1
 			local shot = P_SPMAngle(mo, mt, mo.angle + i * ANG1*spread, 1, 0)
 			if shot and shot.valid
-				shot.color = SRBZ:FetchInventorySlot(player).color
-				shot.fuse = SRBZ:FetchInventorySlot(player).fuse
-				shot.forcedamage = SRBZ:FetchInventorySlot(player).damage
-				shot.forceknockback = SRBZ:FetchInventorySlot(player).knockback
+				shot.color = ZE2:FetchInventorySlot(player).color
+				shot.fuse = ZE2:FetchInventorySlot(player).fuse
+				shot.forcedamage = ZE2:FetchInventorySlot(player).damage
+				shot.forceknockback = ZE2:FetchInventorySlot(player).knockback
 				
 				shot.momx = $ + mo.momx / 3
 				shot.momy = $ + mo.momy / 3
@@ -105,10 +105,10 @@ SRBZ:CreateItem("Scatter Ring",  {
 			local shot = P_SPMAngle(mo, mt, mo.angle, 1, 0)
 			player.aiming = prevaim
 			if shot and shot.valid
-				shot.color = SRBZ:FetchInventorySlot(player).color
-				shot.fuse = SRBZ:FetchInventorySlot(player).fuse
-				shot.forcedamage = SRBZ:FetchInventorySlot(player).damage
-				shot.forceknockback = SRBZ:FetchInventorySlot(player).knockback
+				shot.color = ZE2:FetchInventorySlot(player).color
+				shot.fuse = ZE2:FetchInventorySlot(player).fuse
+				shot.forcedamage = ZE2:FetchInventorySlot(player).damage
+				shot.forceknockback = ZE2:FetchInventorySlot(player).knockback
 
 				shot.momx = $ + mo.momx / 3
 				shot.momy = $ + mo.momy / 3

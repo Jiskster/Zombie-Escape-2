@@ -27,9 +27,9 @@ states[S_ZEMO_BUBBLE] = {
 	nextstate = S_ZEMO_BUBBLE
 }
 
-SRBZ.Emotes = {}
+ZE2.Emotes = {}
 
-function SRBZ:AddEmote(emote_spr, name, desc, sound)
+function ZE2:AddEmote(emote_spr, name, desc, sound)
 	local id = #self.Emotes + 1
 	self.Emotes[id] = {
 		["Sprite"] = emote_spr,
@@ -38,7 +38,7 @@ function SRBZ:AddEmote(emote_spr, name, desc, sound)
 		["Sound"] = sound or 100,
 	}
 	
-	print("Added SRBZ Emote: " + self.Emotes[#self.Emotes].Name +" ("+#self.Emotes+")" )
+	print("Added ZE2 Emote: " + self.Emotes[#self.Emotes].Name +" ("+#self.Emotes+")" )
 end
 
 addHook("PlayerThink", function(player)
@@ -52,34 +52,34 @@ addHook("PlayerThink", function(player)
 	end
 end)
 
-SRBZ:AddEmote(SPR_ZT00, "Heal Me!", "Heal me NOW!")
-SRBZ:AddEmote(SPR_ZT01, "Huh?", "What the?..", sfx_huhem)
-SRBZ:AddEmote(SPR_ZT02, "Skull Emoji", "hell nah bruh", sfx_vboom)
-SRBZ:AddEmote(SPR_ZT03, "Sad Sponge", "me when when no 2.3", sfx_thwop)
-SRBZ:AddEmote(SPR_ZT04, "heheheha", "HE HE HE HA", sfx_heheha)
-SRBZ:AddEmote(SPR_ZT05, "AYO?", "bro said something mad sus", sfx_4ayo)
-SRBZ:AddEmote(SPR_ZT06, "HAHA ONE!", "ONE!", sfx_haha1)
-SRBZ:AddEmote(SPR_ZT07, "sexysonic", "oh yeah", sfx_orchit)
-SRBZ:AddEmote(SPR_ZT08, "insanesonic", "memory card", sfx_memore)
-SRBZ:AddEmote(SPR_ZT09, "peppino scream", "italian mating call", sfx_pepscr)
-SRBZ:AddEmote(SPR_ZT0A, "noise scream", "noid mating call", sfx_noiscr)
-SRBZ:AddEmote(SPR_ZT0B, "chaos emeralds?", "did you get those chaos emeralds?", sfx_demoem)
-SRBZ:AddEmote(SPR_ZT0C, "sonic yeah!", "YEAH", sfx_syeah)
-SRBZ:AddEmote(SPR_ZT0D, "tails slang", "you can count on me", sfx_yccom)
-SRBZ:AddEmote(SPR_ZT0E, "knuckles thing", "oh no", sfx_kohno)
-SRBZ:AddEmote(SPR_ZT0F, "dumbass", "scoutdumbass", sfx_dumba)
-SRBZ:AddEmote(SPR_ZT10, "nerd emoji", "ackktually!", sfx_actu)
-SRBZ:AddEmote(SPR_ZT11, "who invited this kid", "oh my god who invited this kid!", sfx_whoinv)
-SRBZ:AddEmote(SPR_ZT12, "bruh", "BRUH", sfx_bruh)
-SRBZ:AddEmote(SPR_ZT13, "The zombies will be back", "source: trust me", sfx_inf1)
-SRBZ:AddEmote(SPR_ZT13, "You have been enslaved by the zombies", "1865", sfx_inf2)
+ZE2:AddEmote(SPR_ZT00, "Heal Me!", "Heal me NOW!")
+ZE2:AddEmote(SPR_ZT01, "Huh?", "What the?..", sfx_huhem)
+ZE2:AddEmote(SPR_ZT02, "Skull Emoji", "hell nah bruh", sfx_vboom)
+ZE2:AddEmote(SPR_ZT03, "Sad Sponge", "me when when no 2.3", sfx_thwop)
+ZE2:AddEmote(SPR_ZT04, "heheheha", "HE HE HE HA", sfx_heheha)
+ZE2:AddEmote(SPR_ZT05, "AYO?", "bro said something mad sus", sfx_4ayo)
+ZE2:AddEmote(SPR_ZT06, "HAHA ONE!", "ONE!", sfx_haha1)
+ZE2:AddEmote(SPR_ZT07, "sexysonic", "oh yeah", sfx_orchit)
+ZE2:AddEmote(SPR_ZT08, "insanesonic", "memory card", sfx_memore)
+ZE2:AddEmote(SPR_ZT09, "peppino scream", "italian mating call", sfx_pepscr)
+ZE2:AddEmote(SPR_ZT0A, "noise scream", "noid mating call", sfx_noiscr)
+ZE2:AddEmote(SPR_ZT0B, "chaos emeralds?", "did you get those chaos emeralds?", sfx_demoem)
+ZE2:AddEmote(SPR_ZT0C, "sonic yeah!", "YEAH", sfx_syeah)
+ZE2:AddEmote(SPR_ZT0D, "tails slang", "you can count on me", sfx_yccom)
+ZE2:AddEmote(SPR_ZT0E, "knuckles thing", "oh no", sfx_kohno)
+ZE2:AddEmote(SPR_ZT0F, "dumbass", "scoutdumbass", sfx_dumba)
+ZE2:AddEmote(SPR_ZT10, "nerd emoji", "ackktually!", sfx_actu)
+ZE2:AddEmote(SPR_ZT11, "who invited this kid", "oh my god who invited this kid!", sfx_whoinv)
+ZE2:AddEmote(SPR_ZT12, "bruh", "BRUH", sfx_bruh)
+ZE2:AddEmote(SPR_ZT13, "The zombies will be back", "source: trust me", sfx_inf1)
+ZE2:AddEmote(SPR_ZT13, "You have been enslaved by the zombies", "1865", sfx_inf2)
 
 COM_AddCommand("z_emote", function(player, emotenum)
 	if player.mo and player.mo.valid 
 	and player.playerstate ~= PST_DEAD and
 	netgame and multiplayer then
 		local emotenum_tonum = tonumber(emotenum)
-		if not SRBZ.Emotes[emotenum_tonum] then
+		if not ZE2.Emotes[emotenum_tonum] then
 			CONS_Printf(player, "Invalid Emote: ("+emotenum_tonum+")")
 			return
 		end
@@ -91,15 +91,15 @@ COM_AddCommand("z_emote", function(player, emotenum)
 			ebub.target = player.mo
 			ebub.isemotebubble = true
 			
-			ebub.sprite = SRBZ.Emotes[slotchosen].Sprite
+			ebub.sprite = ZE2.Emotes[slotchosen].Sprite
 			P_SetScale(ebub, ebub.scale/4)
-			S_StartSound(player.mo,SRBZ.Emotes[slotchosen].Sound)
+			S_StartSound(player.mo,ZE2.Emotes[slotchosen].Sound)
 		end
 	end
 end)
 
 COM_AddCommand("z_emotelist", function(player)
-	for i,v in ipairs(SRBZ.Emotes) do
+	for i,v in ipairs(ZE2.Emotes) do
 		CONS_Printf(player,"\x82\+ (\$i\): \$v.Name\")
 		CONS_Printf(player,"\x88\| Description: \$v.Description\")
 	end
@@ -115,9 +115,9 @@ COM_AddCommand("z_setemote", function(player, slot, emote)
 		return
 	end
 	
-	if SRBZ.Emotes[tonumber(emote)] then
+	if ZE2.Emotes[tonumber(emote)] then
 		player.emoteslots[tonumber(slot)] = tonumber(emote)
-		CONS_Printf(player,"Slot \$tonumber(slot)\ replaced \$SRBZ.Emotes[tonumber(emote)].Name\")
+		CONS_Printf(player,"Slot \$tonumber(slot)\ replaced \$ZE2.Emotes[tonumber(emote)].Name\")
 		return
 	else
 		CONS_Printf(player,"Invalid Emote.")

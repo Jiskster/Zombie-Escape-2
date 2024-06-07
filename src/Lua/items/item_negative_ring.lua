@@ -1,4 +1,4 @@
-SRBZ:CreateItem("Negative Ring",  {
+ZE2:CreateItem("Negative Ring",  {
 	object = MT_REDRING,
 	icon = "NEGATIVERINGIND",
 	firerate = 23,

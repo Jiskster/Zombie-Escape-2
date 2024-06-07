@@ -6,7 +6,7 @@ mobjinfo[MT_CORK].forceknockback = 20*FU
 mobjinfo[MT_LHRT].forcedamage = 3
 mobjinfo[MT_LHRT].forceknockback = 8*FU
 
-SRBZ.LimitMobjHealth = function(mobj)
+ZE2.LimitMobjHealth = function(mobj)
 	if mobj and mobj.valid then
 		if mobj.health and mobj.maxhealth then
 			if mobj.health > mobj.maxhealth then
@@ -17,8 +17,8 @@ SRBZ.LimitMobjHealth = function(mobj)
 end
 
 addHook("ShouldDamage", function(mo, inf, src, dmg)
-	if (gametype ~= GT_SRBZ) return end
-	if SRBZ.game_ended then return false end
+	if (gametype ~= GT_ZE2) return end
+	if ZE2.game_ended then return false end
 	
 	local knockback = 0
 	local verticalknockback = 0
@@ -72,11 +72,11 @@ addHook("ShouldDamage", function(mo, inf, src, dmg)
 		end
 		
 		--forceverticalknockback
-		if inf.iteminfo and SRBZ.ItemPresets[inf.iteminfo.item_id] and SRBZ.ItemPresets[inf.iteminfo.item_id].onhit and (inf.target or src) then
+		if inf.iteminfo and ZE2.ItemPresets[inf.iteminfo.item_id] and ZE2.ItemPresets[inf.iteminfo.item_id].onhit and (inf.target or src) then
 			if inf.target then
-				SRBZ.ItemPresets[inf.iteminfo.item_id].onhit(inf.target, mo, inf)
+				ZE2.ItemPresets[inf.iteminfo.item_id].onhit(inf.target, mo, inf)
 			elseif src then
-				SRBZ.ItemPresets[inf.iteminfo.item_id].onhit(src, mo, inf)
+				ZE2.ItemPresets[inf.iteminfo.item_id].onhit(src, mo, inf)
 			end
 		end
 	end
@@ -89,7 +89,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg)
 	
 	if mo.player then
 		if mo.player.zteam == 1 then
-			mo.player.powers[pw_flashing] = SRBZ.survinvtics.value
+			mo.player.powers[pw_flashing] = ZE2.survinvtics.value
 			P_FlashPal(mo.player, PAL_NUKE, 2)
 			S_StartSound(mo, sfx_s3kb9)
 			
@@ -151,8 +151,8 @@ addHook("ShouldDamage", function(mo, inf, src, dmg)
 			local player = mo.player 
 			local ztype = player.ztype
 			
-			if ztype and SRBZ.ZombieConfig[ztype] and SRBZ.ZombieConfig[ztype].killaward then
-				local killaward = SRBZ.ZombieConfig[ztype].killaward
+			if ztype and ZE2.ZombieConfig[ztype] and ZE2.ZombieConfig[ztype].killaward then
+				local killaward = ZE2.ZombieConfig[ztype].killaward
 				A_RubyDrop(mo, killaward)
 			end
 		end
@@ -175,8 +175,8 @@ end)
 --ram into players as zombie
 /*
 addHook("MobjMoveCollide", function(thing,tmthing)
-	if (gametype ~= GT_SRBZ) return end
-	if (SRBZ.game_ended) then return end
+	if (gametype ~= GT_ZE2) return end
+	if (ZE2.game_ended) then return end
 	if L_ZCollide(thing,tmthing) and tmthing.player and tmthing.player.zteam == 2 and thing.player
 	and thing.player.zteam ~= 2 then
 		local speed1 = FixedHypot(FixedHypot(tmthing.momx, tmthing.momy), tmthing.momz)
@@ -191,7 +191,7 @@ end)
 */
 
 addHook("MobjSpawn", function(mobj)
-	if gametype ~= GT_SRBZ then return end
+	if gametype ~= GT_ZE2 then return end
 	if mobjinfo[mobj.type].npc_name then
 		if mobjinfo[mobj.type].spawnhealth and type(mobjinfo[mobj.type].npc_spawnhealth) == "table" then
 			local rng_health = P_RandomRange(mobjinfo[mobj.type].npc_spawnhealth[1],mobjinfo[mobj.type].npc_spawnhealth[2])
@@ -203,14 +203,14 @@ addHook("MobjSpawn", function(mobj)
 	end
 end)
 
-function SRBZ.DoPlayerFire(player, iteminfo)
+function ZE2.DoPlayerFire(player, iteminfo)
 	local ring
 	
-	if not SRBZ.ItemPresets[iteminfo.item_id] then
+	if not ZE2.ItemPresets[iteminfo.item_id] then
 		return
 	end
 	
-	if SRBZ.game_ended or player.choosing then 
+	if ZE2.game_ended or player.choosing then 
 		return
 	end
 
@@ -218,12 +218,12 @@ function SRBZ.DoPlayerFire(player, iteminfo)
 		ring = P_SPMAngle(player.mo, iteminfo.object, player.mo.angle, 1, iteminfo.flags2)
 	end
 	
-	if SRBZ.ItemPresets[iteminfo.item_id].ontrigger and SRBZ.ItemPresets[iteminfo.item_id].ontrigger(player,iteminfo) == true then
+	if ZE2.ItemPresets[iteminfo.item_id].ontrigger and ZE2.ItemPresets[iteminfo.item_id].ontrigger(player,iteminfo) == true then
 		return
 	end
 	
-	if SRBZ.ItemPresets[iteminfo.item_id].shake then
-		local shake = SRBZ.ItemPresets[iteminfo.item_id].shake
+	if ZE2.ItemPresets[iteminfo.item_id].shake then
+		local shake = ZE2.ItemPresets[iteminfo.item_id].shake
 		if splitscreen or player == displayplayer then
 			P_StartQuake(shake * FRACUNIT, 7)
 		end
@@ -254,11 +254,11 @@ function SRBZ.DoPlayerFire(player, iteminfo)
 			ring.forceknockback = iteminfo.knockback
 		end
 
-		if SRBZ.ItemPresets[iteminfo.item_id].onspawn then
-			SRBZ.ItemPresets[iteminfo.item_id].onspawn(ring.target,ring,iteminfo)
+		if ZE2.ItemPresets[iteminfo.item_id].onspawn then
+			ZE2.ItemPresets[iteminfo.item_id].onspawn(ring.target,ring,iteminfo)
 		end
 		
-		local temp_iteminfo = SRBZ:Copy(iteminfo)
+		local temp_iteminfo = ZE2:Copy(iteminfo)
 
 		-- destroy functions on fire just in case
 		temp_iteminfo.onspawn = nil
@@ -269,27 +269,27 @@ function SRBZ.DoPlayerFire(player, iteminfo)
 	end
 end
 
-function SRBZ.DoPlayerReload(player)
-	local iteminfo = SRBZ:FetchInventorySlot(player)
-	if iteminfo and iteminfo.reload_time and not player["srbz_info"].reload then
+function ZE2.DoPlayerReload(player)
+	local iteminfo = ZE2:FetchInventorySlot(player)
+	if iteminfo and iteminfo.reload_time and not player["ze2_info"].reload then
 		if iteminfo.ammo ~= iteminfo.max_ammo then
-			player["srbz_info"].reload = iteminfo.reload_time or 2*TICRATE
+			player["ze2_info"].reload = iteminfo.reload_time or 2*TICRATE
 			S_StartSound(player.mo, sfx_z_rel1)
 		end
 	end
 end
 
 addHook("PreThinkFrame", function()
-	if gametype ~= GT_SRBZ then return end
+	if gametype ~= GT_ZE2 then return end
 	for player in players.iterate do
 		local cmd = player.cmd
-		player["srbz_info"] = $ or {
+		player["ze2_info"] = $ or {
 			inventory_selection = 1,
 
 			survivor_inventory_limit = 5,
 			
 			survivor_inventory = {
-				SRBZ:CopyItemFromID(ITEM_RED_RING)
+				ZE2:CopyItemFromID(ITEM_RED_RING)
 			},
 
 			weapondelay = 0,
@@ -314,111 +314,111 @@ addHook("PreThinkFrame", function()
 			shop_confirmscreen = false,
 		}
 		
-		if not player["srbz_info"].zombie_inventory or not player["srbz_info"].zombie_inventory_limit then
-			SRBZ.SetZCinventory(player)
+		if not player["ze2_info"].zombie_inventory or not player["ze2_info"].zombie_inventory_limit then
+			ZE2.SetZCinventory(player)
 		end
 		
 		if player.playerstate ~= PST_DEAD then
-			if #SRBZ:FetchInventory(player) > SRBZ:FetchInventoryLimit(player) then
-				table.remove(SRBZ:FetchInventory(player),#SRBZ:FetchInventory(player))
+			if #ZE2:FetchInventory(player) > ZE2:FetchInventoryLimit(player) then
+				table.remove(ZE2:FetchInventory(player),#ZE2:FetchInventory(player))
 			end
 
-			if player["srbz_info"].inventory_selection > SRBZ:FetchInventoryLimit(player) then
-				player["srbz_info"].inventory_selection = SRBZ:FetchInventoryLimit(player)
+			if player["ze2_info"].inventory_selection > ZE2:FetchInventoryLimit(player) then
+				player["ze2_info"].inventory_selection = ZE2:FetchInventoryLimit(player)
 			end
 		end
 		
 		if player and not player.mo then continue end
 		
 		-- decrement
-		if player["srbz_info"].weapondelay then
-			player["srbz_info"].weapondelay = $ - 1
+		if player["ze2_info"].weapondelay then
+			player["ze2_info"].weapondelay = $ - 1
 		end
 		
-		if player["srbz_info"].reload and SRBZ:FetchInventorySlot(player) then
-			local iteminfo = SRBZ:FetchInventorySlot(player)
+		if player["ze2_info"].reload and ZE2:FetchInventorySlot(player) then
+			local iteminfo = ZE2:FetchInventorySlot(player)
 			
-			player["srbz_info"].reload = $ - 1
+			player["ze2_info"].reload = $ - 1
 			
-			if player["srbz_info"].reload <= 0 then
+			if player["ze2_info"].reload <= 0 then
 				iteminfo.ammo = iteminfo.max_ammo
 				S_StartSound(player.mo, sfx_z_rel2)
 			end
 		end
 		
-		if not SRBZ.game_ended and not player["srbz_info"].ghostmode then 
+		if not ZE2.game_ended and not player["ze2_info"].ghostmode then 
 			if not player.choosing then
 				if (cmd.buttons & BT_WEAPONPREV) then
-					if not player["srbz_info"].pressedprev then
-						if player["srbz_info"].inventory_selection - 1 <= 0 then
-							player["srbz_info"].inventory_selection = SRBZ:FetchInventoryLimit(player)
+					if not player["ze2_info"].pressedprev then
+						if player["ze2_info"].inventory_selection - 1 <= 0 then
+							player["ze2_info"].inventory_selection = ZE2:FetchInventoryLimit(player)
 						else
-							player["srbz_info"].inventory_selection = $ - 1
+							player["ze2_info"].inventory_selection = $ - 1
 						end
 						
 						S_StartSound(nil,sfx_mnu1a,player)
 						
-						player["srbz_info"].reload = 0
+						player["ze2_info"].reload = 0
 					end
 				
-					player["srbz_info"].pressedprev = true
+					player["ze2_info"].pressedprev = true
 				else
-					player["srbz_info"].pressedprev = false
+					player["ze2_info"].pressedprev = false
 				end
 			
 				if (cmd.buttons & BT_WEAPONNEXT) then
-					if not player["srbz_info"].pressednext then
+					if not player["ze2_info"].pressednext then
 					
-						if player["srbz_info"].inventory_selection + 1 > SRBZ:FetchInventoryLimit(player) then
-							player["srbz_info"].inventory_selection = 1
+						if player["ze2_info"].inventory_selection + 1 > ZE2:FetchInventoryLimit(player) then
+							player["ze2_info"].inventory_selection = 1
 						else
-							player["srbz_info"].inventory_selection = $ + 1
+							player["ze2_info"].inventory_selection = $ + 1
 						end
 
 						S_StartSound(nil,sfx_mnu1a,player)
 						
-						player["srbz_info"].reload = 0
+						player["ze2_info"].reload = 0
 					end
 					
-					player["srbz_info"].pressednext = true
+					player["ze2_info"].pressednext = true
 				else
-					player["srbz_info"].pressednext = false	
+					player["ze2_info"].pressednext = false	
 				end
 				
 				if (cmd.buttons & BT_FIRENORMAL) then
-					if not player["srbz_info"].pressed_reload then
-						SRBZ.DoPlayerReload(player)
+					if not player["ze2_info"].pressed_reload then
+						ZE2.DoPlayerReload(player)
 					end
 					
-					player["srbz_info"].pressed_reload = true
+					player["ze2_info"].pressed_reload = true
 				else
-					player["srbz_info"].pressed_reload = false	
+					player["ze2_info"].pressed_reload = false	
 				end
 				
 				if (cmd.buttons & BT_ATTACK) then
-					if not player["srbz_info"].pressed_fire then
-						player["srbz_info"].await_fire = true
+					if not player["ze2_info"].pressed_fire then
+						player["ze2_info"].await_fire = true
 					end
-					player["srbz_info"].pressed_fire = true
+					player["ze2_info"].pressed_fire = true
 				else
-					player["srbz_info"].pressed_fire = false	
+					player["ze2_info"].pressed_fire = false	
 				end
 			end
 			
 			-- try shoot
-			if (cmd.buttons & BT_ATTACK) and not player["srbz_info"].weapondelay and not player["srbz_info"].reload
-			and SRBZ:FetchInventorySlot(player) and player.playerstate ~= PST_DEAD and not player.shop_open 
-			and (player["srbz_info"].await_fire or SRBZ:FetchInventorySlot(player).autouse) then	
-				local iteminfo = SRBZ:FetchInventorySlot(player)
+			if (cmd.buttons & BT_ATTACK) and not player["ze2_info"].weapondelay and not player["ze2_info"].reload
+			and ZE2:FetchInventorySlot(player) and player.playerstate ~= PST_DEAD and not player.shop_open 
+			and (player["ze2_info"].await_fire or ZE2:FetchInventorySlot(player).autouse) then	
+				local iteminfo = ZE2:FetchInventorySlot(player)
 				
 				-- If theres no ammo, dont fire. 
 				-- (Items with no ammo property can pass this check 100%)
 				if not (iteminfo.ammo ~= nil and iteminfo.ammo == 0) then
-					SRBZ.DoPlayerFire(player, iteminfo)
+					ZE2.DoPlayerFire(player, iteminfo)
 
-					player["srbz_info"].weapondelay = iteminfo.firerate
+					player["ze2_info"].weapondelay = iteminfo.firerate
 					
-					player["srbz_info"].await_fire = false
+					player["ze2_info"].await_fire = false
 					
 					if iteminfo.count ~= nil and iteminfo.limited == true then
 						if iteminfo.count > 0  then
@@ -432,18 +432,18 @@ addHook("PreThinkFrame", function()
 						iteminfo.ammo = $ - 1
 					end
 					
-					if iteminfo.ammo <= 0 and not player["srbz_info"].reload then
-						SRBZ.DoPlayerReload(player)
+					if iteminfo.ammo <= 0 and not player["ze2_info"].reload then
+						ZE2.DoPlayerReload(player)
 					end
 				end
 			end	
 			
 			-- clear items below 0 count
-			if SRBZ:FetchInventoryLimit(player) and type(SRBZ:FetchInventoryLimit(player)) == "number" then
-				for i=1,SRBZ:FetchInventoryLimit(player) do
-					if SRBZ:FetchInventory(player)[i] then
-						if SRBZ:FetchInventory(player)[i].limited and SRBZ:FetchInventory(player)[i].count <= 0 then
-							table.remove(SRBZ:FetchInventory(player),i)
+			if ZE2:FetchInventoryLimit(player) and type(ZE2:FetchInventoryLimit(player)) == "number" then
+				for i=1,ZE2:FetchInventoryLimit(player) do
+					if ZE2:FetchInventory(player)[i] then
+						if ZE2:FetchInventory(player)[i].limited and ZE2:FetchInventory(player)[i].count <= 0 then
+							table.remove(ZE2:FetchInventory(player),i)
 						end
 					end
 				end
@@ -453,9 +453,9 @@ addHook("PreThinkFrame", function()
 end)
 
 addHook("MobjThinker", function(mobj)
-	if mobj and mobj.valid and mobj.iteminfo and SRBZ.ItemPresets[mobj.iteminfo.item_id] 
-	and SRBZ.ItemPresets[mobj.iteminfo.item_id].thinker and mobj.target then
-		SRBZ.ItemPresets[mobj.iteminfo.item_id].thinker(mobj.target,mobj)
+	if mobj and mobj.valid and mobj.iteminfo and ZE2.ItemPresets[mobj.iteminfo.item_id] 
+	and ZE2.ItemPresets[mobj.iteminfo.item_id].thinker and mobj.target then
+		ZE2.ItemPresets[mobj.iteminfo.item_id].thinker(mobj.target,mobj)
 	end
 end)
 
@@ -511,7 +511,7 @@ addHook("MobjMoveCollide", function(tmthing, thing)
 end)
 
 addHook("SeenPlayer", function(player)
-	if gametype == GT_SRBZ then
+	if gametype == GT_ZE2 then
 		return false
 	end
 end)

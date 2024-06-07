@@ -1,4 +1,4 @@
-SRBZ:CreateItem("Automatic Ring",  {
+ZE2:CreateItem("Automatic Ring",  {
 	object = MT_THROWNAUTOMATIC,
 	icon = "AUTOIND",
 	firerate = 3,

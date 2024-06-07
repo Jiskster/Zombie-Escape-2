@@ -1,7 +1,7 @@
-SRBZ.blacklisted_characters = {"zzombie"} -- blacklisted characters from showing
+ZE2.blacklisted_characters = {"zzombie"} -- blacklisted characters from showing
 
 
-SRBZ.getSkinNames = function(player, getunlockables, timesrepeated)
+ZE2.getSkinNames = function(player, getunlockables, timesrepeated)
     local list = {}
 	local tr_real = 1
 	if timesrepeated and timesrepeated > 0 then
@@ -13,7 +13,7 @@ SRBZ.getSkinNames = function(player, getunlockables, timesrepeated)
 				continue
 			end
 			local isblacklisted = false
-			for _,v in ipairs(SRBZ.blacklisted_characters) do
+			for _,v in ipairs(ZE2.blacklisted_characters) do
 				if v == skins[i].name then
 					isblacklisted = true
 				end
@@ -33,7 +33,7 @@ SRBZ.getSkinNames = function(player, getunlockables, timesrepeated)
     return list
 end
 
-SRBZ.getSkinNums = function(player, getunlockables, timesrepeated)
+ZE2.getSkinNums = function(player, getunlockables, timesrepeated)
     local list = {}
 	local tr_real = 1
 	if timesrepeated and timesrepeated > 0 then
@@ -45,7 +45,7 @@ SRBZ.getSkinNums = function(player, getunlockables, timesrepeated)
 				continue
 			end
 			local isblacklisted = false
-			for _,v in ipairs(SRBZ.blacklisted_characters) do
+			for _,v in ipairs(ZE2.blacklisted_characters) do
 				if v == skins[i].name then
 					isblacklisted = true
 				end

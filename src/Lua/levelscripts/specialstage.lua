@@ -38,7 +38,7 @@ local function SS_Tele3()
 	end
 end
 
-local SpecialStage1_Timer = SRBZ:AddTimer("Special Stage 1",{
+local SpecialStage1_Timer = ZE2:AddTimer("Special Stage 1",{
 	time = 60*TICRATE,
 	on_end = function(timernum,timername)
 		SS_Tele1()
@@ -48,7 +48,7 @@ local SpecialStage1_Timer = SRBZ:AddTimer("Special Stage 1",{
 	extrainfo = {color = SKINCOLOR_MINT}
 }) 
 
-local SpecialStage2_Timer = SRBZ:AddTimer("Special Stage 2",{
+local SpecialStage2_Timer = ZE2:AddTimer("Special Stage 2",{
 	time = 60*TICRATE,
 	on_end = function(timernum,timername)
 		SS_Tele2()
@@ -58,7 +58,7 @@ local SpecialStage2_Timer = SRBZ:AddTimer("Special Stage 2",{
 	extrainfo = {color = SKINCOLOR_BUBBLEGUM}
 }) 
 
-local SpecialStage3_Timer = SRBZ:AddTimer("Special Stage 3",{
+local SpecialStage3_Timer = ZE2:AddTimer("Special Stage 3",{
 	time = 120*TICRATE,
 	on_end = function(timernum,timername)
 		SS_Tele3()
@@ -89,7 +89,7 @@ end
 local function SS_Objection4()
 	chatprint("\x82\Multiplayer Special Stage 4")
 	chatprint("Survive for\x85 120 \x80seconds")
-	SRBZ.time_limit = SRBZ.game_time + 120*TICRATE
+	ZE2.time_limit = ZE2.game_time + 120*TICRATE
 end
 
 addHook("LinedefExecute", SS_Objection1, "45ACT1")

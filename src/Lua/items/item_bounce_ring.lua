@@ -1,4 +1,4 @@
-SRBZ:CreateItem("Bounce Ring",  {
+ZE2:CreateItem("Bounce Ring",  {
 	object = MT_THROWNBOUNCE,
 	icon = "BNCEIND",
 	firerate = 8,

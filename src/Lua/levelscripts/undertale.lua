@@ -90,7 +90,7 @@ local function undertale_BattleTele4Zm()
 	end
 end
 
-local Undertale_DoorTimer = SRBZ:AddTimer("Door 1",{
+local Undertale_DoorTimer = ZE2:AddTimer("Door 1",{
 	time = 45*TICRATE,
 	on_end = function(timernum,timername)
 		P_LinedefExecute(31)
@@ -98,7 +98,7 @@ local Undertale_DoorTimer = SRBZ:AddTimer("Door 1",{
 	end,
 }) 
 
-local Undertale_Prebattle1Timer = SRBZ:AddTimer("Incoming Zombies",{
+local Undertale_Prebattle1Timer = ZE2:AddTimer("Incoming Zombies",{
 	time = 20*TICRATE,
 	on_end = function(timernum,timername)
 		undertale_BattleTele1Zm()
@@ -120,7 +120,7 @@ local Undertale_Prebattle1Timer = SRBZ:AddTimer("Incoming Zombies",{
 	}
 }) 
 
-local Undertale_Battle1Timer = SRBZ:AddTimer("Survive Zombies",{
+local Undertale_Battle1Timer = ZE2:AddTimer("Survive Zombies",{
 	time = 60*TICRATE,
 	extrainfo = {
 		color = SKINCOLOR_FOREST,
@@ -157,7 +157,7 @@ local Undertale_Battle1Timer = SRBZ:AddTimer("Survive Zombies",{
 	}
 }) 
 
-local Undertale_Prebattle2Timer = SRBZ:AddTimer("Toriel Encounter",{
+local Undertale_Prebattle2Timer = ZE2:AddTimer("Toriel Encounter",{
 	time = 20*TICRATE,
 	on_end = function(timernum,timername)
 		undertale_BattleTele3Surv()
@@ -221,7 +221,7 @@ local function undertale_Prebattle2()
 end
 
 local function undertale_Startbattle2()
-	SRBZ.ZombieCheckpoints = {
+	ZE2.ZombieCheckpoints = {
 		[1] = {
 			x = -1088,
 			y = -4736,
@@ -230,7 +230,7 @@ local function undertale_Startbattle2()
 		}
 	}
 	
-	SRBZ.CurrentZombieCheckpoint = 1
+	ZE2.CurrentZombieCheckpoint = 1
 	
 	for player in players.iterate do
 		if player.mo and player.mo.valid then

@@ -1,4 +1,4 @@
--- Get SRBZ.MapVoteStartFrame from init/gametype.lua
+-- Get ZE2.MapVoteStartFrame from init/gametype.lua
 
 local function allequals(...)
 	local args = {...}
@@ -18,10 +18,10 @@ local function allequals(...)
 end
 
 addHook("ThinkFrame", do
-	if gametype ~= GT_SRBZ or gamestate ~= GS_LEVEL then return end --stop the trolling
+	if gametype ~= GT_ZE2 or gamestate ~= GS_LEVEL then return end --stop the trolling
 	
-	if SRBZ.game_ended and SRBZ.win_tics == SRBZ.MapVoteStartFrame then
-		SRBZ.MapsOnVote = {
+	if ZE2.game_ended and ZE2.win_tics == ZE2.MapVoteStartFrame then
+		ZE2.MapsOnVote = {
 		{0,1},
 		{0,1},
 		{0,1}
@@ -30,7 +30,7 @@ addHook("ThinkFrame", do
 		local temp_selected_maplist = {}
 		
 		for i=1,1035 do
-			if mapheaderinfo[i] and (mapheaderinfo[i].typeoflevel & TOL_SRBZ) 
+			if mapheaderinfo[i] and (mapheaderinfo[i].typeoflevel & TOL_ZE2) 
 			and not mapheaderinfo[i].hidefromvote then
 				table.insert(temp_maplist,i)
 			end
@@ -45,17 +45,17 @@ addHook("ThinkFrame", do
 		temp_maplist = {} -- clear leftover maps
 		
 		for i=1,#temp_selected_maplist do
-			SRBZ.MapsOnVote[i][2] = temp_selected_maplist[i]
+			ZE2.MapsOnVote[i][2] = temp_selected_maplist[i]
 			print(mapheaderinfo[temp_selected_maplist[i]].lvlttl)
 		end
 		
 		for player in players.iterate do
-			player["srbz_info"].vote_selection = P_RandomRange(1,3)
+			player["ze2_info"].vote_selection = P_RandomRange(1,3)
 		end
 		
 		S_StartSound(nil,sfx_s3kb3)
 		
-		if SRBZ.server_intermissionmusic.value then
+		if ZE2.server_intermissionmusic.value then
 			S_ChangeMusic("_VOTE", true)
 			mapmusname = "_VOTE"
 		end
@@ -65,66 +65,66 @@ end)
 addHook("PreThinkFrame", function()
 	for player in players.iterate do
 		local cmd = player.cmd
-		if player.mo and player.mo.valid and player["srbz_info"] then
-			if SRBZ.win_tics > SRBZ.MapVoteStartFrame then
-				if SRBZ.win_tics < SRBZ.MapVoteStartFrame + SRBZ.VoteTimeLimit then
+		if player.mo and player.mo.valid and player["ze2_info"] then
+			if ZE2.win_tics > ZE2.MapVoteStartFrame then
+				if ZE2.win_tics < ZE2.MapVoteStartFrame + ZE2.VoteTimeLimit then
 					if cmd.sidemove < -40 then
-						if not player["srbz_info"].vote_leftpressed and not player["srbz_info"].voted then
+						if not player["ze2_info"].vote_leftpressed and not player["ze2_info"].voted then
 							S_StartSound(nil, sfx_s3kb7, player)
-							if player["srbz_info"].vote_selection - 1 <= 0 then
-								player["srbz_info"].vote_selection = 3
+							if player["ze2_info"].vote_selection - 1 <= 0 then
+								player["ze2_info"].vote_selection = 3
 							else
-								player["srbz_info"].vote_selection = $ - 1
+								player["ze2_info"].vote_selection = $ - 1
 							end
-							player["srbz_info"].vote_leftpressed  = true
+							player["ze2_info"].vote_leftpressed  = true
 						end
 					else
-						player["srbz_info"].vote_leftpressed = false
+						player["ze2_info"].vote_leftpressed = false
 					end
 					
 					if cmd.sidemove > 40 then
-						if not player["srbz_info"].vote_rightpressed and not player["srbz_info"].voted then
+						if not player["ze2_info"].vote_rightpressed and not player["ze2_info"].voted then
 							S_StartSound(nil, sfx_s3kb7, player)
-							if player["srbz_info"].vote_selection + 1 > 3 then
-								player["srbz_info"].vote_selection = 1
+							if player["ze2_info"].vote_selection + 1 > 3 then
+								player["ze2_info"].vote_selection = 1
 							else
-								player["srbz_info"].vote_selection = $ + 1
+								player["ze2_info"].vote_selection = $ + 1
 							end
-							player["srbz_info"].vote_rightpressed  = true
+							player["ze2_info"].vote_rightpressed  = true
 						end
 					else
-						player["srbz_info"].vote_rightpressed = false
+						player["ze2_info"].vote_rightpressed = false
 					end
 				
 					if (cmd.buttons & BT_JUMP) then
-						if not player["srbz_info"].vote_selectpressed and not player["srbz_info"].voted then
+						if not player["ze2_info"].vote_selectpressed and not player["ze2_info"].voted then
 						
 							S_StartSound(nil, sfx_s3kad, player)
-							player["srbz_info"].voted = true
-							player["srbz_info"].vote_selectpressed = true
-							local sel = player["srbz_info"].vote_selection
-							local seltomapnum = SRBZ.MapsOnVote[sel]
+							player["ze2_info"].voted = true
+							player["ze2_info"].vote_selectpressed = true
+							local sel = player["ze2_info"].vote_selection
+							local seltomapnum = ZE2.MapsOnVote[sel]
 
-							SRBZ.MapsOnVote[player["srbz_info"].vote_selection][1] = $ + 1
+							ZE2.MapsOnVote[player["ze2_info"].vote_selection][1] = $ + 1
 						end
 					else
-						player["srbz_info"].vote_selectpressed = false
+						player["ze2_info"].vote_selectpressed = false
 					end
 					
 					if (cmd.buttons & BT_SPIN) then
-						if not player["srbz_info"].vote_deselectpressed and player["srbz_info"].voted then
+						if not player["ze2_info"].vote_deselectpressed and player["ze2_info"].voted then
 						
 							S_StartSound(nil, sfx_s3kc3s, player)
-							player["srbz_info"].voted = false
-							player["srbz_info"].vote_deselectpressed = true
+							player["ze2_info"].voted = false
+							player["ze2_info"].vote_deselectpressed = true
 							
-							local sel = player["srbz_info"].vote_selection
-							local seltomapnum = SRBZ.MapsOnVote[sel]
+							local sel = player["ze2_info"].vote_selection
+							local seltomapnum = ZE2.MapsOnVote[sel]
 
-							SRBZ.MapsOnVote[player["srbz_info"].vote_selection][1] = $ - 1
+							ZE2.MapsOnVote[player["ze2_info"].vote_selection][1] = $ - 1
 						end
 					else
-						player["srbz_info"].vote_deselectpressed = false
+						player["ze2_info"].vote_deselectpressed = false
 					end	
 				end
 				
@@ -135,8 +135,8 @@ addHook("PreThinkFrame", function()
 		end
 	end
 	
-	if SRBZ.win_tics == SRBZ.MapVoteStartFrame + SRBZ.VoteTimeLimit then
-		local sorted_votes = SRBZ:Copy(SRBZ.MapsOnVote)
+	if ZE2.win_tics == ZE2.MapVoteStartFrame + ZE2.VoteTimeLimit then
+		local sorted_votes = ZE2:Copy(ZE2.MapsOnVote)
 
 		table.sort(sorted_votes,function(a,b) return a[1] > b[1] end)
 		
@@ -144,15 +144,15 @@ addHook("PreThinkFrame", function()
 			local chosenmap = P_RandomRange(1,3)
 			
 			print("\x82"..mapheaderinfo[sorted_votes[chosenmap][2]].lvlttl.. " was picked as the next map with a three way tie!")
-			SRBZ.NextMapVoted = sorted_votes[chosenmap][2]
+			ZE2.NextMapVoted = sorted_votes[chosenmap][2]
 		elseif sorted_votes[1][1] == sorted_votes[2][1] then
 			local chosenmap = P_RandomRange(1,2)
 			
 			print("\x82"..mapheaderinfo[sorted_votes[chosenmap][2]].lvlttl.. " was picked as the next map with a two way tie!")
-			SRBZ.NextMapVoted = sorted_votes[chosenmap][2]
+			ZE2.NextMapVoted = sorted_votes[chosenmap][2]
 		else
 			print("\x82"..mapheaderinfo[sorted_votes[1][2]].lvlttl.. " was picked as the next map!")
-			SRBZ.NextMapVoted = sorted_votes[1][2]
+			ZE2.NextMapVoted = sorted_votes[1][2]
 		end
 		
 		for i,v in ipairs(sorted_votes) do
@@ -163,7 +163,7 @@ addHook("PreThinkFrame", function()
 		
 	end
 	
-	if SRBZ.win_tics == SRBZ.MapVoteStartFrame + SRBZ.VoteTimeLimit + 5*TICRATE then
-		COM_BufInsertText(server, "map "..SRBZ.NextMapVoted)
+	if ZE2.win_tics == ZE2.MapVoteStartFrame + ZE2.VoteTimeLimit + 5*TICRATE then
+		COM_BufInsertText(server, "map "..ZE2.NextMapVoted)
 	end
 end)

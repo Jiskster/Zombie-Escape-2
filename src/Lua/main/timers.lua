@@ -1,32 +1,32 @@
-SRBZ.killwhenchosen = CV_RegisterVar({
+ZE2.killwhenchosen = CV_RegisterVar({
 	name = "z_killwhenchosen",
 	defaultvalue = "On",
 	PossibleValue = CV_OnOff,
 	flags = CV_NETVAR,
 })
 
-SRBZ.choosenotice = CV_RegisterVar({
+ZE2.choosenotice = CV_RegisterVar({
 	name = "z_choosenotice",
 	defaultvalue = "On",
 	PossibleValue = CV_OnOff,
 	flags = CV_NETVAR,
 })
 
-SRBZ.killenemiesonwin = CV_RegisterVar({
+ZE2.killenemiesonwin = CV_RegisterVar({
 	name = "z_killenemiessonwin",
 	defaultvalue = "Off",
 	PossibleValue = CV_OnOff,
 	flags = CV_NETVAR,
 })
 
-SRBZ.killzombiesonwin = CV_RegisterVar({
+ZE2.killzombiesonwin = CV_RegisterVar({
 	name = "z_killzombiesonwin",
 	defaultvalue = "On",
 	PossibleValue = CV_OnOff,
 	flags = CV_NETVAR,
 })
 
-function SRBZ:StartWin(team)
+function ZE2:StartWin(team)
 	self.game_ended = true
 	self.team_won = team
 	
@@ -41,11 +41,11 @@ function SRBZ:StartWin(team)
 	for mobj in mobjs.iterate() do
 		if mobj.valid then
 			if (mobj.player and mobj.player.valid and mobj.player.zteam and 
-			mobj.player.zteam == 2 and SRBZ.killzombiesonwin.value and team == 1) then
+			mobj.player.zteam == 2 and ZE2.killzombiesonwin.value and team == 1) then
 				P_KillMobj(mobj)
 				continue
 			end
-			if (mobj.flags & MF_ENEMY) and (SRBZ.killenemiesonwin.value) then
+			if (mobj.flags & MF_ENEMY) and (ZE2.killenemiesonwin.value) then
 				P_KillMobj(mobj)
 				continue
 			end
@@ -60,21 +60,21 @@ addHook("PlayerThink", function(player)
 end)
 
 addHook("ThinkFrame", function()
-	if gametype ~= GT_SRBZ or gamestate ~= GS_LEVEL then return end --stop the trolling
+	if gametype ~= GT_ZE2 or gamestate ~= GS_LEVEL then return end --stop the trolling
 	
-	if leveltime >= SRBZ.wait_time and not SRBZ.round_active then
-		SRBZ.round_active = true
+	if leveltime >= ZE2.wait_time and not ZE2.round_active then
+		ZE2.round_active = true
 		S_StartSound(nil, sfx_rstart)
 		local choosingnums = {}
-		local amountchoosing = FixedCeil(FixedDiv(SRBZ.PlayerCount()*FU,4*FU))/FU -- lmao
+		local amountchoosing = FixedCeil(FixedDiv(ZE2.PlayerCount()*FU,4*FU))/FU -- lmao
 		
 		-- simpler than ze's rng for sure.
 		for player in players.iterate do
 			if player.spectator then continue end
 			
 			if player.choosing == true and player.chosecharacter == false then -- get tf out of character select
-				local selection_name = SRBZ.getSkinNames(player, true)[player.selection]
-				SRBZ.pickcharinselect(player,selection_name) 
+				local selection_name = ZE2.getSkinNames(player, true)[player.selection]
+				ZE2.pickcharinselect(player,selection_name) 
 			end
 			if not player.waszombie then
 				table.insert(choosingnums, #player)
@@ -83,18 +83,18 @@ addHook("ThinkFrame", function()
 		-- At this point, every player's playernum is sroted in choosingnums
 		-- except for the players that were zombies last game.
 
-		if SRBZ.PlayerCount() > 1 then
+		if ZE2.PlayerCount() > 1 then
 			for _I_=1,amountchoosing do
 				local playernumindex = P_RandomRange(1,#choosingnums)
 				local playernum = choosingnums[playernumindex]
 				local player = players[playernum]
 				
-				if SRBZ.killwhenchosen.value then
+				if ZE2.killwhenchosen.value then
 					P_KillMobj(player.mo,nil,nil,DMG_INSTAKILL)
 				else
-					SRBZ.ResetPlayer(player)
+					ZE2.ResetPlayer(player)
 				end
-				if SRBZ.choosenotice.value then
+				if ZE2.choosenotice.value then
 					print(string.format("\x83\%s\x83\ has risen from the dead!",player.name))
 				end
 				player.zteam = 2
@@ -111,22 +111,22 @@ addHook("ThinkFrame", function()
 		
 		choosingnums = nil -- release memory idk wtf
 	end
-	if SRBZ.time_limit and SRBZ.game_time >= SRBZ.time_limit and not (SRBZ.game_ended) then
-		SRBZ:StartWin(1)
+	if ZE2.time_limit and ZE2.game_time >= ZE2.time_limit and not (ZE2.game_ended) then
+		ZE2:StartWin(1)
 	end
 	
 	for player in players.iterate do 
-		if player.mo and player.mo.valid and (SRBZ.game_ended or player.mo.zteam == 2) then
+		if player.mo and player.mo.valid and (ZE2.game_ended or player.mo.zteam == 2) then
 			player.powers[pw_underwater] = 0
 		end
 	end
 	
-	if SRBZ.game_ended then SRBZ.win_tics = $ + 1 end
-	if (SRBZ.round_active) and not (SRBZ.game_ended) then SRBZ.game_time = $ + 1 end
+	if ZE2.game_ended then ZE2.win_tics = $ + 1 end
+	if (ZE2.round_active) and not (ZE2.game_ended) then ZE2.game_time = $ + 1 end
 end)
 
 addHook("MobjThinker", function(mobj)
-	if SRBZ.game_ended and leveltime and SRBZ.win_tics >= SRBZ.MapVoteStartFrame then
+	if ZE2.game_ended and leveltime and ZE2.win_tics >= ZE2.MapVoteStartFrame then
 
 		mobj.flags = $ | MF_NOTHINK
 		return true
@@ -139,7 +139,7 @@ COM_AddCommand("z_forcewin", function(player, arg1)
  	arg1 = tonumber(arg1)
 	
 	if (arg1>0 and arg1<3) then 
-		SRBZ:StartWin(arg1) 
+		ZE2:StartWin(arg1) 
 	end
 	
 end,COM_ADMIN)

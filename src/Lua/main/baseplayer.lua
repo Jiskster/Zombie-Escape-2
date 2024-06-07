@@ -1,11 +1,11 @@
 freeslot("sfx_zjump")
 sfxinfo[sfx_zjump].caption = "Jump"
 mobjinfo[MT_LHRT].forceknockback = 20*FRACUNIT
-SRBZ.JumpSprintFatigue = 15*FRACUNIT
+ZE2.JumpSprintFatigue = 15*FRACUNIT
 
 -- some stuff that player needs
-SRBZ.giveplayerflags = function(player)
-	if gametype == GT_SRBZ then
+ZE2.giveplayerflags = function(player)
+	if gametype == GT_ZE2 then
 		player.charflags = SF_NOJUMPSPIN|SF_NOJUMPDAMAGE|SF_NOSKID
 		player.pflags = $ & ~PF_DIRECTIONCHAR
 		player.pflags = $ & ~PF_ANALOGMODE 
@@ -20,24 +20,24 @@ SRBZ.giveplayerflags = function(player)
 		player.isSprinting = $ or false
 		
 		if player.zteam == 1 then
-			SRBZ.SetCCtoplayer(player)
+			ZE2.SetCCtoplayer(player)
 		elseif player.zteam == 2 then
-			SRBZ.SetZCtoplayer(player)
+			ZE2.SetZCtoplayer(player)
 		end
 		
-		if mapheaderinfo[gamemap].srbz_noabilities then
+		if mapheaderinfo[gamemap].ze2_noabilities then
 			player.pflags = $ & ~PF_GLIDING
 			player.pflags = $ & ~PF_BOUNCING
 			player.powers[pw_tailsfly] = 0
 		end
 	else 
 		if leveltime < 2 then
-			SRBZ.RevertChars(player) 
+			ZE2.RevertChars(player) 
 		end
 	end
 end
 
-function SRBZ:DecrementSprint(player, value)
+function ZE2:DecrementSprint(player, value)
 	if player.sprintmeter - abs(value) <= 0 then
 		player.sprintmeter = 0
 	else
@@ -45,7 +45,7 @@ function SRBZ:DecrementSprint(player, value)
 	end
 end
 
-function SRBZ:IncrementSprint(player, value)
+function ZE2:IncrementSprint(player, value)
 	if player.sprintmeter + abs(value) >= 100*FRACUNIT then
 		player.sprintmeter = 100*FRACUNIT
 	else
@@ -54,13 +54,13 @@ function SRBZ:IncrementSprint(player, value)
 end
 
 -- sprint code
-SRBZ.sprint_thinker = function(player)
+ZE2.sprint_thinker = function(player)
 	if not (player.mo and player.mo.valid) return end
 		
 	local cmd = player.cmd
 	
 	local pmo = player.mo
-	local cc = SRBZ.CharacterConfig
+	local cc = ZE2.CharacterConfig
 	
 	local increment = FRACUNIT/4
 	local decrement = FRACUNIT/3
@@ -68,7 +68,7 @@ SRBZ.sprint_thinker = function(player)
 	if player.zteam == 1 then
 		if P_GetPlayerControlDirection(player) == 1 and (cmd.buttons & BT_SPIN) then
 			
-			SRBZ:DecrementSprint(player, decrement)
+			ZE2:DecrementSprint(player, decrement)
 			
 			player.isSprinting = true
 
@@ -82,7 +82,7 @@ SRBZ.sprint_thinker = function(player)
 				end
 			end
 		else
-			SRBZ:IncrementSprint(player, increment)
+			ZE2:IncrementSprint(player, increment)
 			
 			player.isSprinting = false
 			
@@ -98,11 +98,11 @@ end
 
 addHook("JumpSpecial", function(player)
 	if player.mo and player.mo.valid and player.isSprinting and P_IsObjectOnGround(player.mo) then
-		if player.sprintmeter - SRBZ.JumpSprintFatigue <= 0 then
+		if player.sprintmeter - ZE2.JumpSprintFatigue <= 0 then
 			player.sprintmeter = 0
 			return true
 		else
-			player.sprintmeter = $ - SRBZ.JumpSprintFatigue
+			player.sprintmeter = $ - ZE2.JumpSprintFatigue
 		end
 	end
 end)
@@ -120,7 +120,7 @@ end, "NOABILITY")
 
 -- Limit for climbing characters.
 addHook("PlayerThink", function(player) 
-	if gametype ~= GT_SRBZ then return end
+	if gametype ~= GT_ZE2 then return end
     if player.mo and player.mo.valid then
         player.x_climbtime = $ or 0 
         if player.climbing then
@@ -136,29 +136,29 @@ addHook("PlayerThink", function(player)
     end
 end)
 
-SRBZ.ResetPlayer = function(player, choosenewztype)
+ZE2.ResetPlayer = function(player, choosenewztype)
 	if player.zteam == 1 then
-		SRBZ.SetCCtoplayer(player)
-		SRBZ.SetCChealth(player)
+		ZE2.SetCCtoplayer(player)
+		ZE2.SetCChealth(player)
 		player.ztype = nil
 	elseif player.zteam == 2 then
-		SRBZ.SetZCtoplayer(player)
-		SRBZ.SetZChealth(player)
-		SRBZ.SetZCscale(player)
-		SRBZ.SetZCinventory(player)
+		ZE2.SetZCtoplayer(player)
+		ZE2.SetZChealth(player)
+		ZE2.SetZCscale(player)
+		ZE2.SetZCinventory(player)
 	end
 end
 
-SRBZ.init_player = function(player)
-	if gametype ~= GT_SRBZ and leveltime then return end
+ZE2.init_player = function(player)
+	if gametype ~= GT_ZE2 and leveltime then return end
 	
 	local pmo = player.mo
 	
 	if player and pmo and pmo.valid then
-		if (SRBZ.round_active and SRBZ.PlayerCount() > 1) then
+		if (ZE2.round_active and ZE2.PlayerCount() > 1) then
 			player.zteam = 2
 			player.ztype = "normal"
-			if SRBZ.round_active and SRBZ.PlayerCount() > 1 and leveltime then
+			if ZE2.round_active and ZE2.PlayerCount() > 1 and leveltime then
 				if P_RandomChance(FRACUNIT/5) and not player.z_was_spectating then
 					player.ztype = "alpha"
 				end
@@ -168,7 +168,7 @@ SRBZ.init_player = function(player)
 			player.zteam = 1
 		end
 		
-		SRBZ.ResetPlayer(player, true)
+		ZE2.ResetPlayer(player, true)
 
 		if player.zteam == 2 then 
 			R_SetPlayerSkin(player, "zzombie") 
@@ -181,7 +181,7 @@ end
 -- Zombie Spawn Sounds
 addHook("PlayerSpawn", function(player)
 	local spawnsounds = {sfx_inf1,sfx_inf2}
-	if player.mo and player.mo.valid and player.zteam == 2 and SRBZ.round_active and leveltime then
+	if player.mo and player.mo.valid and player.zteam == 2 and ZE2.round_active and leveltime then
 		local soundrng = P_RandomRange(1,#spawnsounds)
 		S_StartSound(player.mo,spawnsounds[soundrng])
 	end
@@ -189,7 +189,7 @@ end)
 
 -- Jump Sound Replacement
 addHook("MobjThinker", function(mobj)
-	if gametype ~= GT_SRBZ then return end
+	if gametype ~= GT_ZE2 then return end
 	if S_SoundPlaying(mobj, sfx_jump) then
 		S_StopSoundByID(mobj, sfx_jump)
 		S_StartSound(mobj, sfx_zjump)
@@ -215,18 +215,18 @@ end)
 
 -- if you die you be zombie
 addHook("MobjDeath", function(mobj)
-	if SRBZ.round_active and not SRBZ_game_ended and 
-	((SRBZ.PlayerCount() > 1) or (mapheaderinfo[gamemap].srbz_solofail)) then
+	if ZE2.round_active and not ZE2_game_ended and 
+	((ZE2.PlayerCount() > 1) or (mapheaderinfo[gamemap].ze2_solofail)) then
 		mobj.player.zteam = 2
 	end
 end,MT_PLAYER)
 
 -- lock zombies color and prevent survivors from being zombie skin and vice versa
 addHook("PlayerThink", function(player)	
-	if gametype ~= GT_SRBZ or not player.mo return end
+	if gametype ~= GT_ZE2 or not player.mo return end
 	
 	local ztype = player.ztype
-	local zc = SRBZ.ZombieConfig
+	local zc = ZE2.ZombieConfig
 	
 	if player.zteam == 2 and player.mo.skin ~= "zzombie" then
 		R_SetPlayerSkin(player, "zzombie")
@@ -252,11 +252,11 @@ COM_AddCommand("z_changeztype", function(player, new_ztype)
 		return
 	end
 	
-	local zc = SRBZ.ZombieConfig
+	local zc = ZE2.ZombieConfig
 	
 	if zc[new_ztype] then
 		player.ztype = new_ztype
-		SRBZ.ResetPlayer(player)
+		ZE2.ResetPlayer(player)
 	else
 		print("Invalid ztype. "..'"'..new_ztype..'"')
 	end

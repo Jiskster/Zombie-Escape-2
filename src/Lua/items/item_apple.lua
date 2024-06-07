@@ -1,4 +1,4 @@
-SRBZ:CreateItem("Apple", {
+ZE2:CreateItem("Apple", {
 	icon = "APPLEIND",
 	iconscale = FU/2,
 	firerate = 50,
@@ -6,7 +6,7 @@ SRBZ:CreateItem("Apple", {
 	limited = true,
 	count = 5,
 	ontrigger = function(player)
-		SRBZ:ChangeHealth(player.mo, 16)
+		ZE2:ChangeHealth(player.mo, 16)
 	end,
 	price = 60,
 })

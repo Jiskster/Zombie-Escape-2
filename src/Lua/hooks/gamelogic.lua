@@ -1,20 +1,20 @@
 
-addHook("PlayerSpawn", SRBZ.init_player)
+addHook("PlayerSpawn", ZE2.init_player)
 
-addHook("TouchSpecial", SRBZ.HitMegaHP, MT_MEGAHP)
+addHook("TouchSpecial", ZE2.HitMegaHP, MT_MEGAHP)
 
 addHook("PreThinkFrame", function()
 	for player in players.iterate do
-		SRBZ.sprint_thinker(player)
+		ZE2.sprint_thinker(player)
 	end
 end)
 
-addHook("PlayerThink", SRBZ.giveplayerflags)
+addHook("PlayerThink", ZE2.giveplayerflags)
 
-addHook("MobjThinker", SRBZ.LimitMobjHealth)
+addHook("MobjThinker", ZE2.LimitMobjHealth)
 
 addHook("MapLoad", function(map)
-	if gametype == GT_SRBZ then
-		SRBZ.init_gamevars(map)
+	if gametype == GT_ZE2 then
+		ZE2.init_gamevars(map)
 	end
 end)

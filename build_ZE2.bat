@@ -1,7 +1,7 @@
 @ECHO OFF
 
 ::--------------------------------------------------------------------------
-set "name=ZCL_SRBZ"
+set "name=ZCL_ZombieEscape2"
 set "version=beta7"
 
 set /A "delump=0"

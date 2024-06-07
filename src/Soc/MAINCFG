@@ -1,8 +1,8 @@
 MainCfg
-GameData = SRBZ.dat
+GameData = ZE2.dat
 DemoDelayTime = 6942069420
 TitlePicsMode = User
-TitlePicsName = SRBZ_TTL
+TitlePicsName = ZE2_TTL
 TitlePicsScale = 3
 
 # Unlock the funny unlockables
@@ -20,25 +20,25 @@ Levelname = Stonewood
 Subtitle = A very dark town.
 Act = 0
 Music = SWZEM
-TypeOfLevel = SRBZ
+TypeOfLevel = ZE2
 NextLevel = J0
 SkyNum = 11
 Weather = 1
 NoZone = True
-SelectHeading = SRBZ Survival Maps
-Lua.srbz_timelimit = 5
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 5
 
 Level J1
 Levelname = Egypt
 Subtitle = No mummies in sight.
 Act = 0
 Music = EGZEM
-TypeOfLevel = SRBZ
+TypeOfLevel = ZE2
 NextLevel = J1
 SkyNum = 15
 NoZone = True
-SelectHeading = SRBZ Survival Maps
-Lua.srbz_timelimit = 7
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 7
 
 Level J2
 Levelname = Roblox Obby
@@ -46,12 +46,12 @@ Subtitle = Easy parkour
 Act = 0
 SkyNum = 52
 Music = RBXO
-TypeOfLevel = SRBZ
+TypeOfLevel = ZE2
 NextLevel = J2
 NoZone = True
-SelectHeading = SRBZ Survival Maps
-Lua.srbz_timelimit = 7
-Lua.srbz_noabilities = true
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 7
+Lua.ze2_noabilities = true
 
 Level J3
 Levelname = Ice Mountain
@@ -60,85 +60,85 @@ Act = 0
 Weather = 2
 SkyNum = 17
 Music = MP_ICE
-TypeOfLevel = SRBZ
+TypeOfLevel = ZE2
 NextLevel = J3
 NoZone = True
-SelectHeading = SRBZ Survival Maps
-Lua.srbz_timelimit = 9
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 9
 
 Level J4
 Levelname = Minecraft
 Subtitle = Watch for creepers!
 Act = 0
 Music = MC1
-TypeOfLevel = SRBZ
+TypeOfLevel = ZE2
 NextLevel = J4
 SkyNum = 14
 NoZone = True
-SelectHeading = SRBZ Survival Maps
-Lua.srbz_timelimit = 7
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 7
 
 Level J5
 Levelname = Undertale
 Subtitle = You fell down. Survive.
 Act = 0
 Music = UTSTR1
-TypeOfLevel = SRBZ
+TypeOfLevel = ZE2
 NextLevel = J5
 SkyNum = 10
 NoZone = True
-SelectHeading = SRBZ Survival Maps
-Lua.srbz_timelimit = 10
-Lua.srbz_solofail = true
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 10
+Lua.ze2_solofail = true
 
 Level J6
 Levelname = Special Stage
 Subtitle = Chaos emeralds?
 Act = 0
 Music = SPEC8
-TypeOfLevel = SRBZ
+TypeOfLevel = ZE2
 NextLevel = J6
 SkyNum = 1
-SelectHeading = SRBZ Survival Maps
-Lua.srbz_timelimit = 9
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 9
 
 Level N2
 Levelname = The Database Z
 Subtitle = The Digital Dimension
 Act = 0
 Music = DBZ
-TypeOfLevel = SRBZ
+TypeOfLevel = ZE2
 NextLevel = N2
 SkyNum = 99
 NoZone = True
-SelectHeading = SRBZ Survival Maps
-Lua.srbz_timelimit = 7
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 7
 
 Level W1
 LevelName = Concealed Woodland
 Act = 0
 Subtitle = By Joiver
-TypeOfLevel = SRBZ
-SelectHeading = SRBZ Survival Maps
+TypeOfLevel = ZE2
+SelectHeading = ZE2 Survival Maps
 Music = MP_DOM
 NoZone = True
 Weather = PRECIP_STORM
 SkyNum = 20
-Lua.srbz_timelimit = 7
+Lua.ze2_timelimit = 7
 
 Level TF
 LevelName = The Farland
 Act = 0
 Subtitle = By Joiver
 Music = MP_FOR
-TypeOfLevel = SRBZ
-SelectHeading = SRBZ Survival Maps
+TypeOfLevel = ZE2
+SelectHeading = ZE2 Survival Maps
 NoZone = True
 SkyNum = 127
 SkyboxScaleX = -2
 SkyboxScaleY = -2
 lua.takis_iscoldarea = 1
-Lua.srbz_timelimit = 6
+Lua.ze2_timelimit = 6
 
 Level EB
 LevelName = Cave of the Past
@@ -146,9 +146,9 @@ SubTitle = The war against Giygas?
 Act = 0
 NoZone = true
 Music = COTP
-TypeOfLevel = SRBZ
-SelectHeading = SRBZ Survival Maps
-Lua.srbz_timelimit = 15
+TypeOfLevel = ZE2
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 15
 NextLevel = T3
 SkyNum = 7300
 
@@ -157,13 +157,13 @@ Levelname = Ancient Catacombs
 Subtitle = Lost in the creepy catacombs
 Act = 0
 Music = ACZEM
-TypeOfLevel = SRBZ
+TypeOfLevel = ZE2
 NextLevel = N0
 SkyNum = 11
 Weather = 1
 NoZone = True
-SelectHeading = SRBZ Survival Maps
-Lua.srbz_timelimit = 10
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 10
 
 ## SWARM MAP START
 
@@ -172,28 +172,28 @@ Levelname = South Snow
 Subtitle = Very snowy.
 Act = 0
 Music = SS_M
-TypeOfLevel = SRBZ
+TypeOfLevel = ZE2
 NextLevel = V0
 SkyNum = 17
 Palette = 5
 weather = 2
 NoZone = True
-SelectHeading = SRBZ Swarm Maps
-Lua.srbz_timelimit = 6
-Lua.srbz_zombieswarm = true
+SelectHeading = ZE2 Swarm Maps
+Lua.ze2_timelimit = 6
+Lua.ze2_zombieswarm = true
 Lua.hidefromvote = true
 
 Level K5
 LevelName = The Dam
-SelectHeading = SRBZ Swarm Maps
+SelectHeading = ZE2 Swarm Maps
 Subtitle = By, LeoTM, Rare
 Act = 0
 SkyNum = 30
-TypeOfLevel = SRBZ
+TypeOfLevel = ZE2
 NextLevel = K5
 Lua.hidefromvote = true
-Lua.srbz_timelimit = 6
-Lua.srbz_zombieswarm = true
+Lua.ze2_timelimit = 6
+Lua.ze2_zombieswarm = true
 Lua.hidefromvote = true
 #Lua.Author = LeoTM, Rare
 
@@ -201,8 +201,8 @@ Level N6
 Levelname = Summer Forest
 Act = 0
 Music = MP_MED
-TypeOfLevel = SRBZ
-SelectHeading = SRBZ Swarm Maps
+TypeOfLevel = ZE2
+SelectHeading = ZE2 Swarm Maps
 NextLevel = N4
 SkyNum = 40
 NoZone = true

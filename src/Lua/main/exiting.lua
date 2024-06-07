@@ -30,16 +30,16 @@ addHook("TouchSpecial", function(special,toucher)
 	if toucher and toucher.valid and toucher.player and toucher.player.valid then
 		local player = toucher.player
 		
-		if not player["srbz_info"].ghostmode and not SRBZ.game_ended and SRBZ.round_active then
-			local ruby_award = SRBZ.PlayerCount()*10
-			player["srbz_info"].ghostmode = true
+		if not player["ze2_info"].ghostmode and not ZE2.game_ended and ZE2.round_active then
+			local ruby_award = ZE2.PlayerCount()*10
+			player["ze2_info"].ghostmode = true
 			P_GivePlayerRubies(player, ruby_award)
 			CONS_Printf(player,"\x85+"..ruby_award.." goal ring ruby bonus!")
 			for d=0,16 do
 				P_SpawnParaloop(toucher.x, toucher.y, toucher.z+toucher.height, FixedMul(192*FRACUNIT, toucher.scale), 16, MT_NIGHTSPARKLE, i*ANGLE_22h, S_NULL, true)
 			end
 			S_StartSound(nil,sfx_s3kb3)
-			SRBZ:StartWin(player.zteam)
+			ZE2:StartWin(player.zteam)
 		end
 		
 		return true
@@ -47,8 +47,8 @@ addHook("TouchSpecial", function(special,toucher)
 end, MT_CRRING)
 
 addHook("ThinkFrame", function()
-	if gametype ~= GT_SRBZ or gamestate ~= GS_LEVEL then return end --stop the trolling
-	if ((SRBZ.PlayerCount() > 1) or (mapheaderinfo[gamemap].srbz_solofail)) and SRBZ.SurvivorCount() == 0 and not SRBZ.game_ended then
-		SRBZ:StartWin(2)
+	if gametype ~= GT_ZE2 or gamestate ~= GS_LEVEL then return end --stop the trolling
+	if ((ZE2.PlayerCount() > 1) or (mapheaderinfo[gamemap].ze2_solofail)) and ZE2.SurvivorCount() == 0 and not ZE2.game_ended then
+		ZE2:StartWin(2)
 	end
 end)

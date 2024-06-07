@@ -1,8 +1,8 @@
-SRBZ.ItemPresets = {
+ZE2.ItemPresets = {
 
 }
 
-function SRBZ:CreateItem(name,table)
+function ZE2:CreateItem(name,table)
 	local temp_table
 	if not name then
 		error("Name not included.")
@@ -16,7 +16,7 @@ function SRBZ:CreateItem(name,table)
 	if type(table) ~= "table" then
 		error("Arg2 is not a table.")
 	end
-	temp_table = SRBZ:Copy(table) -- temp_table is supposed to add extra info before shipping.
+	temp_table = ZE2:Copy(table) -- temp_table is supposed to add extra info before shipping.
 
 	temp_table.item_id = #self.ItemPresets + 1
 	temp_table.displayname = name
@@ -32,47 +32,47 @@ function SRBZ:CreateItem(name,table)
 	local idglobal = rawset(_G, idname, #self.ItemPresets + 1)
 	self.ItemPresets[#self.ItemPresets + 1] = temp_table
 	
-	print("\x84SRBZ:".."\x82 Weapon ".."\""..name.." ("..idname..")".."\" included ["..(#self.ItemPresets).."]")
+	print("\x84ZE2:".."\x82 Weapon ".."\""..name.." ("..idname..")".."\" included ["..(#self.ItemPresets).."]")
 	return idglobal
 end
 
 
-function SRBZ:FetchInventory(player)
+function ZE2:FetchInventory(player)
 	if player and player.valid then
-		if player["srbz_info"] then
-			if player["srbz_info"].survivor_inventory and player.zteam == 1 then
-				return player["srbz_info"].survivor_inventory
-			elseif player["srbz_info"].zombie_inventory and player.zteam == 2 then
-				return player["srbz_info"].zombie_inventory
+		if player["ze2_info"] then
+			if player["ze2_info"].survivor_inventory and player.zteam == 1 then
+				return player["ze2_info"].survivor_inventory
+			elseif player["ze2_info"].zombie_inventory and player.zteam == 2 then
+				return player["ze2_info"].zombie_inventory
 			else
-				return player["srbz_info"].survivor_inventory
+				return player["ze2_info"].survivor_inventory
 			end
 		end
 	end
 end
 
-function SRBZ:FetchInventoryLimit(player)
+function ZE2:FetchInventoryLimit(player)
 	if player and player.valid then
-		if player["srbz_info"] then
+		if player["ze2_info"] then
 			if player.zteam == 1 then
-				return player["srbz_info"].survivor_inventory_limit
+				return player["ze2_info"].survivor_inventory_limit
 			elseif player.zteam == 2 then
-				return player["srbz_info"].zombie_inventory_limit
+				return player["ze2_info"].zombie_inventory_limit
 			end
 		end
 	end
 	return 1
 end
 
-function SRBZ:FetchInventorySlot(player)
+function ZE2:FetchInventorySlot(player)
 	if player and player.valid then
-		if player["srbz_info"] and player["srbz_info"].inventory_selection then
-			return SRBZ:FetchInventory(player)[player["srbz_info"].inventory_selection] 
+		if player["ze2_info"] and player["ze2_info"].inventory_selection then
+			return ZE2:FetchInventory(player)[player["ze2_info"].inventory_selection] 
 		end
 	end
 end
 
-function SRBZ:ChangeHealth(mobj, amount)
+function ZE2:ChangeHealth(mobj, amount)
 	if amount > mobj.maxhealth then
 		mobj.health = mobj.maxhealth
 	else
@@ -80,7 +80,7 @@ function SRBZ:ChangeHealth(mobj, amount)
 	end
 end
 
-function SRBZ:ChangeStamina(player, amount)
+function ZE2:ChangeStamina(player, amount)
 	if amount + player.sprintmeter > 100*FRACUNIT then
 		player.sprintmeter = 100*FRACUNIT
 	else
@@ -88,10 +88,10 @@ function SRBZ:ChangeStamina(player, amount)
 	end
 end
 
-function SRBZ:IsInventoryFull(player)
+function ZE2:IsInventoryFull(player)
 	if player and player.valid then
-		if player["srbz_info"] and SRBZ:FetchInventory(player) then
-			if #SRBZ:FetchInventory(player) >= SRBZ:FetchInventoryLimit(player) then
+		if player["ze2_info"] and ZE2:FetchInventory(player) then
+			if #ZE2:FetchInventory(player) >= ZE2:FetchInventoryLimit(player) then
 				return true
 			else
 				return false
@@ -102,8 +102,8 @@ function SRBZ:IsInventoryFull(player)
 	end
 end
 
-function SRBZ:CopyItemFromID(item_id)
-	local item = SRBZ:Copy(SRBZ.ItemPresets[item_id]) or error("Invalid item_id.")
+function ZE2:CopyItemFromID(item_id)
+	local item = ZE2:Copy(ZE2.ItemPresets[item_id]) or error("Invalid item_id.")
 	item.ontrigger = nil
 	item.onspawn = nil
 	item.onhit = nil
@@ -111,12 +111,12 @@ function SRBZ:CopyItemFromID(item_id)
 	return item
 end
 
-function SRBZ:GiveItem(player, item_id, count, slot) 
+function ZE2:GiveItem(player, item_id, count, slot) 
 	if player and player.valid then
-		if not item_id or not SRBZ.ItemPresets[item_id] then
+		if not item_id or not ZE2.ItemPresets[item_id] then
 			CONS_Printf(player, "\x85\Invalid item! ["..item_id.."]")
-		elseif player["srbz_info"] and SRBZ:FetchInventory(player) then
-			local item = SRBZ:Copy(SRBZ.ItemPresets[item_id])
+		elseif player["ze2_info"] and ZE2:FetchInventory(player) then
+			local item = ZE2:Copy(ZE2.ItemPresets[item_id])
 
 			--destroy functions
 			item.ontrigger = nil
@@ -129,15 +129,15 @@ function SRBZ:GiveItem(player, item_id, count, slot)
 				item.limited = true
 			end
 			if slot then
-				SRBZ:FetchInventory(player)[slot] = item
+				ZE2:FetchInventory(player)[slot] = item
 			else
-				if not SRBZ:IsInventoryFull(player) then
-					table.insert(SRBZ:FetchInventory(player), item)
+				if not ZE2:IsInventoryFull(player) then
+					table.insert(ZE2:FetchInventory(player), item)
 				else
 					CONS_Printf(player, "\x85\Inventory full!")
 				end
 			end
-		elseif not SRBZ:FetchInventory(player) then
+		elseif not ZE2:FetchInventory(player) then
 			CONS_Printf(player, "\x85\Invalid inventory!")
 		end
 	end

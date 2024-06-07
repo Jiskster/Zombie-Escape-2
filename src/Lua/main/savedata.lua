@@ -2,14 +2,14 @@ local _rchars_ = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890
 local commandtoken = P_RandomKey(FRACUNIT)
 local serverid
 
-SRBZ.autologin = CV_RegisterVar({
+ZE2.autologin = CV_RegisterVar({
 	name = "z_autologin",
 	defaultvalue = "Off",
 	PossibleValue = CV_OnOff,
 	flags = CV_NETVAR,
 })
 
-SRBZ.showloginprint = CV_RegisterVar({
+ZE2.showloginprint = CV_RegisterVar({
 	name = "z_showloginprint",
 	defaultvalue = "Off",
 	PossibleValue = CV_OnOff,
@@ -72,7 +72,7 @@ end
 
 local function saveData(player)
 	if isRegisteredUser(player) and player.rubies ~= nil then
-		local gspath = "SRBZDATA/"..player.registered_user.."/gamesave.sav2"
+		local gspath = "ZE2DATA/"..player.registered_user.."/gamesave.sav2"
 		local gsfile = io.openlocal(gspath, "w+")
 		if gsfile then
 			gsfile:write(json.encode({
@@ -86,7 +86,7 @@ end
 
 local function GetServerIDFromFile()
 	if isserver then
-		local server_id_path = "SRBZDATA/serverid.sav2"
+		local server_id_path = "ZE2DATA/serverid.sav2"
 		local serveridfile = io.openlocal(server_id_path, "r")
 		
 		if serveridfile then
@@ -103,7 +103,7 @@ end
 
 local function SetFileServerID(input_serverid)
 	if isserver then
-		local server_id_path = "SRBZDATA/serverid.sav2"
+		local server_id_path = "ZE2DATA/serverid.sav2"
 		local serveridfile = io.openlocal(server_id_path, "w")
 		
 		if serveridfile then
@@ -145,8 +145,8 @@ COM_AddCommand("z_registeraccount", function(player, tplayer)
 			
 			
             if (isserver) or (isdedicatedserver) then -- Server
-                local server_passpath = "SRBZDATA/"..gen_username.."/password.sav2"
-                local server_gspath = "SRBZDATA/"..gen_username.."/gamesave.sav2"
+                local server_passpath = "ZE2DATA/"..gen_username.."/password.sav2"
+                local server_gspath = "ZE2DATA/"..gen_username.."/gamesave.sav2"
 				
                 local passfile = io.openlocal(server_passpath, "w+")
                 local gsfile = io.openlocal(server_gspath, "w+")
@@ -167,7 +167,7 @@ COM_AddCommand("z_registeraccount", function(player, tplayer)
             end
 
             if (target_player == consoleplayer) then -- Client
-                local clientpath = "client/SRBZ/"..serverid.."/account.sav2"
+                local clientpath = "client/ZE2/"..serverid.."/account.sav2"
                 local file = io.openlocal(clientpath, "w+")
 
                 local clientpath_content = ('z_loginaccount '.. '"'.. gen_username ..'" '.. '"'.. gen_password ..'"')
@@ -180,7 +180,7 @@ COM_AddCommand("z_registeraccount", function(player, tplayer)
 			target_player.registered_user = gen_username
 			target_player.registered = true
 			
-			if (SRBZ.showloginprint.value) or (isserver) then
+			if (ZE2.showloginprint.value) or (isserver) then
 				print(target_player.name.." created an account ("..gen_username..")")
 			end
         end
@@ -206,7 +206,7 @@ COM_AddCommand("z_loginaccount", function(player, username, password)
 			end
 			
             if (isserver) or (isdedicatedserver) then
-				local passpath = "SRBZDATA/"..username.."/password.sav2"
+				local passpath = "ZE2DATA/"..username.."/password.sav2"
 				local passfile = io.openlocal(passpath)
 				
 				if passfile then
@@ -232,7 +232,7 @@ COM_AddCommand("z_importdata", function(player, playernum, username, token) -- m
 			local target_player = players[tonumber(playernum)]
 			
             if ((isserver) or (isdedicatedserver)) then
-                local gspath = "SRBZDATA/"..username.."/gamesave.sav2"
+                local gspath = "ZE2DATA/"..username.."/gamesave.sav2"
                 local gsfile = io.openlocal(gspath, "r")
 
                 if gsfile then
@@ -254,7 +254,7 @@ COM_AddCommand("z_importdata", function(player, playernum, username, token) -- m
 		target_player.registered_user = username
 		target_player.registered = true
 		
-		if (SRBZ.showloginprint.value) or (isserver) then
+		if (ZE2.showloginprint.value) or (isserver) then
 			print(target_player.name.." logged in as "..username)
 		end
 	end
@@ -309,8 +309,8 @@ addHook("PlayerCmd", function(player,cmd) -- auto login / register
 	if not multiplayer then return end
 	
 	if (cmd.buttons or cmd.forwardmove) and (not (player.registered) 
-	and not (player.registered_user)) and SRBZ.autologin.value and serverid then
-		local clientpath = "client/SRBZ/"..serverid.."/account.sav2"
+	and not (player.registered_user)) and ZE2.autologin.value and serverid then
+		local clientpath = "client/ZE2/"..serverid.."/account.sav2"
         local file = io.openlocal(clientpath, "r")
 		if file then
 			COM_BufInsertText(player, file:read("*a"))

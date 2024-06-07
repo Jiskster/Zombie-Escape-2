@@ -1,11 +1,11 @@
-SRBZ.infohud = function(v, player)
-	if gametype ~= GT_SRBZ then return end
-	if SRBZ.game_ended then return end
+ZE2.infohud = function(v, player)
+	if gametype ~= GT_ZE2 then return end
+	if ZE2.game_ended then return end
 	if player.shop_open then return end
 	if player and not player.mo then return end
 	
 	local skinpatch = v.getSprite2Patch(player.mo.skin, SPR2_XTRA)
-	local hppatch = v.cachePatch("SRBZHPBAR1")
+	local hppatch = v.cachePatch("ZE2HPBAR1")
 	local timeemb = v.cachePatch("NGRTIMER")
 	local the_time 
 	local colormap = v.getColormap(skinname, player.mo.color)
@@ -13,18 +13,18 @@ SRBZ.infohud = function(v, player)
 	local health = player.mo.health
 	local maxhealth = player.mo.maxhealth
 	
-	if SRBZ.round_active then
-		if SRBZ.time_limit then
-			the_time = G_TicsToMTIME(SRBZ.time_limit - SRBZ.game_time)
+	if ZE2.round_active then
+		if ZE2.time_limit then
+			the_time = G_TicsToMTIME(ZE2.time_limit - ZE2.game_time)
 		else
-			the_time = G_TicsToMTIME(SRBZ.game_time)
+			the_time = G_TicsToMTIME(ZE2.game_time)
 		end
 	else
-		the_time = G_TicsToMTIME(SRBZ.wait_time - leveltime)
+		the_time = G_TicsToMTIME(ZE2.wait_time - leveltime)
 	end
 	
 	if player.chosecharacter or not player.choosing then
-		if not player["srbz_info"].ghostmode then
+		if not player["ze2_info"].ghostmode then
 			-- [Player Icon] --
 		
 			v.drawScaled(0, 176*FRACUNIT, FixedDiv(3*FRACUNIT, 4*FRACUNIT),
@@ -58,7 +58,7 @@ SRBZ.infohud = function(v, player)
 			v.drawStretched((138-28-7)*FU, 2*FU, 16*FU, 6*FU, v.cachePatch("Z_BG_BLUE"), 
 			V_SNAPTOTOP)
 			
-			customhud.CustomFontString(v, 138-28, 1, tostring(SRBZ.SurvivorCount()), "STCFC", 
+			customhud.CustomFontString(v, 138-28, 1, tostring(ZE2.SurvivorCount()), "STCFC", 
 			(V_SNAPTOTOP), "center" , nil, SKINCOLOR_BLUE)
 			
 
@@ -68,7 +68,7 @@ SRBZ.infohud = function(v, player)
 			v.drawStretched((138+64-7)*FU, 2*FU, 16*FU, 6*FU, v.cachePatch("Z_BG_RED"), 
 			V_SNAPTOTOP)
 			
-			customhud.CustomFontString(v, 138+64, 1, tostring(SRBZ.ZombieCount()), "STCFC", 
+			customhud.CustomFontString(v, 138+64, 1, tostring(ZE2.ZombieCount()), "STCFC", 
 			(V_SNAPTOTOP), "center" , nil, SKINCOLOR_RED)
 			
 
@@ -87,7 +87,7 @@ SRBZ.infohud = function(v, player)
 		end
 		-- [Event Timer HUD] --
 		
-		for i,timer in ipairs(SRBZ:GetActiveTimers()) do 
+		for i,timer in ipairs(ZE2:GetActiveTimers()) do 
 			local event_name_string = ("# "..timer.name.." #") or "Event Name Error"
 			local event_time_string = ("* "..G_TicsToMTIME(timer.time).." *") or "Failed To Get Event Time"
 			local event_color

@@ -39,7 +39,7 @@ states[S_INSTABURST5B] = {SPR_NULL, 0, 1, A_CapeChase, 0, 0, S_INSTABURST6A}
 states[S_INSTABURST6A] = {SPR_ZMSH, 5|FF_FULLBRIGHT, 1, A_CapeChase, 0, 0, S_INSTABURST6B}
 states[S_INSTABURST6B] = {SPR_NULL, 0, 1, A_CapeChase, 0, 0, S_NULL}
 
-SRBZ:CreateItem("Insta Burst", {
+ZE2:CreateItem("Insta Burst", {
 	icon = "ZMISHIND",
 	firerate = 24,
 	sound = sfx_zish1,
@@ -53,7 +53,7 @@ SRBZ:CreateItem("Insta Burst", {
 		instaburst.spritexscale = $*2
 		instaburst.spriteyscale = $*2
 		instaburst.scale = $*3/2
-		instaburst.forcedamage = SRBZ:FetchInventorySlot(player).damage
+		instaburst.forcedamage = ZE2:FetchInventorySlot(player).damage
 		
 		searchBlockmap("objects", function(refmobj,foundmobj)
 			if not L_ZCollide(foundmobj,instaburst) then 

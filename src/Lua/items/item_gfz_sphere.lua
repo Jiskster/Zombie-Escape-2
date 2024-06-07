@@ -1,9 +1,9 @@
 -- Render by Marilyn / Speccy
 
-freeslot("MT_SRBZ_GFZSPHERE", "S_SRBZ_GFZSPHERE", "SPR_GFZS")
+freeslot("MT_ZE2_GFZSPHERE", "S_ZE2_GFZSPHERE", "SPR_GFZS")
 
-mobjinfo[MT_SRBZ_GFZSPHERE] = { 
-	spawnstate = S_SRBZ_GFZSPHERE,
+mobjinfo[MT_ZE2_GFZSPHERE] = { 
+	spawnstate = S_ZE2_GFZSPHERE,
 	--activesound = sfx_shgn,
 	deathstate = S_SPRK1,
 	xdeathstate = S_SPRK1,
@@ -13,8 +13,8 @@ mobjinfo[MT_SRBZ_GFZSPHERE] = {
 	flags = MF_NOBLOCKMAP|MF_MISSILE|MF_NOGRAVITY
 }
 
-states[S_SRBZ_GFZSPHERE] = {
-	nextstate = S_SRBZ_GFZSPHERE,
+states[S_ZE2_GFZSPHERE] = {
+	nextstate = S_ZE2_GFZSPHERE,
 	sprite = SPR_GFZS,
 	frame = FF_FULLBRIGHT|FF_ANIMATE,
 	tics = -1,
@@ -22,8 +22,8 @@ states[S_SRBZ_GFZSPHERE] = {
 	var2 = 2,
 }
 
-SRBZ:CreateItem("GFZSPHERE",  {
-	object = MT_SRBZ_GFZSPHERE,
+ZE2:CreateItem("GFZSPHERE",  {
+	object = MT_ZE2_GFZSPHERE,
 	icon = "GFZSPHEREIND",
 	firerate = 40,
 	--color = SKINCOLOR_RED,

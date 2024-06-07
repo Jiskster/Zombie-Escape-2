@@ -62,8 +62,8 @@ hud.add( function(v, player, camera)
 	if not CV_FindVar("z_nametags").value
 		return
 	end
-	if (gametype ~= GT_SRBZ) return end
-	if SRBZ.game_ended then return end
+	if (gametype ~= GT_ZE2) return end
+	if ZE2.game_ended then return end
 	local width = 320
 	local height = 200
 	local realwidth = v.width()/v.dupx()
@@ -190,9 +190,9 @@ hud.add( function(v, player, camera)
 			end
 			
 			if tmo.player and tmo.player.valid then
-				if SRBZ:FetchInventorySlot(tmo.player) then
-					local icon = v.cachePatch(SRBZ:FetchInventorySlot(tmo.player).icon)
-					local iconscale = SRBZ:FetchInventorySlot(tmo.player).iconscale or FRACUNIT
+				if ZE2:FetchInventorySlot(tmo.player) then
+					local icon = v.cachePatch(ZE2:FetchInventorySlot(tmo.player).icon)
+					local iconscale = ZE2:FetchInventorySlot(tmo.player).iconscale or FRACUNIT
 					
 					v.drawScaled(hpos, vpos + 16*FU, iconscale/2, icon, trans) -- draw weaponicon
 				end

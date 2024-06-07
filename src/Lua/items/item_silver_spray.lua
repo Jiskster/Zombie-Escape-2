@@ -1,6 +1,6 @@
 freeslot("sfx_thoklw")
 
-SRBZ:CreateItem("Silver Spray",  {
+ZE2:CreateItem("Silver Spray",  {
 	object = MT_THROWNAUTOMATIC,
 	icon = "SILVERSPRAYIND",
 	firerate = 2,

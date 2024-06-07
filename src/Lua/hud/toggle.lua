@@ -1,5 +1,5 @@
-SRBZ.togglehud = function(v, player)
-	if gametype == GT_SRBZ and netgame
+ZE2.togglehud = function(v, player)
+	if gametype == GT_ZE2 and netgame
 		hud.disable("score")
 		hud.disable("time")
 		hud.disable("lives")

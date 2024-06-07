@@ -8,8 +8,8 @@ local ty = CV_RegisterVar({
 	defaultvalue = "0",
 	PossibleValue = CV_Unsigned,
 })
-SRBZ.intermissionhud = function(v, player)
-	if not SRBZ.game_ended then return end
+ZE2.intermissionhud = function(v, player)
+	if not ZE2.game_ended then return end
 	
 	local animlength = 3*TICRATE
 	local x1 = {
@@ -40,20 +40,20 @@ SRBZ.intermissionhud = function(v, player)
 	local z_bl = v.cachePatch("Z_BANG_LOWER_BLUE")
 	local z_bg = v.cachePatch("Z_BG_BLUE")
 	
-	if SRBZ.team_won == 2 then
+	if ZE2.team_won == 2 then
 		z_bu = v.cachePatch("Z_BANG_UPPER_RED")
 		z_bl = v.cachePatch("Z_BANG_LOWER_RED")
 		z_bg = v.cachePatch("Z_BG_RED")
 		z_team = v.cachePatch("Z_ZOMBIES")
 	end
 	
-	local scroll = (SRBZ.win_tics%128)
+	local scroll = (ZE2.win_tics%128)
 	
-	x1.ese = ease.outquart(FixedDiv(SRBZ.win_tics*FU, animlength*FU),x1.start*FU,x1.stop*FU)
-	x2.ese = ease.outquart(FixedDiv(SRBZ.win_tics*FU, animlength*FU),x2.start*FU,x2.stop*FU)
-	bg.ese = bg.start-(FixedDiv(SRBZ.win_tics*FU, animlength*FU/2)*9/FU)
-	bl.ese = ease.outquart(FixedDiv(SRBZ.win_tics*FU, animlength*FU),bl.start*FU,bl.stop*FU)
-	bu.ese = ease.outquart(FixedDiv(SRBZ.win_tics*FU, animlength*FU),bu.start*FU,bu.stop*FU)
+	x1.ese = ease.outquart(FixedDiv(ZE2.win_tics*FU, animlength*FU),x1.start*FU,x1.stop*FU)
+	x2.ese = ease.outquart(FixedDiv(ZE2.win_tics*FU, animlength*FU),x2.start*FU,x2.stop*FU)
+	bg.ese = bg.start-(FixedDiv(ZE2.win_tics*FU, animlength*FU/2)*9/FU)
+	bl.ese = ease.outquart(FixedDiv(ZE2.win_tics*FU, animlength*FU),bl.start*FU,bl.stop*FU)
+	bu.ese = ease.outquart(FixedDiv(ZE2.win_tics*FU, animlength*FU),bu.start*FU,bu.stop*FU)
 	
 	local votepatchsize = FU>>1 -- both the cursor and level icon sizes
 	
@@ -62,12 +62,12 @@ SRBZ.intermissionhud = function(v, player)
 	else
 		v.drawScaled(-500*FU,-500*FU, FU*1000, z_bg, 5<<V_ALPHASHIFT)
 	end
-	if not SRBZ.NextMapVoted then
-		if SRBZ.win_tics < SRBZ.MapVoteStartFrame then
+	if not ZE2.NextMapVoted then
+		if ZE2.win_tics < ZE2.MapVoteStartFrame then
 			v.drawScaled(min(x1.ese, x1.stop*FU),100*FU, FU, z_team)
 			v.drawScaled(max(x2.ese, x2.stop*FU),100*FU, FU, z_w)
-		elseif SRBZ.MapsOnVote and #SRBZ.MapsOnVote >= 3 then
-			local selection = player["srbz_info"].vote_selection
+		elseif ZE2.MapsOnVote and #ZE2.MapsOnVote >= 3 then
+			local selection = player["ze2_info"].vote_selection
 			local cursor_patch = v.cachePatch("SLCT1LVL")
 			local cursor_patch2 = v.cachePatch("SLCT2LVL")
 			
@@ -77,15 +77,15 @@ SRBZ.intermissionhud = function(v, player)
 			
 			for i=-1,1 do
 				local numonlist = i+2
-				local map_patch = v.cachePatch(G_BuildMapName(SRBZ.MapsOnVote[numonlist][2]).."P")
-				local levelname = (mapheaderinfo[SRBZ.MapsOnVote[numonlist][2]].lvlttl)
-				local map_votes = SRBZ.MapsOnVote[numonlist][1]
+				local map_patch = v.cachePatch(G_BuildMapName(ZE2.MapsOnVote[numonlist][2]).."P")
+				local levelname = (mapheaderinfo[ZE2.MapsOnVote[numonlist][2]].lvlttl)
+				local map_votes = ZE2.MapsOnVote[numonlist][1]
 				
 				if levelname:len() > 16 then
 					levelname = $:sub(1,16)..".."
 				end
 				local map_x = 120*FU+(i*100*FU)
-				--SRBZ.MapVotes
+				--ZE2.MapVotes
 				
 				v.drawScaled(map_x,map_y,votepatchsize,map_patch)
 				v.drawString(map_x,map_y-(8*FU),levelname, nil, "thin-fixed")
@@ -93,7 +93,7 @@ SRBZ.intermissionhud = function(v, player)
 			end
 
 			-- Selection Flicker Code
-			if (player["srbz_info"].voted)
+			if (player["ze2_info"].voted)
 				v.drawScaled(-80*FU+((selection)*100*FU),map_y,votepatchsize,cursor_patch)
 			else
 				if ((leveltime/2)%2 == 0) then 
@@ -103,11 +103,11 @@ SRBZ.intermissionhud = function(v, player)
 				end
 			end
 			
-			v.drawString(160*FU,50*FU,"\x82"..((SRBZ.MapVoteStartFrame + SRBZ.VoteTimeLimit) - SRBZ.win_tics)/TICRATE, (V_SNAPTOTOP), "fixed-center")
+			v.drawString(160*FU,50*FU,"\x82"..((ZE2.MapVoteStartFrame + ZE2.VoteTimeLimit) - ZE2.win_tics)/TICRATE, (V_SNAPTOTOP), "fixed-center")
 		end
 	else
-		local map_patch = v.cachePatch(G_BuildMapName(SRBZ.NextMapVoted).."P")
-		local levelname = (mapheaderinfo[SRBZ.NextMapVoted].lvlttl)
+		local map_patch = v.cachePatch(G_BuildMapName(ZE2.NextMapVoted).."P")
+		local levelname = (mapheaderinfo[ZE2.NextMapVoted].lvlttl)
 		v.drawScaled(120*FU,75*FU,votepatchsize,map_patch)
 		v.drawString(160*FU,50*FU,"\x82"..levelname.." Was picked as the next map!", (V_SNAPTOTOP), "fixed-center")
 	end

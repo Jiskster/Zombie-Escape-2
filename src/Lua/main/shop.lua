@@ -14,7 +14,7 @@ mobjinfo[MT_SHOPKEEPER].npc_name = "Shop Keeper"
 mobjinfo[MT_SHOPKEEPER].npc_spawnhealth = {100,100}
 mobjinfo[MT_SHOPKEEPER].disablehealthhud = true
 
-SRBZ.ShopkeeperList={
+ZE2.ShopkeeperList={
     {
         ["name"]="Sonic", --Shopkeeper's name, this string is also shown when you come close to him
         ["skin"]="sonic", --mobj_t.skin
@@ -117,13 +117,13 @@ addHook("MobjCollide", function(mo,pmo)
         pmo.player.shop_open = true
         mo.phrase=P_RandomKey(#mo.phrases)+1 --random phrase to be shown on the screen
         pmo.player.shop_person = mo
-        pmo.player["srbz_info"].shop_selection = 1
+        pmo.player["ze2_info"].shop_selection = 1
     end
 end, MT_SHOPKEEPER)
 
 addHook("MobjThinker", function(mobj)
-	if mobj.shopid and SRBZ.ShopkeeperList[mobj.shopid]["forcesprite"] then
-		mobj.sprite = SRBZ.ShopkeeperList[mobj.shopid]["forcesprite"]
+	if mobj.shopid and ZE2.ShopkeeperList[mobj.shopid]["forcesprite"] then
+		mobj.sprite = ZE2.ShopkeeperList[mobj.shopid]["forcesprite"]
 		mobj.tics = 2500000 -- dont be cringe
 	end
 end, MT_SHOPKEEPER)
@@ -131,25 +131,25 @@ end, MT_SHOPKEEPER)
 addHook("MobjSpawn", function(mobj)
     mobj.state = S_PLAY_STND
 
-    local rand = P_RandomRange(1,#SRBZ.ShopkeeperList)
+    local rand = P_RandomRange(1,#ZE2.ShopkeeperList)
 
 	mobj.shopid = rand
-    mobj.alias=SRBZ.ShopkeeperList[rand]["name"]
-    mobj.skin=SRBZ.ShopkeeperList[rand]["skin"]
-    mobj.color=SRBZ.ShopkeeperList[rand]["color"]
-    mobj.phrases=SRBZ.ShopkeeperList[rand]["phrases"]
+    mobj.alias=ZE2.ShopkeeperList[rand]["name"]
+    mobj.skin=ZE2.ShopkeeperList[rand]["skin"]
+    mobj.color=ZE2.ShopkeeperList[rand]["color"]
+    mobj.phrases=ZE2.ShopkeeperList[rand]["phrases"]
 
     mobj.shop = {}
     local itemlist = {}
-	for i=1,#SRBZ.ItemPresets do
-		if SRBZ.ItemPresets[i] and SRBZ.ItemPresets[i].price then
+	for i=1,#ZE2.ItemPresets do
+		if ZE2.ItemPresets[i] and ZE2.ItemPresets[i].price then
 			table.insert(itemlist, i)
 		end
 	end
     for i=1,P_RandomRange(3,6) do
         local rng = P_RandomRange(1,#itemlist) 
         local choseitem = itemlist[rng]
-        local item = SRBZ:CopyItemFromID(choseitem)
+        local item = ZE2:CopyItemFromID(choseitem)
 
         table.remove(itemlist,rng) -- no repeating items
 
@@ -166,10 +166,10 @@ end,MT_SHOPKEEPER)
 addHook("PlayerThink", function(player)
     if player.mo and player.mo.valid then
         if player.shop_person and player.shop_person.shop then
-            local itemchoosing = player.shop_person.shop[player["srbz_info"].shop_selection][2]
+            local itemchoosing = player.shop_person.shop[player["ze2_info"].shop_selection][2]
 
-            if not itemchoosing and player["srbz_info"].shop_confirmscreen then
-                player["srbz_info"].shop_confirmscreen = false
+            if not itemchoosing and player["ze2_info"].shop_confirmscreen then
+                player["ze2_info"].shop_confirmscreen = false
                 S_StartSound(nil, sfx_notadd, player)
             end
         end
@@ -186,7 +186,7 @@ addHook("PlayerThink", function(player)
             player.shop_anim = $ - 1
         end
 
-        if SRBZ.game_ended or player.zteam == 2 then
+        if ZE2.game_ended or player.zteam == 2 then
             player.shop_anim = 0
             player.shop_open = false
         end
@@ -201,79 +201,79 @@ end)
 
 addHook("PreThinkFrame", do
     for player in players.iterate do
-        if player.mo and player.mo.valid and player["srbz_info"] then
-            local szi = player["srbz_info"]
+        if player.mo and player.mo.valid and player["ze2_info"] then
+            local szi = player["ze2_info"]
             local cmd = player.cmd
 
             if player.shop_open and not player.shop_delay and player.shop_person then
-                if cmd.sidemove < -40 and not player["srbz_info"].shop_confirmscreen then
-                    if not player["srbz_info"].shop_leftpressed then
+                if cmd.sidemove < -40 and not player["ze2_info"].shop_confirmscreen then
+                    if not player["ze2_info"].shop_leftpressed then
                         S_StartSound(nil, sfx_s3kb7, player)
-                        if (player["srbz_info"].shop_selection - 1 <= 0) then player["srbz_info"].shop_selection = #player.shop_person.shop
-                        else player["srbz_info"].shop_selection = $ - 1 end
-                        player["srbz_info"].shop_leftpressed  = true
+                        if (player["ze2_info"].shop_selection - 1 <= 0) then player["ze2_info"].shop_selection = #player.shop_person.shop
+                        else player["ze2_info"].shop_selection = $ - 1 end
+                        player["ze2_info"].shop_leftpressed  = true
                     end
-                else player["srbz_info"].shop_leftpressed = false end
+                else player["ze2_info"].shop_leftpressed = false end
                 
-                if cmd.sidemove > 40 and not player["srbz_info"].shop_confirmscreen then
-                    if not player["srbz_info"].shop_rightpressed then
+                if cmd.sidemove > 40 and not player["ze2_info"].shop_confirmscreen then
+                    if not player["ze2_info"].shop_rightpressed then
                         S_StartSound(nil, sfx_s3kb7, player)
-                        if player["srbz_info"].shop_selection + 1 > #player.shop_person.shop then
-                            player["srbz_info"].shop_selection = 1
+                        if player["ze2_info"].shop_selection + 1 > #player.shop_person.shop then
+                            player["ze2_info"].shop_selection = 1
                         else
-                            player["srbz_info"].shop_selection = $ + 1
+                            player["ze2_info"].shop_selection = $ + 1
                         end
-                        player["srbz_info"].shop_rightpressed = true
+                        player["ze2_info"].shop_rightpressed = true
                     end
-                else player["srbz_info"].shop_rightpressed = false end
+                else player["ze2_info"].shop_rightpressed = false end
 
                 if (cmd.buttons & BT_SPIN) then
-                    if not player["srbz_info"].shop_exitpressed then
+                    if not player["ze2_info"].shop_exitpressed then
                         --S_StartSound(nil, sfx_s3kb7, player)
 
-                        if player["srbz_info"].shop_confirmscreen then
-                            player["srbz_info"].shop_confirmscreen = false
+                        if player["ze2_info"].shop_confirmscreen then
+                            player["ze2_info"].shop_confirmscreen = false
                             S_StartSound(nil, sfx_notadd, player)
                         else
                             player.shop_open = false
                             player.shop_delay = TICRATE*2   
                         end
-                        player["srbz_info"].shop_exitpressed  = true
+                        player["ze2_info"].shop_exitpressed  = true
                     end
-                else player["srbz_info"].shop_exitpressed = false end
+                else player["ze2_info"].shop_exitpressed = false end
 
-                if (cmd.buttons & BT_JUMP) and player.shop_person.shop and player.shop_person.shop[player["srbz_info"].shop_selection][2] then
-                    if not player["srbz_info"].shop_selectpressed then
-                        local hasrequiredrubies = player.rubies >= player.shop_person.shop[player["srbz_info"].shop_selection][1]
+                if (cmd.buttons & BT_JUMP) and player.shop_person.shop and player.shop_person.shop[player["ze2_info"].shop_selection][2] then
+                    if not player["ze2_info"].shop_selectpressed then
+                        local hasrequiredrubies = player.rubies >= player.shop_person.shop[player["ze2_info"].shop_selection][1]
 
-                        if hasrequiredrubies and not player["srbz_info"].shop_confirmscreen then
+                        if hasrequiredrubies and not player["ze2_info"].shop_confirmscreen then
                             S_StartSound(nil, sfx_s3kb8, player)
-                            player["srbz_info"].shop_confirmscreen = true
-                        elseif player["srbz_info"].shop_confirmscreen and hasrequiredrubies then 
+                            player["ze2_info"].shop_confirmscreen = true
+                        elseif player["ze2_info"].shop_confirmscreen and hasrequiredrubies then 
 							-- actually buy
-                            player.rubies = $ - player.shop_person.shop[player["srbz_info"].shop_selection][1]
-                            -- copied from SRBZ:FetchInventory()
-                            if player["srbz_info"].survivor_inventory and player.zteam == 1 then
-                                if SRBZ:IsInventoryFull(player) or (player.cmd.buttons & BT_CUSTOM1) then
-                                    player["srbz_info"].survivor_inventory[player["srbz_info"].inventory_selection] =  player.shop_person.shop[player["srbz_info"].shop_selection][2]
+                            player.rubies = $ - player.shop_person.shop[player["ze2_info"].shop_selection][1]
+                            -- copied from ZE2:FetchInventory()
+                            if player["ze2_info"].survivor_inventory and player.zteam == 1 then
+                                if ZE2:IsInventoryFull(player) or (player.cmd.buttons & BT_CUSTOM1) then
+                                    player["ze2_info"].survivor_inventory[player["ze2_info"].inventory_selection] =  player.shop_person.shop[player["ze2_info"].shop_selection][2]
                                 else
-                                    table.insert(player["srbz_info"].survivor_inventory, player.shop_person.shop[player["srbz_info"].shop_selection][2])
+                                    table.insert(player["ze2_info"].survivor_inventory, player.shop_person.shop[player["ze2_info"].shop_selection][2])
                                 end
-                            elseif player["srbz_info"].zombie_inventory and player.zteam == 2 then
-                                if SRBZ:IsInventoryFull(player) or (player.cmd.buttons & BT_CUSTOM1) then
-                                    player["srbz_info"].zombie_inventory[player["srbz_info"].inventory_selection] = player.shop_person.shop[player["srbz_info"].shop_selection][2]
+                            elseif player["ze2_info"].zombie_inventory and player.zteam == 2 then
+                                if ZE2:IsInventoryFull(player) or (player.cmd.buttons & BT_CUSTOM1) then
+                                    player["ze2_info"].zombie_inventory[player["ze2_info"].inventory_selection] = player.shop_person.shop[player["ze2_info"].shop_selection][2]
                                 else
-                                    table.insert(player["srbz_info"].zombie_inventory, player.shop_person.shop[player["srbz_info"].shop_selection][2])
+                                    table.insert(player["ze2_info"].zombie_inventory, player.shop_person.shop[player["ze2_info"].shop_selection][2])
                                 end
                             else error("Could not fetch inventory.",2) end
                             S_StartSound(nil, sfx_s3kb8, player)
-                            player["srbz_info"].shop_confirmscreen = false
-                            player.shop_person.shop[player["srbz_info"].shop_selection][2] = nil
+                            player["ze2_info"].shop_confirmscreen = false
+                            player.shop_person.shop[player["ze2_info"].shop_selection][2] = nil
                         else S_StartSound(nil, sfx_lose, player) end
                         
-                        player["srbz_info"].shop_selectpressed  = true
+                        player["ze2_info"].shop_selectpressed  = true
                     end
-                else player["srbz_info"].shop_selectpressed = false end
+                else player["ze2_info"].shop_selectpressed = false end
 
                 cmd.buttons = 0
                 cmd.forwardmove = 0

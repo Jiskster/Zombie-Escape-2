@@ -1,4 +1,4 @@
-SRBZ:CreateItem("Blue Spring",  {
+ZE2:CreateItem("Blue Spring",  {
 	icon = "BLUESPRINGIND",
 	firerate = 2*TICRATE,
 	limited = true,

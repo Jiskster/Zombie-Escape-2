@@ -1,5 +1,5 @@
-SRBZ.shophud = function(v, player)
-	if (SRBZ.game_ended) or (not player.shop_anim) or (not player.shop_person) then return end
+ZE2.shophud = function(v, player)
+	if (ZE2.game_ended) or (not player.shop_anim) or (not player.shop_person) then return end
 
 	local sp = player.shop_person
 	local theshop = sp.shop
@@ -59,7 +59,7 @@ SRBZ.shophud = function(v, player)
 		customhud.CustomFontString(v, 120, 0, "Rubies: "..player.rubies, "STCFC", 
 		(V_SNAPTOTOP), nil , nil, SKINCOLOR_RED)
 	end
-	if not player["srbz_info"].shop_confirmscreen then
+	if not player["ze2_info"].shop_confirmscreen then
 		v.drawString(160*FU,42*FU,"\x82".."BUY:\x80 JUMP     \x82LEAVE:\x80 SPIN", trans, "thin-fixed-center")
 		--draw the shopkeeper's phrase
 		if player.shop_person.phrases then
@@ -70,7 +70,7 @@ SRBZ.shophud = function(v, player)
 		--draw shop items
 		for i=1,#theshop do
 			local item 
-			local item_x = (i*100*FU)+(120*FU)-((player["srbz_info"].shop_selection-1) * (100*FU)) - 100*FU -- (player["srbz_info"].shop_selection-1 * (120*FU))
+			local item_x = (i*100*FU)+(120*FU)-((player["ze2_info"].shop_selection-1) * (100*FU)) - 100*FU -- (player["ze2_info"].shop_selection-1 * (120*FU))
 			if theshop[i] and theshop[i][2] then
 				item = theshop[i][2]
 				local item_scale = item.iconscale or FU
@@ -105,13 +105,13 @@ SRBZ.shophud = function(v, player)
 		end
 		v.drawScaled(120*FU,item_y,FU>>1,cursor_patch,trans)
 	else
-		local itemchoosing = player.shop_person.shop[player["srbz_info"].shop_selection][2]
+		local itemchoosing = player.shop_person.shop[player["ze2_info"].shop_selection][2]
 		if itemchoosing then
 			v.drawString(160*FU,34*FU,"\x82".."REPLACE HOLDING ITEM:\x80 CUSTOM 1", (V_SNAPTOTOP), "thin-fixed-center")
 			v.drawString(160*FU,42*FU,"\x82".."BUY:\x80 JUMP    \x82 CANCEL:\x80 SPIN", (V_SNAPTOTOP), "thin-fixed-center")
 			v.drawString(160*FU,50*FU,"\x82".."Are you sure you want to buy "..itemchoosing.displayname.."?", (V_SNAPTOTOP), "thin-fixed-center")
 			if not (leveltime % 3) then
-				if (SRBZ:FetchInventorySlot(player) and SRBZ:IsInventoryFull(player)) then
+				if (ZE2:FetchInventorySlot(player) and ZE2:IsInventoryFull(player)) then
 					v.drawString(160*FU,58*FU,"\x84".."WARNING! YOUR HELD ITEM WILL BE REPLACED!", (V_SNAPTOTOP), "thin-fixed-center")
 				end
 			end

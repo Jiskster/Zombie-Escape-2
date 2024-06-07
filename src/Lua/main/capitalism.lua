@@ -2,9 +2,9 @@ freeslot("MT_CRRUBY","S_CRRUBY","SPR_RBY1", "sfx_rbyhit") -- idk what CR means b
 freeslot("MT_RUBY_BOX","MT_RUBY_ICON", "S_RUBY_BOX", "S_RUBY_ICON1", 
 		"S_RUBY_ICON2", "SPR_RBYM")
 
-SRBZ.RubyLimit = 500000;
+ZE2.RubyLimit = 500000;
 
-SRBZ.rubypickupdelay = CV_RegisterVar({
+ZE2.rubypickupdelay = CV_RegisterVar({
 	name = "z_rubypickupdelay",
 	defaultvalue = "0",
 	PossibleValue = {MIN = 0, MAX = 12},
@@ -13,7 +13,7 @@ SRBZ.rubypickupdelay = CV_RegisterVar({
 
 function A_RubyDrop(actor, var1)
 	local rubyamount = var1
-	if mapheaderinfo[gamemap].srbz_zombieswarm then
+	if mapheaderinfo[gamemap].ze2_zombieswarm then
 		rubyamount = $ / 2
 	end
 	for i=1,rubyamount do
@@ -86,8 +86,8 @@ sfxinfo[sfx_rbyhit].caption = "Ruby"
 
 addHook("PlayerThink", function(player)
 	player.rubies = $ or 0
-	if player.rubies > SRBZ.RubyLimit then
-		player.rubies = SRBZ.RubyLimit
+	if player.rubies > ZE2.RubyLimit then
+		player.rubies = ZE2.RubyLimit
 	end
 	
 	if player.rubypickupdelay then
@@ -96,7 +96,7 @@ addHook("PlayerThink", function(player)
 end)
 
 addHook("MobjDeath", function(mobj)
-	if gametype ~= GT_SRBZ return end
+	if gametype ~= GT_ZE2 return end
 	
 	if mobj.rubiesholding then
 		A_RubyDrop(mobj,mobj.rubiesholding)
@@ -105,7 +105,7 @@ addHook("MobjDeath", function(mobj)
 end)
 
 addHook("MobjSpawn", function(mobj)
-	if gametype ~= GT_SRBZ then return end
+	if gametype ~= GT_ZE2 then return end
 	
 	if mobjinfo[mobj.type].rubydrop and type(mobjinfo[mobj.type].rubydrop) == "table" 
 	and #mobjinfo[mobj.type].rubydrop == 2 then
@@ -117,14 +117,14 @@ end)
 
 addHook("TouchSpecial", function(special, toucher)
 	if toucher and toucher.valid and toucher.player then
-		if toucher.player.rubies + 1 > SRBZ.RubyLimit then
+		if toucher.player.rubies + 1 > ZE2.RubyLimit then
 			return true
 		elseif toucher.player.rubypickupdelay then
 			return true
 		end
 		
 		P_GivePlayerRubies(toucher.player, 1)
-		toucher.player.rubypickupdelay = SRBZ.rubypickupdelay.value
+		toucher.player.rubypickupdelay = ZE2.rubypickupdelay.value
 	end
 end, MT_CRRUBY)
 

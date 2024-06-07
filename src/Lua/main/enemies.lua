@@ -81,8 +81,8 @@ mobjinfo[MT_PENGUINATOR].rubydrop = {15,25}
 mobjinfo[MT_PENGUINATOR].painsound = sfx_dmpain
 
 local function GoldCrawlaRNG(mobj)
-	if gametype ~= GT_SRBZ then return end
-	if P_RandomChance( FRACUNIT/(75-(SRBZ.PlayerCount()*2)) ) then
+	if gametype ~= GT_ZE2 then return end
+	if P_RandomChance( FRACUNIT/(75-(ZE2.PlayerCount()*2)) ) then
 		P_SpawnMobjFromMobj(mobj,0,0,0,MT_GOLDCRAWLA)
 		mobj.fuse = 1
 		return true

@@ -1,18 +1,18 @@
 -- Custom timers for maps
 
-SRBZ.maptimerdebug = CV_RegisterVar({
+ZE2.maptimerdebug = CV_RegisterVar({
 	name = "z_maptimerdebug",
 	defaultvalue = "Off",
 	PossibleValue = CV_OnOff,
 })
 
-SRBZ.MapTimers = {}
+ZE2.MapTimers = {}
 
-function SRBZ.AddMapTimer()
-	print("SRBZ.AddMapTimer is deprecated, try SRBZ:AddTimer instead")
+function ZE2.AddMapTimer()
+	print("ZE2.AddMapTimer is deprecated, try ZE2:AddTimer instead")
 end
 
-function SRBZ:AddTimer(_name,_table) 
+function ZE2:AddTimer(_name,_table) 
 	if _name == nil then
 		error("Timer: Arg1 is required (Arg1 _name)")
 	elseif type(_name) ~= "string" then
@@ -26,26 +26,26 @@ function SRBZ:AddTimer(_name,_table)
 	end
 	
 	local _table_recieve = _table
-	local _next_index = #SRBZ.MapTimers + 1
+	local _next_index = #ZE2.MapTimers + 1
 	
 	_table_recieve.name = $ or _name -- why would you wanna change after tho? lol
 	_table_recieve.active = $ or false
 	_table_recieve.time = $ or 15*TICRATE
 	_table_recieve.original_time = _table_recieve.time
 	
-	SRBZ.MapTimers[_next_index] = _table_recieve
+	ZE2.MapTimers[_next_index] = _table_recieve
 	
-	return SRBZ.MapTimers[#SRBZ.MapTimers]
+	return ZE2.MapTimers[#ZE2.MapTimers]
 end
 
-function SRBZ:ResetTimer(_timer)
+function ZE2:ResetTimer(_timer)
 	_timer.active = false
 	_timer.time = _timer.original_time
 end
 
-function SRBZ:GetActiveTimers()
+function ZE2:GetActiveTimers()
 	local activetimers = {}
-	for i,timer in ipairs(SRBZ.MapTimers) do
+	for i,timer in ipairs(ZE2.MapTimers) do
 		if timer.active then
 			table.insert(activetimers, timer)
 		end
@@ -54,15 +54,15 @@ function SRBZ:GetActiveTimers()
 end
 
 addHook("MapLoad", function()
-	for i,timer in ipairs(SRBZ.MapTimers) do
-		SRBZ:ResetTimer(timer)
+	for i,timer in ipairs(ZE2.MapTimers) do
+		ZE2:ResetTimer(timer)
 	end
 end)
 
 addHook("ThinkFrame",do
-	for i,timer in ipairs(SRBZ.MapTimers) do
+	for i,timer in ipairs(ZE2.MapTimers) do
 		if (timer.active) then
-			if (SRBZ.maptimerdebug.value) then
+			if (ZE2.maptimerdebug.value) then
 				print(timer.name..": "..(timer.time/35)) end
 
 			timer.time = $ - 1

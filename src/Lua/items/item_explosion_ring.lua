@@ -1,4 +1,4 @@
-SRBZ:CreateItem("Explosion Ring", {
+ZE2:CreateItem("Explosion Ring", {
 	object = MT_THROWNEXPLOSION,
 	icon = "BOMBIND",
 	firerate = TICRATE*3,

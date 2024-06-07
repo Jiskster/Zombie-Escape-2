@@ -1,23 +1,23 @@
 addHook("NetVars", function(net)
-	SRBZ.time_limit = net($);
-	SRBZ.wait_time = net($);
-	SRBZ.round_active = net($); -- stays on even if the end screen is on
-	SRBZ.game_ended = net($);
-	SRBZ.win_tics = net($); -- Increases if SRBZ.game_ended is true
-	SRBZ.game_time = net($);
-	SRBZ.team_won = net($);
+	ZE2.time_limit = net($);
+	ZE2.wait_time = net($);
+	ZE2.round_active = net($); -- stays on even if the end screen is on
+	ZE2.game_ended = net($);
+	ZE2.win_tics = net($); -- Increases if ZE2.game_ended is true
+	ZE2.game_time = net($);
+	ZE2.team_won = net($);
 	
-	SRBZ.VoteTimeLimit = net($);
-	SRBZ.MapsOnVote = net($);
-	SRBZ.NextMapVoted = net($);
+	ZE2.VoteTimeLimit = net($);
+	ZE2.MapsOnVote = net($);
+	ZE2.NextMapVoted = net($);
 	
-	SRBZ.CurrentZombieCheckpoint = net($);
-	SRBZ.ZombieCheckpoints = net($);
+	ZE2.CurrentZombieCheckpoint = net($);
+	ZE2.ZombieCheckpoints = net($);
 	
-	SRBZ.TWRITE_COUNT = net($);
-	SRBZ.TWRITE_MAPNAME_COUNT = net($);
+	ZE2.TWRITE_COUNT = net($);
+	ZE2.TWRITE_MAPNAME_COUNT = net($);
 	
-	for i,v in ipairs(SRBZ.MapTimers) do
+	for i,v in ipairs(ZE2.MapTimers) do
 		v.name = net($);
 		v.time = net($);
 		v.active = net($);

@@ -1,6 +1,6 @@
 -- Ported From RSNEO
 
-SRBZ:CreateItem("Scatra",  {
+ZE2:CreateItem("Scatra",  {
 	icon = "SCATRAIND",
 	firerate = 25,
 	sound = sfx_shgn,
@@ -12,17 +12,17 @@ SRBZ:CreateItem("Scatra",  {
 	ammo = 10,
 	reload_time = 5*TICRATE,
 	ontrigger = function(player)
-		local mt = MT_SRBZ_THROWNSCATTER
+		local mt = MT_ZE2_THROWNSCATTER
 		local mo = player.mo
 		local spread = 3
 		--S_StartSound(mo, sfx_shgn)
 		for i = -1, 1
 			local shot = P_SPMAngle(mo, mt, mo.angle + i * ANG1*spread, 1, 0)
 			if shot and shot.valid
-				shot.color = SRBZ:FetchInventorySlot(player).color
-				shot.fuse = SRBZ:FetchInventorySlot(player).fuse
-				shot.forcedamage = SRBZ:FetchInventorySlot(player).damage
-				shot.forceknockback = SRBZ:FetchInventorySlot(player).knockback
+				shot.color = ZE2:FetchInventorySlot(player).color
+				shot.fuse = ZE2:FetchInventorySlot(player).fuse
+				shot.forcedamage = ZE2:FetchInventorySlot(player).damage
+				shot.forceknockback = ZE2:FetchInventorySlot(player).knockback
 				shot.colorized = true
 				
 				shot.momx = $ + mo.momx / 3
@@ -36,10 +36,10 @@ SRBZ:CreateItem("Scatra",  {
 			local shot = P_SPMAngle(mo, mt, mo.angle, 1, 0)
 			player.aiming = prevaim
 			if shot and shot.valid
-				shot.color = SRBZ:FetchInventorySlot(player).color
-				shot.fuse = SRBZ:FetchInventorySlot(player).fuse
-				shot.forcedamage = SRBZ:FetchInventorySlot(player).damage
-				shot.forceknockback = SRBZ:FetchInventorySlot(player).knockback
+				shot.color = ZE2:FetchInventorySlot(player).color
+				shot.fuse = ZE2:FetchInventorySlot(player).fuse
+				shot.forcedamage = ZE2:FetchInventorySlot(player).damage
+				shot.forceknockback = ZE2:FetchInventorySlot(player).knockback
 				shot.colorized =  true
 				
 				shot.momx = $ + mo.momx / 3

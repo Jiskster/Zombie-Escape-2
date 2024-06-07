@@ -166,7 +166,7 @@ local function prayer17()
 end
 
 --Pokey Dialouge
-local COTPPokeyTimer = SRBZ:AddTimer("Pokey's Gloating",{
+local COTPPokeyTimer = ZE2:AddTimer("Pokey's Gloating",{
 	time = 60*TICRATE,
 	extrainfo = {
 		color = SKINCOLOR_WHITE,
@@ -321,7 +321,7 @@ local COTPPokeyTimer = SRBZ:AddTimer("Pokey's Gloating",{
 	}
 })
 
-local COTPPreZombieTimer = SRBZ:AddTimer("Incoming Zombies",{
+local COTPPreZombieTimer = ZE2:AddTimer("Incoming Zombies",{
 	time = 30*TICRATE,
 	extrainfo = {
 		color = SKINCOLOR_WHITE,
@@ -384,7 +384,7 @@ local COTPPreZombieTimer = SRBZ:AddTimer("Incoming Zombies",{
 	}
 })
 
-local COTPGiygasTimer = SRBZ:AddTimer("Survive Giygas",{
+local COTPGiygasTimer = ZE2:AddTimer("Survive Giygas",{
 	time = 75*TICRATE,
 	extrainfo = {
 		color = SKINCOLOR_RED,
@@ -497,7 +497,7 @@ local COTPGiygasTimer = SRBZ:AddTimer("Survive Giygas",{
 })
 
 local function poketak1()
-	SRBZ.ZombieCheckpoints = {
+	ZE2.ZombieCheckpoints = {
 		[1] = {
 			x = -5920,
 			y = -16544,
@@ -506,13 +506,13 @@ local function poketak1()
 		}
 	}
 	
-	SRBZ.CurrentZombieCheckpoint = 1
+	ZE2.CurrentZombieCheckpoint = 1
 	
 	COTPPokeyTimer.active = true
 end
 
 local function poketak2()
-	SRBZ.ZombieCheckpoints = {
+	ZE2.ZombieCheckpoints = {
 		[2] = {
 			x = -12800,
 			y = -832,
@@ -521,7 +521,7 @@ local function poketak2()
 		}
 	}
 	
-	SRBZ.CurrentZombieCheckpoint = 2
+	ZE2.CurrentZombieCheckpoint = 2
 
 	for player in players.iterate
 		if (player.zteam == 1) then
@@ -535,7 +535,7 @@ local function poketak2()
 end
 
 local function giygasfn()
-	SRBZ.ZombieCheckpoints = {
+	ZE2.ZombieCheckpoints = {
 		[3] = {
 			x = -16096,
 			y = -4960,
@@ -544,7 +544,7 @@ local function giygasfn()
 		}
 	}
 	
-	SRBZ.CurrentZombieCheckpoint = 3
+	ZE2.CurrentZombieCheckpoint = 3
 
 	for player in players.iterate
 		if (player.zteam == 2) then
@@ -555,7 +555,7 @@ local function giygasfn()
 end
 
 local function prayer18()
-	SRBZ.ZombieCheckpoints = {
+	ZE2.ZombieCheckpoints = {
 		[4] = {
 			x = -12800,
 			y = -832,
@@ -564,7 +564,7 @@ local function prayer18()
 		}
 	}
 
-	SRBZ.CurrentZombieCheckpoint = 4
+	ZE2.CurrentZombieCheckpoint = 4
 
 	chatprint("\x84\ 27600 HP of damage to Giygas!")
 	S_StartSound(player, sfx_smaash)

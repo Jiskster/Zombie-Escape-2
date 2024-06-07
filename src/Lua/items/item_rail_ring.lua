@@ -1,9 +1,9 @@
 local raildmg = 60
 local railkb = 160*FRACUNIT
 
-freeslot("MT_SRBZ_RAILSHOT")
+freeslot("MT_ZE2_RAILSHOT")
 
-mobjinfo[MT_SRBZ_RAILSHOT] = {
+mobjinfo[MT_ZE2_RAILSHOT] = {
 	spawnstate = S_RRNG1,
 	deathstate = S_SPRK1,
 	deathsound = sfx_rs_die,
@@ -38,11 +38,11 @@ local function trigger_func(player, iteminfo)
 	mo.state = S_PLAY_SPRING
 	mo.player.pflags = $ & ~(PF_JUMPED | PF_SPINNING)
 	S_StartSound(mo, sfx_rail1)
-	local rail = P_SPMAngle(mo, MT_SRBZ_RAILSHOT, mo.angle, 1, MF2_DONTDRAW)
+	local rail = P_SPMAngle(mo, MT_ZE2_RAILSHOT, mo.angle, 1, MF2_DONTDRAW)
 	
 	if rail and rail.valid then
-		rail.forcedamage = SRBZ:FetchInventorySlot(player).damage
-		rail.forceknockback = SRBZ:FetchInventorySlot(player).knockback
+		rail.forcedamage = ZE2:FetchInventorySlot(player).damage
+		rail.forceknockback = ZE2:FetchInventorySlot(player).knockback
 		rail.iteminfo = iteminfo
 		
 		local range = 16
@@ -91,7 +91,7 @@ local function trigger_func(player, iteminfo)
 	end
 end
 
-SRBZ:CreateItem("Rail Ring", {
+ZE2:CreateItem("Rail Ring", {
 	shake = 20,
 	icon = "RAILIND",
 	firerate = 5,
