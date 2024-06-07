@@ -30,7 +30,7 @@ states[S_PROP1_BREAK] = {
 	sprite = SPR_WPRP,
 	action = A_Scream,
 	frame = B,
-	tics = 2
+	tics = 4
 }
 
 SRBZ:CreateItem("Tails' fence", {
@@ -45,16 +45,24 @@ SRBZ:CreateItem("Tails' fence", {
 		wood.angle = player.mo.angle+ANGLE_90
 		S_StartSound(player.mo, sfx_jshard)
 		wood.renderflags = $|RF_PAPERSPRITE
+		wood.mobjteam = player.zteam
 		wood.flags = $|MF_SHOOTABLE|MF_SOLID|MF_PAPERCOLLISION -- Reapply flags to prevent desynch (for some reason)
 		wood.target = player.mo
 	end,
 	price = 110,
 })
 
-addHook("MobjCollide", function(mo,pmo)
-	if pmo.type == MT_PLAYER then
-		if pmo.skin ~= "zzombie" then
-			return false
+addHook("MobjCollide", function(wood, tmo)
+	if wood.mobjteam then
+		if tmo.type == MT_PLAYER and tmo.player and tmo.player.valid then
+			local player = tmo.player
+			if wood.mobjteam == player.zteam then
+				return false
+			end
+		else
+			if wood.mobjteam == tmo.mobjteam then
+				return false
+			end
 		end
 	end
 end, MT_PROPWOOD)

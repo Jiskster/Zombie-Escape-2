@@ -28,14 +28,22 @@ addHook("ShouldDamage", function(mo, inf, src, dmg)
 		end
 	end
 	
-	
 	if src and src.player and mo and mo.player then
 		if mo.player.zteam == src.player.zteam then
 			return false
 		end
 	end
+	
+	-- Don't damage objects that are the same team.
+	if mo.mobjteam and inf.mobjteam and mo.mobjteam == inf.mobjteam then
+		return false
+	end
 
 	if mo.player then
+		if mo.player.powers[pw_flashing] then
+			return false
+		end
+		
 		mo.player.shop_open = false
 		mo.player.shop_anim = 0
 	end
@@ -197,6 +205,8 @@ function SRBZ.DoPlayerFire(player, iteminfo)
 
 	if ring then
 		ring.shotbyplayer = true
+		
+		ring.mobjteam = tonumber(player.zteam)
 		
 		if iteminfo.color ~= nil then
 			ring.color = iteminfo.color
