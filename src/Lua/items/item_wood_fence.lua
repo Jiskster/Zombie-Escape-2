@@ -33,7 +33,7 @@ states[S_PROP1_BREAK] = {
 	tics = 4
 }
 
-SRBZ:CreateItem("Tails' fence", {
+SRBZ:CreateItem("Wood Fence", {
 	icon = "FENCEIND",
 	firerate = TICRATE*8,
 	limited = true,
