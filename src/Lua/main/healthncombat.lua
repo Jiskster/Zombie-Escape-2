@@ -21,6 +21,8 @@ addHook("ShouldDamage", function(mo, inf, src, dmg)
 	if SRBZ.game_ended then return false end
 	
 	local knockback = 0
+	local verticalknockback = 0
+	local relativeknockback = false
 	
 	if inf and inf.player and mo and mo.player then
 		if mo.player.zteam == inf.player.zteam then
@@ -57,6 +59,19 @@ addHook("ShouldDamage", function(mo, inf, src, dmg)
 			knockback = inf.forceknockback
 		end
 		
+		if inf.info.forceknockback then
+			knockback = inf.info.forceknockback
+		end
+		
+		if inf.info.relativeknockback then
+			relativeknockback = true
+		end
+		
+		if inf.info.forceverticalknockback then
+			verticalknockback = inf.info.forceverticalknockback
+		end
+		
+		--forceverticalknockback
 		if inf.iteminfo and SRBZ.ItemPresets[inf.iteminfo.item_id] and SRBZ.ItemPresets[inf.iteminfo.item_id].onhit and (inf.target or src) then
 			if inf.target then
 				SRBZ.ItemPresets[inf.iteminfo.item_id].onhit(inf.target, mo, inf)
@@ -66,11 +81,10 @@ addHook("ShouldDamage", function(mo, inf, src, dmg)
 		end
 	end
 	
-	if (inf and inf.player) then P_AddPlayerScore(inf.player, dmg)
-	elseif (src and src.player) then P_AddPlayerScore(src.player, dmg) end
-	
-	if inf and inf.info.forceknockback then
-		knockback = inf.info.forceknockback
+	if (inf and inf.player) then 
+		P_AddPlayerScore(inf.player, dmg)
+	elseif (src and src.player) then 
+		P_AddPlayerScore(src.player, dmg) 
 	end
 	
 	if mo.player then
@@ -78,14 +92,37 @@ addHook("ShouldDamage", function(mo, inf, src, dmg)
 			mo.player.powers[pw_flashing] = SRBZ.survinvtics.value
 			P_FlashPal(mo.player, PAL_NUKE, 2)
 			S_StartSound(mo, sfx_s3kb9)
+			
+			if inf and inf.valid then
+				if not relativeknockback then
+					P_Thrust(mo, inf.angle, knockback)
+				else
+					local r_angle = R_PointToAngle2(mo.x, mo.y, inf.x, inf.y)
+					
+					P_Thrust(mo, r_angle - ANGLE_180, knockback)
+				end
+				
+				if verticalknockback then
+					P_SetObjectMomZ(mo, verticalknockback, true)
+				end
+			end
 		elseif mo.player.zteam == 2 then
 			local zombie_hurtsounds = {
 				sfx_zpa1,
 				sfx_zpa2,
 			}
 			local chosen_hurtsound = zombie_hurtsounds[P_RandomRange(1,2)]
-			if inf and inf.valid then
+			
+			if not relativeknockback then
 				P_Thrust(mo, inf.angle, knockback)
+			else
+				local r_angle = R_PointToAngle2(mo.x, mo.y, inf.x, inf.y)
+				
+				P_Thrust(mo, r_angle - ANGLE_180, knockback)
+			end
+		
+			if verticalknockback then
+				P_SetObjectMomZ(mo, verticalknockback, true)
 			end
 			
 			S_StartSound(mo, chosen_hurtsound)
@@ -107,13 +144,6 @@ addHook("ShouldDamage", function(mo, inf, src, dmg)
 	
 	if inf and inf.info.forcedamage then
 		dmg = inf.info.forcedamage
-	end
-	
-	if ((not inf) or (not inf.iteminfo)) and (not dmg) then
-		if ((mobjinfo[src.type].npc_name) and (mo.player)) 
-		or ((src.player) and mobjinfo[mo.type].npc_name) then
-			dmg = P_RandomKey(9)+3
-		end
 	end
 	
 	if dmg >= mo.health then
