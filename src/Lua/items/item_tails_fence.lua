@@ -11,7 +11,7 @@ mobjinfo[MT_PROPWOOD] = {
 	speed = 0,
 	radius = 96*FRACUNIT,
 	height = 138*FRACUNIT,
-	flags = MF_SHOOTABLE|MF_SOLID,
+	flags = MF_SHOOTABLE|MF_SOLID|MF_PAPERCOLLISION,
 }
 
 mobjinfo[MT_PROPWOOD].npc_name = "Wood Fence"
@@ -45,6 +45,7 @@ SRBZ:CreateItem("Tails' fence", {
 		wood.angle = player.mo.angle+ANGLE_90
 		S_StartSound(player.mo, sfx_jshard)
 		wood.renderflags = $|RF_PAPERSPRITE
+		wood.flags = $|MF_SHOOTABLE|MF_SOLID|MF_PAPERCOLLISION -- Reapply flags to prevent desynch (for some reason)
 		wood.target = player.mo
 	end,
 	price = 110,
