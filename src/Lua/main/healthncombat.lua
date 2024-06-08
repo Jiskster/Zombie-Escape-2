@@ -16,9 +16,26 @@ ZE2.LimitMobjHealth = function(mobj)
 	end
 end
 
-addHook("ShouldDamage", function(mo, inf, src, dmg)
+function ZE2.KillMobj(mo, inf, src, damagetype)
+	if mo.player and mo.player.valid then
+		local player = mo.player 
+		local ztype = player.ztype
+		
+		if ztype and ZE2.ZombieConfig[ztype] and ZE2.ZombieConfig[ztype].killaward then
+			local killaward = ZE2.ZombieConfig[ztype].killaward
+			A_RubyDrop(mo, killaward)
+		end
+	end
+	
+	P_KillMobj(mo, inf, src, damagetype)
+end
+
+-- Always return false
+addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	if (gametype ~= GT_ZE2) return end
 	if ZE2.game_ended then return false end
+	
+	local deathdamagetype = (damagetype >= DMG_INSTAKILL and damagetype <= DMG_SPECTATOR)
 	
 	local knockback = 0
 	local verticalknockback = 0
@@ -51,18 +68,15 @@ addHook("ShouldDamage", function(mo, inf, src, dmg)
 	end
 	
 	if inf then
-		if inf.forcedamage ~= nil then
-			dmg = inf.forcedamage
-		end
-		
-		if inf.forceknockback ~= nil then
-			knockback = inf.forceknockback
+		if inf and inf.info.forcedamage then
+			dmg = inf.info.forcedamage
 		end
 		
 		if inf.info.forceknockback then
 			knockback = inf.info.forceknockback
 		end
 		
+		-- Knocks back angle between two objects instead of pushing backwards of attacker object
 		if inf.info.relativeknockback then
 			relativeknockback = true
 		end
@@ -71,7 +85,14 @@ addHook("ShouldDamage", function(mo, inf, src, dmg)
 			verticalknockback = inf.info.forceverticalknockback
 		end
 		
-		--forceverticalknockback
+		if inf.forcedamage ~= nil then
+			dmg = inf.forcedamage
+		end
+		
+		if inf.forceknockback ~= nil then
+			knockback = inf.forceknockback
+		end
+		
 		if inf.iteminfo and ZE2.ItemPresets[inf.iteminfo.item_id] and ZE2.ItemPresets[inf.iteminfo.item_id].onhit and (inf.target or src) then
 			if inf.target then
 				ZE2.ItemPresets[inf.iteminfo.item_id].onhit(inf.target, mo, inf)
@@ -85,6 +106,12 @@ addHook("ShouldDamage", function(mo, inf, src, dmg)
 		P_AddPlayerScore(inf.player, dmg)
 	elseif (src and src.player) then 
 		P_AddPlayerScore(src.player, dmg) 
+	end
+	
+	-- DIE NOW
+	if mo.health - dmg <= 0 or deathdamagetype then
+		ZE2.KillMobj(mo, inf, src, damagetype)
+		return false
 	end
 	
 	if mo.player then
@@ -141,26 +168,6 @@ addHook("ShouldDamage", function(mo, inf, src, dmg)
 			P_Thrust(mo, inf.angle, knockback)
 		end
 	end
-	
-	if inf and inf.info.forcedamage then
-		dmg = inf.info.forcedamage
-	end
-	
-	if dmg >= mo.health then
-		if mo.player and mo.player.valid then
-			local player = mo.player 
-			local ztype = player.ztype
-			
-			if ztype and ZE2.ZombieConfig[ztype] and ZE2.ZombieConfig[ztype].killaward then
-				local killaward = ZE2.ZombieConfig[ztype].killaward
-				A_RubyDrop(mo, killaward)
-			end
-		end
-		
-		P_KillMobj(mo,inf)
-		return false
-	end
-
 
 	if mo.rubiesholding and (mo.rubiesholding - (mo.rubiesholding/3)) > 0 then
 		 A_RubyDrop(mo, mo.rubiesholding/3)
