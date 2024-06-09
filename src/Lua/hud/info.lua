@@ -30,7 +30,7 @@ ZE2.infohud = function(v, player)
 			v.drawScaled(0, 176*FRACUNIT, FixedDiv(3*FRACUNIT, 4*FRACUNIT),
 			skinpatch, (V_SNAPTOBOTTOM|V_SNAPTOLEFT), colormap)
 			-- [Player Name] --
-			local display_name = (player["ze2_info"].zombie_type and player["ze2_info"].team) 
+			local display_name = (player["ze2_info"].zombie_type and player["ze2_info"].team == 2) 
 			and (player.ztype + " Zombie") or skins[player.mo.skin].realname
 
 			customhud.CustomFontString(v, 25, 192, 
