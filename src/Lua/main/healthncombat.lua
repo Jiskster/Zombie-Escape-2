@@ -6,7 +6,39 @@ mobjinfo[MT_CORK].forceknockback = 20*FU
 mobjinfo[MT_LHRT].forcedamage = 3
 mobjinfo[MT_LHRT].forceknockback = 8*FU
 
-ZE2.LimitMobjHealth = function(mobj)
+-- ze2_info only
+function ZE2:TryBooleanAction(player, _table, strict)
+	if not _table then
+		if strict == true then
+			error("Table expected")
+		end
+		return false
+	end
+	
+	if _table.var == nil then
+		if strict == true then
+			error("Var expected")
+		end
+		
+		return false
+	end
+	
+	if (_table.condition) then
+		if not player["ze2_info"][_table.var] then
+			if _table.action then
+				_table.action()
+			end
+		end
+		
+		player["ze2_info"][_table.var] = true
+	else
+		player["ze2_info"][_table.var] = false
+	end
+	
+	return true
+end
+
+function ZE2.LimitMobjHealth(mobj)
 	if mobj and mobj.valid then
 		if mobj.health and mobj.maxhealth then
 			if mobj.health > mobj.maxhealth then
@@ -306,11 +338,18 @@ addHook("PreThinkFrame", function()
 			
 			reload = 0,
 			
+			fire_pressed = false,
+			
+			weaponprev_pressed = false,
+			weaponnext_pressed = false,
+			
+			reload_pressed = false,
+			
 			vote_selection = 1,
 			voted = false,
 			vote_leftpressed = false,
 			vote_rightpressed = false,
-
+			
 			shop_selection = 1,
 			shop_leftpressed = false,
 			shop_rightpressed = false,
@@ -353,42 +392,57 @@ addHook("PreThinkFrame", function()
 		
 		if not ZE2.game_ended and not player["ze2_info"].ghostmode then 
 			if not player.choosing then
-				if (cmd.buttons & BT_WEAPONPREV) and not (player.lastbuttons & BT_WEAPONPREV)  then
-					if player["ze2_info"].inventory_selection - 1 <= 0 then
-						player["ze2_info"].inventory_selection = ZE2:FetchInventoryLimit(player)
-					else
-						player["ze2_info"].inventory_selection = $ - 1
+				-- Next Weapon
+				ZE2:TryBooleanAction(player, {
+					condition = cmd.buttons & BT_WEAPONPREV,
+					var = "weaponprev_pressed",
+					action = function()
+						if player["ze2_info"].inventory_selection - 1 <= 0 then
+							player["ze2_info"].inventory_selection = ZE2:FetchInventoryLimit(player)
+						else
+							player["ze2_info"].inventory_selection = $ - 1
+						end
+						
+						S_StartSound(nil,sfx_mnu1a,player)
+						
+						player["ze2_info"].reload = 0
 					end
-					
-					S_StartSound(nil,sfx_mnu1a,player)
-					
-					player["ze2_info"].reload = 0
-				end
-			
-				if (cmd.buttons & BT_WEAPONNEXT) and not (player.lastbuttons & BT_WEAPONNEXT) then				
-					if player["ze2_info"].inventory_selection + 1 > ZE2:FetchInventoryLimit(player) then
-						player["ze2_info"].inventory_selection = 1
-					else
-						player["ze2_info"].inventory_selection = $ + 1
-					end
+				}, true)
 
-					S_StartSound(nil,sfx_mnu1a,player)
-					
-					player["ze2_info"].reload = 0
-				end
+				-- Previous Weapon
+				ZE2:TryBooleanAction(player, {
+					condition = cmd.buttons & BT_WEAPONNEXT,
+					var = "weaponnext_pressed",
+					action = function()
+						if player["ze2_info"].inventory_selection + 1 > ZE2:FetchInventoryLimit(player) then
+							player["ze2_info"].inventory_selection = 1
+						else
+							player["ze2_info"].inventory_selection = $ + 1
+						end
+
+						S_StartSound(nil,sfx_mnu1a,player)
+						
+						player["ze2_info"].reload = 0
+					end
+				}, true)
 				
-				if (cmd.buttons & BT_FIRENORMAL) and not (player.lastbuttons & BT_FIRENORMAL)  then
-					ZE2.DoPlayerReload(player)
-				end
+				-- Reload
+				ZE2:TryBooleanAction(player, {
+					condition = cmd.buttons & BT_FIRENORMAL,
+					var = "reload_pressed",
+					action = function()
+						ZE2.DoPlayerReload(player)
+					end
+				}, true)
 				
-				if (cmd.buttons & BT_ATTACK) then
-					if not player["ze2_info"].pressed_fire then
+				-- Fire
+				ZE2:TryBooleanAction(player, {
+					condition = cmd.buttons & BT_ATTACK,
+					var = "fire_pressed",
+					action = function()
 						player["ze2_info"].await_fire = true
 					end
-					player["ze2_info"].pressed_fire = true
-				else
-					player["ze2_info"].pressed_fire = false	
-				end
+				}, true)
 			end
 			
 			-- try shoot

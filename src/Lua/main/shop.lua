@@ -194,57 +194,73 @@ addHook("PlayerThink", function(player)
         if player.shop_anim == 0 then
             player.shop_person = nil
         end
-
-
     end
 end)
 
 addHook("PreThinkFrame", do
     for player in players.iterate do
         if player.mo and player.mo.valid and player["ze2_info"] then
-            local szi = player["ze2_info"]
             local cmd = player.cmd
 
+			--var = function(set)
             if player.shop_open and not player.shop_delay and player.shop_person then
-                if cmd.sidemove < -40 and not player["ze2_info"].shop_confirmscreen then
-                    if not player["ze2_info"].shop_leftpressed then
+				-- Left Press
+				ZE2:TryBooleanAction(player, {
+					condition = (cmd.sidemove < -40) and (not player["ze2_info"].shop_confirmscreen),
+					var = "shop_leftpressed",
+					action = function()
+						S_StartSound(nil, sfx_s3kb7, player)
+						
+                        if (player["ze2_info"].shop_selection - 1 <= 0) then 
+							player["ze2_info"].shop_selection = #player.shop_person.shop
+                        else 
+							player["ze2_info"].shop_selection = $ - 1 
+						end
+					end,
+				}, true)
+				
+				-- Right Press
+				ZE2:TryBooleanAction(player, {
+					condition = (cmd.sidemove > 40) and (not player["ze2_info"].shop_confirmscreen),
+					var = "shop_rightpressed",
+					action = function()
                         S_StartSound(nil, sfx_s3kb7, player)
-                        if (player["ze2_info"].shop_selection - 1 <= 0) then player["ze2_info"].shop_selection = #player.shop_person.shop
-                        else player["ze2_info"].shop_selection = $ - 1 end
-                        player["ze2_info"].shop_leftpressed  = true
-                    end
-                else player["ze2_info"].shop_leftpressed = false end
-                
-                if cmd.sidemove > 40 and not player["ze2_info"].shop_confirmscreen then
-                    if not player["ze2_info"].shop_rightpressed then
-                        S_StartSound(nil, sfx_s3kb7, player)
+						
                         if player["ze2_info"].shop_selection + 1 > #player.shop_person.shop then
                             player["ze2_info"].shop_selection = 1
                         else
-                            player["ze2_info"].shop_selection = $ + 1
+                           player["ze2_info"].shop_selection = $ + 1
                         end
-                        player["ze2_info"].shop_rightpressed = true
-                    end
-                else player["ze2_info"].shop_rightpressed = false end
+					end,
+				}, true)
 
-                if (cmd.buttons & BT_SPIN) then
-                    if not player["ze2_info"].shop_exitpressed then
-                        --S_StartSound(nil, sfx_s3kb7, player)
-
-                        if player["ze2_info"].shop_confirmscreen then
+				-- Close Shop / Exit Confirm Screen
+				ZE2:TryBooleanAction(player, {
+					condition = cmd.buttons & BT_SPIN,
+					var = "shop_exitpressed",
+					action = function()
+                        if player["ze2_info"].shop_confirmscreen then 
+							-- Exit Confirm Screen
                             player["ze2_info"].shop_confirmscreen = false
                             S_StartSound(nil, sfx_notadd, player)
                         else
+							-- Exit Shop Entirely
                             player.shop_open = false
                             player.shop_delay = TICRATE*2   
                         end
-                        player["ze2_info"].shop_exitpressed  = true
-                    end
-                else player["ze2_info"].shop_exitpressed = false end
-
-                if (cmd.buttons & BT_JUMP) and player.shop_person.shop and player.shop_person.shop[player["ze2_info"].shop_selection][2] then
-                    if not player["ze2_info"].shop_selectpressed then
-                        local hasrequiredrubies = player.rubies >= player.shop_person.shop[player["ze2_info"].shop_selection][1]
+					end,
+				}, true)
+				
+				-- Enter Confirm Screen / Buy Item
+				ZE2:TryBooleanAction(player, {
+					condition = (
+						(cmd.buttons & BT_JUMP) 
+						and player.shop_person.shop 
+						and player.shop_person.shop[player["ze2_info"].shop_selection][2]
+					),
+					var = "shop_selectpressed",
+					action = function()
+						local hasrequiredrubies = player.rubies >= player.shop_person.shop[player["ze2_info"].shop_selection][1]
 
                         if hasrequiredrubies and not player["ze2_info"].shop_confirmscreen then
                             S_StartSound(nil, sfx_s3kb8, player)
@@ -276,16 +292,12 @@ addHook("PreThinkFrame", do
                         else
 							S_StartSound(nil, sfx_lose, player)
 						end
-                        
-                        player["ze2_info"].shop_selectpressed  = true
-                    end
-                else 
-					player["ze2_info"].shop_selectpressed = false
-				end
-
-                cmd.buttons = 0
-                cmd.forwardmove = 0
-                cmd.sidemove = 0      
+					end,
+				}, true)
+				
+				cmd.buttons = 0
+				cmd.forwardmove = 0
+				cmd.sidemove = 0
             end
 			
             if player.shop_delay then
