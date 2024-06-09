@@ -1,5 +1,5 @@
 ZE2.shophud = function(v, player)
-	if (ZE2.game_ended) or (not player.shop_anim) or (not player.shop_person) then return end
+	if (ZE2.game_ended) or (not player["ze2_info"].shop_anim) or (not player.shop_person) then return end
 
 	local sp = player.shop_person
 	local theshop = sp.shop
@@ -32,10 +32,10 @@ ZE2.shophud = function(v, player)
 		
 	local scroll = (leveltime%128)
 	
-	bg.ese = bg.start-(FixedDiv(player.shop_anim*FU, animlength*FU/2)*9/FU)
-	shop.ese = ease.inoutsine(FixedDiv(player.shop_anim*FU, animlength*FU),shop.start,shop.stop)
-	bl.ese = ease.inoutsine(FixedDiv(player.shop_anim*FU, animlength*FU),bl.start*FU,bl.stop*FU)
-	bu.ese = ease.inoutsine(FixedDiv(player.shop_anim*FU, animlength*FU),bu.start*FU,bu.stop*FU)
+	bg.ese = bg.start-(FixedDiv(player["ze2_info"].shop_anim*FU, animlength*FU/2)*9/FU)
+	shop.ese = ease.inoutsine(FixedDiv(player["ze2_info"].shop_anim*FU, animlength*FU),shop.start,shop.stop)
+	bl.ese = ease.inoutsine(FixedDiv(player["ze2_info"].shop_anim*FU, animlength*FU),bl.start*FU,bl.stop*FU)
+	bu.ese = ease.inoutsine(FixedDiv(player["ze2_info"].shop_anim*FU, animlength*FU),bu.start*FU,bu.stop*FU)
 	
 	local item_y = 75*FU
 
@@ -52,11 +52,11 @@ ZE2.shophud = function(v, player)
 		v.drawScaled((i*128*FU)-(scroll*FU),min(bu.ese,bu.stop*FU),FU,z_bu,V_SNAPTOTOP)
 	end
 	local trans
-	if player.shop_anim ~= animlength then
+	if player["ze2_info"].shop_anim ~= animlength then
 		trans = shop.ese<<V_ALPHASHIFT
 	end
-	if player.rubies ~= nil then
-		customhud.CustomFontString(v, 120, 0, "Rubies: "..player.rubies, "STCFC", 
+	if player["ze2_info"].rubies ~= nil then
+		customhud.CustomFontString(v, 120, 0, "Rubies: "..player["ze2_info"].rubies, "STCFC", 
 		(V_SNAPTOTOP), nil , nil, SKINCOLOR_RED)
 	end
 	if not player["ze2_info"].shop_confirmscreen then

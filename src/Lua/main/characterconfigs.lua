@@ -67,7 +67,7 @@ ZE2.SetCCtoplayer = function(player)
 		if cc[pmo.skin].normalspeed then 
 			player.normalspeed = cc[pmo.skin].normalspeed or cc["default"].normalspeed
 			local sprintboost = cc[pmo.skin].sprintboost or cc["default"].sprintboost
-			if (sprintboost) and (player.isSprinting and player.sprintmeter > 0) and (player.zteam == 1) then
+			if (sprintboost) and (player["ze2_info"].isSprinting and player["ze2_info"].sprintmeter > 0) and (player["ze2_info"].team == 1) then
 				player.normalspeed = $ + sprintboost
 			end
 		end
@@ -100,7 +100,7 @@ ZE2.SetCCtoplayer = function(player)
 		
 		if (cc[pmo.skin].speedcap) and not ZE2.MobjTouchingPolyObj(pmo) then 
 			local sprintboost = cc[pmo.skin].sprintboost or cc["default"].sprintboost
-			if (sprintboost) and (player.isSprinting and player.sprintmeter > 0) and (player.zteam == 1) then
+			if (sprintboost) and (player["ze2_info"].isSprinting and player["ze2_info"].sprintmeter > 0) and (player["ze2_info"].team == 1) then
 				L_SpeedCap(pmo,cc[pmo.skin].speedcap + sprintboost)
 			else
 				L_SpeedCap(pmo,cc[pmo.skin].speedcap)
@@ -132,7 +132,7 @@ ZE2.SetZCtoplayer = function(player)
 	local pmo = player.mo
 	local zc = ZE2.ZombieConfig
 	local cc = ZE2.CharacterConfig
-	local ztype = player.ztype
+	local ztype = player["ze2_info"].zombie_type
 	
 	if pmo and pmo.valid then
 		if zc[ztype] then
@@ -174,7 +174,7 @@ ZE2.SetZCtoplayer = function(player)
 				player.charflags = $|zc[ztype].charflags 
 			end
 		else
-			player.ztype = "normal"
+			player["ze2_info"].zombie_type = "normal"
 		end
 	end
 end
@@ -183,7 +183,7 @@ ZE2.SetZChealth = function(player)
 	local pmo = player.mo
 	local zc = ZE2.ZombieConfig
 	local cc = ZE2.CharacterConfig
-	local ztype = player.ztype
+	local ztype = player["ze2_info"].zombie_type
 	
 	if pmo and pmo.valid then
 		if zc[ztype] then
@@ -205,7 +205,7 @@ end
 ZE2.SetZCscale = function(player)
 	local pmo = player.mo
 	local zc = ZE2.ZombieConfig
-	local ztype = player.ztype
+	local ztype = player["ze2_info"].zombie_type
 	
 	if pmo and pmo.valid then
 		if ztype and zc[ztype] then
@@ -217,7 +217,7 @@ end
 ZE2.SetZCinventory = function(player)
 	local pmo = player.mo
 	local zc = ZE2.ZombieConfig
-	local ztype = player.ztype
+	local ztype = player["ze2_info"].zombie_type
 	
 	if pmo and pmo.valid then
 		if ztype and zc[ztype] and player["ze2_info"] then

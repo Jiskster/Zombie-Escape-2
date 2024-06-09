@@ -71,12 +71,12 @@ local function isRegisteredUser(player)
 end
 
 local function saveData(player)
-	if isRegisteredUser(player) and player.rubies ~= nil then
+	if isRegisteredUser(player) and player["ze2_info"].rubies ~= nil then
 		local gspath = "ZE2DATA/"..player.registered_user.."/gamesave.sav2"
 		local gsfile = io.openlocal(gspath, "w+")
 		if gsfile then
 			gsfile:write(json.encode({
-				rubies = player.rubies or 0,
+				rubies = player["ze2_info"].rubies or 0,
 				prevname = player.name
 			}))
 			gsfile:close()
@@ -159,7 +159,7 @@ COM_AddCommand("z_registeraccount", function(player, tplayer)
 				
 				if gsfile then
 					gsfile:write(json.encode({
-						rubies = player.rubies or 0,
+						rubies = player["ze2_info"].rubies or 0,
 						prevname = player.name
 					}))
 					gsfile:close()
@@ -269,8 +269,8 @@ COM_AddCommand("z_jsonimport", function(player, playernum, jsondata, token)
 			local target_player = players[tonumber(playernum)]
 			local decoded_data = json.decode(jsondata:gsub("'",'"'))
 			
-			if decoded_data.rubies ~= nil then
-				player.rubies = decoded_data.rubies
+			if decoded_data["ze2_info"].rubies ~= nil then
+				player["ze2_info"].rubies = decoded_data["ze2_info"].rubies
 			end
 		end
 	end

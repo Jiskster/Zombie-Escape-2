@@ -113,8 +113,8 @@ addHook("MobjCollide", function(mo,pmo)
 	if not pmo.player or pmo.skin == "zzombie" or not L_ZCollide(mo,pmo) then
         return
     end
-    if not pmo.player.shop_open and not pmo.player.shop_delay then
-        pmo.player.shop_open = true
+    if not pmo.player["ze2_info"].shop_open and not pmo.player.shop_delay then
+        pmo.player["ze2_info"].shop_open = true
         mo.phrase=P_RandomKey(#mo.phrases)+1 --random phrase to be shown on the screen
         pmo.player.shop_person = mo
         pmo.player["ze2_info"].shop_selection = 1
@@ -161,7 +161,7 @@ addHook("MobjSpawn", function(mobj)
         mobj.shop[i][1] = item.price 
         mobj.shop[i][2] = item
     end
-end,MT_SHOPKEEPER)
+end, MT_SHOPKEEPER)
 
 addHook("PlayerThink", function(player)
     if player.mo and player.mo.valid then
@@ -173,25 +173,27 @@ addHook("PlayerThink", function(player)
                 S_StartSound(nil, sfx_notadd, player)
             end
         end
-        if not player.shop_open then
-            player.shop_open = false
-        end
-        if not player.shop_anim then
-            player.shop_anim = 0
+
+        if not player["ze2_info"].shop_open then
+            player["ze2_info"].shop_open = false
         end
 
-        if player.shop_open and player.shop_anim <= (35 + 35/2) then
-            player.shop_anim = $ + 1
-        elseif not player.shop_open and player.shop_anim then
-            player.shop_anim = $ - 1
+        if not player["ze2_info"].shop_anim then
+            player["ze2_info"].shop_anim = 0
         end
 
-        if ZE2.game_ended or player.zteam == 2 then
-            player.shop_anim = 0
-            player.shop_open = false
+        if player["ze2_info"].shop_open and player["ze2_info"].shop_anim <= (35 + 35/2) then
+            player["ze2_info"].shop_anim = $ + 1
+        elseif not player["ze2_info"].shop_open and player["ze2_info"].shop_anim then
+            player["ze2_info"].shop_anim = $ - 1
         end
 
-        if player.shop_anim == 0 then
+        if ZE2.game_ended or player["ze2_info"].team == 2 then
+            player["ze2_info"].shop_anim = 0
+            player["ze2_info"].shop_open = false
+        end
+
+        if player["ze2_info"].shop_anim == 0 then
             player.shop_person = nil
         end
     end
@@ -203,7 +205,7 @@ addHook("PreThinkFrame", do
             local cmd = player.cmd
 
 			--var = function(set)
-            if player.shop_open and not player.shop_delay and player.shop_person then
+            if player["ze2_info"].shop_open and not player.shop_delay and player.shop_person then
 				-- Left Press
 				ZE2:TryBooleanAction(player, {
 					condition = (cmd.sidemove < -40) and (not player["ze2_info"].shop_confirmscreen),
@@ -245,7 +247,7 @@ addHook("PreThinkFrame", do
                             S_StartSound(nil, sfx_notadd, player)
                         else
 							-- Exit Shop Entirely
-                            player.shop_open = false
+                            player["ze2_info"].shop_open = false
                             player.shop_delay = TICRATE*2   
                         end
 					end,
@@ -260,23 +262,23 @@ addHook("PreThinkFrame", do
 					),
 					var = "shop_selectpressed",
 					action = function()
-						local hasrequiredrubies = player.rubies >= player.shop_person.shop[player["ze2_info"].shop_selection][1]
+						local hasrequiredrubies = player["ze2_info"].rubies >= player.shop_person.shop[player["ze2_info"].shop_selection][1]
 
                         if hasrequiredrubies and not player["ze2_info"].shop_confirmscreen then
                             S_StartSound(nil, sfx_s3kb8, player)
                             player["ze2_info"].shop_confirmscreen = true
                         elseif player["ze2_info"].shop_confirmscreen and hasrequiredrubies then 
 							-- actually buy
-                            player.rubies = $ - player.shop_person.shop[player["ze2_info"].shop_selection][1]
+                            player["ze2_info"].rubies = $ - player.shop_person.shop[player["ze2_info"].shop_selection][1]
 							
                             -- copied from ZE2:FetchInventory()
-                            if player["ze2_info"].survivor_inventory and player.zteam == 1 then
+                            if player["ze2_info"].survivor_inventory and player["ze2_info"].team == 1 then
                                 if ZE2:IsInventoryFull(player) or (player.cmd.buttons & BT_CUSTOM1) then
                                     player["ze2_info"].survivor_inventory[player["ze2_info"].inventory_selection] =  player.shop_person.shop[player["ze2_info"].shop_selection][2]
                                 else
                                     table.insert(player["ze2_info"].survivor_inventory, player.shop_person.shop[player["ze2_info"].shop_selection][2])
                                 end
-                            elseif player["ze2_info"].zombie_inventory and player.zteam == 2 then
+                            elseif player["ze2_info"].zombie_inventory and player["ze2_info"].team == 2 then
                                 if ZE2:IsInventoryFull(player) or (player.cmd.buttons & BT_CUSTOM1) then
                                     player["ze2_info"].zombie_inventory[player["ze2_info"].inventory_selection] = player.shop_person.shop[player["ze2_info"].shop_selection][2]
                                 else
@@ -308,6 +310,6 @@ addHook("PreThinkFrame", do
 end)
 
 addHook("PlayerSpawn", function(p)
-    p.shop_open = false
-    p.shop_anim = 0
+    p["ze2_info"].shop_open = false
+    p["ze2_info"].shop_anim = 0
 end)

@@ -3,6 +3,89 @@ sfxinfo[sfx_zjump].caption = "Jump"
 mobjinfo[MT_LHRT].forceknockback = 20*FRACUNIT
 ZE2.JumpSprintFatigue = 15*FRACUNIT
 
+ZE2["default_ze2_info"] = {
+	inventory_selection = 1,
+
+	survivor_inventory_limit = 5,
+	
+	survivor_inventory = {
+		ZE2:CopyItemFromID(ITEM_RED_RING)
+	},
+
+	weapondelay = 0,
+	ghostmode = false,
+	
+	await_fire = false,
+	
+	reload = 0,
+	
+	fire_pressed = false,
+	
+	weaponprev_pressed = false,
+	weaponnext_pressed = false,
+	
+	reload_pressed = false,
+	
+	vote_selection = 1,
+	voted = false,
+	vote_leftpressed = false,
+	vote_rightpressed = false,
+	
+	shop_selection = 1,
+	shop_leftpressed = false,
+	shop_rightpressed = false,
+	shop_selectpressed = false,
+	shop_exitpressed = false,
+	shop_confirmscreen = false,
+	shop_open = false,
+	shop_anim = 0,
+
+	charselect_choosing = false,
+	charselect_chosecharacter = false,
+	charselect_selection = 1,
+	charselect_prevselection = 1,
+	charselect_selection_anim = 1,
+	charselect_leftpressed = false,
+	charselect_rightpressed = false, 
+
+	sprintmeter = 100*FU,
+	isSprinting = false,
+
+	team = 1,
+
+	rubies = 0,
+	rubypickupdelay = 0,
+
+	was_spectating = false,
+	was_zombie = false,
+
+	zombie_type = "normal",
+}
+
+addHook("PlayerSpawn", function(player)
+	if gametype ~= GT_ZE2 then return end
+	
+	if player["ze2_info"] == nil then
+		player["ze2_info"] = ZE2["default_ze2_info"]
+	end
+end)
+
+function ZE2:ChangeHealth(mobj, amount)
+	if amount > mobj.maxhealth then
+		mobj.health = mobj.maxhealth
+	else
+		mobj.health = $ + amount
+	end
+end
+
+function ZE2:ChangeStamina(player, amount)
+	if amount + player["ze2_info"].sprintmeter > 100*FRACUNIT then
+		player["ze2_info"].sprintmeter = 100*FRACUNIT
+	else
+		player["ze2_info"].sprintmeter = $ + amount
+	end
+end
+
 -- some stuff that player needs
 ZE2.giveplayerflags = function(player)
 	if gametype == GT_ZE2 then
@@ -10,18 +93,19 @@ ZE2.giveplayerflags = function(player)
 		player.pflags = $ & ~PF_DIRECTIONCHAR
 		player.pflags = $ & ~PF_ANALOGMODE 
 		
-		if player.sprintmeter == nil then
-			player.sprintmeter = 100*FRACUNIT
+		if player["ze2_info"].sprintmeter == nil then
+			player["ze2_info"].sprintmeter = 100*FRACUNIT
 		end
 		
-		if player.sprintmeter < 0 then
-			player.sprintmeter = 0
+		if player["ze2_info"].sprintmeter < 0 then
+			player["ze2_info"].sprintmeter = 0
 		end
-		player.isSprinting = $ or false
+
+		player["ze2_info"].isSprinting = $ or false
 		
-		if player.zteam == 1 then
+		if player["ze2_info"].team == 1 then
 			ZE2.SetCCtoplayer(player)
-		elseif player.zteam == 2 then
+		elseif player["ze2_info"].team == 2 then
 			ZE2.SetZCtoplayer(player)
 		end
 		
@@ -38,18 +122,18 @@ ZE2.giveplayerflags = function(player)
 end
 
 function ZE2:DecrementSprint(player, value)
-	if player.sprintmeter - abs(value) <= 0 then
-		player.sprintmeter = 0
+	if player["ze2_info"].sprintmeter - abs(value) <= 0 then
+		player["ze2_info"].sprintmeter = 0
 	else
-		player.sprintmeter = $ - abs(value)
+		player["ze2_info"].sprintmeter = $ - abs(value)
 	end
 end
 
 function ZE2:IncrementSprint(player, value)
-	if player.sprintmeter + abs(value) >= 100*FRACUNIT then
-		player.sprintmeter = 100*FRACUNIT
+	if player["ze2_info"].sprintmeter + abs(value) >= 100*FRACUNIT then
+		player["ze2_info"].sprintmeter = 100*FRACUNIT
 	else
-		player.sprintmeter = $ + abs(value)
+		player["ze2_info"].sprintmeter = $ + abs(value)
 	end
 end
 
@@ -65,15 +149,15 @@ ZE2.sprint_thinker = function(player)
 	local increment = FRACUNIT/4
 	local decrement = FRACUNIT/3
 	
-	if player.zteam == 1 then
+	if player["ze2_info"].team == 1 then
 		if P_GetPlayerControlDirection(player) == 1 and (cmd.buttons & BT_SPIN) then
 			
 			ZE2:DecrementSprint(player, decrement)
 			
-			player.isSprinting = true
+			player["ze2_info"].isSprinting = true
 
 			-- Running Animation
-			if player.sprintmeter == 0 then
+			if player["ze2_info"].sprintmeter == 0 then
 				player.runspeed = 32000*FRACUNIT
 			else
 				player.runspeed = 5*FRACUNIT
@@ -84,25 +168,25 @@ ZE2.sprint_thinker = function(player)
 		else
 			ZE2:IncrementSprint(player, increment)
 			
-			player.isSprinting = false
+			player["ze2_info"].isSprinting = false
 			
 			-- Force Walking Animation
 			player.runspeed = 32000*FRACUNIT
 		end
 	else
-		player.isSprinting = false
+		player["ze2_info"].isSprinting = false
 	end
 	
 	cmd.buttons = $ & ~BT_SPIN
 end
 
 addHook("JumpSpecial", function(player)
-	if player.mo and player.mo.valid and player.isSprinting and P_IsObjectOnGround(player.mo) then
-		if player.sprintmeter - ZE2.JumpSprintFatigue <= 0 then
-			player.sprintmeter = 0
+	if player.mo and player.mo.valid and player["ze2_info"].isSprinting and P_IsObjectOnGround(player.mo) then
+		if player["ze2_info"].sprintmeter - ZE2.JumpSprintFatigue <= 0 then
+			player["ze2_info"].sprintmeter = 0
 			return true
 		else
-			player.sprintmeter = $ - ZE2.JumpSprintFatigue
+			player["ze2_info"].sprintmeter = $ - ZE2.JumpSprintFatigue
 		end
 	end
 end)
@@ -137,11 +221,11 @@ addHook("PlayerThink", function(player)
 end)
 
 ZE2.ResetPlayer = function(player, choosenewztype)
-	if player.zteam == 1 then
+	if player["ze2_info"].team == 1 then
 		ZE2.SetCCtoplayer(player)
 		ZE2.SetCChealth(player)
-		player.ztype = nil
-	elseif player.zteam == 2 then
+		player["ze2_info"].zombie_type = "normal"
+	elseif player["ze2_info"].team == 2 then
 		ZE2.SetZCtoplayer(player)
 		ZE2.SetZChealth(player)
 		ZE2.SetZCscale(player)
@@ -156,32 +240,32 @@ ZE2.init_player = function(player)
 	
 	if player and pmo and pmo.valid then
 		if (ZE2.round_active and ZE2.PlayerCount() > 1) then
-			player.zteam = 2
-			player.ztype = "normal"
+			player["ze2_info"].team = 2
+			player["ze2_info"].zombie_type = "normal"
 			if ZE2.round_active and ZE2.PlayerCount() > 1 and leveltime then
-				if P_RandomChance(FRACUNIT/5) and not player.z_was_spectating then
-					player.ztype = "alpha"
+				if P_RandomChance(FRACUNIT/5) and not player["ze2_info"].was_spectating then
+					player["ze2_info"].zombie_type = "alpha"
 				end
 			end
-			player.z_was_spectating = false
+			player["ze2_info"].was_spectating = false
 		else
-			player.zteam = 1
+			player["ze2_info"].team = 1
 		end
 		
 		ZE2.ResetPlayer(player, true)
 
-		if player.zteam == 2 then 
+		if player["ze2_info"].team == 2 then 
 			R_SetPlayerSkin(player, "zzombie") 
 		end
 
-		player.sprintmeter = 100*FRACUNIT
+		player["ze2_info"].sprintmeter = 100*FRACUNIT
 	end
 end
 
 -- Zombie Spawn Sounds
 addHook("PlayerSpawn", function(player)
 	local spawnsounds = {sfx_inf1,sfx_inf2}
-	if player.mo and player.mo.valid and player.zteam == 2 and ZE2.round_active and leveltime then
+	if player.mo and player.mo.valid and player["ze2_info"].team == 2 and ZE2.round_active and leveltime then
 		local soundrng = P_RandomRange(1,#spawnsounds)
 		S_StartSound(player.mo,spawnsounds[soundrng])
 	end
@@ -201,7 +285,7 @@ addHook("ViewpointSwitch", function(player, nextplayer)
 	if player.spectator then
 		return
 	end
-	if nextplayer.zteam ~= player.zteam then
+	if nextplayer["ze2_info"].team ~= player["ze2_info"].team then
 		return false
 	end
 end)
@@ -209,7 +293,7 @@ end)
 -- Disable special zombie types when unspectating
 addHook("TeamSwitch", function(player, team, fromspectators)
 	if fromspectators then
-		player.z_was_spectating = true
+		player["ze2_info"].was_spectating = true
 	end
 end)
 
@@ -217,7 +301,7 @@ end)
 addHook("MobjDeath", function(mobj)
 	if ZE2.round_active and not ZE2_game_ended and 
 	((ZE2.PlayerCount() > 1) or (mapheaderinfo[gamemap].ze2_solofail)) then
-		mobj.player.zteam = 2
+		mobj.player["ze2_info"].team = 2
 	end
 end,MT_PLAYER)
 
@@ -225,24 +309,24 @@ end,MT_PLAYER)
 addHook("PlayerThink", function(player)	
 	if gametype ~= GT_ZE2 or not player.mo return end
 	
-	local ztype = player.ztype
+	local ztype = player["ze2_info"].zombie_type
 	local zc = ZE2.ZombieConfig
 	
-	if player.zteam == 2 and player.mo.skin ~= "zzombie" then
+	if player["ze2_info"].team == 2 and player.mo.skin ~= "zzombie" then
 		R_SetPlayerSkin(player, "zzombie")
-	elseif player.zteam == 1 and player.mo.skin == "zzombie" then
+	elseif player["ze2_info"].team == 1 and player.mo.skin == "zzombie" then
 		R_SetPlayerSkin(player, "sonic")
 		player.mo.color = player.skincolor
 	end
 		
-	if (player.zteam == 2 and ztype and zc[ztype]) then 
+	if (player["ze2_info"].team == 2 and ztype and zc[ztype]) then 
 		player.mo.color = zc[ztype].skincolor or SKINCOLOR_MOSS
 	end
 end)
 
 COM_AddCommand("z_changeztype", function(player, new_ztype)
 	if not (player.mo and player.mo.valid) then return end
-	if player.zteam ~= 2 then
+	if player["ze2_info"].team ~= 2 then
 		print("You must be a zombie to run this command.")
 		return
 	end
@@ -255,9 +339,153 @@ COM_AddCommand("z_changeztype", function(player, new_ztype)
 	local zc = ZE2.ZombieConfig
 	
 	if zc[new_ztype] then
-		player.ztype = new_ztype
+		player["ze2_info"].zombie_type = new_ztype
 		ZE2.ResetPlayer(player)
 	else
 		print("Invalid ztype. "..'"'..new_ztype..'"')
 	end
 end, 1)
+
+addHook("PreThinkFrame", function()
+	if gametype ~= GT_ZE2 then return end
+	for player in players.iterate do
+		local cmd = player.cmd
+		
+		if player["ze2_info"] == nil then
+			player["ze2_info"] = ZE2["default_ze2_info"]
+		end
+		
+		if not player["ze2_info"].zombie_inventory or not player["ze2_info"].zombie_inventory_limit then
+			ZE2.SetZCinventory(player)
+		end
+		
+		if player.playerstate ~= PST_DEAD then
+			if #ZE2:FetchInventory(player) > ZE2:FetchInventoryLimit(player) then
+				table.remove(ZE2:FetchInventory(player),#ZE2:FetchInventory(player))
+			end
+
+			if player["ze2_info"].inventory_selection > ZE2:FetchInventoryLimit(player) then
+				player["ze2_info"].inventory_selection = ZE2:FetchInventoryLimit(player)
+			end
+		end
+		
+		if player and not player.mo then continue end
+		
+		-- decrement
+		if player["ze2_info"].weapondelay then
+			player["ze2_info"].weapondelay = $ - 1
+		end
+		
+		if player["ze2_info"].reload and ZE2:FetchInventorySlot(player) then
+			local iteminfo = ZE2:FetchInventorySlot(player)
+			
+			player["ze2_info"].reload = $ - 1
+			
+			if player["ze2_info"].reload <= 0 then
+				iteminfo.ammo = iteminfo.max_ammo
+				S_StartSound(player.mo, sfx_z_rel2)
+			end
+		end
+		
+		if not ZE2.game_ended and not player["ze2_info"].ghostmode then 
+			if not player["ze2_info"].charselect_choosing then
+				-- Next Weapon
+				ZE2:TryBooleanAction(player, {
+					condition = cmd.buttons & BT_WEAPONPREV,
+					var = "weaponprev_pressed",
+					action = function()
+						if player["ze2_info"].inventory_selection - 1 <= 0 then
+							player["ze2_info"].inventory_selection = ZE2:FetchInventoryLimit(player)
+						else
+							player["ze2_info"].inventory_selection = $ - 1
+						end
+						
+						S_StartSound(nil,sfx_mnu1a,player)
+						
+						player["ze2_info"].reload = 0
+					end
+				}, true)
+
+				-- Previous Weapon
+				ZE2:TryBooleanAction(player, {
+					condition = cmd.buttons & BT_WEAPONNEXT,
+					var = "weaponnext_pressed",
+					action = function()
+						if player["ze2_info"].inventory_selection + 1 > ZE2:FetchInventoryLimit(player) then
+							player["ze2_info"].inventory_selection = 1
+						else
+							player["ze2_info"].inventory_selection = $ + 1
+						end
+
+						S_StartSound(nil,sfx_mnu1a,player)
+						
+						player["ze2_info"].reload = 0
+					end
+				}, true)
+				
+				-- Reload
+				ZE2:TryBooleanAction(player, {
+					condition = cmd.buttons & BT_FIRENORMAL,
+					var = "reload_pressed",
+					action = function()
+						ZE2.DoPlayerReload(player)
+					end
+				}, true)
+				
+				-- Fire
+				ZE2:TryBooleanAction(player, {
+					condition = cmd.buttons & BT_ATTACK,
+					var = "fire_pressed",
+					action = function()
+						player["ze2_info"].await_fire = true
+					end
+				}, true)
+			end
+			
+			-- try shoot
+			if (cmd.buttons & BT_ATTACK) and not player["ze2_info"].weapondelay and not player["ze2_info"].reload
+			and ZE2:FetchInventorySlot(player) and player.playerstate ~= PST_DEAD and not player["ze2_info"].shop_open 
+			and (player["ze2_info"].await_fire or ZE2:FetchInventorySlot(player).autouse) then	
+				local iteminfo = ZE2:FetchInventorySlot(player)
+				
+				-- If theres no ammo, dont fire. 
+				-- (Items with no ammo property can pass this check 100%)
+				if not (iteminfo.ammo ~= nil and iteminfo.ammo == 0) then
+					ZE2.DoPlayerFire(player, iteminfo)
+
+					player["ze2_info"].weapondelay = iteminfo.firerate
+					
+					player["ze2_info"].await_fire = false
+					
+					if iteminfo.count ~= nil and iteminfo.limited == true then
+						if iteminfo.count > 0  then
+							iteminfo.count = $ - 1
+						end
+					end
+				end
+				
+				if iteminfo.ammo ~= nil then
+					if iteminfo.ammo > 0 then
+						iteminfo.ammo = $ - 1
+					end
+					
+					-- Auto Reload
+					if iteminfo.ammo <= 0 and not player["ze2_info"].reload then
+						ZE2.DoPlayerReload(player)
+					end
+				end
+			end	
+			
+			-- clear items below 0 count
+			if ZE2:FetchInventoryLimit(player) and type(ZE2:FetchInventoryLimit(player)) == "number" then
+				for i=1,ZE2:FetchInventoryLimit(player) do
+					if ZE2:FetchInventory(player)[i] then
+						if ZE2:FetchInventory(player)[i].limited and ZE2:FetchInventory(player)[i].count <= 0 then
+							table.remove(ZE2:FetchInventory(player),i)
+						end
+					end
+				end
+			end
+		end
+	end
+end)

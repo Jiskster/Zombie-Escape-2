@@ -85,13 +85,13 @@ states[S_RUBY_ICON2] = {SPR_RBYM, C, 18, A_RubyDrop, 10}
 sfxinfo[sfx_rbyhit].caption = "Ruby"
 
 addHook("PlayerThink", function(player)
-	player.rubies = $ or 0
-	if player.rubies > ZE2.RubyLimit then
-		player.rubies = ZE2.RubyLimit
+	player["ze2_info"].rubies = $ or 0
+	if player["ze2_info"].rubies > ZE2.RubyLimit then
+		player["ze2_info"].rubies = ZE2.RubyLimit
 	end
 	
-	if player.rubypickupdelay then
-		player.rubypickupdelay = $ - 1
+	if player["ze2_info"].rubypickupdelay then
+		player["ze2_info"].rubypickupdelay = $ - 1
 	end
 end)
 
@@ -117,14 +117,14 @@ end)
 
 addHook("TouchSpecial", function(special, toucher)
 	if toucher and toucher.valid and toucher.player then
-		if toucher.player.rubies + 1 > ZE2.RubyLimit then
+		if toucher.player["ze2_info"].rubies + 1 > ZE2.RubyLimit then
 			return true
-		elseif toucher.player.rubypickupdelay then
+		elseif toucher.player["ze2_info"].rubypickupdelay then
 			return true
 		end
 		
 		P_GivePlayerRubies(toucher.player, 1)
-		toucher.player.rubypickupdelay = ZE2.rubypickupdelay.value
+		toucher.player["ze2_info"].rubypickupdelay = ZE2.rubypickupdelay.value
 	end
 end, MT_CRRUBY)
 
@@ -173,7 +173,7 @@ COM_AddCommand("z_sendrubies", function(player, player2, rubies)
 		return
 	end
 	
-	if rubies > player.rubies then
+	if rubies > player["ze2_info"].rubies then
 		CONS_Printf(player, "\x85You don't have enough rubies to do this.")
 		return
 	end
@@ -183,11 +183,11 @@ COM_AddCommand("z_sendrubies", function(player, player2, rubies)
 		return
 	end
 	
-	player.rubies = $ - rubies 
-	players[player2].rubies = $ + rubies
+	player["ze2_info"].rubies = $ - rubies 
+	players[player2]["ze2_info"].rubies = $ + rubies
 	
 	CONS_Printf(player, 
-	"\x82You sent "..rubies.." rubies to "..players[player2].name)
+	"\x82You sent "..player["ze2_info"].rubies.." rubies to "..players[player2].name)
 	CONS_Printf(players[player2], 
 	string.format("\x82%s\x82 sent you %s rubies", player.name, tostring(rubies))
 	)

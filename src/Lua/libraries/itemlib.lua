@@ -40,9 +40,9 @@ end
 function ZE2:FetchInventory(player)
 	if player and player.valid then
 		if player["ze2_info"] then
-			if player["ze2_info"].survivor_inventory and player.zteam == 1 then
+			if player["ze2_info"].survivor_inventory and player["ze2_info"].team == 1 then
 				return player["ze2_info"].survivor_inventory
-			elseif player["ze2_info"].zombie_inventory and player.zteam == 2 then
+			elseif player["ze2_info"].zombie_inventory and player["ze2_info"].team == 2 then
 				return player["ze2_info"].zombie_inventory
 			else
 				return player["ze2_info"].survivor_inventory
@@ -54,9 +54,9 @@ end
 function ZE2:FetchInventoryLimit(player)
 	if player and player.valid then
 		if player["ze2_info"] then
-			if player.zteam == 1 then
+			if player["ze2_info"].team == 1 then
 				return player["ze2_info"].survivor_inventory_limit
-			elseif player.zteam == 2 then
+			elseif player["ze2_info"].team == 2 then
 				return player["ze2_info"].zombie_inventory_limit
 			end
 		end
@@ -69,22 +69,6 @@ function ZE2:FetchInventorySlot(player)
 		if player["ze2_info"] and player["ze2_info"].inventory_selection then
 			return ZE2:FetchInventory(player)[player["ze2_info"].inventory_selection] 
 		end
-	end
-end
-
-function ZE2:ChangeHealth(mobj, amount)
-	if amount > mobj.maxhealth then
-		mobj.health = mobj.maxhealth
-	else
-		mobj.health = $ + amount
-	end
-end
-
-function ZE2:ChangeStamina(player, amount)
-	if amount + player.sprintmeter > 100*FRACUNIT then
-		player.sprintmeter = 100*FRACUNIT
-	else
-		player.sprintmeter = $ + amount
 	end
 end
 

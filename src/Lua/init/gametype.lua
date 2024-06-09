@@ -20,14 +20,14 @@ rawset(_G, "ze2_modname", "ze2"); -- For customhud.
 freeslot("TOL_ZE2");
 
 rawset(_G, "P_GivePlayerRubies", function(player, amount)
-	if player.rubies == nil then
-		player.rubies = 0
+	if player["ze2_info"].rubies == nil then
+		player["ze2_info"].rubies = 0
 	end
 	
 	if amount > ZE2.RubyLimit then
-		player.rubies = ZE2.RubyLimit
+		player["ze2_info"].rubies = ZE2.RubyLimit
 	else
-		player.rubies = $ + amount
+		player["ze2_info"].rubies = $ + amount
 	end
 end)
 
@@ -61,7 +61,7 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 	end
 	
 	for player in players.iterate do
-		player.zteam = 1;
+		player["ze2_info"].team = 1;
 		if player["ze2_info"] then
 			player["ze2_info"].ghostmode = false
 			player["ze2_info"].vote_selection = 1

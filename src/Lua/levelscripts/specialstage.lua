@@ -4,10 +4,10 @@ local ss_mapnum = G_FindMapByNameOrCode("MAPJ6")
 local function SS_Tele1()
 	for player in players.iterate do
 		if player.mo and player.mo.valid then
-			if (player.zteam == 1) then
+			if (player["ze2_info"].team == 1) then
 				P_SetOrigin(player.mo, -29024*FRACUNIT, 31648*FRACUNIT, 0*FRACUNIT) 
 			end
-			if (player.zteam == 2) then
+			if (player["ze2_info"].team == 2) then
 				P_SetOrigin(player.mo, -30304*FRACUNIT, 27040*FRACUNIT, 0*FRACUNIT) 
 			end
 		end
@@ -17,9 +17,9 @@ end
 local function SS_Tele2()
 	for player in players.iterate do
 		if player.mo and player.mo.valid then
-			if (player.zteam == 1) then
+			if (player["ze2_info"].team == 1) then
 				P_SetOrigin(player.mo, -28576*FRACUNIT, 31648*FRACUNIT, 0*FRACUNIT) 
-			elseif (player.zteam == 2) then
+			elseif (player["ze2_info"].team == 2) then
 				P_SetOrigin(player.mo, -30304*FRACUNIT, 27040*FRACUNIT, 0*FRACUNIT) 
 			end
 		end
@@ -29,9 +29,9 @@ end
 local function SS_Tele3()
 	for player in players.iterate do
 		if player.mo and player.mo.valid then
-			if (player.zteam == 1) then
+			if (player["ze2_info"].team == 1) then
 				P_SetOrigin(player.mo, -28128*FRACUNIT, 31648*FRACUNIT, 0*FRACUNIT) 
-			elseif (player.zteam == 2) then
+			elseif (player["ze2_info"].team == 2) then
 				P_SetOrigin(player.mo, -30304*FRACUNIT, 27040*FRACUNIT, 0*FRACUNIT) 
 			end
 		end

@@ -13,7 +13,7 @@ ZE2.CurrentZombieCheckpoint = 0
 ZE2.CheckpointRally = function(checkpointnum)
 	if ZE2.ZombieCheckpoints[checkpointnum] then
 		for player in players.iterate do
-			if player.mo and player.mo.valid and player.valid and player.zteam == 2 then
+			if player.mo and player.mo.valid and player.valid and player["ze2_info"].team == 2 then
 				local destcheckpoint = ZE2.ZombieCheckpoints[checkpointnum]
 				P_SetOrigin(player.mo, destcheckpoint.x*FU, destcheckpoint.y*FU, destcheckpoint.z*FU)
 				player.mo.angle = FixedAngle(destcheckpoint.angle*FRACUNIT)
@@ -38,7 +38,7 @@ addHook("MapLoad", function()
 end)
 
 addHook("PlayerSpawn", function(player)
-	if player.mo and player.mo.valid and player.zteam == 2 then
+	if player.mo and player.mo.valid and player["ze2_info"].team == 2 then
 		if ZE2.ZombieCheckpoints and ZE2.CurrentZombieCheckpoint 
 		and ZE2.ZombieCheckpoints[ZE2.CurrentZombieCheckpoint] and leveltime then
 			local checkpoint = ZE2.ZombieCheckpoints[ZE2.CurrentZombieCheckpoint]

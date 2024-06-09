@@ -3,17 +3,17 @@ local hud_icon_scale = FU+(FU/4)
 
 addHook("MapLoad", function()
 	for player in players.iterate do
-		player.choosing = true
-		player.chosecharacter = false
+		player["ze2_info"].charselect_choosing = true
+		player["ze2_info"].charselect_chosecharacter = false
 	end
 end)
 
 ZE2.getCharacterSelection = function(player)
-	return player.selection or 1
+	return player["ze2_info"].charselect_selection or 1
 end
 
 ZE2.getSkinFromCharSelect = function(player)
-	return skins[ZE2.getSkinNames(player, true)[player.selection]] or skins["sonic"]
+	return skins[ZE2.getSkinNames(player, true)[player["ze2_info"].charselect_selection]] or skins["sonic"]
 end
 
 ZE2.characterselecthud = function(v, player, c)
@@ -28,7 +28,7 @@ ZE2.characterselecthud = function(v, player, c)
 	local barpatch = v.cachePatch("DABARR")
     local skincount = #ZE2.getSkinNums(player,true)
 	
-	if player.chosecharacter then
+	if player["ze2_info"].charselect_chosecharacter then
 		return
 	end
 
@@ -41,9 +41,9 @@ ZE2.characterselecthud = function(v, player, c)
     for i,skinname in ipairs(ZE2.getSkinNames(player,true)) do
         local sel = ZE2.getCharacterSelection(player)
 		local x
-		if player.selection_anim ~= nil and player.prevselection then
-			local ese = ease.outexpo(FixedDiv(player.selection_anim*FRACUNIT, ((TICRATE/2)*FRACUNIT)), 
-			 (player.prevselection*25)*FRACUNIT, (player.selection*25)*FRACUNIT)
+		if player["ze2_info"].charselect_selection_anim ~= nil and player["ze2_info"].charselect_prevselection then
+			local ese = ease.outexpo(FixedDiv(player["ze2_info"].charselect_selection_anim*FRACUNIT, ((TICRATE/2)*FRACUNIT)), 
+			 (player["ze2_info"].charselect_prevselection*25)*FRACUNIT, (player["ze2_info"].charselect_selection*25)*FRACUNIT)
 			x = (( (157) + (i*25) ) * FRACUNIT) - (ese) --(sel*25)*FRACUNIT
 		else
 			x = (( (157) + (i*25) ) * FRACUNIT) - ((sel*25)*FRACUNIT) 
@@ -149,7 +149,7 @@ ZE2.characterselecthud = function(v, player, c)
 	}
 
 	for i=1,#charinfo_text do
-		local t_ese_div = FixedDiv(player.selection_anim*FRACUNIT, ((TICRATE/2)*FRACUNIT))
+		local t_ese_div = FixedDiv(player["ze2_info"].charselect_selection_anim*FRACUNIT, ((TICRATE/2)*FRACUNIT))
 		local t_ese = ease.outexpo(t_ese_div, 640*FRACUNIT, 320*FRACUNIT)
 		local output_color = charinfo_text[i].textcolor or SKINCOLOR_GREY
 		local output_text = charinfo_text[i].text or "????", "STCFC"

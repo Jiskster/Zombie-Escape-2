@@ -45,7 +45,7 @@ ZE2:CreateItem("Wood Fence", {
 		wood.angle = player.mo.angle+ANGLE_90
 		S_StartSound(player.mo, sfx_jshard)
 		wood.renderflags = $|RF_PAPERSPRITE
-		wood.mobjteam = player.zteam
+		wood.mobjteam = player["ze2_info"].team
 		wood.flags = $|MF_SHOOTABLE|MF_SOLID|MF_PAPERCOLLISION -- Reapply flags to prevent desynch (for some reason)
 		wood.target = player.mo
 	end,
@@ -56,7 +56,7 @@ addHook("MobjCollide", function(wood, tmo)
 	if wood.mobjteam then
 		if tmo.type == MT_PLAYER and tmo.player and tmo.player.valid then
 			local player = tmo.player
-			if wood.mobjteam == player.zteam then
+			if wood.mobjteam == player["ze2_info"].team then
 				return false
 			end
 		else

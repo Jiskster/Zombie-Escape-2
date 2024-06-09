@@ -1,6 +1,6 @@
 ZE2.inventoryhud = function(v, player)
 	if gametype ~= GT_ZE2 then return end
-	if player.choosing then return end
+	if player["ze2_info"].charselect_choosing then return end
 	if ZE2.game_ended then return end
 	
 	if player["ze2_info"].ghostmode then return end
@@ -23,7 +23,7 @@ ZE2.inventoryhud = function(v, player)
 			local overone_xpos = ((i-1)*20)*FU
 			local iconscale = FU
 			
-			if player.shop_open then 
+			if player["ze2_info"].shop_open then 
 				y = 146*FU
 				sel_y = y
 			end

@@ -83,7 +83,7 @@ local function prayerr5()
 	chatprint("\x84\Health Restored!")
 	S_StartSound(player, sfx_ebtext)
 	for player in players.iterate do
-		if (player.zteam == 1) then
+		if (player["ze2_info"].team == 1) then
 			player.mo.health = player.mo.maxhealth
 		end
 	end
@@ -524,10 +524,10 @@ local function poketak2()
 	ZE2.CurrentZombieCheckpoint = 2
 
 	for player in players.iterate
-		if (player.zteam == 1) then
+		if (player["ze2_info"].team == 1) then
 			P_SetOrigin(player.mo, -16096*FRACUNIT, -4960*FRACUNIT, 0*FRACUNIT)
 		end
-		if (player.zteam == 2) then
+		if (player["ze2_info"].team == 2) then
 			P_SetOrigin(player.mo, -12800*FRACUNIT, -832*FRACUNIT, 0*FRACUNIT)
 		end
 	end
@@ -547,7 +547,7 @@ local function giygasfn()
 	ZE2.CurrentZombieCheckpoint = 3
 
 	for player in players.iterate
-		if (player.zteam == 2) then
+		if (player["ze2_info"].team == 2) then
 			P_SetOrigin(player.mo, -16096*FRACUNIT, -4960*FRACUNIT, 0*FRACUNIT)
 		end
 	end
@@ -569,10 +569,10 @@ local function prayer18()
 	chatprint("\x84\ 27600 HP of damage to Giygas!")
 	S_StartSound(player, sfx_smaash)
 		for player in players.iterate
-			if (player.zteam == 1) then
+			if (player["ze2_info"].team == 1) then
 				P_SetOrigin(player.mo, 11712*FRACUNIT, 6656*FRACUNIT, 0*FRACUNIT)
 			end
-			if (player.zteam == 2) then
+			if (player["ze2_info"].team == 2) then
 				P_SetOrigin(player.mo, -12800*FRACUNIT, -832*FRACUNIT, 0*FRACUNIT)
 			end
 		end

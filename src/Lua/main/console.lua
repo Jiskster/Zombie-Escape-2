@@ -55,7 +55,7 @@ COM_AddCommand("z_sellinventory", function(player)
 			
 			CONS_Printf(player,toprint)
 			
-			player.rubies = $ + item_cost
+			player["ze2_info"].rubies = $ + item_cost
 		end
 	end
 	player["ze2_info"].survivor_inventory = {
@@ -69,9 +69,9 @@ end)
 
 COM_AddCommand("z_sellhand", function(player)
 	local inventory 
-	if player.zteam == 1 then
+	if player["ze2_info"].team == 1 then
 		inventory = player["ze2_info"].survivor_inventory
-	elseif player.zteam == 2 then
+	elseif player["ze2_info"].team == 2 then
 		inventory = player["ze2_info"].zombie_inventory
 	end
 	local inventory_slot = inventory[player["ze2_info"].inventory_selection]
@@ -96,7 +96,7 @@ COM_AddCommand("z_sellhand", function(player)
 		
 		table.remove(inventory, player["ze2_info"].inventory_selection)
 		
-		player.rubies = $ + item_cost
+		player["ze2_info"].rubies = $ + item_cost
 		
 	elseif inventory_slot and not inventory_slot.price then -- Unsellable but has slot
 		CONS_Printf(player, "\x85\This item is unsellable!")

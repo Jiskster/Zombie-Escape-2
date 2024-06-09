@@ -51,7 +51,7 @@ end
 function ZE2.KillMobj(mo, inf, src, damagetype)
 	if mo.player and mo.player.valid then
 		local player = mo.player 
-		local ztype = player.ztype
+		local ztype = player["ze2_info"].zombie_type
 		
 		if ztype and ZE2.ZombieConfig[ztype] and ZE2.ZombieConfig[ztype].killaward then
 			local killaward = ZE2.ZombieConfig[ztype].killaward
@@ -74,13 +74,13 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	local relativeknockback = false
 	
 	if inf and inf.player and mo and mo.player then
-		if mo.player.zteam == inf.player.zteam then
+		if mo.player["ze2_info"].team == inf.player["ze2_info"].team then
 			return false
 		end
 	end
 	
 	if src and src.player and mo and mo.player then
-		if mo.player.zteam == src.player.zteam then
+		if mo.player["ze2_info"].team == src.player["ze2_info"].team then
 			return false
 		end
 	end
@@ -95,8 +95,8 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			return false
 		end
 		
-		mo.player.shop_open = false
-		mo.player.shop_anim = 0
+		mo.player["ze2_info"].shop_open = false
+		mo.player["ze2_info"].shop_anim = 0
 	end
 	
 	if inf then
@@ -147,7 +147,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	end
 	
 	if mo.player then
-		if mo.player.zteam == 1 then
+		if mo.player["ze2_info"].team == 1 then
 			mo.player.powers[pw_flashing] = ZE2.survinvtics.value
 			P_FlashPal(mo.player, PAL_NUKE, 2)
 			S_StartSound(mo, sfx_s3kb9)
@@ -165,7 +165,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 					P_SetObjectMomZ(mo, verticalknockback, true)
 				end
 			end
-		elseif mo.player.zteam == 2 then
+		elseif mo.player["ze2_info"].team == 2 then
 			local zombie_hurtsounds = {
 				sfx_zpa1,
 				sfx_zpa2,
@@ -216,8 +216,8 @@ end)
 addHook("MobjMoveCollide", function(thing,tmthing)
 	if (gametype ~= GT_ZE2) return end
 	if (ZE2.game_ended) then return end
-	if L_ZCollide(thing,tmthing) and tmthing.player and tmthing.player.zteam == 2 and thing.player
-	and thing.player.zteam ~= 2 then
+	if L_ZCollide(thing,tmthing) and tmthing.player and tmthing.player["ze2_info"].team == 2 and thing.player
+	and thing.player["ze2_info"].team ~= 2 then
 		local speed1 = FixedHypot(FixedHypot(tmthing.momx, tmthing.momy), tmthing.momz)
 		local speed2 = FixedHypot(FixedHypot(thing.momx, thing.momy), thing.momz)
 		
@@ -249,7 +249,7 @@ function ZE2.DoPlayerFire(player, iteminfo)
 		return
 	end
 	
-	if ZE2.game_ended or player.choosing then 
+	if ZE2.game_ended or player["ze2_info"].charselect_choosing then 
 		return
 	end
 
@@ -275,7 +275,7 @@ function ZE2.DoPlayerFire(player, iteminfo)
 	if ring then
 		ring.shotbyplayer = true
 		
-		ring.mobjteam = tonumber(player.zteam)
+		ring.mobjteam = tonumber(player["ze2_info"].team)
 		
 		if iteminfo.color ~= nil then
 			ring.color = iteminfo.color
@@ -318,181 +318,6 @@ function ZE2.DoPlayerReload(player)
 	end
 end
 
-addHook("PreThinkFrame", function()
-	if gametype ~= GT_ZE2 then return end
-	for player in players.iterate do
-		local cmd = player.cmd
-		player["ze2_info"] = $ or {
-			inventory_selection = 1,
-
-			survivor_inventory_limit = 5,
-			
-			survivor_inventory = {
-				ZE2:CopyItemFromID(ITEM_RED_RING)
-			},
-
-			weapondelay = 0,
-			ghostmode = false,
-			
-			await_fire = false,
-			
-			reload = 0,
-			
-			fire_pressed = false,
-			
-			weaponprev_pressed = false,
-			weaponnext_pressed = false,
-			
-			reload_pressed = false,
-			
-			vote_selection = 1,
-			voted = false,
-			vote_leftpressed = false,
-			vote_rightpressed = false,
-			
-			shop_selection = 1,
-			shop_leftpressed = false,
-			shop_rightpressed = false,
-			shop_selectpressed = false,
-			shop_exitpressed = false,
-			shop_confirmscreen = false,
-		}
-		
-		if not player["ze2_info"].zombie_inventory or not player["ze2_info"].zombie_inventory_limit then
-			ZE2.SetZCinventory(player)
-		end
-		
-		if player.playerstate ~= PST_DEAD then
-			if #ZE2:FetchInventory(player) > ZE2:FetchInventoryLimit(player) then
-				table.remove(ZE2:FetchInventory(player),#ZE2:FetchInventory(player))
-			end
-
-			if player["ze2_info"].inventory_selection > ZE2:FetchInventoryLimit(player) then
-				player["ze2_info"].inventory_selection = ZE2:FetchInventoryLimit(player)
-			end
-		end
-		
-		if player and not player.mo then continue end
-		
-		-- decrement
-		if player["ze2_info"].weapondelay then
-			player["ze2_info"].weapondelay = $ - 1
-		end
-		
-		if player["ze2_info"].reload and ZE2:FetchInventorySlot(player) then
-			local iteminfo = ZE2:FetchInventorySlot(player)
-			
-			player["ze2_info"].reload = $ - 1
-			
-			if player["ze2_info"].reload <= 0 then
-				iteminfo.ammo = iteminfo.max_ammo
-				S_StartSound(player.mo, sfx_z_rel2)
-			end
-		end
-		
-		if not ZE2.game_ended and not player["ze2_info"].ghostmode then 
-			if not player.choosing then
-				-- Next Weapon
-				ZE2:TryBooleanAction(player, {
-					condition = cmd.buttons & BT_WEAPONPREV,
-					var = "weaponprev_pressed",
-					action = function()
-						if player["ze2_info"].inventory_selection - 1 <= 0 then
-							player["ze2_info"].inventory_selection = ZE2:FetchInventoryLimit(player)
-						else
-							player["ze2_info"].inventory_selection = $ - 1
-						end
-						
-						S_StartSound(nil,sfx_mnu1a,player)
-						
-						player["ze2_info"].reload = 0
-					end
-				}, true)
-
-				-- Previous Weapon
-				ZE2:TryBooleanAction(player, {
-					condition = cmd.buttons & BT_WEAPONNEXT,
-					var = "weaponnext_pressed",
-					action = function()
-						if player["ze2_info"].inventory_selection + 1 > ZE2:FetchInventoryLimit(player) then
-							player["ze2_info"].inventory_selection = 1
-						else
-							player["ze2_info"].inventory_selection = $ + 1
-						end
-
-						S_StartSound(nil,sfx_mnu1a,player)
-						
-						player["ze2_info"].reload = 0
-					end
-				}, true)
-				
-				-- Reload
-				ZE2:TryBooleanAction(player, {
-					condition = cmd.buttons & BT_FIRENORMAL,
-					var = "reload_pressed",
-					action = function()
-						ZE2.DoPlayerReload(player)
-					end
-				}, true)
-				
-				-- Fire
-				ZE2:TryBooleanAction(player, {
-					condition = cmd.buttons & BT_ATTACK,
-					var = "fire_pressed",
-					action = function()
-						player["ze2_info"].await_fire = true
-					end
-				}, true)
-			end
-			
-			-- try shoot
-			if (cmd.buttons & BT_ATTACK) and not player["ze2_info"].weapondelay and not player["ze2_info"].reload
-			and ZE2:FetchInventorySlot(player) and player.playerstate ~= PST_DEAD and not player.shop_open 
-			and (player["ze2_info"].await_fire or ZE2:FetchInventorySlot(player).autouse) then	
-				local iteminfo = ZE2:FetchInventorySlot(player)
-				
-				-- If theres no ammo, dont fire. 
-				-- (Items with no ammo property can pass this check 100%)
-				if not (iteminfo.ammo ~= nil and iteminfo.ammo == 0) then
-					ZE2.DoPlayerFire(player, iteminfo)
-
-					player["ze2_info"].weapondelay = iteminfo.firerate
-					
-					player["ze2_info"].await_fire = false
-					
-					if iteminfo.count ~= nil and iteminfo.limited == true then
-						if iteminfo.count > 0  then
-							iteminfo.count = $ - 1
-						end
-					end
-				end
-				
-				if iteminfo.ammo ~= nil then
-					if iteminfo.ammo > 0 then
-						iteminfo.ammo = $ - 1
-					end
-					
-					-- Auto Reload
-					if iteminfo.ammo <= 0 and not player["ze2_info"].reload then
-						ZE2.DoPlayerReload(player)
-					end
-				end
-			end	
-			
-			-- clear items below 0 count
-			if ZE2:FetchInventoryLimit(player) and type(ZE2:FetchInventoryLimit(player)) == "number" then
-				for i=1,ZE2:FetchInventoryLimit(player) do
-					if ZE2:FetchInventory(player)[i] then
-						if ZE2:FetchInventory(player)[i].limited and ZE2:FetchInventory(player)[i].count <= 0 then
-							table.remove(ZE2:FetchInventory(player),i)
-						end
-					end
-				end
-			end
-		end
-	end
-end)
-
 addHook("MobjThinker", function(mobj)
 	if mobj and mobj.valid and mobj.iteminfo and ZE2.ItemPresets[mobj.iteminfo.item_id] 
 	and ZE2.ItemPresets[mobj.iteminfo.item_id].thinker and mobj.target then
@@ -520,7 +345,7 @@ addHook("MobjMoveCollide", function(heart, victim)
 				local inf_player = imo.player
 				local victim_player = victim.player 
 				
-				if (inf_player.zteam == victim_player.zteam) 
+				if (inf_player["ze2_info"].team == victim_player["ze2_info"].team) 
 				and not (imo == victim) and L_ZCollide(heart,victim) then
 					if victim.health + 3 > victim.maxhealth then
 						victim.health = victim.maxhealth
@@ -543,8 +368,8 @@ end, MT_LHRT)
 addHook("MobjMoveCollide", function(tmthing, thing)
 	if tmthing and tmthing.valid and thing and thing.valid then
 		if (tmthing.target and tmthing.flags & MF_MISSILE and tmthing.target.player and thing.player) then
-			local team = thing.player.zteam or thing.target.player.zteam
-			if tmthing.target.player.zteam == team then
+			local team = thing.player["ze2_info"].team or thing.target.player["ze2_info"].team
+			if tmthing.target.player["ze2_info"].team == team then
 				return false
 			end
 		end

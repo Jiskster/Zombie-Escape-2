@@ -1,7 +1,7 @@
 ZE2.infohud = function(v, player)
 	if gametype ~= GT_ZE2 then return end
 	if ZE2.game_ended then return end
-	if player.shop_open then return end
+	if player["ze2_info"].shop_open then return end
 	if player and not player.mo then return end
 	
 	local skinpatch = v.getSprite2Patch(player.mo.skin, SPR2_XTRA)
@@ -23,27 +23,29 @@ ZE2.infohud = function(v, player)
 		the_time = G_TicsToMTIME(ZE2.wait_time - leveltime)
 	end
 	
-	if player.chosecharacter or not player.choosing then
+	if player["ze2_info"].charselect_chosecharacter or not player["ze2_info"].charselect_choosing then
 		if not player["ze2_info"].ghostmode then
 			-- [Player Icon] --
 		
 			v.drawScaled(0, 176*FRACUNIT, FixedDiv(3*FRACUNIT, 4*FRACUNIT),
 			skinpatch, (V_SNAPTOBOTTOM|V_SNAPTOLEFT), colormap)
 			-- [Player Name] --
-			local display_name = player.ztype and (player.ztype + " Zombie") or skins[player.mo.skin].realname
+			local display_name = (player["ze2_info"].zombie_type and player["ze2_info"].team) 
+			and (player.ztype + " Zombie") or skins[player.mo.skin].realname
+
 			customhud.CustomFontString(v, 25, 192, 
 			display_name, "TNYFC", 
 			(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, player.mo.color)
 			
 			-- [Rubies] --
-			if player.rubies ~= nil then
-				customhud.CustomFontString(v, 25, 184, "Rubies: "..player.rubies, "TNYFC", 
+			if player["ze2_info"].rubies ~= nil then
+				customhud.CustomFontString(v, 25, 184, "Rubies: "..player["ze2_info"].rubies, "TNYFC", 
 				(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, SKINCOLOR_RED)
 			end
 			
 			-- [Sprint Meter] --
-			if player.sprintmeter ~= nil and player.zteam == 1 then
-				local sprintmeter = L_FixedDecimal(player.sprintmeter,1).."%"
+			if player["ze2_info"].sprintmeter ~= nil and player["ze2_info"].team == 1 then
+				local sprintmeter = L_FixedDecimal(player["ze2_info"].sprintmeter, 1).."%"
 				customhud.CustomFontString(v, 0, 168, "Run: "..sprintmeter, "TNYFC", 
 				(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, SKINCOLOR_SKY)
 			end

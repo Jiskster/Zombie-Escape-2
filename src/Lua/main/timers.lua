@@ -40,8 +40,8 @@ function ZE2:StartWin(team)
 	
 	for mobj in mobjs.iterate() do
 		if mobj.valid then
-			if (mobj.player and mobj.player.valid and mobj.player.zteam and 
-			mobj.player.zteam == 2 and ZE2.killzombiesonwin.value and team == 1) then
+			if (mobj.player and mobj.player.valid and mobj.player["ze2_info"].team and 
+			mobj.player["ze2_info"].team == 2 and ZE2.killzombiesonwin.value and team == 1) then
 				P_KillMobj(mobj)
 				continue
 			end
@@ -56,7 +56,7 @@ function ZE2:StartWin(team)
 end
 
 addHook("PlayerThink", function(player)
-	player.waszombie = $ or false -- waszombie is to prevent repeating players
+	player["ze2_info"].was_zombie = $ or false -- waszombie is to prevent repeating players
 end)
 
 addHook("ThinkFrame", function()
@@ -72,11 +72,11 @@ addHook("ThinkFrame", function()
 		for player in players.iterate do
 			if player.spectator then continue end
 			
-			if player.choosing == true and player.chosecharacter == false then -- get tf out of character select
-				local selection_name = ZE2.getSkinNames(player, true)[player.selection]
+			if player["ze2_info"].charselect_choosing == true and player["ze2_info"].charselect_chosecharacter == false then -- get tf out of character select
+				local selection_name = ZE2.getSkinNames(player, true)[player["ze2_info"].charselect_selection]
 				ZE2.pickcharinselect(player,selection_name) 
 			end
-			if not player.waszombie then
+			if not player["ze2_info"].was_zombie then
 				table.insert(choosingnums, #player)
 			end
 		end
@@ -97,15 +97,15 @@ addHook("ThinkFrame", function()
 				if ZE2.choosenotice.value then
 					print(string.format("\x83\%s\x83\ has risen from the dead!",player.name))
 				end
-				player.zteam = 2
-				player.waszombie = true
+				player["ze2_info"].team = 2
+				player["ze2_info"].was_zombie = true
 				table.remove(choosingnums,playernumindex)
 			end
 		end
 
 		for player in players.iterate do
-			if player.waszombie and player.zteam == 1 then
-				player.waszombie = false
+			if player["ze2_info"].was_zombie and player["ze2_info"].team == 1 then
+				player["ze2_info"].was_zombie = false
 			end
 		end
 		
@@ -116,7 +116,7 @@ addHook("ThinkFrame", function()
 	end
 	
 	for player in players.iterate do 
-		if player.mo and player.mo.valid and (ZE2.game_ended or player.mo.zteam == 2) then
+		if player.mo and player.mo.valid and (ZE2.game_ended or player["ze2_info"].team == 2) then
 			player.powers[pw_underwater] = 0
 		end
 	end

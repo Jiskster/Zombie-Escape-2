@@ -28,12 +28,13 @@ dofile "items/item_rail_ring.lua"
 dofile "items/item_silver_spray.lua"
 dofile "items/item_gfz_sphere.lua"
 // ITEMS END
+dofile "main/baseplayer.lua"
 
 dofile "main/zombie/zombie_checkpoints.lua"
 dofile "main/zombie/zombie_colors.lua"
 
 dofile "main/characterselect_logic.lua"
-dofile "main/baseplayer.lua"
+
 dofile "main/characterconfigs.lua"
 
 dofile "main/console.lua"

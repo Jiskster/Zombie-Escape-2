@@ -1,7 +1,7 @@
 ZE2.charselect_waittime = TICRATE*5
 ZE2.pickcharinselect = function(player, skinname)
-	player.choosing = false
-	player.chosecharacter = true
+	player["ze2_info"].charselect_choosing = false
+	player["ze2_info"].charselect_chosecharacter = true
 	
 	if R_SkinUsable(player, skinname) then
 		R_SetPlayerSkin(player, skinname)
@@ -17,7 +17,7 @@ addHook("PreThinkFrame", function()
 	if gametype ~= GT_ZE2 then return end
 	for player in players.iterate do
 		if player.mo and player.mo.valid then
-			player.selection_anim = $ or 0
+			player["ze2_info"].charselect_selection_anim = $ or 0
 			if ZE2.round_active then return end 
 			
 			local cmd = player.cmd
@@ -25,77 +25,76 @@ addHook("PreThinkFrame", function()
 			local left = cmd.sidemove < -40
 			local right = cmd.sidemove > 40
 			local skincount = #ZE2.getSkinNames(player, true) + 1
-			local selection_name = ZE2.getSkinNames(player, true)[player.selection] or "sonic"
+			local selection_name = ZE2.getSkinNames(player, true)[player["ze2_info"].charselect_selection] or "sonic"
 			
 			
-			if (cmd.forwardmove > 40) and player.choosing and not player.chosecharacter 
+			if (cmd.forwardmove > 40) and player["ze2_info"].charselect_choosing and not player["ze2_info"].charselect_chosecharacter 
 			and leveltime > ZE2.charselect_waittime then
 				ZE2.pickcharinselect(player,selection_name)
 			end
 			
 			if ZE2.round_active then
-				player.choosing = false
-				player.chosecharacter = true
+				player["ze2_info"].charselect_choosing = false
+				player["ze2_info"].charselect_chosecharacter = true
 			end
 			
-			if not ZE2.round_active and not player.choosing and not player.chosecharacter then -- Where's your stats?
-				player.choosing = true
-				player.chosecharacter = false
-				player.selection = 1		
-				player.prevselection = 1
-				player.selection_anim = (TICRATE/2) + 1 
-			elseif not ZE2.round_active and player.choosing and not player.chosecharacter then -- Stay Still while you're choosing and have not chosen
+			if not ZE2.round_active and not player["ze2_info"].charselect_choosing and not player["ze2_info"].charselect_chosecharacter then -- Where's your stats?
+				player["ze2_info"].charselect_choosing = true
+				player["ze2_info"].charselect_chosecharacter = false
+				player["ze2_info"].charselect_selection = 1		
+				player["ze2_info"].charselect_prevselection = 1
+				player["ze2_info"].charselect_selection_anim = (TICRATE/2) + 1 
+			elseif not ZE2.round_active and player["ze2_info"].charselect_choosing and not player["ze2_info"].charselect_chosecharacter then -- Stay Still while you're choosing and have not chosen
 				player.pflags = $|PF_FULLSTASIS
 			
 				buttons = 0
 			end
 			
-			if player.selection_anim < (TICRATE/2) + 1 then
-				player.selection_anim = $ + 1
+			if player["ze2_info"].charselect_selection_anim < (TICRATE/2) + 1 then
+				player["ze2_info"].charselect_selection_anim = $ + 1
 			end
 
 
-			if player.selection == nil or player.selection <= 0 then
-				player.selection = 1
-			elseif player.selection > skincount then
-				player.selection = skincount
+			if player["ze2_info"].charselect_selection == nil or player["ze2_info"].charselect_selection <= 0 then
+				player["ze2_info"].charselect_selection = 1
+			elseif player["ze2_info"].charselect_selection > skincount then
+				player["ze2_info"].charselect_selection = skincount
 			end
 			
-			if player.choosing and not player.chosecharacter then
+			if player["ze2_info"].charselect_choosing and not player["ze2_info"].charselect_chosecharacter then
 				if left then
-					if not player.pressedleft then
-						player.prevselection = player.selection 
-						if player.selection - 1 > 0 then
-							player.selection = $ - 1
+					if not player["ze2_info"].charselect_leftpressed then
+						player["ze2_info"].charselect_prevselection = player["ze2_info"].charselect_selection 
+						if player["ze2_info"].charselect_selection - 1 > 0 then
+							player["ze2_info"].charselect_selection = $ - 1
 						else	
-							player.selection = skincount - 1			
+							player["ze2_info"].charselect_selection = skincount - 1			
 						end
 						S_StartSound(nil, sfx_s3kb7, player)
-						player.selection_anim = 0
+						player["ze2_info"].charselect_selection_anim = 0
 					end
-					player.pressedleft = true
+					player["ze2_info"].charselect_leftpressed = true
 				else
-					player.pressedleft = false
+					player["ze2_info"].charselect_leftpressed = false
 				end
 				
 				
 				if right then
-					if not player.pressedright then
-						player.prevselection = player.selection 
-						if player.selection + 1 < skincount then
-							player.selection = $ + 1
+					if not player["ze2_info"].charselect_rightpressed then
+						player["ze2_info"].charselect_prevselection = player["ze2_info"].charselect_selection 
+						if player["ze2_info"].charselect_selection + 1 < skincount then
+							player["ze2_info"].charselect_selection = $ + 1
 						else
-							player.selection = 1
+							player["ze2_info"].charselect_selection = 1
 						end
 						S_StartSound(nil, sfx_s3kb7, player)
-						player.selection_anim = 0
+						player["ze2_info"].charselect_selection_anim = 0
 					end
-					player.pressedright = true
+					player["ze2_info"].charselect_rightpressed = true
 				else
-					player.pressedright = false
+					player["ze2_info"].charselect_rightpressed = false
 				end
 			end
-			
 		end
 	end
 end)
@@ -104,12 +103,13 @@ end)
 addHook("PlayerSpawn", function(player)
 	if gametype ~= GT_ZE2 return end
 	
-	player.selection = 1
+	player["ze2_info"].charselect_selection = 1
+
 	if not ZE2.round_active then 
-		player.choosing = true
-		player.chosecharacter = false
+		player["ze2_info"].charselect_choosing = true
+		player["ze2_info"].charselect_chosecharacter = false
 	end
 
-	player.prevselection = 1
-	player.selection_anim = (TICRATE/2) + 1 
+	player["ze2_info"].charselect_prevselection = 1
+	player["ze2_info"].charselect_selection_anim = (TICRATE/2) + 1 
 end)	

@@ -39,7 +39,7 @@ addHook("TouchSpecial", function(special,toucher)
 				P_SpawnParaloop(toucher.x, toucher.y, toucher.z+toucher.height, FixedMul(192*FRACUNIT, toucher.scale), 16, MT_NIGHTSPARKLE, i*ANGLE_22h, S_NULL, true)
 			end
 			S_StartSound(nil,sfx_s3kb3)
-			ZE2:StartWin(player.zteam)
+			ZE2:StartWin(player["ze2_info"].team)
 		end
 		
 		return true
