@@ -66,7 +66,7 @@ addHook("PlayerSpawn", function(player)
 	if gametype ~= GT_ZE2 then return end
 	
 	if player["ze2_info"] == nil then
-		player["ze2_info"] = ZE2["default_ze2_info"]
+		player["ze2_info"] = ZE2:Copy(ZE2["default_ze2_info"])
 	end
 end)
 
@@ -352,7 +352,7 @@ addHook("PreThinkFrame", function()
 		local cmd = player.cmd
 		
 		if player["ze2_info"] == nil then
-			player["ze2_info"] = ZE2["default_ze2_info"]
+			player["ze2_info"] = ZE2:Copy(ZE2["default_ze2_info"])
 		end
 		
 		if not player["ze2_info"].zombie_inventory or not player["ze2_info"].zombie_inventory_limit then
