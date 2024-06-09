@@ -287,10 +287,10 @@ addHook("PreThinkFrame", do
                 cmd.forwardmove = 0
                 cmd.sidemove = 0      
             end
+			
             if player.shop_delay then
                 player.shop_delay = $ - 1
             end
-            
         end
     end
 end)
