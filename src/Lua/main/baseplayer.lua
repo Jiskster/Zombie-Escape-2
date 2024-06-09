@@ -41,7 +41,6 @@ ZE2["default_ze2_info"] = {
 	shop_anim = 0,
 
 	charselect_choosing = false,
-	charselect_chosecharacter = false,
 	charselect_selection = 1,
 	charselect_prevselection = 1,
 	charselect_selection_anim = 1,
