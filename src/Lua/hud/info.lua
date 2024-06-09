@@ -23,7 +23,7 @@ ZE2.infohud = function(v, player)
 		the_time = G_TicsToMTIME(ZE2.wait_time - leveltime)
 	end
 	
-	if player["ze2_info"].charselect_chosecharacter or not player["ze2_info"].charselect_choosing then
+	if not player["ze2_info"].charselect_choosing then
 		if not player["ze2_info"].ghostmode then
 			-- [Player Icon] --
 		

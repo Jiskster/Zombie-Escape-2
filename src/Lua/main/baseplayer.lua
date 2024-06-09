@@ -294,6 +294,10 @@ end)
 addHook("TeamSwitch", function(player, team, fromspectators)
 	if fromspectators then
 		player["ze2_info"].was_spectating = true
+	
+		if ZE2.round_active and not ZE2_game_ended then
+			player["ze2_info"].charselect_choosing = false
+		end
 	end
 end)
 

@@ -4,7 +4,6 @@ local hud_icon_scale = FU+(FU/4)
 addHook("MapLoad", function()
 	for player in players.iterate do
 		player["ze2_info"].charselect_choosing = true
-		player["ze2_info"].charselect_chosecharacter = false
 	end
 end)
 
@@ -27,13 +26,13 @@ ZE2.characterselecthud = function(v, player, c)
     local cursorpatch = v.cachePatch("CURWEAP")
 	local barpatch = v.cachePatch("DABARR")
     local skincount = #ZE2.getSkinNums(player,true)
-	
-	if player["ze2_info"].charselect_chosecharacter then
-		return
-	end
 
 	local cc = ZE2.CharacterConfig
 	
+	if not player["ze2_info"].charselect_choosing then
+		return
+	end
+
 	--Blue Bar
 	v.drawStretched(0, 17*FRACUNIT, 1500*FRACUNIT, FRACUNIT*3, barpatch, V_SNAPTOTOP|V_SNAPTOLEFT)
 	
