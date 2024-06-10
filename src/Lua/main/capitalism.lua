@@ -3,8 +3,8 @@ freeslot("MT_RUBY_BOX","MT_RUBY_ICON", "S_RUBY_BOX", "S_RUBY_ICON1",
 		"S_RUBY_ICON2", "SPR_RBYM")
 
 function ZE2:GivePlayerRubies(player, amount)
-	if player["ze2_info"].rubies + amount > ZE2.RubyLimit then
-		player["ze2_info"].rubies = ZE2.RubyLimit
+	if player["ze2_info"].rubies + amount > player["ze2_info"].rubycap then
+		player["ze2_info"].rubies = player["ze2_info"].rubycap
 		return false
 	else
 		player["ze2_info"].rubies = $ + amount
@@ -17,7 +17,7 @@ function ZE2:QueuePlayerRubies(player, amount)
 	player["ze2_info"].rubyqueue = $ + amount
 end
 
-ZE2.RubyLimit = 500;
+ZE2.DefaultRubyCap = 250;
 
 ZE2.rubypickupdelay = CV_RegisterVar({
 	name = "z_rubypickupdelay",
@@ -101,18 +101,25 @@ states[S_RUBY_ICON2] = {SPR_RBYM, C, 18, A_RubyDrop, 10}
 sfxinfo[sfx_rbyhit].caption = "Ruby"
 
 addHook("PlayerThink", function(player)
-	if player["ze2_info"].rubies > ZE2.RubyLimit then
-		player["ze2_info"].rubies = ZE2.RubyLimit
+	if player["ze2_info"].rubies > player["ze2_info"].rubycap then
+		player["ze2_info"].rubies = player["ze2_info"].rubycap
 	end
 	
 	if player["ze2_info"].rubypickupdelay then
 		player["ze2_info"].rubypickupdelay = $ - 1
 	end
 
-	if player["ze2_info"].rubyqueue then
-		ZE2:GivePlayerRubies(player, 1)
-		S_StartSound(player.mo, sfx_rbyhit)
-		player["ze2_info"].rubyqueue = $ - 1
+	if player.mo and player.mo.valid then
+		if player["ze2_info"].rubyqueue then
+			local ghost = P_SpawnGhostMobj(player.mo)
+			ghost.color = SKINCOLOR_RED
+			ghost.colorized = true
+			ghost.fuse = 2
+			
+			ZE2:GivePlayerRubies(player, 1)
+			S_StartSound(player.mo, sfx_rbyhit)
+			player["ze2_info"].rubyqueue = $ - 1
+		end
 	end
 end)
 
@@ -138,7 +145,7 @@ end)
 
 addHook("TouchSpecial", function(special, toucher)
 	if toucher and toucher.valid and toucher.player then
-		if toucher.player["ze2_info"].rubies + 1 > ZE2.RubyLimit then
+		if toucher.player["ze2_info"].rubies + 1 > toucher.player["ze2_info"].rubycap then
 			return true
 		elseif toucher.player["ze2_info"].rubypickupdelay then
 			return true
