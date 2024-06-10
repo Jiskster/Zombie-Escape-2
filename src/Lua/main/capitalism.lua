@@ -3,10 +3,6 @@ freeslot("MT_RUBY_BOX","MT_RUBY_ICON", "S_RUBY_BOX", "S_RUBY_ICON1",
 		"S_RUBY_ICON2", "SPR_RBYM")
 
 function ZE2:GivePlayerRubies(player, amount)
-	if player["ze2_info"].rubies == nil then
-		player["ze2_info"].rubies = 0
-	end
-	
 	if amount > ZE2.RubyLimit then
 		player["ze2_info"].rubies = ZE2.RubyLimit
 		return false
@@ -17,7 +13,11 @@ function ZE2:GivePlayerRubies(player, amount)
 	return true
 end
 
-ZE2.RubyLimit = 500000;
+function ZE2:QueuePlayerRubies(player, amount)
+	player["ze2_info"].rubyqueue = $ + amount
+end
+
+ZE2.RubyLimit = 500;
 
 ZE2.rubypickupdelay = CV_RegisterVar({
 	name = "z_rubypickupdelay",
@@ -48,7 +48,7 @@ mobjinfo[MT_CRRUBY]= {
 	spawnstate = S_CRRUBY,
 	spawnhealth = 1,
 	deathstate = S_SPRK1,
-	deathsound = sfx_rbyhit,
+	--deathsound = sfx_rbyhit,
 	radius = 25*FU,
 	height = 45*FU,
 	flags = MF_SLIDEME|MF_SPECIAL,
@@ -101,13 +101,18 @@ states[S_RUBY_ICON2] = {SPR_RBYM, C, 18, A_RubyDrop, 10}
 sfxinfo[sfx_rbyhit].caption = "Ruby"
 
 addHook("PlayerThink", function(player)
-	player["ze2_info"].rubies = $ or 0
 	if player["ze2_info"].rubies > ZE2.RubyLimit then
 		player["ze2_info"].rubies = ZE2.RubyLimit
 	end
 	
 	if player["ze2_info"].rubypickupdelay then
 		player["ze2_info"].rubypickupdelay = $ - 1
+	end
+
+	if player["ze2_info"].rubyqueue then
+		ZE2:GivePlayerRubies(player, 1)
+		S_StartSound(player.mo, sfx_rbyhit)
+		player["ze2_info"].rubyqueue = $ - 1
 	end
 end)
 
@@ -138,8 +143,13 @@ addHook("TouchSpecial", function(special, toucher)
 		elseif toucher.player["ze2_info"].rubypickupdelay then
 			return true
 		end
-		
-		ZE2:GivePlayerRubies(toucher.player, 1)
+
+		if not toucher.player["ze2_info"].rubyqueue then
+			S_StartSound(toucher, sfx_rbyhit)
+		end
+
+		ZE2:QueuePlayerRubies(toucher.player, 1)
+
 		toucher.player["ze2_info"].rubypickupdelay = ZE2.rubypickupdelay.value
 	end
 end, MT_CRRUBY)
@@ -208,3 +218,25 @@ COM_AddCommand("z_sendrubies", function(player, player2, rubies)
 	string.format("\x82%s\x82 sent you %s rubies", player.name, tostring(rubies))
 	)
 end)
+
+COM_AddCommand("z_giverubies", function(player, rubies)
+	local function giveinstructions()
+		CONS_Printf(player, "z_giverubies <rubies>: gives rubies to yourself")
+	end
+
+	if (not rubies) or (not tonumber(rubies)) then
+		giveinstructions()
+		return
+	end
+	
+	rubies = tonumber($)
+	
+	if rubies <= 0 then 
+		CONS_Printf(player, "\x85Rubies must be positive value.")
+		return
+	end
+
+	ZE2:QueuePlayerRubies(player, rubies)
+	
+	CONS_Printf(player, "\x82You got "..rubies.." rubies")
+end, 1)

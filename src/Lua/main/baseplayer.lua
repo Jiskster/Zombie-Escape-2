@@ -53,6 +53,7 @@ ZE2["default_ze2_info"] = {
 	team = 1,
 
 	rubies = 0,
+	rubyqueue = 0,
 	rubypickupdelay = 0,
 
 	was_spectating = false,
