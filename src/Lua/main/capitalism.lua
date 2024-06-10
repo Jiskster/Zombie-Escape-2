@@ -3,7 +3,7 @@ freeslot("MT_RUBY_BOX","MT_RUBY_ICON", "S_RUBY_BOX", "S_RUBY_ICON1",
 		"S_RUBY_ICON2", "SPR_RBYM")
 
 function ZE2:GivePlayerRubies(player, amount)
-	if amount > ZE2.RubyLimit then
+	if player["ze2_info"].rubies + amount > ZE2.RubyLimit then
 		player["ze2_info"].rubies = ZE2.RubyLimit
 		return false
 	else
