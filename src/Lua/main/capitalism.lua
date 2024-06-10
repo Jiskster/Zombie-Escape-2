@@ -19,7 +19,7 @@ function A_RubyDrop(actor, var1)
 	for i=1,rubyamount do
 		local the_ruby = P_SpawnMobjFromMobj(actor,0,0,10*FU,MT_CRRUBY)
 		the_ruby.fuse = 16*TICRATE
-		P_SetObjectMomZ(the_ruby, P_RandomRange(5,7)<<16)
+		P_SetObjectMomZ(the_ruby, P_RandomRange(7,10)*FU)
 
 		if rubyamount > 1 then
 			local angle = P_RandomFixed() * FU
@@ -147,10 +147,10 @@ addHook("MobjThinker", function(mobj)
 	if mobj.fuse < 3*TICRATE then
 		mobj.flags2 = $^^MF2_DONTDRAW
 	end
-	local findrange = 255*FRACUNIT
+	local findrange = 1024*FRACUNIT
 	searchBlockmap("objects", function(refmobj, foundmobj)
-		if foundmobj and abs(mobj.z-foundmobj.z) < 150*FU and foundmobj.valid and foundmobj.player then
-			P_FlyTo(mobj,foundmobj.x,foundmobj.y,foundmobj.z,2*FRACUNIT,true)
+		if foundmobj and abs(mobj.z-foundmobj.z) < 300*FU and foundmobj.valid and foundmobj.player then
+			P_FlyTo(mobj,foundmobj.x,foundmobj.y,foundmobj.z,4*FRACUNIT,true)
 		end
 	end,mobj,
 	mobj.x-findrange,mobj.x+findrange,
