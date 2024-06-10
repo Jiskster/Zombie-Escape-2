@@ -46,11 +46,12 @@ states[S_CRRUBY] = {
 	nextstate = S_CRRUBY,
 }
 
+-- Ruby Monitor is unused.
 mobjinfo[MT_RUBY_BOX] = {
 	--$Name Ruby Monitor
 	--$Sprite RBYMA0
 	--$Category Monitors
-	doomednum = 863,
+	doomednum = -1,
 	spawnstate = S_RUBY_BOX,
 	reactiontime = 8,
 	painstate = S_RUBY_BOX,
