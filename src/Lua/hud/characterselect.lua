@@ -1,12 +1,6 @@
 local round_active = false
 local hud_icon_scale = FU+(FU/4)
 
-addHook("MapLoad", function()
-	for player in players.iterate do
-		player["ze2_info"].charselect_choosing = true
-	end
-end)
-
 ZE2.getCharacterSelection = function(player)
 	return player["ze2_info"].charselect_selection or 1
 end
@@ -36,41 +30,41 @@ ZE2.characterselecthud = function(v, player, c)
 	--Blue Bar
 	v.drawStretched(0, 17*FRACUNIT, 1500*FRACUNIT, FRACUNIT*3, barpatch, V_SNAPTOTOP|V_SNAPTOLEFT)
 	
-	--Icons
+	--Character Icons
     for i,skinname in ipairs(ZE2.getSkinNames(player,true)) do
         local sel = ZE2.getCharacterSelection(player)
-		local x
+
+		local x = (157+(i*25))*FRACUNIT - (sel*25)*FRACUNIT
+		local y = 36*FRACUNIT
+
+		-- If animation is playing.
 		if player["ze2_info"].charselect_selection_anim ~= nil and player["ze2_info"].charselect_prevselection then
-			local ese = ease.outexpo(FixedDiv(player["ze2_info"].charselect_selection_anim*FRACUNIT, ((TICRATE/2)*FRACUNIT)), 
-			 (player["ze2_info"].charselect_prevselection*25)*FRACUNIT, (player["ze2_info"].charselect_selection*25)*FRACUNIT)
-			x = (( (157) + (i*25) ) * FRACUNIT) - (ese) --(sel*25)*FRACUNIT
-		else
-			x = (( (157) + (i*25) ) * FRACUNIT) - ((sel*25)*FRACUNIT) 
+			local div = FixedDiv(player["ze2_info"].charselect_selection_anim*FRACUNIT, ((TICRATE/2)*FRACUNIT))
+			local anim_start = (player["ze2_info"].charselect_prevselection*25)*FRACUNIT
+			local anim_end = (player["ze2_info"].charselect_selection*25)*FRACUNIT
+			local ese = ease.outexpo(div, anim_start, anim_end)
+
+			x = (157+(i*25))*FRACUNIT - (ese)
 		end
-		--- (skincount*25)
-        local y = 20*FRACUNIT
-		+ 16*FRACUNIT -- the extra 16 fracunit is the offset
+
         local scale = hud_icon_scale
         local skinpatch = v.getSprite2Patch(skinname, SPR2_LIFE)
         
         local flags = V_SNAPTOTOP
 		local colormap = v.getColormap(skinname, skins[ZE2.getSkinNums(player,true)[i]].prefcolor)
         v.drawScaled(x, y, scale, skinpatch, flags, colormap)
-		
-		--
     end
 
 	--Selection Square
     do
         local skincount = #ZE2.getSkinNums(player,true)
 		
-        local x = ( (145) ) * FU --- skincount*25
+        local x = 145*FU
         local y = 20*FU
 
         local scale = hud_icon_scale
         
         local flags = V_SNAPTOTOP
-
         
         v.drawScaled(x, y, scale, cursorpatch, flags)
     end
@@ -144,7 +138,6 @@ ZE2.characterselecthud = function(v, player, c)
 				or ""
 			)
 		}
-
 	}
 
 	for i=1,#charinfo_text do

@@ -1,4 +1,11 @@
 ZE2.charselect_waittime = TICRATE*5
+
+addHook("MapLoad", function()
+	for player in players.iterate do
+		player["ze2_info"].charselect_choosing = true
+	end
+end)
+
 ZE2.pickcharinselect = function(player, skinname)
 	player["ze2_info"].charselect_choosing = false
 	
