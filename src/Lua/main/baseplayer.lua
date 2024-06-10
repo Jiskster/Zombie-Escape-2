@@ -94,7 +94,9 @@ ZE2.giveplayerflags = function(player)
 		player.pflags = $ & ~PF_ANALOGMODE 
 		
 		if not ZE2.round_active and player["ze2_info"].charselect_choosing then
-			player.mo.flags2 = $|MF2_DONTDRAW
+			if player.mo and player.mo.valid then
+				player.mo.flags2 = $|MF2_DONTDRAW
+			end
 		end
 		
 		if player["ze2_info"].sprintmeter == nil then
