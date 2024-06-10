@@ -80,6 +80,7 @@ mobjinfo[MT_PENGUINATOR].npc_name_color = SKINCOLOR_ICY
 mobjinfo[MT_PENGUINATOR].rubydrop = {15,25}
 mobjinfo[MT_PENGUINATOR].painsound = sfx_dmpain
 
+/*
 local function GoldCrawlaRNG(mobj)
 	if gametype ~= GT_ZE2 then return end
 	if P_RandomChance( FRACUNIT/(75-(ZE2.PlayerCount()*2)) ) then
@@ -91,3 +92,4 @@ end
 
 addHook("MobjSpawn", GoldCrawlaRNG, MT_BLUECRAWLA)
 addHook("MobjSpawn", GoldCrawlaRNG, MT_REDCRAWLA)
+*/
