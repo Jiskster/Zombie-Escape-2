@@ -19,18 +19,6 @@ rawset(_G, "ze2_modname", "ze2"); -- For customhud.
 
 freeslot("TOL_ZE2");
 
-rawset(_G, "P_GivePlayerRubies", function(player, amount)
-	if player["ze2_info"].rubies == nil then
-		player["ze2_info"].rubies = 0
-	end
-	
-	if amount > ZE2.RubyLimit then
-		player["ze2_info"].rubies = ZE2.RubyLimit
-	else
-		player["ze2_info"].rubies = $ + amount
-	end
-end)
-
 ZE2.wait_time = 25*TICRATE;
 ZE2.MapVoteStartFrame = 10*TICRATE
 ZE2.VoteTimeLimit = 12*TICRATE

@@ -27,7 +27,7 @@ ZE2.HitMegaHP = function(special, toucher)
 		local rubies_given = 45
 		toucher.maxhealth = $ + 60
 		toucher.health = toucher.maxhealth
-		P_GivePlayerRubies(toucher.player, rubies_given)
+		ZE2:GivePlayerRubies(toucher.player, rubies_given)
 		CONS_Printf(toucher.player,"\x85+"..rubies_given.." ruby bonus!")
 	else
 		return true

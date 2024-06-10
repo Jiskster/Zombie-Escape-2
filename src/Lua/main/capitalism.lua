@@ -2,6 +2,21 @@ freeslot("MT_CRRUBY","S_CRRUBY","SPR_RBY1", "sfx_rbyhit") -- idk what CR means b
 freeslot("MT_RUBY_BOX","MT_RUBY_ICON", "S_RUBY_BOX", "S_RUBY_ICON1", 
 		"S_RUBY_ICON2", "SPR_RBYM")
 
+function ZE2:GivePlayerRubies(player, amount)
+	if player["ze2_info"].rubies == nil then
+		player["ze2_info"].rubies = 0
+	end
+	
+	if amount > ZE2.RubyLimit then
+		player["ze2_info"].rubies = ZE2.RubyLimit
+		return false
+	else
+		player["ze2_info"].rubies = $ + amount
+	end
+	
+	return true
+end
+
 ZE2.RubyLimit = 500000;
 
 ZE2.rubypickupdelay = CV_RegisterVar({
@@ -124,7 +139,7 @@ addHook("TouchSpecial", function(special, toucher)
 			return true
 		end
 		
-		P_GivePlayerRubies(toucher.player, 1)
+		ZE2:GivePlayerRubies(toucher.player, 1)
 		toucher.player["ze2_info"].rubypickupdelay = ZE2.rubypickupdelay.value
 	end
 end, MT_CRRUBY)

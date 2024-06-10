@@ -33,7 +33,7 @@ addHook("TouchSpecial", function(special,toucher)
 		if not player["ze2_info"].ghostmode and not ZE2.game_ended and ZE2.round_active then
 			local ruby_award = ZE2.PlayerCount()*10
 			player["ze2_info"].ghostmode = true
-			P_GivePlayerRubies(player, ruby_award)
+			ZE2:GivePlayerRubies(player, ruby_award)
 			CONS_Printf(player,"\x85+"..ruby_award.." goal ring ruby bonus!")
 			for d=0,16 do
 				P_SpawnParaloop(toucher.x, toucher.y, toucher.z+toucher.height, FixedMul(192*FRACUNIT, toucher.scale), 16, MT_NIGHTSPARKLE, i*ANGLE_22h, S_NULL, true)
