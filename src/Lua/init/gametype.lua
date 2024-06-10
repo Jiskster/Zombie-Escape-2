@@ -16,7 +16,6 @@ freeslot("sfx_oldrad")
 
 rawset(_G, "ze2_modname", "ze2"); -- For customhud.
 
-
 freeslot("TOL_ZE2");
 
 ZE2.wait_time = 25*TICRATE;

@@ -93,6 +93,10 @@ ZE2.giveplayerflags = function(player)
 		player.pflags = $ & ~PF_DIRECTIONCHAR
 		player.pflags = $ & ~PF_ANALOGMODE 
 		
+		if not ZE2.round_active and player["ze2_info"].charselect_choosing then
+			player.mo.flags2 = $|MF2_DONTDRAW
+		end
+		
 		if player["ze2_info"].sprintmeter == nil then
 			player["ze2_info"].sprintmeter = 100*FRACUNIT
 		end
@@ -247,7 +251,10 @@ ZE2.init_player = function(player)
 					player["ze2_info"].zombie_type = "alpha"
 				end
 			end
+			
 			player["ze2_info"].was_spectating = false
+			
+			P_SpawnMobj(pmo.x, pmo.y, pmo.z, MT_ZE2_TELEGFX)
 		else
 			player["ze2_info"].team = 1
 		end

@@ -7,6 +7,8 @@ addHook("MapLoad", function()
 end)
 
 ZE2.pickcharinselect = function(player, skinname)
+	local pmo = player.mo
+
 	player["ze2_info"].charselect_choosing = false
 	
 	if R_SkinUsable(player, skinname) then
@@ -16,7 +18,12 @@ ZE2.pickcharinselect = function(player, skinname)
 	end
 	
 	ZE2.ResetPlayer(player)
-	S_StartSound(nil, sfx_strpst, player)
+	--S_StartSound(nil, sfx_strpst, player)
+	
+	P_SpawnMobj(pmo.x, pmo.y, pmo.z, MT_ZE2_TELEGFX)
+	
+	pmo.flags2 = $ & ~MF2_DONTDRAW
+	player.pflags = $ & ~PF_INVIS
 end
 
 addHook("PreThinkFrame", function()
@@ -32,6 +39,7 @@ addHook("PreThinkFrame", function()
 			
 			local cmd = player.cmd
 			local buttons = cmd.buttons
+			
 			local left = cmd.sidemove < -40
 			local right = cmd.sidemove > 40
 			local skincount = #ZE2.getSkinNames(player, true) + 1
@@ -42,9 +50,11 @@ addHook("PreThinkFrame", function()
 			end
 			
 			if not ZE2.round_active and player["ze2_info"].charselect_choosing then -- Stay Still while you're choosing and have not chosen
-				player.pflags = $|PF_FULLSTASIS
-			
+				player.pflags = $|PF_FULLSTASIS|PF_INVIS
+				
 				buttons = 0
+				cmd.angleturn = 0
+				cmd.aiming = 0
 			end
 			
 			if player["ze2_info"].charselect_selection_anim < (TICRATE/2) + 1 then

@@ -43,7 +43,6 @@ dofile "main/healthncombat.lua" -- main stuff
 dofile "main/enemies.lua"
 dofile "main/intermission.lua"
 dofile "main/capitalism.lua"
-dofile "main/megahp.lua"
 dofile "main/exiting.lua"
 dofile "main/mapinfo_animation.lua"
 dofile "main/timers.lua"
@@ -52,6 +51,9 @@ dofile "main/shop.lua"
 dofile "main/savedata.lua"
 dofile "main/name_tags.lua"
 dofile "main/maptimers.lua"
+
+dofile "objects/megahp.lua"
+dofile "objects/teleporter_gfx.lua"
 
 dofile "hud/characterselect.lua"
 dofile "hud/info.lua"
