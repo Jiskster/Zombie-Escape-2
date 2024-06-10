@@ -5,5 +5,5 @@ ZE2:CreateItem("Explosion Ring", {
 	color = SKINCOLOR_BLACK,
 	damage = 29,
 	knockback = 90*FRACUNIT,
-	price = 240,
+	price = 120,
 })

@@ -78,7 +78,7 @@ ZE2:CreateItem("Scatter Ring",  {
 	damage = 12,
 	fuse = TICRATE/2,
 	color = SKINCOLOR_PURPLE,
-	price = 250,
+	price = 90,
 	ammo = 15,
 	reload_time = 3*TICRATE,
 	ontrigger = function(player)

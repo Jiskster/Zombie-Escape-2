@@ -97,7 +97,7 @@ ZE2:CreateItem("Rail Ring", {
 	firerate = 5,
 	knockback = railkb,
 	damage = raildmg,
-	price = 1460,
+	price = 205,
 	ammo = 2,
 	reload_time = 7*TICRATE,
 	ontrigger = trigger_func,

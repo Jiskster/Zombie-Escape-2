@@ -11,5 +11,5 @@ ZE2:CreateItem("Blue Spring",  {
 		S_StartSound(player.mo, sfx_jshard)
 		spring.target = player.mo
 	end,
-	price = 120,
+	price = 70,
 })

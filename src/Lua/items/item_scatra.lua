@@ -8,7 +8,7 @@ ZE2:CreateItem("Scatra",  {
 	damage = 10,
 	fuse = 6,
 	color = SKINCOLOR_DUSK,
-	price = 2350,
+	price = 400,
 	ammo = 10,
 	reload_time = 5*TICRATE,
 	ontrigger = function(player)

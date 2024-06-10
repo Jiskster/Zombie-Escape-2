@@ -11,5 +11,5 @@ ZE2:CreateItem("Milk", {
 		ZE2:ChangeStamina(player, 25*FRACUNIT)
 		ZE2:ChangeHealth(player.mo, 4)
 	end,
-	price = 110,
+	price = 20,
 })

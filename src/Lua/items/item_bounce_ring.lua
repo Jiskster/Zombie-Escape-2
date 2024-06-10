@@ -7,5 +7,5 @@ ZE2:CreateItem("Bounce Ring",  {
 	damage = 11,
 	fuse = 10*TICRATE,
 	flags2 = MF2_BOUNCERING,
-	price = 520,
+	--price = 520,
 })

@@ -29,7 +29,7 @@ ZE2:CreateItem("GFZSPHERE",  {
 	--color = SKINCOLOR_RED,
 	knockback = 125*FRACUNIT,
 	damage = 26,
-	price = 920,
+	price = 130,
 	sound = sfx_kc5b,
 	ammo = 3,
 	autouse = true,

@@ -15,7 +15,7 @@ freeslot(
 mobjinfo[MT_BLUECRAWLA].npc_name = "Blue Crawla"
 mobjinfo[MT_BLUECRAWLA].npc_spawnhealth = {12,23}
 mobjinfo[MT_BLUECRAWLA].npc_name_color = SKINCOLOR_BLUE
-mobjinfo[MT_BLUECRAWLA].rubydrop = {4,10}
+mobjinfo[MT_BLUECRAWLA].rubydrop = {2,4}
 mobjinfo[MT_BLUECRAWLA].painsound = sfx_dmpain
 mobjinfo[MT_BLUECRAWLA].forcedamage = 10
 mobjinfo[MT_BLUECRAWLA].forceknockback = 30*FU
@@ -23,9 +23,9 @@ mobjinfo[MT_BLUECRAWLA].forceverticalknockback = 10*FU
 mobjinfo[MT_BLUECRAWLA].relativeknockback = true
 
 mobjinfo[MT_REDCRAWLA].npc_name = "Red Crawla"
-mobjinfo[MT_REDCRAWLA].npc_spawnhealth = {30,55}
+mobjinfo[MT_REDCRAWLA].npc_spawnhealth = {30,45}
 mobjinfo[MT_REDCRAWLA].npc_name_color = SKINCOLOR_RED
-mobjinfo[MT_REDCRAWLA].rubydrop = {10,35}
+mobjinfo[MT_REDCRAWLA].rubydrop = {3,5}
 mobjinfo[MT_REDCRAWLA].painsound = sfx_dmpain
 mobjinfo[MT_REDCRAWLA].forcedamage = 20
 mobjinfo[MT_REDCRAWLA].forceknockback = 50*FU -- relativeknockback
@@ -65,13 +65,13 @@ states[S_GOSS_RUN6] = {SPR_GOSS, F, 1, A_Chase, 0, 0, S_GOSS_RUN1}
 mobjinfo[MT_GOLDBUZZ].npc_name = "Gold Buzz"
 mobjinfo[MT_GOLDBUZZ].npc_spawnhealth = {3,8}
 mobjinfo[MT_GOLDBUZZ].npc_name_color = SKINCOLOR_GOLD
-mobjinfo[MT_GOLDBUZZ].rubydrop = {1,5}
+mobjinfo[MT_GOLDBUZZ].rubydrop = {1,3}
 mobjinfo[MT_GOLDBUZZ].painsound = sfx_dmpain
 
 mobjinfo[MT_REDBUZZ].npc_name = "Red Buzz"
 mobjinfo[MT_REDBUZZ].npc_spawnhealth = {10,17}
 mobjinfo[MT_REDBUZZ].npc_name_color = SKINCOLOR_RED
-mobjinfo[MT_REDBUZZ].rubydrop = {5,7}
+mobjinfo[MT_REDBUZZ].rubydrop = {2,4}
 mobjinfo[MT_REDBUZZ].painsound = sfx_dmpain
 
 mobjinfo[MT_PENGUINATOR].npc_name = "Penguinator"

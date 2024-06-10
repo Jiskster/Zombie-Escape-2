@@ -9,5 +9,5 @@ ZE2:CreateItem("Automatic Ring",  {
 	flags2 = MF2_AUTOMATIC,
 	ammo = 25,
 	reload_time = TICRATE + TICRATE/2,
-	price = 210,
+	price = 50,
 })

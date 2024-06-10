@@ -8,5 +8,5 @@ ZE2:CreateItem("Apple", {
 	ontrigger = function(player)
 		ZE2:ChangeHealth(player.mo, 16)
 	end,
-	price = 60,
+	price = 15,
 })

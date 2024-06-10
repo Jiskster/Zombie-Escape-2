@@ -49,7 +49,7 @@ ZE2:CreateItem("Wood Fence", {
 		wood.flags = $|MF_SHOOTABLE|MF_SOLID|MF_PAPERCOLLISION -- Reapply flags to prevent desynch (for some reason)
 		wood.target = player.mo
 	end,
-	price = 110,
+	price = 55,
 })
 
 addHook("MobjCollide", function(wood, tmo)
