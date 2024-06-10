@@ -3,6 +3,7 @@ sfxinfo[sfx_zjump].caption = "Jump"
 mobjinfo[MT_LHRT].forceknockback = 20*FRACUNIT
 ZE2.JumpSprintFatigue = 15*FRACUNIT
 ZE2.DefaultRubyCap = 250;
+ZE2.RubyStart = 100 -- the amount of rubies you start when you join a server
 
 ZE2["default_ze2_info"] = {
 	inventory_selection = 1,
@@ -53,7 +54,7 @@ ZE2["default_ze2_info"] = {
 
 	team = 1,
 
-	rubies = 0,
+	rubies = ZE2.RubyStart,
 	rubycap = ZE2.DefaultRubyCap,
 	rubyqueue = 0,
 	rubypickupdelay = 0,
