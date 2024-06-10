@@ -6,6 +6,7 @@ addHook("NetVars", function(net)
 	ZE2.win_tics = net($); -- Increases if ZE2.game_ended is true
 	ZE2.game_time = net($);
 	ZE2.team_won = net($);
+	ZE2.pregame_timeleft = net($);
 	
 	ZE2.VoteTimeLimit = net($);
 	ZE2.MapsOnVote = net($);

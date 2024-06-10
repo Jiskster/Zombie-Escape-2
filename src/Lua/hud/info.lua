@@ -20,7 +20,7 @@ ZE2.infohud = function(v, player)
 			the_time = G_TicsToMTIME(ZE2.game_time)
 		end
 	else
-		the_time = G_TicsToMTIME(ZE2.wait_time - leveltime)
+		the_time = G_TicsToMTIME(ZE2.pregame_timeleft)
 	end
 	
 	if not player["ze2_info"].charselect_choosing then

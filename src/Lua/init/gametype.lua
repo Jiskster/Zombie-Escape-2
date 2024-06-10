@@ -11,6 +11,7 @@ freeslot("sfx_eatapl", "sfx_oyahx", "sfx_mnu1a")
 freeslot("sfx_inf1","sfx_inf2","sfx_pipe")
 
 freeslot("sfx_z_rel1", "sfx_z_rel2")
+freeslot("sfx_z20s", "sfx_cone", "sfx_ctwo", "sfx_cthr", "sfx_cfou", "sfx_cfiv", "sfx_csix", "sfx_csev", "sfx_ceig", "sfx_cnin", "sfx_cten")
 
 freeslot("sfx_oldrad")
 
@@ -30,15 +31,17 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 	ZE2.time_limit = 0;
 	ZE2.team_won = 0;
 	
-	ZE2.MapVoteList = {}
-	ZE2.MapVotes = {0,0,0}
+	ZE2.pregame_timeleft = ZE2.wait_time; 
+	
+	ZE2.MapVoteList = {};
+	ZE2.MapVotes = {0,0,0};
 	ZE2.MapsOnVote = {
 	{0,1},
 	{0,1},
 	{0,1}
-	} -- votes, mapnumber
+	}; -- votes, mapnumber
 	
-	ZE2.NextMapVoted = 0
+	ZE2.NextMapVoted = 0;
 	
 	if map then
 		if mapheaderinfo[map].ze2_timelimit then

@@ -26,6 +26,20 @@ ZE2.killzombiesonwin = CV_RegisterVar({
 	flags = CV_NETVAR,
 })
 
+local countdown_sfx = {
+	[20] = sfx_z20s,
+	[10] = sfx_cten,
+	[9] = sfx_cnin,
+	[8] = sfx_ceig,
+	[7] = sfx_csev,
+	[6] = sfx_csix,
+	[5] = sfx_cfiv,
+	[4] = sfx_cfou,
+	[3] = sfx_cthr,
+	[2] = sfx_ctwo,
+	[1] = sfx_cone,
+}
+
 function ZE2:StartWin(team)
 	self.game_ended = true
 	self.team_won = team
@@ -62,7 +76,13 @@ end)
 addHook("ThinkFrame", function()
 	if gametype ~= GT_ZE2 or gamestate ~= GS_LEVEL then return end --stop the trolling
 	
-	if leveltime >= ZE2.wait_time and not ZE2.round_active then
+	if ZE2.pregame_timeleft then
+		ZE2.pregame_timeleft = $ - 1
+	end
+	
+	local count_timecalculate = (ZE2.pregame_timeleft-TICRATE)/TICRATE -- For the countdown not to be behind/ahead
+	
+	if not ZE2.pregame_timeleft and not ZE2.round_active then
 		ZE2.round_active = true
 		S_StartSound(nil, sfx_rstart)
 		local choosingnums = {}
@@ -76,11 +96,12 @@ addHook("ThinkFrame", function()
 				local selection_name = ZE2.getSkinNames(player, true)[player["ze2_info"].charselect_selection]
 				ZE2.pickcharinselect(player,selection_name) 
 			end
+			
 			if not player["ze2_info"].was_zombie then
 				table.insert(choosingnums, #player)
 			end
 		end
-		-- At this point, every player's playernum is sroted in choosingnums
+		-- At this point, every player's playernum is sorted in choosingnums
 		-- except for the players that were zombies last game.
 
 		if ZE2.PlayerCount() > 1 then
@@ -94,9 +115,11 @@ addHook("ThinkFrame", function()
 				else
 					ZE2.ResetPlayer(player)
 				end
+				
 				if ZE2.choosenotice.value then
 					print(string.format("\x83\%s\x83\ has risen from the dead!",player.name))
 				end
+				
 				player["ze2_info"].team = 2
 				player["ze2_info"].was_zombie = true
 				table.remove(choosingnums,playernumindex)
@@ -111,8 +134,16 @@ addHook("ThinkFrame", function()
 		
 		choosingnums = nil -- release memory idk wtf
 	end
+	
 	if ZE2.time_limit and ZE2.game_time >= ZE2.time_limit and not (ZE2.game_ended) then
 		ZE2:StartWin(1)
+	end
+	
+	-- Countdown Voice
+	if (ZE2.pregame_timeleft % TICRATE) == 0 then
+		if countdown_sfx[count_timecalculate] then
+			S_StartSound(nil, countdown_sfx[count_timecalculate])
+		end
 	end
 	
 	for player in players.iterate do 
