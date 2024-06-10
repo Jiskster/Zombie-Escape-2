@@ -2,6 +2,7 @@ freeslot("sfx_zjump")
 sfxinfo[sfx_zjump].caption = "Jump"
 mobjinfo[MT_LHRT].forceknockback = 20*FRACUNIT
 ZE2.JumpSprintFatigue = 15*FRACUNIT
+ZE2.DefaultRubyCap = 250;
 
 ZE2["default_ze2_info"] = {
 	inventory_selection = 1,

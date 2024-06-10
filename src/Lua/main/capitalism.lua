@@ -17,8 +17,6 @@ function ZE2:QueuePlayerRubies(player, amount)
 	player["ze2_info"].rubyqueue = $ + amount
 end
 
-ZE2.DefaultRubyCap = 250;
-
 ZE2.rubypickupdelay = CV_RegisterVar({
 	name = "z_rubypickupdelay",
 	defaultvalue = "0",
@@ -66,7 +64,7 @@ mobjinfo[MT_RUBY_BOX] = {
 	--$Name Ruby Monitor
 	--$Sprite RBYMA0
 	--$Category Monitors
-	doomednum = -1,
+	doomednum = 863,
 	spawnstate = S_RUBY_BOX,
 	reactiontime = 8,
 	painstate = S_RUBY_BOX,
@@ -99,6 +97,12 @@ states[S_RUBY_ICON1] = {SPR_RBYM, C|FF_ANIMATE, 18, nil, 3, 4, S_RUBY_ICON2}
 states[S_RUBY_ICON2] = {SPR_RBYM, C, 18, A_RubyDrop, 10}
 
 sfxinfo[sfx_rbyhit].caption = "Ruby"
+
+-- Disable Ruby Monitors
+addHook("MobjThinker", function(mobj)
+	P_RemoveMobj(mobj)
+	return true
+end, MT_RUBY_BOX)
 
 addHook("PlayerThink", function(player)
 	if player["ze2_info"].rubies > player["ze2_info"].rubycap then
