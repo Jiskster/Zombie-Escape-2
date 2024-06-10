@@ -81,10 +81,14 @@ mobjinfo[MT_REDBUZZ].forceknockback = 15*FU
 mobjinfo[MT_REDBUZZ].relativeknockback = true
 
 mobjinfo[MT_PENGUINATOR].npc_name = "Penguinator"
-mobjinfo[MT_PENGUINATOR].npc_spawnhealth = {40,80}
+mobjinfo[MT_PENGUINATOR].npc_spawnhealth = {10,20}
 mobjinfo[MT_PENGUINATOR].npc_name_color = SKINCOLOR_ICY
-mobjinfo[MT_PENGUINATOR].rubydrop = {15,25}
+mobjinfo[MT_PENGUINATOR].rubydrop = {5,8}
 mobjinfo[MT_PENGUINATOR].painsound = sfx_dmpain
+mobjinfo[MT_PENGUINATOR].forcedamage = 5
+mobjinfo[MT_PENGUINATOR].forceknockback = 30*FU -- relativeknockback
+mobjinfo[MT_PENGUINATOR].forceverticalknockback = 20*FU
+mobjinfo[MT_PENGUINATOR].relativeknockback = true
 
 /*
 local function GoldCrawlaRNG(mobj)
