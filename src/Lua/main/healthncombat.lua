@@ -65,7 +65,7 @@ function ZE2.KillMobj(mo, inf, src, damagetype)
 			
 			if killer then
 				ZE2:QueuePlayerRubies(killer.player, 30)
-				CONS_Printf(killer.player,"\x85+"..ruby_award.." rubies gained from killing a survivor!")
+				CONS_Printf(killer.player, "\x85+"..ruby_award.." rubies gained from killing a survivor!")
 			end
 		elseif team == 2 then
 			if ztype and ZE2.ZombieConfig[ztype] and ZE2.ZombieConfig[ztype].killaward then
