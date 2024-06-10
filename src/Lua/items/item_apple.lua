@@ -4,7 +4,7 @@ ZE2:CreateItem("Apple", {
 	firerate = 50,
 	sound = sfx_eatapl,
 	limited = true,
-	count = 5,
+	count = 3,
 	ontrigger = function(player)
 		ZE2:ChangeHealth(player.mo, 16)
 	end,
