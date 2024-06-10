@@ -52,10 +52,26 @@ function ZE2.KillMobj(mo, inf, src, damagetype)
 	if mo.player and mo.player.valid then
 		local player = mo.player 
 		local ztype = player["ze2_info"].zombie_type
+		local team = player["ze2_info"].team 
 		
-		if ztype and ZE2.ZombieConfig[ztype] and ZE2.ZombieConfig[ztype].killaward then
-			local killaward = ZE2.ZombieConfig[ztype].killaward
-			A_RubyDrop(mo, killaward)
+		if team == 1 then
+			local killer
+			
+			if inf.player and inf.player.valid then
+				killer = inf
+			elseif src.player and src.player.valid then
+				killer = src
+			end
+			
+			if killer then
+				ZE2:QueuePlayerRubies(killer.player, 30)
+				CONS_Printf(killer.player,"\x85+"..ruby_award.." rubies gained from killing a survivor!")
+			end
+		elseif team == 2 then
+			if ztype and ZE2.ZombieConfig[ztype] and ZE2.ZombieConfig[ztype].killaward then
+				local killaward = ZE2.ZombieConfig[ztype].killaward
+				A_RubyDrop(mo, killaward)
+			end
 		end
 	end
 	
