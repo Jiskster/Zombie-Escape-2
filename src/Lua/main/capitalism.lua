@@ -118,7 +118,8 @@ addHook("PlayerThink", function(player)
 			local ghost = P_SpawnGhostMobj(player.mo)
 			ghost.color = SKINCOLOR_RED
 			ghost.colorized = true
-			ghost.fuse = 2
+			ghost.frame = $|FF_TRANS10
+			ghost.fuse = 4
 			
 			ZE2:GivePlayerRubies(player, 1)
 			S_StartSound(player.mo, sfx_rbyhit)
