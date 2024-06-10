@@ -150,6 +150,12 @@ end)
 
 addHook("TouchSpecial", function(special, toucher)
 	if toucher and toucher.valid and toucher.player then
+		local team = toucher.player["ze2_info"].team 
+		
+		if team == 2 then
+			return true
+		end
+		
 		if toucher.player["ze2_info"].rubies + 1 > toucher.player["ze2_info"].rubycap then
 			return true
 		elseif toucher.player["ze2_info"].rubypickupdelay then
