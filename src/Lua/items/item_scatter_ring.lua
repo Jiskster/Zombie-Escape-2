@@ -74,13 +74,13 @@ ZE2:CreateItem("Scatter Ring",  {
 	icon = "SCATIND",
 	firerate = TICRATE,
 	sound = sfx_shgn,
-	knockback = 13*FRACUNIT,
+	knockback = 25*FRACUNIT,
 	damage = 12,
 	fuse = TICRATE/2,
 	color = SKINCOLOR_PURPLE,
 	price = 90,
-	ammo = 15,
-	reload_time = 3*TICRATE,
+	ammo = 5,
+	reload_time = 5*TICRATE,
 	ontrigger = function(player)
 		local mt = MT_ZE2_THROWNSCATTER
 		local mo = player.mo
@@ -93,6 +93,7 @@ ZE2:CreateItem("Scatter Ring",  {
 				shot.fuse = ZE2:FetchInventorySlot(player).fuse
 				shot.forcedamage = ZE2:FetchInventorySlot(player).damage
 				shot.forceknockback = ZE2:FetchInventorySlot(player).knockback
+				shot.mobjteam = player["ze2_info"].team
 				
 				shot.momx = $ + mo.momx / 3
 				shot.momy = $ + mo.momy / 3
@@ -109,7 +110,8 @@ ZE2:CreateItem("Scatter Ring",  {
 				shot.fuse = ZE2:FetchInventorySlot(player).fuse
 				shot.forcedamage = ZE2:FetchInventorySlot(player).damage
 				shot.forceknockback = ZE2:FetchInventorySlot(player).knockback
-
+				shot.mobjteam = player["ze2_info"].team
+				
 				shot.momx = $ + mo.momx / 3
 				shot.momy = $ + mo.momy / 3
 				shot.momz = $ + mo.momz / 3
