@@ -203,7 +203,9 @@ addHook("MobjThinker", function(mobj)
 	local findrange = 1024*FRACUNIT
 	searchBlockmap("objects", function(refmobj, foundmobj)
 		if foundmobj and abs(mobj.z-foundmobj.z) < 300*FU and foundmobj.valid and foundmobj.player then
-			P_FlyTo(mobj,foundmobj.x,foundmobj.y,foundmobj.z,4*FRACUNIT,true)
+			if foundmobj.player["ze2_info"].team == 1 then
+				P_FlyTo(mobj,foundmobj.x,foundmobj.y,foundmobj.z,4*FRACUNIT,true)
+			end
 		end
 	end,mobj,
 	mobj.x-findrange,mobj.x+findrange,
