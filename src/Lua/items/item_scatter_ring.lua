@@ -125,3 +125,9 @@ ZE2:CreateItem("Scatter Ring",  {
 		end
 	end
 })
+
+addHook("MobjFuse", function(mobj)
+	mobj.momx = 0
+	mobj.momy = 0
+	mobj.momz = 0
+end, MT_ZE2_THROWNSCATTER)
