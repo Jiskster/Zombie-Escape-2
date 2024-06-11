@@ -67,7 +67,7 @@ function ZE2:Copy(orig)
     if orig_type == 'table' then
         copy = {}
         for orig_key, orig_value in next, orig, nil do
-            copy[deepcopy(orig_key)] = deepcopy(orig_value)
+            copy[deepcopy(orig_key)] = ZE2:Copy(orig_value)
         end
         setmetatable(copy, deepcopy(getmetatable(orig)))
     else -- number, string, boolean, etc
