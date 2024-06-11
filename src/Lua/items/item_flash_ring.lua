@@ -89,7 +89,7 @@ ZE2:CreateItem("Flash Ring", {
 	firerate = 40,
 	knockback = flashkb,
 	damage = flashdmg,
-	price = 250,
+	--price = 250,
 	ammo = 5,
 	reload_time = 5*TICRATE,
 	ontrigger = function(player)
