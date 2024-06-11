@@ -172,11 +172,20 @@ addHook("TouchSpecial", function(special, toucher)
 	end
 end, MT_CRRUBY)
 
+addHook("MobjDeath", function(mobj)
+	mobj.momx = 0
+	mobj.momy = 0
+	mobj.momz = 0
+end, MT_CRRUBY)
+
 addHook("MobjThinker", function(mobj)
 	if mobj.sprite == SPR_SPRK then
 		mobj.color = SKINCOLOR_RED
 		mobj.colorized = true
 	end
+	
+	if not mobj.health then return end 
+	
 	--P_RingZMovement(mobj)
 	if mobj.eflags & MFE_JUSTHITFLOOR then
 		P_SetObjectMomZ(mobj, abs(FixedDiv(mobj.lastmomz, P_RandomRange(2,3)*FRACUNIT)))
