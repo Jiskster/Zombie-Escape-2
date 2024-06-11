@@ -201,15 +201,30 @@ addHook("MobjThinker", function(mobj)
 		mobj.flags2 = $^^MF2_DONTDRAW
 	end
 	local findrange = 1024*FRACUNIT
+	local pmofound
+	
 	searchBlockmap("objects", function(refmobj, foundmobj)
 		if foundmobj and abs(mobj.z-foundmobj.z) < 300*FU and foundmobj.valid and foundmobj.player then
 			if foundmobj.player["ze2_info"].team == 1 then
-				P_FlyTo(mobj,foundmobj.x,foundmobj.y,foundmobj.z,4*FRACUNIT,true)
+				if not pmofound then
+					pmofound = foundmobj
+				else
+					local newpmodist = R_PointToDist2(mobj.x, mobj.y, foundmobj.x, foundmobj.y)
+					local oldpmodist = R_PointToDist2(mobj.x, mobj.y, pmofound.x, pmofound.y)
+					
+					if newpmodist < oldpmodist then
+						pmofound = foundmobj
+					end
+				end
 			end
 		end
 	end,mobj,
 	mobj.x-findrange,mobj.x+findrange,
 	mobj.y-findrange,mobj.y+findrange)
+	
+	if pmofound and pmofound.valid then
+		P_FlyTo(mobj,pmofound.x,pmofound.y,pmofound.z,4*FRACUNIT,true)
+	end
 end, MT_CRRUBY)
 
 COM_AddCommand("z_sendrubies", function(player, player2, rubies)
