@@ -44,6 +44,7 @@ local function trigger_func(player, iteminfo)
 		rail.forcedamage = ZE2:FetchInventorySlot(player).damage
 		rail.forceknockback = ZE2:FetchInventorySlot(player).knockback
 		rail.iteminfo = iteminfo
+		rail.mobjteam = player["ze2_info"].team
 		
 		local range = 16
 		
