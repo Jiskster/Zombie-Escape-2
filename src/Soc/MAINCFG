@@ -89,18 +89,6 @@ SkyNum = 1
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 9
 
-Level N2
-Levelname = The Database Z
-Subtitle = The Digital Dimension
-Act = 0
-Music = DBZ
-TypeOfLevel = ZE2
-NextLevel = N2
-SkyNum = 99
-NoZone = True
-SelectHeading = ZE2 Survival Maps
-Lua.ze2_timelimit = 7
-
 Level TF
 LevelName = The Farland
 Act = 0
