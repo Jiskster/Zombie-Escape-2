@@ -53,19 +53,6 @@ SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 7
 Lua.ze2_noabilities = true
 
-Level J3
-Levelname = Ice Mountain
-Subtitle = Squares, Pits and Trees.
-Act = 0
-Weather = 2
-SkyNum = 17
-Music = MP_ICE
-TypeOfLevel = ZE2
-NextLevel = J3
-NoZone = True
-SelectHeading = ZE2 Survival Maps
-Lua.ze2_timelimit = 9
-
 Level J4
 Levelname = Minecraft
 Subtitle = Watch for creepers!
@@ -112,18 +99,6 @@ NextLevel = N2
 SkyNum = 99
 NoZone = True
 SelectHeading = ZE2 Survival Maps
-Lua.ze2_timelimit = 7
-
-Level W1
-LevelName = Concealed Woodland
-Act = 0
-Subtitle = By Joiver
-TypeOfLevel = ZE2
-SelectHeading = ZE2 Survival Maps
-Music = MP_DOM
-NoZone = True
-Weather = PRECIP_STORM
-SkyNum = 20
 Lua.ze2_timelimit = 7
 
 Level TF
