@@ -1,5 +1,6 @@
 dofile "init/gametype.lua"
 
+dofile "libraries/fixedfromstring.lua"
 dofile "libraries/json.lua"
 dofile "libraries/mobjlib.lua"
 dofile "libraries/customhudlib.lua"

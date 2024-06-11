@@ -44,10 +44,19 @@ ZE2.infohud = function(v, player)
 			end
 			
 			-- [Sprint Meter] --
+			local sprintmeter_color = SKINCOLOR_SKY
+			
+			-- flicker when no sprint energy left
+			if (leveltime/4) % 2 == 0 then
+				if not player["ze2_info"].sprintmeter then
+					sprintmeter_color = SKINCOLOR_RED
+				end
+			end
+			
 			if player["ze2_info"].sprintmeter ~= nil and player["ze2_info"].team == 1 then
 				local sprintmeter = L_FixedDecimal(player["ze2_info"].sprintmeter, 1).."%"
 				customhud.CustomFontString(v, 0, 168, "Run: "..sprintmeter, "TNYFC", 
-				(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, SKINCOLOR_SKY)
+				(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, sprintmeter_color)
 			end
 			
 			-- [Health] --

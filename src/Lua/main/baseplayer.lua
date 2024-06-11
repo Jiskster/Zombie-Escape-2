@@ -1,7 +1,7 @@
 freeslot("sfx_zjump")
 sfxinfo[sfx_zjump].caption = "Jump"
 mobjinfo[MT_LHRT].forceknockback = 20*FRACUNIT
-ZE2.JumpSprintFatigue = 15*FRACUNIT
+ZE2.JumpSprintFatigue = 10*FRACUNIT
 ZE2.DefaultRubyCap = 250;
 ZE2.RubyStart = 100 -- the amount of rubies you start when you join a server
 
@@ -51,6 +51,7 @@ ZE2["default_ze2_info"] = {
 
 	sprintmeter = 100*FU,
 	isSprinting = false,
+	sprintdelay = 0, -- x > 0 = sprintmeter wont increase
 
 	team = 1,
 
@@ -132,6 +133,7 @@ end
 
 function ZE2:DecrementSprint(player, value)
 	if player["ze2_info"].sprintmeter - abs(value) <= 0 then
+		player["ze2_info"].sprintdelay = TICRATE
 		player["ze2_info"].sprintmeter = 0
 	else
 		player["ze2_info"].sprintmeter = $ - abs(value)
@@ -155,8 +157,15 @@ ZE2.sprint_thinker = function(player)
 	local pmo = player.mo
 	local cc = ZE2.CharacterConfig
 	
-	local increment = FRACUNIT/4
-	local decrement = FRACUNIT/3
+	local increment = FRACUNIT/2
+	local decrement = fixedfromstring("0.185")
+	
+	if player["ze2_info"].sprintdelay then
+		player["ze2_info"].sprintdelay = $ - 1
+		player["ze2_info"].sprintmeter = 0
+	elseif player["ze2_info"].sprintdelay < 0 then
+		player["ze2_info"].sprintdelay = 0
+	end
 	
 	if player["ze2_info"].team == 1 then
 		if P_GetPlayerControlDirection(player) == 1 and (cmd.buttons & BT_SPIN) then
@@ -175,7 +184,13 @@ ZE2.sprint_thinker = function(player)
 				end
 			end
 		else
-			ZE2:IncrementSprint(player, increment)
+			if not player["ze2_info"].sprintdelay then
+				if not (player.speed/FU) then
+					ZE2:IncrementSprint(player, increment)
+				else
+					ZE2:IncrementSprint(player, increment/2)
+				end
+			end
 			
 			player["ze2_info"].isSprinting = false
 			
@@ -193,6 +208,7 @@ addHook("JumpSpecial", function(player)
 	if player.mo and player.mo.valid and player["ze2_info"].isSprinting and P_IsObjectOnGround(player.mo) then
 		if player["ze2_info"].sprintmeter - ZE2.JumpSprintFatigue <= 0 then
 			player["ze2_info"].sprintmeter = 0
+			player["ze2_info"].sprintdelay = TICRATE
 			return true
 		else
 			player["ze2_info"].sprintmeter = $ - ZE2.JumpSprintFatigue
