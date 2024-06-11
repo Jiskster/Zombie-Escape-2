@@ -67,7 +67,6 @@ dofile "hud/intermission.lua"
 dofile "hooks/gamelogic.lua"
 dofile "hooks/hud.lua"
 
-dofile "levelscripts/concealed_woodland.lua"
 dofile "levelscripts/thefarland.lua"
 dofile "levelscripts/minecraft.lua"
 dofile "levelscripts/specialstage.lua"
