@@ -221,8 +221,8 @@ ZE2.SetZCinventory = function(player)
 	
 	if pmo and pmo.valid then
 		if ztype and zc[ztype] and player["ze2_info"] then
-			player["ze2_info"].zombie_inventory = zc[ztype].inventory or {}
-			player["ze2_info"].zombie_inventory_limit = zc[ztype].inventory_limit or 2
+			player["ze2_info"].zombie_inventory = ZE2:Copy(zc[ztype].inventory) or {}
+			player["ze2_info"].zombie_inventory_limit = ZE2:Copy(zc[ztype].inventory_limit) or 2
 		end
 	end
 end
