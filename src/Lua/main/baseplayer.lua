@@ -64,6 +64,9 @@ ZE2["default_ze2_info"] = {
 	was_zombie = false,
 
 	zombie_type = "normal",
+
+	damage_fade = 0, -- tic_t
+	damage_fade_max = 0,
 }
 
 addHook("PlayerSpawn", function(player)
@@ -73,6 +76,11 @@ addHook("PlayerSpawn", function(player)
 		player["ze2_info"] = ZE2:Copy(ZE2["default_ze2_info"])
 	end
 end)
+
+function ZE2:SetDamageFadeAnim(player, tics)
+	player["ze2_info"].damage_fade = tics
+	player["ze2_info"].damage_fade_max = tics
+end
 
 function ZE2:ChangeHealth(mobj, amount)
 	if amount > mobj.maxhealth then
@@ -404,6 +412,17 @@ addHook("PlayerThink", function(player)
 	
 	if not player["ze2_info"].zombie_inventory or not player["ze2_info"].zombie_inventory_limit then
 		ZE2.SetZCinventory(player)
+	end
+
+	if player["ze2_info"].damage_fade and player["ze2_info"].damage_fade_max then
+		player["ze2_info"].damage_fade = $ - 1
+		
+		if not player["ze2_info"].damage_fade then
+			player["ze2_info"].damage_fade_max = 0
+		end
+	else
+		player["ze2_info"].damage_fade = 0
+		player["ze2_info"].damage_fade_max = 0
 	end
 	
 	if player.playerstate ~= PST_DEAD then

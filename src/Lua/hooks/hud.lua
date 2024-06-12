@@ -5,6 +5,8 @@ customhud.SetupItem("ze2_characterselect", ze2_modname, ZE2.characterselecthud, 
 
 customhud.SetupItem("ze2_mapinfo", ze2_modname, ZE2.mapinfohud, "game", 0)
 
+customhud.SetupItem("ze2_damagefade", ze2_modname, ZE2.damagefadehud, "game", 0)
+
 customhud.SetupItem("ze2_info", ze2_modname, ZE2.infohud, "game", 0)
 
 customhud.SetupItem("ze2_toggle", ze2_modname, ZE2.togglehud, "game", 0)

@@ -180,7 +180,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	if mo.player then
 		if mo.player["ze2_info"].team == 1 then
 			mo.player.powers[pw_flashing] = ZE2.survinvtics.value
-			P_FlashPal(mo.player, PAL_NUKE, 2)
+			ZE2:SetDamageFadeAnim(mo.player, 15)
 			S_StartSound(mo, sfx_s3kb9)
 			
 			if inf and inf.valid then

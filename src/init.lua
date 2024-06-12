@@ -50,7 +50,6 @@ dofile "main/timers.lua"
 dofile "main/emotes.lua"
 dofile "main/shop.lua"
 dofile "main/savedata.lua"
-dofile "main/name_tags.lua"
 dofile "main/maptimers.lua"
 
 dofile "objects/megahp.lua"
@@ -60,12 +59,15 @@ dofile "hud/characterselect.lua"
 dofile "hud/info.lua"
 dofile "hud/shop.lua"
 dofile "hud/inventory.lua"
+dofile "hud/damagefade.lua"
 dofile "hud/mapinfo_animation.lua"
 dofile "hud/toggle.lua"
 dofile "hud/intermission.lua"
 
 dofile "hooks/gamelogic.lua"
 dofile "hooks/hud.lua"
+
+dofile "main/name_tags.lua"
 
 dofile "levelscripts/thefarland.lua"
 dofile "levelscripts/minecraft.lua"
