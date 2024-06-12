@@ -258,6 +258,22 @@ ZE2.ResetPlayer = function(player, choosenewztype)
 	end
 end
 
+ZE2.PlayInfectionSound = function(player)
+	local infection_sounds = {sfx_inf1,sfx_inf2}
+	
+	if player.mo and player.mo.valid then
+		local soundrng = P_RandomRange(1,#infection_sounds)
+		S_StartSound(player.mo,infection_sounds[soundrng])
+	end
+end
+
+ZE2.ZombifyPlayer = function(player)
+	player["ze2_info"].team = 2
+	player["ze2_info"].zombie_type = "normal"
+	
+	ZE2.ResetPlayer(player)
+end
+
 ZE2.init_player = function(player)
 	if gametype ~= GT_ZE2 and leveltime then return end
 	
@@ -267,6 +283,7 @@ ZE2.init_player = function(player)
 		if (ZE2.round_active and ZE2.PlayerCount() > 1) then
 			player["ze2_info"].team = 2
 			player["ze2_info"].zombie_type = "normal"
+			
 			if ZE2.round_active and ZE2.PlayerCount() > 1 and leveltime then
 				if P_RandomChance(FRACUNIT/5) and not player["ze2_info"].was_spectating then
 					player["ze2_info"].zombie_type = "alpha"
@@ -292,10 +309,10 @@ end
 
 -- Zombie Spawn Sounds
 addHook("PlayerSpawn", function(player)
-	local spawnsounds = {sfx_inf1,sfx_inf2}
+	if ZE2.instantinfection.value then return end
+
 	if player.mo and player.mo.valid and player["ze2_info"].team == 2 and ZE2.round_active and leveltime then
-		local soundrng = P_RandomRange(1,#spawnsounds)
-		S_StartSound(player.mo,spawnsounds[soundrng])
+		ZE2.PlayInfectionSound(player)
 	end
 end)
 

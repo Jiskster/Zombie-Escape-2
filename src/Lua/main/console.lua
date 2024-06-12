@@ -7,6 +7,13 @@ ZE2.survinvtics = CV_RegisterVar({
 	flags = CV_NETVAR,
 })
 
+ZE2.instantinfection = CV_RegisterVar({
+	name = "z_instantinfection",
+	defaultvalue = "On",
+	PossibleValue = CV_OnOff,
+	flags = CV_NETVAR,
+})
+
 ZE2.server_intermissionmusic = CV_RegisterVar({
 	name = "server_intermissionmusic",
 	defaultvalue = "Off",

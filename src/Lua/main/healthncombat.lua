@@ -49,6 +49,8 @@ function ZE2.LimitMobjHealth(mobj)
 end
 
 function ZE2.KillMobj(mo, inf, src, damagetype)
+	local killing = true
+
 	if mo.player and mo.player.valid then
 		local player = mo.player 
 		local ztype = player["ze2_info"].zombie_type
@@ -64,9 +66,19 @@ function ZE2.KillMobj(mo, inf, src, damagetype)
 				killer = src
 			end
 			
+			if ZE2.instantinfection.value then
+				killing = false
+				
+				ZE2.ZombifyPlayer(player)
+				ZE2.PlayInfectionSound(player)
+				player["ze2_info"].weapondelay = 3*TICRATE -- To prevent a chain effect when defending.
+			end
+			
 			if killer then
 				ZE2:QueuePlayerRubies(killer.player, ruby_award)
-				CONS_Printf(killer.player, "\x85+"..ruby_award.." rubies gained from killing a survivor!")
+				print("\x84"..player.name.." \x83\has been infected by \x85"..killer.player.name)
+				
+				CONS_Printf(killer.player, "\x85+"..ruby_award.." rubies gained from infected a survivor!")
 			end
 		elseif team == 2 then
 			if ztype and ZE2.ZombieConfig[ztype] and ZE2.ZombieConfig[ztype].killaward then
@@ -76,7 +88,9 @@ function ZE2.KillMobj(mo, inf, src, damagetype)
 		end
 	end
 	
-	P_KillMobj(mo, inf, src, damagetype)
+	if killing then
+		P_KillMobj(mo, inf, src, damagetype)
+	end
 end
 
 -- Always return false
