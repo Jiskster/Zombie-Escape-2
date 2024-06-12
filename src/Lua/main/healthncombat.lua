@@ -58,9 +58,9 @@ function ZE2.KillMobj(mo, inf, src, damagetype)
 		if team == 1 then
 			local killer
 			
-			if inf.player and inf.player.valid then
+			if inf and inf.player and inf.player.valid then
 				killer = inf
-			elseif src.player and src.player.valid then
+			elseif src and src.player and src.player.valid then
 				killer = src
 			end
 			
