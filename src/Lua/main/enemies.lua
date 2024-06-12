@@ -67,7 +67,7 @@ mobjinfo[MT_GOLDBUZZ].npc_spawnhealth = {3,8}
 mobjinfo[MT_GOLDBUZZ].npc_name_color = SKINCOLOR_GOLD
 mobjinfo[MT_GOLDBUZZ].rubydrop = {1,3}
 mobjinfo[MT_GOLDBUZZ].painsound = sfx_dmpain
-mobjinfo[MT_GOLDBUZZ].forcedamage = 10
+mobjinfo[MT_GOLDBUZZ].forcedamage = 4
 mobjinfo[MT_GOLDBUZZ].forceknockback = 10*FU
 mobjinfo[MT_GOLDBUZZ].relativeknockback = true
 
@@ -76,7 +76,7 @@ mobjinfo[MT_REDBUZZ].npc_spawnhealth = {10,17}
 mobjinfo[MT_REDBUZZ].npc_name_color = SKINCOLOR_RED
 mobjinfo[MT_REDBUZZ].rubydrop = {2,4}
 mobjinfo[MT_REDBUZZ].painsound = sfx_dmpain
-mobjinfo[MT_REDBUZZ].forcedamage = 15
+mobjinfo[MT_REDBUZZ].forcedamage = 6
 mobjinfo[MT_REDBUZZ].forceknockback = 15*FU
 mobjinfo[MT_REDBUZZ].relativeknockback = true
 
