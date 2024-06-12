@@ -524,13 +524,16 @@ local function poketak2()
 	ZE2.CurrentZombieCheckpoint = 2
 
 	for player in players.iterate
-		if (player["ze2_info"].team == 1) then
-			P_SetOrigin(player.mo, -16096*FRACUNIT, -4960*FRACUNIT, 0*FRACUNIT)
-		end
-		if (player["ze2_info"].team == 2) then
-			P_SetOrigin(player.mo, -12800*FRACUNIT, -832*FRACUNIT, 0*FRACUNIT)
+		if player.mo and player.mo.valid then
+			if (player["ze2_info"].team == 1) then
+				P_SetOrigin(player.mo, -16096*FRACUNIT, -4960*FRACUNIT, 0*FRACUNIT)
+			end
+			if (player["ze2_info"].team == 2) then
+				P_SetOrigin(player.mo, -12800*FRACUNIT, -832*FRACUNIT, 0*FRACUNIT)
+			end
 		end
 	end
+	
 	COTPPreZombieTimer.active = true
 end
 
