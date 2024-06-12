@@ -66,8 +66,6 @@ function ZE2.KillMobj(mo, inf, src, damagetype)
 				killer = src
 			end
 			
-
-			
 			if killer then
 				if ZE2.instantinfection.value then
 					killing = false
