@@ -17,5 +17,5 @@ ZE2:CreateItem("Negative Ring",  {
 		mo.momz = $/4
 		mo.scale = $*2
 	end,
-	price = 210,
+	--price = 210,
 })
