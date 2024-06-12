@@ -378,146 +378,143 @@ COM_AddCommand("z_changeztype", function(player, new_ztype)
 	end
 end, 1)
 
-addHook("PreThinkFrame", function()
-	if gametype ~= GT_ZE2 then return end
-	for player in players.iterate do
-		local cmd = player.cmd
+addHook("PlayerThink", function(player)
+	local cmd = player.cmd
 		
-		if player["ze2_info"] == nil then
-			player["ze2_info"] = ZE2:Copy(ZE2["default_ze2_info"])
+	if player["ze2_info"] == nil then
+		player["ze2_info"] = ZE2:Copy(ZE2["default_ze2_info"])
+	end
+	
+	if not player["ze2_info"].zombie_inventory or not player["ze2_info"].zombie_inventory_limit then
+		ZE2.SetZCinventory(player)
+	end
+	
+	if player.playerstate ~= PST_DEAD then
+		if #ZE2:FetchInventory(player) > ZE2:FetchInventoryLimit(player) then
+			table.remove(ZE2:FetchInventory(player),#ZE2:FetchInventory(player))
 		end
-		
-		if not player["ze2_info"].zombie_inventory or not player["ze2_info"].zombie_inventory_limit then
-			ZE2.SetZCinventory(player)
-		end
-		
-		if player.playerstate ~= PST_DEAD then
-			if #ZE2:FetchInventory(player) > ZE2:FetchInventoryLimit(player) then
-				table.remove(ZE2:FetchInventory(player),#ZE2:FetchInventory(player))
-			end
 
-			if player["ze2_info"].inventory_selection > ZE2:FetchInventoryLimit(player) then
-				player["ze2_info"].inventory_selection = ZE2:FetchInventoryLimit(player)
-			end
-		end
-		
-		if player and not player.mo then continue end
-		
-		-- decrement
-		if player["ze2_info"].weapondelay then
-			player["ze2_info"].weapondelay = $ - 1
-		end
-		
-		if player["ze2_info"].reload and ZE2:FetchInventorySlot(player) then
-			local iteminfo = ZE2:FetchInventorySlot(player)
-			
-			player["ze2_info"].reload = $ - 1
-			
-			if player["ze2_info"].reload <= 0 then
-				iteminfo.ammo = iteminfo.max_ammo
-				S_StartSound(player.mo, sfx_z_rel2)
-			end
-		end
-		
-		if not ZE2.game_ended and not player["ze2_info"].ghostmode then 
-			if not player["ze2_info"].charselect_choosing then
-				-- Next Weapon
-				ZE2:TryBooleanAction(player, {
-					condition = cmd.buttons & BT_WEAPONPREV,
-					var = "weaponprev_pressed",
-					action = function()
-						if player["ze2_info"].inventory_selection - 1 <= 0 then
-							player["ze2_info"].inventory_selection = ZE2:FetchInventoryLimit(player)
-						else
-							player["ze2_info"].inventory_selection = $ - 1
-						end
-						
-						S_StartSound(nil,sfx_mnu1a,player)
-						
-						player["ze2_info"].reload = 0
-					end
-				}, true)
-
-				-- Previous Weapon
-				ZE2:TryBooleanAction(player, {
-					condition = cmd.buttons & BT_WEAPONNEXT,
-					var = "weaponnext_pressed",
-					action = function()
-						if player["ze2_info"].inventory_selection + 1 > ZE2:FetchInventoryLimit(player) then
-							player["ze2_info"].inventory_selection = 1
-						else
-							player["ze2_info"].inventory_selection = $ + 1
-						end
-
-						S_StartSound(nil,sfx_mnu1a,player)
-						
-						player["ze2_info"].reload = 0
-					end
-				}, true)
-				
-				-- Reload
-				ZE2:TryBooleanAction(player, {
-					condition = cmd.buttons & BT_FIRENORMAL,
-					var = "reload_pressed",
-					action = function()
-						ZE2.DoPlayerReload(player)
-					end
-				}, true)
-				
-				-- Fire
-				ZE2:TryBooleanAction(player, {
-					condition = cmd.buttons & BT_ATTACK,
-					var = "fire_pressed",
-					action = function()
-						player["ze2_info"].await_fire = true
-					end
-				}, true)
-			end
-			
-			-- try shoot
-			if (cmd.buttons & BT_ATTACK) and not player["ze2_info"].weapondelay and not player["ze2_info"].reload
-			and ZE2:FetchInventorySlot(player) and player.playerstate ~= PST_DEAD and not player["ze2_info"].shop_open 
-			and (player["ze2_info"].await_fire or ZE2:FetchInventorySlot(player).autouse) then	
-				local iteminfo = ZE2:FetchInventorySlot(player)
-				
-				-- If theres no ammo, dont fire. 
-				-- (Items with no ammo property can pass this check 100%)
-				if not (iteminfo.ammo ~= nil and iteminfo.ammo == 0) then
-					ZE2.DoPlayerFire(player, iteminfo)
-
-					player["ze2_info"].weapondelay = iteminfo.firerate
-					
-					player["ze2_info"].await_fire = false
-					
-					if iteminfo.count ~= nil and iteminfo.limited == true then
-						if iteminfo.count > 0  then
-							iteminfo.count = $ - 1
-						end
-					end
-				end
-				
-				if iteminfo.ammo ~= nil then
-					if iteminfo.ammo > 0 then
-						iteminfo.ammo = $ - 1
-					end
-					
-					-- Auto Reload
-					if iteminfo.ammo <= 0 and not player["ze2_info"].reload then
-						ZE2.DoPlayerReload(player)
-					end
-				end
-			end	
-			
-			-- clear items below 0 count
-			if ZE2:FetchInventoryLimit(player) and type(ZE2:FetchInventoryLimit(player)) == "number" then
-				for i=1,ZE2:FetchInventoryLimit(player) do
-					if ZE2:FetchInventory(player)[i] then
-						if ZE2:FetchInventory(player)[i].limited and ZE2:FetchInventory(player)[i].count <= 0 then
-							table.remove(ZE2:FetchInventory(player),i)
-						end
-					end
-				end
-			end
+		if player["ze2_info"].inventory_selection > ZE2:FetchInventoryLimit(player) then
+			player["ze2_info"].inventory_selection = ZE2:FetchInventoryLimit(player)
 		end
 	end
+	
+	if player and not player.mo then return end
+	
+	-- decrement
+	if player["ze2_info"].weapondelay then
+		player["ze2_info"].weapondelay = $ - 1
+	end
+	
+	if player["ze2_info"].reload and ZE2:FetchInventorySlot(player) then
+		local iteminfo = ZE2:FetchInventorySlot(player)
+		
+		player["ze2_info"].reload = $ - 1
+		
+		if player["ze2_info"].reload <= 0 then
+			iteminfo.ammo = iteminfo.max_ammo
+			S_StartSound(player.mo, sfx_z_rel2)
+		end
+	end
+	
+	if not ZE2.game_ended and not player["ze2_info"].ghostmode then 
+		if not player["ze2_info"].charselect_choosing then
+			-- Next Weapon
+			ZE2:TryBooleanAction(player, {
+				condition = cmd.buttons & BT_WEAPONPREV,
+				var = "weaponprev_pressed",
+				action = function()
+					if player["ze2_info"].inventory_selection - 1 <= 0 then
+						player["ze2_info"].inventory_selection = ZE2:FetchInventoryLimit(player)
+					else
+						player["ze2_info"].inventory_selection = $ - 1
+					end
+					
+					S_StartSound(nil,sfx_mnu1a,player)
+					
+					player["ze2_info"].reload = 0
+				end
+			}, true)
+
+			-- Previous Weapon
+			ZE2:TryBooleanAction(player, {
+				condition = cmd.buttons & BT_WEAPONNEXT,
+				var = "weaponnext_pressed",
+				action = function()
+					if player["ze2_info"].inventory_selection + 1 > ZE2:FetchInventoryLimit(player) then
+						player["ze2_info"].inventory_selection = 1
+					else
+						player["ze2_info"].inventory_selection = $ + 1
+					end
+
+					S_StartSound(nil,sfx_mnu1a,player)
+					
+					player["ze2_info"].reload = 0
+				end
+			}, true)
+			
+			-- Reload
+			ZE2:TryBooleanAction(player, {
+				condition = cmd.buttons & BT_FIRENORMAL,
+				var = "reload_pressed",
+				action = function()
+					ZE2.DoPlayerReload(player)
+				end
+			}, true)
+			
+			-- Fire
+			ZE2:TryBooleanAction(player, {
+				condition = cmd.buttons & BT_ATTACK,
+				var = "fire_pressed",
+				action = function()
+					player["ze2_info"].await_fire = true
+				end
+			}, true)
+		end
+		
+		-- try shoot
+		if (cmd.buttons & BT_ATTACK) and not player["ze2_info"].weapondelay and not player["ze2_info"].reload
+		and ZE2:FetchInventorySlot(player) and player.playerstate ~= PST_DEAD and not player["ze2_info"].shop_open 
+		and (player["ze2_info"].await_fire or ZE2:FetchInventorySlot(player).autouse) then	
+			local iteminfo = ZE2:FetchInventorySlot(player)
+			
+			-- If theres no ammo, dont fire. 
+			-- (Items with no ammo property can pass this check 100%)
+			if not (iteminfo.ammo ~= nil and iteminfo.ammo == 0) then
+				ZE2.DoPlayerFire(player, iteminfo)
+
+				player["ze2_info"].weapondelay = iteminfo.firerate
+				
+				player["ze2_info"].await_fire = false
+				
+				if iteminfo.count ~= nil and iteminfo.limited == true then
+					if iteminfo.count > 0  then
+						iteminfo.count = $ - 1
+					end
+				end
+			end
+			
+			if iteminfo.ammo ~= nil then
+				if iteminfo.ammo > 0 then
+					iteminfo.ammo = $ - 1
+				end
+				
+				-- Auto Reload
+				if iteminfo.ammo <= 0 and not player["ze2_info"].reload then
+					ZE2.DoPlayerReload(player)
+				end
+			end
+		end	
+		
+		-- clear items below 0 count
+		if ZE2:FetchInventoryLimit(player) and type(ZE2:FetchInventoryLimit(player)) == "number" then
+			for i=1,ZE2:FetchInventoryLimit(player) do
+				if ZE2:FetchInventory(player)[i] then
+					if ZE2:FetchInventory(player)[i].limited and ZE2:FetchInventory(player)[i].count <= 0 then
+						table.remove(ZE2:FetchInventory(player),i)
+					end
+				end
+			end
+		end
+	end	
 end)
