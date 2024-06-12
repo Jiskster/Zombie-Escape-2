@@ -206,6 +206,14 @@ addHook("MobjThinker", function(mobj)
 	searchBlockmap("objects", function(refmobj, foundmobj)
 		if foundmobj and abs(mobj.z-foundmobj.z) < 300*FU and foundmobj.valid and foundmobj.player then
 			if foundmobj.player["ze2_info"].team == 1 then
+				if foundmobj.player.spectator then
+					return
+				end
+				
+				if foundmobj.player["ze2_info"].rubies == foundmobj.player["ze2_info"].rubycap then
+					return
+				end
+			
 				if not pmofound then
 					pmofound = foundmobj
 				else
