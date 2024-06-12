@@ -66,15 +66,17 @@ function ZE2.KillMobj(mo, inf, src, damagetype)
 				killer = src
 			end
 			
-			if ZE2.instantinfection.value then
-				killing = false
-				
-				ZE2.ZombifyPlayer(player)
-				ZE2.PlayInfectionSound(player)
-				player["ze2_info"].weapondelay = 3*TICRATE -- To prevent a chain effect when defending.
-			end
+
 			
 			if killer then
+				if ZE2.instantinfection.value then
+					killing = false
+					
+					ZE2.ZombifyPlayer(player)
+					ZE2.PlayInfectionSound(player)
+					player["ze2_info"].weapondelay = 3*TICRATE -- To prevent a chain effect when defending.
+				end
+			
 				ZE2:QueuePlayerRubies(killer.player, ruby_award)
 				print("\x84"..player.name.." \x83\has been infected by \x85"..killer.player.name)
 				
