@@ -552,8 +552,10 @@ local function giygasfn()
 	ZE2.CurrentZombieCheckpoint = 3
 
 	for player in players.iterate
-		if (player["ze2_info"].team == 2) then
-			P_SetOrigin(player.mo, -16096*FRACUNIT, -4960*FRACUNIT, 0*FRACUNIT)
+		if player.mo and player.mo.valid then
+			if (player["ze2_info"].team == 2) then
+				P_SetOrigin(player.mo, -16096*FRACUNIT, -4960*FRACUNIT, 0*FRACUNIT)
+			end
 		end
 	end
 	COTPGiygasTimer.active = true
@@ -573,7 +575,8 @@ local function prayer18()
 
 	chatprint("\x84\ 27600 HP of damage to Giygas!")
 	S_StartSound(player, sfx_smaash)
-		for player in players.iterate
+	for player in players.iterate
+		if player.mo and player.mo.valid then
 			if (player["ze2_info"].team == 1) then
 				P_SetOrigin(player.mo, 11712*FRACUNIT, 6656*FRACUNIT, 0*FRACUNIT)
 			end
@@ -581,6 +584,7 @@ local function prayer18()
 				P_SetOrigin(player.mo, -12800*FRACUNIT, -832*FRACUNIT, 0*FRACUNIT)
 			end
 		end
+	end
 end
 
 addHook("LinedefExecute", ebspoilr, "EBSPOI")
