@@ -1,5 +1,5 @@
-local raildmg = 60
-local railkb = 160*FRACUNIT
+local raildmg = 150
+local railkb = 250*FRACUNIT
 
 freeslot("MT_ZE2_RAILSHOT")
 
@@ -99,7 +99,7 @@ ZE2:CreateItem("Rail Ring", {
 	knockback = railkb,
 	damage = raildmg,
 	price = 250,
-	ammo = 2,
+	ammo = 1,
 	reload_time = 7*TICRATE,
 	ontrigger = trigger_func,
 })
