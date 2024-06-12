@@ -83,8 +83,10 @@ local function prayerr5()
 	chatprint("\x84\Health Restored!")
 	S_StartSound(player, sfx_ebtext)
 	for player in players.iterate do
-		if (player["ze2_info"].team == 1) then
-			player.mo.health = player.mo.maxhealth
+		if player.mo and player.mo.valid then
+			if (player["ze2_info"].team == 1) then
+				player.mo.health = player.mo.maxhealth
+			end
 		end
 	end
 end
