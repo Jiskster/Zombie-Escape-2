@@ -20,8 +20,8 @@ mobjinfo[MT_INSTABURST] = {
 	doomednum = -1,
 	spawnhealth = 1,
 	spawnstate = S_INSTABURST,
-	radius = 72*FRACUNIT,
-	height = 16*FRACUNIT,
+	radius = 96*FRACUNIT,
+	height = 96*FRACUNIT,
 	flags = MF_NOGRAVITY|MF_NOBLOCKMAP
 }
 
@@ -45,29 +45,36 @@ ZE2:CreateItem("Insta Burst", {
 	sound = sfx_zish1,
 	damage = 20,
 	ontrigger = function(player)
-		local brange = 512*FU
-		local range = 185*FU
 		local instaburst = P_SpawnMobjFromMobj(player.mo, 0, 0, 0, MT_INSTABURST)
 		
 		instaburst.target = player.mo
 		instaburst.spritexscale = $*2
 		instaburst.spriteyscale = $*2
-		instaburst.scale = $*3/2
+		instaburst.mobjteam = player["ze2_info"].team
 		instaburst.forcedamage = ZE2:FetchInventorySlot(player).damage
-		
-		searchBlockmap("objects", function(refmobj,foundmobj)
-			if not L_ZCollide(foundmobj,instaburst) then 
-				return false
-			end
-			
-			if (foundmobj.valid and ((foundmobj.flags & (MF_SHOOTABLE)) or foundmobj.player)) then
-				if R_PointToDist2(foundmobj.x, foundmobj.y, instaburst.x, instaburst.y) < range then
-					P_DamageMobj(foundmobj, instaburst, instaburst.target, instaburst.forcedamage)
-				end
-			end
-		end, 
-		instaburst, 
-		instaburst.x-brange,instaburst.x+brange,
-		instaburst.y-brange,instaburst.y+brange)
+		instaburst.ib_hitlist = {}
 	end,
 })
+
+addHook("MobjMoveCollide", function(instaburst, mobj)
+	if (mobj.valid and (mobj.flags & MF_SHOOTABLE) or mobj.player) and instaburst.ib_hitlist then
+		local range = 185*FU
+		local alreadyhit = false
+		
+		if not ZE2.ZCollide(mobj, instaburst) then 
+			return
+		end
+		
+		-- Check if you hit this individual before in another frame
+		for i,v in ipairs(instaburst.ib_hitlist) do
+			if v and v.valid and v == mobj then
+				alreadyhit = true
+			end
+		end
+		
+		if R_PointToDist2(mobj.x, mobj.y, instaburst.x, instaburst.y) < range and not alreadyhit then
+			P_DamageMobj(mobj, instaburst, instaburst.target, instaburst.forcedamage)
+			table.insert(instaburst.ib_hitlist, mobj)
+		end
+	end
+end, MT_INSTABURST)
