@@ -8,6 +8,7 @@ dofile "libraries/countingplayers.lua"
 dofile "libraries/getcharacterlist.lua"
 dofile "libraries/itemlib.lua"
 dofile "libraries/mtimeconv.lua"
+dofile "libraries/sglib.lua" -- https://github.com/GenericHeroGuy/ringracers-scripts
 dofile "libraries/basexx.lua" -- https://github.com/aiq/basexx
 
 // ITEMS
@@ -63,6 +64,7 @@ dofile "hud/damagefade.lua"
 dofile "hud/mapinfo_animation.lua"
 dofile "hud/toggle.lua"
 dofile "hud/intermission.lua"
+dofile "hud/debug.lua"
 
 dofile "hooks/gamelogic.lua"
 dofile "hooks/hud.lua"
