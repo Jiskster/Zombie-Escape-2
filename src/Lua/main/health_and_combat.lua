@@ -273,6 +273,103 @@ addHook("MobjSpawn", function(mobj)
 	end
 end)
 
+-- A P_SPMAngle clone to fit the needs of ZE2
+function ZE2.SpawnMissile(m_table)
+	local source = m_table.source
+	local mobj_type = m_table.mobj_type
+	local angle = m_table.angle
+	local allow_aim = m_table.allow_aim
+	local flags2 = m_table.flags2
+	local slope = 0
+	local x = source.x
+	local y = source.y
+	local z -- Initialize later to calculate for MFE_VERTICALFLIP
+	local th -- Object that is shot.
+	local speed
+	
+	if allow_aim then
+		slope = AngleFixed(source.player.aiming)
+	end
+	
+	if source.eflags & MFE_VERTICALFLIP then
+		z = source.z + 2*source.height/3 - FixedMul(mobjinfo[mobj_type].height, source.scale)
+	else
+		z = source.z + source.height/3
+	end
+	
+	th = P_SpawnMobj(x, y, z, mobj_type)
+	if not (th and th.valid) then
+		return
+	end
+	
+	if source.eflags & MFE_VERTICALFLIP then
+		th.flags2 = $ | MF2_OBJECTFLIP
+	end
+
+	P_SetScale(th, source.scale)
+
+	if flags2 then
+		th.flags2 = $ | flags2
+	end
+
+	if (th.info.seesound and not (th.flags2 & MF2_RAILRING)) then
+		S_StartSound(source, th.info.seesound)
+	end
+
+	th.target = source
+
+	speed = th.info.speed
+	if source.player and source.player.charability == CA_FLY then
+		speed = FixedMul(speed, 3*FRACUNIT/2)
+	end
+
+	th.angle = angle
+	
+	th.momx = FixedMul(speed, cos(angle))
+	th.momy = FixedMul(speed, sin(angle))
+	
+	--th.momx = P_ReturnThrustX(th, angle, speed)
+	--th.momy = P_ReturnThrustY(th, angle, speed)
+	
+	if allow_aim and source.player.aiming then
+		th.momx = FixedMul(th.momx, cos(AngleFixed(source.player.aiming)/FRACUNIT))
+		th.momy = FixedMul(th.momy, cos(AngleFixed(source.player.aiming)/FRACUNIT))
+	end
+
+	th.momz = FixedMul(speed, slope/48)
+	
+	th.momx = FixedMul(th.momx, th.scale)
+	th.momy = FixedMul(th.momy, th.scale)
+	th.momz = FixedMul(th.momz, th.scale)
+	
+	slope = ZE2.CheckMissileSpawn(th)
+	
+	if slope then
+		return th
+	else
+		return
+	end
+end
+
+
+function ZE2.CheckMissileSpawn(th)
+	if not (th.flags & MF_GRENADEBOUNCE) then -- From the Original: "hack: bad! should be a flag.""
+		P_SetOrigin(th, th.x + th.momx/2, th.y, th.z)
+		P_SetOrigin(th, th.x, th.y + th.momy/2, th.z)
+		P_SetOrigin(th, th.x, th.y, th.z + th.momz/2)
+	end
+
+	if not P_TryMove(th, th.x, th.y, true) then
+		if (th and th.valid) then
+			P_ExplodeMissile(th)
+		end
+		return false
+	end
+
+	return true
+end
+
+
 function ZE2.DoPlayerFire(player, iteminfo)
 	local ring
 	
@@ -285,7 +382,16 @@ function ZE2.DoPlayerFire(player, iteminfo)
 	end
 
 	if iteminfo.object then
-		ring = P_SPMAngle(player.mo, iteminfo.object, player.mo.angle, 1, iteminfo.flags2)
+		local missile_def = {
+			source = player.mo, 
+			mobj_type = iteminfo.object,
+			angle = player.mo.angle,
+			allow_aim = true,
+			flags2 = iteminfo.flags2,
+		}
+		
+		ring = ZE2.SpawnMissile(missile_def)
+		-- [LEGACY]: ring = P_SPMAngle(player.mo, iteminfo.object, player.mo.angle, 1, iteminfo.flags2)
 	end
 	
 	if ZE2.ItemPresets[iteminfo.item_id].ontrigger and ZE2.ItemPresets[iteminfo.item_id].ontrigger(player,iteminfo) == true then

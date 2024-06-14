@@ -40,7 +40,7 @@ dofile "main/characterselect_logic.lua"
 dofile "main/characterconfigs.lua"
 
 dofile "main/console.lua"
-dofile "main/healthncombat.lua" -- main stuff 
+dofile "main/health_and_combat.lua" -- main stuff 
 
 dofile "main/enemies.lua"
 dofile "main/intermission.lua"

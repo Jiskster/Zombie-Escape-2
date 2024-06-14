@@ -5,9 +5,9 @@ ZE2:CreateItem("Automatic Ring",  {
 	color = SKINCOLOR_GREEN,
 	autouse = true,
 	damage = 8,
-	knockback = 30*FRACUNIT,
+	knockback = 10*FRACUNIT,
 	flags2 = MF2_AUTOMATIC,
-	ammo = 25,
-	reload_time = TICRATE + TICRATE/2,
+	ammo = 30,
+	reload_time = TICRATE*3,
 	price = 50,
 })
