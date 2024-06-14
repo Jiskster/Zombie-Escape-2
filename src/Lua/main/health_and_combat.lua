@@ -381,7 +381,6 @@ function ZE2.CheckMissileSpawn(th)
 		end
 		return false
 	end
-
 	return true
 end
 
