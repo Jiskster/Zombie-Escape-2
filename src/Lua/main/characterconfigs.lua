@@ -236,11 +236,12 @@ end
 
 ZE2.AddConfig("sonic", {
 	normalspeed = 14 * FRACUNIT,
-	health = 55,
+	health = 45,
 	charability = CA_JUMPTHOK,
 	charability2 = CA2_NONE,
-	jumpfactor = 17 * FRACUNIT / 19,
-	actionspd = 19*FRACUNIT,
+	jumpfactor = 15 * FRACUNIT / 19,
+	actionspd = 8*FRACUNIT,
+	sprintboost = 12 * FRACUNIT,
 	desc1 = "Fast hedgehog born to speed.",
 	desc2 = "Has Low HP, and High Speed",
 	desc3 = "Are you up for the challenge?"
