@@ -288,7 +288,7 @@ function ZE2.SpawnMissile(m_table)
 	local speed
 	
 	if allow_aim then
-		slope = AngleFixed(source.player.aiming)
+		slope = sin(source.player.aiming)
 	end
 	
 	if source.eflags & MFE_VERTICALFLIP then
@@ -331,12 +331,12 @@ function ZE2.SpawnMissile(m_table)
 	--th.momx = P_ReturnThrustX(th, angle, speed)
 	--th.momy = P_ReturnThrustY(th, angle, speed)
 	
-	if allow_aim and source.player.aiming then
-		th.momx = FixedMul(th.momx, cos(AngleFixed(source.player.aiming)/FRACUNIT))
-		th.momy = FixedMul(th.momy, cos(AngleFixed(source.player.aiming)/FRACUNIT))
+	if allow_aim then
+		th.momx = FixedMul(th.momx, cos(source.player.aiming))
+		th.momy = FixedMul(th.momy, cos(source.player.aiming))
 	end
 
-	th.momz = FixedMul(speed, slope/48)
+	th.momz = FixedMul(speed, slope)
 	
 	th.momx = FixedMul(th.momx, th.scale)
 	th.momy = FixedMul(th.momy, th.scale)
