@@ -280,6 +280,7 @@ function ZE2.SpawnMissile(m_table)
 	local angle = m_table.angle
 	local allow_aim = m_table.allow_aim
 	local flags2 = m_table.flags2
+	local iteminfo = m_table.iteminfo
 	local slope = 0
 	local x = source.x
 	local y = source.y
@@ -300,6 +301,21 @@ function ZE2.SpawnMissile(m_table)
 	th = P_SpawnMobj(x, y, z, mobj_type)
 	if not (th and th.valid) then
 		return
+	end
+	
+	if iteminfo then 
+		local temp_iteminfo = ZE2:Copy(iteminfo)
+
+		-- destroy functions
+		temp_iteminfo.onspawn = nil
+		temp_iteminfo.ontrigger = nil
+		temp_iteminfo.onhit = nil
+		
+		th.iteminfo = temp_iteminfo
+	end
+	
+	if source.player then
+		th.mobjteam = tonumber(source.player["ze2_info"].team)
 	end
 	
 	if source.eflags & MFE_VERTICALFLIP then
@@ -387,6 +403,7 @@ function ZE2.DoPlayerFire(player, iteminfo)
 			mobj_type = iteminfo.object,
 			angle = player.mo.angle,
 			allow_aim = true,
+			iteminfo = iteminfo,
 			flags2 = iteminfo.flags2,
 		}
 		
@@ -412,8 +429,6 @@ function ZE2.DoPlayerFire(player, iteminfo)
 	if ring then
 		ring.shotbyplayer = true
 		
-		ring.mobjteam = tonumber(player["ze2_info"].team)
-		
 		if iteminfo.color ~= nil then
 			ring.color = iteminfo.color
 		end 
@@ -434,6 +449,7 @@ function ZE2.DoPlayerFire(player, iteminfo)
 			ZE2.ItemPresets[iteminfo.item_id].onspawn(ring.target,ring,iteminfo)
 		end
 		
+		/*
 		local temp_iteminfo = ZE2:Copy(iteminfo)
 
 		-- destroy functions on fire just in case
@@ -442,6 +458,7 @@ function ZE2.DoPlayerFire(player, iteminfo)
 		temp_iteminfo.onhit = nil
 
 		ring.iteminfo = temp_iteminfo
+		*/
 	end
 end
 
