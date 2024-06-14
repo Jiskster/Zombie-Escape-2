@@ -227,10 +227,15 @@ ZE2.SetZCinventory = function(player)
 	end
 end
 
-ZE2.AddConfig = function(charname, table)
-	ZE2.CharacterConfig[charname] = table
-	ZE2.CharacterConfig[charname].sprintboost = $ or ZE2.CharacterConfig["default"].sprintboost
+ZE2.AddConfig = function(charname, input_table)
+	if ZE2.CharacterConfig[charname] then
+		print("Failed to add character: "..charname.." (Character already registered)")
+	end
 
+	ZE2.CharacterConfig[charname] = input_table
+	ZE2.CharacterConfig[charname].sprintboost = $ or ZE2.CharacterConfig["default"].sprintboost
+	table.insert(ZE2.registered_skins, charname)
+	
 	print("Added chararacter config: ".. charname)
 end
 
