@@ -1,5 +1,5 @@
 ZE2.debughud = function(v, player, camera)
-	return 
+	if true then return end
 	
 	if gametype ~= GT_ZE2 then return end
 	if not player.mo then return end
