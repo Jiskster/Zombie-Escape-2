@@ -131,7 +131,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	end
 	
 	if inf then
-		if inf and inf.info.forcedamage then
+		if inf.info.forcedamage then
 			dmg = inf.info.forcedamage
 		end
 		
