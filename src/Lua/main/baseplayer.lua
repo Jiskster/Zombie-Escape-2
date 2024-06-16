@@ -266,8 +266,14 @@ ZE2.ResetPlayer = function(player, choosenewztype)
 	end
 end
 
-ZE2.PlayInfectionSound = function(player)
-	local infection_sounds = {sfx_inf1,sfx_inf2}
+ZE2.PlayZombieSound = function(player, being_infected)
+	local infection_sounds
+	
+	if not being_infected then
+		infection_sounds = {sfx_inf1, sfx_inf2}
+	else
+		infection_sounds = {sfx_inf3, sfx_inf4}
+	end
 	
 	if player.mo and player.mo.valid then
 		local soundrng = P_RandomRange(1,#infection_sounds)
@@ -320,7 +326,7 @@ addHook("PlayerSpawn", function(player)
 	if ZE2.instantinfection.value then return end
 
 	if player.mo and player.mo.valid and player["ze2_info"].team == 2 and ZE2.round_active and leveltime then
-		ZE2.PlayInfectionSound(player)
+		ZE2.PlayZombieSound(player)
 	end
 end)
 

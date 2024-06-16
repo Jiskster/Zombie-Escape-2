@@ -71,7 +71,7 @@ function ZE2.KillMobj(mo, inf, src, damagetype)
 					killing = false
 					
 					ZE2.ZombifyPlayer(player)
-					ZE2.PlayInfectionSound(player)
+					ZE2.PlayZombieSound(player, true)
 					player["ze2_info"].weapondelay = 3*TICRATE -- To prevent a chain effect when defending.
 				end
 			

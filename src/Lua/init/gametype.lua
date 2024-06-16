@@ -8,12 +8,23 @@ rawset(_G, "XSLINGER", {});
 freeslot("sfx_zdi1","sfx_zdi2","sfx_zish1","sfx_zpa1","sfx_zpa2")
 freeslot("sfx_rstart", "sfx_secret", "sfx_cleva1")
 freeslot("sfx_eatapl", "sfx_oyahx", "sfx_mnu1a")
-freeslot("sfx_inf1","sfx_inf2","sfx_pipe")
+freeslot("sfx_inf1", "sfx_inf2", "sfx_inf3", "sfx_inf4", "sfx_pipe")
 
 freeslot("sfx_z_rel1", "sfx_z_rel2")
 freeslot("sfx_z20s", "sfx_cone", "sfx_ctwo", "sfx_cthr", "sfx_cfou", "sfx_cfiv", "sfx_csix", "sfx_csev", "sfx_ceig", "sfx_cnin", "sfx_cten")
 
 freeslot("sfx_oldrad")
+
+local zombiesfxinfo = {
+        singular = false,
+        priority = 128,
+        flags = SF_X4AWAYSOUND|SF_X8AWAYSOUND|SF_NOMULTIPLESOUND
+}
+
+sfxinfo[sfx_inf1] = zombiesfxinfo
+sfxinfo[sfx_inf2] = zombiesfxinfo
+sfxinfo[sfx_inf3] = zombiesfxinfo
+sfxinfo[sfx_inf4] = zombiesfxinfo
 
 rawset(_G, "ze2_modname", "ze2"); -- For customhud.
 
