@@ -7,11 +7,22 @@ mobjinfo[MT_MIRRORCLONE] = {
     spawnhealth = 1,
     radius = 32*FRACUNIT,
     height = 48*FRACUNIT,
-	flags = MF_SOLID,
+	flags = MF_SOLID|MF_SHOOTABLE,
 }
 
 mobjinfo[MT_MIRRORCLONE].npc_name = "Mirror Clone"
 mobjinfo[MT_MIRRORCLONE].npc_spawnhealth = {100,100}
+
+local function flashpmo(pmo, source)
+	local thok = P_SpawnMobjFromMobj(source,0,0,0,MT_THOK)
+	thok.color = source.color
+	thok.fuse = 17
+	P_FlashPal(pmo.player, 3, 5*TICRATE)
+	P_Thrust(pmo, source.angle, 180*FRACUNIT)
+	S_StartSound(pmo, sfx_bewar2)
+	P_SetScale(thok,thok.scale*3)
+	P_RemoveMobj(source)
+end
 
 ZE2:CreateItem("W's mirror", {
 	icon = "MIRRORIND",
@@ -30,22 +41,66 @@ ZE2:CreateItem("W's mirror", {
 		mirrorclone.alias = player.name
 		mirrorclone.angle = player.mo.angle
 		mirrorclone.forcedamage = ZE2:FetchInventorySlot(player).damage
+		mirrorclone.mobjteam = player["ze2_info"].team
 	end
 })
 
-addHook("MobjCollide", function(mo,pmo)
-	if pmo.player then
-		if pmo.skin == "zzombie" then
-			local thok = P_SpawnMobjFromMobj(mo,0,0,0,MT_THOK)
-			thok.color = mo.color
-			thok.fuse = 17
-			P_FlashPal(pmo.player, 3, 5*TICRATE)
-			P_Thrust(pmo, mo.angle, 180*FRACUNIT)
-			S_StartSound(pmo, sfx_bewar2)
-			P_SetScale(thok,thok.scale*3)
-			P_RemoveMobj(mo)
-		else
-			return false
+addHook("MobjCollide", function(mo,toucher)
+			if toucher.player["ze2_info"].team == mo.mobjteam then
+				return false
+			else
+				flashpmo(toucher, mo)
+			end
+		elseif toucher.mobjteam and (toucher.flags & MF_MISSILE) then
+			if toucher.mobjteam == mo.mobjteam then
+				return false
+			end
 		end
+	end
+end, MT_MIRRORCLONE)
+
+addHook("MobjThinker", function(mo)
+	if not (mo and mo.valid) then return end
+	
+	if mo.mirrorclone_flashing then
+		mo.flags2 = $ ^^ MF2_DONTDRAW
+		
+		mo.mirrorclone_flashing = $ - 1
+		
+		if not mo.mirrorclone_flashing then
+			mo.flags2 = $ & ~MF2_DONTDRAW
+		end
+	end
+end, MT_MIRRORCLONE)
+
+addHook("ShouldDamage", function(mo, inf, src)
+	local attacker
+	
+	if not mo.valid then return end
+	if mo.mirrorclone_flashing then return false end
+	
+	if inf and inf.player then
+		attacker = inf
+	elseif src and src.player then
+		attacker = src
+	end
+	
+	if attacker then
+		mo.mirrorclone_flashing = ZE2.survinvtics.value
+		S_StartSound(mo, sfx_s3kb9)
+	end
+end, MT_MIRRORCLONE)
+
+addHook("MobjDeath", function(mo, inf, src)
+	local attacker
+	
+	if inf and inf.player then
+		attacker = inf
+	elseif src and src.player then
+		attacker = src
+	end
+	
+	if attacker then
+		flashpmo(attacker, mo)
 	end
 end, MT_MIRRORCLONE)
