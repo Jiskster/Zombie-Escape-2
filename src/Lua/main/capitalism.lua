@@ -75,7 +75,7 @@ mobjinfo[MT_RUBY_BOX] = {
 	height = 40*FRACUNIT,
 	mass = 100,
 	damage = MT_RUBY_ICON,
-	flags = MF_SOLID|MF_SHOOTABLE|MF_MONITOR
+	flags = MF_SOLID|MF_SHOOTABLE --|MF_MONITOR
 }
 
 mobjinfo[MT_RUBY_ICON] = {
