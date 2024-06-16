@@ -299,7 +299,7 @@ ZE2.init_player = function(player)
 			player["ze2_info"].zombie_type = "normal"
 			
 			if ZE2.round_active and ZE2.PlayerCount() > 1 and leveltime then
-				if P_RandomChance(FRACUNIT/5) and not player["ze2_info"].was_spectating then
+				if P_RandomChance(FRACUNIT/6) and not player["ze2_info"].was_spectating then
 					player["ze2_info"].zombie_type = "alpha"
 				end
 			end
