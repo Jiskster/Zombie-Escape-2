@@ -46,6 +46,8 @@ ZE2:CreateItem("W's mirror", {
 })
 
 addHook("MobjCollide", function(mo,toucher)
+	if mo.mobjteam then
+		if toucher.player then
 			if toucher.player["ze2_info"].team == mo.mobjteam then
 				return false
 			else
