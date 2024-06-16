@@ -38,14 +38,16 @@ local function trigger_func(player, iteminfo)
 	mo.state = S_PLAY_SPRING
 	mo.player.pflags = $ & ~(PF_JUMPED | PF_SPINNING)
 	S_StartSound(mo, sfx_rail1)
-	local rail = P_SPMAngle(mo, MT_ZE2_RAILSHOT, mo.angle, 1, MF2_DONTDRAW)
+	local rail = ZE2.SpawnMissile({
+		source = mo, 
+		mobj_type = MT_ZE2_RAILSHOT,
+		angle = mo.angle,
+		allow_aim = true,
+		iteminfo = iteminfo,
+		flags2 = MF2_DONTDRAW,
+	})
 	
 	if rail and rail.valid then
-		rail.forcedamage = ZE2:FetchInventorySlot(player).damage
-		rail.forceknockback = ZE2:FetchInventorySlot(player).knockback
-		rail.iteminfo = iteminfo
-		rail.mobjteam = player["ze2_info"].team
-		
 		local range = 16
 		
 		for i = 0, range do

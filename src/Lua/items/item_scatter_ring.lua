@@ -81,20 +81,21 @@ ZE2:CreateItem("Scatter Ring",  {
 	price = 90,
 	ammo = 5,
 	reload_time = 5*TICRATE,
-	ontrigger = function(player)
+	ontrigger = function(player, iteminfo)
 		local mt = MT_ZE2_THROWNSCATTER
 		local mo = player.mo
 		local spread = 4
 		--S_StartSound(mo, sfx_shgn)
 		for i = -1, 1
-			local shot = P_SPMAngle(mo, mt, mo.angle + i * ANG1*spread, 1, 0)
+			local shot = ZE2.SpawnMissile({
+				source = mo, 
+				mobj_type = mt,
+				angle = mo.angle + i * ANG1*spread,
+				allow_aim = true,
+				iteminfo = iteminfo,
+			})
+			
 			if shot and shot.valid
-				shot.color = ZE2:FetchInventorySlot(player).color
-				shot.fuse = ZE2:FetchInventorySlot(player).fuse
-				shot.forcedamage = ZE2:FetchInventorySlot(player).damage
-				shot.forceknockback = ZE2:FetchInventorySlot(player).knockback
-				shot.mobjteam = player["ze2_info"].team
-				
 				shot.momx = $ + mo.momx / 3
 				shot.momy = $ + mo.momy / 3
 				shot.momz = $ + mo.momz / 3
@@ -103,15 +104,15 @@ ZE2:CreateItem("Scatter Ring",  {
 		for i = -1, 1, 2
 			local prevaim = player.aiming
 			player.aiming = $ + i * ANG1*spread
-			local shot = P_SPMAngle(mo, mt, mo.angle, 1, 0)
+			local shot = ZE2.SpawnMissile({
+				source = mo, 
+				mobj_type = mt,
+				angle = mo.angle,
+				allow_aim = true,
+				iteminfo = iteminfo,
+			})
 			player.aiming = prevaim
 			if shot and shot.valid
-				shot.color = ZE2:FetchInventorySlot(player).color
-				shot.fuse = ZE2:FetchInventorySlot(player).fuse
-				shot.forcedamage = ZE2:FetchInventorySlot(player).damage
-				shot.forceknockback = ZE2:FetchInventorySlot(player).knockback
-				shot.mobjteam = player["ze2_info"].team
-				
 				shot.momx = $ + mo.momx / 3
 				shot.momy = $ + mo.momy / 3
 				shot.momz = $ + mo.momz / 3

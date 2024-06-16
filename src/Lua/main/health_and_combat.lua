@@ -330,7 +330,7 @@ function ZE2.SpawnMissile(m_table)
 		end
 		
 		if iteminfo.color ~= nil then
-			ring.color = iteminfo.color
+			th.color = iteminfo.color
 		end
 	end
 	
