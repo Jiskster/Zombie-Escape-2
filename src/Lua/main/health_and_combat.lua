@@ -209,11 +209,15 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 				end
 			end
 		elseif mo.player["ze2_info"].team == 2 then
-			local zombie_hurtsounds = {
-				sfx_zpa1,
-				sfx_zpa2,
-			}
+			local ztype = mo.player["ze2_info"].zombie_type
+			local zombie_hurtsounds = {sfx_zpa1,sfx_zpa2}
 			local chosen_hurtsound = zombie_hurtsounds[P_RandomRange(1,2)]
+			
+			if ztype and ZE2.ZombieConfig[ztype] and ZE2.ZombieConfig[ztype].knockback_multiplier ~= nil then
+				local knockback_multiplier = ZE2.ZombieConfig[ztype].knockback_multiplier
+				
+				knockback = FixedMul($, knockback_multiplier)
+			end
 			
 			if not relativeknockback then
 				P_Thrust(mo, inf.angle, knockback)

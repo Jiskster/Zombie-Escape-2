@@ -30,6 +30,7 @@ ZE2.ZombieConfig = {
 		actionspd = 9*FRACUNIT,
 		scale = 13*FRACUNIT/10,
 		killaward = 20,
+		knockback_multiplier = FRACUNIT/2,
 		accelstart = 96,
 		acceleration = 40,
 		inventory_limit = 2,
