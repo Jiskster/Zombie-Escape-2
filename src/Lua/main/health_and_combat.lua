@@ -131,6 +131,18 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	end
 	
 	if inf then
+		if inf.iteminfo then
+			local iteminfo = inf.iteminfo
+			
+			if iteminfo.damage then
+				dmg = iteminfo.damage
+			end
+			
+			if iteminfo.knockback then
+				knockback = iteminfo.knockback
+			end
+		end
+		
 		if inf.info.forcedamage then
 			dmg = inf.info.forcedamage
 		end
@@ -312,6 +324,14 @@ function ZE2.SpawnMissile(m_table)
 		temp_iteminfo.onhit = nil
 		
 		th.iteminfo = temp_iteminfo
+		
+		if iteminfo.fuse then
+			th.fuse = iteminfo.fuse
+		end
+		
+		if iteminfo.color ~= nil then
+			ring.color = iteminfo.color
+		end
 	end
 	
 	if source.player then
@@ -427,37 +447,10 @@ function ZE2.DoPlayerFire(player, iteminfo)
 
 	if ring then
 		ring.shotbyplayer = true
-		
-		if iteminfo.color ~= nil then
-			ring.color = iteminfo.color
-		end 
-		
-		if iteminfo.fuse ~= nil then
-			ring.fuse = iteminfo.fuse
-		end
-		
-		if iteminfo.damage ~= nil then
-			ring.forcedamage = iteminfo.damage
-		end
-		
-		if iteminfo.knockback ~= nil then
-			ring.forceknockback = iteminfo.knockback
-		end
 
 		if ZE2.ItemPresets[iteminfo.item_id].onspawn then
 			ZE2.ItemPresets[iteminfo.item_id].onspawn(ring.target,ring,iteminfo)
 		end
-		
-		/*
-		local temp_iteminfo = ZE2:Copy(iteminfo)
-
-		-- destroy functions on fire just in case
-		temp_iteminfo.onspawn = nil
-		temp_iteminfo.ontrigger = nil
-		temp_iteminfo.onhit = nil
-
-		ring.iteminfo = temp_iteminfo
-		*/
 	end
 end
 
