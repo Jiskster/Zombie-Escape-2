@@ -17,7 +17,7 @@ local function flashpmo(pmo, source)
 	local thok = P_SpawnMobjFromMobj(source,0,0,0,MT_THOK)
 	thok.color = source.color
 	thok.fuse = 17
-	P_FlashPal(pmo.player, 3, 5*TICRATE)
+	ZE2:SetDamageFadeAnim(pmo.player, 5*TICRATE)
 	P_Thrust(pmo, source.angle, 180*FRACUNIT)
 	S_StartSound(pmo, sfx_bewar2)
 	P_SetScale(thok,thok.scale*3)
