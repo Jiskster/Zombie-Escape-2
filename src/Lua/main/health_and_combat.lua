@@ -257,6 +257,10 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	
 	mo.health = $ - dmg -- fake damage i guess
 	
+	if mo.health <= 0 then
+		ZE2.KillMobj(mo, inf, src, damagetype, not deathdamagetype)
+	end
+	
 	return false
 end)
 
