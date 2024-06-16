@@ -50,8 +50,6 @@ addHook("MobjCollide", function(mo,toucher)
 		if toucher.player then
 			if toucher.player["ze2_info"].team == mo.mobjteam then
 				return false
-			else
-				flashpmo(toucher, mo)
 			end
 		elseif toucher.mobjteam and (toucher.flags & MF_MISSILE) then
 			if toucher.mobjteam == mo.mobjteam then
