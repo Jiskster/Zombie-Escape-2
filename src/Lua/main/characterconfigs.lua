@@ -10,6 +10,7 @@ ZE2.ZombieConfig = {
 		charability2 = CA2_NONE,
 		jumpfactor = 17 * FRACUNIT / 19,
 		actionspd = 9*FRACUNIT,
+		killaward = 10,
 		accelstart = 96,
 		acceleration = 40,
 		inventory_limit = 1,
