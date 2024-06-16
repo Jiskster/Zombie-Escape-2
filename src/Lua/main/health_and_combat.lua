@@ -48,7 +48,7 @@ function ZE2.LimitMobjHealth(mobj)
 	end
 end
 
-function ZE2.KillMobj(mo, inf, src, damagetype)
+function ZE2.KillMobj(mo, inf, src, damagetype, killedbysomething)
 	local killing = true
 
 	if mo.player and mo.player.valid then
@@ -86,6 +86,8 @@ function ZE2.KillMobj(mo, inf, src, damagetype)
 				A_RubyDrop(mo, killaward)
 			end
 		end
+		
+		player["ze2_info"].killedbysomething = killedbysomething
 	end
 	
 	if killing then
@@ -185,7 +187,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	
 	-- DIE NOW
 	if mo.health - dmg <= 0 or deathdamagetype then
-		ZE2.KillMobj(mo, inf, src, damagetype)
+		ZE2.KillMobj(mo, inf, src, damagetype, not deathdamagetype)
 		return false
 	end
 	
