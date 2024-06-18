@@ -5,6 +5,8 @@ for i=1,10 do
 end
 
 freeslot("sfx_telepo")
+--ohg my ears burn
+sfxinfo[sfx_telepo].flags = SF_TOTALLYSINGLE
 
 mobjinfo[MT_ZE2_TELEGFX] = {
 	doomednum = -1,

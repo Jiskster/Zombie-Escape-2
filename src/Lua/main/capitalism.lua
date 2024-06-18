@@ -1,6 +1,7 @@
 freeslot("MT_CRRUBY","S_CRRUBY","SPR_RBY1", "sfx_rbyhit") -- idk what CR means but i just slap it there
-freeslot("MT_RUBY_BOX","MT_RUBY_ICON", "S_RUBY_BOX", "S_RUBY_ICON1", 
-		"S_RUBY_ICON2", "SPR_RBYM")
+														  --stands for Cool Rock you fool
+freeslot("MT_RUBY_BOX", "S_RUBY_BOX", "S_RUBY_BOX_BREAK",
+		"SPR_RBYM")
 
 function ZE2:GivePlayerRubies(player, amount)
 	if player["ze2_info"].rubies + amount > player["ze2_info"].rubycap then
@@ -15,6 +16,46 @@ end
 
 function ZE2:QueuePlayerRubies(player, amount)
 	player["ze2_info"].rubyqueue = $ + amount
+end
+
+function ZE2:DeleteCrate3D(door)
+	if door.sides then
+		for k,v in pairs(door.sides) do
+			if v and v.valid then
+				P_RemoveMobj(v)
+			end
+		end
+	end
+	
+	door.made3d = false
+	door.flags2 = $ &~MF2_DONTDRAW
+end
+
+function ZE2:GetCameraMobj()
+	local cam = camera
+	if (displayplayer and displayplayer.valid)
+		if not CV_FindVar("chasecam").value
+			local th = P_SpawnMobj(displayplayer.realmo.x,
+				displayplayer.realmo.y,
+				displayplayer.realmo.z+(displayplayer.realmo.height/2),
+				MT_NULL
+			)
+			th.angle = displayplayer.realmo.angle
+			cam = th
+		else
+			cam = camera
+		end
+		
+		if displayplayer.awayviewtics
+		and (displayplayer.awayviewmobj and displayplayer.awayviewmobj.valid)
+			cam = displayplayer.awayviewmobj
+		end
+		
+		if not (cam and cam.valid)
+			cam = camera
+		end
+	end
+	return cam
 end
 
 ZE2.rubypickupdelay = CV_RegisterVar({
@@ -59,50 +100,52 @@ states[S_CRRUBY] = {
 	nextstate = S_CRRUBY,
 }
 
--- Ruby Monitor is unused.
 mobjinfo[MT_RUBY_BOX] = {
-	--$Name Ruby Monitor
+	--$Name Ruby Crate
 	--$Sprite RBYMA0
+	--change later?
 	--$Category Monitors
 	doomednum = 863,
 	spawnstate = S_RUBY_BOX,
-	reactiontime = 8,
-	painstate = S_RUBY_BOX,
-	deathstate = S_BOX_POP1,
+	deathstate = S_RUBY_BOX_BREAK,
 	deathsound = sfx_pop,
-	speed = 1,
-	radius = 18*FRACUNIT,
-	height = 40*FRACUNIT,
-	mass = 100,
-	damage = MT_RUBY_ICON,
-	flags = MF_SOLID|MF_SHOOTABLE --|MF_MONITOR
+	spawnhealth = 1,
+	height = 64*FRACUNIT,
+	radius = 32*FRACUNIT,
+	flags = MF_MONITOR|MF_SOLID|MF_SHOOTABLE|MF_RUNSPAWNFUNC
 }
 
-mobjinfo[MT_RUBY_ICON] = {
-	doomednum = -1,
-	spawnstate = S_RUBY_ICON1,
-	seesound = sfx_kc54,
-	reactiontime = 8,
-	deathsound = sfx_pop,
-	speed = 2*FRACUNIT,
-	radius = 8*FRACUNIT,
-	height = 14*FRACUNIT,
-	mass = 100,
-	damage = 62*FRACUNIT,
-	flags = MF_NOBLOCKMAP|MF_NOGRAVITY|MF_NOCLIP|MF_BOXICON|MF_SCENERY
+states[S_RUBY_BOX] = {
+    sprite = SPR_RBYM,
+	action = function(crate)
+		crate.spawnpos = {crate.x,crate.y,crate.z}
+	end,
+    frame = A,
+	tics = -1,
 }
 
-states[S_RUBY_BOX] = {SPR_RBYM, A, 2, nil, 0, 0, S_BOX_FLICKER}
-states[S_RUBY_ICON1] = {SPR_RBYM, C|FF_ANIMATE, 18, nil, 3, 4, S_RUBY_ICON2}
-states[S_RUBY_ICON2] = {SPR_RBYM, C, 18, A_RubyDrop, 10}
+states[S_RUBY_BOX_BREAK] = {
+    sprite = SPR_RBYM,
+    frame = A,
+	action = function(mo)
+		mo.flags2 = $|MF2_DONTDRAW
+		--SpawnEnemyGibs(mo,mo,nil,true)
+		--SpawnEnemyGibs(mo,mo,nil,true)
+		--SpawnBam(mo,true)
+		
+		ZE2:DeleteCrate3D(mo)
+		
+		local sfx = P_SpawnGhostMobj(mo)
+		sfx.flags2 = $|MF2_DONTDRAW
+		sfx.fuse = TICRATE
+		S_StartSound(sfx,mo.info.deathsound)
+		
+		A_RubyDrop(mo,10)
+	end,
+	tics = 1,
+}
 
 sfxinfo[sfx_rbyhit].caption = "Ruby"
-
--- Disable Ruby Monitors
-addHook("MobjThinker", function(mobj)
-	P_RemoveMobj(mobj)
-	return true
-end, MT_RUBY_BOX)
 
 addHook("PlayerThink", function(player)
 	if player["ze2_info"].rubies > player["ze2_info"].rubycap then
@@ -235,6 +278,148 @@ addHook("MobjThinker", function(mobj)
 	end
 end, MT_CRRUBY)
 
+addHook("MobjThinker",function(door)
+	if not (door and door.valid) then return end
+	
+	door.takis_flingme = false
+	door.takis_monitorgibs = true
+	door.takis_gibsprite = SPR_RBYM
+	door.takis_gibframes = {P,Q,R,S}
+	door.takis_gibframeflags = FF_PAPERSPRITE
+	
+	local dist = 0
+	local cullout = true
+	local doculling = true
+	if doculling
+		local cam = ZE2:GetCameraMobj()
+		
+		dist = R_PointToDist2(cam.x,cam.y, door.x,door.y)
+		
+		local thok = P_SpawnMobj(cam.x, cam.y, cam.z, MT_NULL)
+		thok.angle = cam.angle
+		thok.flags2 = $|MF2_DONTDRAW
+		if dist <= 5000*FU
+		and P_CheckSight(thok,door)
+			cullout = false
+		end
+		
+		if not cullout
+			local back = FixedAngle(AngleFixed(thok.angle)+180*FU)
+			local diff = FixedAngle(AngleFixed(R_PointToAngle2(thok.x, thok.y, door.x, door.y))-AngleFixed(back))
+			if AngleFixed(diff) > 180*FU
+				diff = InvAngle(diff)
+			end
+			
+			--in the cameras view
+			if AngleFixed(diff) > 90*FU
+				cullout = false
+			else
+				cullout = true
+			end
+		end
+		
+		if not door.health
+			cullout = true
+		end
+		P_RemoveMobj(thok)
+	end
+	
+	if cullout
+		ZE2:DeleteCrate3D(door)
+		return
+	end
+	
+	if not cullout
+
+		if not door.made3d
+			local list
+			local flip = P_MobjFlip(door)
+			door.flags2 = $|MF2_DONTDRAW
+			
+			door.sides = {}
+			list = door.sides
+			
+			for i = 1,4
+				local angle = door.angle+(FixedAngle(90*FU*(i-1)))
+				local x,y = ReturnTrigAngles(angle)
+				list[0+i] = P_SpawnMobjFromMobj(door,32*x,32*y,0,MT_THOK)
+				list[0+i].frame = A
+				list[0+i].sprite = SPR_RBYM
+				list[0+i].tics,list[0+i].fuse = -1,-1
+				list[0+i].flags = MF_NOGRAVITY|MF_NOCLIPHEIGHT|MF_NOCLIP
+				list[0+i].renderflags = $|RF_PAPERSPRITE|RF_NOSPLATBILLBOARD
+				list[0+i].angle = angle+ANGLE_90
+				list[0+i].height = 64*FU
+				list[0+i].radius = 0
+				P_SetOrigin(list[0+i],
+					list[0+i].x,
+					list[0+i].y,
+					GetActorZ(door,list[0+i],1)
+				)
+			end
+			list[5] = P_SpawnMobjFromMobj(door,0,0,0,MT_THOK)
+			list[5].frame = B
+			list[5].sprite = SPR_RBYM
+			list[5].tics,list[5].fuse = -1,-1
+			list[5].flags = MF_NOGRAVITY|MF_NOCLIPHEIGHT|MF_NOCLIP
+			list[5].renderflags = $|RF_FLOORSPRITE|RF_NOSPLATBILLBOARD
+			list[5].angle = door.angle
+			list[5].height = 0
+			P_SetOrigin(list[5],list[5].x,list[5].y,GetActorZ(door,list[5],2))
+			
+			list[6] = P_SpawnMobjFromMobj(door,0,0,0,MT_THOK)
+			list[6].frame = C
+			list[6].sprite = SPR_RBYM
+			list[6].tics,list[5].fuse = -1,-1
+			list[6].flags = MF_NOGRAVITY|MF_NOCLIPHEIGHT|MF_NOCLIP
+			list[6].renderflags = $|RF_FLOORSPRITE|RF_NOSPLATBILLBOARD
+			list[6].angle = door.angle
+			list[6].height = 0
+			P_SetOrigin(list[6],list[6].x,list[6].y,GetActorZ(door,list[6],1))
+			
+			door.made3d = true
+		
+		--update positions
+		else
+			local list = door.sides
+			
+			for i = 1,4
+				local angle = door.angle+(FixedAngle(90*FU*(i-1)))
+				local x,y = ReturnTrigAngles(angle)
+				list[0+i].angle = angle+ANGLE_90
+				list[0+i].height = 64*FU
+				list[0+i].radius = 0
+				list[0+i].scale = door.scale
+				P_MoveOrigin(list[0+i],
+					door.x+P_ReturnThrustX(nil,angle,32*door.scale),
+					door.y+P_ReturnThrustY(nil,angle,32*door.scale),
+					GetActorZ(door,list[0+i],1)
+				)
+			end
+			list[5].angle = door.angle
+			list[5].height = 0
+			list[5].scale = door.scale
+			list[5].shadowscale = door.scale*14/10
+			P_MoveOrigin(list[5],
+				door.x,
+				door.y,
+				GetActorZ(door,list[5],2)
+			)
+
+			P_SetOrigin(list[6],door.x,door.y,door.z)
+			list[6].angle = door.angle
+			list[6].height = 0
+			list[6].scale = door.scale
+			P_MoveOrigin(list[6],
+				door.x,
+				door.y,
+				GetActorZ(door,list[6],1)
+			)
+			
+		end
+	end
+end,MT_RUBY_BOX)
+
 COM_AddCommand("z_sendrubies", function(player, player2, rubies)
 	local function giveinstructions()
 		CONS_Printf(player, "z_sendrubies <receivingplayernum> <rubies>: gives rubies to a player")
@@ -291,4 +476,4 @@ COM_AddCommand("z_giverubies", function(player, rubies)
 	ZE2:QueuePlayerRubies(player, rubies)
 	
 	CONS_Printf(player, "\x82You got "..rubies.." rubies")
-end, 1)
+end, COM_ADMIN)

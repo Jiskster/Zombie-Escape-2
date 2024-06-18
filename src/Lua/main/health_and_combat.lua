@@ -78,7 +78,7 @@ function ZE2.KillMobj(mo, inf, src, damagetype, killedbysomething)
 				ZE2:QueuePlayerRubies(killer.player, ruby_award)
 				print("\x84"..player.name.." \x83\has been infected by \x85"..killer.player.name)
 				
-				CONS_Printf(killer.player, "\x85+"..ruby_award.." rubies gained from infected a survivor!")
+				CONS_Printf(killer.player, "\x85+"..ruby_award.." rubies gained from infecting a survivor!")
 			end
 		elseif team == 2 then
 			if ztype and ZE2.ZombieConfig[ztype] and ZE2.ZombieConfig[ztype].killaward then
@@ -483,11 +483,13 @@ end)
 
 -- allow weapons to pop monitors
 addHook("MobjMoveCollide", function(tmthing, thing)
-	if tmthing and tmthing.valid and thing and thing.valid then
+	if tmthing and tmthing.valid and thing and thing.valid and L_ZCollide(thing,tmthing) then
 		if tmthing.shotbyplayer and thing.flags & MF_MONITOR then
 			P_KillMobj(thing, tmthing, tmthing.target)
-			S_StartSound(tmthing, sfx_pop)
-			P_RemoveMobj(thing)
+			S_StartSound(tmthing, tmthing.info.deathsound)
+			if (thing and thing.valid) then
+				P_RemoveMobj(thing)
+			end
 		end
 	end
 end)

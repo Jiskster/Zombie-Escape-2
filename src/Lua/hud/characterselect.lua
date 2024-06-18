@@ -46,8 +46,9 @@ ZE2.characterselecthud = function(v, player, c)
 
 			x = (157+(i*25))*FRACUNIT - (ese)
 		end
-
-        local scale = hud_icon_scale
+		
+		local hires = skins[ZE2.getSkinNums(player,true)[i]].highresscale or FU
+        local scale = FixedMul(hud_icon_scale,hires)
         local skinpatch = v.getSprite2Patch(skinname, SPR2_LIFE)
         
         local flags = V_SNAPTOTOP
