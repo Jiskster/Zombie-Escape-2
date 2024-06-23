@@ -72,6 +72,7 @@ function A_RubyDrop(actor, var1)
 	end
 	for i=1,rubyamount do
 		local the_ruby = P_SpawnMobjFromMobj(actor,0,0,10*FU,MT_CRRUBY)
+		the_ruby.scale = FRACUNIT
 		the_ruby.fuse = 16*TICRATE
 		P_SetObjectMomZ(the_ruby, P_RandomRange(7,10)*FU)
 
@@ -418,7 +419,11 @@ addHook("MobjThinker",function(door)
 			
 		end
 	end
-end,MT_RUBY_BOX)
+end, MT_RUBY_BOX)
+
+addHook("MobjSpawn", function(crate)
+	crate.scale = $ / 2
+end, MT_RUBY_BOX)
 
 COM_AddCommand("z_sendrubies", function(player, player2, rubies)
 	local function giveinstructions()
