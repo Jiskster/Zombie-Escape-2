@@ -109,7 +109,7 @@ mobjinfo[MT_RUBY_BOX] = {
 	doomednum = 863,
 	spawnstate = S_RUBY_BOX,
 	deathstate = S_RUBY_BOX_BREAK,
-	deathsound = sfx_pop,
+	deathsound = sfx_wbreak,
 	spawnhealth = 1,
 	height = 64*FRACUNIT,
 	radius = 32*FRACUNIT,
@@ -244,36 +244,43 @@ addHook("MobjThinker", function(mobj)
 	if mobj.fuse < 3*TICRATE then
 		mobj.flags2 = $^^MF2_DONTDRAW
 	end
-	local findrange = 1024*FRACUNIT
+	local findrange = 1024*mobj.scale
 	local pmofound
 	
-	searchBlockmap("objects", function(refmobj, foundmobj)
-		if foundmobj and abs(mobj.z-foundmobj.z) < 300*FU and foundmobj.valid and foundmobj.player then
-			if foundmobj.player["ze2_info"].team == 1 then
-				if foundmobj.player.spectator then
-					return
-				end
+	for p in players.iterate
+		if p["ze2_info"].team ~= 1 then continue end
+		if p.spectator then continue end
+		if p["ze2_info"].rubies == p["ze2_info"].rubycap then continue end
+		if not (p.mo and p.mo.valid) then continue end
+
+		local mo = p.mo
+
+		local dist = FixedHypot(FixedHypot(mobj.x - mo.x, mobj.y - mo.y), mobj.z - mo.z)
+
+		if abs(mobj.z - mo.z) <= 300*mobj.scale
+		and dist <= findrange then
+			if not pmofound then
+				pmofound = mo
+			else
+				local newpmodist = R_PointToDist2(mobj.x, mobj.y, mo.x, mo.y)
+				local oldpmodist = R_PointToDist2(mobj.x, mobj.y, pmofound.x, pmofound.y)
 				
-				if foundmobj.player["ze2_info"].rubies == foundmobj.player["ze2_info"].rubycap then
-					return
-				end
-			
-				if not pmofound then
-					pmofound = foundmobj
-				else
-					local newpmodist = R_PointToDist2(mobj.x, mobj.y, foundmobj.x, foundmobj.y)
-					local oldpmodist = R_PointToDist2(mobj.x, mobj.y, pmofound.x, pmofound.y)
-					
-					if newpmodist < oldpmodist then
-						pmofound = foundmobj
-					end
+				if newpmodist < oldpmodist then
+					pmofound = mo
 				end
 			end
 		end
-	end,mobj,
-	mobj.x-findrange,mobj.x+findrange,
-	mobj.y-findrange,mobj.y+findrange)
-	
+	end
+
+	mobj.spritexscale,mobj.spriteyscale = FU,FU
+	if mobj.momz*P_MobjFlip(mobj) <= -mobj.scale then
+		local mom = FixedDiv(mobj.momz*P_MobjFlip(mobj),mobj.scale)+FU
+		mom = $/50
+		mom = max($,-FU*3/5)
+		mobj.spritexscale,
+		mobj.spriteyscale = $1+mom,$2-mom
+	end
+
 	if pmofound and pmofound.valid then
 		P_FlyTo(mobj,pmofound.x,pmofound.y,pmofound.z,4*FRACUNIT,true)
 	end
@@ -342,8 +349,11 @@ addHook("MobjThinker",function(door)
 			
 			for i = 1,4
 				local angle = door.angle+(FixedAngle(90*FU*(i-1)))
-				local x,y = ReturnTrigAngles(angle)
-				list[0+i] = P_SpawnMobjFromMobj(door,32*x,32*y,0,MT_THOK)
+				list[0+i] = P_SpawnMobjFromMobj(door,
+					P_ReturnThrustX(nil,angle,32*door.scale),
+					P_ReturnThrustY(nil,angle,32*door.scale),
+					0,MT_THOK
+				)
 				list[0+i].frame = A
 				list[0+i].sprite = SPR_RBYM
 				list[0+i].tics,list[0+i].fuse = -1,-1
@@ -386,7 +396,6 @@ addHook("MobjThinker",function(door)
 			
 			for i = 1,4
 				local angle = door.angle+(FixedAngle(90*FU*(i-1)))
-				local x,y = ReturnTrigAngles(angle)
 				list[0+i].angle = angle+ANGLE_90
 				list[0+i].height = 64*FU
 				list[0+i].radius = 0
@@ -419,7 +428,7 @@ addHook("MobjThinker",function(door)
 			
 		end
 	end
-end, MT_RUBY_BOX)
+end,MT_RUBY_BOX)
 
 addHook("MobjSpawn", function(crate)
 	crate.scale = $ / 2

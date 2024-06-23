@@ -303,7 +303,7 @@ ZE2.AddConfig("metalsonic", {
 	health = 75,
 	charability = CA_JUMPBOOST,
 	charability2 = CA2_NONE,
-	jumpfactor = 17 * FRACUNIT / 19,
+	jumpfactor = 15 * FRACUNIT / 19,
 	charflags = SF_MACHINE,
 	sprintboost = 9 * FRACUNIT,
 	desc1 = "He might the the real sonic.",
