@@ -459,11 +459,12 @@ addHook("PlayerThink", function(player)
 	
 	if player["ze2_info"].reload and ZE2:FetchInventorySlot(player) then
 		local iteminfo = ZE2:FetchInventorySlot(player)
+		local iteminfo_modified = ZE2:CopyInventorySlot(player)
 		
 		player["ze2_info"].reload = $ - 1
 		
 		if player["ze2_info"].reload <= 0 then
-			iteminfo.ammo = iteminfo.max_ammo
+			iteminfo.ammo = iteminfo_modified.max_ammo
 			S_StartSound(player.mo, sfx_z_rel2)
 		end
 	end
@@ -525,20 +526,21 @@ addHook("PlayerThink", function(player)
 		
 		-- try shoot
 		if (cmd.buttons & BT_ATTACK) and not player["ze2_info"].weapondelay and not player["ze2_info"].reload
-		and ZE2:FetchInventorySlot(player) and player.playerstate ~= PST_DEAD and not player["ze2_info"].shop_open 
-		and (player["ze2_info"].await_fire or ZE2:FetchInventorySlot(player).autouse) then	
+		and ZE2:CopyInventorySlot(player) and player.playerstate ~= PST_DEAD and not player["ze2_info"].shop_open 
+		and (player["ze2_info"].await_fire or ZE2:CopyInventorySlot(player).autouse) then	
 			local iteminfo = ZE2:FetchInventorySlot(player)
+			local iteminfo_modified = ZE2:CopyInventorySlot(player)
 			
 			-- If theres no ammo, dont fire. 
 			-- (Items with no ammo property can pass this check 100%)
 			if not (iteminfo.ammo ~= nil and iteminfo.ammo == 0) then
 				ZE2.DoPlayerFire(player, iteminfo)
 
-				player["ze2_info"].weapondelay = iteminfo.firerate
+				player["ze2_info"].weapondelay = iteminfo_modified.firerate
 				
 				player["ze2_info"].await_fire = false
 				
-				if iteminfo.count ~= nil and iteminfo.limited == true then
+				if iteminfo_modified.count ~= nil and iteminfo_modified.limited == true then
 					if iteminfo.count > 0  then
 						iteminfo.count = $ - 1
 					end

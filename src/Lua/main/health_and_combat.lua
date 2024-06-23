@@ -1,7 +1,3 @@
--- Fang's Cork Bullet
-mobjinfo[MT_CORK].forcedamage = 10
-mobjinfo[MT_CORK].forceknockback = 20*FU
-
 -- Amy's Hammer Hearts
 mobjinfo[MT_LHRT].forcedamage = 3
 mobjinfo[MT_LHRT].forceknockback = 8*FU
@@ -134,7 +130,13 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	
 	if inf then
 		if inf.iteminfo then
-			local iteminfo = inf.iteminfo
+			local srcskin
+			
+			if src and src.valid and src.player then
+				srcskin = src.skin
+			end
+			
+			local iteminfo = ZE2:CopyItemInfo(inf.iteminfo, srcskin)
 			
 			if iteminfo.damage then
 				dmg = iteminfo.damage
@@ -325,8 +327,10 @@ function ZE2.SpawnMissile(m_table)
 		return
 	end
 	
+	speed = th.info.speed
+	
 	if iteminfo then 
-		local temp_iteminfo = ZE2:Copy(iteminfo)
+		local temp_iteminfo = ZE2:CopyItemInfo(iteminfo, source.skin)
 
 		-- destroy functions
 		temp_iteminfo.onspawn = nil
@@ -336,11 +340,15 @@ function ZE2.SpawnMissile(m_table)
 		th.iteminfo = temp_iteminfo
 		
 		if iteminfo.fuse then
-			th.fuse = iteminfo.fuse
+			th.fuse = temp_iteminfo.fuse
 		end
 		
 		if iteminfo.color ~= nil then
-			th.color = iteminfo.color
+			th.color = temp_iteminfo.color
+		end
+		
+		if iteminfo.velocity_multiplier then
+			speed = FixedMul($, iteminfo.velocity_multiplier)
 		end
 	end
 	
@@ -364,9 +372,8 @@ function ZE2.SpawnMissile(m_table)
 
 	th.target = source
 
-	speed = th.info.speed
 	if source.player and source.player.charability == CA_FLY then
-		speed = FixedMul(speed, 3*FRACUNIT/2)
+		speed = FixedMul($, 3*FRACUNIT/2)
 	end
 
 	th.angle = angle
@@ -415,8 +422,10 @@ function ZE2.CheckMissileSpawn(th)
 end
 
 
-function ZE2.DoPlayerFire(player, iteminfo)
+function ZE2.DoPlayerFire(player, input_iteminfo)
 	local ring
+	
+	local iteminfo = ZE2:CopyItemInfo(input_iteminfo, player.mo.skin)
 	
 	if not ZE2.ItemPresets[iteminfo.item_id] then
 		return
@@ -465,7 +474,7 @@ function ZE2.DoPlayerFire(player, iteminfo)
 end
 
 function ZE2.DoPlayerReload(player)
-	local iteminfo = ZE2:FetchInventorySlot(player)
+	local iteminfo = ZE2:CopyInventorySlot(player)
 	if iteminfo and iteminfo.reload_time and not player["ze2_info"].reload then
 		if iteminfo.ammo ~= iteminfo.max_ammo then
 			player["ze2_info"].reload = iteminfo.reload_time or 2*TICRATE

@@ -64,10 +64,18 @@ function ZE2:FetchInventoryLimit(player)
 	return 1
 end
 
-function ZE2:FetchInventorySlot(player)
+function ZE2:FetchInventorySlot(player, slot)
 	if player and player.valid then
 		if player["ze2_info"] and player["ze2_info"].inventory_selection then
-			return ZE2:FetchInventory(player)[player["ze2_info"].inventory_selection] 
+			return ZE2:FetchInventory(player)[slot or player["ze2_info"].inventory_selection] 
+		end
+	end
+end
+
+function ZE2:CopyInventorySlot(player, slot)
+	if player and player.valid and player.mo and player.mo.valid then
+		if player["ze2_info"] and player["ze2_info"].inventory_selection then
+			return ZE2:CopyItemInfo(ZE2:FetchInventory(player)[slot or player["ze2_info"].inventory_selection], player.mo.skin)
 		end
 	end
 end
@@ -82,6 +90,28 @@ function ZE2:IsInventoryFull(player)
 			end
 		else
 			return true
+		end
+	end
+end
+
+-- To support skin item overwrites.
+-- Makes a copy of the iteminfo (hopefully i dont regret using this)
+
+function ZE2:CopyItemInfo(iteminfo, skin)
+	if iteminfo then
+		if not (iteminfo.skin_overwrite and iteminfo.skin_overwrite[skin]) or not skin then
+			return ZE2:Copy(iteminfo)
+		else
+			local modified = ZE2:Copy(iteminfo)
+			local skin_overwrite = iteminfo.skin_overwrite[skin]
+			
+			for i,v in pairs(skin_overwrite) do
+				modified[i] = v
+			end
+			
+			modified.skin_overwrite = nil -- no trailing
+			
+			return modified
 		end
 	end
 end
