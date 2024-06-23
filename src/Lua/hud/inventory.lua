@@ -77,19 +77,14 @@ ZE2.inventoryhud = function(v, player)
 		end
 	end
 	
+	-- item info
 	if ZE2:FetchInventorySlot(player) and ZE2:FetchInventorySlot(player).displayname then
-		local iteminfo = ""
 		local itemname = ZE2:FetchInventorySlot(player).displayname
 		local itemcolor = ZE2:FetchInventorySlot(player).color or SKINCOLOR_CLOUDY
 		
-		if ZE2:FetchInventorySlot(player).damage then
-			iteminfo = $ + "Damage: "..ZE2:FetchInventorySlot(player).damage.." "
-		end
-		
-		customhud.CustomFontString(v,115*FU,sel_y-(10*FU),itemname, "TNYFC", V_SNAPTOBOTTOM, nil, FRACUNIT, itemcolor)
-		customhud.CustomFontString(v,115*FU,sel_y-(18*FU),iteminfo, "TNYFC", V_SNAPTOBOTTOM, nil, FRACUNIT, SKINCOLOR_CRIMSON)
+		customhud.CustomFontString(v,sel_x+(8*FU),sel_y-(10*FU),itemname, "TNYFC", V_SNAPTOBOTTOM, "center", FRACUNIT, itemcolor)
 	else
-		customhud.CustomFontString(v,115*FU,sel_y-(10*FU),"EMPTY", "TNYFC", V_SNAPTOBOTTOM, nil, FRACUNIT, SKINCOLOR_CLOUDY)
+		customhud.CustomFontString(v,sel_x+(8*FU),sel_y-(10*FU),"EMPTY", "TNYFC", V_SNAPTOBOTTOM, "center", FRACUNIT, SKINCOLOR_CLOUDY)
 	end
 	
 	-- weapon selection 
