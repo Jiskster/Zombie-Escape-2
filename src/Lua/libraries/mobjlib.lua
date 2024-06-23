@@ -63,3 +63,34 @@ rawset(_G, "L_FixedDecimal", function(str,maxdecimal)
 	local str_decimal = string.sub(decimal,2)
 	return str_polarity..str_whole..'.'..str_decimal
 end)
+
+--because im LAZY.
+--gets @actor's @type of z for @targ
+rawset(_G,"GetActorZ",function(actor,targ,type)
+	if type == nil then type = 1 end
+	if not (actor and actor.valid) then return 0 end
+	if not (targ and targ.valid) then return 0 end
+	
+	local flip = P_MobjFlip(actor)
+	
+	--get z
+	if type == 1
+		if flip == 1
+			return actor.z
+		else
+			return actor.z+actor.height-targ.height
+		end
+	--get top z
+	elseif type == 2
+		if flip == 1
+			return actor.z+actor.height
+		else
+			return actor.z-targ.height
+		end
+	end
+	return 0
+end)
+
+rawset(_G,"ReturnTrigAngles",function(angle)
+	return cos(angle),sin(angle)
+end)
