@@ -63,7 +63,7 @@ end
 local function prayerr3()
 	for player in players.iterate
 		if player.rings == 1 then
-			chatprint(string.format("(\x84\%s\x80\ friends began having an uneasy feeling in their hearts.)",player.name))
+			chatprint(string.format("(\x84\%s\x80\ friends began having an uneasy feeling in their hearts and prayed for their safety.)",player.name))
 		end
 	end
 	S_StartSound(player, sfx_ebtext)
@@ -168,155 +168,43 @@ local function prayer17()
 end
 
 --Pokey Dialouge
-local COTPPokeyTimer = ZE2:AddTimer("Pokey's Gloating",{
-	time = 60*TICRATE,
+local COTPPokeyTimer = ZE2:AddTimer("Pokey Encounter",{
+	time = 30*TICRATE,
 	extrainfo = {
 		color = SKINCOLOR_WHITE,
 		-- Presidential Speech 2: Electric Boogaloo
 		[1] = {
-			event_time = 58*TICRATE,
+			event_time = 28*TICRATE,
 			event_func = do
 				chatprint("\x84\<Pokey>\x80\ Hey! Aren't you surprised? It's me, Pokey!")
 				S_StartSound(player, sfx_ebtext)
 			end
 		},
 		[2] = {
-			event_time = 56*TICRATE,
+			event_time = 22*TICRATE,
 			event_func = do
-				chatprint("\x84\<Pokey>\x80\ I assist only the strong and able! That's Pokey.")
+				chatprint("\x84\<Pokey>\x80\ Hold it... Where the hell is Ness?!")
 				S_StartSound(player, sfx_ebtext)
 			end
 		},
 		[3] = {
-			event_time = 53*TICRATE,
+			event_time = 16*TICRATE,
 			event_func = do
-				chatprint("\x84\<Pokey>\x80\ You guys look pathetic!")
+				chatprint("\x84\<Pokey>\x80\ NO! NO! NO! NOOO!")
 				S_StartSound(player, sfx_ebtext)
 			end
 		},
 		[4] = {
-			event_time = 50*TICRATE,
+			event_time = 8*TICRATE,
 			event_func = do
-				chatprint("\x84\<Pokey>\x80\ The Apple of Enlightenment has already made a prediction.")
+				chatprint("\x84\<Pokey>\x80\ The Apple of Enlightenment told me Ness was gonna be here, not a bunch of damn fur balls!")
 				S_StartSound(player, sfx_ebtext)
 			end
 		},
 		[5] = {
-			event_time = 47*TICRATE,
+			event_time = 2*TICRATE,
 			event_func = do
-				chatprint("\x84\<Pokey>\x80\ ...But I won't let what it predicted take place.")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[6] = {
-			event_time = 45*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ You guys will be beaten by Giygas.")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[7] = {
-			event_time = 43*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ Giygas will be stronger, a more powerful entity than any other!")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[8] = {
-			event_time = 40*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ Why? 'Cause of me.")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[9] = {
-			event_time = 38*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ I was led by Giygas, and now I'm here.")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[10] = {
-			event_time = 36*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ The Apple of Enlightenment couldn't predict this.")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[11] = {
-			event_time = 33*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ Master Giygas. No, Giygas is no longer the wielder of evil.")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[12] = {
-			event_time = 30*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ He has become the embodiment of Evil itself...")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[13] = {
-			event_time = 27*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ Which he cannot control on his own.")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[14] = {
-			event_time = 25*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ He is the Evil Power.")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[15] = {
-			event_time = 17*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ I understand you guys are already claiming to be heroes.")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[16] = {
-			event_time = 14*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ Well, it is a gazillion years too early for you to oppose Giygas!")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[17] = {
-			event_time = 11*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ You must feel pretty stupid to keep fighting without even knowing what Giygas looks like!")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[18] = {
-			event_time = 8*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ If you were to ever see Giygas, you'd be so petrified with fear, you'd never be able to run away!")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[19] = {
-			event_time = 5*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ ...That's how scary it is.")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[20] = {
-			event_time = 3*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ So, do you want me to turn off the Devil's Machine?")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[21] = {
-			event_time = 1*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ Well, prepare to be amazed!")
+				chatprint("\x84\<Pokey>\x80\ You all ruined this for me! I'm not even gonna fight! I'll watch Giygas devour you all! Heh heh heh!")
 				S_StartSound(player, sfx_ebtext)
 			end
 		}
@@ -324,59 +212,24 @@ local COTPPokeyTimer = ZE2:AddTimer("Pokey's Gloating",{
 })
 
 local COTPPreZombieTimer = ZE2:AddTimer("Incoming Zombies",{
-	time = 30*TICRATE,
+	time = 15*TICRATE,
 	extrainfo = {
 		color = SKINCOLOR_WHITE,
 		[1] = {
-			event_time = 27*TICRATE,
+			event_time = 13*TICRATE,
 			event_func = do
 				chatprint("\x84\<Pokey>\x80\ So, isn't this terrifying? I'm terrified, too.")
 				S_StartSound(player, sfx_ebtext)
 			end
 		},
 		[2] = {
-			event_time = 24*TICRATE,
+			event_time = 10*TICRATE,
 			event_func = do
 				chatprint("\x84\<Pokey>\x80\ Giygas cannot think rationally any more,")
 				S_StartSound(player, sfx_ebtext)
 			end
 		},
 		[3] = {
-			event_time = 21*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ and he isn't even aware of what he is doing now.")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[4] = {
-			event_time = 18*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ His own mind was destroyed by his incredible power.")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[5] = {
-			event_time = 15*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ What an all-mighty idiot!")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[6] = {
-			event_time = 10*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ Yep, that's what he is!")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[7] = {
-			event_time = 8*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ Heh heh heh heh...")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[8] = {
 			event_time = 5*TICRATE,
 			event_func = do
 				chatprint("\x84\<Pokey>\x80\ and you... you will be... just another meal to him!")
@@ -387,111 +240,41 @@ local COTPPreZombieTimer = ZE2:AddTimer("Incoming Zombies",{
 })
 
 local COTPGiygasTimer = ZE2:AddTimer("Survive Giygas",{
-	time = 75*TICRATE,
+	time = 45*TICRATE,
 	extrainfo = {
 		color = SKINCOLOR_RED,
 		[1] = {
-			event_time = 45*TICRATE,
+			event_time = 20*TICRATE,
 			event_func = do
-				chatprint("\x84\<Pokey>\x80\ Heh heh heh heh. You must really be at the end of your rope.")
+				chatprint("\x84\<Pokey>\x80\ GrrrrAHHH! Why won't you all die?!")
 				S_StartSound(player, sfx_ebtext)
 			end
 		},
 		[2] = {
-			event_time = 41*TICRATE,
+			event_time = 16*TICRATE,
 			event_func = do
-				chatprint("\x84\<Pokey>\x80\ In this bizarre dimension, you survivors are the only force fighting for justice...")
+				chatprint("\x84\<Pokey>\x80\ You have no purpose in being here!")
 				S_StartSound(player, sfx_ebtext)
 			end
 		},
 		[3] = {
-			event_time = 36*TICRATE,
+			event_time = 12*TICRATE,
 			event_func = do
-				chatprint("\x84\<Pokey>\x80\ And here you stand,")
+				chatprint("\x84\<Pokey>\x80\ This was supposed to be the moment I finally surpassed Ness!")
 				S_StartSound(player, sfx_ebtext)
 			end
 		},
 		[4] = {
-			event_time = 34*TICRATE,
+			event_time = 8*TICRATE,
 			event_func = do
-				chatprint("\x84\<Pokey>\x80\ waiting to be burned up with all the rest of the garbage of this universe...")
+				chatprint("\x84\<Pokey>\x80\ Nobody will save you and you'll be burned like the rest of the garbage of the cosmos!")
 				S_StartSound(player, sfx_ebtext)
 			end
 		},
 		[5] = {
-			event_time = 30*TICRATE,
+			event_time = 1*TICRATE,
 			event_func = do
-				chatprint("\x84\<Pokey>\x80\ Haaaaah! That's so sad. I can't help but shed a tear.")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[6] = {
-			event_time = 26*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ You know, my heart is beating incredibly fast,")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[7] = {
-			event_time = 23*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ ...I must be experiencing absolute terror!")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[8] = {
-			event_time = 20*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ Do you want to scream for help here in the dark?!")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[9] = {
-			event_time = 17*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ Ha ha ha ha ha!")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[10] = {
-			event_time = 15*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ Why not call your mommy?")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[11] = {
-			event_time = 13*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ Say, Mommy! Daddy! I'm so frightened! I think I'm gonna to wet my pants!")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[12] = {
-			event_time = 10*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ I know you have telepathy, or something, so just try and call for help,")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[13] = {
-			event_time = 7*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ No one will help you now!")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[14] = {
-			event_time = 5*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ Ha ha ha haah...")
-				S_StartSound(player, sfx_ebtext)
-			end
-		},
-		[15] = {
-			event_time = 2*TICRATE,
-			event_func = do
-				chatprint("\x84\<Pokey>\x80\ Don't worry, your pitiful suffering will be over soon!")
+				chatprint("\x84\<Pokey>\x80\ Go ahead and cry out, nobody will save you now!")
 				S_StartSound(player, sfx_ebtext)
 			end
 		}

@@ -111,7 +111,7 @@ NoZone = true
 Music = COTP
 TypeOfLevel = ZE2
 SelectHeading = ZE2 Survival Maps
-Lua.ze2_timelimit = 15
+Lua.ze2_timelimit = 10
 NextLevel = T3
 SkyNum = 7300
 
