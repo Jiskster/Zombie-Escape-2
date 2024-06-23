@@ -60,6 +60,8 @@ addHook("MapLoad", function()
 end)
 
 addHook("ThinkFrame",do
+	if ZE2.game_ended then return end
+	
 	for i,timer in ipairs(ZE2.MapTimers) do
 		if (timer.active) then
 			if (ZE2.maptimerdebug.value) then
