@@ -4,6 +4,7 @@ DemoDelayTime = 6942069420
 TitlePicsMode = User
 TitlePicsName = ZE2_TTL
 TitlePicsScale = 3
+LoopTitle = true
 
 # Unlock the funny unlockables
 
