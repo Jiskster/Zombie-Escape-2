@@ -140,7 +140,7 @@ states[S_RUBY_BOX_BREAK] = {
 		sfx.fuse = TICRATE
 		S_StartSound(sfx,mo.info.deathsound)
 		
-		A_RubyDrop(mo,10)
+		A_RubyDrop(mo, 5)
 	end,
 	tics = 1,
 }
