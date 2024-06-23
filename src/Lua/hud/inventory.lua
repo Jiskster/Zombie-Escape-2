@@ -7,6 +7,7 @@ ZE2.inventoryhud = function(v, player)
 	
 	if player and not player.mo then return end
 	
+	local skin = player.mo.skin
 	local s_patch = v.cachePatch("CURWEAP")
 	local cyan_patch = v.cachePatch("Z_CYANSQUARE")
 	local sel = player["ze2_info"].inventory_selection
@@ -22,6 +23,9 @@ ZE2.inventoryhud = function(v, player)
 			local y = 176*FU
 			local overone_xpos = ((i-1)*20)*FU
 			local iconscale = FU
+			local slot = ZE2:FetchInventorySlot(player, i)
+			local slot_icon -- = ZE2:GetItemInfoIndex(slot, "icon", skin)
+			local slot_iconscale --  = ZE2:GetItemInfoIndex(slot, "iconscale", skin)
 			
 			if player["ze2_info"].shop_open then 
 				y = 146*FU
@@ -33,36 +37,43 @@ ZE2.inventoryhud = function(v, player)
 				x = $ + overone_xpos
 			end
 			
-			if ZE2:FetchInventory(player)[i] then
-				if ZE2:FetchInventory(player)[i].icon then
-					patch = v.cachePatch(ZE2:FetchInventory(player)[i].icon)
+			if slot then
+				slot_icon = ZE2:GetItemInfoIndex(slot, "icon", skin)
+				slot_iconscale = ZE2:GetItemInfoIndex(slot, "iconscale", skin)
+				
+				if slot_icon then
+					patch = v.cachePatch(slot_icon)
 				else
 					patch = v.cachePatch("BLANKIND")
 				end
-				if ZE2:FetchInventory(player)[i].iconscale then
-					iconscale = ZE2:FetchInventory(player)[i].iconscale
+				if slot_iconscale then
+					iconscale = slot_iconscale
 				end
 			else
 				patch = v.cachePatch("BLANKIND")
 			end
 			
 			-- weapon icons
-			if ZE2:FetchInventory(player)[i] then
+			if slot then
 				v.drawStretched(x, y, iconscale, iconscale, patch, V_SNAPTOBOTTOM)
 			else
 				v.drawStretched(x, y, iconscale, iconscale, patch, V_SNAPTOBOTTOM|V_TRANSLUCENT)
 			end
 
-			if ZE2:FetchInventory(player)[i] then
+			if slot then
+				local slot_count = ZE2:GetItemInfoIndex(slot, "count", skin)
+				local slot_limited = ZE2:GetItemInfoIndex(slot, "limited", skin)
+				local slot_ammo = ZE2:GetItemInfoIndex(slot, "ammo", skin)
+			
 				-- item count
-				if ZE2:FetchInventory(player)[i].count and ZE2:FetchInventory(player)[i].limited then
-					local count = tostring(ZE2:FetchInventory(player)[i].count)
+				if slot_count and slot_limited then
+					local count = tostring(slot_count)
 					customhud.CustomFontString(v,x,y,count, "DTNYF", V_SNAPTOBOTTOM, nil, FRACUNIT, SKINCOLOR_CLOUDY)
-					--v.drawString(x, y, tostring(ZE2:FetchInventory(player)[i].count), V_SNAPTOBOTTOM, "thin-fixed")
-				elseif ZE2:FetchInventory(player)[i].ammo ~= nil then -- ammo count
-					local ammo = tostring(ZE2:FetchInventory(player)[i].ammo)
+					--v.drawString(x, y, tostring(slot_count), V_SNAPTOBOTTOM, "thin-fixed")
+				elseif slot_ammo ~= nil then -- ammo count
+					local ammo = tostring(slot_ammo)
 					
-					if ZE2:FetchInventory(player)[i].ammo then
+					if slot_ammo then
 						v.drawString(x, y, ammo, V_SNAPTOBOTTOM, "thin-fixed")
 						customhud.CustomFontString(v,x,y,ammo, "DTNYF", V_SNAPTOBOTTOM, nil, FRACUNIT, SKINCOLOR_AQUAMARINE)
 					else -- flash if no ammo
@@ -79,10 +90,11 @@ ZE2.inventoryhud = function(v, player)
 	
 	-- item info
 	if ZE2:FetchInventorySlot(player) and ZE2:FetchInventorySlot(player).displayname then
-		local itemname = ZE2:FetchInventorySlot(player).displayname
-		local itemcolor = ZE2:FetchInventorySlot(player).color or SKINCOLOR_CLOUDY
+		local slot = ZE2:FetchInventorySlot(player)
+		local slot_itemname = ZE2:GetItemInfoIndex(slot, "displayname", skin)
+		local slot_itemcolor = ZE2:GetItemInfoIndex(slot, "color", skin) or SKINCOLOR_CLOUDY
 		
-		customhud.CustomFontString(v,sel_x+(8*FU),sel_y-(10*FU),itemname, "TNYFC", V_SNAPTOBOTTOM, "center", FRACUNIT, itemcolor)
+		customhud.CustomFontString(v,sel_x+(8*FU),sel_y-(10*FU),slot_itemname, "TNYFC", V_SNAPTOBOTTOM, "center", FRACUNIT, slot_itemcolor)
 	else
 		customhud.CustomFontString(v,sel_x+(8*FU),sel_y-(10*FU),"EMPTY", "TNYFC", V_SNAPTOBOTTOM, "center", FRACUNIT, SKINCOLOR_CLOUDY)
 	end
@@ -90,12 +102,14 @@ ZE2.inventoryhud = function(v, player)
 	-- weapon selection 
 	v.drawStretched(sel_x-(2*FU), sel_y-(2*FU), FU, FU, s_patch, V_SNAPTOBOTTOM)
 	if ZE2:FetchInventorySlot(player) then
+		local slot = ZE2:FetchInventorySlot(player)
+		
 		if player["ze2_info"].reload then
-			local slotreload = ZE2:FetchInventorySlot(player).reload_time or 10
+			local slotreload = ZE2:GetItemInfoIndex(slot, "reload_time", skin) or 10
 			local reload_div = FU - min(FixedDiv(player["ze2_info"].reload, slotreload),FU)
 			v.drawStretched(sel_x, sel_y, reload_div, FU, cyan_patch, V_SNAPTOBOTTOM|V_50TRANS)
 		elseif player["ze2_info"].weapondelay then
-			local slotdelay = ZE2:FetchInventorySlot(player).firerate
+			local slotdelay = ZE2:GetItemInfoIndex(slot, "firerate", skin)
 			local delay_div = min(FixedDiv(player["ze2_info"].weapondelay, slotdelay),FU)
 			v.drawStretched(sel_x, sel_y, delay_div, FU, cyan_patch, V_SNAPTOBOTTOM|V_50TRANS)
 		end

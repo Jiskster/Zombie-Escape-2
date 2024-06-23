@@ -64,10 +64,10 @@ function ZE2:FetchInventoryLimit(player)
 	return 1
 end
 
-function ZE2:FetchInventorySlot(player)
+function ZE2:FetchInventorySlot(player, slot)
 	if player and player.valid then
 		if player["ze2_info"] and player["ze2_info"].inventory_selection then
-			return ZE2:FetchInventory(player)[player["ze2_info"].inventory_selection] 
+			return ZE2:FetchInventory(player)[slot or player["ze2_info"].inventory_selection] 
 		end
 	end
 end
@@ -82,6 +82,40 @@ function ZE2:IsInventoryFull(player)
 			end
 		else
 			return true
+		end
+	end
+end
+
+function ZE2:GetItemInfoIndex(iteminfo, index, skin, real)
+	if not (iteminfo.skin_overwrite and iteminfo.skin_overwrite[skin]) or not skin and index then -- no overwrite or no skin, has index
+		if iteminfo[index] ~= nil then
+			return iteminfo[index]
+		else
+			return nil
+		end
+	elseif index then
+		if skin and iteminfo.skin_overwrite[skin][index] ~= nil and not real then
+			return iteminfo.skin_overwrite[skin][index]
+		elseif iteminfo[index] ~= nil then
+			return iteminfo[index]
+		else
+			return nil
+		end
+	end
+end
+
+function ZE2:SetItemInfoIndex(iteminfo, index, value, skin, real)
+	if value ~= nil then
+		if not (iteminfo.skin_overwrite and iteminfo.skin_overwrite[skin]) or not skin and index then -- no overwrite or no skin, has index
+			if iteminfo[index] ~= nil then
+				iteminfo[index] = value
+			end
+		elseif index then
+			if skin and iteminfo.skin_overwrite[skin][index] ~= nil and not real then
+				iteminfo.skin_overwrite[skin][index] = value
+			elseif iteminfo[index] ~= nil then
+				iteminfo[index] = value
+			end
 		end
 	end
 end
