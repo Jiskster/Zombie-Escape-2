@@ -29,7 +29,7 @@ ZE2:CreateItem("W's mirror", {
 	firerate = TICRATE*5,
 	sound = sfx_mrr12,
 	limited = true,
-	count = 5,
+	count = 3,
 	price = 110,
 	ontrigger = function(player)
 		local mirrorclone = P_SpawnMobjFromMobj(player.mo,0,0,0,MT_MIRRORCLONE)
