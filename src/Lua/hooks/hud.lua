@@ -15,5 +15,6 @@ customhud.SetupItem("ze2_toggle", ze2_modname, ZE2.togglehud, "game", 0)
 customhud.SetupItem("ze2_intermissionhud", ze2_modname, ZE2.intermissionhud, "game", 0)
 customhud.SetupItem("ze2_shop", ze2_modname, ZE2.shophud, "game", 0)
 customhud.SetupItem("ze2_inventory", ze2_modname, ZE2.inventoryhud, "game", 0)
+customhud.SetupItem("ze2_scores", ze2_modname, ZE2.tabscores, "scores", 0)
 
 customhud.SetupItem("ze2_debug", ze2_modname, ZE2.debughud, "game", 1)
