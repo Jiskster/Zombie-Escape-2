@@ -1,5 +1,7 @@
 customhud.SetupFont("STCFC", -1, 4);
 customhud.SetupFont("TNYFC", -1, 4);
+customhud.SetupFont("DSTCF", -1, 4);
+customhud.SetupFont("DTNYF", -1, 4);
 
 customhud.SetupItem("ze2_characterselect", ze2_modname, ZE2.characterselecthud, "game", 0)
 

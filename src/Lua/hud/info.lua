@@ -81,15 +81,12 @@ ZE2.infohud = function(v, player)
 			
 			customhud.CustomFontString(v, 138+64, 1, tostring(ZE2.ZombieCount()), "STCFC", 
 			(V_SNAPTOTOP), "center" , nil, SKINCOLOR_RED)
-			
-
-			
 		end
 		
 		-- [Timer] --
 		if the_time ~= nil then
 			-- Time
-			customhud.CustomFontString(v, 150, 1, the_time, "STCFC", 
+			customhud.CustomFontString(v, 150, 1, the_time, "DSTCF", 
 			(V_SNAPTOTOP), nil , nil, SKINCOLOR_BEIGE)
 			
 			-- Clock Icon

@@ -57,19 +57,19 @@ ZE2.inventoryhud = function(v, player)
 				-- item count
 				if ZE2:FetchInventory(player)[i].count and ZE2:FetchInventory(player)[i].limited then
 					local count = tostring(ZE2:FetchInventory(player)[i].count)
-					customhud.CustomFontString(v,x,y,count, "TNYFC", V_SNAPTOBOTTOM, nil, FRACUNIT, SKINCOLOR_CLOUDY)
+					customhud.CustomFontString(v,x,y,count, "DTNYF", V_SNAPTOBOTTOM, nil, FRACUNIT, SKINCOLOR_CLOUDY)
 					--v.drawString(x, y, tostring(ZE2:FetchInventory(player)[i].count), V_SNAPTOBOTTOM, "thin-fixed")
 				elseif ZE2:FetchInventory(player)[i].ammo ~= nil then -- ammo count
 					local ammo = tostring(ZE2:FetchInventory(player)[i].ammo)
 					
 					if ZE2:FetchInventory(player)[i].ammo then
 						v.drawString(x, y, ammo, V_SNAPTOBOTTOM, "thin-fixed")
-						customhud.CustomFontString(v,x,y,ammo, "TNYFC", V_SNAPTOBOTTOM, nil, FRACUNIT, SKINCOLOR_AQUAMARINE)
-					else
+						customhud.CustomFontString(v,x,y,ammo, "DTNYF", V_SNAPTOBOTTOM, nil, FRACUNIT, SKINCOLOR_AQUAMARINE)
+					else -- flash if no ammo
 						if (leveltime/4)%2 == 0 then
-							customhud.CustomFontString(v,x,y,ammo, "TNYFC", V_SNAPTOBOTTOM, nil, FRACUNIT, SKINCOLOR_CRIMSON)
+							customhud.CustomFontString(v,x,y,ammo, "DTNYF", V_SNAPTOBOTTOM, nil, FRACUNIT, SKINCOLOR_CRIMSON)
 						else
-							customhud.CustomFontString(v,x,y,ammo, "TNYFC", V_SNAPTOBOTTOM, nil, FRACUNIT, SKINCOLOR_AQUAMARINE)
+							customhud.CustomFontString(v,x,y,ammo, "DTNYF", V_SNAPTOBOTTOM, nil, FRACUNIT, SKINCOLOR_AQUAMARINE)
 						end
 					end
 				end
