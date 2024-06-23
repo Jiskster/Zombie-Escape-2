@@ -72,14 +72,6 @@ function ZE2:FetchInventorySlot(player, slot)
 	end
 end
 
-function ZE2:CopyInventorySlot(player, slot)
-	if player and player.valid and player.mo and player.mo.valid then
-		if player["ze2_info"] and player["ze2_info"].inventory_selection then
-			return ZE2:CopyItemInfo(ZE2:FetchInventory(player)[slot or player["ze2_info"].inventory_selection], player.mo.skin)
-		end
-	end
-end
-
 function ZE2:IsInventoryFull(player)
 	if player and player.valid then
 		if player["ze2_info"] and ZE2:FetchInventory(player) then
@@ -94,24 +86,36 @@ function ZE2:IsInventoryFull(player)
 	end
 end
 
--- To support skin item overwrites.
--- Makes a copy of the iteminfo (hopefully i dont regret using this)
-
-function ZE2:CopyItemInfo(iteminfo, skin)
-	if iteminfo then
-		if not (iteminfo.skin_overwrite and iteminfo.skin_overwrite[skin]) or not skin then
-			return ZE2:Copy(iteminfo)
+function ZE2:GetItemInfoIndex(iteminfo, index, skin, real)
+	if not (iteminfo.skin_overwrite and iteminfo.skin_overwrite[skin]) or not skin and index then -- no overwrite or no skin, has index
+		if iteminfo[index] ~= nil then
+			return iteminfo[index]
 		else
-			local modified = ZE2:Copy(iteminfo)
-			local skin_overwrite = iteminfo.skin_overwrite[skin]
-			
-			for i,v in pairs(skin_overwrite) do
-				modified[i] = v
+			return nil
+		end
+	elseif index then
+		if skin and iteminfo.skin_overwrite[skin][index] ~= nil and not real then
+			return iteminfo.skin_overwrite[skin][index]
+		elseif iteminfo[index] ~= nil then
+			return iteminfo[index]
+		else
+			return nil
+		end
+	end
+end
+
+function ZE2:SetItemInfoIndex(iteminfo, index, value, skin, real)
+	if value ~= nil then
+		if not (iteminfo.skin_overwrite and iteminfo.skin_overwrite[skin]) or not skin and index then -- no overwrite or no skin, has index
+			if iteminfo[index] ~= nil then
+				iteminfo[index] = value
 			end
-			
-			modified.skin_overwrite = nil -- no trailing
-			
-			return modified
+		elseif index then
+			if skin and iteminfo.skin_overwrite[skin][index] ~= nil and not real then
+				iteminfo.skin_overwrite[skin][index] = value
+			elseif iteminfo[index] ~= nil then
+				iteminfo[index] = value
+			end
 		end
 	end
 end

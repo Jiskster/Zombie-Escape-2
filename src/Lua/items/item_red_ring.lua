@@ -17,8 +17,9 @@ ZE2:CreateItem("Red Ring",  {
 			damage = 45,
 			
 			-- No Overwrite Support Yet
-			--ammo = 10,
-			--reload_time = 1*TICRATE,
+			max_ammo = 10,
+			ammo = 10,
+			reload_time = 1*TICRATE,
 		}
 	},
 	onspawn = function(pmo, mo)

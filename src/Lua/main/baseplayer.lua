@@ -458,13 +458,15 @@ addHook("PlayerThink", function(player)
 	end
 	
 	if player["ze2_info"].reload and ZE2:FetchInventorySlot(player) then
+		local skin = player.mo.skin
 		local iteminfo = ZE2:FetchInventorySlot(player)
-		local iteminfo_modified = ZE2:CopyInventorySlot(player)
+		local ammo = ZE2:GetItemInfoIndex(iteminfo, "ammo", skin)
+		local max_ammo = ZE2:GetItemInfoIndex(iteminfo, "max_ammo", skin)
 		
 		player["ze2_info"].reload = $ - 1
 		
 		if player["ze2_info"].reload <= 0 then
-			iteminfo.ammo = iteminfo_modified.max_ammo
+			ZE2:SetItemInfoIndex(iteminfo, "ammo", max_ammo, skin)
 			S_StartSound(player.mo, sfx_z_rel2)
 		end
 	end
@@ -526,35 +528,46 @@ addHook("PlayerThink", function(player)
 		
 		-- try shoot
 		if (cmd.buttons & BT_ATTACK) and not player["ze2_info"].weapondelay and not player["ze2_info"].reload
-		and ZE2:CopyInventorySlot(player) and player.playerstate ~= PST_DEAD and not player["ze2_info"].shop_open 
-		and (player["ze2_info"].await_fire or ZE2:CopyInventorySlot(player).autouse) then	
+		and ZE2:FetchInventorySlot(player) and player.playerstate ~= PST_DEAD and not player["ze2_info"].shop_open 
+		and (player["ze2_info"].await_fire or ZE2:FetchInventorySlot(player).autouse) then
+			local skin = player.mo.skin
 			local iteminfo = ZE2:FetchInventorySlot(player)
-			local iteminfo_modified = ZE2:CopyInventorySlot(player)
+			local ammo = ZE2:GetItemInfoIndex(iteminfo, "ammo", skin)
+			local max_ammo = ZE2:GetItemInfoIndex(iteminfo, "max_ammo", skin)
+			local count = ZE2:GetItemInfoIndex(iteminfo, "count", skin)
+			local limited = ZE2:GetItemInfoIndex(iteminfo, "limited", skin)
+			local firerate = ZE2:GetItemInfoIndex(iteminfo, "firerate", skin)
 			
 			-- If theres no ammo, dont fire. 
 			-- (Items with no ammo property can pass this check 100%)
-			if not (iteminfo.ammo ~= nil and iteminfo.ammo == 0) then
+			if ammo ~= nil and ammo <= 0 and not player["ze2_info"].reload then
+				print("Reload")
+				ZE2.DoPlayerReload(player)
+			elseif not max_ammo then
 				ZE2.DoPlayerFire(player, iteminfo)
 
-				player["ze2_info"].weapondelay = iteminfo_modified.firerate
+				player["ze2_info"].weapondelay = firerate
 				
 				player["ze2_info"].await_fire = false
 				
-				if iteminfo_modified.count ~= nil and iteminfo_modified.limited == true then
-					if iteminfo.count > 0  then
-						iteminfo.count = $ - 1
+				if count ~= nil and limited == true then
+					if count > 0  then
+						ZE2:SetItemInfoIndex(iteminfo, "count", count - 1, skin)
 					end
 				end
-			end
-			
-			if iteminfo.ammo ~= nil then
-				if iteminfo.ammo > 0 then
-					iteminfo.ammo = $ - 1
-				end
+			elseif ammo ~= nil and max_ammo and ammo > 0 then
+				ZE2:SetItemInfoIndex(iteminfo, "ammo", ammo - 1, skin)
 				
-				-- Auto Reload
-				if iteminfo.ammo <= 0 and not player["ze2_info"].reload then
-					ZE2.DoPlayerReload(player)
+				ZE2.DoPlayerFire(player, iteminfo)
+
+				player["ze2_info"].weapondelay = firerate
+				
+				player["ze2_info"].await_fire = false
+				
+				if count ~= nil and limited == true then
+					if count > 0  then
+						ZE2:SetItemInfoIndex(iteminfo, "count", count - 1, skin)
+					end
 				end
 			end
 		end	

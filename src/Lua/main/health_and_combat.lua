@@ -136,14 +136,16 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 				srcskin = src.skin
 			end
 			
-			local iteminfo = ZE2:CopyItemInfo(inf.iteminfo, srcskin)
+			local iteminfo = ZE2:Copy(inf.iteminfo)
+			local item_damage = ZE2:GetItemInfoIndex(iteminfo, "damage", srcskin)
+			local item_knockback = ZE2:GetItemInfoIndex(iteminfo, "knockback", srcskin)
 			
-			if iteminfo.damage then
-				dmg = iteminfo.damage
+			if item_damage then
+				dmg = item_damage
 			end
 			
-			if iteminfo.knockback then
-				knockback = iteminfo.knockback
+			if item_knockback then
+				knockback = item_knockback
 			end
 		end
 		
@@ -330,7 +332,11 @@ function ZE2.SpawnMissile(m_table)
 	speed = th.info.speed
 	
 	if iteminfo then 
-		local temp_iteminfo = ZE2:CopyItemInfo(iteminfo, source.skin)
+		local skin = source.skin
+		local temp_iteminfo = ZE2:Copy(iteminfo)
+		local missile_fuse = ZE2:GetItemInfoIndex(temp_iteminfo, "fuse", skin)
+		local missile_color = ZE2:GetItemInfoIndex(temp_iteminfo, "color", skin)
+		local missile_velocity_multiplier = ZE2:GetItemInfoIndex(temp_iteminfo, "velocity_multiplier", skin)
 
 		-- destroy functions
 		temp_iteminfo.onspawn = nil
@@ -338,17 +344,17 @@ function ZE2.SpawnMissile(m_table)
 		temp_iteminfo.onhit = nil
 		
 		th.iteminfo = temp_iteminfo
-		
-		if iteminfo.fuse then
-			th.fuse = temp_iteminfo.fuse
+
+		if missile_fuse then
+			th.fuse = missile_fuse
 		end
 		
-		if iteminfo.color ~= nil then
-			th.color = temp_iteminfo.color
+		if missile_color ~= nil then
+			th.color = missile_color
 		end
 		
-		if iteminfo.velocity_multiplier then
-			speed = FixedMul($, iteminfo.velocity_multiplier)
+		if missile_velocity_multiplier then
+			speed = FixedMul($, missile_velocity_multiplier)
 		end
 	end
 	
@@ -422,12 +428,15 @@ function ZE2.CheckMissileSpawn(th)
 end
 
 
-function ZE2.DoPlayerFire(player, input_iteminfo)
+function ZE2.DoPlayerFire(player, iteminfo)
 	local ring
+	local skin = player.mo.skin
+	local missile_object = ZE2:GetItemInfoIndex(iteminfo, "object", skin)
+	local flags2 = ZE2:GetItemInfoIndex(iteminfo, "flags2", skin)
+	local item_sound = ZE2:GetItemInfoIndex(iteminfo, "sound", skin)
 	
-	local iteminfo = ZE2:CopyItemInfo(input_iteminfo, player.mo.skin)
-	
-	if not ZE2.ItemPresets[iteminfo.item_id] then
+	-- dont be a phony
+	if not ZE2.ItemPresets[iteminfo.item_id] then 
 		return
 	end
 	
@@ -435,14 +444,14 @@ function ZE2.DoPlayerFire(player, input_iteminfo)
 		return
 	end
 
-	if iteminfo.object then
+	if missile_object then
 		local missile_def = {
 			source = player.mo, 
-			mobj_type = iteminfo.object,
+			mobj_type = missile_object,
 			angle = player.mo.angle,
 			allow_aim = true,
-			iteminfo = iteminfo,
-			flags2 = iteminfo.flags2,
+			["iteminfo"] = iteminfo, -- you can do iteminfo = iteminfo too, its ["iteminfo"] = iteminfo for visual clarity.
+			["flags2"] = flags2,
 		}
 		
 		ring = ZE2.SpawnMissile(missile_def)
@@ -460,8 +469,8 @@ function ZE2.DoPlayerFire(player, input_iteminfo)
 		end
 	end
 	
-	if iteminfo.sound then
-		S_StartSound(player.mo, iteminfo.sound)
+	if item_sound then
+		S_StartSound(player.mo, item_sound)
 	end
 
 	if ring then
@@ -474,10 +483,15 @@ function ZE2.DoPlayerFire(player, input_iteminfo)
 end
 
 function ZE2.DoPlayerReload(player)
-	local iteminfo = ZE2:CopyInventorySlot(player)
-	if iteminfo and iteminfo.reload_time and not player["ze2_info"].reload then
-		if iteminfo.ammo ~= iteminfo.max_ammo then
-			player["ze2_info"].reload = iteminfo.reload_time or 2*TICRATE
+	local iteminfo = ZE2:FetchInventorySlot(player)
+	local skin = player.mo.skin
+	local ammo = ZE2:GetItemInfoIndex(iteminfo, "ammo", skin)
+	local max_ammo = ZE2:GetItemInfoIndex(iteminfo, "max_ammo", skin)
+	local reload_time = ZE2:GetItemInfoIndex(iteminfo, "reload_time", skin)
+	
+	if iteminfo and reload_time and not player["ze2_info"].reload then
+		if ammo ~= max_ammo then
+			player["ze2_info"].reload = reload_time or 2*TICRATE
 			S_StartSound(player.mo, sfx_z_rel1)
 		end
 	end
