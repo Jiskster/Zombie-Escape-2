@@ -1,6 +1,6 @@
 freeslot("MT_CRRING","S_CRRING") 
 
-mobjinfo[MT_CRRING]= {
+mobjinfo[MT_CRRING] = {
 	doomednum = 860,
 	spawnstate = S_CRRING,
 	spawnhealth = 1,
