@@ -250,6 +250,10 @@ addHook("PlayerThink", function(player)
         if player.x_climbtime > 2*TICRATE + TICRATE/2 then
             player.climbing = 0
         end
+		
+		if player.pflags & PF_BOUNCING and player.mo.eflags & MFE_JUSTHITFLOOR and player.mo.health then
+			player.mo.momz = 10*FRACUNIT * P_MobjFlip(player.mo)
+		end
     end
 end)
 
