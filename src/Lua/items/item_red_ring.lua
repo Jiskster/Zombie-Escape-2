@@ -16,10 +16,9 @@ ZE2:CreateItem("Red Ring",  {
 			velocity_multiplier = 2*FRACUNIT,
 			damage = 45,
 			
-			-- No Overwrite Support Yet
 			max_ammo = 10,
 			ammo = 10,
-			reload_time = 1*TICRATE,
+			reload_time = 3*TICRATE,
 		}
 	},
 	onspawn = function(pmo, mo)
