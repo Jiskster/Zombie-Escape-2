@@ -40,6 +40,26 @@ local countdown_sfx = {
 	[1] = sfx_cone,
 }
 
+local function CheckGameForWinRing()
+	local haswinring = false
+	local winring_doomednum = mobjinfo[MT_CRRING].doomednum
+	
+	for thing in mapthings.iterate do 
+		if thing.type == winring_doomednum then
+			haswinring = true
+			break
+		end
+	end
+	
+	if not haswinring then
+		print("Mapnum " .. gamemap .. " doesn't have an exit. Forcing zombie win.")
+		ZE2:StartWin(2)
+		return false
+	end
+	
+	return true
+end
+
 function ZE2:StartWin(team)
 	self.game_ended = true
 	self.team_won = team
@@ -82,7 +102,9 @@ addHook("ThinkFrame", function()
 	
 	local count_timecalculate = (ZE2.pregame_timeleft-TICRATE)/TICRATE -- For the countdown not to be behind/ahead
 	
-	if not ZE2.pregame_timeleft and not ZE2.round_active then
+	if not ZE2.pregame_timeleft and not ZE2.round_active and not ZE2.game_ended then
+		if not CheckGameForWinRing() then return end
+		
 		ZE2.round_active = true
 		S_StartSound(nil, sfx_rstart)
 		local choosingnums = {}
