@@ -67,6 +67,9 @@ ZE2["default_ze2_info"] = {
 
 	damage_fade = 0, -- tic_t
 	damage_fade_max = 0,
+	
+	checkpoint_number = 0,
+	checkpoint_catchuptics = 0, 
 }
 
 addHook("PlayerSpawn", function(player)
@@ -478,6 +481,20 @@ addHook("PlayerThink", function(player)
 	end
 	
 	if player and not player.mo then return end
+	
+	if player["ze2_info"].checkpoint_catchuptics and ZE2.GetLatestCheckpoint(player) and ZE2.Checkpoints[ZE2.GetLatestCheckpoint(player)] then
+		print(player["ze2_info"].checkpoint_catchuptics/TICRATE)
+		
+		local latest_checkpoint = ZE2.GetLatestCheckpoint(player)
+		local info = ZE2.Checkpoints[latest_checkpoint]
+		
+		player["ze2_info"].checkpoint_catchuptics = $ - 1
+		
+		if not player["ze2_info"].checkpoint_catchuptics then
+			P_SetOrigin(player.mo, info.x*FU, info.y*FU, info.z*FU)
+			P_SpawnMobj(player.mo.x, player.mo.y, player.mo.z, MT_ZE2_TELEGFX)
+		end
+	end
 	
 	-- decrement
 	if player["ze2_info"].weapondelay then
