@@ -140,6 +140,8 @@ ZE2.giveplayerflags = function(player)
 end
 
 function ZE2:DecrementSprint(player, value)
+	if player["ze2_info"].team ~= 1 then return end
+
 	if player["ze2_info"].sprintmeter - abs(value) <= 0 then
 		player["ze2_info"].sprintdelay = TICRATE
 		player["ze2_info"].sprintmeter = 0
@@ -149,6 +151,8 @@ function ZE2:DecrementSprint(player, value)
 end
 
 function ZE2:IncrementSprint(player, value)
+	if player["ze2_info"].team ~= 1 then return end
+	
 	if player["ze2_info"].sprintmeter + abs(value) >= 100*FRACUNIT then
 		player["ze2_info"].sprintmeter = 100*FRACUNIT
 	else
