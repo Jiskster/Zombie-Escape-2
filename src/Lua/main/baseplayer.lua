@@ -218,13 +218,12 @@ ZE2.sprint_thinker = function(player)
 end
 
 addHook("JumpSpecial", function(player)
-	if player.mo and player.mo.valid and player["ze2_info"].isSprinting and P_IsObjectOnGround(player.mo) then
-		if player["ze2_info"].sprintmeter - ZE2.JumpSprintFatigue <= 0 then
-			player["ze2_info"].sprintmeter = 0
-			player["ze2_info"].sprintdelay = TICRATE
+	if player.mo and player.mo.valid and not (player.pflags & PF_THOKKED) then
+		if not player["ze2_info"].sprintmeter then
 			return true
-		else
-			player["ze2_info"].sprintmeter = $ - ZE2.JumpSprintFatigue
+		elseif not (player.pflags & PF_JUMPDOWN) then
+			ZE2:DecrementSprint(player, ZE2.JumpSprintFatigue)
+			return false
 		end
 	end
 end)
@@ -269,6 +268,14 @@ addHook("PlayerThink", function(player)
 
 		if player.glidetime then
 			ZE2:DecrementSprint(player, (player.glidetime*FRACUNIT)/32)
+		end
+		
+		if (player.pflags & PF_JUMPED) then
+			player["ze2_info"].isJumping = true
+		end
+		
+		if P_IsObjectOnGround(player.mo) and player["ze2_info"].isJumping then
+			player["ze2_info"].isJumping = false
 		end
 		
 		if player.pflags & PF_BOUNCING and player.mo.eflags & MFE_JUSTHITFLOOR and player.mo.health then
