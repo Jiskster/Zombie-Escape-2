@@ -562,21 +562,11 @@ addHook("PlayerThink", function(player)
 			-- (Items with no ammo property can pass this check 100%)
 			if ammo ~= nil and ammo <= 0 and not player["ze2_info"].reload then
 				ZE2.DoPlayerReload(player)
-			elseif not max_ammo then
-				ZE2.DoPlayerFire(player, iteminfo)
-
-				player["ze2_info"].weapondelay = firerate
-				
-				player["ze2_info"].await_fire = false
-				
-				if count ~= nil and limited == true then
-					if count > 0  then
-						ZE2:SetItemInfoIndex(iteminfo, "count", count - 1, skin)
-					end
+			else
+				if ammo ~= nil and max_ammo and ammo > 0 then
+					ZE2:SetItemInfoIndex(iteminfo, "ammo", ammo - 1, skin)
 				end
-			elseif ammo ~= nil and max_ammo and ammo > 0 then
-				ZE2:SetItemInfoIndex(iteminfo, "ammo", ammo - 1, skin)
-				
+			
 				ZE2.DoPlayerFire(player, iteminfo)
 
 				player["ze2_info"].weapondelay = firerate
