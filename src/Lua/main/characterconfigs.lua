@@ -268,11 +268,11 @@ ZE2.AddConfig("tails", {
 
 ZE2.AddConfig("knuckles", {
 	normalspeed = 10 * FRACUNIT,
-	health = 115,
+	health = 100,
 	charability = CA_GLIDEANDCLIMB,
 	charability2 = CA2_NONE,
 	jumpfactor = 17 * FRACUNIT / 19,
-	actionspd = 12*FRACUNIT,
+	actionspd = 24*FRACUNIT,
 	sprintboost = 8 * FRACUNIT,
 	desc1 = "Very Strong feller",
 	desc2 = "Glides slow. The slowest."

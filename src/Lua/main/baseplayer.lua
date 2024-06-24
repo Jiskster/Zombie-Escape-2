@@ -191,7 +191,7 @@ ZE2.sprint_thinker = function(player)
 					P_SpawnSkidDust(player, 20*FRACUNIT)
 				end
 			end
-		else
+		elseif not player.climbing then
 			if not player["ze2_info"].sprintdelay then
 				if not (player.speed/FU) then
 					ZE2:IncrementSprint(player, increment)
@@ -235,21 +235,30 @@ addHook("LinedefExecute", function(line, mobj, sector)
 	end
 end, "NOABILITY")
 
--- Limit for climbing characters.
+-- Limit character abilities. 
 addHook("PlayerThink", function(player) 
 	if gametype ~= GT_ZE2 then return end
     if player.mo and player.mo.valid then
-        player.x_climbtime = $ or 0 
+	
         if player.climbing then
-            player.x_climbtime = $ + 1
-        elseif player.x_climbtime then
-            player.x_climbtime = $ - 1  
-            player.pflags = $ | PF_THOKKED
+            ZE2:DecrementSprint(player, FRACUNIT)
+			
+			if not player["ze2_info"].sprintmeter then
+				player.climbing = 0
+				player.mo.state = S_PLAY_ROLL
+			end
         end
+		
+		if not player["ze2_info"].sprintmeter then
+			if (player.pflags & PF_GLIDING) then
+				player.pflags = $ & ~PF_GLIDING
+				player.mo.state = S_PLAY_ROLL
+			end
+		end
 
-        if player.x_climbtime > 2*TICRATE + TICRATE/2 then
-            player.climbing = 0
-        end
+		if player.glidetime then
+			ZE2:DecrementSprint(player, (player.glidetime*FRACUNIT)/32)
+		end
 		
 		if player.pflags & PF_BOUNCING and player.mo.eflags & MFE_JUSTHITFLOOR and player.mo.health then
 			player.mo.momz = 10*FRACUNIT * P_MobjFlip(player.mo)
