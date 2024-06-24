@@ -259,8 +259,8 @@ ZE2.AddConfig("tails", {
 	health = 80,
 	charability = CA_FLY,
 	charability2 = CA2_NONE,
-	jumpfactor = 17 * FRACUNIT / 19,
-	actionspd = 30*FRACUNIT,
+	jumpfactor = 18 * FRACUNIT / 19,
+	actionspd = 40*FRACUNIT,
 	sprintboost = 11 * FRACUNIT,
 	desc1 = "Has the brains. Without the plane.",
 	desc2 = "Flies slow. Slower than sonic."

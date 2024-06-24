@@ -176,7 +176,8 @@ ZE2.sprint_thinker = function(player)
 	end
 	
 	if player["ze2_info"].team == 1 then
-		if P_GetPlayerControlDirection(player) == 1 and (cmd.buttons & BT_SPIN) then
+		if P_GetPlayerControlDirection(player) == 1 and (cmd.buttons & BT_SPIN) 
+		and not player.powers[pw_tailsfly] then
 			
 			ZE2:DecrementSprint(player, decrement)
 			
@@ -207,6 +208,10 @@ ZE2.sprint_thinker = function(player)
 		end
 	else
 		player["ze2_info"].isSprinting = false
+	end
+	
+	if cmd.buttons & BT_SPIN and player.powers[pw_tailsfly] then
+		P_SetObjectMomZ(player.mo, -FRACUNIT/2, true)
 	end
 	
 	cmd.buttons = $ & ~BT_SPIN
@@ -254,6 +259,12 @@ addHook("PlayerThink", function(player)
 				player.pflags = $ & ~PF_GLIDING
 				player.mo.state = S_PLAY_ROLL
 			end
+			
+			player.powers[pw_tailsfly] = 0
+		end
+		
+		if player.powers[pw_tailsfly] then
+			ZE2:DecrementSprint(player, FRACUNIT)
 		end
 
 		if player.glidetime then
