@@ -218,7 +218,7 @@ ZE2.sprint_thinker = function(player)
 end
 
 addHook("JumpSpecial", function(player)
-	if player.mo and player.mo.valid and not (player.pflags & PF_THOKKED) then
+	if player.mo and player.mo.valid and not (player.pflags & PF_THOKKED) and P_IsObjectOnGround(player.mo) then
 		if not player["ze2_info"].sprintmeter then
 			return true
 		elseif not (player.pflags & PF_JUMPDOWN) then
