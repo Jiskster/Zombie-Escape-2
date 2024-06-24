@@ -104,4 +104,9 @@ ZE2:CreateItem("Rail Ring", {
 	ammo = 1,
 	reload_time = 7*TICRATE,
 	ontrigger = trigger_func,
+	skin_overwrite = {
+		["fang"] = {
+			reload_time = 3*TICRATE,
+		}
+	},
 })
