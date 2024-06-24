@@ -561,7 +561,6 @@ addHook("PlayerThink", function(player)
 			-- If theres no ammo, dont fire. 
 			-- (Items with no ammo property can pass this check 100%)
 			if ammo ~= nil and ammo <= 0 and not player["ze2_info"].reload then
-				print("Reload")
 				ZE2.DoPlayerReload(player)
 			elseif not max_ammo then
 				ZE2.DoPlayerFire(player, iteminfo)
