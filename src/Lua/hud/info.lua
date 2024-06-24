@@ -86,7 +86,7 @@ ZE2.infohud = function(v, player)
 		-- [Timer] --
 		if the_time ~= nil then
 			-- Time
-			customhud.CustomFontString(v, 150, 1, the_time, "DSTCF", 
+			customhud.CustomFontString(v, 150, 1, the_time, "STCFC", 
 			(V_SNAPTOTOP), nil , nil, SKINCOLOR_BEIGE)
 			
 			-- Clock Icon
