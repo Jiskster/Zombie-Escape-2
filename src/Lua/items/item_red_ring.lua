@@ -12,7 +12,7 @@ ZE2:CreateItem("Red Ring",  {
 			icon = "CORKIND",
 			firerate = 26,
 			color = SKINCOLOR_BROWN,
-			knockback = 55*FRACUNIT,
+			knockback = 35*FRACUNIT,
 			velocity_multiplier = 2*FRACUNIT,
 			damage = 45,
 			
