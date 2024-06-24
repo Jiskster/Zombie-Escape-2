@@ -6,11 +6,13 @@ Creator:
 
 Coders:
 "Jisk"
+"Luigi Budd"
 "LeonardoTheMutant"
 
 Spriters:
 "Luigi Budd"
 "W"
+"GLide KS"
 
 Modelers:
 "Marilyn / Speccy"
@@ -18,6 +20,7 @@ Modelers:
 Mappers:
 "Tuxe" - N/A (Different intrests, problematic community member)
 "Hammito" - N/A (Left the community)
+"Tempestissimo"
 "Neonius|Next"
 "jovier"
 
@@ -30,7 +33,7 @@ Testers:
 "Tempestissimo"
 "jovier"
 
-This mod is open assets, anyone is allowed to edit and contribute.
+This mod is not open assets, it is encouraged to patch the mod via external addons.
 You will be credited for your contributions.
 Github: https://github.com/Jiskster/SRBZ
 Revoid Discord Server: https://discord.com/invite/NVP2PUV7yk 
