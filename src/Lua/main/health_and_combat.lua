@@ -354,6 +354,7 @@ function ZE2.SpawnMissile(m_table)
 		temp_iteminfo.onspawn = nil
 		temp_iteminfo.ontrigger = nil
 		temp_iteminfo.onhit = nil
+		temp_iteminfo.thinker = nil
 		
 		th.iteminfo = temp_iteminfo
 
