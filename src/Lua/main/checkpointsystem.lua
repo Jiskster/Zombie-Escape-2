@@ -24,7 +24,7 @@ mobjinfo[MT_ZE2CHECKPOINT] = {
 	radius = 64*FRACUNIT,
 	height = 80*FRACUNIT,
 	mass = 4,
-	flags = MF_SPECIAL,
+	flags = MF_NOBLOCKMAP|MF_NOCLIP|MF_NOGRAVITY|MF_NOCLIPHEIGHT,
 }
 
 ZE2.LatestSurvivorCheckpoint = 0
