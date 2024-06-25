@@ -4,14 +4,23 @@ mobjinfo[MT_ZE2CHECKPOINT] = {
 	//$Category Zombie Escape 2
 	//$Name ZE2 Checkpoint
 	//$Sprite STPTA0
+	
 	//$Arg0 Checkpoint Number
 	//$Arg0Default 0
+	
 	//$Arg1 Checkpoint Flags
 	//$Arg1Type 12
 	//$Arg1Enum {1="Survivor"; 2="Zombie";}
 	//$Arg1Flags {1="Survivor"; 2="Zombie";}
+	
 	//$Arg2 Catchup Delay (Seconds)
 	//$Arg2Default 25
+
+	//$Arg3 Indiscriminate Checkpoints
+	//$Arg3ToolTip Allow any team to influence other team's catchup teleports.
+	//$Arg3Type 12
+	//$Arg3Enum {1="Active";}
+	//$Arg3Flags {1="Active";}
 	
 	doomednum = 5600,
 	spawnstate = S_INVISIBLE,
@@ -39,6 +48,35 @@ function ZE2.GetLatestCheckpoint(player)
 	end
 end
 
+function ZE2.LatestCheckpointTeleport(player, setcheckpoint)
+	if ZE2.GetLatestCheckpoint(player) and ZE2.Checkpoints[ZE2.GetLatestCheckpoint(player)] then
+		local latest_checkpoint = ZE2.GetLatestCheckpoint(player)
+		local info = ZE2.Checkpoints[latest_checkpoint]
+		
+		P_SetOrigin(player.mo, info.x*FU, info.y*FU, info.z*FU)
+		P_SpawnMobj(player.mo.x, player.mo.y, player.mo.z, MT_ZE2_TELEGFX)
+		S_StartSound(player.mo, sfx_telepo) -- make sure it plays the sound
+		player.mo.angle = FixedAngle(info.angle*FRACUNIT)
+		
+		if setcheckpoint then
+			player["ze2_info"].checkpoint_number = latest_checkpoint
+		end
+	end
+end
+
+function ZE2.DeductCatchupTics(player, tics)
+	if player["ze2_info"].checkpoint_catchuptics <= 0 then return end
+	
+	if player["ze2_info"].checkpoint_catchuptics - tics <= 0 then
+		player["ze2_info"].checkpoint_catchuptics = 0
+		ZE2.LatestCheckpointTeleport(player)
+	else
+		player["ze2_info"].checkpoint_catchuptics = $ - tics
+	end
+end
+
+
+
 local function ActivateCheckpoint(mobj, checkpoint)
 	local isvalid = mobj.player and mobj.player.valid 
 					and checkpoint and checkpoint.valid
@@ -49,39 +87,74 @@ local function ActivateCheckpoint(mobj, checkpoint)
 		local checkpoint_number = checkpoint.spawnpoint.args[0]
 		local checkpoint_flags = checkpoint.spawnpoint.args[1]
 		local checkpoint_catchup_delay = checkpoint.spawnpoint.args[2]
+		local checkpoint_indisriminate_flags = checkpoint.spawnpoint.args[3]
 		local SURVIVORFLAG, ZOMBIEFLAG = 1<<0, 1<<1
+		local INDISCRIMINATE_FLAG = 1<<0 --Indiscriminate Checkpoints
 		
 		if checkpoint_number then
-			if (checkpoint_flags & SURVIVORFLAG) and player["ze2_info"].team == 1 then
-				if ZE2.LatestSurvivorCheckpoint < checkpoint_number then
+			if (checkpoint_flags & SURVIVORFLAG) and (player["ze2_info"].team == 1 or (checkpoint_indisriminate_flags & INDISCRIMINATE_FLAG)) then
+				if ZE2.LatestSurvivorCheckpoint < checkpoint_number then -- Is activating a newer checkpoint
 					ZE2.LatestSurvivorCheckpoint = checkpoint_number
-					checkpoint.state = checkpoint.info.painstate
-					S_StartSound(mobj, checkpoint.info.painsound)
+					player["ze2_info"].checkpoint_number = ZE2.LatestSurvivorCheckpoint
+					
+					--checkpoint.state = checkpoint.info.painstate
+					--S_StartSound(mobj, checkpoint.info.painsound)
 					
 					for tplayer in players.iterate do 
 						if tplayer.spectator then continue end
 						if player == tplayer then continue end 
 						
 						if tplayer["ze2_info"] and tplayer["ze2_info"].team == 1 and tplayer["ze2_info"].checkpoint_number < checkpoint_number then
+							if tplayer["ze2_info"].checkpoint_catchuptics then
+								ZE2.DeductCatchupTics(player, 5*TICRATE)
+								continue
+							end
+						
 							tplayer["ze2_info"].checkpoint_catchuptics = checkpoint_catchup_delay*TICRATE
 						end
+					end
+				elseif player["ze2_info"].team == 1 then
+					if player["ze2_info"].checkpoint_number < checkpoint_number and checkpoint_number ~= ZE2.GetLatestCheckpoint(player) then
+						ZE2.DeductCatchupTics(player, 5*TICRATE)
+						--print("Not same checkpoint number, deducting tics")
+					elseif checkpoint_number == ZE2.GetLatestCheckpoint(player) then
+						player["ze2_info"].checkpoint_catchuptics = 0
+						player["ze2_info"].checkpoint_number = ZE2.GetLatestCheckpoint(player)
+						--print("Equal checkpoints")
 					end
 				end
 			end
 			
-			if (checkpoint_flags & ZOMBIEFLAG) and player["ze2_info"].team == 2 then
+			if (checkpoint_flags & ZOMBIEFLAG) and (player["ze2_info"].team == 2 or (checkpoint_indisriminate_flags & INDISCRIMINATE_FLAG)) then
 				if ZE2.LatestZombieCheckpoint < checkpoint_number then
 					ZE2.LatestZombieCheckpoint = checkpoint_number
-					checkpoint.state = checkpoint.info.painstate
-					S_StartSound(mobj, checkpoint.info.painsound)
+					player["ze2_info"].checkpoint_number = ZE2.LatestZombieCheckpoint
+					
+					--checkpoint.state = checkpoint.info.painstate
+					--S_StartSound(mobj, checkpoint.info.painsound)
 					
 					for tplayer in players.iterate do 
 						if tplayer.spectator then continue end
 						if player == tplayer then continue end 
 						
 						if tplayer["ze2_info"] and tplayer["ze2_info"].team == 2 and tplayer["ze2_info"].checkpoint_number < checkpoint_number then
+							if tplayer["ze2_info"].checkpoint_catchuptics then
+								ZE2.DeductCatchupTics(player, 5*TICRATE)
+								continue
+							end
+							
 							tplayer["ze2_info"].checkpoint_catchuptics = checkpoint_catchup_delay*TICRATE
 						end
+					end
+				elseif player["ze2_info"].team == 2 then
+					if player["ze2_info"].checkpoint_number < checkpoint_number and checkpoint_number ~= ZE2.GetLatestCheckpoint(player) then
+						player["ze2_info"].checkpoint_number = checkpoint_number
+						ZE2.DeductCatchupTics(player, 5*TICRATE)
+						--print("Not same checkpoint number, deducting tics")
+					elseif checkpoint_number == ZE2.GetLatestCheckpoint(player) then
+						player["ze2_info"].checkpoint_catchuptics = 0
+						player["ze2_info"].checkpoint_number = ZE2.GetLatestCheckpoint(player)
+						--print("Equal checkpoints")
 					end
 				end
 			end
@@ -141,3 +214,12 @@ addHook("LinedefExecute", function(line, mobj, sector)
 		end
 	end
 end, "ZE2CHECKPOINT")
+
+addHook("PlayerSpawn", function(player)
+	if not leveltime then return end
+	if gametype ~= GT_ZE2 then return end
+	
+	if player.mo and player.mo.valid then
+		ZE2.LatestCheckpointTeleport(player, true)
+	end
+end)

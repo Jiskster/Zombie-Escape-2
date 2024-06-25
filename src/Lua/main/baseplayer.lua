@@ -482,17 +482,11 @@ addHook("PlayerThink", function(player)
 	
 	if player and not player.mo then return end
 	
-	if player["ze2_info"].checkpoint_catchuptics and ZE2.GetLatestCheckpoint(player) and ZE2.Checkpoints[ZE2.GetLatestCheckpoint(player)] then
-		print(player["ze2_info"].checkpoint_catchuptics/TICRATE)
-		
-		local latest_checkpoint = ZE2.GetLatestCheckpoint(player)
-		local info = ZE2.Checkpoints[latest_checkpoint]
-		
+	if player["ze2_info"].checkpoint_catchuptics then
 		player["ze2_info"].checkpoint_catchuptics = $ - 1
 		
 		if not player["ze2_info"].checkpoint_catchuptics then
-			P_SetOrigin(player.mo, info.x*FU, info.y*FU, info.z*FU)
-			P_SpawnMobj(player.mo.x, player.mo.y, player.mo.z, MT_ZE2_TELEGFX)
+			ZE2.LatestCheckpointTeleport(player, true)
 		end
 	end
 	
