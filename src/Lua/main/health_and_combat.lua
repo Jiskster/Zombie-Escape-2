@@ -500,7 +500,7 @@ end
 addHook("MobjThinker", function(mobj)
 	if mobj and mobj.valid and mobj.iteminfo and ZE2.ItemPresets[mobj.iteminfo.item_id] 
 	and ZE2.ItemPresets[mobj.iteminfo.item_id].thinker and mobj.target then
-		ZE2.ItemPresets[mobj.iteminfo.item_id].thinker(mobj.target,mobj)
+		ZE2.ItemPresets[mobj.iteminfo.item_id].thinker(mobj.target, mobj)
 	end
 end)
 

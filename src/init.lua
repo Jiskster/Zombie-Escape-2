@@ -29,6 +29,8 @@ dofile "items/item_flash_ring.lua"
 dofile "items/item_rail_ring.lua"
 dofile "items/item_silver_spray.lua"
 dofile "items/item_gfz_sphere.lua"
+dofile "items/item_infinity_ring.lua"
+
 // ITEMS END
 dofile "main/baseplayer.lua"
 
