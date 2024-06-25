@@ -202,7 +202,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			if inf and inf.valid and inf.player then
 				inflictor_player = inf.player
 			elseif src and src.valid and src.player then
-				inflictor_player = inf.player
+				inflictor_player = src.player
 			end
 			
 			mo.player.powers[pw_flashing] = ZE2.survinvtics.value
