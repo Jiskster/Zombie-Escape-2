@@ -145,7 +145,7 @@ addHook("ThinkFrame", function()
 				local player = players[playernum]
 				
 				if ZE2.killwhenchosen.value then
-					P_KillMobj(player.mo,nil,nil,DMG_INSTAKILL)
+					ZE2.KillMobj(player.mo, nil, nil, DMG_INSTAKILL, true)
 				else
 					ZE2.ResetPlayer(player)
 				end
