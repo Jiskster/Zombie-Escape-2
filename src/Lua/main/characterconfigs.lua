@@ -36,7 +36,7 @@ ZE2.ZombieConfig = {
 		inventory_limit = 2,
 		inventory = {
 			ZE2:CopyItemFromID(ITEM_INSTA_BURST),
-			ZE2:CopyItemFromID(ITEM_SILVER_SPRAY)
+			--ZE2:CopyItemFromID(ITEM_SILVER_SPRAY)
 		},
 	},
 }
