@@ -14,7 +14,7 @@ freeslot("MT_TORIEL") -- fuck you SOC
 
 mobjinfo[MT_TORIEL].npc_name = "Toriel"
 mobjinfo[MT_TORIEL].npc_name_color = SKINCOLOR_WHITE
-mobjinfo[MT_TORIEL].npc_spawnhealth = {1400,3700}
+mobjinfo[MT_TORIEL].npc_spawnhealth = {100,100}
 
 local function undertale_floweytalk()
 	chatprint("\x82\<Flowey>\x80 Hey, why are you in a hurry- Wait!")

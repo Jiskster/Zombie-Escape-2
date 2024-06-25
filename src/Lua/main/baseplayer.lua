@@ -67,6 +67,9 @@ ZE2["default_ze2_info"] = {
 
 	damage_fade = 0, -- tic_t
 	damage_fade_max = 0,
+	
+	checkpoint_number = 0,
+	checkpoint_catchuptics = 0, 
 }
 
 addHook("PlayerSpawn", function(player)
@@ -482,6 +485,14 @@ addHook("PlayerThink", function(player)
 	end
 	
 	if player and not player.mo then return end
+	
+	if player["ze2_info"].checkpoint_catchuptics then
+		player["ze2_info"].checkpoint_catchuptics = $ - 1
+		
+		if not player["ze2_info"].checkpoint_catchuptics then
+			ZE2.LatestCheckpointTeleport(player, true)
+		end
+	end
 	
 	-- decrement
 	if player["ze2_info"].weapondelay then

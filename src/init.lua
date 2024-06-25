@@ -52,6 +52,7 @@ dofile "main/emotes.lua"
 dofile "main/shop.lua"
 dofile "main/savedata.lua"
 dofile "main/maptimers.lua"
+dofile "main/checkpointsystem.lua"
 
 dofile "objects/megahp.lua"
 dofile "objects/teleporter_gfx.lua"
@@ -72,7 +73,6 @@ dofile "hooks/hud.lua"
 
 dofile "main/name_tags.lua"
 
-dofile "levelscripts/thefarland.lua"
 dofile "levelscripts/minecraft.lua"
 dofile "levelscripts/specialstage.lua"
 dofile "levelscripts/undertale.lua"

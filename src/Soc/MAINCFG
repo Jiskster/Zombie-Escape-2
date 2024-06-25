@@ -90,20 +90,6 @@ SkyNum = 1
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 9
 
-Level TF
-LevelName = The Farland
-Act = 0
-Subtitle = By Joiver
-Music = MP_FOR
-TypeOfLevel = ZE2
-SelectHeading = ZE2 Survival Maps
-NoZone = True
-SkyNum = 127
-SkyboxScaleX = -2
-SkyboxScaleY = -2
-lua.takis_iscoldarea = 1
-Lua.ze2_timelimit = 6
-
 Level EB
 LevelName = Cave of the Past
 SubTitle = The war against Giygas?
