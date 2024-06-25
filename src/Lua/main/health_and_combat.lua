@@ -197,6 +197,14 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	
 	if mo.player then
 		if mo.player["ze2_info"].team == 1 then
+			local inflictor_player -- 100% by a zombie
+			
+			if inf and inf.valid and inf.player then
+				inflictor_player = inf.player
+			elseif src and src.valid and src.player then
+				inflictor_player = inf.player
+			end
+			
 			mo.player.powers[pw_flashing] = ZE2.survinvtics.value
 			ZE2:SetDamageFadeAnim(mo.player, 15)
 			S_StartSound(mo, sfx_s3kb9)
@@ -213,6 +221,10 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 				if verticalknockback then
 					P_SetObjectMomZ(mo, verticalknockback, true)
 				end
+			end
+			
+			if inflictor_player then
+				ZE2:DecrementSprint(inflictor_player, 20*FRACUNIT)
 			end
 		elseif mo.player["ze2_info"].team == 2 then
 			local ztype = mo.player["ze2_info"].zombie_type
