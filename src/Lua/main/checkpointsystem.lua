@@ -52,7 +52,7 @@ local function ActivateCheckpoint(mobj, checkpoint)
 		local SURVIVORFLAG, ZOMBIEFLAG = 1<<0, 1<<1
 		
 		if checkpoint_number then
-			if (checkpoint_flags & SURVIVORFLAG) then
+			if (checkpoint_flags & SURVIVORFLAG) and player["ze2_info"].team == 1 then
 				if ZE2.LatestSurvivorCheckpoint < checkpoint_number then
 					ZE2.LatestSurvivorCheckpoint = checkpoint_number
 					checkpoint.state = checkpoint.info.painstate
@@ -69,7 +69,7 @@ local function ActivateCheckpoint(mobj, checkpoint)
 				end
 			end
 			
-			if (checkpoint_flags & ZOMBIEFLAG) then
+			if (checkpoint_flags & ZOMBIEFLAG) and player["ze2_info"].team == 2 then
 				if ZE2.LatestZombieCheckpoint < checkpoint_number then
 					ZE2.LatestZombieCheckpoint = checkpoint_number
 					checkpoint.state = checkpoint.info.painstate
@@ -118,9 +118,26 @@ addHook("MapLoad", function()
 	end
 end)
 
-addHook("TouchSpecial", function(special, toucher)
-	if not (special and special.valid and toucher and toucher.valid) then return true end
+--minor TODO: Fix Iterating many times in the same checkpoint
+addHook("LinedefExecute", function(line, mobj, sector)
+	local checkpoint_doomednum = mobjinfo[MT_ZE2CHECKPOINT].doomednum
 	
-	ActivateCheckpoint(toucher, special)
-	return true
-end, MT_ZE2CHECKPOINT)
+	if mobj and mobj.valid and mobj.player and mobj.player.valid then
+		if line.tag then
+			local foundcheckpoint
+			
+			for mapthing in mapthings.tagged(line.tag) do
+				if mapthing.type ~= checkpoint_doomednum then continue end
+				
+				foundcheckpoint = mapthing
+				--print("Found Checkpoint")
+				break;
+			end
+			
+			if foundcheckpoint and foundcheckpoint.mobj and foundcheckpoint.mobj.valid then
+				--print("Valid checkpoint mobj")
+				ActivateCheckpoint(mobj, foundcheckpoint.mobj)
+			end
+		end
+	end
+end, "ZE2CHECKPOINT")
