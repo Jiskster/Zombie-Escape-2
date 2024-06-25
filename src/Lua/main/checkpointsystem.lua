@@ -16,11 +16,11 @@ mobjinfo[MT_ZE2CHECKPOINT] = {
 	//$Arg2 Catchup Delay (Seconds)
 	//$Arg2Default 25
 
-	//$Arg3 Indiscriminate Checkpoints
-	//$Arg3ToolTip Allow any team to influence other team's catchup teleports.
+	//$Arg3 Extra Flags
+	//$Arg3ToolTip Indiscriminate Checkpoints: \nAllow any team to influence other team's catchup teleports.
 	//$Arg3Type 12
-	//$Arg3Enum {1="Active";}
-	//$Arg3Flags {1="Active";}
+	//$Arg3Enum {1="Indiscriminate Checkpoints"; 2="Disable Catchup";}
+	//$Arg3Flags {1="Indiscriminate Checkpoints"; 2="Disable Catchup";}
 	
 	doomednum = 5600,
 	spawnstate = S_INVISIBLE,
@@ -87,12 +87,13 @@ local function ActivateCheckpoint(mobj, checkpoint)
 		local checkpoint_number = checkpoint.spawnpoint.args[0]
 		local checkpoint_flags = checkpoint.spawnpoint.args[1]
 		local checkpoint_catchup_delay = checkpoint.spawnpoint.args[2]
-		local checkpoint_indisriminate_flags = checkpoint.spawnpoint.args[3]
+		local checkpoint_extra_flags = checkpoint.spawnpoint.args[3]
 		local SURVIVORFLAG, ZOMBIEFLAG = 1<<0, 1<<1
 		local INDISCRIMINATE_FLAG = 1<<0 --Indiscriminate Checkpoints
+		local DISABLECATCHUP_FLAG = 1<<1 --Disable catchup (Makes it so others dont have to catch up to you)
 		
 		if checkpoint_number then
-			if (checkpoint_flags & SURVIVORFLAG) and (player["ze2_info"].team == 1 or (checkpoint_indisriminate_flags & INDISCRIMINATE_FLAG)) then
+			if (checkpoint_flags & SURVIVORFLAG) and (player["ze2_info"].team == 1 or (checkpoint_extra_flags & INDISCRIMINATE_FLAG)) then
 				if ZE2.LatestSurvivorCheckpoint < checkpoint_number then -- Is activating a newer checkpoint
 					ZE2.LatestSurvivorCheckpoint = checkpoint_number
 					player["ze2_info"].checkpoint_number = ZE2.LatestSurvivorCheckpoint
@@ -100,17 +101,20 @@ local function ActivateCheckpoint(mobj, checkpoint)
 					--checkpoint.state = checkpoint.info.painstate
 					--S_StartSound(mobj, checkpoint.info.painsound)
 					
-					for tplayer in players.iterate do 
-						if tplayer.spectator then continue end
-						if player == tplayer then continue end 
-						
-						if tplayer["ze2_info"] and tplayer["ze2_info"].team == 1 and tplayer["ze2_info"].checkpoint_number < checkpoint_number then
-							if tplayer["ze2_info"].checkpoint_catchuptics then
-								ZE2.DeductCatchupTics(player, 5*TICRATE)
-								continue
+					if not (checkpoint_extra_flags & DISABLECATCHUP_FLAG) then
+						for tplayer in players.iterate do 
+							if tplayer.spectator then continue end
+							if player == tplayer then continue end 
+							
+							
+							if tplayer["ze2_info"] and tplayer["ze2_info"].team == 1 and tplayer["ze2_info"].checkpoint_number < checkpoint_number then
+								if tplayer["ze2_info"].checkpoint_catchuptics then
+									ZE2.DeductCatchupTics(player, 5*TICRATE)
+									continue
+								end
+							
+								tplayer["ze2_info"].checkpoint_catchuptics = checkpoint_catchup_delay*TICRATE
 							end
-						
-							tplayer["ze2_info"].checkpoint_catchuptics = checkpoint_catchup_delay*TICRATE
 						end
 					end
 				elseif player["ze2_info"].team == 1 then
@@ -125,7 +129,7 @@ local function ActivateCheckpoint(mobj, checkpoint)
 				end
 			end
 			
-			if (checkpoint_flags & ZOMBIEFLAG) and (player["ze2_info"].team == 2 or (checkpoint_indisriminate_flags & INDISCRIMINATE_FLAG)) then
+			if (checkpoint_flags & ZOMBIEFLAG) and (player["ze2_info"].team == 2 or (checkpoint_extra_flags & INDISCRIMINATE_FLAG)) then
 				if ZE2.LatestZombieCheckpoint < checkpoint_number then
 					ZE2.LatestZombieCheckpoint = checkpoint_number
 					player["ze2_info"].checkpoint_number = ZE2.LatestZombieCheckpoint
@@ -133,17 +137,19 @@ local function ActivateCheckpoint(mobj, checkpoint)
 					--checkpoint.state = checkpoint.info.painstate
 					--S_StartSound(mobj, checkpoint.info.painsound)
 					
-					for tplayer in players.iterate do 
-						if tplayer.spectator then continue end
-						if player == tplayer then continue end 
-						
-						if tplayer["ze2_info"] and tplayer["ze2_info"].team == 2 and tplayer["ze2_info"].checkpoint_number < checkpoint_number then
-							if tplayer["ze2_info"].checkpoint_catchuptics then
-								ZE2.DeductCatchupTics(player, 5*TICRATE)
-								continue
-							end
+					if not (checkpoint_extra_flags & DISABLECATCHUP_FLAG) then
+						for tplayer in players.iterate do 
+							if tplayer.spectator then continue end
+							if player == tplayer then continue end 
 							
-							tplayer["ze2_info"].checkpoint_catchuptics = checkpoint_catchup_delay*TICRATE
+							if tplayer["ze2_info"] and tplayer["ze2_info"].team == 2 and tplayer["ze2_info"].checkpoint_number < checkpoint_number then
+								if tplayer["ze2_info"].checkpoint_catchuptics then
+									ZE2.DeductCatchupTics(player, 5*TICRATE)
+									continue
+								end
+								
+								tplayer["ze2_info"].checkpoint_catchuptics = checkpoint_catchup_delay*TICRATE
+							end
 						end
 					end
 				elseif player["ze2_info"].team == 2 then
