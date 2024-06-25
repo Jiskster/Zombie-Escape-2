@@ -74,7 +74,6 @@ dofile "hooks/hud.lua"
 dofile "main/name_tags.lua"
 
 dofile "levelscripts/minecraft.lua"
-dofile "levelscripts/specialstage.lua"
 dofile "levelscripts/undertale.lua"
 dofile "levelscripts/caveofthepast.lua"
 

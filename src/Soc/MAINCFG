@@ -79,17 +79,6 @@ SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 10
 Lua.ze2_solofail = true
 
-Level J6
-Levelname = Special Stage
-Subtitle = Chaos emeralds?
-Act = 0
-Music = SPEC8
-TypeOfLevel = ZE2
-NextLevel = J6
-SkyNum = 1
-SelectHeading = ZE2 Survival Maps
-Lua.ze2_timelimit = 9
-
 Level EB
 LevelName = Cave of the Past
 SubTitle = The war against Giygas?
