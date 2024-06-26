@@ -273,7 +273,7 @@ ZE2.AddConfig("knuckles", {
 	charability2 = CA2_NONE,
 	jumpfactor = 17 * FRACUNIT / 19,
 	actionspd = 24*FRACUNIT,
-	sprintboost = 8 * FRACUNIT,
+	sprintboost = 10 * FRACUNIT,
 	desc1 = "Very Strong feller",
 	desc2 = "Glides slow. The slowest."
 })
