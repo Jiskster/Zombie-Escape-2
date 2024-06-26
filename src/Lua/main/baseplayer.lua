@@ -43,8 +43,11 @@ ZE2["default_ze2_info"] = {
 	shop_anim = 0,
 
 	pregamemenu_type = 1, -- [1]: Character Select
+	pregamemenu_lasttype = 1, -- [1]: Character Select
 	pregamemenu_active = false,
 	pregamemenu_intopmenu = false,
+	pregamemenu_intopmenuanim = 0,
+	pregamemenu_intopmenuanim_max = TICRATE/2,
 	pregamemenu_leftpressed = false,
 	pregamemenu_rightpressed = false, 
 	pregamemenu_forwardpressed = false,

@@ -114,7 +114,7 @@ addHook("PreThinkFrame", function()
 		
 		if player["ze2_info"].pregamemenu_active then
 			if not player["ze2_info"].pregamemenu_intopmenu then
-				if ZE2.PregameMenuDef[pregamemenu_type] then -- << Character Select
+				if ZE2.PregameMenuDef[pregamemenu_type] then
 					ZE2.PregameMenuDef[pregamemenu_type](player)
 				end
 				
@@ -141,7 +141,11 @@ addHook("PreThinkFrame", function()
 					condition = left,
 					var = "pregamemenu_leftpressed",
 					action = function()
-						player["ze2_info"].pregamemenu_type = 1
+						if player["ze2_info"].pregamemenu_type ~= 1 then
+							player["ze2_info"].pregamemenu_lasttype = player["ze2_info"].pregamemenu_type
+							player["ze2_info"].pregamemenu_type = 1
+							player["ze2_info"].pregamemenu_intopmenuanim = player["ze2_info"].pregamemenu_intopmenuanim_max
+						end
 						
 						print("Character Select Menu")
 					end
@@ -151,7 +155,11 @@ addHook("PreThinkFrame", function()
 					condition = right,
 					var = "pregamemenu_rightpressed",
 					action = function()
-						player["ze2_info"].pregamemenu_type = 2
+						if player["ze2_info"].pregamemenu_type ~= 2 then
+							player["ze2_info"].pregamemenu_lasttype = player["ze2_info"].pregamemenu_type
+							player["ze2_info"].pregamemenu_type = 2
+							player["ze2_info"].pregamemenu_intopmenuanim = player["ze2_info"].pregamemenu_intopmenuanim_max
+						end
 						
 						print("Shop Menu")
 					end
@@ -165,6 +173,10 @@ addHook("PreThinkFrame", function()
 				cmd.angleturn = 0
 				cmd.aiming = 0
 			end
+		end
+		
+		if player["ze2_info"].pregamemenu_intopmenuanim then
+			player["ze2_info"].pregamemenu_intopmenuanim = $ - 1
 		end
 		
 		if player["ze2_info"].charselect_selection_anim < (TICRATE/2) + 1 then

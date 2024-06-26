@@ -30,7 +30,7 @@ rawset(_G, "ze2_modname", "ze2"); -- For customhud.
 
 freeslot("TOL_ZE2");
 
-ZE2.wait_time = 25*TICRATE;
+ZE2.wait_time = 2322*TICRATE;
 ZE2.MapVoteStartFrame = 10*TICRATE
 ZE2.VoteTimeLimit = 12*TICRATE
 
