@@ -51,7 +51,6 @@ addHook("PreThinkFrame", function()
 				if player["ze2_info"].charselect_hold >= TICRATE then
 					ZE2.pickcharinselect(player,selection_name)
 					player["ze2_info"].charselect_hold = 0
-					buttons = 0 -- prevents random jumps when spawning
 				end
 			else
 				player["ze2_info"].charselect_hold = 0
