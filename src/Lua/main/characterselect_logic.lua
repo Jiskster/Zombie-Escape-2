@@ -29,23 +29,25 @@ end
 addHook("PreThinkFrame", function()
 	if gametype ~= GT_ZE2 then return end
 	for player in players.iterate do
+		if not (player.mo and player.mo.valid) then continue end
+		
 		if ZE2.round_active then
 			player["ze2_info"].charselect_choosing = false
 		end
-
-		if player.mo and player.mo.valid then
-			player["ze2_info"].charselect_selection_anim = $ or 0
-			if ZE2.round_active then return end 
-			
-			local cmd = player.cmd
-			local buttons = cmd.buttons
-			
-			local left = cmd.sidemove < -40
-			local right = cmd.sidemove > 40
-			local skincount = #ZE2.getSkinNames(player, true) + 1
-			local selection_name = ZE2.getSkinNames(player, true)[player["ze2_info"].charselect_selection] or "sonic"
-			
-			if (buttons & BT_SPIN) and player["ze2_info"].charselect_choosing then -- and leveltime > ZE2.charselect_waittime
+		
+		player["ze2_info"].charselect_selection_anim = $ or 0
+		if ZE2.round_active then return end 
+		
+		local cmd = player.cmd
+		local buttons = cmd.buttons
+		
+		local left = cmd.sidemove < -40
+		local right = cmd.sidemove > 40
+		local skincount = #ZE2.getSkinNames(player, true) + 1
+		local selection_name = ZE2.getSkinNames(player, true)[player["ze2_info"].charselect_selection] or "sonic"
+		
+		if player["ze2_info"].charselect_choosing then
+			if (buttons & BT_SPIN) then -- hold button to choose character
 				player["ze2_info"].charselect_hold = $ + 1
 				
 				if player["ze2_info"].charselect_hold >= TICRATE then
@@ -56,7 +58,7 @@ addHook("PreThinkFrame", function()
 				player["ze2_info"].charselect_hold = 0
 			end
 			
-			if not ZE2.round_active and player["ze2_info"].charselect_choosing then -- Stay Still while you're choosing and have not chosen
+			if not ZE2.round_active then -- Stay Still while you're choosing and have not chosen
 				player.pflags = $|PF_FULLSTASIS|PF_INVIS
 				
 				buttons = 0
@@ -64,51 +66,47 @@ addHook("PreThinkFrame", function()
 				cmd.aiming = 0
 			end
 			
-			if player["ze2_info"].charselect_selection_anim < (TICRATE/2) + 1 then
-				player["ze2_info"].charselect_selection_anim = $ + 1
-			end
-
-
-			if player["ze2_info"].charselect_selection == nil or player["ze2_info"].charselect_selection <= 0 then
-				player["ze2_info"].charselect_selection = 1
-			elseif player["ze2_info"].charselect_selection > skincount then
-				player["ze2_info"].charselect_selection = skincount
+			if left then
+				if not player["ze2_info"].charselect_leftpressed then
+					player["ze2_info"].charselect_prevselection = player["ze2_info"].charselect_selection 
+					if player["ze2_info"].charselect_selection - 1 > 0 then
+						player["ze2_info"].charselect_selection = $ - 1
+					else	
+						player["ze2_info"].charselect_selection = skincount - 1			
+					end
+					S_StartSound(nil, sfx_s3kb7, player)
+					player["ze2_info"].charselect_selection_anim = 0
+				end
+				player["ze2_info"].charselect_leftpressed = true
+			else
+				player["ze2_info"].charselect_leftpressed = false
 			end
 			
-			if player["ze2_info"].charselect_choosing then
-				if left then
-					if not player["ze2_info"].charselect_leftpressed then
-						player["ze2_info"].charselect_prevselection = player["ze2_info"].charselect_selection 
-						if player["ze2_info"].charselect_selection - 1 > 0 then
-							player["ze2_info"].charselect_selection = $ - 1
-						else	
-							player["ze2_info"].charselect_selection = skincount - 1			
-						end
-						S_StartSound(nil, sfx_s3kb7, player)
-						player["ze2_info"].charselect_selection_anim = 0
+			if right then
+				if not player["ze2_info"].charselect_rightpressed then
+					player["ze2_info"].charselect_prevselection = player["ze2_info"].charselect_selection 
+					if player["ze2_info"].charselect_selection + 1 < skincount then
+						player["ze2_info"].charselect_selection = $ + 1
+					else
+						player["ze2_info"].charselect_selection = 1
 					end
-					player["ze2_info"].charselect_leftpressed = true
-				else
-					player["ze2_info"].charselect_leftpressed = false
+					S_StartSound(nil, sfx_s3kb7, player)
+					player["ze2_info"].charselect_selection_anim = 0
 				end
-				
-				
-				if right then
-					if not player["ze2_info"].charselect_rightpressed then
-						player["ze2_info"].charselect_prevselection = player["ze2_info"].charselect_selection 
-						if player["ze2_info"].charselect_selection + 1 < skincount then
-							player["ze2_info"].charselect_selection = $ + 1
-						else
-							player["ze2_info"].charselect_selection = 1
-						end
-						S_StartSound(nil, sfx_s3kb7, player)
-						player["ze2_info"].charselect_selection_anim = 0
-					end
-					player["ze2_info"].charselect_rightpressed = true
-				else
-					player["ze2_info"].charselect_rightpressed = false
-				end
+				player["ze2_info"].charselect_rightpressed = true
+			else
+				player["ze2_info"].charselect_rightpressed = false
 			end
+		end
+		
+		if player["ze2_info"].charselect_selection_anim < (TICRATE/2) + 1 then
+			player["ze2_info"].charselect_selection_anim = $ + 1
+		end
+
+		if player["ze2_info"].charselect_selection == nil or player["ze2_info"].charselect_selection <= 0 then
+			player["ze2_info"].charselect_selection = 1
+		elseif player["ze2_info"].charselect_selection > skincount then
+			player["ze2_info"].charselect_selection = skincount
 		end
 	end
 end)
