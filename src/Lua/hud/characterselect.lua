@@ -166,7 +166,7 @@ ZE2.characterselecthud = function(v, player, c)
 		local offset2 = cos(ANG1*(leveltime*3))*3
 		local x = (160*FU) + offset
 		local y = (170*FU) + offset2
-		local text = "Hold Jump to choose a character."
+		local text = "Hold SPIN to choose a character."
 		
 		if player["ze2_info"].charselect_hold then
 			local holdticoffset = (TICRATE - player["ze2_info"].charselect_hold)

@@ -45,7 +45,7 @@ addHook("PreThinkFrame", function()
 			local skincount = #ZE2.getSkinNames(player, true) + 1
 			local selection_name = ZE2.getSkinNames(player, true)[player["ze2_info"].charselect_selection] or "sonic"
 			
-			if (buttons & BT_JUMP) and player["ze2_info"].charselect_choosing then -- and leveltime > ZE2.charselect_waittime
+			if (buttons & BT_SPIN) and player["ze2_info"].charselect_choosing then -- and leveltime > ZE2.charselect_waittime
 				player["ze2_info"].charselect_hold = $ + 1
 				
 				if player["ze2_info"].charselect_hold >= TICRATE then
