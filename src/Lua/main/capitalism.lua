@@ -211,6 +211,7 @@ addHook("TouchSpecial", function(special, toucher)
 		end
 
 		ZE2:QueuePlayerRubies(toucher.player, 1)
+		ZE2:IncrementSprint(toucher.player, 5*FRACUNIT)
 
 		toucher.player["ze2_info"].rubypickupdelay = ZE2.rubypickupdelay.value
 	end
