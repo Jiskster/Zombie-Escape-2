@@ -133,6 +133,7 @@ function ZE2:CopyItemFromID(item_id)
 	item.ontrigger = nil
 	item.onspawn = nil
 	item.onhit = nil
+	item.thinker = nil
 
 	return item
 end
