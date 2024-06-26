@@ -102,10 +102,10 @@ states[S_CRRUBY] = {
 }
 
 mobjinfo[MT_RUBY_BOX] = {
-	--$Name Ruby Crate
-	--$Sprite RBYMAR
-	--change later?
-	--$Category Monitors
+	//$Category Zombie Escape 2
+	//$Name Ruby Crate
+	//$Sprite RBYMAR
+	
 	doomednum = 863,
 	spawnstate = S_RUBY_BOX,
 	deathstate = S_RUBY_BOX_BREAK,

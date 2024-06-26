@@ -3,7 +3,7 @@ freeslot("MT_ZE2CHECKPOINT")
 mobjinfo[MT_ZE2CHECKPOINT] = {
 	//$Category Zombie Escape 2
 	//$Name ZE2 Checkpoint
-	//$Sprite STPTA0
+	//$Sprite TGFXA0 
 	
 	//$Arg0 Checkpoint Number
 	//$Arg0Default 0
@@ -74,8 +74,6 @@ function ZE2.DeductCatchupTics(player, tics)
 		player["ze2_info"].checkpoint_catchuptics = $ - tics
 	end
 end
-
-
 
 local function ActivateCheckpoint(mobj, checkpoint)
 	local isvalid = mobj.player and mobj.player.valid 
