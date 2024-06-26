@@ -96,6 +96,18 @@ ZE2.SetCCtoplayer = function(player)
 			player.actionspd = cc[pmo.skin].actionspd 
 		end
 
+		if (cc[pmo.skin].accelstart) then 
+			player.accelstart = cc[pmo.skin].accelstart 
+		else
+			player.accelstart = skins[pmo.skin].accelstart
+		end
+		
+		if (cc[pmo.skin].acceleration) then 
+			player.acceleration = cc[pmo.skin].acceleration 
+		else
+			player.acceleration = skins[pmo.skin].acceleration
+		end
+		
 		if (cc[pmo.skin].charflags) then 
 			player.charflags = $|cc[pmo.skin].charflags 
 		end
