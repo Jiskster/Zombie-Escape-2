@@ -45,8 +45,16 @@ addHook("PreThinkFrame", function()
 			local skincount = #ZE2.getSkinNames(player, true) + 1
 			local selection_name = ZE2.getSkinNames(player, true)[player["ze2_info"].charselect_selection] or "sonic"
 			
-			if (cmd.forwardmove > 40) and player["ze2_info"].charselect_choosing and leveltime > ZE2.charselect_waittime then
-				ZE2.pickcharinselect(player,selection_name)
+			if (buttons & BT_JUMP) and player["ze2_info"].charselect_choosing then -- and leveltime > ZE2.charselect_waittime
+				player["ze2_info"].charselect_hold = $ + 1
+				
+				if player["ze2_info"].charselect_hold >= TICRATE then
+					ZE2.pickcharinselect(player,selection_name)
+					player["ze2_info"].charselect_hold = 0
+					buttons = 0 -- prevents random jumps when spawning
+				end
+			else
+				player["ze2_info"].charselect_hold = 0
 			end
 			
 			if not ZE2.round_active and player["ze2_info"].charselect_choosing then -- Stay Still while you're choosing and have not chosen
@@ -118,4 +126,5 @@ addHook("PlayerSpawn", function(player)
 
 	player["ze2_info"].charselect_prevselection = 1
 	player["ze2_info"].charselect_selection_anim = (TICRATE/2) + 1 
+	player["ze2_info"].charselect_hold = 0
 end)	

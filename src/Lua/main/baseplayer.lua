@@ -48,6 +48,7 @@ ZE2["default_ze2_info"] = {
 	charselect_selection_anim = 1,
 	charselect_leftpressed = false,
 	charselect_rightpressed = false, 
+	charselect_hold = 0,
 
 	sprintmeter = 100*FU,
 	isSprinting = false,

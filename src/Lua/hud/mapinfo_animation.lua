@@ -3,8 +3,8 @@ ZE2.mapinfohud = function(v, player)
 	if gametype ~= GT_ZE2 then return end
 	local mapinfo = mapheaderinfo[gamemap]
 
-	local lvlttlY = 64*FU
-	local subttlY = 72*FU
+	local lvlttlY = 44*FU
+	local subttlY = 52*FU
 	
 	if (ZE2.TWRITE_MAPNAME_COUNT < mapinfo.lvlttl:len() and leveltime>10) then 
 		customhud.CustomFontString(v,0,lvlttlY, mapinfo.lvlttl:sub(1,ZE2.TWRITE_MAPNAME_COUNT).."_", "TNYFC", V_SNAPTOLEFT|V_SNAPTOTOP, nil, FU, SKINCOLOR_BLUE)
