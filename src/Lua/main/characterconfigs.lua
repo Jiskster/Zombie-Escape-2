@@ -318,6 +318,8 @@ ZE2.AddConfig("metalsonic", {
 	jumpfactor = 15 * FRACUNIT / 19,
 	charflags = SF_MACHINE,
 	sprintboost = 9 * FRACUNIT,
+	accelstart = 96, -- 96
+	acceleration = 25, --40
 	desc1 = "He might the the real sonic.",
 	desc2 = "Jump Height depends on speed.",
 })
