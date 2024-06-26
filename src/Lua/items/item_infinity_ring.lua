@@ -4,7 +4,7 @@ ZE2:CreateItem("Infinity Ring",	{
 	firerate = 5,
 	color = SKINCOLOR_SALMON,
 	knockback = 14*FRACUNIT,
-	damage = 15,
+	damage = 30,
 	price = 115,
 	autouse = true,
 	thinker = function(pmo, mo)
