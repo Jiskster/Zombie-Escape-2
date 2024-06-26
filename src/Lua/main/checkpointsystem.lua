@@ -229,3 +229,10 @@ addHook("PlayerSpawn", function(player)
 		ZE2.LatestCheckpointTeleport(player, true)
 	end
 end)
+
+-- Deprecate older maps.
+addHook("LinedefExecute", function(line, mobj, sector)
+	if mobj and mobj.valid and mobj.player and mobj.player.valid then
+		print("ZCHECKPOINT Lua Linedef Executor is deprecated. X:"..mobj.x/FU.."|Y:"..mobj.y/FU.."|Z:"..mobj.z/FU) 
+	end
+end, "ZCHECKPOINT")

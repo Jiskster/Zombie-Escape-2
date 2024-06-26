@@ -34,7 +34,6 @@ dofile "items/item_infinity_ring.lua"
 // ITEMS END
 dofile "main/baseplayer.lua"
 
-dofile "main/zombie/zombie_checkpoints.lua"
 dofile "main/zombie/zombie_colors.lua"
 
 dofile "main/characterselect_logic.lua"
