@@ -19,6 +19,8 @@ ZE2.characterselecthud = function(v, player, c)
 
     local cursorpatch = v.cachePatch("CURWEAP")
 	local barpatch = v.cachePatch("DABARR")
+	local blackbgpatch = v.cachePatch("Z_BG_BLACK")
+	
     local skincount = #ZE2.getSkinNums(player,true)
 
 	local cc = ZE2.CharacterConfig
@@ -29,6 +31,16 @@ ZE2.characterselecthud = function(v, player, c)
 
 	--Blue Bar
 	v.drawStretched(0, 67*FRACUNIT, 1500*FRACUNIT, FRACUNIT*3, barpatch, V_SNAPTOTOP|V_SNAPTOLEFT)
+	
+	do
+		local hscale = 60*FU
+		local vscale = 20*FU
+		local x = 160*FU
+		local y = 20*FU
+		v.drawStretched(x-(hscale/2), y, hscale, vscale, blackbgpatch, V_SNAPTOTOP|V_50TRANS)
+		
+		customhud.CustomFontString(v, x, y+(vscale/3), "Character", "TNYFC", (V_SNAPTOTOP), "center" , FU, SKINCOLOR_WHITE)
+	end
 	
 	--Character Icons
     for i,skinname in ipairs(ZE2.getSkinNames(player,true)) do
