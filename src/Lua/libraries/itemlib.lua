@@ -87,36 +87,44 @@ function ZE2:IsInventoryFull(player)
 end
 
 function ZE2:GetItemInfoIndex(iteminfo, index, skin, real)
-	if not (iteminfo.skin_overwrite and iteminfo.skin_overwrite[skin]) or not skin and index then -- no overwrite or no skin, has index
-		if iteminfo[index] ~= nil then
-			return iteminfo[index]
-		else
-			return nil
+	if iteminfo then
+		if not (iteminfo.skin_overwrite and iteminfo.skin_overwrite[skin]) or not skin and index then -- no overwrite or no skin, has index
+			if iteminfo[index] ~= nil then
+				return iteminfo[index]
+			else
+				return nil
+			end
+		elseif index then
+			if skin and iteminfo.skin_overwrite[skin][index] ~= nil and not real then
+				return iteminfo.skin_overwrite[skin][index]
+			elseif iteminfo[index] ~= nil then
+				return iteminfo[index]
+			else
+				return nil
+			end
 		end
-	elseif index then
-		if skin and iteminfo.skin_overwrite[skin][index] ~= nil and not real then
-			return iteminfo.skin_overwrite[skin][index]
-		elseif iteminfo[index] ~= nil then
-			return iteminfo[index]
-		else
-			return nil
-		end
+	else
+		return nil
 	end
 end
 
 function ZE2:SetItemInfoIndex(iteminfo, index, value, skin, real)
-	if value ~= nil then
-		if not (iteminfo.skin_overwrite and iteminfo.skin_overwrite[skin]) or not skin and index then -- no overwrite or no skin, has index
-			if iteminfo[index] ~= nil then
-				iteminfo[index] = value
-			end
-		elseif index then
-			if skin and iteminfo.skin_overwrite[skin][index] ~= nil and not real then
-				iteminfo.skin_overwrite[skin][index] = value
-			elseif iteminfo[index] ~= nil then
-				iteminfo[index] = value
+	if iteminfo then
+		if value ~= nil then
+			if not (iteminfo.skin_overwrite and iteminfo.skin_overwrite[skin]) or not skin and index then -- no overwrite or no skin, has index
+				if iteminfo[index] ~= nil then
+					iteminfo[index] = value
+				end
+			elseif index then
+				if skin and iteminfo.skin_overwrite[skin][index] ~= nil and not real then
+					iteminfo.skin_overwrite[skin][index] = value
+				elseif iteminfo[index] ~= nil then
+					iteminfo[index] = value
+				end
 			end
 		end
+	else
+		return nil
 	end
 end
 
