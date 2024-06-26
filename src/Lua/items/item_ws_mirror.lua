@@ -7,7 +7,7 @@ mobjinfo[MT_MIRRORCLONE] = {
     spawnhealth = 1,
     radius = 32*FRACUNIT,
     height = 48*FRACUNIT,
-	flags = MF_SOLID|MF_SHOOTABLE,
+	flags = MF_SHOOTABLE,
 }
 
 mobjinfo[MT_MIRRORCLONE].npc_name = "Mirror Clone"
