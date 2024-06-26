@@ -144,10 +144,22 @@ ZE2.giveplayerflags = function(player)
 end
 
 function ZE2:DecrementSprint(player, value)
+	local cc = ZE2.CharacterConfig
+	local newsprintexhaust -- custom config value
+	
+	if cc[player.mo.skin] and cc[player.mo.skin].sprintexhaust then
+		newsprintexhaust = cc[player.mo.skin].sprintexhaust
+	end
+	
 	if player["ze2_info"].team ~= 1 then return end
 
 	if player["ze2_info"].sprintmeter - abs(value) <= 0 then
-		player["ze2_info"].sprintdelay = TICRATE
+		if newsprintexhaust ~= nil then
+			player["ze2_info"].sprintdelay = abs(newsprintexhaust)
+		else
+			player["ze2_info"].sprintdelay = TICRATE -- do default
+		end
+		
 		player["ze2_info"].sprintmeter = 0
 	else
 		player["ze2_info"].sprintmeter = $ - abs(value)
