@@ -123,7 +123,7 @@ addHook("PreThinkFrame", function()
 					var = "pregamemenu_forwardpressed",
 					action = function()
 						player["ze2_info"].pregamemenu_intopmenu = true
-						print("Going to top menu")
+						--print("Going to top menu")
 					end
 				}, true)
 			else
@@ -133,7 +133,7 @@ addHook("PreThinkFrame", function()
 					action = function()
 						player["ze2_info"].pregamemenu_intopmenu = false
 						
-						print("Going to main menu")
+						--print("Going to main menu")
 					end
 				}, true)
 				
@@ -147,7 +147,7 @@ addHook("PreThinkFrame", function()
 							player["ze2_info"].pregamemenu_intopmenuanim = player["ze2_info"].pregamemenu_intopmenuanim_max
 						end
 						
-						print("Character Select Menu")
+						--print("Character Select Menu")
 					end
 				}, true)
 				
@@ -161,7 +161,7 @@ addHook("PreThinkFrame", function()
 							player["ze2_info"].pregamemenu_intopmenuanim = player["ze2_info"].pregamemenu_intopmenuanim_max
 						end
 						
-						print("Shop Menu")
+						--print("Shop Menu")
 					end
 				}, true)
 			end
