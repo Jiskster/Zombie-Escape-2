@@ -103,7 +103,7 @@ states[S_CRRUBY] = {
 
 mobjinfo[MT_RUBY_BOX] = {
 	--$Name Ruby Crate
-	--$Sprite RBYMA0
+	--$Sprite RBYMAR
 	--change later?
 	--$Category Monitors
 	doomednum = 863,
