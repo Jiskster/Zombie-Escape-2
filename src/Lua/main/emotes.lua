@@ -129,7 +129,7 @@ addHook("PlayerThink", function(player)
 	if player.lastemotepress then
 		player.lastemotepress = $ - 1
 	end
-	if player["ze2_info"].charselect_choosing then
+	if player["ze2_info"].pregamemenu_active then
 		return
 	end
 	if (player.cmd.buttons & BT_WEAPONMASK) == 1 then

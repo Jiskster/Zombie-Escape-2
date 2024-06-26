@@ -453,7 +453,7 @@ function ZE2.DoPlayerFire(player, iteminfo)
 		return
 	end
 	
-	if ZE2.game_ended or player["ze2_info"].charselect_choosing then 
+	if ZE2.game_ended or player["ze2_info"].pregamemenu_active then 
 		return
 	end
 

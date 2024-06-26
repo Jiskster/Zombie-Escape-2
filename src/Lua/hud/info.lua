@@ -23,7 +23,7 @@ ZE2.infohud = function(v, player)
 		the_time = G_TicsToMTIME(ZE2.pregame_timeleft)
 	end
 	
-	if not player["ze2_info"].charselect_choosing then
+	if not player["ze2_info"].pregamemenu_active then
 		if not player["ze2_info"].ghostmode then
 			-- [Player Icon] --
 		

@@ -12,6 +12,7 @@ end
 ZE2.characterselecthud = function(v, player, c)
 	if ZE2.round_active then return end 
 	if gametype ~= GT_ZE2 then return end
+	
     local pmo = player.mo 
     if not pmo then 
         return
@@ -19,28 +20,19 @@ ZE2.characterselecthud = function(v, player, c)
 
     local cursorpatch = v.cachePatch("CURWEAP")
 	local barpatch = v.cachePatch("DABARR")
-	local blackbgpatch = v.cachePatch("Z_BG_BLACK")
 	
     local skincount = #ZE2.getSkinNums(player,true)
 
 	local cc = ZE2.CharacterConfig
 	
-	if not player["ze2_info"].charselect_choosing then
+	if not player["ze2_info"].pregamemenu_active then
 		return
 	end
-
+	
+	if player["ze2_info"].pregamemenu_type ~= 1 then return end
+	
 	--Blue Bar
 	v.drawStretched(0, 67*FRACUNIT, 1500*FRACUNIT, FRACUNIT*3, barpatch, V_SNAPTOTOP|V_SNAPTOLEFT)
-	
-	do
-		local hscale = 60*FU
-		local vscale = 20*FU
-		local x = 160*FU
-		local y = 20*FU
-		v.drawStretched(x-(hscale/2), y, hscale, vscale, blackbgpatch, V_SNAPTOTOP|V_50TRANS)
-		
-		customhud.CustomFontString(v, x, y+(vscale/3), "Character", "TNYFC", (V_SNAPTOTOP), "center" , FU, SKINCOLOR_WHITE)
-	end
 	
 	--Character Icons
     for i,skinname in ipairs(ZE2.getSkinNames(player,true)) do
@@ -166,7 +158,7 @@ ZE2.characterselecthud = function(v, player, c)
 		local offset2 = cos(ANG1*(leveltime*3))*3
 		local x = (160*FU) + offset
 		local y = (170*FU) + offset2
-		local text = "Hold SPIN to choose a character."
+		local text = "Press SPIN to choose a character."
 		
 		if player["ze2_info"].charselect_hold then
 			local holdticoffset = (TICRATE - player["ze2_info"].charselect_hold)

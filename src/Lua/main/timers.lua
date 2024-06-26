@@ -44,7 +44,7 @@ local function ForceEndAllCharacterSelection()
 	for player in players.iterate do
 		if player.spectator then continue end
 		
-		if player["ze2_info"].charselect_choosing == true then -- get tf out of character select
+		if player["ze2_info"].pregamemenu_active == true then -- get tf out of character select
 			local selection_name = ZE2.getSkinNames(player, true)[player["ze2_info"].charselect_selection]
 			ZE2.pickcharinselect(player,selection_name) 
 		end
@@ -126,7 +126,7 @@ addHook("ThinkFrame", function()
 		for player in players.iterate do
 			if player.spectator then continue end
 			
-			if player["ze2_info"].charselect_choosing == true then -- get tf out of character select
+			if player["ze2_info"].pregamemenu_active == true then -- get tf out of character select
 				local selection_name = ZE2.getSkinNames(player, true)[player["ze2_info"].charselect_selection]
 				ZE2.pickcharinselect(player,selection_name) 
 			end

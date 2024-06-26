@@ -42,12 +42,17 @@ ZE2["default_ze2_info"] = {
 	shop_open = false,
 	shop_anim = 0,
 
-	charselect_choosing = false,
+	pregamemenu_type = 1, -- [1]: Character Select
+	pregamemenu_active = false,
+	pregamemenu_intopmenu = false,
+	pregamemenu_leftpressed = false,
+	pregamemenu_rightpressed = false, 
+	pregamemenu_forwardpressed = false,
+	pregamemenu_spinpressed = false,
+	
 	charselect_selection = 1,
 	charselect_prevselection = 1,
 	charselect_selection_anim = 1,
-	charselect_leftpressed = false,
-	charselect_rightpressed = false, 
 	charselect_hold = 0,
 
 	sprintmeter = 100*FU,
@@ -109,7 +114,7 @@ ZE2.giveplayerflags = function(player)
 		player.pflags = $ & ~PF_DIRECTIONCHAR
 		player.pflags = $ & ~PF_ANALOGMODE 
 		
-		if not ZE2.round_active and player["ze2_info"].charselect_choosing then
+		if not ZE2.round_active and player["ze2_info"].pregamemenu_active then
 			if player.mo and player.mo.valid then
 				player.mo.flags2 = $|MF2_DONTDRAW
 			end
@@ -411,7 +416,7 @@ addHook("TeamSwitch", function(player, team, fromspectators)
 		player["ze2_info"].was_spectating = true
 	
 		if ZE2.round_active and not ZE2_game_ended then
-			player["ze2_info"].charselect_choosing = false
+			player["ze2_info"].pregamemenu_active = false
 		end
 	end
 end)
@@ -527,7 +532,7 @@ addHook("PlayerThink", function(player)
 	end
 	
 	if not ZE2.game_ended and not player["ze2_info"].ghostmode then 
-		if not player["ze2_info"].charselect_choosing then
+		if not player["ze2_info"].pregamemenu_active then
 			-- Next Weapon
 			ZE2:TryBooleanAction(player, {
 				condition = cmd.buttons & BT_WEAPONPREV,

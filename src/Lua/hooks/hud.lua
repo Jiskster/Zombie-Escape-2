@@ -3,6 +3,7 @@ customhud.SetupFont("TNYFC", -1, 4);
 customhud.SetupFont("DSTCF", -1, 4);
 customhud.SetupFont("DTNYF", -1, 4);
 
+customhud.SetupItem("ze2_pregame", ze2_modname, ZE2.pregamehud, "game", 0)
 customhud.SetupItem("ze2_characterselect", ze2_modname, ZE2.characterselecthud, "game", 0)
 
 customhud.SetupItem("ze2_mapinfo", ze2_modname, ZE2.mapinfohud, "game", 0)

@@ -36,7 +36,7 @@ dofile "main/baseplayer.lua"
 
 dofile "main/zombie/zombie_colors.lua"
 
-dofile "main/characterselect_logic.lua"
+dofile "main/pregamemenu_logic.lua"
 
 dofile "main/characterconfigs.lua"
 
@@ -58,6 +58,7 @@ dofile "main/checkpointsystem.lua"
 dofile "objects/megahp.lua"
 dofile "objects/teleporter_gfx.lua"
 
+dofile "hud/pregame.lua"
 dofile "hud/characterselect.lua"
 dofile "hud/info.lua"
 dofile "hud/shop.lua"
