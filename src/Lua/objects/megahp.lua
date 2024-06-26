@@ -1,6 +1,10 @@
 freeslot("MT_MEGAHP", "S_MEGAHP", "SPR_MGAO", "sfx_maxhp")
 
 mobjinfo[MT_MEGAHP] = {
+	//$Category Zombie Escape 2
+	//$Name Mega HP Orb
+	//$Sprite MGAOA0
+	
 	doomednum = 1472,
 	spawnstate = S_MEGAHP,
 	spawnhealth = 1,
