@@ -12,7 +12,8 @@ Coders:
 Spriters:
 "Luigi Budd"
 "W"
-"GLide KS"
+"GLide KS" - Updated Zombie Sprite
+"Scarf" - Original Zombie Sprite
 
 Modelers:
 "Marilyn / Speccy"
