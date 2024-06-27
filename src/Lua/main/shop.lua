@@ -24,12 +24,12 @@ ZE2.Survivor_ShopList = {
 }
 
 function ZE2:RegisterShopItem(item_id)
-	local item_def = ZE2:CopyItemFromID(item_id)
+	local iteminfo = ZE2:CopyItemFromID(item_id)
 	local shop_def = {}
 	
-	shop_def.name = item_def.displayname
-	shop_def.itemdef = item_def
-	shop_def.price = item_def.price
+	shop_def.name = iteminfo.displayname
+	shop_def.iteminfo = iteminfo
+	shop_def.price = iteminfo.price
 	
 	table.insert(ZE2.ShopDefinitions, shop_def)
 end
@@ -79,6 +79,8 @@ addHook("MapLoad", function()
 			error("Recursion Error (How did this happen??)")
 			break;
 		end
+		
+		tries = $ + 1
 	end
 	
 	ZE2.Survivor_ShopList = picked_shopdefs

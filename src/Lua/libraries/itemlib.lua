@@ -143,6 +143,7 @@ function ZE2:GiveItem(player, item_id, count, slot)
 	if player and player.valid then
 		if not item_id or not ZE2.ItemPresets[item_id] then
 			CONS_Printf(player, "\x85\Invalid item! ["..item_id.."]")
+			return false
 		elseif player["ze2_info"] and ZE2:FetchInventory(player) then
 			local item = ZE2:Copy(ZE2.ItemPresets[item_id])
 
@@ -156,17 +157,64 @@ function ZE2:GiveItem(player, item_id, count, slot)
 				item.count = count
 				item.limited = true
 			end
+			
 			if slot then
 				ZE2:FetchInventory(player)[slot] = item
+				return true
 			else
 				if not ZE2:IsInventoryFull(player) then
 					table.insert(ZE2:FetchInventory(player), item)
+					return true
 				else
 					CONS_Printf(player, "\x85\Inventory full!")
+					return false
 				end
 			end
 		elseif not ZE2:FetchInventory(player) then
 			CONS_Printf(player, "\x85\Invalid inventory!")
+			return false
 		end
+		
+		return false
+	end
+end
+
+-- Make sure the table is an actual iteminfo or bad things happen LMAO
+function ZE2:GiveItemFromTable(player, iteminfo, count, slot) 
+	if player and player.valid then
+		if not iteminfo or (iteminfo and not iteminfo.item_id) then
+			return false
+		elseif player["ze2_info"] and ZE2:FetchInventory(player) then
+			local item = ZE2:Copy(iteminfo)
+
+			--destroy functions
+			item.ontrigger = nil
+			item.onspawn = nil
+			item.onhit = nil
+			item.thinker = nil
+			
+			if count ~= nil then
+				item.count = count
+				item.limited = true
+			end
+			
+			if slot then
+				ZE2:FetchInventory(player)[slot] = item
+				return true
+			else
+				if not ZE2:IsInventoryFull(player) then
+					table.insert(ZE2:FetchInventory(player), item)
+					return true
+				else
+					CONS_Printf(player, "\x85\Inventory full!")
+					return false
+				end
+			end
+		elseif not ZE2:FetchInventory(player) then
+			CONS_Printf(player, "\x85\Invalid inventory!")
+			return false
+		end
+		
+		return false
 	end
 end

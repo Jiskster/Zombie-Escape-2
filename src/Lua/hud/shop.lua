@@ -48,11 +48,11 @@ ZE2.shophud = function(v, player)
 		v.drawScaled(x, y+change, FU, infobarpatch, V_SNAPTOTOP|topmenuflag|soldflag)
 		
 		if shop_def then
-			if shop_def.itemdef and shop_def.itemdef.icon then
-				local icon_patch = v.cachePatch(shop_def.itemdef.icon)
+			if shop_def.iteminfo and shop_def.iteminfo.icon then
+				local icon_patch = v.cachePatch(shop_def.iteminfo.icon)
 				
 				if icon_patch then
-					local iconscale = shop_def.itemdef.iconscale or FU
+					local iconscale = shop_def.iteminfo.iconscale or FU
 					
 					v.drawScaled(x+item_icon_xoffset, y+item_icon_yoffset+change, FixedMul(iconscale, FU), icon_patch, V_SNAPTOTOP|topmenuflag|soldflag)
 				end
@@ -74,8 +74,8 @@ ZE2.shophud = function(v, player)
 		
 			if shop_def.name then
 				local color = SKINCOLOR_WHITE
-				if shop_def.itemdef and shop_def.itemdef.color then
-					color = shop_def.itemdef.color
+				if shop_def.iteminfo and shop_def.iteminfo.color then
+					color = shop_def.iteminfo.color
 				end
 				
 				customhud.CustomFontString(v, x + item_name_xoffset, y+item_name_yoffset+change, shop_def.name, "STCFC", (V_SNAPTOTOP|topmenuflag|soldflag), "center" , FU, color)

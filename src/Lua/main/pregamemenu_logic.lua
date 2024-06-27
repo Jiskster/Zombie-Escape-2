@@ -75,6 +75,8 @@ ZE2.PregameMenuDef = {
 		}, true)
 	end,
 	[2] = function(player, cmd)
+		if player["ze2_info"].team ~= 1 then return end -- not risking it
+	
 		local buttons = cmd.buttons
 		
 		-- Forward Press
@@ -110,11 +112,22 @@ ZE2.PregameMenuDef = {
 		ZE2:TryBooleanAction(player, {
 			condition = (buttons & BT_JUMP),
 			var = "pregamemenu_jumppressed",
-			action = function()			
-				if ZE2.Survivor_ShopList[player["ze2_info"].shop_selection] then
-					if not ZE2.Survivor_ShopList[player["ze2_info"].shop_selection].sold then
-						S_StartSound(nil, sfx_strpst, player)
-						ZE2.Survivor_ShopList[player["ze2_info"].shop_selection].sold = true
+			action = function()		
+				local shoplistindex = ZE2.Survivor_ShopList[player["ze2_info"].shop_selection]
+				if shoplistindex then
+					local shopdef = ZE2.NumToShopDef(shoplistindex.shopdefid)
+					local price = shopdef.price
+					local enoughrubies = (player["ze2_info"].rubies - price) >= 0
+					
+					--ZE2:GiveItemFromTable(player, iteminfo, count, slot) 
+					if not shoplistindex.sold then
+						if enoughrubies then
+							if ZE2:GiveItemFromTable(player, shopdef.iteminfo, nil) then
+								player["ze2_info"].rubies = $ - price
+								S_StartSound(nil, sfx_strpst, player)
+								shoplistindex.sold = true
+							end
+						end
 					else
 						S_StartSound(nil, sfx_lose, player)
 					end			
