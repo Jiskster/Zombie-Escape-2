@@ -1,6 +1,5 @@
 ZE2.PregameMenuDef = {
-	[1] = function(player)
-		local cmd = player.cmd
+	[1] = function(player, cmd)
 		local buttons = cmd.buttons
 		
 		local left = cmd.sidemove < -40
@@ -10,7 +9,7 @@ ZE2.PregameMenuDef = {
 		local pregamemenu_type = player["ze2_info"].pregamemenu_type
 		
 		
-		/*
+		/* Scrapped holding mechanic
 		if (buttons & BT_SPIN) then -- hold button to choose character
 			player["ze2_info"].charselect_hold = $ + 1
 			
@@ -75,8 +74,37 @@ ZE2.PregameMenuDef = {
 			end
 		}, true)
 	end,
-	[2] = function(player)
-	
+	[2] = function(player, cmd)
+		local buttons = cmd.buttons
+		
+		-- Forward Press
+		ZE2:TryBooleanAction(player, {
+			condition = (cmd.forwardmove > 40),
+			var = "pregamemenu_forwardpressed",
+			action = function()
+				if (player["ze2_info"].shop_selection - 1 <= 0) then 
+					player["ze2_info"].pregamemenu_intopmenu = true -- Return to top menu
+				else 
+					player["ze2_info"].shop_selection = $ - 1 
+					S_StartSound(nil, sfx_menu1, player)
+				end
+			end,
+		}, true)
+		
+		-- Backwards Press
+		ZE2:TryBooleanAction(player, {
+			condition = (cmd.forwardmove < -40),
+			var = "pregamemenu_backwardspressed",
+			action = function()			
+				S_StartSound(nil, sfx_menu1, player)
+				
+				if player["ze2_info"].shop_selection + 1 > #ZE2.Survivor_ShopList
+					player["ze2_info"].shop_selection = #ZE2.Survivor_ShopList
+				else
+				   player["ze2_info"].shop_selection = $ + 1
+				end
+			end,
+		}, true)
 	end
 }
 
@@ -130,7 +158,7 @@ addHook("PreThinkFrame", function()
 		if player["ze2_info"].pregamemenu_active then
 			if not player["ze2_info"].pregamemenu_intopmenu then
 				if ZE2.PregameMenuDef[pregamemenu_type] then
-					ZE2.PregameMenuDef[pregamemenu_type](player)
+					ZE2.PregameMenuDef[pregamemenu_type](player, cmd)
 				end
 			else
 				ZE2:TryBooleanAction(player, {

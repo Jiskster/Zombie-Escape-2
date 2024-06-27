@@ -34,13 +34,6 @@ ZE2["default_ze2_info"] = {
 	vote_rightpressed = false,
 	
 	shop_selection = 1,
-	shop_leftpressed = false,
-	shop_rightpressed = false,
-	shop_selectpressed = false,
-	shop_exitpressed = false,
-	shop_confirmscreen = false,
-	shop_open = false,
-	shop_anim = 0,
 
 	pregamemenu_type = 1, -- [1]: Character Select
 	pregamemenu_lasttype = 1, -- [1]: Character Select
