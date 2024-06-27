@@ -1,4 +1,4 @@
-ZE2:CreateItem("Explosion Ring", {
+local explosion_ring = ZE2:CreateItem("Explosion Ring", {
 	object = MT_THROWNEXPLOSION,
 	icon = "BOMBIND",
 	firerate = TICRATE*3,
@@ -7,3 +7,5 @@ ZE2:CreateItem("Explosion Ring", {
 	knockback = 90*FRACUNIT,
 	price = 160,
 })
+
+ZE2:RegisterShopItem(explosion_ring)

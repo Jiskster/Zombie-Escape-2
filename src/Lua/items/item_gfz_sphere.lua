@@ -22,11 +22,12 @@ states[S_ZE2_GFZSPHERE] = {
 	var2 = 2,
 }
 
-ZE2:CreateItem("GFZSPHERE",  {
+local gfz_sphere = ZE2:CreateItem("GFZSPHERE",  {
 	object = MT_ZE2_GFZSPHERE,
 	icon = "GFZSPHEREIND",
 	firerate = 40,
 	--color = SKINCOLOR_RED,
+	color = SKINCOLOR_BROWN,
 	knockback = 125*FRACUNIT,
 	damage = 26,
 	price = 130,
@@ -35,3 +36,5 @@ ZE2:CreateItem("GFZSPHERE",  {
 	autouse = true,
 	reload_time = TICRATE*4,
 })
+
+ZE2:RegisterShopItem(gfz_sphere)

@@ -1,8 +1,9 @@
-ZE2:CreateItem("Blue Spring",  {
+local blue_spring = ZE2:CreateItem("Blue Spring",  {
 	icon = "BLUESPRINGIND",
 	firerate = 2*TICRATE,
 	limited = true,
 	count = 5,
+	color = SKINCOLOR_BLUE,
 	ontrigger = function(player)
 		local spring = P_SpawnMobj(player.mo.x+FixedMul(128*FRACUNIT, cos(player.mo.angle)),
 					             player.mo.y+FixedMul(128*FRACUNIT, sin(player.mo.angle)), 
@@ -13,3 +14,5 @@ ZE2:CreateItem("Blue Spring",  {
 	end,
 	price = 70,
 })
+
+ZE2:RegisterShopItem(blue_spring)

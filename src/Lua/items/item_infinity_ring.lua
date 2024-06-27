@@ -1,4 +1,4 @@
-ZE2:CreateItem("Infinity Ring",	{
+local infinity_ring = ZE2:CreateItem("Infinity Ring",	{
 	object = MT_THROWNINFINITY,
 	icon = "INFNIND",
 	firerate = 5,
@@ -21,3 +21,5 @@ ZE2:CreateItem("Infinity Ring",	{
 		--pmo.momz = $ / 2	
 	end
 })
+
+ZE2:RegisterShopItem(infinity_ring)

@@ -33,11 +33,12 @@ states[S_PROP1_BREAK] = {
 	tics = 4
 }
 
-ZE2:CreateItem("Wood Fence", {
+local wood_fence = ZE2:CreateItem("Wood Fence", {
 	icon = "FENCEIND",
 	firerate = TICRATE*5,
 	limited = true,
 	count = 2,
+	color = SKINCOLOR_BROWN,
 	ontrigger = function(player)
 		local wood = P_SpawnMobj(player.mo.x+FixedMul(128*FRACUNIT, cos(player.mo.angle)),
 					             player.mo.y+FixedMul(128*FRACUNIT, sin(player.mo.angle)), 
@@ -65,3 +66,5 @@ addHook("MobjCollide", function(wood, tmo)
 		end
 	end
 end, MT_PROPWOOD)
+
+ZE2:RegisterShopItem(wood_fence)

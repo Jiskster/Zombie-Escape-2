@@ -2,7 +2,7 @@ ZE2.ItemPresets = {
 
 }
 
-function ZE2:CreateItem(name,table)
+function ZE2:CreateItem(name,input_table)
 	local temp_table
 	if not name then
 		error("Name not included.")
@@ -10,13 +10,13 @@ function ZE2:CreateItem(name,table)
 	if type(name) ~= "string" then
 		error("Arg1 is not a string.")
 	end
-	if not table then
+	if not input_table then
 		error("Table not found.")
 	end
-	if type(table) ~= "table" then
+	if type(input_table) ~= "table" then
 		error("Arg2 is not a table.")
 	end
-	temp_table = ZE2:Copy(table) -- temp_table is supposed to add extra info before shipping.
+	temp_table = ZE2:Copy(input_table) -- temp_table is supposed to add extra info before shipping.
 
 	temp_table.item_id = #self.ItemPresets + 1
 	temp_table.displayname = name
@@ -29,11 +29,12 @@ function ZE2:CreateItem(name,table)
 	end
 	
 	local idname = ("ITEM_"..name:upper()):gsub(" ","_"):gsub("'","")
-	local idglobal = rawset(_G, idname, #self.ItemPresets + 1)
-	self.ItemPresets[#self.ItemPresets + 1] = temp_table
+	local idglobal 
+	table.insert(self.ItemPresets, temp_table) -- Push new item
+	rawset(_G, idname, #self.ItemPresets) -- Define Item Global
 	
-	print("\x84ZE2:".."\x82 Weapon ".."\""..name.." ("..idname..")".."\" included ["..(#self.ItemPresets).."]")
-	return idglobal
+	print("\x84ZE2:".."\x82 Item ".."\""..name.." ("..idname..")".."\" included ["..(#self.ItemPresets).."]")
+	return #self.ItemPresets -- Item ID
 end
 
 
@@ -149,7 +150,7 @@ function ZE2:GiveItem(player, item_id, count, slot)
 			item.ontrigger = nil
 			item.onspawn = nil
 			item.onhit = nil
-			
+			item.thinker = nil
 			
 			if count ~= nil then
 				item.count = count

@@ -24,13 +24,14 @@ local function flashpmo(pmo, source)
 	P_RemoveMobj(source)
 end
 
-ZE2:CreateItem("W's mirror", {
+local w_mirror = ZE2:CreateItem("W's mirror", {
 	icon = "MIRRORIND",
 	firerate = TICRATE*5,
 	sound = sfx_mrr12,
 	limited = true,
 	count = 3,
 	price = 110,
+	color = SKINCOLOR_AETHER,
 	ontrigger = function(player)
 		local mirrorclone = P_SpawnMobjFromMobj(player.mo,0,0,0,MT_MIRRORCLONE)
 		mirrorclone.target = player.mo
@@ -104,3 +105,5 @@ addHook("MobjDeath", function(mo, inf, src)
 		flashpmo(attacker, mo)
 	end
 end, MT_MIRRORCLONE)
+
+ZE2:RegisterShopItem(w_mirror)

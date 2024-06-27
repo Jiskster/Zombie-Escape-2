@@ -11,6 +11,8 @@ dofile "libraries/mtimeconv.lua"
 dofile "libraries/sglib.lua" -- https://github.com/GenericHeroGuy/ringracers-scripts
 dofile "libraries/basexx.lua" -- https://github.com/aiq/basexx
 
+dofile "main/shop.lua"
+
 // ITEMS
 dofile "items/item_red_ring.lua"
 dofile "items/item_auto_ring.lua"
@@ -30,8 +32,8 @@ dofile "items/item_rail_ring.lua"
 dofile "items/item_silver_spray.lua"
 dofile "items/item_gfz_sphere.lua"
 dofile "items/item_infinity_ring.lua"
-
 // ITEMS END
+
 dofile "main/baseplayer.lua"
 
 dofile "main/zombie/zombie_colors.lua"
@@ -50,7 +52,6 @@ dofile "main/exiting.lua"
 dofile "main/mapinfo_animation.lua"
 dofile "main/timers.lua"
 dofile "main/emotes.lua"
-dofile "main/shop.lua"
 dofile "main/savedata.lua"
 dofile "main/maptimers.lua"
 dofile "main/checkpointsystem.lua"

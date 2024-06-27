@@ -1,4 +1,4 @@
-ZE2:CreateItem("Automatic Ring",  {
+local auto_ring = ZE2:CreateItem("Automatic Ring",  {
 	object = MT_THROWNAUTOMATIC,
 	icon = "AUTOIND",
 	firerate = 2,
@@ -11,3 +11,6 @@ ZE2:CreateItem("Automatic Ring",  {
 	reload_time = TICRATE*3,
 	price = 50,
 })
+
+print(auto_ring)
+ZE2:RegisterShopItem(auto_ring)

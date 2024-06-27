@@ -94,7 +94,7 @@ local function trigger_func(player, iteminfo)
 	end
 end
 
-ZE2:CreateItem("Rail Ring", {
+local rail_ring = ZE2:CreateItem("Rail Ring", {
 	shake = 20,
 	icon = "RAILIND",
 	firerate = 5,
@@ -102,6 +102,7 @@ ZE2:CreateItem("Rail Ring", {
 	damage = raildmg,
 	price = 250,
 	ammo = 1,
+	color = SKINCOLOR_AZURE,
 	reload_time = 7*TICRATE,
 	ontrigger = trigger_func,
 	skin_overwrite = {
@@ -110,3 +111,5 @@ ZE2:CreateItem("Rail Ring", {
 		}
 	},
 })
+
+ZE2:RegisterShopItem(rail_ring)

@@ -70,7 +70,7 @@ states[S_ZE2_THROWNSCATTER7] = {
 	tics = 1,
 }
 
-ZE2:CreateItem("Scatter Ring",  {
+local scatter_ring = ZE2:CreateItem("Scatter Ring",  {
 	icon = "SCATIND",
 	firerate = TICRATE,
 	sound = sfx_shgn,
@@ -134,3 +134,5 @@ addHook("MobjFuse", function(mobj)
 	mobj.momy = 0
 	mobj.momz = 0
 end, MT_ZE2_THROWNSCATTER)
+
+ZE2:RegisterShopItem(scatter_ring)

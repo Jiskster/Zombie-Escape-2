@@ -23,6 +23,18 @@ ZE2.PregameMenuDef = {
 		end
 		*/
 		
+		-- Pressed forward to go to main menu
+		ZE2:TryBooleanAction(player, {
+			condition = cmd.forwardmove > 40,
+			var = "pregamemenu_forwardpressed",
+			action = function()
+				player["ze2_info"].pregamemenu_intopmenu = true
+				--print("Going to top menu")
+			end
+		}, true)
+		
+		-- Pressed spin to pick character
+		
 		ZE2:TryBooleanAction(player, {
 			condition = (buttons & BT_SPIN),
 			var = "pregamemenu_spinpressed",
@@ -62,6 +74,9 @@ ZE2.PregameMenuDef = {
 				player["ze2_info"].charselect_selection_anim = 0
 			end
 		}, true)
+	end,
+	[2] = function(player)
+	
 	end
 }
 
@@ -117,23 +132,12 @@ addHook("PreThinkFrame", function()
 				if ZE2.PregameMenuDef[pregamemenu_type] then
 					ZE2.PregameMenuDef[pregamemenu_type](player)
 				end
-				
-				ZE2:TryBooleanAction(player, {
-					condition = cmd.forwardmove > 40,
-					var = "pregamemenu_forwardpressed",
-					action = function()
-						player["ze2_info"].pregamemenu_intopmenu = true
-						--print("Going to top menu")
-					end
-				}, true)
 			else
 				ZE2:TryBooleanAction(player, {
 					condition = cmd.forwardmove < -40,
-					var = "pregamemenu_forwardpressed",
+					var = "pregamemenu_backwardspressed",
 					action = function()
 						player["ze2_info"].pregamemenu_intopmenu = false
-						
-						--print("Going to main menu")
 					end
 				}, true)
 				
