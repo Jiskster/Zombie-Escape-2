@@ -37,11 +37,15 @@ ZE2.shophud = function(v, player)
 	local minirubypatch = v.cachePatch("Z_MINI_RUBY")
 	local selectionpatch = v.cachePatch("Z_SHOPSELECTION")
 	
+	customhud.CustomFontString(v, 280*FU, 30*FU, "Rubies: "..player["ze2_info"].rubies, "STCFC", (V_SNAPTOTOP|V_SNAPTORIGHT|topmenuflag), "right" , FU, SKINCOLOR_RED)
+	
 	for i,b in ipairs(ZE2.Survivor_ShopList) do
-		local shop_def = ZE2.NumToShopDef(b)
+		local shopdefid = b.shopdefid
+		local soldflag = (b.sold and not topmenuflag) and V_50TRANS or 0
+		local shop_def = ZE2.NumToShopDef(shopdefid)
 		local change = (i-1)*yc
 		
-		v.drawScaled(x, y+change, FU, infobarpatch, V_SNAPTOTOP|topmenuflag)
+		v.drawScaled(x, y+change, FU, infobarpatch, V_SNAPTOTOP|topmenuflag|soldflag)
 		
 		if shop_def then
 			if shop_def.itemdef and shop_def.itemdef.icon then
@@ -50,7 +54,7 @@ ZE2.shophud = function(v, player)
 				if icon_patch then
 					local iconscale = shop_def.itemdef.iconscale or FU
 					
-					v.drawScaled(x+item_icon_xoffset, y+item_icon_yoffset+change, FixedMul(iconscale, FU), icon_patch, V_SNAPTOTOP|topmenuflag)
+					v.drawScaled(x+item_icon_xoffset, y+item_icon_yoffset+change, FixedMul(iconscale, FU), icon_patch, V_SNAPTOTOP|topmenuflag|soldflag)
 				end
 			end
 			
@@ -60,9 +64,12 @@ ZE2.shophud = function(v, player)
 				local price_x = x+ruby_price_xoffset
 				local price_y = y+ruby_price_yoffset+change
 				local price_text = tostring(shop_def.price)
+				if b.sold then
+					price_text = $ + " (SOLD)"
+				end
 				
 				v.drawScaled(rubyicon_x,rubyicon_y,FU,minirubypatch,V_SNAPTOTOP|topmenuflag)
-				customhud.CustomFontString(v,price_x,price_y,price_text,"TNYFC",(V_SNAPTOTOP|topmenuflag),nil,FU,SKINCOLOR_RED)
+				customhud.CustomFontString(v,price_x,price_y,price_text,"TNYFC",(V_SNAPTOTOP|topmenuflag|soldflag),nil,FU,SKINCOLOR_RED)
 			end
 		
 			if shop_def.name then
@@ -71,13 +78,13 @@ ZE2.shophud = function(v, player)
 					color = shop_def.itemdef.color
 				end
 				
-				customhud.CustomFontString(v, x + item_name_xoffset, y+item_name_yoffset+change, shop_def.name, "STCFC", (V_SNAPTOTOP|topmenuflag), "center" , FU, color)
+				customhud.CustomFontString(v, x + item_name_xoffset, y+item_name_yoffset+change, shop_def.name, "STCFC", (V_SNAPTOTOP|topmenuflag|soldflag), "center" , FU, color)
 			end
 			
 			if not player["ze2_info"].pregamemenu_intopmenu then
 				-- if selection is render index
 				if shop_selection == i then
-					v.drawScaled(x+selection_xoffset+selectionanim, y+selection_yoffset+change, FU, selectionpatch, V_SNAPTOTOP|topmenuflag)
+					v.drawScaled(x+selection_xoffset+selectionanim, y+selection_yoffset+change, FU, selectionpatch, V_SNAPTOTOP|topmenuflag|soldflag)
 				end
 			end
 		end

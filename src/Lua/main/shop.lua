@@ -46,7 +46,7 @@ addHook("MapLoad", function()
 	local shopdef_numsleft = {}
     local picked_shopdefs = {}
 	local itemnumsdiscarded = {}
-	local numitemstolist = P_RandomRange(2,4)
+	local numitemstolist = P_RandomRange(3,6)
 	local numitemstolistleft = numitemstolist
 	local tries = 0
 	
@@ -66,7 +66,10 @@ addHook("MapLoad", function()
 		end
 		
 		if not foundrepeat then
-			table.insert(picked_shopdefs, rng)
+			table.insert(picked_shopdefs, {
+				shopdefid = rng,
+				sold = false,
+			})
 			table.insert(itemnumsdiscarded, rng)
 			table.remove(shopdef_numsleft, rng)
 			numitemstolistleft = $ - 1
@@ -81,20 +84,12 @@ addHook("MapLoad", function()
 	ZE2.Survivor_ShopList = picked_shopdefs
 	
 	for i,v in ipairs(ZE2.Survivor_ShopList) do
-		print(ZE2.ShopDefinitions[v].name)
+		print(ZE2.ShopDefinitions[v.shopdefid].name)
 	end
 	
-	/*
-    for i=1,P_RandomRange(3,6) do
-        local rng = P_RandomRange(1,#new_itemlist) 
-        local choseitem = new_itemlist[rng]
-        local item = ZE2:CopyItemFromID(choseitem)
-
-        table.remove(new_itemlist,rng)
-		
-        ZE2.Survivor_ShopList[i].price = item.price 
-    end
-	*/
+	for player in players.iterate do
+		player["ze2_info"].shop_selection = 1
+	end
 end)
 /*
 

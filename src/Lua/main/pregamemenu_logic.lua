@@ -105,6 +105,18 @@ ZE2.PregameMenuDef = {
 				end
 			end,
 		}, true)
+		
+		-- Jump Press
+		ZE2:TryBooleanAction(player, {
+			condition = (buttons & BT_JUMP),
+			var = "pregamemenu_jumppressed",
+			action = function()			
+				S_StartSound(nil, sfx_menu1, player)
+				if ZE2.Survivor_ShopList[player["ze2_info"].shop_selection] then
+					ZE2.Survivor_ShopList[player["ze2_info"].shop_selection].sold = true
+				end
+			end,
+		}, true)
 	end
 }
 

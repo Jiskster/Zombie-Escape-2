@@ -46,6 +46,7 @@ ZE2["default_ze2_info"] = {
 	pregamemenu_forwardpressed = false,
 	pregamemenu_backwardspressed = false,
 	pregamemenu_spinpressed = false,
+	pregamemenu_jumppressed = true,
 	
 	charselect_selection = 1,
 	charselect_prevselection = 1,
