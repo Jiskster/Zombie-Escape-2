@@ -19,6 +19,8 @@ addHook("NetVars", function(net)
 	ZE2.LatestSurvivorCheckpoint = net($);
 	ZE2.LatestZombieCheckpoint = net($);
 	
+	ZE2.Survivor_ShopList = net($);
+	
 	ZE2.TWRITE_COUNT = net($);
 	ZE2.TWRITE_MAPNAME_COUNT = net($);
 	
