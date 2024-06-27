@@ -49,6 +49,11 @@ local wood_fence = ZE2:CreateItem("Wood Fence", {
 		wood.mobjteam = player["ze2_info"].team
 		wood.target = player.mo
 	end,
+	skin_overwrite = {
+		["tails"] = {
+			firerate = 2*TICRATE,
+		}
+	},
 	price = 55,
 })
 
