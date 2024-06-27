@@ -68,7 +68,7 @@ ZE2.shophud = function(v, player)
 					price_text = $ + " (SOLD)"
 				end
 				
-				v.drawScaled(rubyicon_x,rubyicon_y,FU,minirubypatch,V_SNAPTOTOP|topmenuflag)
+				v.drawScaled(rubyicon_x,rubyicon_y,FU,minirubypatch,V_SNAPTOTOP|topmenuflag|soldflag)
 				customhud.CustomFontString(v,price_x,price_y,price_text,"TNYFC",(V_SNAPTOTOP|topmenuflag|soldflag),nil,FU,SKINCOLOR_RED)
 			end
 		
