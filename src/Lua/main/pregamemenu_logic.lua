@@ -127,6 +127,8 @@ ZE2.PregameMenuDef = {
 								S_StartSound(nil, sfx_strpst, player)
 								shoplistindex.sold = true
 							end
+						else
+							S_StartSound(nil, sfx_lose, player)
 						end
 					else
 						S_StartSound(nil, sfx_lose, player)
