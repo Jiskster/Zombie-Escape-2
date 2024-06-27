@@ -111,9 +111,13 @@ ZE2.PregameMenuDef = {
 			condition = (buttons & BT_JUMP),
 			var = "pregamemenu_jumppressed",
 			action = function()			
-				S_StartSound(nil, sfx_menu1, player)
 				if ZE2.Survivor_ShopList[player["ze2_info"].shop_selection] then
-					ZE2.Survivor_ShopList[player["ze2_info"].shop_selection].sold = true
+					if not ZE2.Survivor_ShopList[player["ze2_info"].shop_selection].sold then
+						S_StartSound(nil, sfx_strpst, player)
+						ZE2.Survivor_ShopList[player["ze2_info"].shop_selection].sold = true
+					else
+						S_StartSound(nil, sfx_lose, player)
+					end			
 				end
 			end,
 		}, true)

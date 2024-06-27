@@ -84,7 +84,7 @@ ZE2.shophud = function(v, player)
 			if not player["ze2_info"].pregamemenu_intopmenu then
 				-- if selection is render index
 				if shop_selection == i then
-					v.drawScaled(x+selection_xoffset+selectionanim, y+selection_yoffset+change, FU, selectionpatch, V_SNAPTOTOP|topmenuflag|soldflag)
+					v.drawScaled(x+selection_xoffset+selectionanim, y+selection_yoffset+change, FU, selectionpatch, V_SNAPTOTOP|topmenuflag)
 				end
 			end
 		end
