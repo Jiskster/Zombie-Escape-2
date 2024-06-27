@@ -108,7 +108,7 @@ ZE2.PregameMenuDef = {
 			end,
 		}, true)
 		
-		-- Jump Press
+		-- Jump Press (Buy Item)
 		ZE2:TryBooleanAction(player, {
 			condition = (buttons & BT_JUMP),
 			var = "pregamemenu_jumppressed",
@@ -135,6 +135,16 @@ ZE2.PregameMenuDef = {
 					end			
 				end
 			end,
+		}, true)
+		
+		-- Spin Press (Exit Shop Menu)
+		ZE2:TryBooleanAction(player, {
+			condition = (buttons & BT_SPIN),
+			var = "pregamemenu_spinpressed",
+			action = function()
+				player["ze2_info"].pregamemenu_intopmenu = true -- Return to top menu
+				player["ze2_info"].shop_selection = 1
+			end
 		}, true)
 	end
 }
