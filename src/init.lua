@@ -79,5 +79,6 @@ dofile "main/name_tags.lua"
 dofile "levelscripts/minecraft.lua"
 dofile "levelscripts/undertale.lua"
 dofile "levelscripts/caveofthepast.lua"
+dofile "levelscripts/spookyflower.lua"
 
 dofile "main/netvars.lua"
