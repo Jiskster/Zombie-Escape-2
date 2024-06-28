@@ -196,6 +196,10 @@ ZE2.sprint_thinker = function(player)
 	local decrement = fixedfromstring("0.185")
 	
 	if player["ze2_info"].sprintdelay then
+		if player["ze2_info"].sprintmeter then
+			player["ze2_info"].sprintdelay = 0
+		end
+		
 		player["ze2_info"].sprintdelay = $ - 1
 	elseif player["ze2_info"].sprintdelay < 0 then
 		player["ze2_info"].sprintdelay = 0
