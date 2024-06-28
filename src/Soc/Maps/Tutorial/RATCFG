@@ -1,0 +1,35 @@
+Freeslot
+MT_STUPIDRAT
+S_STUPIDRAT1
+S_STUPIDRAT2
+S_STUPIDRAT3
+SPR_SRAT
+
+State S_STUPIDRAT1
+next = S_STUPIDRAT2
+SpriteName = SPR_SRAT
+SpriteFrame = A
+Duration = 3
+
+State S_STUPIDRAT2
+next = S_STUPIDRAT3
+SpriteName = SPR_SRAT
+SpriteFrame = B
+Duration = 3
+
+State S_STUPIDRAT3
+next = S_STUPIDRAT1
+SpriteName = SPR_SRAT
+SpriteFrame = C
+Duration = 3
+
+Object MT_STUPIDRAT
+#$Name Stupid Rat Prop
+#$Sprite SRATA0
+MapThingNum = 2108
+SpawnState = S_STUPIDRAT1
+deathstate = S_STUPIDRAT1
+spawnhealth = 1000
+radius = 32*FRACUNIT
+height = 74*FRACUNIT
+flags = MF_SOLID

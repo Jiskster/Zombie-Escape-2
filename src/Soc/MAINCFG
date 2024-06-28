@@ -91,6 +91,19 @@ SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 10
 Lua.ze2_solofail = true
 
+#  is to make it not recognized as the tutorial by Takis and anyone else who reacts to the tutorial
+
+Level Y0
+Levelname = Tutorial
+Act = 0
+Music = TUTORL
+TypeOfLevel = ZE2
+LevelSelect = 1
+NextLevel = J0
+SkyNum = 99
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 5
+
 Level EB
 LevelName = Cave of the Past
 SubTitle = The war against Giygas?

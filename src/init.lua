@@ -80,5 +80,6 @@ dofile "levelscripts/minecraft.lua"
 dofile "levelscripts/undertale.lua"
 dofile "levelscripts/caveofthepast.lua"
 dofile "levelscripts/spookyflower.lua"
+dofile "levelscripts/tutorial.lua"
 
 dofile "main/netvars.lua"
