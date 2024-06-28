@@ -2,7 +2,7 @@
 
 ZE2.survinvtics = CV_RegisterVar({
 	name = "z_survinvtics",
-	defaultvalue = "25",
+	defaultvalue = "40",
 	PossibleValue = {MIN = 0, MAX = 350},
 	flags = CV_NETVAR,
 })
