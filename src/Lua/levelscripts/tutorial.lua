@@ -400,8 +400,6 @@ local function F_TextPromptDrawer(vv, prompt)
         string.sub(prompt.text, 1, prompt.textprogress),
         V_SNAPTOBOTTOM|V_ALLOWLOWERCASE
     )
-
-    return boxHeight
 end
 
 startDialouge = function (p, prompt)
@@ -598,6 +596,10 @@ addHook("PlayerThink", function (p)
         end
         p.tutLastTeam = p["ze2_info"] and p["ze2_info"].team
     end
+	
+	if p.tutCurrentPrompt then
+		p["ze2_info"].lower_hud_offset = p.tutCurrentPrompt.height * 13
+	end
 end)
 
 addHook("MapLoad", function ()
@@ -611,32 +613,6 @@ end)
 
 hud.add(function (v, player)
     if player.tutCurrentPrompt then
-        local boxHeight = F_TextPromptDrawer(v, player.tutCurrentPrompt)
-
-        -- funny hack
-        local fakev = {
-            cachePatch = v.cachePatch,
-            patchExists = v.patchExists,
-            getSprite2Patch = v.getSprite2Patch,
-            getColormap = v.getColormap,
-            draw = function (x, y, p, f, c)
-                v.draw(x, y-boxHeight, p, f, c)
-            end,
-            drawScaled = function (x, y, s, p, f, c)
-                v.drawScaled(x, y-(boxHeight*FU), s, p, f, c)
-            end,
-            drawString = function (x, y, s, f, a)
-                local yoff = boxHeight
-                if a and a:find("fixed") then
-                    yoff = $ * FU
-                end
-                v.drawString(x, y-yoff, s, f, a)
-            end,
-            drawStretched = function (x, y, xs, ys, p, f, c)
-                v.drawStretched(x, y-(boxHeight*FU), xs, ys, p, f, c)
-            end
-        }
-        ZE2.infohud(fakev, player)
-        ZE2.inventoryhud(fakev, player)
+        F_TextPromptDrawer(v, player.tutCurrentPrompt)
     end
 end)
