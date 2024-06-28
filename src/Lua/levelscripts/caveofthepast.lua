@@ -282,31 +282,11 @@ local COTPGiygasTimer = ZE2:AddTimer("Survive Giygas",{
 })
 
 local function poketak1()
-	ZE2.ZombieCheckpoints = {
-		[1] = {
-			x = -5920,
-			y = -16544,
-			z = 184,
-			angle = 90,
-		}
-	}
-	
-	ZE2.CurrentZombieCheckpoint = 1
-	
 	COTPPokeyTimer.active = true
 end
 
 local function poketak2()
-	ZE2.ZombieCheckpoints = {
-		[2] = {
-			x = -12800,
-			y = -832,
-			z = 0,
-			angle = ANGLE_90,
-		}
-	}
-	
-	ZE2.CurrentZombieCheckpoint = 2
+	LatestZombieCheckpoint = 2 -- black box
 
 	for player in players.iterate
 		if player.mo and player.mo.valid then
@@ -323,16 +303,7 @@ local function poketak2()
 end
 
 local function giygasfn()
-	ZE2.ZombieCheckpoints = {
-		[3] = {
-			x = -16096,
-			y = -4960,
-			z = 0,
-			angle = ANGLE_90,
-		}
-	}
-	
-	ZE2.CurrentZombieCheckpoint = 3
+	LatestZombieCheckpoint = 3 -- giygas room
 
 	for player in players.iterate
 		if player.mo and player.mo.valid then
@@ -345,16 +316,7 @@ local function giygasfn()
 end
 
 local function prayer18()
-	ZE2.ZombieCheckpoints = {
-		[4] = {
-			x = -12800,
-			y = -832,
-			z = 0,
-			angle = ANGLE_90,
-		}
-	}
-
-	ZE2.CurrentZombieCheckpoint = 4
+	LatestZombieCheckpoint = 2 -- black box
 
 	chatprint("\x84\ 27600 HP of damage to Giygas!")
 	S_StartSound(player, sfx_smaash)
