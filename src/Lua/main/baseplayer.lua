@@ -197,7 +197,6 @@ ZE2.sprint_thinker = function(player)
 	
 	if player["ze2_info"].sprintdelay then
 		player["ze2_info"].sprintdelay = $ - 1
-		player["ze2_info"].sprintmeter = 0
 	elseif player["ze2_info"].sprintdelay < 0 then
 		player["ze2_info"].sprintdelay = 0
 	end
