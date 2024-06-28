@@ -476,7 +476,6 @@ addHook("PlayerThink", function (p)
 					startDialouge(p, prompt.next)
 				else
 					p.tutCurrentPrompt = nil
-					p["ze2_info"].lower_hud_offset = 0
 				end
 			end
 		else

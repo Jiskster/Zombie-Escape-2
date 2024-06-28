@@ -634,4 +634,6 @@ addHook("PlayerThink", function(player)
 			end
 		end
 	end	
+	
+	player["ze2_info"].lower_hud_offset = 0
 end)
