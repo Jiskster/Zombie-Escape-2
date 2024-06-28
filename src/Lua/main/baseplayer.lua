@@ -611,6 +611,9 @@ addHook("PlayerThink", function(player)
 			else
 				if ammo ~= nil and max_ammo and ammo > 0 then
 					ZE2:SetItemInfoIndex(iteminfo, "ammo", ammo - 1, skin)
+					if ammo <= 0 then
+						ZE2.DoPlayerReload(player)
+					end
 				end
 			
 				ZE2.DoPlayerFire(player, iteminfo)
