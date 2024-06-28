@@ -286,7 +286,7 @@ local function poketak1()
 end
 
 local function poketak2()
-	LatestZombieCheckpoint = 2 -- black box
+	ZE2.LatestZombieCheckpoint = 2 -- black box
 
 	for player in players.iterate
 		if player.mo and player.mo.valid then
@@ -303,7 +303,7 @@ local function poketak2()
 end
 
 local function giygasfn()
-	LatestZombieCheckpoint = 3 -- giygas room
+	ZE2.LatestZombieCheckpoint = 3 -- giygas room
 
 	for player in players.iterate
 		if player.mo and player.mo.valid then
@@ -316,7 +316,7 @@ local function giygasfn()
 end
 
 local function prayer18()
-	LatestZombieCheckpoint = 2 -- black box
+	ZE2.LatestZombieCheckpoint = 2 -- black box
 
 	chatprint("\x84\ 27600 HP of damage to Giygas!")
 	S_StartSound(player, sfx_smaash)
