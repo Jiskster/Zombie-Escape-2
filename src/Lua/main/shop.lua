@@ -45,8 +45,8 @@ addHook("MapLoad", function()
 	
 	local shopdef_numsleft = {}
     local picked_shopdefs = {}
-	local itemnumsdiscarded = {}
-	local numitemstolist = P_RandomRange(3,6)
+	--local itemnumsdiscarded = {}
+	local numitemstolist = 6 --P_RandomRange(3,6)
 	local numitemstolistleft = numitemstolist
 	local tries = 0
 	
@@ -58,20 +58,22 @@ addHook("MapLoad", function()
 		local rng = P_RandomRange(1,#shopdef_numsleft)
 		local foundrepeat = false -- im paranoid and i found a repeat during testing
 		
+		/*
 		for i,v in ipairs(itemnumsdiscarded) do
 			if v == rng then
 				foundrepeat = true
 				break;
 			end
 		end
+		*/
 		
 		if not foundrepeat then
 			table.insert(picked_shopdefs, {
 				shopdefid = rng,
 				sold = false,
 			})
-			table.insert(itemnumsdiscarded, rng)
-			table.remove(shopdef_numsleft, rng)
+			--table.insert(itemnumsdiscarded, rng)
+			--table.remove(shopdef_numsleft, rng)
 			numitemstolistleft = $ - 1
 		end
 		
