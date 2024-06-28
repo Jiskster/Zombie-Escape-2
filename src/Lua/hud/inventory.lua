@@ -22,7 +22,7 @@ ZE2.inventoryhud = function(v, player)
 	if ZE2:FetchInventoryLimit(player) and type(ZE2:FetchInventoryLimit(player)) == "number" then
 		for i=1,ZE2:FetchInventoryLimit(player) do
 			local x = 116*FU
-			local y = 176*FU
+			local y = sel_y
 			local overone_xpos = ((i-1)*20)*FU
 			local iconscale = FU
 			local slot = ZE2:FetchInventorySlot(player, i)
