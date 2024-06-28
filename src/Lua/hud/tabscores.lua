@@ -149,15 +149,18 @@ ZE2.tabscores = function(v)
             FU/2
         )
 
+		--haha
+		local pingas = (p.quittime) and "QUIT" or (p.ping.."ms")
+		local pingcolor = (p.quittime) and SKINCOLOR_RED or (p.ping < 128 and SKINCOLOR_GREEN or (p.ping < 256 and SKINCOLOR_YELLOW or SKINCOLOR_RED))
         customhud.CustomFontString(v,
             x+16*FU+rubielength,
             y+8*FU,
-            p == server and "SERVER" or p.ping.."ms",
+            p == server and "SERVER" or pingas,
             "TNYFC",
             V_SNAPTOTOP,
             nil,
             FU/2,
-            p == server and SKINCOLOR_BLUE or p.ping < 128 and SKINCOLOR_GREEN or (p.ping < 256 and SKINCOLOR_YELLOW or SKINCOLOR_RED)
+            p == server and pingcolor
         )
     end
 
@@ -221,16 +224,19 @@ ZE2.tabscores = function(v)
             "TNYFC",
             FU/2
         )
-
+		
+		--haha
+		local pingas = (p.quittime) and "QUIT" or (p.ping.."ms")
+		local pingcolor = (p.quittime) and SKINCOLOR_RED or (p.ping < 128 and SKINCOLOR_GREEN or (p.ping < 256 and SKINCOLOR_YELLOW or SKINCOLOR_RED))
         customhud.CustomFontString(v,
             x+16*FU+rubielength,
             y+8*FU,
-            p == server and "SERVER" or p.ping.."ms",
+            p == server and "SERVER" or pingas,
             "TNYFC",
             V_SNAPTOTOP,
             nil,
             FU/2,
-            p == server and SKINCOLOR_BLUE or p.ping < 128 and SKINCOLOR_GREEN or (p.ping < 256 and SKINCOLOR_YELLOW or SKINCOLOR_RED)
+            p == server and SKINCOLOR_BLUE or pingcolor
         )
     end
 
