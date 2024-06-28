@@ -12,9 +12,6 @@ addHook("NetVars", function(net)
 	ZE2.MapsOnVote = net($);
 	ZE2.NextMapVoted = net($);
 	
-	ZE2.CurrentZombieCheckpoint = net($);
-	ZE2.ZombieCheckpoints = net($);
-	
 	ZE2.Checkpoints = net($);
 	ZE2.LatestSurvivorCheckpoint = net($);
 	ZE2.LatestZombieCheckpoint = net($);
