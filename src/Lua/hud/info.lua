@@ -23,23 +23,25 @@ ZE2.infohud = function(v, player)
 		the_time = G_TicsToMTIME(ZE2.pregame_timeleft)
 	end
 	
+	local lower_hud_offset = player["ze2_info"].lower_hud_offset or 0
+	
 	if not player["ze2_info"].pregamemenu_active then
 		if not player["ze2_info"].ghostmode then
 			-- [Player Icon] --
 		
-			v.drawScaled(0, 176*FRACUNIT, FixedDiv(3*FRACUNIT, 4*FRACUNIT),
+			v.drawScaled(0, (176-lower_hud_offset)*FRACUNIT, FixedDiv(3*FRACUNIT, 4*FRACUNIT)
 			skinpatch, (V_SNAPTOBOTTOM|V_SNAPTOLEFT), colormap)
 			-- [Player Name] --
 			local display_name = (player["ze2_info"].zombie_type and player["ze2_info"].team == 2) 
 			and (player["ze2_info"].zombie_type + " Zombie") or skins[player.mo.skin].realname
 
-			customhud.CustomFontString(v, 25, 192, 
+			customhud.CustomFontString(v, 25, 192-lower_hud_offset,
 			display_name, "TNYFC", 
 			(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, player.mo.color)
 			
 			-- [Rubies] --
 			if player["ze2_info"].rubies ~= nil then
-				customhud.CustomFontString(v, 25, 184, "Rubies: "..player["ze2_info"].rubies, "TNYFC", 
+				customhud.CustomFontString(v, 25, 184-lower_hud_offset, "Rubies: "..player["ze2_info"].rubies, "TNYFC", 
 				(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, SKINCOLOR_RED)
 			end
 			
@@ -55,7 +57,7 @@ ZE2.infohud = function(v, player)
 			
 			if player["ze2_info"].sprintmeter ~= nil and player["ze2_info"].team == 1 then
 				local sprintmeter = L_FixedDecimal(player["ze2_info"].sprintmeter, 1).."%"
-				customhud.CustomFontString(v, 0, 168, "Run: "..sprintmeter, "TNYFC", 
+				customhud.CustomFontString(v, 0, 168-lower_hud_offset, "Run: "..sprintmeter, "TNYFC",
 				(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, sprintmeter_color)
 			end
 			
@@ -75,7 +77,7 @@ ZE2.infohud = function(v, player)
 			
 			-- [Health] --
 			local healthstring = "+ "..health.."/"..maxhealth
-			customhud.CustomFontString(v, 25, 176, healthstring, "TNYFC", 
+			customhud.CustomFontString(v, 25, 176-lower_hud_offset, healthstring, "TNYFC", 
 			(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, SKINCOLOR_GREEN)
 			
 						

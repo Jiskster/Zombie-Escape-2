@@ -7,6 +7,8 @@ ZE2.inventoryhud = function(v, player)
 	
 	if player and not player.mo then return end
 	
+	local lower_hud_offset = player["ze2_info"].lower_hud_offset or 0
+	
 	local skin = player.mo.skin
 	local s_patch = v.cachePatch("CURWEAP")
 	local cyan_patch = v.cachePatch("Z_CYANSQUARE")
@@ -15,7 +17,7 @@ ZE2.inventoryhud = function(v, player)
 	if sel > 1 then
 		sel_x = $ + ((sel-1)*20*FU)
 	end
-	local sel_y = 176*FU
+	local sel_y = (176-lower_hud_offset)*FU
 	
 	if ZE2:FetchInventoryLimit(player) and type(ZE2:FetchInventoryLimit(player)) == "number" then
 		for i=1,ZE2:FetchInventoryLimit(player) do
@@ -28,7 +30,7 @@ ZE2.inventoryhud = function(v, player)
 			local slot_iconscale --  = ZE2:GetItemInfoIndex(slot, "iconscale", skin)
 			
 			if player["ze2_info"].shop_open then 
-				y = 146*FU
+				y = min(146, 176-lower_hud_offset)*FU
 				sel_y = y
 			end
 			local patch

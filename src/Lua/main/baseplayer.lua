@@ -74,6 +74,8 @@ ZE2["default_ze2_info"] = {
 	
 	checkpoint_number = 0,
 	checkpoint_catchuptics = 0, 
+	
+	lower_hud_offset = 0,
 }
 
 addHook("PlayerSpawn", function(player)
@@ -82,6 +84,8 @@ addHook("PlayerSpawn", function(player)
 	if player["ze2_info"] == nil then
 		player["ze2_info"] = ZE2:Copy(ZE2["default_ze2_info"])
 	end
+	
+	player["ze2_info"].lower_hud_offset = 0
 end)
 
 function ZE2:SetDamageFadeAnim(player, tics)
