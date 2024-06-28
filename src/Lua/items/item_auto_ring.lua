@@ -12,5 +12,4 @@ local auto_ring = ZE2:CreateItem("Automatic Ring",  {
 	price = 50,
 })
 
-print(auto_ring)
 ZE2:RegisterShopItem(auto_ring)
