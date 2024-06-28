@@ -85,9 +85,11 @@ addHook("MapLoad", function()
 	
 	ZE2.Survivor_ShopList = picked_shopdefs
 	
+	/*
 	for i,v in ipairs(ZE2.Survivor_ShopList) do
 		print(ZE2.ShopDefinitions[v.shopdefid].name)
 	end
+	*/
 	
 	for player in players.iterate do
 		player["ze2_info"].shop_selection = 1
