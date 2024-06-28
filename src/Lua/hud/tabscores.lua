@@ -98,7 +98,9 @@ ZE2.tabscores = function(v)
             x = $+(75*FU)
             y = $-(32*FU/3*15)
         end
-
+		
+		local flags = V_SNAPTOTOP
+		if (p.quittime and (leveltime/TICRATE % 2)) then flags = $|V_50TRANS end
         local skin = skins[p.skin].name
         local color = v.getColormap(skin,p.realmo.color)
         local name = string.sub(p.name,1,15)
@@ -106,7 +108,7 @@ ZE2.tabscores = function(v)
             y,
             FU/3,     
             v.getSprite2Patch(skin, SPR2_XTRA),
-            V_SNAPTOTOP,
+            flags,
             color
         )
 
@@ -115,7 +117,7 @@ ZE2.tabscores = function(v)
             y,
             name,
             "STCFC",
-            V_SNAPTOTOP,
+            flags,
             nil,
             FU/2,
             (p == consoleplayer) and SKINCOLOR_YELLOW or SKINCOLOR_BLUE
@@ -126,7 +128,7 @@ ZE2.tabscores = function(v)
             y+4*FU,
             "+"..p.mo.health.."/"..p.mo.maxhealth,
             "TNYFC",
-            V_SNAPTOTOP,
+            flags,
             nil,
             FU/2,
             SKINCOLOR_GREEN
@@ -137,7 +139,7 @@ ZE2.tabscores = function(v)
             y+8*FU,
             "Rubies: "..p["ze2_info"].rubies,
             "TNYFC",
-            V_SNAPTOTOP,
+            flags,
             nil,
             FU/2,
             SKINCOLOR_RED
@@ -157,10 +159,10 @@ ZE2.tabscores = function(v)
             y+8*FU,
             p == server and "SERVER" or pingas,
             "TNYFC",
-            V_SNAPTOTOP,
+            flags,
             nil,
             FU/2,
-            p == server and pingcolor
+            p == server and SKINCOLOR_BLUE or pingcolor
         )
     end
 
@@ -175,6 +177,8 @@ ZE2.tabscores = function(v)
             y = $-(32*FU/3*15)
         end
 
+		local flags = V_SNAPTOTOP
+		if (p.quittime and (leveltime/TICRATE % 2)) then flags = $|V_50TRANS end
         local skin = skins[p.skin].name
         local color = v.getColormap(skin,p.realmo.color)
         local name = string.sub(p.name,1,15)
@@ -182,7 +186,7 @@ ZE2.tabscores = function(v)
             y,
             FU/3,     
             v.getSprite2Patch(skin, SPR2_XTRA),
-            V_SNAPTOTOP,
+            flags,
             color
         )
 
@@ -191,7 +195,7 @@ ZE2.tabscores = function(v)
             y,
             name,
             "STCFC",
-            V_SNAPTOTOP,
+            flags,
             nil,
             FU/2,
             (p == consoleplayer) and SKINCOLOR_YELLOW or SKINCOLOR_RED
@@ -202,7 +206,7 @@ ZE2.tabscores = function(v)
             y+4*FU,
             "+"..p.mo.health.."/"..p.mo.maxhealth,
             "TNYFC",
-            V_SNAPTOTOP,
+            flags,
             nil,
             FU/2,
             SKINCOLOR_GREEN
@@ -213,7 +217,7 @@ ZE2.tabscores = function(v)
             y+8*FU,
             p["ze2_info"].zombie_type,
             "TNYFC",
-            V_SNAPTOTOP,
+            flags,
             nil,
             FU/2,
             p.mo.color
@@ -233,7 +237,7 @@ ZE2.tabscores = function(v)
             y+8*FU,
             p == server and "SERVER" or pingas,
             "TNYFC",
-            V_SNAPTOTOP,
+            flags,
             nil,
             FU/2,
             p == server and SKINCOLOR_BLUE or pingcolor
