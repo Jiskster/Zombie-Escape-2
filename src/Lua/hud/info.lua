@@ -29,7 +29,7 @@ ZE2.infohud = function(v, player)
 		if not player["ze2_info"].ghostmode then
 			-- [Player Icon] --
 		
-			v.drawScaled(0, (176-lower_hud_offset)*FRACUNIT, FixedDiv(3*FRACUNIT, 4*FRACUNIT)
+			v.drawScaled(0, (176-lower_hud_offset)*FRACUNIT, FixedDiv(3*FRACUNIT, 4*FRACUNIT),
 			skinpatch, (V_SNAPTOBOTTOM|V_SNAPTOLEFT), colormap)
 			-- [Player Name] --
 			local display_name = (player["ze2_info"].zombie_type and player["ze2_info"].team == 2) 
