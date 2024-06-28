@@ -43,7 +43,7 @@ ZE2:CreateItem("Insta Burst", {
 	icon = "ZMISHIND",
 	firerate = 24,
 	sound = sfx_zish1,
-	damage = 15,
+	damage = 20,
 	color = SKINCOLOR_RED,
 	ontrigger = function(player)
 		local instaburst = P_SpawnMobjFromMobj(player.mo, 0, 0, 0, MT_INSTABURST)
