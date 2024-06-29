@@ -12,6 +12,7 @@ local auto_ring = ZE2:CreateItem("Automatic Ring",  {
 	price = 50,
 	skin_overwrite = {
 		["knuckles"] = {
+			max_ammo = 100,
 			ammo = 100,
 		}
 	}
