@@ -33,10 +33,9 @@ ZE2.ZombieConfig = {
 		knockback_multiplier = FRACUNIT/2,
 		accelstart = 100,
 		acceleration = 27,
-		inventory_limit = 2,
+		inventory_limit = 1,
 		inventory = {
 			ZE2:CopyItemFromID(ITEM_INSTA_BURST),
-			--ZE2:CopyItemFromID(ITEM_SILVER_SPRAY)
 		},
 	},
 }
