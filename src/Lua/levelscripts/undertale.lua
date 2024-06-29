@@ -67,6 +67,8 @@ local function undertale_BattleTele3Surv()
 end
 
 local function undertale_BattleTele3Zm()
+	ZE2.LatestZombieCheckpoint = 3
+	
 	for player in players.iterate
 		if player.mo and player.mo.valid and (player["ze2_info"].team == 2) then
 			P_SetOrigin(player.mo, -1088*FRACUNIT, -4736*FRACUNIT, 0*FRACUNIT)
