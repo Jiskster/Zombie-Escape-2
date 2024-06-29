@@ -104,15 +104,15 @@ states[S_CRRUBY] = {
 mobjinfo[MT_RUBY_BOX] = {
 	//$Category Zombie Escape 2
 	//$Name Ruby Crate
-	//$Sprite RBYMAR
+	//$Sprite RBYMARAL
 	
 	doomednum = 863,
 	spawnstate = S_RUBY_BOX,
 	deathstate = S_RUBY_BOX_BREAK,
 	deathsound = sfx_wbreak,
 	spawnhealth = 1,
-	height = 64*FRACUNIT,
-	radius = 32*FRACUNIT,
+	height = 32*FRACUNIT,
+	radius = 16*FRACUNIT,
 	flags = MF_MONITOR|MF_SOLID|MF_SHOOTABLE|MF_RUNSPAWNFUNC
 }
 
@@ -351,8 +351,8 @@ addHook("MobjThinker",function(door)
 			for i = 1,4
 				local angle = door.angle+(FixedAngle(90*FU*(i-1)))
 				list[0+i] = P_SpawnMobjFromMobj(door,
-					P_ReturnThrustX(nil,angle,32*door.scale),
-					P_ReturnThrustY(nil,angle,32*door.scale),
+					P_ReturnThrustX(nil,angle,16*door.scale),
+					P_ReturnThrustY(nil,angle,16*door.scale),
 					0,MT_THOK
 				)
 				list[0+i].frame = A
@@ -361,7 +361,7 @@ addHook("MobjThinker",function(door)
 				list[0+i].flags = MF_NOGRAVITY|MF_NOCLIPHEIGHT|MF_NOCLIP
 				list[0+i].renderflags = $|RF_PAPERSPRITE|RF_NOSPLATBILLBOARD
 				list[0+i].angle = angle+ANGLE_90
-				list[0+i].height = 64*FU
+				list[0+i].height = 32*FU
 				list[0+i].radius = 0
 				P_SetOrigin(list[0+i],
 					list[0+i].x,
@@ -398,19 +398,19 @@ addHook("MobjThinker",function(door)
 			for i = 1,4
 				local angle = door.angle+(FixedAngle(90*FU*(i-1)))
 				list[0+i].angle = angle+ANGLE_90
-				list[0+i].height = 64*FU
+				list[0+i].height = 32*FU
 				list[0+i].radius = 0
 				list[0+i].scale = door.scale
 				P_MoveOrigin(list[0+i],
-					door.x+P_ReturnThrustX(nil,angle,32*door.scale),
-					door.y+P_ReturnThrustY(nil,angle,32*door.scale),
+					door.x+P_ReturnThrustX(nil,angle,16*door.scale),
+					door.y+P_ReturnThrustY(nil,angle,16*door.scale),
 					GetActorZ(door,list[0+i],1)
 				)
 			end
 			list[5].angle = door.angle
 			list[5].height = 0
 			list[5].scale = door.scale
-			list[5].shadowscale = door.scale*14/10
+			list[5].shadowscale = (door.scale/2)*14/10
 			P_MoveOrigin(list[5],
 				door.x,
 				door.y,
@@ -430,10 +430,6 @@ addHook("MobjThinker",function(door)
 		end
 	end
 end,MT_RUBY_BOX)
-
-addHook("MobjSpawn", function(crate)
-	crate.scale = $ / 2
-end, MT_RUBY_BOX)
 
 COM_AddCommand("z_sendrubies", function(player, player2, rubies)
 	local function giveinstructions()
