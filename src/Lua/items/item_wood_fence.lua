@@ -54,7 +54,7 @@ local wood_fence = ZE2:CreateItem("Wood Fence", {
 			firerate = 2*TICRATE,
 		}
 	},
-	price = 55,
+	price = 70,
 })
 
 addHook("MobjCollide", function(wood, tmo)
