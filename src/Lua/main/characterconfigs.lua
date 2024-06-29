@@ -70,6 +70,17 @@ ZE2.SetCCtoplayer = function(player)
 			local sprintboost = cc[pmo.skin].sprintboost or cc["default"].sprintboost
 			if (sprintboost) and (player["ze2_info"].isSprinting and player["ze2_info"].sprintmeter > 0) and (player["ze2_info"].team == 1) then
 				player.normalspeed = $ + sprintboost
+				/* UNUSED SPRINT CAM CODE
+				if player.camerascale < player.mo.scale + FU/2 then
+					player.camerascale = $ + FU/32
+				end
+				*/
+			else
+				/* UNUSED SPRINT CAM CODE
+				if player.camerascale > player.mo.scale then
+					player.camerascale = $ - FU/32
+				end
+				*/
 			end
 		end
 		

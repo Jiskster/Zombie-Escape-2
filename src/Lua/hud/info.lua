@@ -56,10 +56,14 @@ ZE2.infohud = function(v, player)
 			end
 			
 			if player["ze2_info"].sprintmeter ~= nil and player["ze2_info"].team == 1 then
+				local y = 168-lower_hud_offset
+				
 				local sprintmeter = L_FixedDecimal(player["ze2_info"].sprintmeter, 1).."%"
-				customhud.CustomFontString(v, 0, 168-lower_hud_offset, "Run: "..sprintmeter, "TNYFC",
+				customhud.CustomFontString(v, 0, y, "Run: "..sprintmeter, "TNYFC",
 				(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, sprintmeter_color)
 			end
+			
+
 			
 			/*
 			-- [Checkpoint Number] --
@@ -76,9 +80,19 @@ ZE2.infohud = function(v, player)
 			*/
 			
 			-- [Health] --
+			--local healthfont = player.mo.shield_health and "TNYFC" or "STCFC"
 			local healthstring = "+ "..health.."/"..maxhealth
 			customhud.CustomFontString(v, 25, 176-lower_hud_offset, healthstring, "TNYFC", 
 			(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, SKINCOLOR_GREEN)
+			
+			if player.mo.shield_health and player.mo.shield_def then
+				local healthstring_width = customhud.CustomFontStringWidth(v, healthstring, "TNYFC", FRACUNIT)
+				local shield_color = player.mo.shield_def.color or SKINCOLOR_WHITE
+				
+				local shield_health = tostring(player.mo.shield_health)
+				customhud.CustomFontString(v, 29+(healthstring_width/FU), 176-lower_hud_offset, "@ "..shield_health, "TNYFC",
+				(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, shield_color)
+			end
 			
 						
 			-- [Survivor Count] --			

@@ -190,9 +190,27 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	end
 	
 	-- DIE NOW
-	if mo.health - dmg <= 0 or deathdamagetype then
-		ZE2.KillMobj(mo, inf, src, damagetype, not deathdamagetype)
-		return false
+	
+	if not mo.shield_health then
+		if mo.health - dmg <= 0 or deathdamagetype then
+			ZE2.KillMobj(mo, inf, src, damagetype, not deathdamagetype)
+			return false
+		end
+	else
+		if deathdamagetype then
+			ZE2.KillMobj(mo, inf, src, damagetype, not deathdamagetype)
+			return false
+		end
+		
+		if mo.shield_health - dmg <= 0 then -- if shield break
+			local damageleft = abs(mo.shield_health - dmg)
+			mo.shield_health = 0 -- no more shield
+			
+			if mo.health - damageleft <= 0 then -- kill if rest of damage is enough to kill
+				ZE2.KillMobj(mo, inf, src, damagetype, not deathdamagetype)
+				return false
+			end
+		end
 	end
 	
 	if mo.player then
@@ -206,8 +224,14 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			end
 			
 			mo.player.powers[pw_flashing] = ZE2.survinvtics.value
-			ZE2:SetDamageFadeAnim(mo.player, 15)
-			S_StartSound(mo, sfx_s3kb9)
+			
+			if not mo.shield_health then
+				ZE2:SetDamageFadeAnim(mo.player, 15)
+				S_StartSound(mo, sfx_s3kb9)
+			else -- 
+				S_StartSound(mo, sfx_shldls)
+			end
+
 			
 			if inf and inf.valid then
 				if not relativeknockback then
@@ -271,7 +295,11 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		 mo.rubiesholding = $ - mo.rubiesholding/3
 	end
 	
-	mo.health = $ - dmg -- fake damage i guess
+	if mo.shield_health then
+		mo.shield_health = $ - dmg
+	else
+		mo.health = $ - dmg -- fake damage i guess
+	end
 	
 	if mo.health <= 0 then
 		ZE2.KillMobj(mo, inf, src, damagetype, not deathdamagetype)
@@ -309,6 +337,8 @@ addHook("MobjSpawn", function(mobj)
 			mobj.maxhealth = mobj.health
 		end
 	end
+	
+	mobj.shield_health = 0
 end)
 
 -- A P_SPMAngle clone to fit the needs of ZE2

@@ -50,6 +50,7 @@ dofile "main/emotes.lua"
 dofile "main/savedata.lua"
 dofile "main/maptimers.lua"
 dofile "main/checkpointsystem.lua"
+dofile "main/shields.lua"
 
 dofile "objects/megahp.lua"
 dofile "objects/teleporter_gfx.lua"
