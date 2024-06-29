@@ -616,6 +616,9 @@ addHook("PlayerThink", function(player)
 			else
 				if ammo ~= nil and max_ammo and ammo > 0 then
 					ZE2:SetItemInfoIndex(iteminfo, "ammo", ammo - 1, skin)
+					ammo = ZE2:GetItemInfoIndex(iteminfo, "ammo", skin) -- get updated ammo
+					
+					-- Auto Reload
 					if ammo <= 0 then
 						ZE2.DoPlayerReload(player)
 					end
