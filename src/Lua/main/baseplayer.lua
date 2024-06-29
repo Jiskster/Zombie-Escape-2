@@ -186,6 +186,8 @@ end
 -- sprint code
 ZE2.sprint_thinker = function(player)
 	if not (player.mo and player.mo.valid) return end
+	
+	if (gametype ~= GT_ZE2) then return end
 		
 	local cmd = player.cmd
 	
