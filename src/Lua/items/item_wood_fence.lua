@@ -15,7 +15,7 @@ mobjinfo[MT_PROPWOOD] = {
 }
 
 mobjinfo[MT_PROPWOOD].npc_name = "Wood Fence"
-mobjinfo[MT_PROPWOOD].npc_spawnhealth = {150,200}
+mobjinfo[MT_PROPWOOD].npc_spawnhealth = {50,150}
 mobjinfo[MT_PROPWOOD].npc_name_color = SKINCOLOR_BROWN
 
 states[S_PROP1] = {
@@ -37,7 +37,7 @@ local wood_fence = ZE2:CreateItem("Wood Fence", {
 	icon = "FENCEIND",
 	firerate = TICRATE*5,
 	limited = true,
-	count = 2,
+	count = 5,
 	color = SKINCOLOR_BROWN,
 	ontrigger = function(player)
 		local wood = P_SpawnMobj(player.mo.x+FixedMul(128*FRACUNIT, cos(player.mo.angle)),
@@ -54,7 +54,7 @@ local wood_fence = ZE2:CreateItem("Wood Fence", {
 			firerate = 2*TICRATE,
 		}
 	},
-	price = 55,
+	price = 70,
 })
 
 addHook("MobjCollide", function(wood, tmo)

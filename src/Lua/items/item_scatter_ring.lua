@@ -81,6 +81,7 @@ local scatter_ring = ZE2:CreateItem("Scatter Ring",  {
 	price = 90,
 	ammo = 5,
 	reload_time = 5*TICRATE,
+	velocity_multiplier = 2*FRACUNIT,
 	ontrigger = function(player, iteminfo)
 		local mt = MT_ZE2_THROWNSCATTER
 		local mo = player.mo

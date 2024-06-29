@@ -200,9 +200,9 @@ ZE2.sprint_thinker = function(player)
 	if player["ze2_info"].sprintdelay then
 		if player["ze2_info"].sprintmeter then
 			player["ze2_info"].sprintdelay = 0
+		else
+			player["ze2_info"].sprintdelay = $ - 1
 		end
-		
-		player["ze2_info"].sprintdelay = $ - 1
 	elseif player["ze2_info"].sprintdelay < 0 then
 		player["ze2_info"].sprintdelay = 0
 	end
@@ -255,11 +255,8 @@ addHook("JumpSpecial", function(player)
 	if player["ze2_info"].team ~= 1 then return end
 
 	if player.mo and player.mo.valid and not (player.pflags & PF_THOKKED) and P_IsObjectOnGround(player.mo) then
-		if not player["ze2_info"].sprintmeter then
-			return true
-		elseif not (player.pflags & PF_JUMPDOWN) then
+		if not (player.pflags & PF_JUMPDOWN) then
 			ZE2:DecrementSprint(player, ZE2.JumpSprintFatigue)
-			return false
 		end
 	end
 end)
@@ -616,6 +613,9 @@ addHook("PlayerThink", function(player)
 			else
 				if ammo ~= nil and max_ammo and ammo > 0 then
 					ZE2:SetItemInfoIndex(iteminfo, "ammo", ammo - 1, skin)
+					ammo = ZE2:GetItemInfoIndex(iteminfo, "ammo", skin) -- get updated ammo
+					
+					-- Auto Reload
 					if ammo <= 0 then
 						ZE2.DoPlayerReload(player)
 					end

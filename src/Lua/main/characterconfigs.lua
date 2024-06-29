@@ -33,10 +33,9 @@ ZE2.ZombieConfig = {
 		knockback_multiplier = FRACUNIT/2,
 		accelstart = 100,
 		acceleration = 27,
-		inventory_limit = 2,
+		inventory_limit = 1,
 		inventory = {
 			ZE2:CopyItemFromID(ITEM_INSTA_BURST),
-			--ZE2:CopyItemFromID(ITEM_SILVER_SPRAY)
 		},
 	},
 }
@@ -94,6 +93,8 @@ ZE2.SetCCtoplayer = function(player)
 		
 		if (cc[pmo.skin].actionspd) then 
 			player.actionspd = cc[pmo.skin].actionspd 
+		else
+			player.actionspd = skins[pmo.skin].actionspd
 		end
 
 		if (cc[pmo.skin].accelstart) then 
@@ -110,6 +111,12 @@ ZE2.SetCCtoplayer = function(player)
 		
 		if (cc[pmo.skin].charflags) then 
 			player.charflags = $|cc[pmo.skin].charflags 
+		end
+		
+		if player["ze2_info"].sprintdelay then
+			player.jumpfactor = $ / 2
+			player.actionspd = $ / 2
+			player.normalspeed = $ / 2
 		end
 		
 		if (cc[pmo.skin].speedcap) and not ZE2.MobjTouchingPolyObj(pmo) then 
