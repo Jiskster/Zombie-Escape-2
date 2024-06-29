@@ -209,6 +209,8 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			if mo.health - damageleft <= 0 then -- kill if rest of damage is enough to kill
 				ZE2.KillMobj(mo, inf, src, damagetype, not deathdamagetype)
 				return false
+			else
+				dmg = max($ - damageleft, 0)
 			end
 		end
 	end
