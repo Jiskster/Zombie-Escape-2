@@ -255,11 +255,8 @@ addHook("JumpSpecial", function(player)
 	if player["ze2_info"].team ~= 1 then return end
 
 	if player.mo and player.mo.valid and not (player.pflags & PF_THOKKED) and P_IsObjectOnGround(player.mo) then
-		if not player["ze2_info"].sprintmeter then
-			return true
-		elseif not (player.pflags & PF_JUMPDOWN) then
+		if not (player.pflags & PF_JUMPDOWN) then
 			ZE2:DecrementSprint(player, ZE2.JumpSprintFatigue)
-			return false
 		end
 	end
 end)
