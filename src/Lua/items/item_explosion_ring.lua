@@ -1,11 +1,11 @@
 local explosion_ring = ZE2:CreateItem("Explosion Ring", {
 	object = MT_THROWNEXPLOSION,
 	icon = "BOMBIND",
-	firerate = TICRATE*3,
+	firerate = TICRATE + TICRATE/2,
 	color = SKINCOLOR_BLACK,
-	damage = 150,
+	damage = 70,
 	knockback = 90*FRACUNIT,
-	price = 160,
+	price = 140,
 })
 
 ZE2:RegisterShopItem(explosion_ring)
