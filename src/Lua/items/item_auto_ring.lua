@@ -7,7 +7,7 @@ local auto_ring = ZE2:CreateItem("Automatic Ring",  {
 	damage = 12,
 	knockback = 20*FRACUNIT,
 	flags2 = MF2_AUTOMATIC,
-	ammo = 30,
+	ammo = 50,
 	reload_time = TICRATE*3,
 	price = 50,
 })
