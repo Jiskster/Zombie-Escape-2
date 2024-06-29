@@ -10,6 +10,11 @@ local auto_ring = ZE2:CreateItem("Automatic Ring",  {
 	ammo = 50,
 	reload_time = TICRATE*3,
 	price = 50,
+	skin_overwrite = {
+		["knuckles"] = {
+			ammo = 100,
+		}
+	}
 })
 
 ZE2:RegisterShopItem(auto_ring)
