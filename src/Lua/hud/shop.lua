@@ -43,16 +43,17 @@ ZE2.shophud = function(v, player)
 		local shopdefid = b.shopdefid
 		local soldflag = (b.sold and not topmenuflag) and V_50TRANS or 0
 		local shop_def = ZE2.NumToShopDef(shopdefid)
+		local iteminfo = shop_def.iteminfo
 		local change = (i-1)*yc
 		
 		v.drawScaled(x, y+change, FU, infobarpatch, V_SNAPTOTOP|topmenuflag|soldflag)
 		
 		if shop_def then
-			if shop_def.iteminfo and shop_def.iteminfo.icon then
-				local icon_patch = v.cachePatch(shop_def.iteminfo.icon)
+			if iteminfo and iteminfo.icon then
+				local icon_patch = v.cachePatch(iteminfo.icon)
 				
 				if icon_patch then
-					local iconscale = shop_def.iteminfo.iconscale or FU
+					local iconscale = iteminfo.iconscale or FU
 					
 					v.drawScaled(x+item_icon_xoffset, y+item_icon_yoffset+change, FixedMul(iconscale, FU), icon_patch, V_SNAPTOTOP|topmenuflag|soldflag)
 				end
@@ -71,11 +72,12 @@ ZE2.shophud = function(v, player)
 				v.drawScaled(rubyicon_x,rubyicon_y,FU,minirubypatch,V_SNAPTOTOP|topmenuflag|soldflag)
 				customhud.CustomFontString(v,price_x,price_y,price_text,"TNYFC",(V_SNAPTOTOP|topmenuflag|soldflag),nil,FU,SKINCOLOR_RED)
 			end
-		
+			
+			local color = SKINCOLOR_WHITE
 			if shop_def.name then
-				local color = SKINCOLOR_WHITE
-				if shop_def.iteminfo and shop_def.iteminfo.color then
-					color = shop_def.iteminfo.color
+				
+				if iteminfo and iteminfo.color then
+					color = iteminfo.color
 				end
 				
 				customhud.CustomFontString(v, x + item_name_xoffset, y+item_name_yoffset+change, shop_def.name, "STCFC", (V_SNAPTOTOP|topmenuflag|soldflag), "center" , FU, color)
@@ -84,7 +86,68 @@ ZE2.shophud = function(v, player)
 			if not player["ze2_info"].pregamemenu_intopmenu then
 				-- if selection is render index
 				if shop_selection == i then
+					local draw_info_table = {
+						[1] = {
+							color = color,
+							text = shop_def.name,		
+						},
+						[2] = {
+							color = SKINCOLOR_RED,
+							text = "Price: "..shop_def.price,
+						}
+					}
+					
+					-- Selection Arrow
 					v.drawScaled(x+selection_xoffset+selectionanim, y+selection_yoffset+change, FU, selectionpatch, V_SNAPTOTOP|topmenuflag)
+					
+					if iteminfo then
+						if iteminfo.damage then
+							table.insert(draw_info_table, {
+								color = SKINCOLOR_CRIMSON,
+								text = "Damage: ".. iteminfo.damage,
+							})
+						end
+						
+						if iteminfo.knockback then
+							table.insert(draw_info_table, {
+								color = SKINCOLOR_GREEN,
+								text = string.format("Knockback: %.2fFU", iteminfo.knockback),
+							})
+						end
+						
+						if iteminfo.firerate then
+							table.insert(draw_info_table, {
+								color = SKINCOLOR_MOSS,
+								text = "ItemDelay: ".. G_TicsToSeconds(iteminfo.firerate).."."..G_TicsToCentiseconds(iteminfo.firerate).." secs",
+							})
+						end
+						
+						if iteminfo.count and iteminfo.max_count then
+							table.insert(draw_info_table, {
+								color = SKINCOLOR_VAPOR,
+								text = "Count: ".. iteminfo.count.."/"..iteminfo.max_count,
+							})
+						end
+						
+						if iteminfo.ammo and iteminfo.max_ammo then
+							table.insert(draw_info_table, {
+								color = SKINCOLOR_NOBLE,
+								text = "Ammo: ".. iteminfo.ammo.."/"..iteminfo.max_ammo,
+							})
+						end
+						
+						if iteminfo.reload_time then
+							table.insert(draw_info_table, {
+								color = SKINCOLOR_PEAR,
+								text = "Reload Time: ".. G_TicsToSeconds(iteminfo.reload_time).."."..G_TicsToCentiseconds(iteminfo.reload_time).." secs",
+							})
+						end
+					end
+					
+					-- Draw Item Info
+					for ii,bb in ipairs(draw_info_table) do
+						customhud.CustomFontString(v,0,60+((ii-1)*8),bb.text,"TNYFC",(V_SNAPTOTOP|V_SNAPTOLEFT|topmenuflag|soldflag),nil,nil,bb.color)
+					end
 				end
 			end
 		end

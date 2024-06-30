@@ -216,7 +216,6 @@ function ZE2:GiveItem(player, item_input, count, slot)
 					
 					local fitem,fslot = ZE2:GetInventoryItemFromId(player, item_id) --print(fitem,fslot)
 
-
 					if fitem and fitem.count and fitem.count + real_count <= fitem.max_count then
 						ZE2:FetchInventory(player)[fslot].count = $ + real_count
 						--print("Added apon exiting item")
