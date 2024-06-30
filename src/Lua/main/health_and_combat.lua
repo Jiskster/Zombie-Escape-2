@@ -201,18 +201,6 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			ZE2.KillMobj(mo, inf, src, damagetype, not deathdamagetype)
 			return false
 		end
-		
-		if mo.shield_health - dmg <= 0 then -- if shield break
-			local damageleft = abs(mo.shield_health - dmg)
-			mo.shield_health = 0 -- no more shield
-			
-			if mo.health - damageleft <= 0 then -- kill if rest of damage is enough to kill
-				ZE2.KillMobj(mo, inf, src, damagetype, not deathdamagetype)
-				return false
-			else
-				dmg = max($ - damageleft, 0)
-			end
-		end
 	end
 	
 	if mo.player then
@@ -298,8 +286,23 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	end
 	
 	if mo.shield_health then
-		mo.shield_health = $ - dmg
-	else
+		if mo.shield_health - dmg <= 0 then
+			dmg = $ - abs(mo.shield_health - dmg)
+			mo.shield_health = 0
+		else
+			mo.shield_health = $ - dmg
+		end
+		
+		if not shield_health then
+			dmg = 0 -- TODO: Make damage to shield after broken bleed into damage
+		end
+		
+		if mo.shield_health <= 0 then
+			mo.shield_health = 0
+		end
+	end
+	
+	if not mo.shield_health then
 		mo.health = $ - dmg -- fake damage i guess
 	end
 	

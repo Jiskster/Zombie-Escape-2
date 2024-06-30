@@ -40,6 +40,8 @@ function ZE2:GiveShieldToMobj(mobj, shieldid)
 	end
 	
 	mobj.shield_orb.target = mobj
+	
+	return true
 end
 
 function ZE2:RemoveShieldFromMobj(mobj)

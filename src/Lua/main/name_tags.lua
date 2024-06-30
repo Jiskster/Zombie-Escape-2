@@ -161,7 +161,8 @@ hud.add( function(v, player, camera)
 		end
 
 		local health = ("["+tostring(tmo.health)+"/"+tostring(tmo.maxhealth)+"]")
-
+		local shield = ("["+tostring(tmo.shield_health)+"]")
+		
 		local namefont = "fixed-center"
 		local ringfont = "fixed-center"
 		local charwidth = 5
@@ -186,6 +187,18 @@ hud.add( function(v, player, camera)
 		if name then
 			customhud.CustomFontString(v,hpos,vpos,name, "TNYFC", trans, namefont , FRACUNIT, namecolor)
 			if not tmo.dontshowhealth then
+				if tmo.shield_health and tmo.shield_def then
+					local shield_color = SKINCOLOR_WHITE
+					
+					if tmo.shield_def.color then
+						shield_color = tmo.shield_def.color
+					end
+				
+					customhud.CustomFontString(v,hpos,vpos+(lineheight*FU),shield,"TNYFC",trans,ringfont, FRACUNIT, shield_color)
+					
+					vpos = $ + 8*FU
+				end
+			
 				customhud.CustomFontString(v,hpos,vpos+(lineheight*FU),health, "TNYFC",trans, ringfont , FRACUNIT, textcolor)
 			end
 			

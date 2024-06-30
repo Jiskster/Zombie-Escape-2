@@ -111,3 +111,13 @@ COM_AddCommand("z_sellhand", function(player)
 		CONS_Printf(player, "\x85\Blank inventory slot!")
 	end
 end)
+
+COM_AddCommand("z_giveshield", function(player, shieldtype)
+	if not (player.mo and player.mo.valid) then return end
+	if (shieldtype == nil or not tonumber(shieldtype)) then return end
+	
+	if not ZE2:GiveShieldToMobj(player.mo, tonumber(shieldtype)) then
+		CONS_Printf(player, "\x85\Invalid shieldtype!")
+		return
+	end
+end)
