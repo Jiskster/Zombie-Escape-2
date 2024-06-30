@@ -51,7 +51,7 @@ COM_AddCommand("z_sellinventory", function(player)
 			local item_maxcount
 			if player["ze2_info"].survivor_inventory[i].count then
 				item_count = player["ze2_info"].survivor_inventory[i].count
-				item_maxcount = player["ze2_info"].survivor_inventory[i].maxcount
+				item_maxcount = player["ze2_info"].survivor_inventory[i].max_count
 			end
 			if item_count and item_maxcount then
 				item_cost = (item_cost*item_count)/item_maxcount
@@ -89,7 +89,7 @@ COM_AddCommand("z_sellhand", function(player)
 		local item_maxcount
 		if inventory[player["ze2_info"].inventory_selection].count then
 			item_count = inventory[player["ze2_info"].inventory_selection].count
-			item_maxcount = inventory[player["ze2_info"].inventory_selection].maxcount
+			item_maxcount = inventory[player["ze2_info"].inventory_selection].max_count
 		end
 		if item_count and item_maxcount then
 			item_cost = (item_cost*item_count)/item_maxcount

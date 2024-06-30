@@ -38,6 +38,7 @@ local wood_fence = ZE2:CreateItem("Wood Fence", {
 	firerate = TICRATE*5,
 	limited = true,
 	count = 5,
+	max_count = 25,
 	color = SKINCOLOR_BROWN,
 	ontrigger = function(player)
 		local wood = P_SpawnMobj(player.mo.x+FixedMul(128*FRACUNIT, cos(player.mo.angle)),

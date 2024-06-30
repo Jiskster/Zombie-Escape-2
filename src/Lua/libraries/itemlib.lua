@@ -20,11 +20,11 @@ function ZE2:CreateItem(name,input_table)
 
 	temp_table.item_id = #self.ItemPresets + 1
 	temp_table.displayname = name
-	if temp_table.count then
-		temp_table.maxcount = temp_table.count
+	if temp_table.count and temp_table.max_count == nil then
+		temp_table.max_count = temp_table.count
 	end
 	
-	if temp_table.ammo then
+	if temp_table.ammo and temp_table.max_ammo == nil then
 		temp_table.max_ammo = temp_table.ammo
 	end
 	
@@ -71,6 +71,34 @@ function ZE2:FetchInventorySlot(player, slot)
 			return ZE2:FetchInventory(player)[slot or player["ze2_info"].inventory_selection] 
 		end
 	end
+end
+
+-- returns number
+function ZE2:FetchEmptySlot(player)
+	for i=1,ZE2:FetchInventoryLimit(player) do
+		if not ZE2:FetchInventory(player)[i] then
+			return i
+		end	
+	end
+	
+	return false
+end
+
+function ZE2:GetInventoryItemFromId(player, item_id)
+	local found
+	local found_slot
+	
+	for i=1,ZE2:FetchInventoryLimit(player) do
+		if ZE2:FetchInventory(player)[i] and ZE2:FetchInventory(player)[i].item_id
+		and ZE2:FetchInventory(player)[i].item_id == item_id then
+			found = ZE2:FetchInventory(player)[i]
+			found_slot = i
+			
+			return found, found_slot
+		end
+	end
+		
+	return false
 end
 
 function ZE2:IsInventoryFull(player)
@@ -139,14 +167,27 @@ function ZE2:CopyItemFromID(item_id)
 	return item
 end
 
-function ZE2:GiveItem(player, item_id, count, slot) 
+-- iteminfo can be number or table
+function ZE2:GiveItem(player, item_input, count, slot) 
+	local datatype = type(item_input)
+	local isTable = datatype == "table"
+	local isNumber = datatype == "number"
+	
 	if player and player.valid then
-		if not item_id or not ZE2.ItemPresets[item_id] then
-			CONS_Printf(player, "\x85\Invalid item! ["..item_id.."]")
+		if not item_input or (isTable and item_input and not item_input.item_id) 
+		or (isNumber and item_input and not ZE2.ItemPresets[item_input]) then
 			return false
 		elseif player["ze2_info"] and ZE2:FetchInventory(player) then
-			local item = ZE2:Copy(ZE2.ItemPresets[item_id])
-
+			local item
+	
+			if isNumber then
+				item = ZE2:Copy(ZE2.ItemPresets[item_input])
+			elseif isTable then
+				item = ZE2:Copy(item_input)
+			else
+				error("Invalid Type")
+			end
+			
 			--destroy functions
 			item.ontrigger = nil
 			item.onspawn = nil
@@ -162,48 +203,32 @@ function ZE2:GiveItem(player, item_id, count, slot)
 				ZE2:FetchInventory(player)[slot] = item
 				return true
 			else
-				if not ZE2:IsInventoryFull(player) then
-					table.insert(ZE2:FetchInventory(player), item)
-					return true
-				else
-					CONS_Printf(player, "\x85\Inventory full!")
-					return false
-				end
-			end
-		elseif not ZE2:FetchInventory(player) then
-			CONS_Printf(player, "\x85\Invalid inventory!")
-			return false
-		end
-		
-		return false
-	end
-end
-
--- Make sure the table is an actual iteminfo or bad things happen LMAO
-function ZE2:GiveItemFromTable(player, iteminfo, count, slot) 
-	if player and player.valid then
-		if not iteminfo or (iteminfo and not iteminfo.item_id) then
-			return false
-		elseif player["ze2_info"] and ZE2:FetchInventory(player) then
-			local item = ZE2:Copy(iteminfo)
-
-			--destroy functions
-			item.ontrigger = nil
-			item.onspawn = nil
-			item.onhit = nil
-			item.thinker = nil
+				local real_count = count or item.count
 			
-			if count ~= nil then
-				item.count = count
-				item.limited = true
-			end
-			
-			if slot then
-				ZE2:FetchInventory(player)[slot] = item
-				return true
-			else
 				if not ZE2:IsInventoryFull(player) then
-					table.insert(ZE2:FetchInventory(player), item)
+					local item_id
+					
+					if isNumber then
+						item_id = item_input
+					elseif isTable then
+						item_id = item_input.item_id
+					end
+					
+					local fitem,fslot = ZE2:GetInventoryItemFromId(player, item_id) --print(fitem,fslot)
+
+
+					if fitem and fitem.count and fitem.count + real_count <= fitem.max_count then
+						ZE2:FetchInventory(player)[fslot].count = $ + real_count
+						--print("Added apon exiting item")
+					elseif ZE2:FetchEmptySlot(player) then
+						local emptyslot = ZE2:FetchEmptySlot(player) 
+						
+						if emptyslot then
+							ZE2:FetchInventory(player)[emptyslot] = item
+							--print("Went to empty slot")
+						end
+					end
+					
 					return true
 				else
 					CONS_Printf(player, "\x85\Inventory full!")

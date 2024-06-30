@@ -5,6 +5,7 @@ local apple = ZE2:CreateItem("Apple", {
 	sound = sfx_eatapl,
 	limited = true,
 	count = 3,
+	max_count = 100,
 	color = SKINCOLOR_RED,
 	ontrigger = function(player)
 		ZE2:ChangeHealth(player.mo, 16)

@@ -7,6 +7,7 @@ local milk = ZE2:CreateItem("Milk", {
 	sound = sfx_gulpy,
 	limited = true,
 	count = 5,
+	max_count = 25,
 	color = SKINCOLOR_WHITE,
 	ontrigger = function(player)
 		ZE2:ChangeStamina(player, 40*FRACUNIT)
