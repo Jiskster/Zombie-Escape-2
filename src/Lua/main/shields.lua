@@ -87,14 +87,8 @@ addHook("MobjThinker", function(shield)
 			local ty = shield.target.y
 			local tz = shield.target.z
 			
-			-- for some reason i need this since it lags behind (maybe due to the hooks position in the game logic)
-			local tmx = shield.target.momx
-			local tmy = shield.target.momy
-			local tmz = shield.target.momz
-		
-			P_MoveOrigin(shield, tx+tmx, ty+tmy, tz+tmz)
-			
-			
+			P_MoveOrigin(shield, tx, ty, tz)
+				
 			if shield.target.player and shield.target.player.valid then
 				local player = shield.target.player
 				
