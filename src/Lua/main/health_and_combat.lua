@@ -281,20 +281,17 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	end
 
 	if mo.rubiesholding and (mo.rubiesholding - (mo.rubiesholding/3)) > 0 then
-		 A_RubyDrop(mo, mo.rubiesholding/3)
-		 mo.rubiesholding = $ - mo.rubiesholding/3
+		A_RubyDrop(mo, mo.rubiesholding/3)
+		mo.rubiesholding = $ - mo.rubiesholding/3
 	end
 	
 	if mo.shield_health then
+	
 		if mo.shield_health - dmg <= 0 then
-			dmg = $ - abs(mo.shield_health - dmg)
+			dmg = $ - abs(mo.shield_health)
 			mo.shield_health = 0
 		else
 			mo.shield_health = $ - dmg
-		end
-		
-		if not shield_health then
-			dmg = 0 -- TODO: Make damage to shield after broken bleed into damage
 		end
 		
 		if mo.shield_health <= 0 then

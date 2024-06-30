@@ -87,7 +87,8 @@ ZE2.tabscores = function(v)
         FU,
         SKINCOLOR_RED
     )
-
+	
+	--convert these into 1 loop?
     for i,p in ipairs(ZE2.SurvivorList())
         i = $-1
         local x,y = 20*FU,24*FU+(32*FU/3*i)
@@ -133,7 +134,23 @@ ZE2.tabscores = function(v)
             FU/2,
             SKINCOLOR_GREEN
         )
-
+		if p.mo.shield_health and p.mo.shield_def then
+			local healthstring_width = customhud.CustomFontStringWidth(v,  " +"..p.mo.health.."/"..p.mo.maxhealth, "TNYFC", FU/2)
+			local shield_color = p.mo.shield_def.color or SKINCOLOR_WHITE
+			
+			local shield_health = tostring(p.mo.shield_health)
+			customhud.CustomFontString(v,
+				x+12*FU+healthstring_width,
+				y+4*FU,
+				"@ "..shield_health,
+				"TNYFC",
+				flags,
+				nil,
+				FU/2,
+				shield_color
+			)
+		end
+		
         customhud.CustomFontString(v,
             x+12*FU,
             y+8*FU,
