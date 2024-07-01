@@ -64,20 +64,26 @@ ZE2.infohud = function(v, player)
 			end
 			
 
+
 			
 			/*
 			-- [Checkpoint Number] --
 			local checkpoint_number = player["ze2_info"].checkpoint_number
 			customhud.CustomFontString(v, 0, 160, "Checkpoint: "..checkpoint_number, "TNYFC", 
 			(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, SKINCOLOR_YELLOW)
+			*/
+			
 			
 			-- [Checkpoint Catch Up Timer] --
 			if player["ze2_info"].checkpoint_catchuptics then
 				local catchup_tics = player["ze2_info"].checkpoint_catchuptics
-				customhud.CustomFontString(v, 0, 152, "Catch Up Timer: "..catchup_tics/TICRATE, "TNYFC", 
-				(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, SKINCOLOR_CHERRY)
+				
+				customhud.CustomFontString(v, 160, 142, "Catching up in:", "TNYFC", 
+				(V_SNAPTOBOTTOM|V_50TRANS), "center", nil, SKINCOLOR_CHERRY)
+				
+				customhud.CustomFontString(v, 160, 150, tostring(catchup_tics/TICRATE), "TNYFC", 
+				(V_SNAPTOBOTTOM|V_50TRANS), "center" , nil, SKINCOLOR_CHERRY)
 			end
-			*/
 			
 			-- [Health] --
 			--local healthfont = player.mo.shield_health and "TNYFC" or "STCFC"
