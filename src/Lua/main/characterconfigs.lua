@@ -13,6 +13,7 @@ ZE2.ZombieConfig = {
 		killaward = 10,
 		accelstart = 100,
 		acceleration = 50,
+		thrustfactor = 6,
 		inventory_limit = 1,
 		inventory = {
 			ZE2:CopyItemFromID(ITEM_INSTA_BURST)
@@ -120,6 +121,12 @@ ZE2.SetCCtoplayer = function(player)
 			player.acceleration = skins[pmo.skin].acceleration
 		end
 		
+		if (cc[pmo.skin].thrustfactor) then 
+			player.thrustfactor = cc[pmo.skin].thrustfactor 
+		else
+			player.thrustfactor = skins[pmo.skin].thrustfactor
+		end
+		
 		if (cc[pmo.skin].charflags) then 
 			player.charflags = $|cc[pmo.skin].charflags 
 		end
@@ -200,6 +207,12 @@ ZE2.SetZCtoplayer = function(player)
 				player.acceleration = zc[ztype].acceleration 
 			else
 				player.acceleration = 70
+			end
+			
+			if (zc[ztype].thrustfactor) then 
+				player.thrustfactor = zc[ztype].thrustfactor 
+			else
+				player.thrustfactor = 5
 			end
 
 			if (zc[ztype].charflags) then 
