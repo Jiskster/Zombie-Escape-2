@@ -190,7 +190,6 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	end
 	
 	-- DIE NOW
-	
 	if not mo.shield_health then
 		if mo.health - dmg <= 0 or deathdamagetype then
 			ZE2.KillMobj(mo, inf, src, damagetype, not deathdamagetype)
@@ -277,6 +276,36 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		
 		if inf and inf.valid then
 			P_Thrust(mo, inf.angle, knockback)
+		end
+	end
+	
+	do -- Damage Multiplier Effect
+		local inflictor_player -- 100% by a zombie
+		
+		if inf and inf.valid and inf.player then
+			inflictor_player = inf.player
+		elseif src and src.valid and src.player then
+			inflictor_player = src.player
+		end
+		
+		if inflictor_player and inflictor_player.valid then
+			local attributes = ZE2:FindEffectAttributes(inflictor_player, "damage_multiplier") 
+			
+			if #attributes then
+				local multi = 0
+				
+				for i=1,#attributes do
+					if i == 1 then
+						multi = attributes[i]
+					else
+						multi = FixedMul($, attributes[i])
+					end
+				end
+				
+				if multi then
+					dmg = FixedMul($*FU, multi)/FU
+				end
+			end
 		end
 	end
 

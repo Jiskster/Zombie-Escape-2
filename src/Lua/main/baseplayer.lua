@@ -5,6 +5,22 @@ ZE2.JumpSprintFatigue = 8*FRACUNIT
 ZE2.DefaultRubyCap = 250;
 ZE2.RubyStart = 100 -- the amount of rubies you start when you join a server
 
+ZE2.Effect_ThinkerFuncs = {
+	["Alpha_Rage"] = function(player)
+		if player.mo and player.mo.valid then
+			P_SpawnGhostMobj(player.mo)
+		end
+	end
+}
+
+ZE2.Effect_EndFuncs = {
+	["Alpha_Rage"] = function(player)
+		if player.mo and player.mo.valid then
+			S_StartSound(player.mo, sfx_bstdn)
+		end
+	end
+}
+
 ZE2["default_ze2_info"] = {
 	inventory_selection = 1,
 
@@ -76,6 +92,7 @@ ZE2["default_ze2_info"] = {
 	checkpoint_catchuptics = 0, 
 	
 	lower_hud_offset = 0,
+	special_cooldown = 0
 }
 
 addHook("PlayerSpawn", function(player)
@@ -86,6 +103,8 @@ addHook("PlayerSpawn", function(player)
 	end
 	
 	player["ze2_info"].lower_hud_offset = 0
+	player["ze2_info"].special_cooldown = 0
+	player["ze2_info"].effects = {}
 end)
 
 function ZE2:SetDamageFadeAnim(player, tics)
@@ -107,6 +126,29 @@ function ZE2:ChangeStamina(player, amount)
 	else
 		player["ze2_info"].sprintmeter = $ + amount
 	end
+end
+
+function ZE2:GivePlayerEffect(player, effect_name, effect_table, effect_time)
+	if player["ze2_info"].effects and effect_name and effect_table and effect_time then
+		local tbl = effect_table
+		tbl.time_left = effect_time -- tics
+		
+		player["ze2_info"].effects[effect_name] = tbl
+	end
+end
+
+function ZE2:FindEffectAttributes(player, attribute)
+	local tb = {}
+
+	if player["ze2_info"].effects then
+		for i,v in pairs(player["ze2_info"].effects) do
+			if v[attribute] then
+				table.insert(tb, v[attribute])
+			end
+		end
+	end
+	
+	return tb
 end
 
 -- some stuff that player needs
@@ -137,6 +179,47 @@ ZE2.giveplayerflags = function(player)
 		elseif player["ze2_info"].team == 2 then
 			ZE2.SetZCtoplayer(player)
 		end
+		
+		if player["ze2_info"].effects then
+			for i,v in pairs(player["ze2_info"].effects) do
+				if v.normalspeed then
+					player.normalspeed = v.normalspeed
+				elseif v.normalspeed_multiplier then
+					player.normalspeed = FixedMul($, v.normalspeed_multiplier)
+				end
+				
+				if v.actionspd then
+					player.actionspd = v.actionspd
+				elseif v.actionspd_multiplier then
+					player.actionspd = FixedMul($, v.actionspd_multiplier)
+				end
+				
+				if v.charability then
+					player.charability = v.charability
+				end
+				
+				if ZE2.Effect_ThinkerFuncs[i] then
+					ZE2.Effect_ThinkerFuncs[i](player)
+				end
+				
+				if v.time_left then
+					v.time_left = $ - 1
+					
+					if not v.time_left then
+						if ZE2.Effect_EndFuncs[i] then
+							ZE2.Effect_EndFuncs[i](player)
+						end
+						
+						player["ze2_info"].effects[i] = nil
+						continue
+					end
+				end
+			end
+		else
+			player["ze2_info"].effects = {}
+		end
+		
+
 		
 		if mapheaderinfo[gamemap].ze2_noabilities then
 			player.pflags = $ & ~PF_GLIDING
@@ -478,6 +561,31 @@ COM_AddCommand("z_changeztype", function(player, new_ztype)
 	end
 end, 1)
 
+-- Alpha Zombie Rage, sort of hardcoded for the time being
+addHook("PlayerThink", function(player)
+	if not (player.mo and player.mo.valid) then return end
+	if not (player["ze2_info"].team == 2 and player["ze2_info"].zombie_type == "alpha") then return end
+	
+	ZE2:TryBooleanAction(player, {
+		condition = player.cmd.buttons & BT_CUSTOM1,
+		var = "special_pressed",
+		action = function()
+			if not player["ze2_info"].special_cooldown then
+				player["ze2_info"].special_cooldown = 25*TICRATE
+				
+				S_StartSound(player.mo, sfx_bstup)
+				
+				ZE2:GivePlayerEffect(player, "Alpha_Rage", {
+					normalspeed_multiplier = 3*FU,
+					actionspd_multiplier = 3*FU,
+					damage_multiplier = 2*FU,
+					charability = CA_JUMPTHOK,
+				}, 3*TICRATE)
+			end
+		end
+	}, true)
+end)
+
 addHook("PlayerThink", function(player)
 	local cmd = player.cmd
 		
@@ -498,6 +606,10 @@ addHook("PlayerThink", function(player)
 	else
 		player["ze2_info"].damage_fade = 0
 		player["ze2_info"].damage_fade_max = 0
+	end
+	
+	if player["ze2_info"].special_cooldown then
+		player["ze2_info"].special_cooldown = $ - 1
 	end
 	
 	if player.playerstate ~= PST_DEAD then
