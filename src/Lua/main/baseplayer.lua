@@ -448,7 +448,7 @@ ZE2.init_player = function(player)
 			if ZE2.round_active and ZE2.PlayerCount() > 1 and leveltime then
 				-- killedbysomething variable is to prevent players from suiciding to get a special zombie
 				-- same goes for was_spectating
-				if P_RandomChance(FRACUNIT/4) then
+				if P_RandomChance(FRACUNIT/5) then
 					if not player["ze2_info"].was_spectating and player["ze2_info"].killedbysomething then
 						player["ze2_info"].killedbysomething = false
 						player["ze2_info"].zombie_type = "alpha"
