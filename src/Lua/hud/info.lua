@@ -67,7 +67,7 @@ ZE2.infohud = function(v, player)
 			if player["ze2_info"].team == 2
 			and player["ze2_info"].zombie_type == "alpha" then
 				local special_cooldown = player["ze2_info"].special_cooldown
-				local y = 160-lower_hud_offset
+				local y = 168-lower_hud_offset
 				local text = "Press C1 to Rage"
 				
 				if special_cooldown then
