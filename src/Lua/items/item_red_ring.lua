@@ -31,4 +31,10 @@ ZE2:CreateItem("Red Ring",  {
 			pmo.momz = $ / 2
 		end
 	end,
+	thinker = function(pmo, mo)
+		if mo.type == MT_CORK then
+			local ghost = P_SpawnGhostMobj(mo)
+			ghost.destscale = ghost.scale*4
+		end
+	end
 })
