@@ -4,15 +4,13 @@ ZE2.ZombieConfig = {
 	["normal"] = {
 		skincolor = SKINCOLOR_MOSS,
 		normalspeed = 18 * FRACUNIT,
-		health = 350,
-		healthpersurvivor = 20,
+		health = 200,
 		charability = CA_NONE,
 		charability2 = CA2_NONE,
 		jumpfactor = 17 * FRACUNIT / 19,
 		actionspd = 9*FRACUNIT,
 		killaward = 10,
 		accelstart = 100,
-		acceleration = 50,
 		thrustfactor = 6,
 		inventory_limit = 1,
 		inventory = {
@@ -23,8 +21,7 @@ ZE2.ZombieConfig = {
 	["alpha"] = {
 		skincolor = SKINCOLOR_ALPHAZOMBIE,
 		normalspeed = 20 * FRACUNIT,
-		health = 600,
-		healthpersurvivor = 25,
+		health = 400,
 		charability = CA_NONE,
 		charability2 = CA2_NONE,
 		jumpfactor = 19 * FRACUNIT / 19,
@@ -206,13 +203,13 @@ ZE2.SetZCtoplayer = function(player)
 			if (zc[ztype].accelstart) then 
 				player.accelstart = zc[ztype].accelstart 
 			else
-				player.accelstart = 110
+				player.accelstart = 96
 			end
 			
 			if (zc[ztype].acceleration) then 
 				player.acceleration = zc[ztype].acceleration 
 			else
-				player.acceleration = 70
+				player.acceleration = 40
 			end
 			
 			if (zc[ztype].thrustfactor) then 
