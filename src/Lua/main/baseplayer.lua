@@ -85,6 +85,8 @@ ZE2["default_ze2_info"] = {
 
 	zombie_type = "normal",
 
+	blood_currency = 0,
+
 	damage_fade = 0, -- tic_t
 	damage_fade_max = 0,
 	

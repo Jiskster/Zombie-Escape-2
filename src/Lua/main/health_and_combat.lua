@@ -101,11 +101,18 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	local knockback = 0
 	local verticalknockback = 0
 	local relativeknockback = false
+	local inflictor_player
 	
 	if inf and inf.player and mo and mo.player then
 		if mo.player["ze2_info"].team == inf.player["ze2_info"].team then
 			return false
 		end
+	end
+	
+	if inf and inf.valid and inf.player then
+		inflictor_player = inf.player
+	elseif src and src.valid and src.player then
+		inflictor_player = src.player
 	end
 	
 	if src and src.player and mo and mo.player then
@@ -204,14 +211,6 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	
 	if mo.player then
 		if mo.player["ze2_info"].team == 1 then
-			local inflictor_player -- 100% by a zombie
-			
-			if inf and inf.valid and inf.player then
-				inflictor_player = inf.player
-			elseif src and src.valid and src.player then
-				inflictor_player = src.player
-			end
-			
 			mo.player.powers[pw_flashing] = ZE2.survinvtics.value
 			
 			if not mo.shield_health then
@@ -237,7 +236,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			end
 			
 			if inflictor_player then
-				ZE2:DecrementSprint(mo.player, 60*FRACUNIT)
+				ZE2:DecrementSprint(mo.player, 25*FRACUNIT)
 			end
 		elseif mo.player["ze2_info"].team == 2 then
 			local ztype = mo.player["ze2_info"].zombie_type
@@ -279,32 +278,22 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		end
 	end
 	
-	do -- Damage Multiplier Effect
-		local inflictor_player -- 100% by a zombie
+	if inflictor_player and inflictor_player.valid then
+		local attributes = ZE2:FindEffectAttributes(inflictor_player, "damage_multiplier") 
 		
-		if inf and inf.valid and inf.player then
-			inflictor_player = inf.player
-		elseif src and src.valid and src.player then
-			inflictor_player = src.player
-		end
-		
-		if inflictor_player and inflictor_player.valid then
-			local attributes = ZE2:FindEffectAttributes(inflictor_player, "damage_multiplier") 
+		if #attributes then
+			local multi = 0
 			
-			if #attributes then
-				local multi = 0
-				
-				for i=1,#attributes do
-					if i == 1 then
-						multi = attributes[i]
-					else
-						multi = FixedMul($, attributes[i])
-					end
+			for i=1,#attributes do
+				if i == 1 then
+					multi = attributes[i]
+				else
+					multi = FixedMul($, attributes[i])
 				end
-				
-				if multi then
-					dmg = FixedMul($*FU, multi)/FU
-				end
+			end
+			
+			if multi then
+				dmg = FixedMul($*FU, multi)/FU
 			end
 		end
 	end

@@ -68,6 +68,7 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 			player["ze2_info"].vote_selection = 1
 			player["ze2_info"].voted = false
 			player["ze2_info"].checkpoint_number = 0
+			player["ze2_info"].blood_currency = 0 -- happiness is temporary 
 		end
 	end
 end; ZE2.init_gamevars();
