@@ -289,7 +289,7 @@ end
 
 ZE2.AddConfig("sonic", {
 	normalspeed = 14 * FRACUNIT,
-	health = 45,
+	health = 30,
 	charability = CA_JUMPTHOK,
 	charability2 = CA2_NONE,
 	jumpfactor = 15 * FRACUNIT / 19,
