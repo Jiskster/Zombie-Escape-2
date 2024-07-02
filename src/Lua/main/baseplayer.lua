@@ -2,7 +2,7 @@ freeslot("sfx_zjump")
 sfxinfo[sfx_zjump].caption = "Jump"
 mobjinfo[MT_LHRT].forceknockback = 20*FRACUNIT
 ZE2.JumpSprintFatigue = 8*FRACUNIT
-ZE2.DefaultRubyCap = 250;
+ZE2.DefaultRubyCap = 500;
 ZE2.RubyStart = 100 -- the amount of rubies you start when you join a server
 
 ZE2.Effect_ThinkerFuncs = {
