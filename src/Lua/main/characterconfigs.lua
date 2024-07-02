@@ -235,7 +235,8 @@ ZE2.SetZChealth = function(player)
 	
 	if pmo and pmo.valid then
 		if zc[ztype] then
-			local healthpersurvivor = zc[ztype].healthpersurvivor or 5
+			local healthpersurvivor = zc[ztype].healthpersurvivor or 0
+			
 			if (zc[ztype].health) then
 				pmo.health = zc[ztype].health + (ZE2.SurvivorCount()*healthpersurvivor)
 				pmo.maxhealth = pmo.health
