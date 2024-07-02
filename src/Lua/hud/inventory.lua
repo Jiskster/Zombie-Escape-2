@@ -66,7 +66,15 @@ ZE2.inventoryhud = function(v, player)
 				local slot_count = ZE2:GetItemInfoIndex(slot, "count", skin)
 				local slot_limited = ZE2:GetItemInfoIndex(slot, "limited", skin)
 				local slot_ammo = ZE2:GetItemInfoIndex(slot, "ammo", skin)
-			
+				local slot_firerate = ZE2:GetItemInfoIndex(slot, "firerate", skin)
+				
+				if slot_firerate and slot.firerate_left then
+					local div = min(FixedDiv(slot.firerate_left, slot_firerate), FU)
+					v.drawStretched(x, y, div, FU, cyan_patch, V_SNAPTOBOTTOM|V_50TRANS)
+				end
+				
+				
+				
 				-- item count
 				if slot_count and slot_limited then
 					local count = tostring(slot_count)
@@ -110,10 +118,15 @@ ZE2.inventoryhud = function(v, player)
 			local slotreload = ZE2:GetItemInfoIndex(slot, "reload_time", skin) or 10
 			local reload_div = FU - min(FixedDiv(player["ze2_info"].reload, slotreload),FU)
 			v.drawStretched(sel_x, sel_y, reload_div, FU, cyan_patch, V_SNAPTOBOTTOM|V_50TRANS)
-		elseif player["ze2_info"].weapondelay then
+		end
+		
+		if player["ze2_info"].weapondelay then
 			local slotdelay = ZE2:GetItemInfoIndex(slot, "firerate", skin)
-			local delay_div = min(FixedDiv(player["ze2_info"].weapondelay, slotdelay),FU)
-			v.drawStretched(sel_x, sel_y, delay_div, FU, cyan_patch, V_SNAPTOBOTTOM|V_50TRANS)
+			local text = G_TicsToSeconds(player["ze2_info"].weapondelay).."."..G_TicsToCentiseconds(player["ze2_info"].weapondelay)
+			customhud.CustomFontString(v,160*FU,sel_y-(16*FU),text,"TNYFC",V_SNAPTOBOTTOM|V_50TRANS,"center",FRACUNIT,SKINCOLOR_WHITE)
+			
+			--local delay_div = min(FixedDiv(player["ze2_info"].weapondelay, slotdelay),FU)
+			--v.drawStretched(sel_x, sel_y, delay_div, FU, cyan_patch, V_SNAPTOBOTTOM|V_50TRANS)
 		end
 	end
 end

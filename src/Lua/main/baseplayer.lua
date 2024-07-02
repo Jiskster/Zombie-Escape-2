@@ -709,16 +709,19 @@ addHook("PlayerThink", function(player)
 		end
 		
 		-- try shoot
+		local iteminfo = ZE2:FetchInventorySlot(player)
+		local skin = player.mo.skin
+		
 		if (cmd.buttons & BT_ATTACK) and not player["ze2_info"].weapondelay and not player["ze2_info"].reload
-		and ZE2:FetchInventorySlot(player) and player.playerstate ~= PST_DEAD and not player["ze2_info"].shop_open 
-		and (player["ze2_info"].await_fire or ZE2:FetchInventorySlot(player).autouse) then
-			local skin = player.mo.skin
-			local iteminfo = ZE2:FetchInventorySlot(player)
+		and iteminfo and player.playerstate ~= PST_DEAD and not player["ze2_info"].shop_open 
+		and (player["ze2_info"].await_fire or iteminfo.autouse)
+		and not iteminfo.firerate_left then
 			local ammo = ZE2:GetItemInfoIndex(iteminfo, "ammo", skin)
 			local max_ammo = ZE2:GetItemInfoIndex(iteminfo, "max_ammo", skin)
 			local count = ZE2:GetItemInfoIndex(iteminfo, "count", skin)
 			local limited = ZE2:GetItemInfoIndex(iteminfo, "limited", skin)
 			local firerate = ZE2:GetItemInfoIndex(iteminfo, "firerate", skin)
+			local itemdelay = ZE2:GetItemInfoIndex(iteminfo, "itemdelay", skin)
 			
 			-- If theres no ammo, dont fire. 
 			-- (Items with no ammo property can pass this check 100%)
@@ -737,7 +740,11 @@ addHook("PlayerThink", function(player)
 			
 				ZE2.DoPlayerFire(player, iteminfo)
 
-				player["ze2_info"].weapondelay = firerate
+				player["ze2_info"].weapondelay = itemdelay
+				
+				if firerate then
+					ZE2:SetItemInfoIndex(iteminfo, "firerate_left", firerate, skin)
+				end
 				
 				player["ze2_info"].await_fire = false
 				
@@ -752,9 +759,15 @@ addHook("PlayerThink", function(player)
 		-- clear items below 0 count
 		if ZE2:FetchInventoryLimit(player) and type(ZE2:FetchInventoryLimit(player)) == "number" then
 			for i=1,ZE2:FetchInventoryLimit(player) do
-				if ZE2:FetchInventory(player)[i] then
-					if ZE2:FetchInventory(player)[i].limited and ZE2:FetchInventory(player)[i].count <= 0 then
-						table.remove(ZE2:FetchInventory(player),i)
+				local slot = ZE2:FetchInventorySlot(player, i)
+				
+				if slot then
+					if slot.limited and slot.count <= 0 then
+						table.remove(ZE2:FetchInventory(player), i)
+					end
+					
+					if slot.firerate_left then
+						slot.firerate_left = $ - 1
 					end
 				end
 			end

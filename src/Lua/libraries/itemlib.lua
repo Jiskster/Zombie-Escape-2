@@ -28,6 +28,8 @@ function ZE2:CreateItem(name,input_table)
 		temp_table.max_ammo = temp_table.ammo
 	end
 	
+	temp_table.firerate_left = 0
+	
 	local idname = ("ITEM_"..name:upper()):gsub(" ","_"):gsub("'","")
 	local idglobal 
 	table.insert(self.ItemPresets, temp_table) -- Push new item
