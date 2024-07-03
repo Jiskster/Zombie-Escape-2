@@ -23,8 +23,6 @@ ZE2.pregamehud = function(v, player, c)
 		return
 	end
 	
-	v.fadeScreen(0xFF00, 15)
-	
 	blackbgpatch = v.cachePatch("Z_BG_BLACK")
 	pregamemenu_type = player["ze2_info"].pregamemenu_type
 	pregamemenu_lasttype = player["ze2_info"].pregamemenu_lasttype
