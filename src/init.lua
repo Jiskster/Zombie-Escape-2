@@ -27,6 +27,8 @@ dofile "items/item_scatter_ring.lua"
 dofile "items/item_rail_ring.lua"
 dofile "items/item_gfz_sphere.lua"
 dofile "items/item_infinity_ring.lua"
+dofile "items/item_grenade.lua"
+
 // ITEMS END
 
 dofile "main/baseplayer.lua"
