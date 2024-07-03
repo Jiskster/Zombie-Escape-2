@@ -3,8 +3,6 @@
 ZE2.zombie_shophud = function(v, player)
 	if gametype ~= GT_ZE2 then return end
 	
-	
-	
 	if player["ze2_info"].team ~= 2 then
 		return
 	end
@@ -22,7 +20,6 @@ ZE2.zombie_shophud = function(v, player)
 		v.fadeScreen(0xFF00, 15)
 	
 		v.drawString(160, 50, "Zombie Shop", V_SNAPTOTOP, "center")
-		
 		
 		for i=1,#ZE2.Zombie_ShopList do
 			local text = ZE2.NumToShopDef(i).realname.." \x85"..ZE2.NumToShopDef(i).price.."BLD"

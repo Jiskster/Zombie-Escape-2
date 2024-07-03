@@ -68,9 +68,18 @@ local ZMBSHOP_ALPHA_ZOMBIE = ZE2:RegisterGenericShop("Alpha_Zombie", {
 	for_zombies = true,
 }, 125)
 
+local ZMBSHOP_SIGMA_ZOMBIE = ZE2:RegisterGenericShop("Sigma_Zombie", {
+	realname = "Sigma Zombie",
+	buyfunc = function(player)
+		player["ze2_info"].zombie_next_type = "sigma"
+	end,
+	for_zombies = true,
+}, 250)
+
 ZE2.Zombie_ShopList = {
 	ZMBSHOP_100BONUSHP,
-	ZMBSHOP_ALPHA_ZOMBIE
+	ZMBSHOP_ALPHA_ZOMBIE,
+	ZMBSHOP_SIGMA_ZOMBIE
 }
 
 addHook("MapLoad", function()
