@@ -4,14 +4,14 @@ ZE2.ZombieConfig = {
 	["normal"] = {
 		skincolor = SKINCOLOR_MOSS,
 		normalspeed = 27 * FRACUNIT,
-		health = 200,
+		health = 150,
 		charability = CA_NONE,
 		charability2 = CA2_NONE,
 		jumpfactor = 17 * FRACUNIT / 19,
 		actionspd = 9*FRACUNIT,
 		killaward = 10,
 		accelstart = 100,
-		thrustfactor = 6,
+		thrustfactor = 4,
 		inventory_limit = 1,
 		inventory = {
 			ZE2:CopyItemFromID(ITEM_INSTA_BURST)
