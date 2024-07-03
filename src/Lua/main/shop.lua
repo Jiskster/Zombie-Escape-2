@@ -160,6 +160,10 @@ end)
 addHook("PlayerThink", function(player)
 	local cmd = player.cmd
 	
+	if ZE2.game_ended then
+		return
+	end
+	
 	if player.playerstate == PST_DEAD then
 		if player["ze2_info"].team == 2 then
 			--player["ze2_info"].zombie_shop_open = true

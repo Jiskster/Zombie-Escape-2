@@ -11,6 +11,10 @@ ZE2.zombie_shophud = function(v, player)
 		return
 	end
 	
+	if ZE2.game_ended then
+		return
+	end
+	
 	local selection = player["ze2_info"].zombie_shop_selection
 	
 	if not player["ze2_info"].zombie_shop_open then
