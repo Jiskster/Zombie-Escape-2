@@ -79,5 +79,6 @@ dofile "levelscripts/undertale.lua"
 dofile "levelscripts/caveofthepast.lua"
 dofile "levelscripts/spookyflower.lua"
 dofile "levelscripts/tutorial.lua"
+dofile "levelscripts/robloxobby.lua"
 
 dofile "main/netvars.lua"
