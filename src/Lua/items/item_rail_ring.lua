@@ -1,4 +1,4 @@
-local raildmg = 150
+local raildmg = 300
 local railkb = 250*FRACUNIT
 
 freeslot("MT_ZE2_RAILSHOT")
