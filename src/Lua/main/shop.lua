@@ -112,14 +112,14 @@ addHook("MapLoad", function()
 		local rng = P_RandomRange(1,#shopdef_numsleft)
 		local foundrepeat = false -- im paranoid and i found a repeat during testing
 		
-		/*
-		for i,v in ipairs(itemnumsdiscarded) do
-			if v == rng then
-				foundrepeat = true
-				break;
+		if not ZE2.repeatshopitems.value then
+			for i,v in ipairs(itemnumsdiscarded) do
+				if v == rng then
+					foundrepeat = true
+					break;
+				end
 			end
 		end
-		*/
 		
 		if not foundrepeat then
 			table.insert(picked_shopdefs, {
