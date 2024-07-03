@@ -444,10 +444,16 @@ function ZE2.SpawnMissile(m_table)
 
 	th.target = source
 
+	/* Deprecated for chracter config variable "bullet_speed_multiplier"
 	if source.player and source.player.charability == CA_FLY then
 		speed = FixedMul($, 3*FRACUNIT/2)
 	end
-
+	*/
+	
+	if source.player and ZE2.CharacterConfig[source.skin] and ZE2.CharacterConfig[source.skin].bullet_speed_multiplier then
+		speed = FixedMul($, ZE2.CharacterConfig[source.skin].bullet_speed_multiplier)
+	end
+	
 	th.angle = angle
 	
 	th.momx = FixedMul(speed, cos(angle))

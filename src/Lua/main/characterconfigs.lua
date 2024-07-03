@@ -327,6 +327,7 @@ ZE2.AddConfig("tails", {
 	jumpfactor = 18 * FRACUNIT / 19,
 	actionspd = 40*FRACUNIT,
 	sprintboost = 15 * FRACUNIT,
+	bullet_speed_multiplier = (3*FRACUNIT)/2, -- 1.5x
 	desc1 = "Has the brains. Without the plane.",
 	desc2 = "Flies slow. Slower than sonic."
 })
@@ -339,6 +340,7 @@ ZE2.AddConfig("knuckles", {
 	jumpfactor = 17 * FRACUNIT / 19,
 	actionspd = 24*FRACUNIT,
 	sprintboost = 13 * FRACUNIT,
+	bullet_speed_multiplier = FRACUNIT/2,
 	desc1 = "Very Strong feller",
 	desc2 = "Glides slow. The slowest."
 })
