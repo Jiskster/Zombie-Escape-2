@@ -89,7 +89,7 @@ addHook("MapLoad", function()
 	
 	local shopdef_numsleft = {}
     local picked_shopdefs = {}
-	--local itemnumsdiscarded = {}
+	local itemnumsdiscarded = {}
 	local numitemstolist = 6 --P_RandomRange(3,6)
 	local numitemstolistleft = numitemstolist
 	local tries = 0
@@ -126,8 +126,12 @@ addHook("MapLoad", function()
 				shopdefid = shopdef_numsleft[rng],
 				sold = false,
 			})
-			--table.insert(itemnumsdiscarded, rng)
-			--table.remove(shopdef_numsleft, rng)
+			
+			if not ZE2.repeatshopitems.value then
+				table.insert(itemnumsdiscarded, shopdef_numsleft[rng])
+				table.remove(shopdef_numsleft, rng)
+			end
+			
 			numitemstolistleft = $ - 1
 		end
 		
