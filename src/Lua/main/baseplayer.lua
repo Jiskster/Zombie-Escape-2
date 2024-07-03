@@ -94,7 +94,13 @@ ZE2["default_ze2_info"] = {
 	checkpoint_catchuptics = 0, 
 	
 	lower_hud_offset = 0,
-	special_cooldown = 0
+	special_cooldown = 0,
+	
+	zombie_healthbonus = 0, -- extra health you get from buying health bonuses 
+	zombie_shop_open = false,
+	zombie_shop_selection = 1,
+	zombie_shop_c1_pressed = false,
+	zombie_next_type = nil,
 }
 
 addHook("PlayerSpawn", function(player)
@@ -450,13 +456,17 @@ ZE2.init_player = function(player)
 			if ZE2.round_active and ZE2.PlayerCount() > 1 and leveltime then
 				-- killedbysomething variable is to prevent players from suiciding to get a special zombie
 				-- same goes for was_spectating
-				if P_RandomChance(FRACUNIT/5) then
-					if not player["ze2_info"].was_spectating and player["ze2_info"].killedbysomething then
-						player["ze2_info"].killedbysomething = false
-						player["ze2_info"].zombie_type = "alpha"
-					end
+				if player["ze2_info"].zombie_next_type then
+					player["ze2_info"].zombie_type = player["ze2_info"].zombie_next_type
+					player["ze2_info"].zombie_next_type = nil
+				else
+					player["ze2_info"].zombie_type = "normal"
 				end
+				
+				player["ze2_info"].killedbysomething = false
 			end
+			
+			player["ze2_info"].zombie_shop_open = false
 			
 			player["ze2_info"].was_spectating = false
 			
@@ -567,6 +577,7 @@ end, 1)
 addHook("PlayerThink", function(player)
 	if not (player.mo and player.mo.valid) then return end
 	if not (player["ze2_info"].team == 2 and player["ze2_info"].zombie_type == "alpha") then return end
+	if player.playerstate ~= PST_LIVE then return end
 	
 	ZE2:TryBooleanAction(player, {
 		condition = player.cmd.buttons & BT_CUSTOM1,

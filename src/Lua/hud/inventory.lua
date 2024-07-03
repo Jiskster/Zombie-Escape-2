@@ -5,6 +5,8 @@ ZE2.inventoryhud = function(v, player)
 	
 	if player["ze2_info"].ghostmode then return end
 	
+	if player["ze2_info"].zombie_shop_open then return end
+	
 	if player and not player.mo then return end
 	
 	local lower_hud_offset = player["ze2_info"].lower_hud_offset or 0
@@ -29,10 +31,6 @@ ZE2.inventoryhud = function(v, player)
 			local slot_icon -- = ZE2:GetItemInfoIndex(slot, "icon", skin)
 			local slot_iconscale --  = ZE2:GetItemInfoIndex(slot, "iconscale", skin)
 			
-			if player["ze2_info"].shop_open then 
-				y = min(146, 176-lower_hud_offset)*FU
-				sel_y = y
-			end
 			local patch
 			
 			if i > 1 then

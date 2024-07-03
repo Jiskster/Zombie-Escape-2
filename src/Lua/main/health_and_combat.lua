@@ -52,16 +52,15 @@ function ZE2.KillMobj(mo, inf, src, damagetype, killedbysomething)
 		local ztype = player["ze2_info"].zombie_type
 		local team = player["ze2_info"].team
 		local ruby_award = 30
+		local killer -- will be valid if player
+		
+		if inf and inf.player and inf.player.valid then
+			killer = inf
+		elseif src and src.player and src.player.valid then
+			killer = src
+		end
 		
 		if team == 1 then
-			local killer
-			
-			if inf and inf.player and inf.player.valid then
-				killer = inf
-			elseif src and src.player and src.player.valid then
-				killer = src
-			end
-			
 			if killer then
 				if ZE2.instantinfection.value then
 					killing = false
@@ -80,6 +79,10 @@ function ZE2.KillMobj(mo, inf, src, damagetype, killedbysomething)
 			if ztype and ZE2.ZombieConfig[ztype] and ZE2.ZombieConfig[ztype].killaward then
 				local killaward = ZE2.ZombieConfig[ztype].killaward
 				A_RubyDrop(mo, killaward)
+			end
+			
+			if killer then
+				player["ze2_info"].blood_currency = $ + 25
 			end
 		end
 		

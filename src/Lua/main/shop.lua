@@ -23,6 +23,10 @@ ZE2.Survivor_ShopList = {
 	
 }
 
+ZE2.Zombie_ShopList = {
+
+}
+
 function ZE2:RegisterShopItem(item_id)
 	local iteminfo = ZE2:CopyItemFromID(item_id)
 	local shop_def = {}
@@ -32,11 +36,42 @@ function ZE2:RegisterShopItem(item_id)
 	shop_def.price = iteminfo.price
 	
 	table.insert(ZE2.ShopDefinitions, shop_def)
+	return #ZE2.ShopDefinitions
+end
+
+function ZE2:RegisterGenericShop(name, input_table, price)
+	local shop_def = input_table
+	shop_def.name = name
+	shop_def.price = price
+	
+	table.insert(ZE2.ShopDefinitions, shop_def)
+	return #ZE2.ShopDefinitions
 end
 
 function ZE2.NumToShopDef(number)
 	return ZE2.ShopDefinitions[number]
 end
+
+local ZMBSHOP_100BONUSHP = ZE2:RegisterGenericShop("100_Bonus_HP", {
+	realname = "100 Bonus Health", -- For Zombie Shop Display
+	buyfunc = function(player)
+		player["ze2_info"].zombie_healthbonus = $ + 100
+	end,
+	for_zombies = true,
+}, 25)
+
+local ZMBSHOP_ALPHA_ZOMBIE = ZE2:RegisterGenericShop("Alpha_Zombie", {
+	realname = "Alpha Zombie",
+	buyfunc = function(player)
+		player["ze2_info"].zombie_next_type = "alpha"
+	end,
+	for_zombies = true,
+}, 125)
+
+ZE2.Zombie_ShopList = {
+	ZMBSHOP_100BONUSHP,
+	ZMBSHOP_ALPHA_ZOMBIE
+}
 
 addHook("MapLoad", function()
 	if gametype ~= GT_ZE2 then return end
@@ -51,6 +86,16 @@ addHook("MapLoad", function()
 	local tries = 0
 	
 	for i,v in ipairs(ZE2.ShopDefinitions) do
+		/*
+		for ii,vv in pairs(v)
+			print(tostring(ii).." : "..tostring(vv))
+		end
+		*/
+		
+		if v.for_zombies then 
+			continue 
+		end
+		
 		table.insert(shopdef_numsleft, i)
 	end
 	
@@ -69,7 +114,7 @@ addHook("MapLoad", function()
 		
 		if not foundrepeat then
 			table.insert(picked_shopdefs, {
-				shopdefid = rng,
+				shopdefid = shopdef_numsleft[rng],
 				sold = false,
 			})
 			--table.insert(itemnumsdiscarded, rng)
@@ -95,5 +140,80 @@ addHook("MapLoad", function()
 	
 	for player in players.iterate do
 		player["ze2_info"].shop_selection = 1
+	end
+end)
+
+-- Handle Zombie Shop
+addHook("PlayerThink", function(player)
+	local cmd = player.cmd
+	
+	if player.playerstate == PST_DEAD then
+		if player["ze2_info"].team == 2 then
+			--player["ze2_info"].zombie_shop_open = true
+			
+			if player["ze2_info"].zombie_shop_open then
+				ZE2:TryBooleanAction(player, {
+					condition = cmd.forwardmove > 40,
+					var = "zombie_shop_forward_pressed",
+					action = function()
+						if player["ze2_info"].zombie_shop_selection - 1 <= 0 then
+							player["ze2_info"].zombie_shop_selection = 1
+						else
+							player["ze2_info"].zombie_shop_selection = $ - 1
+						end
+						
+						S_StartSound(nil, sfx_menu1, player)
+					end
+				}, true)
+				
+				ZE2:TryBooleanAction(player, {
+					condition = cmd.forwardmove < -40,
+					var = "zombie_shop_backwards_pressed",
+					action = function()
+						if player["ze2_info"].zombie_shop_selection + 1 >= #ZE2.Zombie_ShopList then
+							player["ze2_info"].zombie_shop_selection = #ZE2.Zombie_ShopList
+						else
+							player["ze2_info"].zombie_shop_selection = $ + 1
+						end
+						
+						S_StartSound(nil, sfx_menu1, player)
+					end
+				}, true)
+				
+				ZE2:TryBooleanAction(player, {
+					condition = cmd.buttons & BT_CUSTOM1,
+					var = "zombie_shop_c1_pressed",
+					action = function()
+						local selection = player["ze2_info"].zombie_shop_selection
+						
+						if ZE2.Zombie_ShopList[selection] then
+							local shopdef = ZE2.NumToShopDef(ZE2.Zombie_ShopList[selection])
+						
+							if shopdef then
+								if shopdef.price > player["ze2_info"].blood_currency then
+									S_StartSound(nil, sfx_lose, player)
+								else
+									player["ze2_info"].blood_currency = $ - shopdef.price
+									
+									if shopdef.buyfunc then
+										shopdef.buyfunc(player)
+									end
+								
+									S_StartSound(nil, sfx_s1a1, player)
+								end
+							end
+						end
+					end
+				}, true)
+			else
+				ZE2:TryBooleanAction(player, {
+					condition = cmd.buttons & BT_CUSTOM1,
+					var = "zombie_shop_c1_pressed",
+					action = function()
+						player["ze2_info"].zombie_shop_open = true
+					end
+				}, true)
+			end
+		end
 	end
 end)

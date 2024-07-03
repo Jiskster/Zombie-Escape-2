@@ -64,8 +64,10 @@ dofile "hud/damagefade.lua"
 dofile "hud/mapinfo_animation.lua"
 dofile "hud/tabscores.lua"
 dofile "hud/toggle.lua"
+dofile "hud/zombie_shop.lua"
 dofile "hud/intermission.lua"
 dofile "hud/debug.lua"
+
 
 dofile "hooks/gamelogic.lua"
 dofile "hooks/hud.lua"

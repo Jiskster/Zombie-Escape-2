@@ -9,6 +9,7 @@ ZE2.togglehud = function(v, player)
 		hud.disable("teamscores")
 		hud.disable("rings")
 		hud.disable("stagetitle")
+		hud.disable("textspectator")
 	elseif gametype ~= GT_ZE2 and lastgt == GT_ZE2 
 		hud.enable("rankings")
 		hud.enable("score")
@@ -17,6 +18,7 @@ ZE2.togglehud = function(v, player)
 		hud.enable("teamscores")
 		hud.enable("rings")
 		hud.enable("stagetitle")
+		hud.enable("textspectator")
 	end
 	lastgt = gametype
 end

@@ -1,7 +1,7 @@
 ZE2.infohud = function(v, player)
 	if gametype ~= GT_ZE2 then return end
 	if ZE2.game_ended then return end
-	if player["ze2_info"].shop_open then return end
+	if player["ze2_info"].zombie_shop_open then return end
 	if player and not player.mo then return end
 	
 	local skinpatch = v.getSprite2Patch(player.mo.skin, SPR2_XTRA)
