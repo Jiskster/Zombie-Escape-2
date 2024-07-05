@@ -206,35 +206,33 @@ function ZE2:GiveItem(player, item_input, count, slot)
 				return true
 			else
 				local real_count = count or item.count
-			
-				if not ZE2:IsInventoryFull(player) then
-					local item_id
-					
-					if isNumber then
-						item_id = item_input
-					elseif isTable then
-						item_id = item_input.item_id
-					end
-					
-					local fitem,fslot = ZE2:GetInventoryItemFromId(player, item_id) --print(fitem,fslot)
+				
+				local item_id
+				
+				if isNumber then
+					item_id = item_input
+				elseif isTable then
+					item_id = item_input.item_id
+				end
+				
+				local fitem,fslot = ZE2:GetInventoryItemFromId(player, item_id) --print(fitem,fslot)
 
-					if fitem and fitem.count and fitem.count + real_count <= fitem.max_count then
-						ZE2:FetchInventory(player)[fslot].count = $ + real_count
-						--print("Added apon exiting item")
-					elseif ZE2:FetchEmptySlot(player) then
-						local emptyslot = ZE2:FetchEmptySlot(player) 
-						
-						if emptyslot then
-							ZE2:FetchInventory(player)[emptyslot] = item
-							--print("Went to empty slot")
-						end
-					end
+				if fitem and fitem.count and fitem.count + real_count <= fitem.max_count then
+					ZE2:FetchInventory(player)[fslot].count = $ + real_count
+					--print("Added apon exiting item")
+				elseif ZE2:FetchEmptySlot(player) then
+					local emptyslot = ZE2:FetchEmptySlot(player) 
 					
-					return true
+					if emptyslot then
+						ZE2:FetchInventory(player)[emptyslot] = item
+						--print("Went to empty slot")
+					end
 				else
 					CONS_Printf(player, "\x85\Inventory full!")
 					return false
 				end
+				
+				return true
 			end
 		elseif not ZE2:FetchInventory(player) then
 			CONS_Printf(player, "\x85\Invalid inventory!")
