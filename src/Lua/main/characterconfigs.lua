@@ -308,7 +308,7 @@ end
 
 ZE2.AddConfig("sonic", {
 	normalspeed = 14 * FRACUNIT,
-	health = 30,
+	health = 25,
 	charability = CA_JUMPTHOK,
 	charability2 = CA2_NONE,
 	jumpfactor = 15 * FRACUNIT / 19,
@@ -321,7 +321,7 @@ ZE2.AddConfig("sonic", {
 
 ZE2.AddConfig("tails", {
 	normalspeed = 12 * FRACUNIT,
-	health = 80,
+	health = 55,
 	charability = CA_FLY,
 	charability2 = CA2_NONE,
 	jumpfactor = 18 * FRACUNIT / 19,
@@ -334,7 +334,7 @@ ZE2.AddConfig("tails", {
 
 ZE2.AddConfig("knuckles", {
 	normalspeed = 10 * FRACUNIT,
-	health = 100,
+	health = 90,
 	charability = CA_GLIDEANDCLIMB,
 	charability2 = CA2_NONE,
 	jumpfactor = 17 * FRACUNIT / 19,
@@ -358,7 +358,7 @@ ZE2.AddConfig("amy", {
 
 ZE2.AddConfig("fang", {
 	normalspeed = 11 * FRACUNIT,
-	health = 85,
+	health = 75,
 	charability = CA_BOUNCE,
 	charability2 = CA2_NONE,
 	jumpfactor = 20 * FRACUNIT / 19,
@@ -369,7 +369,7 @@ ZE2.AddConfig("fang", {
 
 ZE2.AddConfig("metalsonic", {
 	normalspeed = 13 * FRACUNIT,
-	health = 75,
+	health = 70,
 	charability = CA_JUMPBOOST,
 	charability2 = CA2_NONE,
 	jumpfactor = 15 * FRACUNIT / 19,
