@@ -240,6 +240,8 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			
 			if inflictor_player then
 				ZE2:DecrementSprint(mo.player, 25*FRACUNIT)
+				
+				inflictor_player["ze2_info"].blood_currency = $ + 5
 			end
 		elseif mo.player["ze2_info"].team == 2 then
 			local ztype = mo.player["ze2_info"].zombie_type
@@ -265,6 +267,10 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			end
 			
 			S_StartSound(mo, chosen_hurtsound)
+			
+			if inflictor_player then
+				mo.player["ze2_info"].blood_currency = $ + 2
+			end
 		end
 	elseif mobjinfo[mo.type].npc_name then
 		if (not mo.target) and (inf or src.player) then --enemies wake up if you hit them from behind
