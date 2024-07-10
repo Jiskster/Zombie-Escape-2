@@ -197,6 +197,14 @@ addHook("PreThinkFrame", function()
 		local pregamemenu_type = player["ze2_info"].pregamemenu_type
 		
 		if player["ze2_info"].pregamemenu_active then
+			if not ZE2.round_active then -- Stay Still while you're choosing and have not chosen
+				player.pflags = $|PF_FULLSTASIS|PF_INVIS
+				
+				buttons = 0
+				cmd.angleturn = 0
+				cmd.aiming = 0
+			end
+			
 			if not player["ze2_info"].pregamemenu_intopmenu then
 				if ZE2.PregameMenuDef[pregamemenu_type] then
 					ZE2.PregameMenuDef[pregamemenu_type](player, cmd)
@@ -237,14 +245,6 @@ addHook("PreThinkFrame", function()
 						--print("Shop Menu")
 					end
 				}, true)
-			end
-			
-			if not ZE2.round_active then -- Stay Still while you're choosing and have not chosen
-				player.pflags = $|PF_FULLSTASIS|PF_INVIS
-				
-				buttons = 0
-				cmd.angleturn = 0
-				cmd.aiming = 0
 			end
 		end
 		
