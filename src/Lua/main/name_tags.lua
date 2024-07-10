@@ -128,20 +128,12 @@ hud.add( function(v, player, camera)
 		local charwidth = 5
 		local lineheight = 8
 		local y_offset = 0
-		--if distance > 500*FRACUNIT then
-			--namefont = "small-thin-fixed-center"
-			--ringfont = "small-thin-fixed-center"
-			--charwidth = 4
-			--lineheight = 4
-		--end
-		
 
 		local flash = (leveltime/(TICRATE/6))%2 == 0
 		if flash and tmo.health == 0 then
 			textcolor = SKINCOLOR_RED
 		end
 	
-		--local nameflags = skincolors[tmo.skincolor].chatcolor
 		local distedit = max(0, distance - ((distlimit*FU)>>1)) * 2
 		local trans = min(9, (((distedit * 10) >> 16) / distlimit)) * V_10TRANS
 		
@@ -174,43 +166,8 @@ hud.add( function(v, player, camera)
 				end
 			end
 		end
-		--v.drawString(hpos, vpos, name, nameflags|trans|V_ALLOWLOWERCASE, namefont)
-		--v.drawString(hpos, vpos+(lineheight*FRACUNIT), health, rflags|trans|V_ALLOWLOWERCASE, ringfont)
-
-		if tmo.player and not tmo.player.lastmessagetimer then continue end
-
-		if tmo.player and tmo.player.valid then
-			local chat_lifespan = 2*TICRATE
-			chat_lifespan = $1 + #tmo.player.lastmessage * TICRATE / 18 or 0
-
-			if tmo.player and tmo.player.lastmessage 
-			and leveltime < tmo.player.lastmessagetimer+chat_lifespan then
-				local flags = V_GRAYMAP
-				local thelines = string_linebreak(v, tmo.player.lastmessage, flags)
-				for i = 1, #thelines
-					v.drawString(hpos, vpos+(lineheight*(i+1)*FRACUNIT), thelines[i], flags|trans|V_ALLOWLOWERCASE, namefont)
-				end
-			end
-		end
 	end
 end, "game")
-
-addHook("PlayerMsg", function(player, typenum, target, message)
-	if typenum ~= 0 then
-		return false --only for normal global messages
-	end
-	if ignorelist != nil and #ignorelist
-		for i = 1, #ignorelist
-			if ignorelist[i] == player
-				return false
-			end
-		end
-	end
-
-	player.lastmessage = message
-	player.lastmessagetimer = leveltime
-	return false
-end)
 
 local consoleplayer_camera = nil
 hud.add(function(v, player, camera)
