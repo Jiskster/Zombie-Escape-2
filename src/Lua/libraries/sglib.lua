@@ -14,8 +14,12 @@ rawset(_G, "SG_GetViewVars", function(v, p, c, allowspectator)
 		return mo.x, mo.y, mo.z, mo.angle, mo.pitch, roll
 	elseif c.chase then
 		return c.x, c.y, c.z + c.height/2, c.angle, c.aiming, roll
+	/*
 	elseif p.mo then
 		return p.mo.x, p.mo.y, p.viewz, p.mo.angle, p.aiming, roll
+	*/
+	else
+		return p.realmo.x, p.realmo.y, p.viewz, p.realmo.angle, p.aiming, roll
 	end
 end)
 

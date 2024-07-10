@@ -86,60 +86,20 @@ hud.add( function(v, player, camera)
 		if tmo.player and player == tmo.player then continue end
 
 		if not tmo.player and not mobjinfo[tmo.type].npc_name then continue end
-
-		--how far away is the other mobj?
+		
 		local distance = R_PointToDist(tmo.x, tmo.y) 
 
 		local distlimit = 1000
 		if distance > distlimit*FRACUNIT then continue end
-
-		--Angle between camera vector and target
-		local hangdiff = R_PointToAngle2(cam.x, cam.y, tmo.x, tmo.y)
-		local hangle = hangdiff - cam.angle
-
-		--check if object is outside of our field of view
-		--converting to fixed just to normalise things
-		--e.g. this will convert 365° to 5° for us
-		local fhanlge = AngleFixed(hangle)
-		local fhfov = AngleFixed(fov>>1)
-		local f360 = AngleFixed(ANGLE_MAX)
-		if fhanlge < f360 - fhfov and fhanlge > fhfov then
-			continue
-		end
 		
-		--flipcam adjustment
-		local flip = 1
-		if displayplayer.mo and displayplayer.mo.valid
-			flip = P_MobjFlip(displayplayer.mo)
-		end
+		local result = SG_ObjectTracking(v, player, camera, {
+			x = tmo.x,
+			y = tmo.y,
+			z = tmo.z,
+		}, false, true)
 
-		--figure out vertical angle
-		local h = FixedHypot(cam.x-tmo.x, cam.y-tmo.y)
-		local tmoz = tmo.z
-		if (flip == -1)
-			tmoz = tmo.z + tmo.height
-		end
-		if spectator
-			tmoz = $ - 48*tmo.scale
-		end
-		local vangdiff = R_PointToAngle2(0, 0, tmoz-cam.z-48*FRACUNIT*flip, h) - ANGLE_90
-		local vcangle = first_person and player.aiming or cam.aiming or 0
+		--how far away is the other mobj?
 		
-		local vangle = (vcangle + vangdiff) * flip
-
-		--again just check if we're outside the FOV
-		local fvangle = AngleFixed(vangle)
-		local fvfov = FixedMul(AngleFixed(fov), FRACUNIT*v.height()/v.width())
-		if fvangle < f360 - fvfov and fvangle > fvfov then
-			continue
-		end
-		if (tmo.flags2 & MF2_DONTDRAW) then
-			continue
-		end
-		local hpos = hudwidth>>1 - FixedMul(hud_distance, tan(hangle) * realwidth/width)
-		local vpos = hudheight>>1 + FixedMul(hud_distance, tan(vangle) * realheight/height)
-
-		hpos = $ - 25*FU
 		local name
 		if tmo.player then
 			name = tmo.player.name
@@ -163,10 +123,11 @@ hud.add( function(v, player, camera)
 		local health = ("["+tostring(tmo.health)+"/"+tostring(tmo.maxhealth)+"]")
 		local shield = ("["+tostring(tmo.shield_health)+"]")
 		
-		local namefont = "fixed-center"
-		local ringfont = "fixed-center"
+		local namefont = "center"
+		local ringfont = "center"
 		local charwidth = 5
 		local lineheight = 8
+		local y_offset = 0
 		--if distance > 500*FRACUNIT then
 			--namefont = "small-thin-fixed-center"
 			--ringfont = "small-thin-fixed-center"
@@ -184,8 +145,10 @@ hud.add( function(v, player, camera)
 		local distedit = max(0, distance - ((distlimit*FU)>>1)) * 2
 		local trans = min(9, (((distedit * 10) >> 16) / distlimit)) * V_10TRANS
 		
-		if name then
-			customhud.CustomFontString(v,hpos,vpos,name, "TNYFC", trans, namefont , FRACUNIT, namecolor)
+		if name and result and result.onScreen then
+			customhud.CustomFontString(v, result.x, result.y, name, "TNYFC", trans, namefont, FRACUNIT, namecolor)
+			y_offset = $ + 8*FU
+			
 			if not tmo.dontshowhealth then
 				if tmo.shield_health and tmo.shield_def then
 					local shield_color = SKINCOLOR_WHITE
@@ -194,12 +157,12 @@ hud.add( function(v, player, camera)
 						shield_color = tmo.shield_def.color
 					end
 				
-					customhud.CustomFontString(v,hpos,vpos+(lineheight*FU),shield,"TNYFC",trans,ringfont, FRACUNIT, shield_color)
-					
-					vpos = $ + 8*FU
+					customhud.CustomFontString(v,result.x, result.y+y_offset, shield, "TNYFC", trans, ringfont, FRACUNIT, shield_color)
+					y_offset = $ + 8*FU
 				end
-			
-				customhud.CustomFontString(v,hpos,vpos+(lineheight*FU),health, "TNYFC",trans, ringfont , FRACUNIT, textcolor)
+				
+				customhud.CustomFontString(v, result.x, result.y+y_offset, health, "TNYFC", trans, ringfont, FRACUNIT, textcolor)
+				y_offset = $ + 8*FU
 			end
 			
 			if tmo.player and tmo.player.valid then
@@ -207,7 +170,7 @@ hud.add( function(v, player, camera)
 					local icon = v.cachePatch(ZE2:FetchInventorySlot(tmo.player).icon)
 					local iconscale = ZE2:FetchInventorySlot(tmo.player).iconscale or FRACUNIT
 					
-					v.drawScaled(hpos, vpos + 16*FU, iconscale/2, icon, trans) -- draw weaponicon
+					v.drawScaled(result.x-(4*FU), result.y+y_offset, iconscale/2, icon, trans) -- draw weaponicon
 				end
 			end
 		end
@@ -259,7 +222,7 @@ addHook("PostThinkFrame", function()
 	local range = 1024*FRACUNIT
 	local dplay
 	if (displayplayer and displayplayer.valid and 
-	displayplayer.mo and displayplayer.mo.valid) then
+	displayplayer.realmo) then
 		dplay = displayplayer
 	end
 	
