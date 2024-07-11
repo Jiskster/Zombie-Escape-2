@@ -73,8 +73,8 @@ rawset(_G, "SG_ObjectTracking", function(v, p, c, point, reverse, allowspectator
 	-- future G: seems to alternate between view count and view number depending on where you are in the codebase
 	-- may i interest the Krew in stplyrnum? :^)
 	if splitscreen then
-		// Half-wide screens
-		screenWidth = $ >> 1
+		// Half-height screens (this isn't kart's splitscreen!)
+		screenHeight = $ >> 1
 	end
 
 	local screenHalfW = (screenWidth >> 1) << FRACBITS
