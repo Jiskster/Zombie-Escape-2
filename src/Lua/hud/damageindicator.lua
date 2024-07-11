@@ -9,8 +9,13 @@ ZE2.damageindicatorhud = function(v, player, camera)
 			z = tbl.draw_z,
 		}, false, true)
 		
-		if result.onScreen then
-			v.drawString(result.x, result.y, "\x85"..tostring(tbl.number), 0, "thin-fixed-center")
+		if result.onScreen and tbl.tics_left then
+			local flags = 0
+			
+			if tbl.tics_left <= 10 and tbl.tics_left > 0 then
+				flags = (10 - tbl.tics_left)<<V_ALPHASHIFT 
+			end
+			v.drawString(result.x, result.y, "\x85"..tostring(tbl.number), flags, "thin-fixed-center")
 		end
 	end
 end
