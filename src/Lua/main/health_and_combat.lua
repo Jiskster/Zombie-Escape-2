@@ -352,12 +352,17 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	if mo.shield_health then
 		if mo.shield_health - dmg <= 0 then
 			dmg = $ - abs(mo.shield_health)
+			
 			if inflictor_player and attacker then
 				ZE2:AddDamageIndicator(inflictor_player, mo, dmg)
 			end
 			
 			mo.shield_health = 0
 		else
+			if inflictor_player and attacker then
+				ZE2:AddDamageIndicator(inflictor_player, mo, dmg)
+			end
+			
 			mo.shield_health = $ - dmg
 		end
 		
