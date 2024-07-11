@@ -10,7 +10,7 @@ ZE2.damageindicatorhud = function(v, player, camera)
 		}, false, true)
 		
 		if result.onScreen then
-			v.drawString(result.x, result.y, tbl.number, 0, "fixed")
+			v.drawString(result.x, result.y, "\x85"..tostring(tbl.number), 0, "thin-fixed-center")
 		end
 	end
 end

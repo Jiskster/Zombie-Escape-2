@@ -101,7 +101,7 @@ function ZE2:AddDamageIndicator(player, victim_mobj, damage)
 			number = damage,
 			draw_x = victim_mobj.x,
 			draw_y = victim_mobj.y,
-			draw_z = victim_mobj.z,
+			draw_z = victim_mobj.z + (victim_mobj.height*2),
 		}
 	else
 		if player["ze2_info"].damage_indicator_table[victim_mobj].tics_left then
@@ -114,7 +114,7 @@ function ZE2:AddDamageIndicator(player, victim_mobj, damage)
 		
 		player["ze2_info"].damage_indicator_table[victim_mobj].draw_x = victim_mobj.x
 		player["ze2_info"].damage_indicator_table[victim_mobj].draw_y = victim_mobj.y
-		player["ze2_info"].damage_indicator_table[victim_mobj].draw_z = victim_mobj.z
+		player["ze2_info"].damage_indicator_table[victim_mobj].draw_z = victim_mobj.z + (victim_mobj.height*2)
 	end
 end
 
