@@ -48,15 +48,15 @@ ZE2.infohud = function(v, player)
 					(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, SKINCOLOR_RED)
 				end
 				
-				-- [Sprint Meter] --
-				local sprintmeter_color = SKINCOLOR_SKY
-				
 				-- flicker when no sprint energy left
 				if (leveltime/4) % 2 == 0 then
 					if not player["ze2_info"].sprintmeter then
 						sprintmeter_color = SKINCOLOR_RED
 					end
 				end
+				
+				-- [Sprint Meter] --
+				local sprintmeter_color = SKINCOLOR_SKY
 				
 				if player["ze2_info"].sprintmeter ~= nil and player["ze2_info"].team == 1 then
 					local y = 168-lower_hud_offset
@@ -66,6 +66,7 @@ ZE2.infohud = function(v, player)
 					(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, sprintmeter_color)
 				end
 				
+				-- [Health] --
 				if health and maxhealth then
 					local healthstring = "+ "..health.."/"..maxhealth
 					customhud.CustomFontString(v, 25, 176-lower_hud_offset, healthstring, "TNYFC", 
@@ -125,20 +126,14 @@ ZE2.infohud = function(v, player)
 				customhud.CustomFontString(v, 160, 150, tostring(catchup_tics/TICRATE), "TNYFC", 
 				(V_SNAPTOBOTTOM|V_50TRANS), "center" , nil, SKINCOLOR_CHERRY)
 			end
-			
-			-- [Health] --
-			--local healthfont = player.realmo.shield_health and "TNYFC" or "STCFC"
-			
-						
+				
 			-- [Survivor Count] --			
 			v.drawStretched((138-28-7)*FU, 2*FU, 16*FU, 6*FU, v.cachePatch("Z_BG_BLUE"), 
 			V_SNAPTOTOP)
 			
 			customhud.CustomFontString(v, 138-28, 1, tostring(ZE2.SurvivorCount()), "STCFC", 
 			(V_SNAPTOTOP), "center" , nil, SKINCOLOR_BLUE)
-			
 
-			
 			-- [Zombie Count] --
 			
 			v.drawStretched((138+64-7)*FU, 2*FU, 16*FU, 6*FU, v.cachePatch("Z_BG_RED"), 
