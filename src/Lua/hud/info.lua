@@ -65,6 +65,21 @@ ZE2.infohud = function(v, player)
 					customhud.CustomFontString(v, 0, y, "Run: "..sprintmeter, "TNYFC",
 					(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, sprintmeter_color)
 				end
+				
+				if health and maxhealth then
+					local healthstring = "+ "..health.."/"..maxhealth
+					customhud.CustomFontString(v, 25, 176-lower_hud_offset, healthstring, "TNYFC", 
+					(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, SKINCOLOR_GREEN)
+				end
+				
+				if player.realmo.shield_health and player.realmo.shield_def then
+					local healthstring_width = customhud.CustomFontStringWidth(v, healthstring, "TNYFC", FRACUNIT)
+					local shield_color = player.realmo.shield_def.color or SKINCOLOR_WHITE
+					
+					local shield_health = tostring(player.realmo.shield_health)
+					customhud.CustomFontString(v, 29+(healthstring_width/FU), 176-lower_hud_offset, "@ "..shield_health, "TNYFC",
+					(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, shield_color)
+				end
 			else
 				customhud.CustomFontString(v, 0, 192-lower_hud_offset, "SPECTATOR MODE", "TNYFC",
 				(V_SNAPTOBOTTOM|V_SNAPTOLEFT|V_50TRANS), nil , nil, SKINCOLOR_WHITE)
@@ -113,21 +128,6 @@ ZE2.infohud = function(v, player)
 			
 			-- [Health] --
 			--local healthfont = player.realmo.shield_health and "TNYFC" or "STCFC"
-			
-			if health and maxhealth then
-				local healthstring = "+ "..health.."/"..maxhealth
-				customhud.CustomFontString(v, 25, 176-lower_hud_offset, healthstring, "TNYFC", 
-				(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, SKINCOLOR_GREEN)
-			end
-			
-			if player.realmo.shield_health and player.realmo.shield_def then
-				local healthstring_width = customhud.CustomFontStringWidth(v, healthstring, "TNYFC", FRACUNIT)
-				local shield_color = player.realmo.shield_def.color or SKINCOLOR_WHITE
-				
-				local shield_health = tostring(player.realmo.shield_health)
-				customhud.CustomFontString(v, 29+(healthstring_width/FU), 176-lower_hud_offset, "@ "..shield_health, "TNYFC",
-				(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, shield_color)
-			end
 			
 						
 			-- [Survivor Count] --			
