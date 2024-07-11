@@ -241,15 +241,11 @@ ZE2.giveplayerflags = function(player)
 		
 		if player["ze2_info"].damage_indicator_table then
 			for dmo,v in pairs(player["ze2_info"].damage_indicator_table) do
-				if dmo and dmo.valid then
-					if v.tics_left then
-						v.tics_left = $ - 1
-						
-						if v.tics_left <= 0 then
-							player["ze2_info"].damage_indicator_table[dmo] = nil
-							continue
-						end
-					else
+			
+				if v.tics_left then
+					v.tics_left = $ - 1
+					
+					if v.tics_left <= 0 then
 						player["ze2_info"].damage_indicator_table[dmo] = nil
 						continue
 					end
