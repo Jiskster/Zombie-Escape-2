@@ -125,10 +125,12 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	end
 	
 	-- Don't damage objects that are the same team.
-	if mo.mobjteam and inf.mobjteam and mo.mobjteam == inf.mobjteam then
-		return false
+	if inf and mobj and inf.valid and mobj.valid then
+		if mo.mobjteam and inf.mobjteam and mo.mobjteam == inf.mobjteam then
+			return false
+		end
 	end
-
+	
 	if mo.player then
 		if mo.player.powers[pw_flashing] then
 			return false
