@@ -70,13 +70,12 @@ dofile "hud/toggle.lua"
 dofile "hud/zombie_shop.lua"
 dofile "hud/intermission.lua"
 dofile "hud/damageindicator.lua"
+dofile "hud/name_tags.lua"
 dofile "hud/debug.lua"
 
 
 dofile "hooks/gamelogic.lua"
 dofile "hooks/hud.lua"
-
-dofile "main/name_tags.lua"
 
 dofile "levelscripts/minecraft.lua"
 dofile "levelscripts/undertale.lua"

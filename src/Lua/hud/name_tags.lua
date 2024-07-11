@@ -58,7 +58,7 @@ CV_RegisterVar({
 	PossibleValue = CV_OnOff
 })
 
-hud.add( function(v, player, camera)
+ZE2.nametagshud = function(v, player, camera)
 	if not CV_FindVar("z_nametags").value
 		return
 	end
@@ -167,7 +167,7 @@ hud.add( function(v, player, camera)
 			end
 		end
 	end
-end, "game")
+end
 
 local consoleplayer_camera = nil
 hud.add(function(v, player, camera)
