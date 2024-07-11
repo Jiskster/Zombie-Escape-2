@@ -48,15 +48,15 @@ ZE2.infohud = function(v, player)
 					(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, SKINCOLOR_RED)
 				end
 				
+				-- [Sprint Meter] --
+				local sprintmeter_color = SKINCOLOR_SKY
+				
 				-- flicker when no sprint energy left
 				if (leveltime/4) % 2 == 0 then
 					if not player["ze2_info"].sprintmeter then
 						sprintmeter_color = SKINCOLOR_RED
 					end
 				end
-				
-				-- [Sprint Meter] --
-				local sprintmeter_color = SKINCOLOR_SKY
 				
 				if player["ze2_info"].sprintmeter ~= nil and player["ze2_info"].team == 1 then
 					local y = 168-lower_hud_offset
@@ -71,15 +71,16 @@ ZE2.infohud = function(v, player)
 					local healthstring = "+ "..health.."/"..maxhealth
 					customhud.CustomFontString(v, 25, 176-lower_hud_offset, healthstring, "TNYFC", 
 					(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, SKINCOLOR_GREEN)
-				end
-				
-				if player.realmo.shield_health and player.realmo.shield_def then
-					local healthstring_width = customhud.CustomFontStringWidth(v, healthstring, "TNYFC", FRACUNIT)
-					local shield_color = player.realmo.shield_def.color or SKINCOLOR_WHITE
 					
-					local shield_health = tostring(player.realmo.shield_health)
-					customhud.CustomFontString(v, 29+(healthstring_width/FU), 176-lower_hud_offset, "@ "..shield_health, "TNYFC",
-					(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, shield_color)
+					-- [Shield Health] --
+					if player.realmo.shield_health and player.realmo.shield_def then
+						local healthstring_width = customhud.CustomFontStringWidth(v, healthstring, "TNYFC", FRACUNIT)
+						local shield_color = player.realmo.shield_def.color or SKINCOLOR_WHITE
+						
+						local shield_health = tostring(player.realmo.shield_health)
+						customhud.CustomFontString(v, 29+(healthstring_width/FU), 176-lower_hud_offset, "@ "..shield_health, "TNYFC",
+						(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, shield_color)
+					end
 				end
 			else
 				customhud.CustomFontString(v, 0, 192-lower_hud_offset, "SPECTATOR MODE", "TNYFC",
