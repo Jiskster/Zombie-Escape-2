@@ -15,7 +15,7 @@ ZE2.damageindicatorhud = function(v, player, camera)
 			if tbl.tics_left <= 10 and tbl.tics_left > 0 then
 				flags = (10 - tbl.tics_left)<<V_ALPHASHIFT 
 			end
-			v.drawString(result.x, result.y, "\x85"..tostring(tbl.number), flags, "thin-fixed-center")
+			v.drawString(result.x, result.y, "\x85"..tostring(tbl.number), flags, "small-thin-fixed-center")
 		end
 	end
 end
