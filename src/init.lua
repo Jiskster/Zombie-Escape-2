@@ -69,6 +69,7 @@ dofile "hud/tabscores.lua"
 dofile "hud/toggle.lua"
 dofile "hud/zombie_shop.lua"
 dofile "hud/intermission.lua"
+dofile "hud/damageindicator.lua"
 dofile "hud/debug.lua"
 
 

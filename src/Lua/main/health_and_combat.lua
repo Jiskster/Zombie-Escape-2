@@ -94,6 +94,30 @@ function ZE2.KillMobj(mo, inf, src, damagetype, killedbysomething)
 	end
 end
 
+function ZE2:AddDamageIndicator(player, victim_mobj, damage)
+	if not player["ze2_info"].damage_indicator_table[victim_mobj] then
+		player["ze2_info"].damage_indicator_table[victim_mobj] = {
+			tics_left = TICRATE*2,
+			number = damage,
+			draw_x = victim_mobj.x,
+			draw_y = victim_mobj.y,
+			draw_z = victim_mobj.z,
+		}
+	else
+		if player["ze2_info"].damage_indicator_table[victim_mobj].tics_left then
+			player["ze2_info"].damage_indicator_table[victim_mobj].tics_left = TICRATE*2
+		end
+		
+		if player["ze2_info"].damage_indicator_table[victim_mobj].number then
+			player["ze2_info"].damage_indicator_table[victim_mobj].number = $ + damage
+		end
+		
+		player["ze2_info"].damage_indicator_table[victim_mobj].draw_x = victim_mobj.x
+		player["ze2_info"].damage_indicator_table[victim_mobj].draw_y = victim_mobj.y
+		player["ze2_info"].damage_indicator_table[victim_mobj].draw_z = victim_mobj.z
+	end
+end
+
 -- Always return false
 addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	if (gametype ~= GT_ZE2) return end
@@ -104,18 +128,21 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	local knockback = 0
 	local verticalknockback = 0
 	local relativeknockback = false
-	local inflictor_player
+	local inflictor_player -- player_t
+	local attacker -- mobj_t
 	
 	if inf and inf.player and mo and mo.player then
 		if mo.player["ze2_info"].team == inf.player["ze2_info"].team then
 			return false
 		end
-	end
+	end--player["ze2_info"].damage_indicator_table
 	
 	if inf and inf.valid and inf.player then
 		inflictor_player = inf.player
+		attacker = inf
 	elseif src and src.valid and src.player then
 		inflictor_player = src.player
+		attacker = src
 	end
 	
 	if src and src.player and mo and mo.player then
@@ -204,11 +231,19 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	-- DIE NOW
 	if not mo.shield_health then
 		if mo.health - dmg <= 0 or deathdamagetype then
+			if inflictor_player and attacker then
+				ZE2:AddDamageIndicator(inflictor_player, mo, dmg)
+			end
+			
 			ZE2.KillMobj(mo, inf, src, damagetype, not deathdamagetype)
 			return false
 		end
 	else
 		if deathdamagetype then
+			if inflictor_player and attacker then
+				ZE2:AddDamageIndicator(inflictor_player, mo, dmg)
+			end
+			
 			ZE2.KillMobj(mo, inf, src, damagetype, not deathdamagetype)
 			return false
 		end
@@ -315,9 +350,12 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	end
 	
 	if mo.shield_health then
-	
 		if mo.shield_health - dmg <= 0 then
 			dmg = $ - abs(mo.shield_health)
+			if inflictor_player and attacker then
+				ZE2:AddDamageIndicator(inflictor_player, mo, dmg)
+			end
+			
 			mo.shield_health = 0
 		else
 			mo.shield_health = $ - dmg
@@ -329,6 +367,10 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	end
 	
 	if not mo.shield_health then
+		if inflictor_player and attacker then
+			ZE2:AddDamageIndicator(inflictor_player, mo, dmg)
+		end
+		
 		mo.health = $ - dmg -- fake damage i guess
 	end
 	

@@ -101,6 +101,17 @@ ZE2["default_ze2_info"] = {
 	zombie_shop_selection = 1,
 	zombie_shop_c1_pressed = false,
 	zombie_next_type = nil,
+	
+	damage_indicator_table = {},
+	/*	damage_indicator_table
+		[mobj_t] = {
+			draw_x = (x),
+			draw_y = (y),
+			draw_z = (z),
+			number = 100,
+			tics_left = 35,
+		}
+	*/
 }
 
 addHook("PlayerSpawn", function(player)
@@ -113,6 +124,7 @@ addHook("PlayerSpawn", function(player)
 	player["ze2_info"].lower_hud_offset = 0
 	player["ze2_info"].special_cooldown = 0
 	player["ze2_info"].effects = {}
+	player["ze2_info"].damage_indicator_table = {}
 end)
 
 function ZE2:SetDamageFadeAnim(player, tics)
@@ -227,7 +239,26 @@ ZE2.giveplayerflags = function(player)
 			player["ze2_info"].effects = {}
 		end
 		
-
+		if player["ze2_info"].damage_indicator_table then
+			for dmo,v in pairs(player["ze2_info"].damage_indicator_table) do
+				if dmo and dmo.valid then
+					if v.tics_left then
+						v.tics_left = $ - 1
+						
+						if v.tics_left <= 0 then
+							player["ze2_info"].damage_indicator_table[dmo] = nil
+							continue
+						end
+					else
+						player["ze2_info"].damage_indicator_table[dmo] = nil
+						continue
+					end
+				else
+					player["ze2_info"].damage_indicator_table[dmo] = nil
+					continue
+				end
+			end
+		end
 		
 		if mapheaderinfo[gamemap].ze2_noabilities then
 			player.pflags = $ & ~PF_GLIDING
