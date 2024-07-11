@@ -522,6 +522,11 @@ addHook("TeamSwitch", function(player, team, fromspectators)
 			player["ze2_info"].pregamemenu_active = false
 		end
 	end
+	
+	-- NEVER have pregamemenu_active on as spectator
+	if team == 0 then
+		player["ze2_info"].pregamemenu_active = false
+	end
 end)
 
 -- if you die you be zombie

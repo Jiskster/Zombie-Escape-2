@@ -204,7 +204,7 @@ addHook("PostThinkFrame", function()
 				
 				table.insert(sorted_mobjs, foundmobj)
 			end
-		end,dplay.mo,dplay.mo.x-range,dplay.mo.x+range,dplay.mo.y-range,dplay.mo.y+range)
+		end,dplay.realmo,dplay.realmo.x-range,dplay.realmo.x+range,dplay.realmo.y-range,dplay.realmo.y+range)
 		
 		table.sort(sorted_mobjs, function(a, b)
 			return R_PointToDist(a.mo.x, a.mo.y) > R_PointToDist(b.mo.x, b.mo.y)

@@ -2,16 +2,17 @@ ZE2.infohud = function(v, player)
 	if gametype ~= GT_ZE2 then return end
 	if ZE2.game_ended then return end
 	if player["ze2_info"].zombie_shop_open then return end
-	if player and not player.mo then return end
+	if not player.realmo then return end
+	--if player and not player.realmo then return end
 	
-	local skinpatch = v.getSprite2Patch(player.mo.skin, SPR2_XTRA)
+	local skinpatch = v.getSprite2Patch(player.realmo.skin, SPR2_XTRA)
 	local hppatch = v.cachePatch("ZE2HPBAR1")
 	local timeemb = v.cachePatch("NGRTIMER")
 	local the_time 
-	local colormap = v.getColormap(skinname, player.mo.color)
+	local colormap = v.getColormap(skinname, player.realmo.color)
 	
-	local health = player.mo.health
-	local maxhealth = player.mo.maxhealth
+	local health = player.realmo.health
+	local maxhealth = player.realmo.maxhealth
 	
 	if ZE2.round_active then
 		if ZE2.time_limit then
@@ -27,40 +28,46 @@ ZE2.infohud = function(v, player)
 	
 	if not player["ze2_info"].pregamemenu_active then
 		if not player["ze2_info"].ghostmode then
-			-- [Player Icon] --
 		
-			v.drawScaled(0, (176-lower_hud_offset)*FRACUNIT, FixedDiv(3*FRACUNIT, 4*FRACUNIT),
-			skinpatch, (V_SNAPTOBOTTOM|V_SNAPTOLEFT), colormap)
-			-- [Player Name] --
-			local display_name = (player["ze2_info"].zombie_type and player["ze2_info"].team == 2) 
-			and (player["ze2_info"].zombie_type + " Zombie") or skins[player.mo.skin].realname
+			if not player.spectator then
+				-- [Player Icon] --
+			
+				v.drawScaled(0, (176-lower_hud_offset)*FRACUNIT, FixedDiv(3*FRACUNIT, 4*FRACUNIT),
+				skinpatch, (V_SNAPTOBOTTOM|V_SNAPTOLEFT), colormap)
+				-- [Player Name] --
+				local display_name = (player["ze2_info"].zombie_type and player["ze2_info"].team == 2) 
+				and (player["ze2_info"].zombie_type + " Zombie") or skins[player.realmo.skin].realname
 
-			customhud.CustomFontString(v, 25, 192-lower_hud_offset,
-			display_name, "TNYFC", 
-			(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, player.mo.color)
-			
-			-- [Rubies] --
-			if player["ze2_info"].rubies ~= nil then
-				customhud.CustomFontString(v, 25, 184-lower_hud_offset, "Rubies: "..player["ze2_info"].rubies, "TNYFC", 
-				(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, SKINCOLOR_RED)
-			end
-			
-			-- [Sprint Meter] --
-			local sprintmeter_color = SKINCOLOR_SKY
-			
-			-- flicker when no sprint energy left
-			if (leveltime/4) % 2 == 0 then
-				if not player["ze2_info"].sprintmeter then
-					sprintmeter_color = SKINCOLOR_RED
-				end
-			end
-			
-			if player["ze2_info"].sprintmeter ~= nil and player["ze2_info"].team == 1 then
-				local y = 168-lower_hud_offset
+				customhud.CustomFontString(v, 25, 192-lower_hud_offset,
+				display_name, "TNYFC", 
+				(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, player.realmo.color)
 				
-				local sprintmeter = L_FixedDecimal(player["ze2_info"].sprintmeter, 1).."%"
-				customhud.CustomFontString(v, 0, y, "Run: "..sprintmeter, "TNYFC",
-				(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, sprintmeter_color)
+				-- [Rubies] --
+				if player["ze2_info"].rubies ~= nil then
+					customhud.CustomFontString(v, 25, 184-lower_hud_offset, "Rubies: "..player["ze2_info"].rubies, "TNYFC", 
+					(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, SKINCOLOR_RED)
+				end
+				
+				-- [Sprint Meter] --
+				local sprintmeter_color = SKINCOLOR_SKY
+				
+				-- flicker when no sprint energy left
+				if (leveltime/4) % 2 == 0 then
+					if not player["ze2_info"].sprintmeter then
+						sprintmeter_color = SKINCOLOR_RED
+					end
+				end
+				
+				if player["ze2_info"].sprintmeter ~= nil and player["ze2_info"].team == 1 then
+					local y = 168-lower_hud_offset
+					
+					local sprintmeter = L_FixedDecimal(player["ze2_info"].sprintmeter, 1).."%"
+					customhud.CustomFontString(v, 0, y, "Run: "..sprintmeter, "TNYFC",
+					(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, sprintmeter_color)
+				end
+			else
+				customhud.CustomFontString(v, 0, 192-lower_hud_offset, "SPECTATOR MODE", "TNYFC",
+				(V_SNAPTOBOTTOM|V_SNAPTOLEFT|V_50TRANS), nil , nil, SKINCOLOR_WHITE)
 			end
 			
 			-- Hardcoded display at the moment
@@ -105,16 +112,19 @@ ZE2.infohud = function(v, player)
 			end
 			
 			-- [Health] --
-			--local healthfont = player.mo.shield_health and "TNYFC" or "STCFC"
-			local healthstring = "+ "..health.."/"..maxhealth
-			customhud.CustomFontString(v, 25, 176-lower_hud_offset, healthstring, "TNYFC", 
-			(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, SKINCOLOR_GREEN)
+			--local healthfont = player.realmo.shield_health and "TNYFC" or "STCFC"
 			
-			if player.mo.shield_health and player.mo.shield_def then
+			if health and maxhealth then
+				local healthstring = "+ "..health.."/"..maxhealth
+				customhud.CustomFontString(v, 25, 176-lower_hud_offset, healthstring, "TNYFC", 
+				(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, SKINCOLOR_GREEN)
+			end
+			
+			if player.realmo.shield_health and player.realmo.shield_def then
 				local healthstring_width = customhud.CustomFontStringWidth(v, healthstring, "TNYFC", FRACUNIT)
-				local shield_color = player.mo.shield_def.color or SKINCOLOR_WHITE
+				local shield_color = player.realmo.shield_def.color or SKINCOLOR_WHITE
 				
-				local shield_health = tostring(player.mo.shield_health)
+				local shield_health = tostring(player.realmo.shield_health)
 				customhud.CustomFontString(v, 29+(healthstring_width/FU), 176-lower_hud_offset, "@ "..shield_health, "TNYFC",
 				(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, shield_color)
 			end

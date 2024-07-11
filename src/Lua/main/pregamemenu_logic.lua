@@ -151,7 +151,9 @@ ZE2.PregameMenuDef = {
 
 addHook("MapLoad", function()
 	for player in players.iterate do
-		player["ze2_info"].pregamemenu_active = true
+		if not player.spectator then
+			player["ze2_info"].pregamemenu_active = true
+		end
 	end
 end)
 
@@ -271,7 +273,10 @@ addHook("PlayerSpawn", function(player)
 	player["ze2_info"].charselect_selection = 1
 
 	if not ZE2.round_active then 
-		player["ze2_info"].pregamemenu_active = true
+		-- ermm... dont pregame menu when spectating!!
+		if not player.spectator then
+			player["ze2_info"].pregamemenu_active = true
+		end
 	end
 	
 	player["ze2_info"].pregamemenu_intopmenu = false
