@@ -41,6 +41,7 @@ ZE2["default_ze2_info"] = {
 	
 	weaponprev_pressed = false,
 	weaponnext_pressed = false,
+	weaponkey_pressed = false,
 	
 	reload_pressed = false,
 	
@@ -112,6 +113,8 @@ ZE2["default_ze2_info"] = {
 			tics_left = 35,
 		}
 	*/
+	
+	pro_controls = false,
 }
 
 addHook("PlayerSpawn", function(player)
@@ -731,6 +734,24 @@ addHook("PlayerThink", function(player)
 					player["ze2_info"].reload = 0
 				end
 			}, true)
+			
+			-- Number Key Weapon Swap (Pro Controls)
+			if player["ze2_info"].pro_controls then
+				if cmd.buttons & BT_WEAPONMASK then
+					-- Dont do if on same slot as selected.
+					if not ((cmd.buttons & BT_WEAPONMASK) == (player["ze2_info"].inventory_selection)) then 
+						if cmd.buttons & BT_WEAPONMASK > ZE2:FetchInventoryLimit(player) then
+							player["ze2_info"].inventory_selection = ZE2:FetchInventoryLimit(player)
+						else
+							player["ze2_info"].inventory_selection = cmd.buttons & BT_WEAPONMASK
+						end
+
+						S_StartSound(nil,sfx_mnu1a,player)
+						
+						player["ze2_info"].reload = 0
+					end
+				end
+			end
 			
 			-- Reload
 			ZE2:TryBooleanAction(player, {

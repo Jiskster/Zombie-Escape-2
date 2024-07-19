@@ -129,9 +129,11 @@ addHook("PlayerThink", function(player)
 	if player.lastemotepress then
 		player.lastemotepress = $ - 1
 	end
-	if player["ze2_info"].pregamemenu_active then
+	
+	if player["ze2_info"].pregamemenu_active or player["ze2_info"].pro_controls then
 		return
 	end
+	
 	if (player.cmd.buttons & BT_WEAPONMASK) == 1 then
 		COM_BufInsertText(player, "z_emote 1")
 	end
