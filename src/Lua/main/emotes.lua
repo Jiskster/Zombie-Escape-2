@@ -115,12 +115,6 @@ COM_AddCommand("z_emotelist", function(player, page)
 			end
 		end
 	end
-	/*
-	for i,v in ipairs(ZE2.Emotes) do
-		CONS_Printf(player,"\x82\+ (\$i\): \$v.Name\")
-		CONS_Printf(player,"\x88\| Description: \$v.Description\")
-	end
-	*/
 end)
 
 COM_AddCommand("z_setemote", function(player, slot, emote)
