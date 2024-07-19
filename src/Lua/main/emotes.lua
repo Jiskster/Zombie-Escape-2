@@ -79,21 +79,22 @@ COM_AddCommand("z_emote", function(player, emotenum)
 	and player.playerstate ~= PST_DEAD and
 	netgame and multiplayer then
 		local emotenum_tonum = tonumber(emotenum)
+		
 		if not ZE2.Emotes[emotenum_tonum] then
 			CONS_Printf(player, "Invalid Emote: ("+emotenum_tonum+")")
 			return
 		end
+		
 		if not(player.emotebubble) and not player.lastemotepress then
 			player.lastemotepress = (TICRATE*3 + 25)
 			player.mo.emotebubble = P_SpawnMobj(player.mo.x,player.mo.y,player.mo.z+player.mo.height,MT_ZEMO_BUBBLE)
 			local ebub = player.mo.emotebubble
-			local slotchosen = player.emoteslots[emotenum_tonum]
 			ebub.target = player.mo
 			ebub.isemotebubble = true
 			
-			ebub.sprite = ZE2.Emotes[slotchosen].Sprite
+			ebub.sprite = ZE2.Emotes[emotenum_tonum].Sprite
 			P_SetScale(ebub, ebub.scale/4)
-			S_StartSound(player.mo,ZE2.Emotes[slotchosen].Sound)
+			S_StartSound(player.mo,ZE2.Emotes[emotenum_tonum].Sound)
 		end
 	end
 end)
@@ -110,7 +111,7 @@ COM_AddCommand("z_setemote", function(player, slot, emote)
 		CONS_Printf(player,"z_setemote <slot> <emotenumber>: Sets your slot to an emote.")
 		return
 	end
-	if not(slot) or tonumber(slot) > 3 or tonumber(slot) < 1 then
+	if not(slot) or not tonumber(slot) or not tonumber(emote) or tonumber(slot) > 3 or tonumber(slot) < 1 then
 		CONS_Printf(player,"Slot must be a valid number. And between 1 - 3")
 		return
 	end
@@ -135,15 +136,11 @@ addHook("PlayerThink", function(player)
 	end
 	
 	if (player.cmd.buttons & BT_WEAPONMASK) == 1 then
-		COM_BufInsertText(player, "z_emote 1")
-	end
-	
-	if (player.cmd.buttons & BT_WEAPONMASK) == 2 then
-		COM_BufInsertText(player, "z_emote 2")
-	end
-	
-	if (player.cmd.buttons & BT_WEAPONMASK) == 3 then
-		COM_BufInsertText(player, "z_emote 3")
+		COM_BufInsertText(player, "z_emote "..player.emoteslots[1])
+	elseif (player.cmd.buttons & BT_WEAPONMASK) == 2 then
+		COM_BufInsertText(player, "z_emote "..player.emoteslots[2])
+	elseif (player.cmd.buttons & BT_WEAPONMASK) == 3 then
+		COM_BufInsertText(player, "z_emote "..player.emoteslots[3])
 	end
 end)
 
