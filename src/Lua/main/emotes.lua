@@ -99,11 +99,28 @@ COM_AddCommand("z_emote", function(player, emotenum)
 	end
 end)
 
-COM_AddCommand("z_emotelist", function(player)
+COM_AddCommand("z_emotelist", function(player, page)
+	local foundemote = false
+	page = max(tonumber($) or 1, 1)
+	
+	CONS_Printf(player,"\x8A\#PAGE \$page\# (z_emotelist <page>)")
+	for i=((page-1)*10)+1,(page)*10 do
+		if ZE2.Emotes[i] then
+			local name = ZE2.Emotes[i].Name
+			local description = ZE2.Emotes[i].Description
+			
+			if name and description then
+				CONS_Printf(player,"\x82\+ (\$i\): \$name\")
+				CONS_Printf(player,"\x80\| Description: \$description\")
+			end
+		end
+	end
+	/*
 	for i,v in ipairs(ZE2.Emotes) do
 		CONS_Printf(player,"\x82\+ (\$i\): \$v.Name\")
 		CONS_Printf(player,"\x88\| Description: \$v.Description\")
 	end
+	*/
 end)
 
 COM_AddCommand("z_setemote", function(player, slot, emote)
