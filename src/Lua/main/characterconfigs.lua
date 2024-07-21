@@ -325,7 +325,7 @@ ZE2.AddConfig("tails", {
 	charability = CA_FLY,
 	charability2 = CA2_NONE,
 	jumpfactor = 18 * FRACUNIT / 19,
-	actionspd = 40*FRACUNIT,
+	actionspd = 75*FRACUNIT,
 	sprintboost = 15 * FRACUNIT,
 	bullet_speed_multiplier = (3*FRACUNIT)/2, -- 1.5x
 	desc1 = "Has the brains. Without the plane.",
