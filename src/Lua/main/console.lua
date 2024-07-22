@@ -148,3 +148,54 @@ COM_AddCommand("z_procontrols", function(player, toggling)
 		CONS_Printf(player, "Pro Controls has been disabled.")
 	end
 end)
+
+COM_AddCommand("z_swapitem", function(player, slot1, slot2)
+	local help = "z_swapitem <slot1> <slot2>"
+	
+	local slot1_item
+	local slot2_item
+
+	if not (slot1) or not (slot2) then
+		CONS_Printf(player, help)
+		return
+	elseif not tonumber(slot1) or not tonumber(slot2) then
+		CONS_Printf(player, help)
+		return
+	end
+	
+	slot1 = tonumber($)
+	slot2 = tonumber($)
+	
+	if slot1 > ZE2:FetchInventoryLimit(player) or slot1 <= 0 then
+		CONS_Printf(player, "Slot 1 is not a valid number in range.")
+		return
+	end
+	
+	if slot2 > ZE2:FetchInventoryLimit(player) or slot2 <= 0 then
+		CONS_Printf(player, "Slot 2 is not a valid number in range.")
+		return
+	end
+	
+	if slot1 == slot2 then
+		CONS_Printf(player, "Slot 1 and 2 cannot be the same number")
+		return
+	end
+	
+	slot1_item = ZE2:Copy(ZE2:FetchInventorySlot(player, slot1))
+	slot2_item = ZE2:Copy(ZE2:FetchInventorySlot(player, slot2))
+
+	ZE2:ClearInventorySlot(player, slot1)
+	ZE2:ClearInventorySlot(player, slot2)
+	
+	if slot2_item then
+		ZE2:GiveItem(player, slot2_item, nil, slot1)
+	else
+		ZE2:ClearInventorySlot(player, slot1)
+	end
+	
+	if slot1_item then
+		ZE2:GiveItem(player, slot1_item, nil, slot2)
+	else
+		ZE2:ClearInventorySlot(player, slot2)
+	end
+end)

@@ -75,6 +75,16 @@ function ZE2:FetchInventorySlot(player, slot)
 	end
 end
 
+
+function ZE2:ClearInventorySlot(player, slot)
+	if player and player.valid then
+		if player["ze2_info"] and player["ze2_info"].inventory_selection then
+			ZE2:FetchInventory(player)[slot or player["ze2_info"].inventory_selection] = nil
+			return true
+		end
+	end
+	return false
+end
 -- returns number
 function ZE2:FetchEmptySlot(player)
 	for i=1,ZE2:FetchInventoryLimit(player) do
