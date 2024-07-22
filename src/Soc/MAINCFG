@@ -91,6 +91,19 @@ SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 10
 Lua.ze2_solofail = true
 
+Level J6
+Levelname = Obby From Hell
+Subtitle = Easy parkour
+Act = 0
+SkyNum = 52
+Music = RBXC
+TypeOfLevel = ZE2
+NextLevel = J2
+NoZone = True
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 7
+Lua.ze2_noabilities = true
+
 #  is to make it not recognized as the tutorial by Takis and anyone else who reacts to the tutorial
 
 Level Y0
