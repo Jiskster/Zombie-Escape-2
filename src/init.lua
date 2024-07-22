@@ -29,6 +29,7 @@ dofile "items/item_gfz_sphere.lua"
 dofile "items/item_infinity_ring.lua"
 dofile "items/item_grenade.lua"
 dofile "items/item_landmine.lua"
+dofile "items/item_energy_drink.lua"
 
 // ITEMS END
 

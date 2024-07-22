@@ -10,7 +10,16 @@ ZE2.Effect_ThinkerFuncs = {
 		if player.mo and player.mo.valid then
 			P_SpawnGhostMobj(player.mo)
 		end
-	end
+	end,
+	["Energy_Drink"] = function(player)
+		if player.mo and player.mo.valid then
+			player["ze2_info"].sprintmeter = 100*FRACUNIT
+			
+			local ghost = P_SpawnGhostMobj(player.mo)
+			ghost.colorized = true
+			ghost.color = SKINCOLOR_MASTER
+		end
+	end,
 }
 
 ZE2.Effect_EndFuncs = {
@@ -18,7 +27,12 @@ ZE2.Effect_EndFuncs = {
 		if player.mo and player.mo.valid then
 			S_StartSound(player.mo, sfx_bstdn)
 		end
-	end
+	end,
+	["Energy_Drink"] = function(player)
+		if player.mo and player.mo.valid then
+			S_StartSound(player.mo, sfx_edprdn)
+		end
+	end,
 }
 
 ZE2["default_ze2_info"] = {
