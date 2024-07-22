@@ -140,6 +140,20 @@ NoZone = True
 NextLevel = J1
 Lua.ze2_timelimit = 7
 
+Level G0
+Levelname = Westopolis
+SubTitle = Now EVERYBODY gets a gun!
+Act = 0
+Music = WESTO1
+TypeOfLevel = ZE2
+NextLevel = Z2
+SkyNum = 8008
+LevelSelect = 1
+SkyboxScale = 64
+NoZone = true
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 7
+
 ## SWARM MAP START
 
 Level V0
