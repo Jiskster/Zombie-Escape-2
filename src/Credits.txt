@@ -35,6 +35,8 @@ Testers:
 "bypigs2"
 "Tempestissimo"
 "jovier"
+"GLide KS"
+"Neonius|Next"
 
 This mod is not open assets, it is encouraged to patch the mod via external addons.
 You will be credited for your contributions.
