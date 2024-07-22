@@ -2,7 +2,7 @@ The zombies will be back!
 
 Creator:
 "Hammito" / "Sabl3" - Original zombie escape creator. No longer present in the community.
-"Jisk" - SRBZ/ZE2 creator and ZE1 Maintainer.
+"Jisk" - ZE2 creator and ZE1 Maintainer.
 
 Coders:
 "Jisk"
@@ -24,6 +24,8 @@ Mappers:
 "Tempestissimo"
 "Neonius|Next"
 "jovier"
+"bypigs2"
+"GLide KS"
 
 Testers:
 "bullymaguire1991" - Chao's step father
