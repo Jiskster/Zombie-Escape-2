@@ -90,6 +90,24 @@ mobjinfo[MT_PENGUINATOR].forceknockback = 30*FU -- relativeknockback
 mobjinfo[MT_PENGUINATOR].forceverticalknockback = 20*FU
 mobjinfo[MT_PENGUINATOR].relativeknockback = true
 
+mobjinfo[MT_GOOMBA].npc_name = "Goomba"
+mobjinfo[MT_GOOMBA].npc_spawnhealth = {10,15}
+mobjinfo[MT_GOOMBA].npc_name_color = SKINCOLOR_ORANGE
+mobjinfo[MT_GOOMBA].rubydrop = {2,2}
+mobjinfo[MT_GOOMBA].forcedamage = 10
+mobjinfo[MT_GOOMBA].forceknockback = 20*FU -- relativeknockback
+mobjinfo[MT_GOOMBA].forceverticalknockback = 6*FU
+mobjinfo[MT_GOOMBA].relativeknockback = true
+
+mobjinfo[MT_BLUEGOOMBA].npc_name = "Blue Goomba"
+mobjinfo[MT_BLUEGOOMBA].npc_spawnhealth = {10,15}
+mobjinfo[MT_BLUEGOOMBA].npc_name_color = SKINCOLOR_BLUE
+mobjinfo[MT_BLUEGOOMBA].rubydrop = {2,2}
+mobjinfo[MT_BLUEGOOMBA].forcedamage = 10
+mobjinfo[MT_BLUEGOOMBA].forceknockback = 20*FU -- relativeknockback
+mobjinfo[MT_BLUEGOOMBA].forceverticalknockback = 6*FU
+mobjinfo[MT_BLUEGOOMBA].relativeknockback = true
+
 /*
 local function GoldCrawlaRNG(mobj)
 	if gametype ~= GT_ZE2 then return end
