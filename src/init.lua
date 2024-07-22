@@ -86,5 +86,6 @@ dofile "levelscripts/tutorial.lua"
 dofile "levelscripts/robloxobby.lua"
 dofile "levelscripts/doomedcorp.lua"
 dofile "levelscripts/doomedcorp_objects.lua"
+dofile "levelscripts/superzombiobros.lua"
 
 dofile "main/netvars.lua"

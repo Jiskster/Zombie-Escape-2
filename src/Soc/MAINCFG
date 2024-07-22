@@ -121,12 +121,24 @@ Levelname = Doomed Corp
 Act = 0
 Music = THZ2
 Subtitle = Those Doom monsters did this...?
-TypeOfLevel = ze2
+TypeOfLevel = ZE2
 SkyNum = 8
 SelectHeading = ZE2 Survival Maps
 NoZone = True
 NextLevel = J1
 Lua.ze2_timelimit = 6
+
+Level M1
+Levelname = Super Zombio Bros
+Act = 0
+Subtitle = Mamma mia.
+TypeOfLevel = ZE2
+Music = MARIO1
+Skynum = 31
+SelectHeading = ZE2 Survival Maps
+NoZone = True
+NextLevel = J1
+Lua.ze2_timelimit = 7
 
 ## SWARM MAP START
 
