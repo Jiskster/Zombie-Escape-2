@@ -127,7 +127,7 @@ COM_AddCommand("z_giveshield", function(player, shieldtype)
 		CONS_Printf(player, "\x85\Invalid shieldtype!")
 		return
 	end
-end)
+end, COM_ADMIN)
 
 COM_AddCommand("z_procontrols", function(player, toggling)
 	if not (toggling) then
