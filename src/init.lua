@@ -32,6 +32,9 @@ dofile "items/item_landmine.lua"
 
 // ITEMS END
 
+dofile "enemies/vanilla.lua"
+dofile "enemies/doom.lua"
+
 dofile "main/baseplayer.lua"
 
 dofile "main/zombie/zombie_colors.lua"
@@ -43,7 +46,6 @@ dofile "main/characterconfigs.lua"
 dofile "main/console.lua"
 dofile "main/health_and_combat.lua" -- main stuff 
 
-dofile "main/enemies.lua"
 dofile "main/intermission.lua"
 dofile "main/capitalism.lua"
 dofile "main/exiting.lua"
@@ -82,5 +84,7 @@ dofile "levelscripts/caveofthepast.lua"
 dofile "levelscripts/spookyflower.lua"
 dofile "levelscripts/tutorial.lua"
 dofile "levelscripts/robloxobby.lua"
+dofile "levelscripts/doomedcorp.lua"
+dofile "levelscripts/doomedcorp_objects.lua"
 
 dofile "main/netvars.lua"

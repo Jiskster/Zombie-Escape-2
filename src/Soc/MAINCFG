@@ -116,6 +116,18 @@ Lua.ze2_timelimit = 10
 NextLevel = T3
 SkyNum = 7300
 
+Level DC
+Levelname = Doomed Corp
+Act = 0
+Music = THZ2
+Subtitle = Those Doom monsters did this...?
+TypeOfLevel = ze2
+SkyNum = 8
+SelectHeading = ZE2 Survival Maps
+NoZone = True
+NextLevel = J1
+Lua.ze2_timelimit = 6
+
 ## SWARM MAP START
 
 Level V0
