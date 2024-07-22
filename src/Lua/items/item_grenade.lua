@@ -13,4 +13,4 @@ local grenade = ZE2:CreateItem("Grenade",  {
 	price = 75,
 })
 
-ZE2:RegisterShopItem(grenade)
+ZE2:RegisterShop_ItemID(grenade)

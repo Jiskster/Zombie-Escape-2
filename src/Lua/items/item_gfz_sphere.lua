@@ -37,4 +37,4 @@ local gfz_sphere = ZE2:CreateItem("GFZSPHERE",  {
 	reload_time = TICRATE*4,
 })
 
-ZE2:RegisterShopItem(gfz_sphere)
+ZE2:RegisterShop_ItemID(gfz_sphere)

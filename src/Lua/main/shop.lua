@@ -27,7 +27,7 @@ ZE2.Zombie_ShopList = {
 
 }
 
-function ZE2:RegisterShopItem(item_id)
+function ZE2:RegisterShop_ItemID(item_id)
 	local iteminfo = ZE2:CopyItemFromID(item_id)
 	local shop_def = {}
 	

@@ -136,4 +136,4 @@ addHook("MobjFuse", function(mobj)
 	mobj.momz = 0
 end, MT_ZE2_THROWNSCATTER)
 
-ZE2:RegisterShopItem(scatter_ring)
+ZE2:RegisterShop_ItemID(scatter_ring)

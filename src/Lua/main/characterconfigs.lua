@@ -146,6 +146,12 @@ ZE2.SetCCtoplayer = function(player)
 			player.charflags = $|cc[pmo.skin].charflags 
 		end
 		
+		if pmo.shield_def and pmo.shield_def.jumpfactor_multiplier then
+			local multi = pmo.shield_def.jumpfactor_multiplier
+			
+			player.jumpfactor = FixedMul($, multi)
+		end
+		
 		if player["ze2_info"].sprintdelay then
 			player.jumpfactor = $ / 2
 			player.actionspd = $ / 2

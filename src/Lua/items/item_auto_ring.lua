@@ -18,4 +18,4 @@ local auto_ring = ZE2:CreateItem("Automatic Ring",  {
 	}
 })
 
-ZE2:RegisterShopItem(auto_ring)
+ZE2:RegisterShop_ItemID(auto_ring)

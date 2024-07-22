@@ -57,6 +57,11 @@ ZE2.shophud = function(v, player)
 					
 					v.drawScaled(x+item_icon_xoffset, y+item_icon_yoffset+change, FixedMul(iconscale, FU), icon_patch, V_SNAPTOTOP|topmenuflag|soldflag)
 				end
+			elseif shop_def.icon then
+				local iconscale = shop_def.iconscale or FU
+				local icon_patch = v.cachePatch(shop_def.icon)
+				
+				v.drawScaled(x+item_icon_xoffset, y+item_icon_yoffset+change, FixedMul(iconscale, FU), icon_patch, V_SNAPTOTOP|topmenuflag|soldflag)
 			end
 			
 			if shop_def.price then

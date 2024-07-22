@@ -15,4 +15,4 @@ local milk = ZE2:CreateItem("Milk", {
 	price = 50,
 })
 
-ZE2:RegisterShopItem(milk)
+ZE2:RegisterShop_ItemID(milk)

@@ -73,4 +73,4 @@ addHook("MobjCollide", function(wood, tmo)
 	end
 end, MT_PROPWOOD)
 
-ZE2:RegisterShopItem(wood_fence)
+ZE2:RegisterShop_ItemID(wood_fence)

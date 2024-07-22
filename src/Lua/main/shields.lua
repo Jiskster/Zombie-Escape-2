@@ -1,3 +1,5 @@
+freeslot("MT_ZE2_SHIELD")
+
 -- NOTE: mobj_t.shield_def shouldn't be edited. It's a reference.
 
 ZE2.CachedShieldMobjs = {}
@@ -9,10 +11,15 @@ ZE2.ShieldDefinitions = {
 		health = 75,
 		state = S_PITY1,
 		color = SKINCOLOR_MOSS,
+	},
+	[2] = {
+		name = "Whirlwind",
+		health = 20,
+		state = S_WIND1,
+		color = SKINCOLOR_BONE,
+		jumpfactor_multiplier = 3*FRACUNIT/2 ,
 	}
 }
-
-freeslot("MT_ZE2_SHIELD")
 
 mobjinfo[MT_ZE2_SHIELD] = {
 	doomednum = -1,
@@ -23,6 +30,20 @@ mobjinfo[MT_ZE2_SHIELD] = {
 	dispoffset = 4,
 	flags = MF_NOBLOCKMAP|MF_NOCLIP|MF_NOCLIPHEIGHT|MF_NOGRAVITY|MF_SCENERY,
 }
+
+ZE2:RegisterGenericShop("Whirlwind Shield", {
+	icon = "TVWWICON",
+	iconscale = FRACUNIT/2,
+	buyfunc = function(player)
+		if ZE2.MobjHasShield(player.mo) then
+			CONS_Printf(player, "A shield is already equiped.")
+			S_StartSound(player.mo, sfx_lose)
+			return false
+		end
+		
+		ZE2:GiveShieldToMobj(player.mo, 2) -- give whirl wind
+	end,
+}, 150)
 
 function ZE2:GiveShieldToMobj(mobj, shieldid)
 	if not ZE2.ShieldDefinitions[shieldid] then return false end
@@ -42,6 +63,14 @@ function ZE2:GiveShieldToMobj(mobj, shieldid)
 	mobj.shield_orb.target = mobj
 	
 	return true
+end
+
+function ZE2.MobjHasShield(mobj)
+	if mobj.shield_def or mobj.shield_health then
+		return true
+	end
+	
+	return false
 end
 
 function ZE2:RemoveShieldFromMobj(mobj)

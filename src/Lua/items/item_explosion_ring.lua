@@ -8,4 +8,4 @@ local explosion_ring = ZE2:CreateItem("Explosion Ring", {
 	price = 140,
 })
 
-ZE2:RegisterShopItem(explosion_ring)
+ZE2:RegisterShop_ItemID(explosion_ring)

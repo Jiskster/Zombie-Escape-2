@@ -12,4 +12,4 @@ local apple = ZE2:CreateItem("Apple", {
 	price = 15,
 })
 
-ZE2:RegisterShopItem(apple)
+ZE2:RegisterShop_ItemID(apple)

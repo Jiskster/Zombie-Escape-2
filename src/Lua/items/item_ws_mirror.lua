@@ -106,4 +106,4 @@ addHook("MobjDeath", function(mo, inf, src)
 	end
 end, MT_MIRRORCLONE)
 
-ZE2:RegisterShopItem(w_mirror)
+ZE2:RegisterShop_ItemID(w_mirror)

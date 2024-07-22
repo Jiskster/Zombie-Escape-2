@@ -68,4 +68,4 @@ addHook("TouchSpecial", function(special, toucher)
 	return true
 end, MT_ZE2_LANDMINE)
 
-ZE2:RegisterShopItem(landmine)
+ZE2:RegisterShop_ItemID(landmine)

@@ -15,4 +15,4 @@ local blue_spring = ZE2:CreateItem("Blue Spring",  {
 	price = 70,
 })
 
-ZE2:RegisterShopItem(blue_spring)
+ZE2:RegisterShop_ItemID(blue_spring)

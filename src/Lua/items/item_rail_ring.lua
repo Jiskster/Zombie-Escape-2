@@ -112,4 +112,4 @@ local rail_ring = ZE2:CreateItem("Rail Ring", {
 	},
 })
 
-ZE2:RegisterShopItem(rail_ring)
+ZE2:RegisterShop_ItemID(rail_ring)

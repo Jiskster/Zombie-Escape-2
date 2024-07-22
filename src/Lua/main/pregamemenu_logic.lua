@@ -118,11 +118,20 @@ ZE2.PregameMenuDef = {
 					local shopdef = ZE2.NumToShopDef(shoplistindex.shopdefid)
 					local price = shopdef.price
 					local enoughrubies = (player["ze2_info"].rubies - price) >= 0
-					
-					--ZE2:GiveItemFromTable(player, iteminfo, count, slot) 
+
 					if not shoplistindex.sold then
 						if enoughrubies then
-							if ZE2:GiveItem(player, shopdef.iteminfo, nil) then
+							if shopdef.buyfunc and shopdef.buyfunc(player) == false then
+								return
+							end
+							
+							if shopdef.iteminfo then
+								if ZE2:GiveItem(player, shopdef.iteminfo, nil) then
+									player["ze2_info"].rubies = $ - price
+									S_StartSound(nil, sfx_strpst, player)
+									shoplistindex.sold = true
+								end
+							else
 								player["ze2_info"].rubies = $ - price
 								S_StartSound(nil, sfx_strpst, player)
 								shoplistindex.sold = true
