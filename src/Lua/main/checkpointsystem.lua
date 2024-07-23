@@ -58,6 +58,8 @@ function ZE2.LatestCheckpointTeleport(player, setcheckpoint)
 		S_StartSound(player.mo, sfx_telepo) -- make sure it plays the sound
 		player.mo.angle = FixedAngle(info.angle*FRACUNIT)
 		
+		player.mo.flags2 = $ & ~MF2_TWOD -- get out
+		
 		if setcheckpoint then
 			player["ze2_info"].checkpoint_number = latest_checkpoint
 		end
