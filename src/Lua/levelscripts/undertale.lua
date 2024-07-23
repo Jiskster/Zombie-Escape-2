@@ -216,6 +216,7 @@ local function undertale_Startbattle1()
 	S_ChangeMusic("UTBTL2",true,player)
 	S_StartSound(player, sfx_utdgr)
 	Undertale_Battle1Timer.active = true
+	ZE2.CurrentZombieCheckpoint = 3
 end
 
 local function undertale_Prebattle2()
@@ -223,16 +224,7 @@ local function undertale_Prebattle2()
 end
 
 local function undertale_Startbattle2()
-	ZE2.ZombieCheckpoints = {
-		[1] = {
-			x = -1088,
-			y = -4736,
-			z = 0,
-			angle = ANGLE_180,
-		}
-	}
-	
-	ZE2.CurrentZombieCheckpoint = 1
+	ZE2.CurrentZombieCheckpoint = 4
 	
 	for player in players.iterate do
 		if player.mo and player.mo.valid then
