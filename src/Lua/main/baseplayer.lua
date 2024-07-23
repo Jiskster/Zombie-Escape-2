@@ -639,7 +639,7 @@ addHook("PlayerThink", function(player)
 				
 				ZE2:GivePlayerEffect(player, "Alpha_Rage", {
 					normalspeed_multiplier = 3*FU,
-					actionspd_multiplier = 3*FU,
+					actionspd_multiplier = 2*FU,
 					damage_multiplier = 2*FU,
 					charability = CA_JUMPTHOK,
 				}, 3*TICRATE)
