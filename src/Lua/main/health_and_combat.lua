@@ -82,7 +82,7 @@ function ZE2.KillMobj(mo, inf, src, damagetype, killedbysomething)
 			end
 			
 			if killer then
-				player["ze2_info"].blood_currency = $ + 25
+				player["ze2_info"].blood_currency = $ + 100
 			end
 		end
 		

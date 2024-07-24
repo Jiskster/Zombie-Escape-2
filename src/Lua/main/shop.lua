@@ -66,7 +66,7 @@ local ZMBSHOP_ALPHA_ZOMBIE = ZE2:RegisterGenericShop("Alpha_Zombie", {
 		player["ze2_info"].zombie_next_type = "alpha"
 	end,
 	for_zombies = true,
-}, 100)
+}, 500)
 
 local ZMBSHOP_SIGMA_ZOMBIE = ZE2:RegisterGenericShop("Sigma_Zombie", {
 	realname = "Sigma Zombie",
@@ -74,7 +74,7 @@ local ZMBSHOP_SIGMA_ZOMBIE = ZE2:RegisterGenericShop("Sigma_Zombie", {
 		player["ze2_info"].zombie_next_type = "sigma"
 	end,
 	for_zombies = true,
-}, 200)
+}, 1000)
 
 ZE2.Zombie_ShopList = {
 	ZMBSHOP_100BONUSHP,
