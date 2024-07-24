@@ -1,9 +1,9 @@
 ZE2:CreateItem("Red Ring",  {
 	object = MT_REDRING,
 	icon = "RINGIND",
-	firerate = 4,
+	firerate = 7,
 	color = SKINCOLOR_RED,
-	knockback = 10*FRACUNIT,
+	knockback = 3*FRACUNIT,
 	damage = 45,
 	velocity_multiplier = 2*FRACUNIT,
 	skin_overwrite = {
