@@ -8,13 +8,13 @@ local auto_ring = ZE2:CreateItem("Automatic Ring",  {
 	knockback = 3*FRACUNIT,
 	flags2 = MF2_AUTOMATIC,
 	ammo = 100,
-	reload_time = TICRATE*8,
+	reload_time = TICRATE*3,
 	price = 50,
 	skin_overwrite = {
 		["knuckles"] = {
 			damage = 30,
-			max_ammo = 200,
-			ammo = 200,
+			max_ammo = 150,
+			ammo = 150,
 			firerate = 1,
 			reload_time = TICRATE*6,
 		}

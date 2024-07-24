@@ -11,7 +11,7 @@ ZE2.ZombieConfig = {
 		actionspd = 9*FRACUNIT,
 		killaward = 10,
 		accelstart = 100,
-		thrustfactor = 7,
+		thrustfactor = 6,
 		inventory_limit = 1,
 		inventory = {
 			ZE2:CopyItemFromID(ITEM_INSTA_BURST)
@@ -30,7 +30,7 @@ ZE2.ZombieConfig = {
 		killaward = 20,
 		knockback_multiplier = FRACUNIT/2,
 		accelstart = 100,
-		acceleration = 27,
+		acceleration = 31,
 		inventory_limit = 1,
 		inventory = {
 			ZE2:CopyItemFromID(ITEM_INSTA_BURST),
