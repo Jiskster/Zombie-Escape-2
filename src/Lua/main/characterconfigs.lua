@@ -18,7 +18,7 @@ ZE2.ZombieConfig = {
 			ZE2:CopyItemFromID(ITEM_INSTA_BURST)
 		},
 	},
-	ZE2.ZombieConfig["alpha"] = {
+	["alpha"] = {
 		skincolor = SKINCOLOR_ALPHAZOMBIE,
 		normalspeed = 24 * FRACUNIT,
 		health = 2000,
