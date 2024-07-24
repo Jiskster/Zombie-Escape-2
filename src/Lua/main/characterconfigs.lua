@@ -3,7 +3,7 @@
 ZE2.ZombieConfig = {
 	["normal"] = {
 		skincolor = SKINCOLOR_MOSS,
-		normalspeed = 24 * FRACUNIT,
+		normalspeed = 25 * FRACUNIT,
 		health = 750,
 		charability = CA_NONE,
 		charability2 = CA2_NONE,
@@ -11,14 +11,14 @@ ZE2.ZombieConfig = {
 		actionspd = 9*FRACUNIT,
 		killaward = 10,
 		accelstart = 100,
+		acceleration = 30,
 		thrustfactor = 6,
 		inventory_limit = 1,
 		inventory = {
 			ZE2:CopyItemFromID(ITEM_INSTA_BURST)
 		},
-		
 	},
-	["alpha"] = {
+	ZE2.ZombieConfig["alpha"] = {
 		skincolor = SKINCOLOR_ALPHAZOMBIE,
 		normalspeed = 24 * FRACUNIT,
 		health = 2000,
@@ -29,8 +29,8 @@ ZE2.ZombieConfig = {
 		scale = 13*FRACUNIT/10,
 		killaward = 20,
 		knockback_multiplier = FRACUNIT/2,
-		accelstart = 100,
-		acceleration = 31,
+		accelstart = 130,
+		acceleration = 30,
 		inventory_limit = 1,
 		inventory = {
 			ZE2:CopyItemFromID(ITEM_INSTA_BURST),
@@ -39,7 +39,7 @@ ZE2.ZombieConfig = {
 	["sigma"] = {
 		skincolor = SKINCOLOR_SUPERSILVER4,
 		normalspeed = 30 * FRACUNIT,
-		health = 1000,
+		health = 2500,
 		charability = CA_THOK,
 		charability2 = CA2_NONE,
 		jumpfactor = 19 * FRACUNIT / 19,
