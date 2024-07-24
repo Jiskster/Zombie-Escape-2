@@ -292,11 +292,14 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			end
 			
 			if not relativeknockback then
-				P_Thrust(mo, inf.angle, knockback)
+				local r_momxy = FixedHypot(mo.momx, mo.momy)
+				
+				P_InstaThrust(mo, inf.angle, knockback + abs(r_momxy))
 			else
 				local r_angle = R_PointToAngle2(mo.x, mo.y, inf.x, inf.y)
+				local r_momxy = FixedHypot(mo.momx, mo.momy)
 				
-				P_Thrust(mo, r_angle - ANGLE_180, knockback)
+				P_InstaThrust(mo, r_angle - ANGLE_180, knockback + abs(r_momxy))
 			end
 		
 			if verticalknockback then
