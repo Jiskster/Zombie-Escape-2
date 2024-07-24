@@ -313,13 +313,13 @@ ZE2.AddConfig = function(charname, input_table)
 end
 
 ZE2.AddConfig("sonic", {
-	normalspeed = 14 * FRACUNIT,
+	normalspeed = 13 * FRACUNIT,
 	health = 25,
 	charability = CA_JUMPTHOK,
 	charability2 = CA2_NONE,
 	jumpfactor = 15 * FRACUNIT / 19,
 	actionspd = 8*FRACUNIT,
-	sprintboost = 16 * FRACUNIT,
+	sprintboost = 12 * FRACUNIT,
 	desc1 = "Fast hedgehog born to speed.",
 	desc2 = "Has Low HP, and High Speed",
 	desc3 = "Are you up for the challenge?"
@@ -332,7 +332,7 @@ ZE2.AddConfig("tails", {
 	charability2 = CA2_NONE,
 	jumpfactor = 18 * FRACUNIT / 19,
 	actionspd = 65*FRACUNIT,
-	sprintboost = 15 * FRACUNIT,
+	sprintboost = 11 * FRACUNIT,
 	bullet_speed_multiplier = (3*FRACUNIT)/2, -- 1.5x
 	desc1 = "Has the brains. Without the plane.",
 	desc2 = "Flies slow. Slower than sonic."
@@ -345,7 +345,7 @@ ZE2.AddConfig("knuckles", {
 	charability2 = CA2_NONE,
 	jumpfactor = 17 * FRACUNIT / 19,
 	actionspd = 24*FRACUNIT,
-	sprintboost = 13 * FRACUNIT,
+	sprintboost = 10 * FRACUNIT,
 	bullet_speed_multiplier = FRACUNIT/2,
 	desc1 = "Very Strong feller",
 	desc2 = "Glides slow. The slowest."
@@ -357,7 +357,7 @@ ZE2.AddConfig("amy", {
 	charability = CA_TWINSPIN,
 	charability2 = CA2_NONE,
 	jumpfactor = 20 * FRACUNIT / 19,
-	sprintboost = 14 * FRACUNIT,
+	sprintboost = 11 * FRACUNIT,
 	desc1 = "Pink Pink Pink.",
 	desc2 = "WIP ABILITIES"
 })
@@ -368,7 +368,7 @@ ZE2.AddConfig("fang", {
 	charability = CA_BOUNCE,
 	charability2 = CA2_NONE,
 	jumpfactor = 20 * FRACUNIT / 19,
-	sprintboost = 14 * FRACUNIT,
+	sprintboost = 12 * FRACUNIT,
 	desc1 = "He shoots the shooty shoot.",
 	desc2 = "Have less momentum to shoot."
 })
@@ -380,7 +380,7 @@ ZE2.AddConfig("metalsonic", {
 	charability2 = CA2_NONE,
 	jumpfactor = 15 * FRACUNIT / 19,
 	charflags = SF_MACHINE,
-	sprintboost = 12 * FRACUNIT,
+	sprintboost = 10 * FRACUNIT,
 	accelstart = 96,
 	acceleration = 25,
 	sprintexhaust = 3*TICRATE, -- loser
