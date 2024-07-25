@@ -276,7 +276,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			end
 			
 			if inflictor_player then
-				ZE2:DecrementSprint(mo.player, 25*FRACUNIT)
+				ZE2:DecrementSprint(mo.player, 40*FRACUNIT)
 				
 				inflictor_player["ze2_info"].blood_currency = $ + 5
 			end
