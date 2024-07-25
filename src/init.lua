@@ -89,5 +89,6 @@ dofile "levelscripts/doomedcorp.lua"
 dofile "levelscripts/doomedcorp_objects.lua"
 dofile "levelscripts/superzombiobros.lua"
 dofile "levelscripts/westopolis.lua"
+dofile "levelscripts/ancientcatacombs.lua"
 
 dofile "main/netvars.lua"
