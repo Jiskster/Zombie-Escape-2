@@ -102,13 +102,18 @@ ZE2.tabscores = function(v)
 		
 		local flags = V_SNAPTOTOP
 		if (p.quittime and (leveltime/TICRATE % 2)) then flags = $|V_50TRANS end
-        local skin = skins[p.skin].name
+        local skin = p.skin
         local color = v.getColormap(skin,p.realmo.color)
         local name = string.sub(p.name,1,15)
+        local skinpatch = v.getSprite2Patch(skin, SPR2_XTRA)
+        if skinpatch == v.getSprite2Patch(skin, SPR2_STND) then
+            -- wait, that's not a real icon
+            skinpatch = v.cachePatch("Z_MISSINGICON")
+        end
         v.drawScaled(x,
             y,
             FU/3,     
-            v.getSprite2Patch(skin, SPR2_XTRA),
+            skinpatch,
             flags,
             color
         )
@@ -196,13 +201,18 @@ ZE2.tabscores = function(v)
 
 		local flags = V_SNAPTOTOP
 		if (p.quittime and (leveltime/TICRATE % 2)) then flags = $|V_50TRANS end
-        local skin = skins[p.skin].name
+        local skin = p.skin
         local color = v.getColormap(skin,p.realmo.color)
         local name = string.sub(p.name,1,15)
+        local skinpatch = v.getSprite2Patch(skin, SPR2_XTRA)
+        if skinpatch == v.getSprite2Patch(skin, SPR2_STND) then
+            -- wait, that's not a real icon
+            skinpatch = v.cachePatch("Z_MISSINGICON")
+        end
         v.drawScaled(x,
             y,
             FU/3,     
-            v.getSprite2Patch(skin, SPR2_XTRA),
+            skinpatch,
             flags,
             color
         )
