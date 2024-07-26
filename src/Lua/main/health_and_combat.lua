@@ -51,7 +51,7 @@ function ZE2.KillMobj(mo, inf, src, damagetype, killedbysomething)
 		local player = mo.player 
 		local ztype = player["ze2_info"].zombie_type
 		local team = player["ze2_info"].team
-		local ruby_award = 30
+		local ruby_award = 45
 		local killer -- will be valid if player
 		
 		if inf and inf.player and inf.player.valid then
