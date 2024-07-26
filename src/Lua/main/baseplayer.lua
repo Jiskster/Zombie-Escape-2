@@ -793,7 +793,7 @@ addHook("PlayerThink", function(player)
 		if (cmd.buttons & BT_ATTACK) and not player["ze2_info"].weapondelay and not player["ze2_info"].reload
 		and iteminfo and player.playerstate ~= PST_DEAD and not player["ze2_info"].shop_open 
 		and (player["ze2_info"].await_fire or iteminfo.autouse)
-		and not iteminfo.firerate_left then
+		and not iteminfo.firerate_left and not (ZE2.zombie_releasetime and player["ze2_info"].team == 2) then
 			local ammo = ZE2:GetItemInfoIndex(iteminfo, "ammo", skin)
 			local max_ammo = ZE2:GetItemInfoIndex(iteminfo, "max_ammo", skin)
 			local count = ZE2:GetItemInfoIndex(iteminfo, "count", skin)
