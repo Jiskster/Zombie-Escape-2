@@ -17,9 +17,6 @@ mobjinfo[MT_ZOMBIEMAN_MISSILE] = {
 }
 
 mobjinfo[MT_ZOMBIEMAN_MISSILE].forcedamage = 12
-mobjinfo[MT_ZOMBIEMAN_MISSILE].forceknockback = 3*FU
-mobjinfo[MT_ZOMBIEMAN_MISSILE].forceverticalknockback = 3*FU
-mobjinfo[MT_ZOMBIEMAN_MISSILE].relativeknockback = true
 
 ---------------------------------------Zombie Man
 
