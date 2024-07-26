@@ -332,16 +332,19 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	end
 	
 	if inflictor_player and inflictor_player.valid then
-		local attributes = ZE2:FindEffectAttributes(inflictor_player, "damage_multiplier") 
+		local dmg_attributes = ZE2:FindEffectAttributes(inflictor_player, "damage_multiplier") 
+		local kb_attributes = ZE2:FindEffectAttributes(inflictor_player, "knockback_multiplier")
 		
-		if #attributes then
+		-- all of this should be a function lol
+		
+		if #dmg_attributes then
 			local multi = 0
 			
-			for i=1,#attributes do
+			for i=1,#dmg_attributes do
 				if i == 1 then
-					multi = attributes[i]
+					multi = dmg_attributes[i]
 				else
-					multi = FixedMul($, attributes[i])
+					multi = FixedMul($, dmg_attributes[i])
 				end
 			end
 			
@@ -349,8 +352,26 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 				dmg = FixedMul($*FU, multi)/FU
 			end
 		end
+		
+		if #kb_attributes then
+			local multi = 0 
+			
+			for i=1,#kb_attributes do
+				if i == 1 then
+					multi = kb_attributes[i]
+				else
+					multi = FixedMul($, kb_attributes[i])
+				end
+			end
+			
+			if multi then
+				knockback = FixedMul($, multi)
+			end
+		end
 	end
 
+	print(knockback)
+	
 	if mo.rubiesholding and (mo.rubiesholding - (mo.rubiesholding/3)) > 0 then
 		A_RubyDrop(mo, mo.rubiesholding/3)
 		mo.rubiesholding = $ - mo.rubiesholding/3

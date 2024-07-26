@@ -13,6 +13,7 @@ local energydrink = ZE2:CreateItem("Energy Drink", {
 		ZE2:GivePlayerEffect(player, "Energy_Drink", {
 			normalspeed_multiplier = 3*FRACUNIT/2,
 			damage_multiplier = 3*FRACUNIT/2,
+			knockback_multiplier = 3*FRACUNIT,
 		}, 7*TICRATE, true)
 	end,
 	price = 115,
