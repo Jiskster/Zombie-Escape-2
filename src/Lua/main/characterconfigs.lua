@@ -207,7 +207,9 @@ ZE2.SetZCtoplayer = function(player)
 			else
 				player.normalspeed = cc["default"].normalspeed
 			end
-		
+			
+			player.normalspeed = max($ - (player["ze2_info"].landfatigue_timer)*FU, 0) 
+			
 			if (zc[ztype].charability) then
 				player.charability = zc[ztype].charability
 			else
