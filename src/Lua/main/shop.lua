@@ -67,7 +67,7 @@ local ZMBSHOP_5BONUSSPEED300LESSHP = ZE2:RegisterGenericShop("5_Bonus_Speed_300_
 		player["ze2_info"].zombie_speedbonus = $ + 5*FRACUNIT
 	end,
 	for_zombies = true,
-}, 250)
+}, 200)
 
 local ZMBSHOP_ALPHA_ZOMBIE = ZE2:RegisterGenericShop("Alpha_Zombie", {
 	realname = "Alpha Zombie",
