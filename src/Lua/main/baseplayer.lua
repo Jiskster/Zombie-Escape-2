@@ -1,7 +1,7 @@
 freeslot("sfx_zjump")
 sfxinfo[sfx_zjump].caption = "Jump"
 mobjinfo[MT_LHRT].forceknockback = 20*FRACUNIT
-ZE2.JumpSprintFatigue = 8*FRACUNIT
+ZE2.JumpSprintFatigue = 12*FRACUNIT
 ZE2.DefaultRubyCap = 500;
 ZE2.RubyStart = 100 -- the amount of rubies you start when you join a server
 
@@ -330,7 +330,7 @@ ZE2.sprint_thinker = function(player)
 	local cc = ZE2.CharacterConfig
 	
 	local increment = FRACUNIT/2
-	local decrement = fixedfromstring("0.185")
+	local decrement = fixedfromstring("0.142")
 	
 	if player["ze2_info"].sprintdelay then
 		if player["ze2_info"].sprintmeter then
@@ -362,7 +362,7 @@ ZE2.sprint_thinker = function(player)
 		elseif not player.climbing then
 			if not player["ze2_info"].sprintdelay then
 				if not (player.speed/FU) then
-					ZE2:IncrementSprint(player, increment)
+					ZE2:IncrementSprint(player, increment*3)
 				else
 					ZE2:IncrementSprint(player, increment/2)
 				end
