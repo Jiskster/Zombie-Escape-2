@@ -638,8 +638,8 @@ addHook("PlayerThink", function(player)
 				S_StartSound(player.mo, sfx_bstup)
 				
 				ZE2:GivePlayerEffect(player, "Alpha_Rage", {
-					normalspeed_multiplier = 3*FU,
-					actionspd_multiplier = 2*FU,
+					normalspeed_multiplier = 4*FU,
+					actionspd_multiplier = 3*FU/2,
 					damage_multiplier = 2*FU,
 					charability = CA_JUMPTHOK,
 				}, 3*TICRATE)
