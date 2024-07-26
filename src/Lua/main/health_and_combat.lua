@@ -268,7 +268,6 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 				S_StartSound(mo, sfx_shldls)
 			end
 
-			
 			if inf and inf.valid then
 				if not relativeknockback then
 					P_Thrust(mo, inf.angle, knockback)
