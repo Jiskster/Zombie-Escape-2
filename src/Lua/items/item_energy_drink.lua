@@ -6,12 +6,12 @@ local energydrink = ZE2:CreateItem("Energy Drink", {
 	firerate = TICRATE*30,
 	sound = sfx_rblxdr,
 	limited = true,
-	count = 2,
+	count = 3,
 	max_count = 15,
 	color = SKINCOLOR_MASTER,
 	ontrigger = function(player)
 		ZE2:GivePlayerEffect(player, "Energy_Drink", {
-			normalspeed_multiplier = 5*FRACUNIT/4,
+			normalspeed_multiplier = 3*FRACUNIT/2,
 			damage_multiplier = 3*FRACUNIT/2,
 		}, 7*TICRATE, true)
 	end,
