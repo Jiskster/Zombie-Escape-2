@@ -135,10 +135,6 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		if mo.player["ze2_info"].team == inf.player["ze2_info"].team then
 			return false
 		end
-		
-		if (ZE2.zombie_releasetime and mo.player["ze2_info"].team == 2) then
-			return false
-		end
 	end--player["ze2_info"].damage_indicator_table
 	
 	if inf and inf.valid and inf.player then
@@ -169,6 +165,10 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		
 		mo.player["ze2_info"].shop_open = false
 		mo.player["ze2_info"].shop_anim = 0
+		
+		if inflictor_player and (ZE2.zombie_releasetime and mo.player["ze2_info"].team == 2) then
+			return false
+		end
 	end
 	
 	if inf then
