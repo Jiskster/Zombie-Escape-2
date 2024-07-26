@@ -369,8 +369,6 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			end
 		end
 	end
-
-	print(knockback)
 	
 	if mo.rubiesholding and (mo.rubiesholding - (mo.rubiesholding/3)) > 0 then
 		A_RubyDrop(mo, mo.rubiesholding/3)
