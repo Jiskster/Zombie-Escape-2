@@ -3,9 +3,9 @@
 ZE2.ZombieConfig = {
 	["normal"] = {
 		skincolor = SKINCOLOR_MOSS,
-		normalspeed = 22 * FRACUNIT,
+		normalspeed = 19 * FRACUNIT,
 		health = 1500,
-		charability = CA_DOUBLEJUMP,
+		charability = CA_NONE,
 		charability2 = CA2_NONE,
 		jumpfactor = 18 * FRACUNIT / 19,
 		actionspd = 9*FRACUNIT,
