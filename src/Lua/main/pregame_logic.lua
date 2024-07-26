@@ -196,7 +196,7 @@ addHook("PreThinkFrame", function()
 		end
 		
 		player["ze2_info"].charselect_selection_anim = $ or 0
-		if ZE2.round_active then return end 
+		--if ZE2.round_active then return end 
 		
 		local cmd = player.cmd
 		local buttons = cmd.buttons
@@ -206,12 +206,12 @@ addHook("PreThinkFrame", function()
 		local skincount = #ZE2.getSkinNames(player, true) + 1
 		local selection_name = ZE2.getSkinNames(player, true)[player["ze2_info"].charselect_selection] or "sonic"
 		local pregamemenu_type = player["ze2_info"].pregamemenu_type
-		
+
 		if player["ze2_info"].pregamemenu_active then
-			if not ZE2.round_active then -- Stay Still while you're choosing and have not chosen
-				player.pflags = $|PF_FULLSTASIS|PF_INVIS
+			if not ZE2.round_active then
+				--player.pflags = $|PF_FULLSTASIS|PF_INVIS
 				
-				buttons = 0
+				--buttons = 0
 				cmd.angleturn = 0
 				cmd.aiming = 0
 			end
@@ -257,6 +257,26 @@ addHook("PreThinkFrame", function()
 					end
 				}, true)
 			end
+		elseif ZE2.pregame_timeleft then
+			ZE2:TryBooleanAction(player, {
+				condition = buttons & BT_SPIN,
+				var = "pregamemenu_spinpressed",
+				action = function()
+					player["ze2_info"].pregamemenu_lasttype = 1
+					player["ze2_info"].pregamemenu_type = 1
+					player["ze2_info"].pregamemenu_active = true
+					player["ze2_info"].pregamemenu_intopmenu = false
+				end
+			}, true)
+		end
+		
+		if ZE2.pregame_timeleft 
+		or (ZE2.zombie_releasetime and player["ze2_info"].team == 2) then
+			player.pflags = $|PF_FULLSTASIS|PF_INVIS
+			
+			buttons = 0
+			--cmd.angleturn = 0
+			--cmd.aiming = 0
 		end
 		
 		if player["ze2_info"].pregamemenu_intopmenuanim then

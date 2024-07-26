@@ -154,7 +154,8 @@ ZE2.characterselecthud = function(v, player, c)
 		local output_text = charinfo_text[i].text or "????", "STCFC"
 		customhud.CustomFontString(v, t_ese, 100*FU + (i*(8*FU)), output_text, "TNYFC", (V_SNAPTORIGHT|V_SNAPTOTOP|topmenuflag), "right", FU, output_color)
 	end
-
+	--ZE2.pregame_timeleft
+	/*
 	if not player["ze2_info"].pregamemenu_intopmenu then
 		local offset = sin(ANG1*(leveltime*3))*3 
 		local offset2 = cos(ANG1*(leveltime*3))*3
@@ -169,4 +170,5 @@ ZE2.characterselecthud = function(v, player, c)
 		
 		customhud.CustomFontString(v,x,y,text, "TNYFC", (V_SNAPTOBOTTOM|V_TRANSLUCENT), "center" , FRACUNIT, SKINCOLOR_GREY)
 	end
+	*/
 end

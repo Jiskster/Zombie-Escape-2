@@ -77,7 +77,7 @@ ZE2["default_ze2_info"] = {
 	pregamemenu_forwardpressed = false,
 	pregamemenu_backwardspressed = false,
 	pregamemenu_spinpressed = false,
-	pregamemenu_jumppressed = true,
+	pregamemenu_jumppressed = false,
 	
 	charselect_selection = 1,
 	charselect_prevselection = 1,
@@ -713,7 +713,7 @@ addHook("PlayerThink", function(player)
 		end
 	end
 	
-	if not ZE2.game_ended and not player["ze2_info"].ghostmode then 
+	if not ZE2.game_ended and not player["ze2_info"].ghostmode and not ZE2.pregame_timeleft then 
 		if not player["ze2_info"].pregamemenu_active then
 			-- Next Weapon
 			ZE2:TryBooleanAction(player, {

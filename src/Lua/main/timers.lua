@@ -1,31 +1,3 @@
-ZE2.killwhenchosen = CV_RegisterVar({
-	name = "z_killwhenchosen",
-	defaultvalue = "On",
-	PossibleValue = CV_OnOff,
-	flags = CV_NETVAR,
-})
-
-ZE2.choosenotice = CV_RegisterVar({
-	name = "z_choosenotice",
-	defaultvalue = "On",
-	PossibleValue = CV_OnOff,
-	flags = CV_NETVAR,
-})
-
-ZE2.killenemiesonwin = CV_RegisterVar({
-	name = "z_killenemiessonwin",
-	defaultvalue = "Off",
-	PossibleValue = CV_OnOff,
-	flags = CV_NETVAR,
-})
-
-ZE2.killzombiesonwin = CV_RegisterVar({
-	name = "z_killzombiesonwin",
-	defaultvalue = "On",
-	PossibleValue = CV_OnOff,
-	flags = CV_NETVAR,
-})
-
 local countdown_sfx = {
 	[20] = sfx_z20s,
 	[10] = sfx_cten,
@@ -112,6 +84,10 @@ addHook("ThinkFrame", function()
 		ZE2.pregame_timeleft = $ - 1
 	end
 	
+	if ZE2.zombie_releasetime then
+		ZE2.zombie_releasetime = $ - 1
+	end
+	
 	local count_timecalculate = (ZE2.pregame_timeleft-TICRATE)/TICRATE -- For the countdown not to be behind/ahead
 	
 	if not ZE2.pregame_timeleft and not ZE2.round_active and not ZE2.game_ended then
@@ -147,7 +123,8 @@ addHook("ThinkFrame", function()
 				if ZE2.killwhenchosen.value then
 					ZE2.KillMobj(player.mo, nil, nil, DMG_INSTAKILL, true)
 				else
-					ZE2.ResetPlayer(player)
+					ZE2.ZombifyPlayer(player)
+					ZE2.PlayZombieSound(player, true)
 				end
 				
 				if ZE2.choosenotice.value then
@@ -165,6 +142,8 @@ addHook("ThinkFrame", function()
 				player["ze2_info"].was_zombie = false
 			end
 		end
+		
+		ZE2.zombie_releasetime = 12*TICRATE
 		
 		choosingnums = nil -- release memory idk wtf
 	end

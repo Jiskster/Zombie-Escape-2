@@ -28,6 +28,34 @@ ZE2.repeatshopitems = CV_RegisterVar({
 	flags = CV_NETVAR,
 })
 
+ZE2.killwhenchosen = CV_RegisterVar({
+	name = "z_killwhenchosen",
+	defaultvalue = "Off",
+	PossibleValue = CV_OnOff,
+	flags = CV_NETVAR,
+})
+
+ZE2.choosenotice = CV_RegisterVar({
+	name = "z_choosenotice",
+	defaultvalue = "On",
+	PossibleValue = CV_OnOff,
+	flags = CV_NETVAR,
+})
+
+ZE2.killenemiesonwin = CV_RegisterVar({
+	name = "z_killenemiessonwin",
+	defaultvalue = "Off",
+	PossibleValue = CV_OnOff,
+	flags = CV_NETVAR,
+})
+
+ZE2.killzombiesonwin = CV_RegisterVar({
+	name = "z_killzombiesonwin",
+	defaultvalue = "On",
+	PossibleValue = CV_OnOff,
+	flags = CV_NETVAR,
+})
+
 COM_AddCommand("z_giveitem", function(player, item_id, count, slot)
 	if player.mo and player.mo.valid and player["ze2_info"] and ZE2:FetchInventory(player) then
 		if item_id then
