@@ -112,6 +112,8 @@ ZE2["default_ze2_info"] = {
 	special_cooldown = 0,
 	
 	zombie_healthbonus = 0, -- extra health you get from buying health bonuses 
+	zombie_healthdeduction = 0,
+	zombie_speedbonus = 0, -- normalspeed bonus
 	zombie_shop_open = false,
 	zombie_shop_selection = 1,
 	zombie_shop_c1_pressed = false,

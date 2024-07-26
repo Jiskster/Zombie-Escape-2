@@ -71,6 +71,8 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 			player["ze2_info"].checkpoint_number = 0
 			player["ze2_info"].blood_currency = 0 -- happiness is temporary 
 			player["ze2_info"].zombie_healthbonus = 0
+			player["ze2_info"].zombie_healthdeduction = 0
+			player["ze2_info"].zombie_speedbonus = 0
 		end
 	end
 end; ZE2.init_gamevars();
