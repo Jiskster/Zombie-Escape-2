@@ -353,7 +353,7 @@ ZE2.sprint_thinker = function(player)
 			if player["ze2_info"].sprintmeter == 0 then
 				player.runspeed = 32000*FRACUNIT
 			else
-				if cmd.forwardmove > 0 then
+				if cmd.forwardmove > 0 or cmd.sidemove then
 					player.runspeed = 5*FRACUNIT
 					
 					if player.speed >= 5*FRACUNIT and P_IsObjectOnGround(pmo) then

@@ -87,7 +87,7 @@ ZE2.SetCCtoplayer = function(player)
 			player.normalspeed = cc[pmo.skin].normalspeed or cc["default"].normalspeed
 			local sprintboost = cc[pmo.skin].sprintboost or cc["default"].sprintboost
 			if (sprintboost) and (player["ze2_info"].isSprinting and player["ze2_info"].sprintmeter > 0) and (player["ze2_info"].team == 1) then
-				if cmd.forwardmove > 0 then
+				if cmd.forwardmove > 0 or cmd.sidemove then
 					player.normalspeed = $ + sprintboost
 				else -- walking backwards
 					player.normalspeed = FixedMul($, 3*FRACUNIT/4) 
