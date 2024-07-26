@@ -80,13 +80,18 @@ end
 ZE2.SetCCtoplayer = function(player)
 	local pmo = player.mo
 	local cc = ZE2.CharacterConfig
+	local cmd = player.cmd
 	
 	if pmo and pmo.valid and cc[pmo.skin] then
 		if cc[pmo.skin].normalspeed then 
 			player.normalspeed = cc[pmo.skin].normalspeed or cc["default"].normalspeed
 			local sprintboost = cc[pmo.skin].sprintboost or cc["default"].sprintboost
 			if (sprintboost) and (player["ze2_info"].isSprinting and player["ze2_info"].sprintmeter > 0) and (player["ze2_info"].team == 1) then
-				player.normalspeed = $ + sprintboost
+				if cmd.forwardmove > 0 then
+					player.normalspeed = $ + sprintboost
+				else -- walking backwards
+					player.normalspeed = FixedMul($, 3*FRACUNIT/4) 
+				end
 				/* UNUSED SPRINT CAM CODE
 				if player.camerascale < player.mo.scale + FU/2 then
 					player.camerascale = $ + FU/32
@@ -137,15 +142,11 @@ ZE2.SetCCtoplayer = function(player)
 			player.acceleration = skins[pmo.skin].acceleration
 		end
 		
-		/* Removed. Use Acceleration instead.
 		if (cc[pmo.skin].thrustfactor) then 
 			player.thrustfactor = cc[pmo.skin].thrustfactor 
 		else
 			player.thrustfactor = skins[pmo.skin].thrustfactor
 		end
-		*/
-		
-		player.thrustfactor = 4
 		
 		if (cc[pmo.skin].charflags) then 
 			player.charflags = $|cc[pmo.skin].charflags 

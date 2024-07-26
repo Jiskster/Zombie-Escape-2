@@ -345,7 +345,6 @@ ZE2.sprint_thinker = function(player)
 	if player["ze2_info"].team == 1 then
 		if P_GetPlayerControlDirection(player) == 1 and (cmd.buttons & BT_SPIN) 
 		and not player.powers[pw_tailsfly] then
-			
 			ZE2:DecrementSprint(player, decrement)
 			
 			player["ze2_info"].isSprinting = true
@@ -354,9 +353,21 @@ ZE2.sprint_thinker = function(player)
 			if player["ze2_info"].sprintmeter == 0 then
 				player.runspeed = 32000*FRACUNIT
 			else
-				player.runspeed = 5*FRACUNIT
-				if player.speed >= 5*FRACUNIT and P_IsObjectOnGround(pmo) then
-					P_SpawnSkidDust(player, 20*FRACUNIT)
+				if cmd.forwardmove > 0 then
+					player.runspeed = 5*FRACUNIT
+					
+					if player.speed >= 5*FRACUNIT and P_IsObjectOnGround(pmo) then
+						P_SpawnSkidDust(player, 20*FRACUNIT)
+					end
+				else -- running while walking backwards
+					player.runspeed = 32000*FRACUNIT
+					
+					if player.speed >= 5*FRACUNIT and P_IsObjectOnGround(pmo) then
+						if (leveltime % 4) == 0 then
+							P_SpawnSkidDust(player, 20*FRACUNIT)
+							S_StartSound(pmo, sfx_skid)
+						end
+					end
 				end
 			end
 		elseif not player.climbing then
