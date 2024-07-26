@@ -137,11 +137,15 @@ ZE2.SetCCtoplayer = function(player)
 			player.acceleration = skins[pmo.skin].acceleration
 		end
 		
+		/* Removed. Use Acceleration instead.
 		if (cc[pmo.skin].thrustfactor) then 
 			player.thrustfactor = cc[pmo.skin].thrustfactor 
 		else
 			player.thrustfactor = skins[pmo.skin].thrustfactor
 		end
+		*/
+		
+		player.thrustfactor = 4
 		
 		if (cc[pmo.skin].charflags) then 
 			player.charflags = $|cc[pmo.skin].charflags 
