@@ -131,6 +131,10 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	local inflictor_player -- player_t
 	local attacker -- mobj_t
 	
+	if inf and inf.valid and (inf.flags & MF_MISSILE) then
+		P_ExplodeMissile(inf)
+	end
+	
 	if inf and inf.player and mo and mo.player then
 		if mo.player["ze2_info"].team == inf.player["ze2_info"].team then
 			return false
