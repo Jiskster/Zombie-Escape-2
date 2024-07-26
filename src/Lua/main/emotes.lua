@@ -7,7 +7,7 @@ freeslot("SPR_ZT12","SPR_ZT13", "SPR_ZT14")
 freeslot("sfx_huhem", "sfx_vboom", "sfx_thwop", "sfx_heheha", "sfx_4ayo")
 freeslot("sfx_syeah", "sfx_kohno", "sfx_yccom", "sfx_noiscr", "sfx_pepscr")
 freeslot("sfx_actu", "sfx_memore", "sfx_dumba", "sfx_demoem", "sfx_whoinv")
-freeslot("sfx_bruh", "sfx_haha1", "sfx_orchit")
+freeslot("sfx_bruh", "sfx_haha1", "sfx_orchit", "sfx_wtsig2")
 
 mobjinfo[MT_ZEMO_BUBBLE] = {		
 	doomednum = -1,
@@ -73,6 +73,7 @@ ZE2:AddEmote(SPR_ZT11, "who invited this kid", "oh my god who invited this kid!"
 ZE2:AddEmote(SPR_ZT12, "bruh", "BRUH", sfx_bruh)
 ZE2:AddEmote(SPR_ZT13, "The zombies will be back", "source: trust me", sfx_inf1)
 ZE2:AddEmote(SPR_ZT13, "You have been enslaved by the zombies", "1865", sfx_inf2)
+ZE2:AddEmote(SPR_ZT14, "Umm what the sigma", "siggmaa", sfx_wtsig2)
 
 COM_AddCommand("z_emote", function(player, emotenum)
 	if player.mo and player.mo.valid 
