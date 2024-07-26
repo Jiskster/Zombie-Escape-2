@@ -129,6 +129,9 @@ ZE2["default_ze2_info"] = {
 	*/
 	
 	pro_controls = false,
+	
+	landfatigue = false,
+	landfatigue_timer = 0,
 }
 
 addHook("PlayerSpawn", function(player)
@@ -273,6 +276,19 @@ ZE2.giveplayerflags = function(player)
 			end
 		end
 		
+		if player["ze2_info"].landfatigue_timer then
+			player["ze2_info"].landfatigue_timer = $ - 1
+		end
+		
+		if player.mo and player.mo.valid then
+			local pmo = player.mo
+			
+			if player["ze2_info"].landfatigue and (pmo.eflags & MFE_JUSTHITFLOOR) then
+				player["ze2_info"].landfatigue = false
+				player["ze2_info"].landfatigue_timer = $ + 20
+			end
+		end
+		
 		if mapheaderinfo[gamemap].ze2_noabilities then
 			player.pflags = $ & ~PF_GLIDING
 			player.pflags = $ & ~PF_BOUNCING
@@ -403,6 +419,7 @@ addHook("JumpSpecial", function(player)
 	if player.mo and player.mo.valid and not (player.pflags & PF_THOKKED) and P_IsObjectOnGround(player.mo) then
 		if not (player.pflags & PF_JUMPDOWN) then
 			ZE2:DecrementSprint(player, ZE2.JumpSprintFatigue)
+			player["ze2_info"].landfatigue = true
 		end
 	end
 end)
