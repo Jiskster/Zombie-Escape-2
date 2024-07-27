@@ -11,10 +11,10 @@ local energydrink = ZE2:CreateItem("Energy Drink", {
 	color = SKINCOLOR_MASTER,
 	ontrigger = function(player)
 		ZE2:GivePlayerEffect(player, "Energy_Drink", {
-			normalspeed_multiplier = 3*FRACUNIT/2,
-			damage_multiplier = 3*FRACUNIT/2,
-			knockback_multiplier = 3*FRACUNIT,
-		}, 7*TICRATE, true)
+			normalspeed_multiplier = 10*FRACUNIT/7,
+			damage_multiplier = 2*FRACUNIT,
+			knockback_multiplier = 5*FRACUNIT,
+		}, 6*TICRATE, true)
 	end,
 	price = 115,
 })
