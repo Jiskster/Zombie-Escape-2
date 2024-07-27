@@ -371,19 +371,23 @@ ZE2.sprint_thinker = function(player)
 			if player["ze2_info"].sprintmeter == 0 then
 				player.runspeed = 32000*FRACUNIT
 			else
-				if cmd.forwardmove > 0 or cmd.sidemove then
+				if (cmd.forwardmove > 0 or cmd.sidemove) 
+				and not player["ze2_info"].landfatigue_timer then
 					player.runspeed = 5*FRACUNIT
 					
 					if player.speed >= 5*FRACUNIT and P_IsObjectOnGround(pmo) then
 						P_SpawnSkidDust(player, 20*FRACUNIT)
 					end
-				else -- running while walking backwards
+				else -- running while walking backwards or land fatigued
 					player.runspeed = 32000*FRACUNIT
 					
 					if player.speed >= 5*FRACUNIT and P_IsObjectOnGround(pmo) then
 						if (leveltime % 4) == 0 then
 							P_SpawnSkidDust(player, 20*FRACUNIT)
-							S_StartSound(pmo, sfx_skid)
+							
+							if not player["ze2_info"].landfatigue_timer then
+								S_StartSound(pmo, sfx_skid)
+							end
 						end
 					end
 				end
