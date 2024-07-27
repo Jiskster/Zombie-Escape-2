@@ -427,7 +427,9 @@ addHook("JumpSpecial", function(player)
 				ZE2:DecrementSprint(player, ZE2.JumpSprintFatigue)
 			end
 			
-			player["ze2_info"].landfatigue = true
+			if ZE2.landingfatigue.value then
+				player["ze2_info"].landfatigue = true
+			end
 		end
 	end
 end)

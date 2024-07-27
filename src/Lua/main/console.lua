@@ -56,6 +56,13 @@ ZE2.killzombiesonwin = CV_RegisterVar({
 	flags = CV_NETVAR,
 })
 
+ZE2.landingfatigue = CV_RegisterVar({
+	name = "z_landingfatigue",
+	defaultvalue = "Off",
+	PossibleValue = CV_OnOff,
+	flags = CV_NETVAR,
+})
+
 COM_AddCommand("z_giveitem", function(player, item_id, count, slot)
 	if player.mo and player.mo.valid and player["ze2_info"] and ZE2:FetchInventory(player) then
 		if item_id then
