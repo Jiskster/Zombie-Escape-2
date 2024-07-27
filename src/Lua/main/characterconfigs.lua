@@ -391,16 +391,13 @@ ZE2.AddConfig("fang", {
 ZE2.AddConfig("metalsonic", {
 	normalspeed = 13 * FRACUNIT,
 	health = 70,
-	charability = CA_JUMPBOOST,
+	charability = CA_NONE,
 	charability2 = CA2_NONE,
 	jumpfactor = 15 * FRACUNIT / 19,
 	charflags = SF_MACHINE,
 	sprintboost = 10 * FRACUNIT,
-	accelstart = 96,
-	acceleration = 25,
-	sprintexhaust = 3*TICRATE, -- loser
 	desc1 = "He might the the real sonic.",
-	desc2 = "Jump Height depends on speed.",
+	desc2 = "Just a fella with an identity crisis.",
 })
 
 ZE2.RevertChars = function(p)
