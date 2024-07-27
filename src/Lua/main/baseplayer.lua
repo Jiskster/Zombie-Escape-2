@@ -452,8 +452,8 @@ addHook("PlayerThink", function(player)
 		local cmd = player.cmd
 		
 		if player["ze2_info"].team == 2 then
-			if cmd.sidemove then
-				L_SpeedCapXY(player.mo, 15*FRACUNIT)
+			if cmd.sidemove and P_IsObjectOnGround(player.mo) then
+				L_SpeedCapXY(player.mo, 17*FRACUNIT)
 			end
 		end
 	
