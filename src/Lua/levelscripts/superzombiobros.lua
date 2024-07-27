@@ -7,7 +7,7 @@ local ZB_Timer1 = ZE2:AddTimer("Defend Barrier",{
 })
 
 local ZB_Timer2 = ZE2:AddTimer("Defend Barrier 2",{
-	time = 40*TICRATE,
+	time = 50*TICRATE,
 	on_end = function(timernum,timername)
 		P_LinedefExecute(61)
 	end,
