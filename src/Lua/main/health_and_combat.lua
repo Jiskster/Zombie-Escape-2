@@ -72,6 +72,7 @@ function ZE2.KillMobj(mo, inf, src, damagetype, killedbysomething)
 			
 				ZE2:QueuePlayerRubies(killer.player, ruby_award)
 				print("\x84"..player.name.." \x83\has been infected by \x85"..killer.player.name)
+				killer.player["ze2_info"].blood_currency = $ + 30
 				
 				CONS_Printf(killer.player, "\x85+"..ruby_award.." rubies gained from infecting a survivor!")
 			end
