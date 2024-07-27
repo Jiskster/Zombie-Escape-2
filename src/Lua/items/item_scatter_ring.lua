@@ -72,9 +72,9 @@ states[S_ZE2_THROWNSCATTER7] = {
 
 local scatter_ring = ZE2:CreateItem("Scatter Ring",  {
 	icon = "SCATIND",
-	firerate = TICRATE,
+	firerate = TICRATE + TICRATE/2,
 	sound = sfx_shgn,
-	knockback = 25*FRACUNIT,
+	knockback = 35*FRACUNIT,
 	damage = 40,
 	fuse = TICRATE/2,
 	color = SKINCOLOR_PURPLE,
