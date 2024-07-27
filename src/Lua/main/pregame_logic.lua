@@ -193,6 +193,7 @@ addHook("PreThinkFrame", function()
 		
 		if ZE2.round_active then
 			player["ze2_info"].pregamemenu_active = false
+			player.pflags = $ &~PF_INVIS
 		end
 		
 		player["ze2_info"].charselect_selection_anim = $ or 0
