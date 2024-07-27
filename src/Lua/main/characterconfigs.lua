@@ -382,7 +382,7 @@ ZE2.AddConfig("fang", {
 	health = 75,
 	charability = CA_BOUNCE,
 	charability2 = CA2_NONE,
-	jumpfactor = 20 * FRACUNIT / 19,
+	jumpfactor = 18 * FRACUNIT / 19,
 	sprintboost = 12 * FRACUNIT,
 	desc1 = "He shoots the shooty shoot.",
 	desc2 = "Have less momentum to shoot."
@@ -393,7 +393,7 @@ ZE2.AddConfig("metalsonic", {
 	health = 70,
 	charability = CA_NONE,
 	charability2 = CA2_NONE,
-	jumpfactor = 15 * FRACUNIT / 19,
+	jumpfactor = 17 * FRACUNIT / 19,
 	charflags = SF_MACHINE,
 	sprintboost = 10 * FRACUNIT,
 	desc1 = "He might the the real sonic.",
