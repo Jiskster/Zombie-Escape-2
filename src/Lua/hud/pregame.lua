@@ -27,10 +27,13 @@ ZE2.pregamehud = function(v, player, c)
 		local text
 		
 		if player["ze2_info"].team == 1 then
-			if player["ze2_info"].pregamemenu_active 
-			and player["ze2_info"].pregamemenu_type == 1 then
-				text = "Press SPIN to select a character."
-			elseif not player["ze2_info"].pregamemenu_intopmenu then
+			if player["ze2_info"].pregamemenu_active then
+				if not player["ze2_info"].pregamemenu_intopmenu then
+					if player["ze2_info"].pregamemenu_type == 1 then
+						text = "Press SPIN to select a character."
+					end
+				end
+			else
 				text = "Press SPIN to open pregame menu."
 			end
 		elseif ZE2.zombie_releasetime then
