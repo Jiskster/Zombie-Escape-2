@@ -368,7 +368,7 @@ ZE2.sprint_thinker = function(player)
 			player["ze2_info"].isSprinting = true
 
 			-- Running Animation
-			if player["ze2_info"].sprintmeter == 0 then
+			if player["ze2_info"].sprintmeter <= 0 then
 				player.runspeed = 32000*FRACUNIT
 			else
 				if (cmd.forwardmove > 0 or cmd.sidemove) 
@@ -413,6 +413,7 @@ ZE2.sprint_thinker = function(player)
 	if cmd.buttons & BT_SPIN and player.powers[pw_tailsfly] then
 		P_SetObjectMomZ(player.mo, -FRACUNIT/2, true)
 	end
+
 	
 	cmd.buttons = $ & ~BT_SPIN
 end
@@ -463,11 +464,13 @@ addHook("PlayerThink", function(player)
 			end
         end
 		
-		if not player["ze2_info"].sprintmeter then
+		if player["ze2_info"].sprintmeter <= 0 then
 			if (player.pflags & PF_GLIDING) then
 				player.pflags = $ & ~PF_GLIDING
 				player.mo.state = S_PLAY_ROLL
 			end
+			
+			player.pflags = $ & ~PF_BOUNCING
 			
 			player.powers[pw_tailsfly] = 0
 		end
@@ -490,6 +493,10 @@ addHook("PlayerThink", function(player)
 		
 		if player.pflags & PF_BOUNCING and player.mo.eflags & MFE_JUSTHITFLOOR and player.mo.health then
 			player.mo.momz = 10*FRACUNIT * P_MobjFlip(player.mo)
+		end 
+		
+		if player.mo.state == S_PLAY_BOUNCE_LANDING then
+			ZE2:DecrementSprint(player, 3*FRACUNIT)
 		end
     end
 end)
