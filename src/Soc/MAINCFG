@@ -40,6 +40,7 @@ SkyNum = 15
 NoZone = True
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 7
+Lua.ze2_zombiereleasetime = 10
 
 Level J2
 Levelname = Roblox Obby
@@ -89,6 +90,7 @@ SkyNum = 10
 NoZone = True
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 10
+Lua.ze2_zombiereleasetime = 10
 Lua.ze2_solofail = true
 
 Level J6

@@ -143,7 +143,17 @@ addHook("ThinkFrame", function()
 			end
 		end
 		
-		ZE2.zombie_releasetime = 12*TICRATE
+		if mapheaderinfo[gamemap].ze2_zombiereleasetime then
+			local input = tonumber(mapheaderinfo[gamemap].ze2_zombiereleasetime)
+			
+			if input ~= nil then
+				ZE2.zombie_releasetime = input*TICRATE
+			else
+				ZE2.zombie_releasetime = 12*TICRATE -- TODO: Un magic-number this
+			end
+		else
+			ZE2.zombie_releasetime = 12*TICRATE
+		end
 		
 		choosingnums = nil -- release memory idk wtf
 	end
