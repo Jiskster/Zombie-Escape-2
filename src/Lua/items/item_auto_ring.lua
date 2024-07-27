@@ -5,6 +5,7 @@ local auto_ring = ZE2:CreateItem("Automatic Ring",  {
 	color = SKINCOLOR_GREEN,
 	autouse = true,
 	damage = 20,
+	velocity_multiplier = 2*FRACUNIT,
 	knockback = FRACUNIT/2,
 	flags2 = MF2_AUTOMATIC,
 	ammo = 100,
