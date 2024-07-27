@@ -442,10 +442,17 @@ addHook("LinedefExecute", function(line, mobj, sector)
 	end
 end, "NOABILITY")
 
--- Limit character abilities. 
+-- Limit character abilities. And side movement momentum for zombies
 addHook("PlayerThink", function(player) 
 	if gametype ~= GT_ZE2 then return end
     if player.mo and player.mo.valid then
+		local cmd = player.cmd
+		
+		if player["ze2_info"].team == 2 then
+			if cmd.sidemove then
+				L_SpeedCapXY(player.mo, 15*FRACUNIT)
+			end
+		end
 	
         if player.climbing then
             ZE2:DecrementSprint(player, FRACUNIT)

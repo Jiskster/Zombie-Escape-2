@@ -25,13 +25,18 @@ rawset(_G, "P_FlyTo", function(mo, fx, fy, fz, sped, addques) --A very useful co
     end    
 end)
 
-rawset(_G,'L_DoBrakes', function(mo,factor)
+rawset(_G,"L_DoBrakes", function(mo,factor)
 	mo.momx = FixedMul($,factor)
 	mo.momy = FixedMul($,factor)
 	mo.momz = FixedMul($,factor)
 end)
 
-rawset(_G,'L_SpeedCap', function(mo,limit,factor)
+rawset(_G,"L_DoBrakesXY", function(mo,factor)
+	mo.momx = FixedMul($,factor)
+	mo.momy = FixedMul($,factor)
+end)
+
+rawset(_G,"L_SpeedCap", function(mo,limit,factor)
 	local spd_xy = R_PointToDist2(0,0,mo.momx,mo.momy)
 	local spd = R_PointToDist2(0,0,spd_xy,mo.momz)
 	if spd > limit
@@ -39,6 +44,17 @@ rawset(_G,'L_SpeedCap', function(mo,limit,factor)
 			factor = FixedDiv(limit,spd)
 		end
 		L_DoBrakes(mo,factor)
+		return factor
+	end
+end)
+
+rawset(_G,"L_SpeedCapXY", function(mo,limit,factor)
+	local spd = R_PointToDist2(0,0,mo.momx,mo.momy)
+	if spd > limit
+		if factor == nil
+			factor = FixedDiv(limit,spd)
+		end
+		L_DoBrakesXY(mo,factor)
 		return factor
 	end
 end)
