@@ -1,7 +1,7 @@
 local infinity_ring = ZE2:CreateItem("Infinity Ring",	{
 	object = MT_THROWNINFINITY,
 	icon = "INFNIND",
-	firerate = 5,
+	firerate = 7,
 	color = SKINCOLOR_SALMON,
 	knockback = FRACUNIT/2,
 	damage = 85,
