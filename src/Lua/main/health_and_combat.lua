@@ -286,7 +286,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			if inflictor_player then
 				ZE2:DecrementSprint(mo.player, 40*FRACUNIT)
 				
-				inflictor_player["ze2_info"].blood_currency = $ + 5
+				inflictor_player["ze2_info"].blood_currency = $ + 15
 			end
 		elseif mo.player["ze2_info"].team == 2 then
 			local ztype = mo.player["ze2_info"].zombie_type
