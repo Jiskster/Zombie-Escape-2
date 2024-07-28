@@ -187,7 +187,8 @@ addHook("PostThinkFrame", function()
 		searchBlockmap("objects", function(refmobj,foundmobj)
 			if dplay and foundmobj.health then
 				
-				if foundmobj.player then
+				if foundmobj.player and foundmobj.player.spectator then
+					return
 					--print(foundmobj.player.name)
 				end
 				

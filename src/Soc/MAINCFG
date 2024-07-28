@@ -40,6 +40,7 @@ SkyNum = 15
 NoZone = True
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 7
+Lua.ze2_zombiereleasetime = 10
 
 Level J2
 Levelname = Roblox Obby
@@ -89,6 +90,7 @@ SkyNum = 10
 NoZone = True
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 10
+Lua.ze2_zombiereleasetime = 10
 Lua.ze2_solofail = true
 
 Level J6
@@ -164,6 +166,19 @@ SkyNum = 8008
 LevelSelect = 1
 SkyboxScale = 64
 NoZone = true
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 7
+
+Level N0
+Levelname = Ancient Catacombs
+Subtitle = Lost in the creepy catacombs
+Act = 0
+Music = ACZEM
+TypeOfLevel = ZE2
+NextLevel = N0
+SkyNum = 11
+Weather = 1
+NoZone = True
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 7
 

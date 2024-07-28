@@ -1,7 +1,7 @@
 freeslot("sfx_zjump")
 sfxinfo[sfx_zjump].caption = "Jump"
 mobjinfo[MT_LHRT].forceknockback = 20*FRACUNIT
-ZE2.JumpSprintFatigue = 8*FRACUNIT
+ZE2.JumpSprintFatigue = 12*FRACUNIT
 ZE2.DefaultRubyCap = 500;
 ZE2.RubyStart = 100 -- the amount of rubies you start when you join a server
 
@@ -77,7 +77,7 @@ ZE2["default_ze2_info"] = {
 	pregamemenu_forwardpressed = false,
 	pregamemenu_backwardspressed = false,
 	pregamemenu_spinpressed = false,
-	pregamemenu_jumppressed = true,
+	pregamemenu_jumppressed = false,
 	
 	charselect_selection = 1,
 	charselect_prevselection = 1,
@@ -112,6 +112,8 @@ ZE2["default_ze2_info"] = {
 	special_cooldown = 0,
 	
 	zombie_healthbonus = 0, -- extra health you get from buying health bonuses 
+	zombie_healthdeduction = 0,
+	zombie_speedbonus = 0, -- normalspeed bonus
 	zombie_shop_open = false,
 	zombie_shop_selection = 1,
 	zombie_shop_c1_pressed = false,
@@ -129,6 +131,9 @@ ZE2["default_ze2_info"] = {
 	*/
 	
 	pro_controls = false,
+	
+	landfatigue = false,
+	landfatigue_timer = 0,
 }
 
 addHook("PlayerSpawn", function(player)
@@ -273,6 +278,19 @@ ZE2.giveplayerflags = function(player)
 			end
 		end
 		
+		if player["ze2_info"].landfatigue_timer then
+			player["ze2_info"].landfatigue_timer = $ - 1
+		end
+		
+		if player.mo and player.mo.valid then
+			local pmo = player.mo
+			
+			if player["ze2_info"].landfatigue and (pmo.eflags & MFE_JUSTHITFLOOR) then
+				player["ze2_info"].landfatigue = false
+				player["ze2_info"].landfatigue_timer = $ + 20
+			end
+		end
+		
 		if mapheaderinfo[gamemap].ze2_noabilities then
 			player.pflags = $ & ~PF_GLIDING
 			player.pflags = $ & ~PF_BOUNCING
@@ -330,7 +348,7 @@ ZE2.sprint_thinker = function(player)
 	local cc = ZE2.CharacterConfig
 	
 	local increment = FRACUNIT/2
-	local decrement = fixedfromstring("0.185")
+	local decrement = fixedfromstring("0.142")
 	
 	if player["ze2_info"].sprintdelay then
 		if player["ze2_info"].sprintmeter then
@@ -345,24 +363,39 @@ ZE2.sprint_thinker = function(player)
 	if player["ze2_info"].team == 1 then
 		if P_GetPlayerControlDirection(player) == 1 and (cmd.buttons & BT_SPIN) 
 		and not player.powers[pw_tailsfly] then
-			
 			ZE2:DecrementSprint(player, decrement)
 			
 			player["ze2_info"].isSprinting = true
 
 			-- Running Animation
-			if player["ze2_info"].sprintmeter == 0 then
+			if player["ze2_info"].sprintmeter <= 0 then
 				player.runspeed = 32000*FRACUNIT
 			else
-				player.runspeed = 5*FRACUNIT
-				if player.speed >= 5*FRACUNIT and P_IsObjectOnGround(pmo) then
-					P_SpawnSkidDust(player, 20*FRACUNIT)
+				if (cmd.forwardmove > 0 or cmd.sidemove) 
+				and not player["ze2_info"].landfatigue_timer then
+					player.runspeed = 5*FRACUNIT
+					
+					if player.speed >= 5*FRACUNIT and P_IsObjectOnGround(pmo) then
+						P_SpawnSkidDust(player, 20*FRACUNIT)
+					end
+				else -- running while walking backwards or land fatigued
+					player.runspeed = 32000*FRACUNIT
+					
+					if player.speed >= 5*FRACUNIT and P_IsObjectOnGround(pmo) then
+						if (leveltime % 4) == 0 then
+							P_SpawnSkidDust(player, 20*FRACUNIT)
+							
+							if not player["ze2_info"].landfatigue_timer then
+								S_StartSound(pmo, sfx_skid)
+							end
+						end
+					end
 				end
 			end
 		elseif not player.climbing then
 			if not player["ze2_info"].sprintdelay then
 				if not (player.speed/FU) then
-					ZE2:IncrementSprint(player, increment)
+					ZE2:IncrementSprint(player, increment*3)
 				else
 					ZE2:IncrementSprint(player, increment/2)
 				end
@@ -380,18 +413,23 @@ ZE2.sprint_thinker = function(player)
 	if cmd.buttons & BT_SPIN and player.powers[pw_tailsfly] then
 		P_SetObjectMomZ(player.mo, -FRACUNIT/2, true)
 	end
+
 	
 	cmd.buttons = $ & ~BT_SPIN
 end
 
 addHook("JumpSpecial", function(player)
 	if gametype ~= GT_ZE2 then return end
-	
-	if player["ze2_info"].team ~= 1 then return end
 
 	if player.mo and player.mo.valid and not (player.pflags & PF_THOKKED) and P_IsObjectOnGround(player.mo) then
 		if not (player.pflags & PF_JUMPDOWN) then
-			ZE2:DecrementSprint(player, ZE2.JumpSprintFatigue)
+			if player["ze2_info"].team == 1 then
+				ZE2:DecrementSprint(player, ZE2.JumpSprintFatigue)
+			end
+			
+			if ZE2.landingfatigue.value then
+				player["ze2_info"].landfatigue = true
+			end
 		end
 	end
 end)
@@ -407,10 +445,17 @@ addHook("LinedefExecute", function(line, mobj, sector)
 	end
 end, "NOABILITY")
 
--- Limit character abilities. 
+-- Limit character abilities. And side movement momentum for zombies
 addHook("PlayerThink", function(player) 
 	if gametype ~= GT_ZE2 then return end
     if player.mo and player.mo.valid then
+		local cmd = player.cmd
+		
+		if player["ze2_info"].team == 2 then
+			if cmd.sidemove and P_IsObjectOnGround(player.mo) then
+				L_SpeedCapXY(player.mo, 17*FRACUNIT)
+			end
+		end
 	
         if player.climbing then
             ZE2:DecrementSprint(player, FRACUNIT)
@@ -421,11 +466,13 @@ addHook("PlayerThink", function(player)
 			end
         end
 		
-		if not player["ze2_info"].sprintmeter then
+		if player["ze2_info"].sprintmeter <= 0 then
 			if (player.pflags & PF_GLIDING) then
 				player.pflags = $ & ~PF_GLIDING
 				player.mo.state = S_PLAY_ROLL
 			end
+			
+			player.pflags = $ & ~PF_BOUNCING
 			
 			player.powers[pw_tailsfly] = 0
 		end
@@ -448,6 +495,10 @@ addHook("PlayerThink", function(player)
 		
 		if player.pflags & PF_BOUNCING and player.mo.eflags & MFE_JUSTHITFLOOR and player.mo.health then
 			player.mo.momz = 10*FRACUNIT * P_MobjFlip(player.mo)
+		end 
+		
+		if player.mo.state == S_PLAY_BOUNCE_LANDING then
+			ZE2:DecrementSprint(player, 3*FRACUNIT)
 		end
     end
 end)
@@ -638,8 +689,8 @@ addHook("PlayerThink", function(player)
 				S_StartSound(player.mo, sfx_bstup)
 				
 				ZE2:GivePlayerEffect(player, "Alpha_Rage", {
-					normalspeed_multiplier = 3*FU,
-					actionspd_multiplier = 2*FU,
+					normalspeed_multiplier = 4*FU,
+					actionspd_multiplier = 3*FU/2,
 					damage_multiplier = 2*FU,
 					charability = CA_JUMPTHOK,
 				}, 3*TICRATE)
@@ -713,7 +764,7 @@ addHook("PlayerThink", function(player)
 		end
 	end
 	
-	if not ZE2.game_ended and not player["ze2_info"].ghostmode then 
+	if not ZE2.game_ended and not player["ze2_info"].ghostmode and not ZE2.pregame_timeleft then 
 		if not player["ze2_info"].pregamemenu_active then
 			-- Next Weapon
 			ZE2:TryBooleanAction(player, {
@@ -793,7 +844,7 @@ addHook("PlayerThink", function(player)
 		if (cmd.buttons & BT_ATTACK) and not player["ze2_info"].weapondelay and not player["ze2_info"].reload
 		and iteminfo and player.playerstate ~= PST_DEAD and not player["ze2_info"].shop_open 
 		and (player["ze2_info"].await_fire or iteminfo.autouse)
-		and not iteminfo.firerate_left then
+		and not iteminfo.firerate_left and not (ZE2.zombie_releasetime and player["ze2_info"].team == 2) then
 			local ammo = ZE2:GetItemInfoIndex(iteminfo, "ammo", skin)
 			local max_ammo = ZE2:GetItemInfoIndex(iteminfo, "max_ammo", skin)
 			local count = ZE2:GetItemInfoIndex(iteminfo, "count", skin)

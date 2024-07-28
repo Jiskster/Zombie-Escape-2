@@ -1,7 +1,7 @@
 freeslot("sfx_dcrp01")
 
 local DC_Timer1 = ZE2:AddTimer("Defend Elevator",{
-	time = 27*TICRATE,
+	time = 20*TICRATE,
 	on_end = function(timernum,timername)
 		P_LinedefExecute(30)
 	end,

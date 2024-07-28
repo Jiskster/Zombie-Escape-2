@@ -19,6 +19,7 @@ local function flashpmo(pmo, source)
 	thok.fuse = 17
 	ZE2:SetDamageFadeAnim(pmo.player, 5*TICRATE)
 	P_Thrust(pmo, source.angle, 180*FRACUNIT)
+	pmo.health = 1
 	S_StartSound(pmo, sfx_bewar2)
 	P_SetScale(thok,thok.scale*3)
 	P_RemoveMobj(source)

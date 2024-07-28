@@ -34,6 +34,7 @@ end
 function ZE2:GetCameraMobj()
 	local cam = camera
 	if (displayplayer and displayplayer.valid)
+		
 		if not CV_FindVar("chasecam").value
 			
 			local pmo = displayplayer.realmo
@@ -41,15 +42,17 @@ function ZE2:GetCameraMobj()
 				pmo = displayplayer.mo
 			end
 			
-			if pmo and pmo.valid
-				local th = P_SpawnMobj(pmo.x,
+			if (pmo and pmo.valid)
+				local th = P_SpawnMobj(
+					pmo.x,
 					pmo.y,
 					GetActorZ(pmo,pmo,2),
 					MT_RAY
 				)
 				th.angle = pmo.angle
+				pmo = th
 			end
-			cam = th
+			cam = pmo
 		else
 			cam = camera
 		end

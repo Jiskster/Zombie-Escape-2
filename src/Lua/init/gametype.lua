@@ -30,7 +30,7 @@ rawset(_G, "ze2_modname", "ze2"); -- For customhud.
 
 freeslot("TOL_ZE2");
 
-ZE2.wait_time = 25*TICRATE;
+ZE2.wait_time = 15*TICRATE;
 ZE2.MapVoteStartFrame = 10*TICRATE
 ZE2.VoteTimeLimit = 12*TICRATE
 
@@ -43,6 +43,7 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 	ZE2.team_won = 0;
 	
 	ZE2.pregame_timeleft = ZE2.wait_time; 
+	ZE2.zombie_releasetime = 0;
 	
 	ZE2.MapVoteList = {};
 	ZE2.MapVotes = {0,0,0};
@@ -70,6 +71,8 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 			player["ze2_info"].checkpoint_number = 0
 			player["ze2_info"].blood_currency = 0 -- happiness is temporary 
 			player["ze2_info"].zombie_healthbonus = 0
+			player["ze2_info"].zombie_healthdeduction = 0
+			player["ze2_info"].zombie_speedbonus = 0
 		end
 	end
 end; ZE2.init_gamevars();

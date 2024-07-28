@@ -6,6 +6,8 @@ ZE2.inventoryhud = function(v, player)
 	if player["ze2_info"].ghostmode then return end
 	
 	if player["ze2_info"].zombie_shop_open then return end
+	if ZE2.pregame_timeleft then return end
+	if ZE2.zombie_releasetime and player["ze2_info"].team == 2 then return end
 	
 	if player and not player.mo then return end
 	

@@ -60,6 +60,15 @@ local ZMBSHOP_100BONUSHP = ZE2:RegisterGenericShop("100_Bonus_HP", {
 	for_zombies = true,
 }, 25)
 
+local ZMBSHOP_5BONUSSPEED300LESSHP = ZE2:RegisterGenericShop("5_Bonus_Speed_300_Less_HP", {
+	realname = "-300 HP +5 Speed", -- For Zombie Shop Display
+	buyfunc = function(player)
+		player["ze2_info"].zombie_healthdeduction = $ + 300
+		player["ze2_info"].zombie_speedbonus = $ + 5*FRACUNIT
+	end,
+	for_zombies = true,
+}, 200)
+
 local ZMBSHOP_ALPHA_ZOMBIE = ZE2:RegisterGenericShop("Alpha_Zombie", {
 	realname = "Alpha Zombie",
 	buyfunc = function(player)
@@ -78,6 +87,7 @@ local ZMBSHOP_SIGMA_ZOMBIE = ZE2:RegisterGenericShop("Sigma_Zombie", {
 
 ZE2.Zombie_ShopList = {
 	ZMBSHOP_100BONUSHP,
+	ZMBSHOP_5BONUSSPEED300LESSHP,
 	ZMBSHOP_ALPHA_ZOMBIE,
 	ZMBSHOP_SIGMA_ZOMBIE
 }

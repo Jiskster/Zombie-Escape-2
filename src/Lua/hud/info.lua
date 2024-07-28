@@ -5,7 +5,13 @@ ZE2.infohud = function(v, player)
 	if not player.realmo then return end
 	--if player and not player.realmo then return end
 	
-	local skinpatch = v.getSprite2Patch(player.realmo.skin, SPR2_XTRA)
+	-- the #skins[...] part is to make sure funny-named characters (like 00) show correctly
+	local skinid = #(skins[player.realmo.skin])
+	local skinpatch = v.getSprite2Patch(skinid, SPR2_XTRA)
+	if skinpatch == v.getSprite2Patch(skinid, SPR2_STND) then
+		-- wait, that's not a real icon
+		skinpatch = v.cachePatch("Z_MISSINGICON")
+	end
 	local hppatch = v.cachePatch("ZE2HPBAR1")
 	local timeemb = v.cachePatch("NGRTIMER")
 	local the_time 

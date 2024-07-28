@@ -51,7 +51,7 @@ function ZE2.KillMobj(mo, inf, src, damagetype, killedbysomething)
 		local player = mo.player 
 		local ztype = player["ze2_info"].zombie_type
 		local team = player["ze2_info"].team
-		local ruby_award = 30
+		local ruby_award = 45
 		local killer -- will be valid if player
 		
 		if inf and inf.player and inf.player.valid then
@@ -72,6 +72,7 @@ function ZE2.KillMobj(mo, inf, src, damagetype, killedbysomething)
 			
 				ZE2:QueuePlayerRubies(killer.player, ruby_award)
 				print("\x84"..player.name.." \x83\has been infected by \x85"..killer.player.name)
+				killer.player["ze2_info"].blood_currency = $ + 30
 				
 				CONS_Printf(killer.player, "\x85+"..ruby_award.." rubies gained from infecting a survivor!")
 			end
@@ -131,6 +132,10 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	local inflictor_player -- player_t
 	local attacker -- mobj_t
 	
+	if inf and inf.valid and (inf.flags & MF_MISSILE) then
+		P_ExplodeMissile(inf)
+	end
+	
 	if inf and inf.player and mo and mo.player then
 		if mo.player["ze2_info"].team == inf.player["ze2_info"].team then
 			return false
@@ -165,6 +170,10 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		
 		mo.player["ze2_info"].shop_open = false
 		mo.player["ze2_info"].shop_anim = 0
+		
+		if inflictor_player and (ZE2.zombie_releasetime and mo.player["ze2_info"].team == 2) then
+			return false
+		end
 	end
 	
 	if inf then
@@ -260,7 +269,6 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 				S_StartSound(mo, sfx_shldls)
 			end
 
-			
 			if inf and inf.valid then
 				if not relativeknockback then
 					P_Thrust(mo, inf.angle, knockback)
@@ -276,9 +284,9 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			end
 			
 			if inflictor_player then
-				ZE2:DecrementSprint(mo.player, 25*FRACUNIT)
+				ZE2:DecrementSprint(mo.player, 90*FRACUNIT)
 				
-				inflictor_player["ze2_info"].blood_currency = $ + 5
+				inflictor_player["ze2_info"].blood_currency = $ + 15
 			end
 		elseif mo.player["ze2_info"].team == 2 then
 			local ztype = mo.player["ze2_info"].zombie_type
@@ -328,16 +336,19 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	end
 	
 	if inflictor_player and inflictor_player.valid then
-		local attributes = ZE2:FindEffectAttributes(inflictor_player, "damage_multiplier") 
+		local dmg_attributes = ZE2:FindEffectAttributes(inflictor_player, "damage_multiplier") 
+		local kb_attributes = ZE2:FindEffectAttributes(inflictor_player, "knockback_multiplier")
 		
-		if #attributes then
+		-- all of this should be a function lol
+		
+		if #dmg_attributes then
 			local multi = 0
 			
-			for i=1,#attributes do
+			for i=1,#dmg_attributes do
 				if i == 1 then
-					multi = attributes[i]
+					multi = dmg_attributes[i]
 				else
-					multi = FixedMul($, attributes[i])
+					multi = FixedMul($, dmg_attributes[i])
 				end
 			end
 			
@@ -345,8 +356,24 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 				dmg = FixedMul($*FU, multi)/FU
 			end
 		end
+		
+		if #kb_attributes then
+			local multi = 0 
+			
+			for i=1,#kb_attributes do
+				if i == 1 then
+					multi = kb_attributes[i]
+				else
+					multi = FixedMul($, kb_attributes[i])
+				end
+			end
+			
+			if multi then
+				knockback = FixedMul($, multi)
+			end
+		end
 	end
-
+	
 	if mo.rubiesholding and (mo.rubiesholding - (mo.rubiesholding/3)) > 0 then
 		A_RubyDrop(mo, mo.rubiesholding/3)
 		mo.rubiesholding = $ - mo.rubiesholding/3

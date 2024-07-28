@@ -15,7 +15,7 @@ mobjinfo[MT_PROPWOOD] = {
 }
 
 mobjinfo[MT_PROPWOOD].npc_name = "Wood Fence"
-mobjinfo[MT_PROPWOOD].npc_spawnhealth = {50,200}
+mobjinfo[MT_PROPWOOD].npc_spawnhealth = {50,300}
 mobjinfo[MT_PROPWOOD].npc_name_color = SKINCOLOR_BROWN
 
 states[S_PROP1] = {
@@ -35,10 +35,10 @@ states[S_PROP1_BREAK] = {
 
 local wood_fence = ZE2:CreateItem("Wood Fence", {
 	icon = "FENCEIND",
-	firerate = TICRATE*4,
+	firerate = TICRATE*3,
 	limited = true,
-	count = 15,
-	max_count = 50,
+	count = 25,
+	max_count = 100,
 	color = SKINCOLOR_BROWN,
 	ontrigger = function(player)
 		local wood = P_SpawnMobj(player.mo.x+FixedMul(128*FRACUNIT, cos(player.mo.angle)),
@@ -52,7 +52,7 @@ local wood_fence = ZE2:CreateItem("Wood Fence", {
 	end,
 	skin_overwrite = {
 		["tails"] = {
-			firerate = 3*TICRATE/2,
+			firerate = TICRATE,
 		}
 	},
 	price = 70,

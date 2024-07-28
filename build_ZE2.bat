@@ -2,7 +2,7 @@
 
 ::--------------------------------------------------------------------------
 set "name=ZCL_ZombieEscape2"
-set "version=beta11"
+set "version=beta12"
 
 set /A "delump=0"
 

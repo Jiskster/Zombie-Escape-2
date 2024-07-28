@@ -67,8 +67,6 @@ local function undertale_BattleTele3Surv()
 end
 
 local function undertale_BattleTele3Zm()
-	ZE2.LatestZombieCheckpoint = 3
-	
 	for player in players.iterate
 		if player.mo and player.mo.valid and (player["ze2_info"].team == 2) then
 			P_SetOrigin(player.mo, -1088*FRACUNIT, -4736*FRACUNIT, 0*FRACUNIT)
@@ -216,7 +214,7 @@ local function undertale_Startbattle1()
 	S_ChangeMusic("UTBTL2",true,player)
 	S_StartSound(player, sfx_utdgr)
 	Undertale_Battle1Timer.active = true
-	ZE2.CurrentZombieCheckpoint = 3
+	ZE2.LatestZombieCheckpoint = 3
 end
 
 local function undertale_Prebattle2()
@@ -224,7 +222,7 @@ local function undertale_Prebattle2()
 end
 
 local function undertale_Startbattle2()
-	ZE2.CurrentZombieCheckpoint = 4
+	ZE2.LatestZombieCheckpoint = 4
 	
 	for player in players.iterate do
 		if player.mo and player.mo.valid then
