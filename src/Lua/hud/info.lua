@@ -68,7 +68,7 @@ ZE2.infohud = function(v, player)
 					local y = 168-lower_hud_offset
 					
 					local sprintmeter = L_FixedDecimal(player["ze2_info"].sprintmeter, 1).."%"
-					customhud.CustomFontString(v, 0, y, "Run: "..sprintmeter, "TNYFC",
+					customhud.CustomFontString(v, 0, y, "STAMINA: "..sprintmeter, "TNYFC",
 					(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, sprintmeter_color)
 				end
 				
