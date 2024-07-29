@@ -422,8 +422,9 @@ addHook("PlayerThink", function(player)
 	if gametype ~= GT_ZE2 then return end
     if player.mo and player.mo.valid then
 		local cmd = player.cmd
+		local floorz = P_FloorzAtPos(player.mo.x, player.mo.y, player.mo.z, player.mo.height)
 		
-		if cmd.sidemove and P_IsObjectOnGround(player.mo) then
+		if cmd.sidemove and abs(player.mo.z - floorz) <= 16*FRACUNIT then
 			L_SpeedCapXY(player.mo, 16*FRACUNIT)
 		end
 		
