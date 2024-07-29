@@ -449,7 +449,11 @@ addHook("PlayerThink", function(player)
 		end
 		
 		if player.powers[pw_tailsfly] then
-			ZE2:DecrementSprint(player, FRACUNIT)
+			if not (player.speed/FU) then
+				ZE2:DecrementSprint(player, FRACUNIT*5)
+			else
+				ZE2:DecrementSprint(player, 3*FRACUNIT/2)
+			end
 		end
 
 		if player.glidetime then
