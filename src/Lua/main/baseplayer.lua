@@ -1,7 +1,7 @@
 freeslot("sfx_zjump")
 sfxinfo[sfx_zjump].caption = "Jump"
 mobjinfo[MT_LHRT].forceknockback = 20*FRACUNIT
-ZE2.JumpSprintFatigue = 12*FRACUNIT
+ZE2.JumpSprintFatigue = 21*FRACUNIT
 ZE2.DefaultRubyCap = 500;
 ZE2.RubyStart = 100 -- the amount of rubies you start when you join a server
 
@@ -317,7 +317,7 @@ function ZE2:DecrementSprint(player, value)
 		if newsprintexhaust ~= nil then
 			player["ze2_info"].sprintdelay = abs(newsprintexhaust)
 		else
-			player["ze2_info"].sprintdelay = TICRATE -- do default
+			player["ze2_info"].sprintdelay = TICRATE*2 -- do default
 		end
 		
 		player["ze2_info"].sprintmeter = 0
@@ -328,6 +328,7 @@ end
 
 function ZE2:IncrementSprint(player, value)
 	if player["ze2_info"].team ~= 1 then return end
+	if player["ze2_info"].sprintdelay then return end
 	
 	if player["ze2_info"].sprintmeter + abs(value) >= 100*FRACUNIT then
 		player["ze2_info"].sprintmeter = 100*FRACUNIT
@@ -361,60 +362,31 @@ ZE2.sprint_thinker = function(player)
 	end
 	
 	if player["ze2_info"].team == 1 then
-		if P_GetPlayerControlDirection(player) == 1 and (cmd.buttons & BT_SPIN) 
-		and not player.powers[pw_tailsfly] then
-			ZE2:DecrementSprint(player, decrement)
-			
-			player["ze2_info"].isSprinting = true
-
-			-- Running Animation
-			if player["ze2_info"].sprintmeter <= 0 then
-				player.runspeed = 32000*FRACUNIT
+		if not player.climbing then
+			if (player.speed/FU) > 12 then -- running
+				if P_IsObjectOnGround(pmo) then
+					P_SpawnSkidDust(player, 20*FRACUNIT)
+				end
+				
+				ZE2:IncrementSprint(player, increment/2)
+				
+				player.runspeed = 5*FRACUNIT
 			else
-				if (cmd.forwardmove > 0 or cmd.sidemove) 
-				and not player["ze2_info"].landfatigue_timer then
-					player.runspeed = 5*FRACUNIT
-					
-					if player.speed >= 5*FRACUNIT and P_IsObjectOnGround(pmo) then
-						P_SpawnSkidDust(player, 20*FRACUNIT)
-					end
-				else -- running while walking backwards or land fatigued
-					player.runspeed = 32000*FRACUNIT
-					
-					if player.speed >= 5*FRACUNIT and P_IsObjectOnGround(pmo) then
-						if (leveltime % 4) == 0 then
-							P_SpawnSkidDust(player, 20*FRACUNIT)
-							
-							if not player["ze2_info"].landfatigue_timer then
-								S_StartSound(pmo, sfx_skid)
-							end
-						end
-					end
-				end
-			end
-		elseif not player.climbing then
-			if not player["ze2_info"].sprintdelay then
-				if not (player.speed/FU) then
+				if not (player.speed/FU) then -- not moving
 					ZE2:IncrementSprint(player, increment*3)
-				else
-					ZE2:IncrementSprint(player, increment/2)
+				else -- moving but slower than running speed
+					ZE2:IncrementSprint(player, increment)
 				end
+				
+				player.runspeed = 32000*FRACUNIT
 			end
-			
-			player["ze2_info"].isSprinting = false
-			
-			-- Force Walking Animation
-			player.runspeed = 32000*FRACUNIT
 		end
-	else
-		player["ze2_info"].isSprinting = false
 	end
 	
 	if cmd.buttons & BT_SPIN and player.powers[pw_tailsfly] then
 		P_SetObjectMomZ(player.mo, -FRACUNIT/2, true)
 	end
 
-	
 	cmd.buttons = $ & ~BT_SPIN
 end
 
@@ -450,13 +422,12 @@ addHook("PlayerThink", function(player)
 	if gametype ~= GT_ZE2 then return end
     if player.mo and player.mo.valid then
 		local cmd = player.cmd
+		local floorz = P_FloorzAtPos(player.mo.x, player.mo.y, player.mo.z, player.mo.height)
 		
-		if player["ze2_info"].team == 2 then
-			if cmd.sidemove and P_IsObjectOnGround(player.mo) then
-				L_SpeedCapXY(player.mo, 17*FRACUNIT)
-			end
+		if cmd.sidemove and abs(player.mo.z - floorz) <= 16*FRACUNIT then
+			L_SpeedCapXY(player.mo, 16*FRACUNIT)
 		end
-	
+		
         if player.climbing then
             ZE2:DecrementSprint(player, FRACUNIT)
 			
@@ -478,7 +449,11 @@ addHook("PlayerThink", function(player)
 		end
 		
 		if player.powers[pw_tailsfly] then
-			ZE2:DecrementSprint(player, FRACUNIT)
+			if not (player.speed/FU) then
+				ZE2:DecrementSprint(player, FRACUNIT*3)
+			else
+				ZE2:DecrementSprint(player, 3*FRACUNIT/2)
+			end
 		end
 
 		if player.glidetime then

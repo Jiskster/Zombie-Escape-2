@@ -12,7 +12,6 @@ ZE2.ZombieConfig = {
 		killaward = 10,
 		accelstart = 100,
 		acceleration = 29,
-		thrustfactor = 5,
 		inventory_limit = 1,
 		inventory = {
 			ZE2:CopyItemFromID(ITEM_INSTA_BURST)
@@ -20,7 +19,7 @@ ZE2.ZombieConfig = {
 	},
 	["alpha"] = {
 		skincolor = SKINCOLOR_ALPHAZOMBIE,
-		normalspeed = 20 * FRACUNIT,
+		normalspeed = 18 * FRACUNIT,
 		health = 3000,
 		charability = CA_NONE,
 		charability2 = CA2_NONE,
@@ -85,24 +84,9 @@ ZE2.SetCCtoplayer = function(player)
 	if pmo and pmo.valid and cc[pmo.skin] then
 		if cc[pmo.skin].normalspeed then 
 			player.normalspeed = cc[pmo.skin].normalspeed or cc["default"].normalspeed
-			local sprintboost = cc[pmo.skin].sprintboost or cc["default"].sprintboost
-			if (sprintboost) and (player["ze2_info"].isSprinting and player["ze2_info"].sprintmeter > 0) and (player["ze2_info"].team == 1) then
-				if cmd.forwardmove > 0 or cmd.sidemove then
-					player.normalspeed = max($ + sprintboost - (player["ze2_info"].landfatigue_timer)*FU, 0)
-				else -- walking backwards
-					player.normalspeed = FixedMul($, 3*FRACUNIT/4) 
-				end
-				/* UNUSED SPRINT CAM CODE
-				if player.camerascale < player.mo.scale + FU/2 then
-					player.camerascale = $ + FU/32
-				end
-				*/
-			else
-				/* UNUSED SPRINT CAM CODE
-				if player.camerascale > player.mo.scale then
-					player.camerascale = $ - FU/32
-				end
-				*/
+			
+			if (player["ze2_info"].team == 1) then
+				player.normalspeed = max($ - (player["ze2_info"].landfatigue_timer)*FU, 0)
 			end
 		end
 
@@ -141,11 +125,11 @@ ZE2.SetCCtoplayer = function(player)
 		else
 			player.acceleration = skins[pmo.skin].acceleration
 		end
-		
-		if (cc[pmo.skin].thrustfactor) then 
-			player.thrustfactor = cc[pmo.skin].thrustfactor 
+
+		if P_IsObjectOnGround(pmo) then
+			player.thrustfactor = 10
 		else
-			player.thrustfactor = skins[pmo.skin].thrustfactor
+			player.thrustfactor = 4
 		end
 		
 		if (cc[pmo.skin].charflags) then 
@@ -245,10 +229,10 @@ ZE2.SetZCtoplayer = function(player)
 				player.acceleration = 40
 			end
 			
-			if (zc[ztype].thrustfactor) then 
-				player.thrustfactor = zc[ztype].thrustfactor 
+			if P_IsObjectOnGround(pmo) then
+				player.thrustfactor = 10
 			else
-				player.thrustfactor = 5
+				player.thrustfactor = 4
 			end
 
 			if (zc[ztype].charflags) then 
@@ -328,74 +312,68 @@ ZE2.AddConfig = function(charname, input_table)
 end
 
 ZE2.AddConfig("sonic", {
-	normalspeed = 13 * FRACUNIT,
+	normalspeed = 20 * FRACUNIT,
 	health = 25,
 	charability = CA_JUMPTHOK,
 	charability2 = CA2_NONE,
 	jumpfactor = 15 * FRACUNIT / 19,
 	actionspd = 8*FRACUNIT,
-	sprintboost = 12 * FRACUNIT,
 	desc1 = "Fast hedgehog born to speed.",
 	desc2 = "Has Low HP, and High Speed",
 	desc3 = "Are you up for the challenge?"
 })
 
 ZE2.AddConfig("tails", {
-	normalspeed = 12 * FRACUNIT,
+	normalspeed = 18 * FRACUNIT,
 	health = 55,
 	charability = CA_FLY,
 	charability2 = CA2_NONE,
 	jumpfactor = 18 * FRACUNIT / 19,
-	actionspd = 65*FRACUNIT,
-	sprintboost = 11 * FRACUNIT,
+	actionspd = 47*FRACUNIT,
 	bullet_speed_multiplier = (3*FRACUNIT)/2, -- 1.5x
 	desc1 = "Has the brains. Without the plane.",
 	desc2 = "Flies slow. Slower than sonic."
 })
 
 ZE2.AddConfig("knuckles", {
-	normalspeed = 10 * FRACUNIT,
+	normalspeed = 16 * FRACUNIT,
 	health = 90,
 	charability = CA_GLIDEANDCLIMB,
 	charability2 = CA2_NONE,
 	jumpfactor = 17 * FRACUNIT / 19,
 	actionspd = 24*FRACUNIT,
-	sprintboost = 10 * FRACUNIT,
 	bullet_speed_multiplier = FRACUNIT/2,
 	desc1 = "Very Strong feller",
 	desc2 = "Glides slow. The slowest."
 })
 
 ZE2.AddConfig("amy", {
-	normalspeed = 11 * FRACUNIT,
+	normalspeed = 18 * FRACUNIT,
 	health = 45,
 	charability = CA_TWINSPIN,
 	charability2 = CA2_NONE,
 	jumpfactor = 20 * FRACUNIT / 19,
-	sprintboost = 11 * FRACUNIT,
 	desc1 = "Pink Pink Pink.",
 	desc2 = "WIP ABILITIES"
 })
 
 ZE2.AddConfig("fang", {
-	normalspeed = 11 * FRACUNIT,
+	normalspeed = 17 * FRACUNIT,
 	health = 75,
 	charability = CA_BOUNCE,
 	charability2 = CA2_NONE,
 	jumpfactor = 18 * FRACUNIT / 19,
-	sprintboost = 12 * FRACUNIT,
 	desc1 = "He shoots the shooty shoot.",
 	desc2 = "Have less momentum to shoot."
 })
 
 ZE2.AddConfig("metalsonic", {
-	normalspeed = 13 * FRACUNIT,
+	normalspeed = 18 * FRACUNIT,
 	health = 70,
 	charability = CA_NONE,
 	charability2 = CA2_NONE,
 	jumpfactor = 17 * FRACUNIT / 19,
 	charflags = SF_MACHINE,
-	sprintboost = 10 * FRACUNIT,
 	desc1 = "He might the the real sonic.",
 	desc2 = "Just a fella with an identity crisis.",
 })
