@@ -317,7 +317,7 @@ function ZE2:DecrementSprint(player, value)
 		if newsprintexhaust ~= nil then
 			player["ze2_info"].sprintdelay = abs(newsprintexhaust)
 		else
-			player["ze2_info"].sprintdelay = TICRATE -- do default
+			player["ze2_info"].sprintdelay = TICRATE*2 -- do default
 		end
 		
 		player["ze2_info"].sprintmeter = 0
@@ -328,6 +328,7 @@ end
 
 function ZE2:IncrementSprint(player, value)
 	if player["ze2_info"].team ~= 1 then return end
+	if player["ze2_info"].sprintdelay then return end
 	
 	if player["ze2_info"].sprintmeter + abs(value) >= 100*FRACUNIT then
 		player["ze2_info"].sprintmeter = 100*FRACUNIT
@@ -362,7 +363,7 @@ ZE2.sprint_thinker = function(player)
 	
 	if player["ze2_info"].team == 1 then
 		if not player.climbing then
-			if (player.speed/FU) > 12 then
+			if (player.speed/FU) > 12 then -- running
 				if P_IsObjectOnGround(pmo) then
 					P_SpawnSkidDust(player, 20*FRACUNIT)
 				end
@@ -371,8 +372,10 @@ ZE2.sprint_thinker = function(player)
 				
 				player.runspeed = 5*FRACUNIT
 			else
-				if not (player.speed/FU) then
+				if not (player.speed/FU) then -- not moving
 					ZE2:IncrementSprint(player, increment*3)
+				else -- moving but slower than running speed
+					ZE2:IncrementSprint(player, increment)
 				end
 				
 				player.runspeed = 32000*FRACUNIT
@@ -384,7 +387,6 @@ ZE2.sprint_thinker = function(player)
 		P_SetObjectMomZ(player.mo, -FRACUNIT/2, true)
 	end
 
-	
 	cmd.buttons = $ & ~BT_SPIN
 end
 
