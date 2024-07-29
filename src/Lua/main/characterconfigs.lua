@@ -126,7 +126,11 @@ ZE2.SetCCtoplayer = function(player)
 			player.acceleration = skins[pmo.skin].acceleration
 		end
 
-		player.thrustfactor = 10
+		if P_IsObjectOnGround(pmo) then
+			player.thrustfactor = 10
+		else
+			player.thrustfactor = 4
+		end
 		
 		if (cc[pmo.skin].charflags) then 
 			player.charflags = $|cc[pmo.skin].charflags 
@@ -225,10 +229,10 @@ ZE2.SetZCtoplayer = function(player)
 				player.acceleration = 40
 			end
 			
-			if (zc[ztype].thrustfactor) then 
-				player.thrustfactor = zc[ztype].thrustfactor 
-			else
+			if P_IsObjectOnGround(pmo) then
 				player.thrustfactor = 10
+			else
+				player.thrustfactor = 4
 			end
 
 			if (zc[ztype].charflags) then 
