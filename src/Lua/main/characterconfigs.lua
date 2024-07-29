@@ -344,7 +344,7 @@ ZE2.AddConfig("knuckles", {
 })
 
 ZE2.AddConfig("amy", {
-	normalspeed = 17 * FRACUNIT,
+	normalspeed = 18 * FRACUNIT,
 	health = 45,
 	charability = CA_TWINSPIN,
 	charability2 = CA2_NONE,
