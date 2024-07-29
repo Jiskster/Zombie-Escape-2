@@ -88,6 +88,10 @@ mobjinfo[MT_BLUEGOOMBA].npc_spawnhealth = {10,15}
 mobjinfo[MT_BLUEGOOMBA].npc_name_color = SKINCOLOR_BLUE
 mobjinfo[MT_BLUEGOOMBA].rubydrop = {2,2}
 mobjinfo[MT_BLUEGOOMBA].forcedamage = 10
+
+-- Turret
+mobjinfo[MT_TURRETLASER].forcedamage = 20
+mobjinfo[MT_TURRETLASER].forceknockback = 30*FRACUNIT
 /*
 local function GoldCrawlaRNG(mobj)
 	if gametype ~= GT_ZE2 then return end
