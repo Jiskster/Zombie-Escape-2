@@ -228,7 +228,7 @@ ZE2.SetZCtoplayer = function(player)
 			if (zc[ztype].thrustfactor) then 
 				player.thrustfactor = zc[ztype].thrustfactor 
 			else
-				player.thrustfactor = 15
+				player.thrustfactor = 10
 			end
 
 			if (zc[ztype].charflags) then 
