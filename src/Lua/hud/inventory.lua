@@ -84,7 +84,6 @@ ZE2.inventoryhud = function(v, player)
 					local ammo = tostring(slot_ammo)
 					
 					if slot_ammo then
-						v.drawString(x, y, ammo, V_SNAPTOBOTTOM, "thin-fixed")
 						customhud.CustomFontString(v,x,y,ammo, "DTNYF", V_SNAPTOBOTTOM, nil, FRACUNIT, SKINCOLOR_AQUAMARINE)
 					else -- flash if no ammo
 						if (leveltime/4)%2 == 0 then
