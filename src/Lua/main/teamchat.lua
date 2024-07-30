@@ -15,11 +15,18 @@ function ZE2.DoTeamChat(player, text, team)
 		prefixrole = "\x82".."~"..hexcolor
 	end
 	
+	if (isserver or isdedicatedserver) and ZE2.server_showteamchat.value then
+		local teamname = (team == 1) and "[TEAMCHAT:SURVIVORS]" or "[TEAMCHAT:ZOMBIES]"
+		
+		chatprint(hexcolor..teamname.."<"..prefixrole..player.name.."> "..text, true)
+	end
+	
 	for tplayer in players.iterate do
 		if tplayer.spectator then continue end
-		
+		if tplayer == server and ZE2.server_showteamchat.value then return end
+	
 		if tplayer["ze2_info"].team == team then
-			chatprintf(tplayer, hexcolor.."[T]<"..prefixrole..tplayer.name.."> "..text, true)
+			chatprintf(tplayer, hexcolor.."[T]<"..prefixrole..player.name.."> "..text, true)
 		end
 	end
 end
