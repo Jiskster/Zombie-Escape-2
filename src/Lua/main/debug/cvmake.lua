@@ -1,7 +1,7 @@
 local CV_Float = "float!"
 local CV_Number = {MIN = -999999999, MAX=999999999}
 local function bind(object, key, varname, options)
-    local flags = CV_NETVAR | CV_CALL
+    local flags = CV_NETVAR | CV_CALL | CV_NOINIT
     local value = object[key]
     if options == CV_Float then
         flags = $ | CV_FLOAT
