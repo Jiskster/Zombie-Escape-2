@@ -93,3 +93,6 @@ dofile "levelscripts/westopolis.lua"
 dofile "levelscripts/ancientcatacombs.lua"
 
 dofile "main/netvars.lua"
+
+dofile "main/debug/cvmake.lua"
+dofile "main/debug/commands.lua"
