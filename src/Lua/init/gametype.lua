@@ -44,6 +44,8 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 	ZE2.time_limit = 0;
 	ZE2.team_won = 0;
 	
+	ZE2.mapladdertag = nil;
+	
 	ZE2.pregame_timeleft = ZE2.wait_time; 
 	ZE2.zombie_releasetime = 0;
 	
@@ -61,6 +63,11 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 		if mapheaderinfo[map].ze2_timelimit then
 			local input = tonumber(mapheaderinfo[map].ze2_timelimit)
 			ZE2.time_limit = input*60*TICRATE
+		end
+		
+		if mapheaderinfo[map].ze2_laddertag then
+			local input = tonumber(mapheaderinfo[map].ze2_laddertag)
+			ZE2.mapladdertag = input
 		end
 	end
 	

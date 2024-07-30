@@ -57,6 +57,7 @@ dofile "main/savedata.lua"
 dofile "main/maptimers.lua"
 dofile "main/checkpointsystem.lua"
 dofile "main/shields.lua"
+dofile "main/ladder.lua"
 
 dofile "objects/megahp.lua"
 dofile "objects/teleporter_gfx.lua"
