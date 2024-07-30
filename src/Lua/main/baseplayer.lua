@@ -36,6 +36,8 @@ ZE2.Effect_EndFuncs = {
 }
 
 ZE2["default_ze2_info"] = {
+	crouching = false,
+
 	inventory_selection = 1,
 
 	survivor_inventory_limit = 5,
@@ -364,7 +366,7 @@ ZE2.sprint_thinker = function(player)
 	if player["ze2_info"].team == 1 then
 		if not player.climbing then
 			if (player.speed/FU) > 12 then -- running
-				if P_IsObjectOnGround(pmo) then
+				if P_IsObjectOnGround(pmo) and not player["ze2_info"].crouching then
 					P_SpawnSkidDust(player, 20*FRACUNIT)
 				end
 				

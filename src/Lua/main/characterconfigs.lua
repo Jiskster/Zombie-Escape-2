@@ -88,6 +88,10 @@ ZE2.SetCCtoplayer = function(player)
 			if (player["ze2_info"].team == 1) then
 				player.normalspeed = max($ - (player["ze2_info"].landfatigue_timer)*FU, 0)
 			end
+			
+			if player["ze2_info"].crouching and P_IsObjectOnGround(pmo) then
+				player.normalspeed = $ / 2
+			end
 		end
 
 		if (cc[pmo.skin].charability) then
@@ -194,6 +198,10 @@ ZE2.SetZCtoplayer = function(player)
 			
 			player.normalspeed = $ + player["ze2_info"].zombie_speedbonus
 			player.normalspeed = max($ - (player["ze2_info"].landfatigue_timer)*FU, 0) 
+			
+			if player["ze2_info"].crouching and P_IsObjectOnGround(pmo) then
+				player.normalspeed = $ / 2
+			end
 			
 			if (zc[ztype].charability) then
 				player.charability = zc[ztype].charability

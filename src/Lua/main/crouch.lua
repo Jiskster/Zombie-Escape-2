@@ -1,0 +1,57 @@
+freeslot("SPR2_ZECH")
+freeslot("S_PLAY_CROUCH_ZE2")
+
+spr2defaults[SPR2_ZECH] = SPR2_ROLL
+
+states[S_PLAY_CROUCH_ZE2] = {
+    sprite = SPR_PLAY,
+    frame = SPR2_ZECH|FF_ANIMATE|A,
+    tics = -1,
+    nextstate = S_PLAY_ROLL
+}
+
+local function CrouchHeightHook(player)
+	if gametype ~= GT_ZE2 then return end
+
+    return (player["ze2_info"].crouching or (player.mo.ceilingz-player.mo.floorz < player.height)) and player.spinheight or player.height
+end
+
+addHook("PostThinkFrame", function()
+	for player in players.iterate do
+		if not (player.mo and player.mo.valid) then continue end
+		if gametype ~= GT_ZE2 then continue end
+		
+		local cmd = player.cmd
+		local pmo = player.mo
+		local skin = pmo.skin
+		
+		if cmd.buttons & BT_CUSTOM1 then
+			player["ze2_info"].crouching = true
+			
+			if P_IsObjectOnGround(player.mo) and player["ze2_info"].crouching then
+				if pmo.frame > skins[skin].sprites[SPR2_ROLL].numframes then
+					pmo.frame = A
+				end
+				
+				pmo.state = S_PLAY_CROUCH_ZE2
+			end
+		else
+			if player["ze2_info"].crouching then
+				if pmo.state == S_PLAY_CROUCH_ZE2 then
+					if (player.speed/FU) then
+						pmo.frame = A
+						pmo.state = S_PLAY_WALK
+					else
+						pmo.frame = A
+						pmo.state = S_PLAY_STND
+					end
+				end
+			end
+			
+			player["ze2_info"].crouching = false
+		end
+	end
+end)
+
+addHook("PlayerHeight", CrouchHeightHook)
+addHook("PlayerCanEnterSpinGaps", CrouchHeightHook)
