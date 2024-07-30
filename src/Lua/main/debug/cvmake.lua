@@ -52,14 +52,14 @@ for k,v in pairs(ZE2.ItemPresets) do
 end
 
 -- float test
-local o = {f = 0}
-bind(o, "f", "zd_float", CV_Float)
-hud.add(function (v)
-    v.drawString(160, 130, tostring(o.f), 0, "center")
-end)
+-- local o = {f = 0}
+-- bind(o, "f", "zd_float", CV_Float)
+-- hud.add(function (v)
+--     v.drawString(160, 130, tostring(o.f), 0, "center")
+-- end)
 
-COM_AddCommand("clear", function ()
-    for i=1,50 do
-        print("")
-    end
-end)
+-- COM_AddCommand("clear", function ()
+--     for i=1,50 do
+--         print("")
+--     end
+-- end)
