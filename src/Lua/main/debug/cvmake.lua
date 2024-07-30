@@ -1,8 +1,17 @@
+local CV_Float = "float!"
+local CV_Number = {MIN = -999999999, MAX=999999999}
 local function bind(object, key, varname, options)
+    local flags = CV_NETVAR | CV_CALL
+    local value = object[key]
+    if options == CV_Float then
+        flags = $ | CV_FLOAT
+        options = {MIN = -999999999, MAX=999999999}
+        value = string.format("%f", value)
+    end
     CV_RegisterVar({
         varname,
-        object[key],
-        CV_NETVAR | CV_CALL,
+        value,
+        flags,
         options,
         function(varr)
             --[[@type consvar_t]]
@@ -37,4 +46,20 @@ for k,v in pairs(ZE2.ItemPresets) do
     if v.damage then
         bind(v, "damage", "zd_" .. name .. "_damage", CV_Natural)
     end
+    if v.knockback then
+        bind(v, "knockback", "zd_" .. name .. "_knockback", CV_Float)
+    end
 end
+
+-- float test
+local o = {f = 0}
+bind(o, "f", "zd_float", CV_Float)
+hud.add(function (v)
+    v.drawString(160, 130, tostring(o.f), 0, "center")
+end)
+
+COM_AddCommand("clear", function ()
+    for i=1,50 do
+        print("")
+    end
+end)
