@@ -86,6 +86,10 @@ addHook("ThinkFrame", function()
 	
 	if ZE2.zombie_releasetime then
 		ZE2.zombie_releasetime = $ - 1
+		
+		if not ZE2.zombie_releasetime then
+			S_StartSoundAtVolume(nil, sfx_zmrel, 128)
+		end
 	end
 	
 	local count_timecalculate = (ZE2.pregame_timeleft-TICRATE)/TICRATE -- For the countdown not to be behind/ahead
