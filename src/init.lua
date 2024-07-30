@@ -60,6 +60,7 @@ dofile "main/maptimers.lua"
 dofile "main/checkpointsystem.lua"
 dofile "main/shields.lua"
 dofile "main/ladder.lua"
+dofile "main/teamchat.lua"
 
 dofile "objects/megahp.lua"
 dofile "objects/teleporter_gfx.lua"

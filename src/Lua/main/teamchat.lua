@@ -1,0 +1,47 @@
+function ZE2.DoTeamChat(player, text, team)
+	if gametype ~= GT_ZE2 then return end
+	if not text then return end
+	if not team then return end
+	if team < 1 or team > 2 then return end
+	
+	local hexcolor = (team == 1) and "\x84" or "\x85"
+	local prefixrole = ""
+	
+	if IsPlayerAdmin(player) then
+		prefixrole = "\x82".."@"..hexcolor
+	end
+	
+	if player == server then
+		prefixrole = "\x82".."~"..hexcolor
+	end
+	
+	for tplayer in players.iterate do
+		if tplayer.spectator then continue end
+		
+		if tplayer["ze2_info"].team == team then
+			chatprintf(tplayer, hexcolor.."[T]<"..prefixrole..tplayer.name.."> "..text, true)
+		end
+	end
+end
+
+addHook("PlayerMsg", function(source, msgtype, target, msg)
+	if gametype ~= GT_ZE2 then return end
+	
+	if (msg:sub(1,3) == "/tc") and (msg:len() == 3) then
+		source["ze2_info"].teamchat_enabled = not $
+	
+		local teamchatiswhat = source["ze2_info"].teamchat_enabled and "Enabled" or "Disabled"
+		chatprintf(source, "\x89".."Team Chat is "..teamchatiswhat)
+		return true
+	elseif (msg:sub(1,4) == "/tc ") and (msg:len() > 4) 
+	and not source["ze2_info"].teamchat_enabled then
+		ZE2.DoTeamChat(source, msg:gsub("/tc ", ""), source["ze2_info"].team, 1)
+		return true
+	end
+	
+	if source["ze2_info"].teamchat_enabled then
+		ZE2.DoTeamChat(source, msg, source["ze2_info"].team)
+		return true
+	end
+end)
+

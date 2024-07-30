@@ -136,6 +136,8 @@ ZE2["default_ze2_info"] = {
 	
 	landfatigue = false,
 	landfatigue_timer = 0,
+	
+	teamchat_enabled = false,
 }
 
 addHook("PlayerSpawn", function(player)
