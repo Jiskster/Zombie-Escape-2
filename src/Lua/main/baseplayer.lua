@@ -655,7 +655,7 @@ addHook("PlayerThink", function(player)
 	if player.playerstate ~= PST_LIVE then return end
 	
 	ZE2:TryBooleanAction(player, {
-		condition = player.cmd.buttons & BT_CUSTOM1,
+		condition = player.cmd.buttons & BT_CUSTOM2,
 		var = "special_pressed",
 		action = function()
 			if not player["ze2_info"].special_cooldown then
