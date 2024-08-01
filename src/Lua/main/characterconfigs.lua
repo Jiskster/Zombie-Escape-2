@@ -130,7 +130,8 @@ ZE2.SetCCtoplayer = function(player)
 			player.acceleration = skins[pmo.skin].acceleration
 		end
 
-		if P_IsObjectOnGround(pmo) then
+		if P_IsObjectOnGround(pmo) or
+		(not P_IsObjectOnGround(pmo) and cmd.forwardmove < 0 and P_GetPlayerControlDirection(player) == 2) then
 			player.thrustfactor = 10
 		else
 			player.thrustfactor = 4
@@ -237,7 +238,8 @@ ZE2.SetZCtoplayer = function(player)
 				player.acceleration = 40
 			end
 			
-			if P_IsObjectOnGround(pmo) then
+			if P_IsObjectOnGround(pmo) or
+			(not P_IsObjectOnGround(pmo) and cmd.forwardmove < 0 and P_GetPlayerControlDirection(player) == 2) then
 				player.thrustfactor = 10
 			else
 				player.thrustfactor = 4
