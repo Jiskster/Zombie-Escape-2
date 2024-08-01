@@ -390,8 +390,6 @@ ZE2.sprint_thinker = function(player)
 	if cmd.buttons & BT_SPIN and player.powers[pw_tailsfly] then
 		P_SetObjectMomZ(player.mo, -FRACUNIT/2, true)
 	end
-
-	cmd.buttons = $ & ~BT_SPIN
 end
 
 addHook("JumpSpecial", function(player)

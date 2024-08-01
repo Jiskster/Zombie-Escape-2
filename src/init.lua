@@ -38,11 +38,11 @@ dofile "enemies/doom.lua"
 
 dofile "main/baseplayer.lua"
 
-dofile "main/crouch.lua"
-
 dofile "main/zombie/zombie_colors.lua"
 
 dofile "main/pregame_logic.lua"
+
+dofile "main/crouch.lua"
 
 dofile "main/characterconfigs.lua"
 

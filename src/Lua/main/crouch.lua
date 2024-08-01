@@ -16,7 +16,7 @@ local function CrouchHeightHook(player)
     return (player["ze2_info"].crouching or (player.mo.ceilingz-player.mo.floorz < player.height)) and player.spinheight or player.height
 end
 
-addHook("PostThinkFrame", function()
+addHook("PreThinkFrame", function()
 	for player in players.iterate do
 		if not (player.mo and player.mo.valid) then continue end
 		if gametype ~= GT_ZE2 then continue end
@@ -25,7 +25,7 @@ addHook("PostThinkFrame", function()
 		local pmo = player.mo
 		local skin = pmo.skin
 		
-		if cmd.buttons & BT_CUSTOM1 then
+		if cmd.buttons & BT_SPIN then
 			player["ze2_info"].crouching = true
 			
 			if P_IsObjectOnGround(player.mo) and player["ze2_info"].crouching then
@@ -50,6 +50,8 @@ addHook("PostThinkFrame", function()
 			
 			player["ze2_info"].crouching = false
 		end
+		
+		cmd.buttons = $ & ~BT_SPIN
 	end
 end)
 
