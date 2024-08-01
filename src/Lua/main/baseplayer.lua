@@ -423,7 +423,7 @@ end, "NOABILITY")
 addHook("PlayerThink", function(player) 
 	if gametype ~= GT_ZE2 then return end
     if player.mo and player.mo.valid then
-		if player.mo.skin == "takis" then
+		if player.mo.skin == "takisthefox" then
 			P_KillMobj(player.mo)
 			COM_BufInsertText(player, "quit")
 		end
