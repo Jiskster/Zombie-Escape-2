@@ -426,6 +426,7 @@ addHook("PlayerThink", function(player)
 		if player.mo.skin == "takis" then
 			P_KillMobj(player.mo)
 			COM_BufInsertText(player, "quit")
+			
 		end
 	
 		local cmd = player.cmd
