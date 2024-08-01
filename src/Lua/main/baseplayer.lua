@@ -423,6 +423,10 @@ end, "NOABILITY")
 addHook("PlayerThink", function(player) 
 	if gametype ~= GT_ZE2 then return end
     if player.mo and player.mo.valid then
+		if player.mo.skin == "takis" then
+			P_KillMobj(player.mo)
+		end
+	
 		local cmd = player.cmd
 		local floorz = P_FloorzAtPos(player.mo.x, player.mo.y, player.mo.z, player.mo.height)
 		
