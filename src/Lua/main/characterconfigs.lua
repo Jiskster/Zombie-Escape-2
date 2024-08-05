@@ -185,6 +185,7 @@ end
 
 ZE2.SetZCtoplayer = function(player)
 	local pmo = player.mo
+	local cmd = player.cmd
 	local zc = ZE2.ZombieConfig
 	local cc = ZE2.CharacterConfig
 	local ztype = player["ze2_info"].zombie_type
