@@ -314,7 +314,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 				P_SetObjectMomZ(mo, verticalknockback, true)
 			end
 			
-			mo.player["ze2_info"].landfatigue_timer = 30
+			mo.player["ze2_info"].landfatigue_timer = 20
 			
 			S_StartSound(mo, chosen_hurtsound)
 			
