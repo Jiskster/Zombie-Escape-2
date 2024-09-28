@@ -3,7 +3,7 @@ ZE2:CreateItem("Red Ring",  {
 	icon = "RINGIND",
 	firerate = 6,
 	color = SKINCOLOR_RED,
-	knockback = 7*FRACUNIT,
+	knockback = 14*FRACUNIT,
 	damage = 45,
 	velocity_multiplier = 2*FRACUNIT,
 	max_ammo = 50,
