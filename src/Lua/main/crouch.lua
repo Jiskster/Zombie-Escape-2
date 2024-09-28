@@ -20,6 +20,7 @@ addHook("PreThinkFrame", function()
 	for player in players.iterate do
 		if not (player.mo and player.mo.valid) then continue end
 		if gametype ~= GT_ZE2 then continue end
+		if ZE2.game_ended then continue end
 		
 		local cmd = player.cmd
 		local pmo = player.mo
