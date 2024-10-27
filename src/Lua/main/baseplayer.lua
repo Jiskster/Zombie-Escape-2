@@ -369,12 +369,12 @@ ZE2.sprint_thinker = function(player)
 		if not player.climbing then
 			if (player.speed/FU) > 12 then -- running
 				if P_IsObjectOnGround(pmo) and not player["ze2_info"].crouching then
-					P_SpawnSkidDust(player, 20*FRACUNIT)
+					--P_SpawnSkidDust(player, 20*FRACUNIT)
 				end
 				
 				ZE2:IncrementSprint(player, increment/2)
 				
-				player.runspeed = 5*FRACUNIT
+				player.runspeed = 32000*FRACUNIT
 			else
 				if not (player.speed/FU) then -- not moving
 					ZE2:IncrementSprint(player, increment*3)

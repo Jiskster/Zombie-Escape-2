@@ -3,11 +3,11 @@
 ZE2.ZombieConfig = {
 	["normal"] = {
 		skincolor = SKINCOLOR_MOSS,
-		normalspeed = 22 * FRACUNIT,
+		normalspeed = 15 * FRACUNIT,
 		health = 1500,
 		charability = CA_NONE,
 		charability2 = CA2_NONE,
-		jumpfactor = 18 * FRACUNIT / 19,
+		jumpfactor = 3*FU/4,
 		actionspd = 9*FRACUNIT,
 		killaward = 10,
 		accelstart = 100,
@@ -19,11 +19,11 @@ ZE2.ZombieConfig = {
 	},
 	["alpha"] = {
 		skincolor = SKINCOLOR_ALPHAZOMBIE,
-		normalspeed = 18 * FRACUNIT,
+		normalspeed = 15 * FRACUNIT,
 		health = 3000,
 		charability = CA_NONE,
 		charability2 = CA2_NONE,
-		jumpfactor = 19 * FRACUNIT / 19,
+		jumpfactor = 3*FU/4,
 		actionspd = 16*FRACUNIT,
 		scale = 13*FRACUNIT/10,
 		killaward = 20,
@@ -41,7 +41,7 @@ ZE2.ZombieConfig = {
 		health = 1200,
 		charability = CA_THOK,
 		charability2 = CA2_NONE,
-		jumpfactor = 19 * FRACUNIT / 19,
+		jumpfactor = 3*FU/4,
 		actionspd = 40*FRACUNIT,
 		scale = 13*FRACUNIT/10,
 		killaward = 50,
@@ -132,7 +132,7 @@ ZE2.SetCCtoplayer = function(player)
 
 		if P_IsObjectOnGround(pmo) or
 		(not P_IsObjectOnGround(pmo) and cmd.forwardmove < 0 and P_GetPlayerControlDirection(player) == 2) then
-			player.thrustfactor = 8
+			player.thrustfactor = 12
 		else
 			player.thrustfactor = 4
 		end
@@ -323,11 +323,11 @@ ZE2.AddConfig = function(charname, input_table)
 end
 
 ZE2.AddConfig("sonic", {
-	normalspeed = 20 * FRACUNIT,
+	normalspeed = 15 * FRACUNIT,
 	health = 25,
-	charability = CA_JUMPTHOK,
+	charability = CA_NONE,
 	charability2 = CA2_NONE,
-	jumpfactor = 15 * FRACUNIT / 19,
+	jumpfactor = 3*FU/4,
 	actionspd = 8*FRACUNIT,
 	desc1 = "Fast hedgehog born to speed.",
 	desc2 = "Has Low HP, and High Speed",
@@ -335,11 +335,12 @@ ZE2.AddConfig("sonic", {
 })
 
 ZE2.AddConfig("tails", {
-	normalspeed = 18 * FRACUNIT,
-	health = 55,
-	charability = CA_FLY,
+	normalspeed = 15 * FRACUNIT,
+	health = 25,
+	charability = CA_NONE,
 	charability2 = CA2_NONE,
-	jumpfactor = 18 * FRACUNIT / 19,
+	jumpfactor = 3*FU/4,
+	--actionspd = 8*FRACUNIT,
 	actionspd = 47*FRACUNIT,
 	bullet_speed_multiplier = (3*FRACUNIT)/2, -- 1.5x
 	desc1 = "Has the brains. Without the plane.",
@@ -347,43 +348,43 @@ ZE2.AddConfig("tails", {
 })
 
 ZE2.AddConfig("knuckles", {
-	normalspeed = 16 * FRACUNIT,
-	health = 90,
-	charability = CA_GLIDEANDCLIMB,
+	normalspeed = 15 * FRACUNIT,
+	health = 25,
+	charability = CA_NONE,
 	charability2 = CA2_NONE,
-	jumpfactor = 17 * FRACUNIT / 19,
-	actionspd = 24*FRACUNIT,
+	jumpfactor = 3*FU/4,
+	--actionspd = 24*FRACUNIT,
 	bullet_speed_multiplier = FRACUNIT/2,
 	desc1 = "Very Strong feller",
 	desc2 = "Glides slow. The slowest."
 })
 
 ZE2.AddConfig("amy", {
-	normalspeed = 18 * FRACUNIT,
-	health = 45,
-	charability = CA_TWINSPIN,
+	normalspeed = 15 * FRACUNIT,
+	health = 25,
+	charability = CA_NONE,
 	charability2 = CA2_NONE,
-	jumpfactor = 20 * FRACUNIT / 19,
+	jumpfactor = 3*FU/4,
 	desc1 = "Pink Pink Pink.",
 	desc2 = "WIP ABILITIES"
 })
 
 ZE2.AddConfig("fang", {
-	normalspeed = 17 * FRACUNIT,
-	health = 75,
-	charability = CA_BOUNCE,
+	normalspeed = 15 * FRACUNIT,
+	health = 25,
+	charability = CA_NONE,
 	charability2 = CA2_NONE,
-	jumpfactor = 18 * FRACUNIT / 19,
+	jumpfactor = 3*FU/4,
 	desc1 = "He shoots the shooty shoot.",
 	desc2 = "Have less momentum to shoot."
 })
 
 ZE2.AddConfig("metalsonic", {
-	normalspeed = 18 * FRACUNIT,
-	health = 70,
+	normalspeed = 15 * FRACUNIT,
+	health = 25,
 	charability = CA_NONE,
 	charability2 = CA2_NONE,
-	jumpfactor = 17 * FRACUNIT / 19,
+	jumpfactor = 3*FU/4,
 	charflags = SF_MACHINE,
 	desc1 = "He might the the real sonic.",
 	desc2 = "Just a fella with an identity crisis.",
