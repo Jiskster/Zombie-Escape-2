@@ -3,15 +3,15 @@
 ZE2.ZombieConfig = {
 	["normal"] = {
 		skincolor = SKINCOLOR_MOSS,
-		normalspeed = 15 * FRACUNIT,
+		normalspeed = 17 * FRACUNIT,
 		health = 1500,
 		charability = CA_NONE,
 		charability2 = CA2_NONE,
 		jumpfactor = 3*FU/4,
 		actionspd = 9*FRACUNIT,
 		killaward = 10,
-		accelstart = 100,
-		acceleration = 29,
+		--accelstart = 100,
+		--acceleration = 29,
 		inventory_limit = 1,
 		inventory = {
 			ZE2:CopyItemFromID(ITEM_INSTA_BURST)
@@ -28,8 +28,8 @@ ZE2.ZombieConfig = {
 		scale = 13*FRACUNIT/10,
 		killaward = 20,
 		knockback_multiplier = FRACUNIT/2,
-		accelstart = 130,
-		acceleration = 24,
+		--accelstart = 130,
+		--acceleration = 24,
 		inventory_limit = 1,
 		inventory = {
 			ZE2:CopyItemFromID(ITEM_INSTA_BURST),
@@ -46,8 +46,8 @@ ZE2.ZombieConfig = {
 		scale = 13*FRACUNIT/10,
 		killaward = 50,
 		knockback_multiplier = FRACUNIT/4,
-		accelstart = 100,
-		acceleration = 15,
+		--accelstart = 100,
+		--acceleration = 15,
 		inventory_limit = 1,
 		inventory = {
 			ZE2:CopyItemFromID(ITEM_INSTA_BURST),
@@ -230,7 +230,7 @@ ZE2.SetZCtoplayer = function(player)
 			if (zc[ztype].accelstart) then 
 				player.accelstart = zc[ztype].accelstart 
 			else
-				player.accelstart = 96
+				player.accelstart = 128
 			end
 			
 			if (zc[ztype].acceleration) then 
@@ -241,7 +241,7 @@ ZE2.SetZCtoplayer = function(player)
 			
 			if P_IsObjectOnGround(pmo) or
 			(not P_IsObjectOnGround(pmo) and cmd.forwardmove < 0 and P_GetPlayerControlDirection(player) == 2) then
-				player.thrustfactor = 8
+				player.thrustfactor = 12
 			else
 				player.thrustfactor = 4
 			end
