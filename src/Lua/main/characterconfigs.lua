@@ -310,81 +310,96 @@ ZE2.SetZCinventory = function(player)
 	end
 end
 
+-- TODO: Remove this function on v1.0 release.
 ZE2.AddConfig = function(charname, input_table)
-	if ZE2.CharacterConfig[charname] then
-		print("Failed to add character: "..charname.." (Character already registered)")
-	end
-
-	ZE2.CharacterConfig[charname] = input_table
-	ZE2.CharacterConfig[charname].sprintboost = $ or ZE2.CharacterConfig["default"].sprintboost
-	table.insert(ZE2.registered_skins, charname)
+	print("Failed to add character: "..charname.." (ZE2.AddConfig is disabled, and will be removed on v1.0 release)")
 	
-	print("Added chararacter config: ".. charname)
+	return
 end
 
-ZE2.AddConfig("sonic", {
-	normalspeed = 15 * FRACUNIT,
-	health = 25,
-	charability = CA_NONE,
-	charability2 = CA2_NONE,
-	jumpfactor = 3*FU/4,
-	actionspd = 8*FRACUNIT,
+function ZE2:AddCharacterConfig(skinname, input_table)
+	local ZE2 = self;
+	local speeds = {
+		[1] = 14*FRACUNIT, -- slow
+		[2] = 15*FRACUNIT, -- normal
+		[3] = 16*FRACUNIT, -- fast
+		
+		["slow"] = 14*FRACUNIT,
+		["normal"] = 15*FRACUNIT,
+		["fast"] = 16*FRACUNIT,
+	}
+	
+	if ZE2.CharacterConfig[skinname] then
+		print("Failed to add character: "..skinname.." (Character already registered)")
+		return 
+	end
+	
+	if input_table.speed ~= nil then
+		if type(input_table.speed) == ("string") then
+			input_table.speed = $:lower()
+		end
+		
+		if speeds[input_table.speed] then
+			input_table.normalspeed = speeds[input_table.speed]
+		else
+			input_table.normalspeed = speeds["normal"]
+		end
+	else
+		input_table.normalspeed = speeds["normal"]
+	end
+	
+	input_table.charability = CA_NONE
+	input_table.charability2 = CA2_NONE
+	input_table.jumpfactor = 3*FU/4
+	
+	ZE2.CharacterConfig[skinname] = input_table
+	ZE2.CharacterConfig[skinname].sprintboost = $ or ZE2.CharacterConfig["default"].sprintboost
+	table.insert(ZE2.registered_skins, skinname)
+	
+	print("Added chararacter config: ".. skinname)
+end
+
+ZE2:AddCharacterConfig("sonic", {
+	health = 100,
+	speed = "fast",
 	desc1 = "Fast hedgehog born to speed.",
 	desc2 = "Has Low HP, and High Speed",
 	desc3 = "Are you up for the challenge?"
 })
 
-ZE2.AddConfig("tails", {
-	normalspeed = 15 * FRACUNIT,
-	health = 25,
-	charability = CA_NONE,
-	charability2 = CA2_NONE,
-	jumpfactor = 3*FU/4,
-	--actionspd = 8*FRACUNIT,
-	actionspd = 47*FRACUNIT,
+ZE2:AddCharacterConfig("tails", {
+	health = 150,
+	speed = "normal",
 	bullet_speed_multiplier = (3*FRACUNIT)/2, -- 1.5x
 	desc1 = "Has the brains. Without the plane.",
 	desc2 = "Flies slow. Slower than sonic."
 })
 
-ZE2.AddConfig("knuckles", {
-	normalspeed = 15 * FRACUNIT,
-	health = 25,
-	charability = CA_NONE,
-	charability2 = CA2_NONE,
-	jumpfactor = 3*FU/4,
-	--actionspd = 24*FRACUNIT,
+ZE2:AddCharacterConfig("knuckles", {
+	health = 200,
+	speed = "slow",
 	bullet_speed_multiplier = FRACUNIT/2,
 	desc1 = "Very Strong feller",
 	desc2 = "Glides slow. The slowest."
 })
 
-ZE2.AddConfig("amy", {
-	normalspeed = 15 * FRACUNIT,
-	health = 25,
-	charability = CA_NONE,
-	charability2 = CA2_NONE,
-	jumpfactor = 3*FU/4,
+ZE2:AddCharacterConfig("amy", {
+	health = 75,
+	speed = "fast",
 	desc1 = "Pink Pink Pink.",
 	desc2 = "WIP ABILITIES"
 })
 
-ZE2.AddConfig("fang", {
-	normalspeed = 15 * FRACUNIT,
-	health = 25,
-	charability = CA_NONE,
-	charability2 = CA2_NONE,
-	jumpfactor = 3*FU/4,
+ZE2:AddCharacterConfig("fang", {
+	health = 110,
+	speed = "normal",
 	desc1 = "He shoots the shooty shoot.",
 	desc2 = "Have less momentum to shoot."
 })
 
-ZE2.AddConfig("metalsonic", {
-	normalspeed = 15 * FRACUNIT,
-	health = 25,
-	charability = CA_NONE,
-	charability2 = CA2_NONE,
-	jumpfactor = 3*FU/4,
+ZE2:AddCharacterConfig("metalsonic", {
+	health = 105,
+	speed = "fast",
 	charflags = SF_MACHINE,
 	desc1 = "He might the the real sonic.",
 	desc2 = "Just a fella with an identity crisis.",

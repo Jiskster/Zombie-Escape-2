@@ -97,25 +97,15 @@ ZE2.characterselecthud = function(v, player, c)
 		},
 		[3] = {
 			textcolor = SKINCOLOR_TEAL,
-			text = "Speed: ^".. (
-				(cc[ZE2.getSkinFromCharSelect(player).name] and cc[ZE2.getSkinFromCharSelect(player).name].normalspeed) 
+			text = "Speed: ".. (
+				(cc[ZE2.getSkinFromCharSelect(player).name] and cc[ZE2.getSkinFromCharSelect(player).name].speed) 
 				
-				and L_FixedDecimal(cc[ZE2.getSkinFromCharSelect(player).name].normalspeed,2)
+				and cc[ZE2.getSkinFromCharSelect(player).name].speed:upper()
 				
 				or "[UNREGISTERED SPEED]"
 			)
 		},
 		[4] = {
-			textcolor = SKINCOLOR_ICY,
-			text = "Sprint Increment: +".. (
-				(cc[ZE2.getSkinFromCharSelect(player).name] and cc[ZE2.getSkinFromCharSelect(player).name].sprintboost) 
-				
-				and L_FixedDecimal(cc[ZE2.getSkinFromCharSelect(player).name].sprintboost,2)
-				
-				or "[UNREGISTERED SPRINT SPEED]"
-			)
-		},
-		[5] = {
 			textcolor = SKINCOLOR_YELLOW,
 			text = (
 				(cc[ZE2.getSkinFromCharSelect(player).name] and cc[ZE2.getSkinFromCharSelect(player).name].desc1) 
@@ -125,7 +115,7 @@ ZE2.characterselecthud = function(v, player, c)
 				or ""
 			)
 		},
-		[6] = {
+		[5] = {
 			textcolor = SKINCOLOR_LIME,
 			text = (
 				(cc[ZE2.getSkinFromCharSelect(player).name] and cc[ZE2.getSkinFromCharSelect(player).name].desc2) 
@@ -135,7 +125,7 @@ ZE2.characterselecthud = function(v, player, c)
 				or ""
 			)
 		},
-		[7] = {
+		[6] = {
 			textcolor = SKINCOLOR_PERIDOT,
 			text = (
 				(cc[ZE2.getSkinFromCharSelect(player).name] and cc[ZE2.getSkinFromCharSelect(player).name].desc3) 
