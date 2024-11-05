@@ -83,18 +83,6 @@ dofile "hud/debug.lua"
 dofile "hooks/gamelogic.lua"
 dofile "hooks/hud.lua"
 
-dofile "levelscripts/minecraft.lua"
-dofile "levelscripts/undertale.lua"
-dofile "levelscripts/caveofthepast.lua"
-dofile "levelscripts/spookyflower.lua"
-dofile "levelscripts/tutorial.lua"
-dofile "levelscripts/robloxobby.lua"
-dofile "levelscripts/doomedcorp.lua"
-dofile "levelscripts/doomedcorp_objects.lua"
-dofile "levelscripts/superzombiobros.lua"
-dofile "levelscripts/westopolis.lua"
-dofile "levelscripts/ancientcatacombs.lua"
-
 dofile "main/netvars.lua"
 
 dofile "main/debug/cvmake.lua"
