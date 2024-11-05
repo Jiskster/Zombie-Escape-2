@@ -132,7 +132,7 @@ ZE2.SetCCtoplayer = function(player)
 		(not P_IsObjectOnGround(pmo) and cmd.forwardmove < 0 and P_GetPlayerControlDirection(player) == 2) then
 			player.thrustfactor = 12
 		else
-			player.thrustfactor = 4
+			player.thrustfactor = 1
 		end
 		
 		if (cc[pmo.skin].charflags) then 
@@ -241,7 +241,7 @@ ZE2.SetZCtoplayer = function(player)
 			(not P_IsObjectOnGround(pmo) and cmd.forwardmove < 0 and P_GetPlayerControlDirection(player) == 2) then
 				player.thrustfactor = 12
 			else
-				player.thrustfactor = 4
+				player.thrustfactor = 1
 			end
 
 			if (zc[ztype].charflags) then 
