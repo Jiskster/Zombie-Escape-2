@@ -86,6 +86,7 @@ dofile "hooks/hud.lua"
 dofile "levelscripts/waterfall_objects.lua"
 dofile "levelscripts/waterfall_timers.lua"
 dofile "levelscripts/noxylous.lua"
+dofile "levelscripts/grancolia.lua"
 
 dofile "main/netvars.lua"
 
