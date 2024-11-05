@@ -83,6 +83,9 @@ dofile "hud/debug.lua"
 dofile "hooks/gamelogic.lua"
 dofile "hooks/hud.lua"
 
+dofile "levelscripts/waterfall_objects.lua"
+dofile "levelscripts/waterfall_timers.lua"
+
 dofile "main/netvars.lua"
 
 dofile "main/debug/cvmake.lua"

@@ -16,6 +16,30 @@ Unlockable 23
 
 ## SURVIVAL MAP START
 
+Level WF
+Levelname = Waterfall
+Act = 0
+Music = UTWTFL
+Subtitle = Fills you with determination...
+TypeOfLevel = ZE2
+SkyNum = 601
+SelectHeading = ZE2 Survival Maps
+NoZone = True
+NextLevel = J1
+Lua.ze2_timelimit = 6
+
+Level A0
+Levelname = Gran Colia
+Act = 0
+Music = ALGFZ1
+Subtitle = Oddly Nostalgic
+TypeOfLevel = ZE2
+SkyNum = 2
+SelectHeading = ZE2 Survival Maps
+NoZone = True
+NextLevel = J1
+Lua.ze2_timelimit = 6
+
 ## SWARM MAP START
 
 Level N6
