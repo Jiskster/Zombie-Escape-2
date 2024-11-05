@@ -133,6 +133,7 @@ ZE2.SetCCtoplayer = function(player)
 			player.thrustfactor = 12
 		else
 			player.thrustfactor = 1
+			player["ze2_info"].nofrictiontics = 0
 		end
 		
 		if (cc[pmo.skin].charflags) then 
@@ -242,6 +243,7 @@ ZE2.SetZCtoplayer = function(player)
 				player.thrustfactor = 12
 			else
 				player.thrustfactor = 1
+				player["ze2_info"].nofrictiontics = 0
 			end
 
 			if (zc[ztype].charflags) then 

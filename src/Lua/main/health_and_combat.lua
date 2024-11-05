@@ -271,9 +271,13 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 
 			if inf and inf.valid then
 				if not relativeknockback then
+					mo.friction = FRACUNIT
+				
 					P_Thrust(mo, inf.angle, knockback)
 				else
 					local r_angle = R_PointToAngle2(mo.x, mo.y, inf.x, inf.y)
+					
+					mo.friction = FRACUNIT
 					
 					P_Thrust(mo, r_angle - ANGLE_180, knockback)
 				end
@@ -303,11 +307,13 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 				local r_momxy = FixedHypot(mo.momx, mo.momy)
 				
 				P_Thrust(mo, inf.angle, knockback)
+				mo.player["ze2_info"].nofrictiontics = min($ + 5, TICRATE)
 			else
 				local r_angle = R_PointToAngle2(mo.x, mo.y, inf.x, inf.y)
 				local r_momxy = FixedHypot(mo.momx, mo.momy)
 				
 				P_Thrust(mo, r_angle - ANGLE_180, knockback)
+				mo.player["ze2_info"].nofrictiontics = min($ + 5, TICRATE)
 			end
 		
 			if verticalknockback then

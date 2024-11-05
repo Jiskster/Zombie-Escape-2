@@ -121,6 +121,8 @@ ZE2["default_ze2_info"] = {
 	zombie_shop_c1_pressed = false,
 	zombie_next_type = nil,
 	
+	nofrictiontics = 0; 
+	
 	damage_indicator_table = {},
 	/*	damage_indicator_table
 		[mobj_t] = {
@@ -718,6 +720,12 @@ addHook("PlayerThink", function(player)
 	end
 	
 	if player and not player.mo then return end
+	
+	if player["ze2_info"].nofrictiontics then
+		player.mo.friction = FRACUNIT
+		
+		player["ze2_info"].nofrictiontics = max(0, $ - 1)
+	end
 	
 	if player["ze2_info"].checkpoint_catchuptics then
 		player["ze2_info"].checkpoint_catchuptics = $ - 1
