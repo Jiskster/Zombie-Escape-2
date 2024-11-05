@@ -22,4 +22,4 @@ local infinity_ring = ZE2:CreateItem("Infinity Ring",	{
 	end
 })
 
-ZE2:RegisterShop_ItemID(infinity_ring)
+--ZE2:RegisterShop_ItemID(infinity_ring)
