@@ -40,6 +40,19 @@ NoZone = True
 NextLevel = J1
 Lua.ze2_timelimit = 6
 
+Level NX
+Levelname = NOXY
+Subtitle = ZE2 TEST MAP
+Act = 0
+Music = NOXY
+TypeOfLevel = ZE2
+NextLevel = NX
+SkyNum = 99
+NoZone = True
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 7
+
+
 ## SWARM MAP START
 
 Level N6
