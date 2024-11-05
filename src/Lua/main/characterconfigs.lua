@@ -1,5 +1,3 @@
--- health and maxhealth are identical values, I see no sense in declaring two of them
--- (perhaps players starting with lower hp?)
 ZE2.ZombieConfig = {
 	["normal"] = {
 		skincolor = SKINCOLOR_MOSS,
