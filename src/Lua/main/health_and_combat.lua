@@ -307,20 +307,23 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 				local r_momxy = FixedHypot(mo.momx, mo.momy)
 				
 				P_Thrust(mo, inf.angle, knockback)
-				mo.player["ze2_info"].nofrictiontics = min($ + 5, TICRATE)
+				
+				P_InstaThrust(mo, inf.angle, knockback + r_momxy)
+				mo.player["ze2_info"].nofrictiontics = min($ + 6, 12)
 			else
 				local r_angle = R_PointToAngle2(mo.x, mo.y, inf.x, inf.y)
 				local r_momxy = FixedHypot(mo.momx, mo.momy)
-				
+
 				P_Thrust(mo, r_angle - ANGLE_180, knockback)
-				mo.player["ze2_info"].nofrictiontics = min($ + 5, TICRATE)
+				
+				mo.player["ze2_info"].nofrictiontics = min($ + 6, 12)
 			end
 		
 			if verticalknockback then
 				P_SetObjectMomZ(mo, verticalknockback, true)
 			end
 			
-			mo.player["ze2_info"].landfatigue_timer = 20
+			--mo.player["ze2_info"].landfatigue_timer = 20
 			
 			S_StartSound(mo, chosen_hurtsound)
 			
