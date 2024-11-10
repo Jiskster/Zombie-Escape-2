@@ -153,10 +153,10 @@ addHook("ThinkFrame", function()
 			if input ~= nil then
 				ZE2.zombie_releasetime = input*TICRATE
 			else
-				ZE2.zombie_releasetime = 12*TICRATE -- TODO: Un magic-number this
+				ZE2.zombie_releasetime = 10*TICRATE -- TODO: Un magic-number this
 			end
 		else
-			ZE2.zombie_releasetime = 12*TICRATE
+			ZE2.zombie_releasetime = 10*TICRATE
 		end
 		
 		choosingnums = nil -- release memory idk wtf
