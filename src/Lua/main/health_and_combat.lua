@@ -309,14 +309,14 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 				P_Thrust(mo, inf.angle, knockback)
 				
 				P_InstaThrust(mo, inf.angle, knockback + r_momxy)
-				mo.player["ze2_info"].nofrictiontics = min($ + 6, 12)
+				mo.player["ze2_info"].nofrictiontics = min($ + 3, 8)
 			else
 				local r_angle = R_PointToAngle2(mo.x, mo.y, inf.x, inf.y)
 				local r_momxy = FixedHypot(mo.momx, mo.momy)
 
 				P_Thrust(mo, r_angle - ANGLE_180, knockback)
 				
-				mo.player["ze2_info"].nofrictiontics = min($ + 6, 12)
+				mo.player["ze2_info"].nofrictiontics = min($ + 3, 8)
 			end
 		
 			if verticalknockback then
