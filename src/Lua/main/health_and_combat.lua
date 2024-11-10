@@ -306,7 +306,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			if not relativeknockback then
 				local r_momxy = FixedHypot(mo.momx, mo.momy)
 				
-				P_Thrust(mo, inf.angle, knockback)
+				--P_Thrust(mo, inf.angle, knockback)
 				
 				P_InstaThrust(mo, inf.angle, knockback + r_momxy)
 				mo.player["ze2_info"].nofrictiontics = min($ + 3, 8)
