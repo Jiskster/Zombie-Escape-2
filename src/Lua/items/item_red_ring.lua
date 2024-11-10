@@ -8,7 +8,7 @@ ZE2:CreateItem("Red Ring",  {
 	velocity_multiplier = 2*FRACUNIT + FRACUNIT/2,
 	max_ammo = 20,
 	ammo = 20,
-	reload_time = 3*TICRATE,
+	reload_time = 2*TICRATE + TICRATE/3,
 	skin_overwrite = {
 		["fang"] = {
 			displayname = "Cork",
