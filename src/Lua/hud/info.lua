@@ -38,20 +38,24 @@ ZE2.infohud = function(v, player)
 			if not player.spectator then
 				-- [Player Icon] --
 			
+				/*
 				v.drawScaled(0, (176-lower_hud_offset)*FRACUNIT, FixedDiv(3*FRACUNIT, 4*FRACUNIT),
 				skinpatch, (V_SNAPTOBOTTOM|V_SNAPTOLEFT), colormap)
+				*/
 				-- [Player Name] --
 				local display_name = (player["ze2_info"].zombie_type and player["ze2_info"].team == 2) 
 				and (player["ze2_info"].zombie_type + " Zombie") or skins[player.realmo.skin].realname
-
+					
+				/*
 				customhud.CustomFontString(v, 25, 192-lower_hud_offset,
 				display_name, "TNYFC", 
 				(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, player.realmo.color)
+				*/
 				
-				-- [Rubies] --
+				-- [Cash] --
 				if player["ze2_info"].rubies ~= nil then
-					customhud.CustomFontString(v, 25, 184-lower_hud_offset, "Rubies: "..player["ze2_info"].rubies, "TNYFC", 
-					(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, SKINCOLOR_RED)
+					customhud.CustomFontString(v, 320-10, 0+5, "$ "..player["ze2_info"].rubies, "STCFC", 
+					(V_SNAPTOTOP|V_SNAPTORIGHT), "right" , nil, SKINCOLOR_FOREST)
 				end
 				
 				-- [Sprint Meter] --
@@ -64,27 +68,28 @@ ZE2.infohud = function(v, player)
 					end
 				end
 				
+		
 				if player["ze2_info"].sprintmeter ~= nil and player["ze2_info"].team == 1 then
-					local y = 168-lower_hud_offset
+					local y = 176-lower_hud_offset
 					
 					local sprintmeter = L_FixedDecimal(player["ze2_info"].sprintmeter, 1).."%"
-					customhud.CustomFontString(v, 0, y, "STAMINA: "..sprintmeter, "TNYFC",
-					(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, sprintmeter_color)
+					customhud.CustomFontString(v, 25, y, sprintmeter, "TNYFC",
+					(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil, nil, sprintmeter_color)
 				end
 				
 				-- [Health] --
 				if health and maxhealth then
-					local healthstring = "+ "..health.."/"..maxhealth
-					customhud.CustomFontString(v, 25, 176-lower_hud_offset, healthstring, "TNYFC", 
-					(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, SKINCOLOR_GREEN)
+					local healthstring = "+ "..health
+					customhud.CustomFontString(v, 25*FU, (184*FU)-(lower_hud_offset*FU), healthstring, "STCFC", 
+					(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil, FRACUNIT, SKINCOLOR_GREEN)
 					
 					-- [Shield Health] --
 					if player.realmo.shield_health and player.realmo.shield_def then
-						local healthstring_width = customhud.CustomFontStringWidth(v, healthstring, "TNYFC", FRACUNIT)
+						local healthstring_width = customhud.CustomFontStringWidth(v, healthstring, "STCFC", FRACUNIT)
 						local shield_color = player.realmo.shield_def.color or SKINCOLOR_WHITE
 						
 						local shield_health = tostring(player.realmo.shield_health)
-						customhud.CustomFontString(v, 29+(healthstring_width/FU), 176-lower_hud_offset, "@ "..shield_health, "TNYFC",
+						customhud.CustomFontString(v, 29*FU+(healthstring_width), (184*FU)-(lower_hud_offset*FU), "@ "..shield_health, "STCFC",
 						(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, shield_color)
 					end
 				end
