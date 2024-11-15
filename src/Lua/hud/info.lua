@@ -53,8 +53,8 @@ ZE2.infohud = function(v, player)
 				*/
 				
 				-- [Cash] --
-				if player["ze2_info"].rubies ~= nil then
-					customhud.CustomFontString(v, 320-10, 0+5, "$ "..player["ze2_info"].rubies, "STCFC", 
+				if player["ze2_info"].cash ~= nil then
+					customhud.CustomFontString(v, 320-10, 0+5, "$ "..player["ze2_info"].cash, "STCFC", 
 					(V_SNAPTOTOP|V_SNAPTORIGHT), "right" , nil, SKINCOLOR_FOREST)
 				end
 				

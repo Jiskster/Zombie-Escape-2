@@ -92,7 +92,7 @@ ZE2["default_ze2_info"] = {
 
 	team = 1,
 
-	rubies = ZE2.RubyStart,
+	cash = ZE2.RubyStart,
 	rubycap = ZE2.DefaultRubyCap,
 	rubyqueue = 0,
 	rubypickupdelay = 0,

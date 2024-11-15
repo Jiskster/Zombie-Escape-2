@@ -4,11 +4,11 @@ freeslot("MT_RUBY_BOX", "S_RUBY_BOX", "S_RUBY_BOX_BREAK",
 		"SPR_RBYM")
 
 function ZE2:GivePlayerRubies(player, amount)
-	if player["ze2_info"].rubies + amount > player["ze2_info"].rubycap then
-		player["ze2_info"].rubies = player["ze2_info"].rubycap
+	if player["ze2_info"].cash + amount > player["ze2_info"].rubycap then
+		player["ze2_info"].cash = player["ze2_info"].rubycap
 		return false
 	else
-		player["ze2_info"].rubies = $ + amount
+		player["ze2_info"].cash = $ + amount
 	end
 	
 	return true
@@ -160,8 +160,8 @@ states[S_RUBY_BOX_BREAK] = {
 sfxinfo[sfx_rbyhit].caption = "Ruby"
 
 addHook("PlayerThink", function(player)
-	if player["ze2_info"].rubies > player["ze2_info"].rubycap then
-		player["ze2_info"].rubies = player["ze2_info"].rubycap
+	if player["ze2_info"].cash > player["ze2_info"].rubycap then
+		player["ze2_info"].cash = player["ze2_info"].rubycap
 	end
 	
 	if player["ze2_info"].rubypickupdelay then
@@ -186,9 +186,9 @@ end)
 addHook("MobjDeath", function(mobj)
 	if gametype ~= GT_ZE2 return end
 	
-	if mobj.rubiesholding then
-		A_RubyDrop(mobj,mobj.rubiesholding)
-		mobj.rubiesholding = 0
+	if mobj.cashholding then
+		A_RubyDrop(mobj,mobj.cashholding)
+		mobj.cashholding = 0
 	end
 end)
 
@@ -198,7 +198,7 @@ addHook("MobjSpawn", function(mobj)
 	if mobjinfo[mobj.type].rubydrop and type(mobjinfo[mobj.type].rubydrop) == "table" 
 	and #mobjinfo[mobj.type].rubydrop == 2 then
 		local ruby_count = P_RandomRange(mobjinfo[mobj.type].rubydrop[1],mobjinfo[mobj.type].rubydrop[2])
-		mobj.rubiesholding = ruby_count
+		mobj.cashholding = ruby_count
 	end
 end)
 
@@ -211,7 +211,7 @@ addHook("TouchSpecial", function(special, toucher)
 			return true
 		end
 		
-		if toucher.player["ze2_info"].rubies + 1 > toucher.player["ze2_info"].rubycap then
+		if toucher.player["ze2_info"].cash + 1 > toucher.player["ze2_info"].rubycap then
 			return true
 		elseif toucher.player["ze2_info"].rubypickupdelay then
 			return true
@@ -221,7 +221,7 @@ addHook("TouchSpecial", function(special, toucher)
 			S_StartSound(toucher, sfx_rbyhit)
 		end
 
-		ZE2:QueuePlayerRubies(toucher.player, 1)
+		ZE2:QueuePlayerRubies(toucher.player, 5)
 		ZE2:IncrementSprint(toucher.player, 5*FRACUNIT)
 
 		toucher.player["ze2_info"].rubypickupdelay = ZE2.rubypickupdelay.value
@@ -262,7 +262,7 @@ addHook("MobjThinker", function(mobj)
 	for p in players.iterate
 		if p["ze2_info"].team ~= 1 then continue end
 		if p.spectator then continue end
-		if p["ze2_info"].rubies == p["ze2_info"].rubycap then continue end
+		if p["ze2_info"].cash == p["ze2_info"].rubycap then continue end
 		if not (p.mo and p.mo.valid) then continue end
 
 		local mo = p.mo
@@ -458,7 +458,7 @@ COM_AddCommand("z_sendrubies", function(player, player2, rubies)
 		return
 	end
 	
-	if rubies > player["ze2_info"].rubies then
+	if rubies > player["ze2_info"].cash then
 		CONS_Printf(player, "\x85You don't have enough rubies to do this.")
 		return
 	end
@@ -468,11 +468,11 @@ COM_AddCommand("z_sendrubies", function(player, player2, rubies)
 		return
 	end
 	
-	player["ze2_info"].rubies = $ - rubies 
-	players[player2]["ze2_info"].rubies = $ + rubies
+	player["ze2_info"].cash = $ - rubies 
+	players[player2]["ze2_info"].cash = $ + rubies
 	
 	CONS_Printf(player, 
-	"\x82You sent "..rubies.." rubies to "..players[player2].name)
+	"\x82You sent "..cash.." rubies to "..players[player2].name)
 	CONS_Printf(players[player2], 
 	string.format("\x82%s\x82 sent you %s rubies", player.name, tostring(rubies))
 	)
@@ -497,5 +497,5 @@ COM_AddCommand("z_giverubies", function(player, rubies)
 
 	ZE2:QueuePlayerRubies(player, rubies)
 	
-	CONS_Printf(player, "\x82You got "..rubies.." rubies")
+	CONS_Printf(player, "\x82You got "..cash.." rubies")
 end, COM_ADMIN)

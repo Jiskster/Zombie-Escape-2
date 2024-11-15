@@ -37,7 +37,7 @@ ZE2.shophud = function(v, player)
 	local minirubypatch = v.cachePatch("Z_MINI_RUBY")
 	local selectionpatch = v.cachePatch("Z_SHOPSELECTION")
 	
-	customhud.CustomFontString(v, 280*FU, 30*FU, "Rubies: "..player["ze2_info"].rubies, "STCFC", (V_SNAPTOTOP|V_SNAPTORIGHT|topmenuflag), "right" , FU, SKINCOLOR_RED)
+	customhud.CustomFontString(v, 280*FU, 30*FU, "Rubies: "..player["ze2_info"].cash, "STCFC", (V_SNAPTOTOP|V_SNAPTORIGHT|topmenuflag), "right" , FU, SKINCOLOR_RED)
 	
 	for i,b in ipairs(ZE2.Survivor_ShopList) do
 		local shopdefid = b.shopdefid

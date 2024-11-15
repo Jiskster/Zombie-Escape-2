@@ -51,7 +51,7 @@ function ZE2.KillMobj(mo, inf, src, damagetype, killedbysomething)
 		local player = mo.player 
 		local ztype = player["ze2_info"].zombie_type
 		local team = player["ze2_info"].team
-		local ruby_award = 45
+		local cash_award = 150
 		local killer -- will be valid if player
 		
 		if inf and inf.player and inf.player.valid then
@@ -70,11 +70,11 @@ function ZE2.KillMobj(mo, inf, src, damagetype, killedbysomething)
 					player["ze2_info"].weapondelay = 3*TICRATE -- To prevent a chain effect when defending.
 				end
 			
-				ZE2:QueuePlayerRubies(killer.player, ruby_award)
+				ZE2:QueuePlayerRubies(killer.player, cash_award)
 				print("\x84"..player.name.." \x83\has been infected by \x85"..killer.player.name)
 				killer.player["ze2_info"].blood_currency = $ + 30
 				
-				CONS_Printf(killer.player, "\x85+"..ruby_award.." rubies gained from infecting a survivor!")
+				CONS_Printf(killer.player, "\x83+ $"..cash_award.." cash gained from infecting a survivor!")
 			end
 		elseif team == 2 then
 			if ztype and ZE2.ZombieConfig[ztype] and ZE2.ZombieConfig[ztype].killaward then
@@ -385,9 +385,9 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		end
 	end
 	
-	if mo.rubiesholding and (mo.rubiesholding - (mo.rubiesholding/3)) > 0 then
-		A_RubyDrop(mo, mo.rubiesholding/3)
-		mo.rubiesholding = $ - mo.rubiesholding/3
+	if mo.cashholding and (mo.cashholding - (mo.cashholding/3)) > 0 then
+		A_RubyDrop(mo, mo.cashholding/3)
+		mo.cashholding = $ - mo.cashholding/3
 	end
 	
 	if mo.shield_health then

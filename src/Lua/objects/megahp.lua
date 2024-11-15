@@ -28,11 +28,12 @@ sfxinfo[sfx_maxhp].caption="Max HP increased"
 
 ZE2.HitMegaHP = function(special, toucher)
 	if toucher and toucher.valid and toucher.player and toucher.player["ze2_info"].team and toucher.player["ze2_info"].team == 1 then
-		local rubies_given = 45
+		local rubies_given = 200
+		
 		toucher.health = toucher.maxhealth
 		ZE2:GiveShieldToMobj(toucher, 1)
 		ZE2:GivePlayerRubies(toucher.player, rubies_given)
-		CONS_Printf(toucher.player,"\x85+"..rubies_given.." ruby bonus!")
+		CONS_Printf(toucher.player,"\x83+ $"..cash_given.." cash bonus!")
 	else
 		return true
 	end

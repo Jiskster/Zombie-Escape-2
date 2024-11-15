@@ -159,7 +159,7 @@ ZE2.tabscores = function(v)
         customhud.CustomFontString(v,
             x+12*FU,
             y+8*FU,
-            "Rubies: "..p["ze2_info"].rubies,
+            "Rubies: "..p["ze2_info"].cash,
             "TNYFC",
             flags,
             nil,
@@ -168,7 +168,7 @@ ZE2.tabscores = function(v)
         )
 
         local rubielength = customhud.CustomFontStringWidth(v,
-            "Rubies:  "..p["ze2_info"].rubies,
+            "Rubies:  "..p["ze2_info"].cash,
             "TNYFC",
             FU/2
         )
