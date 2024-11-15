@@ -68,11 +68,15 @@ ZE2.infohud = function(v, player)
 					end
 				end
 				
-		
 				if player["ze2_info"].sprintmeter ~= nil and player["ze2_info"].team == 1 then
 					local y = 176-lower_hud_offset
 					
 					local sprintmeter = L_FixedDecimal(player["ze2_info"].sprintmeter, 1).."%"
+					
+					if not player["ze2_info"].sprintmeter then
+						sprintmeter = "LOW!"
+					end
+					
 					customhud.CustomFontString(v, 25, y, sprintmeter, "TNYFC",
 					(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil, nil, sprintmeter_color)
 				end
