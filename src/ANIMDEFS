@@ -1,2 +1,3 @@
 texture	SKY601  	range	SKY6025  	tics 4
 flat	BLKWAT01  	range	BLKWAT16  	tics 8
+texture	NEON01  	range	NEON08  	tics 5
