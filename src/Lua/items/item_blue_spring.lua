@@ -3,6 +3,7 @@ local blue_spring = ZE2:CreateItem("Blue Spring",  {
 	firerate = 2*TICRATE,
 	limited = true,
 	count = 10,
+	max_count = 50,
 	color = SKINCOLOR_BLUE,
 	ontrigger = function(player)
 		local spring = P_SpawnMobj(player.mo.x+FixedMul(128*FRACUNIT, cos(player.mo.angle)),
