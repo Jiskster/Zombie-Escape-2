@@ -77,9 +77,9 @@ ZE2.intermissionhud = function(v, player)
 			
 			for i=-1,1 do
 				local numonlist = i+2
-				local map_patch = v.cachePatch(G_BuildMapName(ZE2.MapsOnVote[numonlist][2]).."P")
-				local levelname = (mapheaderinfo[ZE2.MapsOnVote[numonlist][2]].lvlttl)
-				local map_votes = ZE2.MapsOnVote[numonlist][1]
+				local map_patch = v.cachePatch(G_BuildMapName(ZE2.MapsOnVote[numonlist].mapnum).."P")
+				local levelname = (mapheaderinfo[ZE2.MapsOnVote[numonlist].mapnum].lvlttl)
+				local map_votes = ZE2.MapsOnVote[numonlist].votes
 				
 				if levelname:len() > 16 then
 					levelname = $:sub(1,16)..".."

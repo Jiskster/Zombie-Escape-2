@@ -52,9 +52,9 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 	ZE2.MapVoteList = {};
 	ZE2.MapVotes = {0,0,0};
 	ZE2.MapsOnVote = {
-	{0,1},
-	{0,1},
-	{0,1}
+	{votes = 0, mapnum = 1},
+	{votes = 0, mapnum = 1},
+	{votes = 0, mapnum = 1}
 	}; -- votes, mapnumber
 	
 	ZE2.NextMapVoted = 0;

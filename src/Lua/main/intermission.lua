@@ -22,10 +22,11 @@ addHook("ThinkFrame", do
 	
 	if ZE2.game_ended and ZE2.win_tics == ZE2.MapVoteStartFrame then
 		ZE2.MapsOnVote = {
-		{0,1},
-		{0,1},
-		{0,1}
+		{votes = 0, mapnum = 1},
+		{votes = 0, mapnum = 1},
+		{votes = 0, mapnum = 1}
 		} -- votes, mapnumber
+		
 		local temp_maplist = {}
 		local temp_selected_maplist = {}
 		
@@ -45,7 +46,7 @@ addHook("ThinkFrame", do
 		temp_maplist = {} -- clear leftover maps
 		
 		for i=1,#temp_selected_maplist do
-			ZE2.MapsOnVote[i][2] = temp_selected_maplist[i]
+			ZE2.MapsOnVote[i].mapnum = temp_selected_maplist[i]
 			print(mapheaderinfo[temp_selected_maplist[i]].lvlttl)
 		end
 		
@@ -103,7 +104,7 @@ addHook("PreThinkFrame", function()
 							local sel = player["ze2_info"].vote_selection
 							local seltomapnum = ZE2.MapsOnVote[sel]
 
-							ZE2.MapsOnVote[player["ze2_info"].vote_selection][1] = $ + 1
+							ZE2.MapsOnVote[player["ze2_info"].vote_selection].votes = $ + 1
 						end
 					end
 					
@@ -115,7 +116,7 @@ addHook("PreThinkFrame", function()
 							local sel = player["ze2_info"].vote_selection
 							local seltomapnum = ZE2.MapsOnVote[sel]
 
-							ZE2.MapsOnVote[player["ze2_info"].vote_selection][1] = $ - 1
+							ZE2.MapsOnVote[player["ze2_info"].vote_selection].votes = $ - 1
 						end
 					end	
 				end
@@ -130,25 +131,25 @@ addHook("PreThinkFrame", function()
 	if ZE2.win_tics == ZE2.MapVoteStartFrame + ZE2.VoteTimeLimit then
 		local sorted_votes = ZE2:Copy(ZE2.MapsOnVote)
 
-		table.sort(sorted_votes,function(a,b) return a[1] > b[1] end)
+		table.sort(sorted_votes,function(a,b) return a.votes > b.votes end)
 		
-		if allequals(sorted_votes[1][1],sorted_votes[2][1],sorted_votes[3][1])
+		if allequals(sorted_votes[1].votes,sorted_votes[2].votes,sorted_votes[3].votes)
 			local chosenmap = P_RandomRange(1,3)
 			
-			print("\x82"..mapheaderinfo[sorted_votes[chosenmap][2]].lvlttl.. " was picked as the next map with a three way tie!")
-			ZE2.NextMapVoted = sorted_votes[chosenmap][2]
-		elseif sorted_votes[1][1] == sorted_votes[2][1] then
+			print("\x82"..mapheaderinfo[sorted_votes[chosenmap].mapnum].lvlttl.. " was picked as the next map with a three way tie!")
+			ZE2.NextMapVoted = sorted_votes[chosenmap].mapnum
+		elseif sorted_votes[1].votes == sorted_votes[2].votes then
 			local chosenmap = P_RandomRange(1,2)
 			
-			print("\x82"..mapheaderinfo[sorted_votes[chosenmap][2]].lvlttl.. " was picked as the next map with a two way tie!")
-			ZE2.NextMapVoted = sorted_votes[chosenmap][2]
+			print("\x82"..mapheaderinfo[sorted_votes[chosenmap].mapnum].lvlttl.. " was picked as the next map with a two way tie!")
+			ZE2.NextMapVoted = sorted_votes[chosenmap].mapnum
 		else
-			print("\x82"..mapheaderinfo[sorted_votes[1][2]].lvlttl.. " was picked as the next map!")
-			ZE2.NextMapVoted = sorted_votes[1][2]
+			print("\x82"..mapheaderinfo[sorted_votes[1].mapnum].lvlttl.. " was picked as the next map!")
+			ZE2.NextMapVoted = sorted_votes[1].mapnum
 		end
 		
 		for i,v in ipairs(sorted_votes) do
-			print(i..": "..G_BuildMapTitle(v[2]).. "["..v[1].."]")
+			print(i..": "..G_BuildMapTitle(v.mapnum).. "["..v.votes.."]")
 		end
 		
 		S_StartSound(nil,sfx_s3kb3)
