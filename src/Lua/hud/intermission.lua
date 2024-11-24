@@ -63,10 +63,32 @@ ZE2.intermissionhud = function(v, player)
 		v.drawScaled(-500*FU,-500*FU, FU*1000, z_bg, 5<<V_ALPHASHIFT)
 	end
 	if not ZE2.NextMapVoted then
-		if ZE2.win_tics < ZE2.MapVoteStartFrame then
+		if ZE2.win_tics < ZE2.MapVoteStartFrame then -- animation
 			v.drawScaled(min(x1.ese, x1.stop*FU),100*FU, FU, z_team)
 			v.drawScaled(max(x2.ese, x2.stop*FU),100*FU, FU, z_w)
-		elseif ZE2.MapsOnVote and #ZE2.MapsOnVote >= 3 then
+		elseif ZE2.rounds_left > 1 then -- between rounds
+			local diff = max(0, min(ZE2.win_tics - ZE2.MapVoteStartFrame, 10))
+			
+			local diff2_delay = 10
+			local diff2 = 9 - max(0, min((ZE2.win_tics-diff2_delay) - ZE2.MapVoteStartFrame, 9)) -- delay by 10 frames
+			
+			local round_color = SKINCOLOR_WHITE 
+			
+			if ZE2.team_won == 1 then
+				round_color = SKINCOLOR_BLUE
+			elseif ZE2.team_won == 2 then
+				round_color = SKINCOLOR_RED
+			end
+			
+			if diff < 10 then
+				v.drawScaled(x1.stop*FU, 100*FU, FU, z_team, diff<<V_ALPHASHIFT)
+				v.drawScaled(x2.stop*FU, 100*FU, FU, z_w, diff<<V_ALPHASHIFT)
+			else
+				local text = "ROUND "..(ZE2.getMaxRoundsFromMap(gamemap) - ZE2.rounds_left) + 1 + 1
+				customhud.CustomFontString(v, 160*FU, 100*FU, text, "STCFC", 
+				diff2<<V_ALPHASHIFT, "center", 2*FRACUNIT, round_color)
+			end
+		elseif ZE2.MapsOnVote and #ZE2.MapsOnVote >= 3 then -- map vote
 			local selection = player["ze2_info"].vote_selection
 			local cursor_patch = v.cachePatch("SLCT1LVL")
 			local cursor_patch2 = v.cachePatch("SLCT2LVL")
@@ -111,11 +133,12 @@ ZE2.intermissionhud = function(v, player)
 		v.drawScaled(120*FU,75*FU,votepatchsize,map_patch)
 		v.drawString(160*FU,50*FU,"\x82"..levelname.." Was picked as the next map!", (V_SNAPTOTOP), "fixed-center")
 	end
-	for i=-5,5
+	
+	for i=-5,5 do
 		v.drawScaled((i*128*FU)+(scroll*FU),max(bl.ese,bl.stop*FU),FU,z_bl,V_SNAPTOBOTTOM)
 	end
-	for i=-5,5
+	
+	for i=-5,5 do
 		v.drawScaled((i*128*FU)-(scroll*FU),min(bu.ese,bu.stop*FU),FU,z_bu,V_SNAPTOTOP)
 	end
-
 end

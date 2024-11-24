@@ -8,6 +8,8 @@ addHook("NetVars", function(net)
 	ZE2.team_won = net($);
 	ZE2.pregame_timeleft = net($);
 	ZE2.zombie_releasetime = net($);
+	ZE2.queuing_round = net($);
+	ZE2.rounds_left = net($);
 	
 	ZE2.VoteTimeLimit = net($);
 	ZE2.MapsOnVote = net($);

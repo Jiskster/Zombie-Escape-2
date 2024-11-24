@@ -35,6 +35,8 @@ freeslot("TOL_ZE2");
 ZE2.wait_time = 15*TICRATE;
 ZE2.MapVoteStartFrame = 10*TICRATE
 ZE2.VoteTimeLimit = 12*TICRATE
+ZE2.queuing_round = false
+ZE2.rounds_left = 3
 
 ZE2.init_gamevars = function(map) -- Variables vary per game.
 	ZE2.round_active = false;
@@ -52,14 +54,22 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 	ZE2.MapVoteList = {};
 	ZE2.MapVotes = {0,0,0};
 	ZE2.MapsOnVote = {
-	{votes = 0, mapnum = 1},
-	{votes = 0, mapnum = 1},
-	{votes = 0, mapnum = 1}
+		{votes = 0, mapnum = 1},
+		{votes = 0, mapnum = 1},
+		{votes = 0, mapnum = 1}
 	}; -- votes, mapnumber
 	
 	ZE2.NextMapVoted = 0;
 	
 	if map then
+		if ZE2.queuing_round then
+			ZE2.rounds_left = $ - 1
+			ZE2.queuing_round = false
+		else
+			ZE2.rounds_left = tonumber(mapheaderinfo[map].ze2_rounds) or 3
+			ZE2.queuing_round = false
+		end
+		
 		if mapheaderinfo[map].ze2_timelimit then
 			local input = tonumber(mapheaderinfo[map].ze2_timelimit)
 			ZE2.time_limit = input*60*TICRATE
@@ -100,6 +110,16 @@ function ZE2:Copy(orig)
         copy = orig
     end
     return copy
+end
+
+function ZE2.getMaxRoundsFromMap(map)
+	local output = 3
+	
+	if mapheaderinfo[map].ze2_rounds then
+		output = tonumber(mapheaderinfo[map].ze2_rounds)
+	end
+	
+	return output
 end
 
 function ZE2.ZCollide(mo1,mo2)

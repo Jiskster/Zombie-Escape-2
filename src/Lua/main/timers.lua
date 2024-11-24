@@ -184,8 +184,8 @@ addHook("ThinkFrame", function()
 end)
 
 addHook("MobjThinker", function(mobj)
-	if ZE2.game_ended and leveltime and ZE2.win_tics >= ZE2.MapVoteStartFrame then
-
+	if ZE2.game_ended and leveltime and ZE2.win_tics >= ZE2.MapVoteStartFrame 
+	and not (ZE2.rounds_left > 1) then
 		mobj.flags = $ | MF_NOTHINK
 		return true
 	end
@@ -196,8 +196,7 @@ COM_AddCommand("z_forcewin", function(player, arg1)
  	if not arg1 or not tonumber(arg1) then return end
  	arg1 = tonumber(arg1)
 	
-	if (arg1>0 and arg1<3) then 
+	if (arg1 > 0 and arg1 < 3) then 
 		ZE2:StartWin(arg1) 
 	end
-	
 end,COM_ADMIN)

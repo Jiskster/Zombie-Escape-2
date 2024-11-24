@@ -578,7 +578,6 @@ function ZE2.SpawnMissile(m_table)
 	end
 end
 
-
 function ZE2.CheckMissileSpawn(th)
 	if not (th.flags & MF_GRENADEBOUNCE) then -- From the Original: "hack: bad! should be a flag.""
 		P_SetOrigin(th, th.x + th.momx/2, th.y, th.z)
@@ -594,7 +593,6 @@ function ZE2.CheckMissileSpawn(th)
 	end
 	return true
 end
-
 
 function ZE2.DoPlayerFire(player, iteminfo)
 	local ring

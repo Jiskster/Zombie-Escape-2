@@ -143,31 +143,45 @@ addHook("ThinkFrame", do
 	if gametype ~= GT_ZE2 or gamestate ~= GS_LEVEL then return end --stop the trolling
 	
 	if ZE2.game_ended and ZE2.win_tics == ZE2.MapVoteStartFrame then
-		V_StartVote()
+		if not (ZE2.rounds_left > 1) then
+			V_StartVote()
+		else
+			ZE2.queuing_round = true
+			S_FadeMusic(0, 2500)
+		end
 	end
 end)
 
 addHook("PreThinkFrame", function()
+	if not ZE2.game_ended then return end
+	
 	for player in players.iterate do
 		local cmd = player.cmd
 		if player.mo and player.mo.valid and player["ze2_info"] then
 			if ZE2.win_tics > ZE2.MapVoteStartFrame then
-				if ZE2.win_tics < ZE2.MapVoteStartFrame + ZE2.VoteTimeLimit then
+				if ZE2.win_tics < ZE2.MapVoteStartFrame + ZE2.VoteTimeLimit 
+				and not (ZE2.rounds_left > 1) then
 					V_PlayerVoteCMD(player, cmd)
+					
+					cmd.buttons = 0
+					cmd.forwardmove = 0
+					cmd.sidemove = 0
 				end
-				
-				cmd.buttons = 0
-				cmd.forwardmove = 0
-				cmd.sidemove = 0				
 			end	
 		end
 	end
 	
-	if ZE2.win_tics == ZE2.MapVoteStartFrame + ZE2.VoteTimeLimit then
-		V_EndVote()
-	end
-	
-	if ZE2.win_tics == ZE2.MapVoteStartFrame + ZE2.VoteTimeLimit + 5*TICRATE then
-		COM_BufInsertText(server, "map "..ZE2.NextMapVoted)
+	if not (ZE2.rounds_left > 1) then
+		if ZE2.win_tics == ZE2.MapVoteStartFrame + ZE2.VoteTimeLimit then
+			V_EndVote()
+		end
+		
+		if ZE2.win_tics == ZE2.MapVoteStartFrame + ZE2.VoteTimeLimit + 5*TICRATE then
+			COM_BufInsertText(server, "map "..ZE2.NextMapVoted)
+		end
+	else
+		if ZE2.win_tics == ZE2.MapVoteStartFrame + 5*TICRATE then -- proceed to next round
+			COM_BufInsertText(server, "map "..gamemap)
+		end
 	end
 end)
