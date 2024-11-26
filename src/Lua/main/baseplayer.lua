@@ -398,7 +398,7 @@ addHook("JumpSpecial", function(player)
 	if gametype ~= GT_ZE2 then return end
 
 	if player.mo and player.mo.valid and not (player.pflags & PF_THOKKED) and P_IsObjectOnGround(player.mo) then
-		if (player.mo.ceilingz - player.mo.floorz) < player.height 
+		if (player.mo.ceilingz - player.mo.floorz) < player.height + ZE2.playerheightoffset
 		and player["ze2_info"].crouching then
 			return true
 		end
