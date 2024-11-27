@@ -40,6 +40,18 @@ NoZone = True
 NextLevel = J1
 Lua.ze2_timelimit = 6
 
+Level A1
+Levelname = Marble Depths
+Act = 0
+Music = UMBZ01
+Subtitle = Ancient Plains
+TypeOfLevel = ZE2
+SkyNum = 2
+SelectHeading = ZE2 Survival Maps
+NoZone = True
+NextLevel = A1
+Lua.ze2_timelimit = 6
+
 Level NX
 Levelname = NOXY
 Subtitle = ZE2 TEST MAP

@@ -87,6 +87,7 @@ dofile "levelscripts/waterfall_objects.lua"
 dofile "levelscripts/waterfall_timers.lua"
 dofile "levelscripts/noxylous.lua"
 dofile "levelscripts/grancolia.lua"
+dofile "levelscripts/ug_marble.lua"
 
 dofile "main/netvars.lua"
 
