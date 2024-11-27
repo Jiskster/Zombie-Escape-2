@@ -62,6 +62,7 @@ ZE2.intermissionhud = function(v, player)
 	else
 		v.drawScaled(-500*FU,-500*FU, FU*1000, z_bg, 5<<V_ALPHASHIFT)
 	end
+	
 	if not ZE2.NextMapVoted then
 		if ZE2.win_tics < ZE2.MapVoteStartFrame then -- animation
 			v.drawScaled(min(x1.ese, x1.stop*FU),100*FU, FU, z_team)
@@ -84,11 +85,11 @@ ZE2.intermissionhud = function(v, player)
 				v.drawScaled(x1.stop*FU, 100*FU, FU, z_team, diff<<V_ALPHASHIFT)
 				v.drawScaled(x2.stop*FU, 100*FU, FU, z_w, diff<<V_ALPHASHIFT)
 			else
-				local nextround = (ZE2.getMaxRoundsFromMap(gamemap) - ZE2.rounds_left) + 1 + 1
+				local nextround = ZE2.getCurrentRound() + 1
 				local text = "ROUND "..nextround
 				
 				-- when next round is the last round
-				if ZE2.getMaxRoundsFromMap(gamemap) == nextround then
+				if ZE2.getMaxRoundsFromMap() == nextround then
 					text = "FINAL ROUND"
 				end
 				

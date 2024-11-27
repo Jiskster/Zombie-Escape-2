@@ -115,11 +115,15 @@ end
 function ZE2.getMaxRoundsFromMap(map)
 	local output = 3
 	
-	if mapheaderinfo[map].ze2_rounds then
-		output = tonumber(mapheaderinfo[map].ze2_rounds)
+	if mapheaderinfo[map or gamemap].ze2_rounds then
+		output = tonumber(mapheaderinfo[map or gamemap].ze2_rounds)
 	end
 	
 	return output
+end
+
+function ZE2.getCurrentRound()
+	return (ZE2.getMaxRoundsFromMap() - ZE2.rounds_left) + 1
 end
 
 function ZE2.ZCollide(mo1,mo2)
