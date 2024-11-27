@@ -65,8 +65,45 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 		if ZE2.queuing_round then
 			ZE2.rounds_left = $ - 1
 			ZE2.queuing_round = false
+			
+			-- force reload everyone's weapon
+			for player in players.iterate do
+				if player["ze2_info"] then
+					-- TODO: Make a function for this process.
+					for i,v in pairs(player["ze2_info"].survivor_inventory) do
+						v.ammo = v.max_ammo
+						
+						if v.skin_overwrite then
+							for a,b in pairs(v.skin_overwrite) do
+								if b.ammo ~= nil then
+									if b.max_ammo ~= nil then
+										b.ammo = b.max_ammo
+									elseif v.max_ammo ~= nil then
+										b.ammo = v.max_ammo
+									end
+								end
+							end
+						end
+					end
+				else
+					continue
+				end
+			end
 		else
 			ZE2.rounds_left = tonumber(mapheaderinfo[map].ze2_rounds) or 3
+			
+			-- reset everyone's inventory
+			for player in players.iterate do
+				if player["ze2_info"] then
+					-- TODO: Reference the default table and copy that, instead of making a new one
+					player["ze2_info"].survivor_inventory = {
+						ZE2:CopyItemFromID(ITEM_RED_RING)
+					}
+				else
+					continue
+				end
+			end
+			
 			ZE2.queuing_round = false
 		end
 		
