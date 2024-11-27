@@ -271,6 +271,19 @@ ZE2.tabscores = function(v)
         )
     end
 
+	-- draw rounds
+	local current_round = ZE2.getCurrentRound()
+	local max_rounds = ZE2.getMaxRoundsFromMap()
+	local roundcount_text = current_round .. " / " .. max_rounds
+	local rc_yoffset = 0
+	
+	if CV_FindVar("showfps").value then
+		rc_yoffset = $ - 8
+	end	
+	
+	v.drawString(320, 200 - 16 + rc_yoffset, "\x82".."ROUNDS", V_SNAPTOBOTTOM|V_SNAPTORIGHT, "right")
+	v.drawString(320, 200 - 8  + rc_yoffset, roundcount_text , V_SNAPTOBOTTOM|V_SNAPTORIGHT, "right")
+
     --draw spectators
     local i
     local length,height = 0, 174
