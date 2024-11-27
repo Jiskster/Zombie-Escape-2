@@ -546,9 +546,11 @@ function ZE2.SpawnMissile(m_table)
 	end
 	*/
 	
+	/*
 	if source.player and ZE2.CharacterConfig[source.skin] and ZE2.CharacterConfig[source.skin].bullet_speed_multiplier then
 		speed = FixedMul($, ZE2.CharacterConfig[source.skin].bullet_speed_multiplier)
 	end
+	*/
 	
 	th.angle = angle
 	
