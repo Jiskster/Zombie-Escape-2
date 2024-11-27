@@ -84,7 +84,14 @@ ZE2.intermissionhud = function(v, player)
 				v.drawScaled(x1.stop*FU, 100*FU, FU, z_team, diff<<V_ALPHASHIFT)
 				v.drawScaled(x2.stop*FU, 100*FU, FU, z_w, diff<<V_ALPHASHIFT)
 			else
-				local text = "ROUND "..(ZE2.getMaxRoundsFromMap(gamemap) - ZE2.rounds_left) + 1 + 1
+				local nextround = (ZE2.getMaxRoundsFromMap(gamemap) - ZE2.rounds_left) + 1 + 1
+				local text = "ROUND "..nextround
+				
+				-- when next round is the last round
+				if ZE2.getMaxRoundsFromMap(gamemap) == nextround then
+					text = "FINAL ROUND"
+				end
+				
 				customhud.CustomFontString(v, 160*FU, 100*FU, text, "STCFC", 
 				diff2<<V_ALPHASHIFT, "center", 2*FRACUNIT, round_color)
 			end
