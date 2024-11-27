@@ -91,7 +91,7 @@ ZE2.shophud = function(v, player)
 							text = shop_def.name,		
 						},
 						[2] = {
-							color = SKINCOLOR_RED,
+							color = SKINCOLOR_FOREST,
 							text = "Price: "..shop_def.price,
 						}
 					}
