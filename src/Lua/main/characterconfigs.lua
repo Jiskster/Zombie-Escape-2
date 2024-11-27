@@ -378,7 +378,6 @@ ZE2:AddCharacterConfig("sonic", {
 ZE2:AddCharacterConfig("tails", {
 	health = 150,
 	speed = "normal",
-	bullet_speed_multiplier = (3*FRACUNIT)/2, -- 1.5x
 	desc1 = "Has the brains. Without the plane.",
 	desc2 = "Flies slow. Slower than sonic."
 })
@@ -386,7 +385,6 @@ ZE2:AddCharacterConfig("tails", {
 ZE2:AddCharacterConfig("knuckles", {
 	health = 200,
 	speed = "slow",
-	bullet_speed_multiplier = FRACUNIT/2,
 	desc1 = "Very Strong feller",
 	desc2 = "Glides slow. The slowest."
 })
