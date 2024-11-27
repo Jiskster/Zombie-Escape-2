@@ -19,12 +19,9 @@ ZE2.shophud = function(v, player)
 	local item_icon_xoffset = 5*FU
 	local item_icon_yoffset = 3*FU
 	
-	local ruby_icon_xoffset = 35*FU
-	local ruby_icon_yoffset = 2*FU
-	
 	-- offset from icon offset
-	local ruby_price_xoffset = ruby_icon_xoffset + 8*FU
-	local ruby_price_yoffset = ruby_icon_yoffset
+	local ruby_price_xoffset = 35*FU
+	local ruby_price_yoffset = 2*FU
 	
 	local selection_xoffset = -8*FU
 	local selection_yoffset = 4*FU
@@ -37,7 +34,7 @@ ZE2.shophud = function(v, player)
 	local minirubypatch = v.cachePatch("Z_MINI_RUBY")
 	local selectionpatch = v.cachePatch("Z_SHOPSELECTION")
 	
-	customhud.CustomFontString(v, 280*FU, 30*FU, "Rubies: "..player["ze2_info"].cash, "STCFC", (V_SNAPTOTOP|V_SNAPTORIGHT|topmenuflag), "right" , FU, SKINCOLOR_RED)
+	customhud.CustomFontString(v, 280*FU, 30*FU, "Cash: "..player["ze2_info"].cash, "STCFC", (V_SNAPTOTOP|V_SNAPTORIGHT|topmenuflag), "right" , FU, SKINCOLOR_FOREST)
 	
 	for i,b in ipairs(ZE2.Survivor_ShopList) do
 		local shopdefid = b.shopdefid
@@ -65,17 +62,14 @@ ZE2.shophud = function(v, player)
 			end
 			
 			if shop_def.price then
-				local rubyicon_x = x+ruby_icon_xoffset
-				local rubyicon_y = y+ruby_icon_yoffset+change
 				local price_x = x+ruby_price_xoffset
 				local price_y = y+ruby_price_yoffset+change
-				local price_text = tostring(shop_def.price)
+				local price_text = "$ "..tostring(shop_def.price)
 				if b.sold then
 					price_text = $ + " (SOLD)"
 				end
 				
-				v.drawScaled(rubyicon_x,rubyicon_y,FU,minirubypatch,V_SNAPTOTOP|topmenuflag|soldflag)
-				customhud.CustomFontString(v,price_x,price_y,price_text,"TNYFC",(V_SNAPTOTOP|topmenuflag|soldflag),nil,FU,SKINCOLOR_RED)
+				customhud.CustomFontString(v,price_x,price_y,price_text,"TNYFC",(V_SNAPTOTOP|topmenuflag|soldflag),nil,FU,SKINCOLOR_FOREST)
 			end
 			
 			local color = SKINCOLOR_WHITE

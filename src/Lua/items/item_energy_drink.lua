@@ -16,7 +16,7 @@ local energydrink = ZE2:CreateItem("Energy Drink", {
 			knockback_multiplier = 5*FRACUNIT,
 		}, 6*TICRATE, true)
 	end,
-	price = 115,
+	price = 575,
 })
 
 ZE2:RegisterShop_ItemID(energydrink)

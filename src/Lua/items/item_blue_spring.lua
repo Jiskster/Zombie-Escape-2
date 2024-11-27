@@ -13,7 +13,7 @@ local blue_spring = ZE2:CreateItem("Blue Spring",  {
 		S_StartSound(player.mo, sfx_jshard)
 		spring.target = player.mo
 	end,
-	price = 70,
+	price = 350,
 })
 
 ZE2:RegisterShop_ItemID(blue_spring)

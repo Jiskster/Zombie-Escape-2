@@ -43,7 +43,7 @@ ZE2:RegisterGenericShop("Whirlwind Shield", {
 		
 		ZE2:GiveShieldToMobj(player.mo, 2) -- give whirl wind
 	end,
-}, 150)
+}, 750)
 
 function ZE2:GiveShieldToMobj(mobj, shieldid)
 	if not ZE2.ShieldDefinitions[shieldid] then return false end

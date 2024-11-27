@@ -31,15 +31,15 @@ addHook("TouchSpecial", function(special,toucher)
 		local player = toucher.player
 		
 		if not player["ze2_info"].ghostmode and not ZE2.game_ended and ZE2.round_active then
-			local ruby_award = ZE2.PlayerCount()*5
+			local cash_award = ZE2.PlayerCount()*25
 			player["ze2_info"].ghostmode = true
 			
 			for tplayer in players.iterate do
 				if tplayer.spectator then continue end
 				if player["ze2_info"].team ~= tplayer["ze2_info"].team then continue end
 				
-				ZE2:GivePlayerRubies(tplayer, ruby_award)
-				CONS_Printf(tplayer, "\x85+"..ruby_award.." rubies awarded for winning!")
+				ZE2:GivePlayerRubies(tplayer, cash_award)
+				CONS_Printf(tplayer, "\x83 + Awarded "..cash_award.." cash awarded for winning!")
 			end
 
 			for d=0,16 do

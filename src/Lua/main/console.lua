@@ -146,7 +146,7 @@ COM_AddCommand("z_sellhand", function(player)
 		
 		item_cost = ($*3)/4 -- Give only 75% back.
 		
-		local toprint = string.format("%s sold for \x85\%s Rubies. (75 percent given back)",item_name,tostring(item_cost))
+		local toprint = string.format("%s sold for \x85\%s Cash. (75 percent given back)",item_name,tostring(item_cost))
 		
 		CONS_Printf(player,toprint)
 		

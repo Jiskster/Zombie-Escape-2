@@ -5,7 +5,7 @@ local infinity_ring = ZE2:CreateItem("Infinity Ring",	{
 	color = SKINCOLOR_SALMON,
 	knockback = FRACUNIT/2,
 	damage = 85,
-	price = 115,
+	price = 575,
 	autouse = true,
 	thinker = function(pmo, mo)
 		if mo.framethati_usedinfinity then
