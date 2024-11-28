@@ -221,7 +221,8 @@ addHook("TouchSpecial", function(special, toucher)
 			S_StartSound(toucher, sfx_rbyhit)
 		end
 
-		ZE2:QueuePlayerRubies(toucher.player, 5)
+		ZE2:GivePlayerRubies(toucher.player, 5)
+		S_StartSound(toucher, sfx_rbyhit)
 		ZE2:IncrementSprint(toucher.player, 5*FRACUNIT)
 
 		toucher.player["ze2_info"].rubypickupdelay = ZE2.rubypickupdelay.value
@@ -495,7 +496,8 @@ COM_AddCommand("z_giverubies", function(player, rubies)
 		return
 	end
 
-	ZE2:QueuePlayerRubies(player, rubies)
+	ZE2:GivePlayerRubies(player, rubies)
+	S_StartSound(player.mo, sfx_rbyhit)
 	
 	CONS_Printf(player, "\x82You got "..cash.." rubies")
 end, COM_ADMIN)
