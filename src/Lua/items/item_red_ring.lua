@@ -5,7 +5,7 @@ ZE2:CreateItem("Red Ring",  {
 	color = SKINCOLOR_RED,
 	knockback = 10*FRACUNIT,
 	damage = 45,
-	velocity_multiplier = 2*FRACUNIT + 3*FRACUNIT/4,
+	velocity_multiplier = 3*FRACUNIT + FRACUNIT/2,
 	max_ammo = 35,
 	ammo = 35,
 	reload_time = 3*TICRATE/2,
