@@ -44,7 +44,7 @@ local function CheckGameForWinRing()
 	return true
 end
 
-function ZE2:StartWin(team)
+function ZE2:StartWin(team, fromring)
 	self.game_ended = true
 	self.team_won = team
 	
@@ -68,6 +68,22 @@ function ZE2:StartWin(team)
 				continue
 			end
 		end
+	end
+	
+	local cash_base_award = 15
+	
+	if fromring then
+		cash_base_award = $ * 2
+	end
+	
+	local cash_award = ZE2.PlayerCount()*cash_base_award
+	
+	for player in players.iterate do
+		if player.spectator then continue end
+		if player["ze2_info"].team ~= team then continue end
+		
+		ZE2:GivePlayerRubies(player, cash_award)
+		CONS_Printf(player, "\x83 + Awarded "..cash_award.." cash awarded for winning!")
 	end
 	
 	P_StartQuake(24*FRACUNIT, 3*TICRATE)
