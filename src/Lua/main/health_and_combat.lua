@@ -259,6 +259,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	end
 	
 	if mo.player then
+		-- TODO: Merge both team kb code.
 		if mo.player["ze2_info"].team == 1 then
 			mo.player.powers[pw_flashing] = ZE2.survinvtics.value
 			
@@ -296,6 +297,11 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			local ztype = mo.player["ze2_info"].zombie_type
 			local zombie_hurtsounds = {sfx_zpa1,sfx_zpa2}
 			local chosen_hurtsound = zombie_hurtsounds[P_RandomRange(1,2)]
+			
+			
+			if mo.player["ze2_info"].crouching then
+				knockback = $ * 3
+			end
 			
 			if ztype and ZE2.ZombieConfig[ztype] and ZE2.ZombieConfig[ztype].knockback_multiplier ~= nil then
 				local knockback_multiplier = ZE2.ZombieConfig[ztype].knockback_multiplier
