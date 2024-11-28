@@ -20,8 +20,8 @@ ZE2:CreateItem("Red Ring",  {
 			velocity_multiplier = 2*FRACUNIT,
 			damage = 100,
 			
-			max_ammo = 15,
-			ammo = 15,
+			max_ammo = 10,
+			ammo = 10,
 			reload_time = 1*TICRATE,
 		}
 	},
