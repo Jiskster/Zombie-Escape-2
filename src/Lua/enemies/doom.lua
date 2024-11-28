@@ -325,19 +325,6 @@ mobjinfo[MT_ARCHVILE] = {
 		painchance = 10
 }
 
---Arch-vile's low spawn chance
-addHook("MapLoad", function(mapnum) 
-	local archvile_spawnchance
-	
-	if (mapnum == 220) then
-		archvile_spawnchance = P_RandomChance(FRACUNIT/6)
-	end
-	
-	if archvile_spawnchance then
-		P_SpawnMobj(-2816*FRACUNIT, -5088*FRACUNIT, 760*FRACUNIT, MT_ARCHVILE)
-	end
-end)
-
 --bigger scale for Arch-vile
 addHook("MobjSpawn", function(mobj) 
 	if mobj and mobj.valid then
