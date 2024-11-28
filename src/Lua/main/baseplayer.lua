@@ -344,6 +344,7 @@ function ZE2:IncrementSprint(player, value)
 end
 
 -- sprint code
+-- TODO: Sprinting is no longer in the game, so this thing needs to be reorganized for the new name and stuff.
 ZE2.sprint_thinker = function(player)
 	if not (player.mo and player.mo.valid) return end
 	
@@ -356,6 +357,16 @@ ZE2.sprint_thinker = function(player)
 	
 	local increment = FRACUNIT/2
 	local decrement = fixedfromstring("0.142")
+	
+	-- TODO: Make the sidemove limiting code cleaner, and modular.
+	if not player["ze2_info"].pregamemenu_active
+	and not ZE2.game_ended then
+		if cmd.sidemove > 25 then
+			cmd.sidemove = 25
+		elseif cmd.sidemove < -25 then
+			cmd.sidemove = -25
+		end
+	end
 	
 	if player["ze2_info"].sprintdelay then
 		if player["ze2_info"].sprintmeter then
@@ -431,11 +442,6 @@ addHook("PlayerThink", function(player)
 	if gametype ~= GT_ZE2 then return end
     if player.mo and player.mo.valid then
 		local cmd = player.cmd
-		local floorz = P_FloorzAtPos(player.mo.x, player.mo.y, player.mo.z, player.mo.height)
-		
-		if cmd.sidemove and abs(player.mo.z - floorz) <= 16*FRACUNIT then
-			L_SpeedCapXY(player.mo, 16*FRACUNIT)
-		end
 		
         if player.climbing then
             ZE2:DecrementSprint(player, FRACUNIT)
