@@ -88,6 +88,11 @@ dofile "levelscripts/waterfall_timers.lua"
 dofile "levelscripts/noxylous.lua"
 dofile "levelscripts/grancolia.lua"
 dofile "levelscripts/ug_marble.lua"
+dofile "levelscripts/doomedcorp_sounds.lua"
+dofile "levelscripts/doomedcorp_electricsparkles.lua"
+dofile "levelscripts/doomedcorp_objects.lua"
+dofile "levelscripts/doomedcorp_timers.lua"
+dofile "levelscripts/doomedcorp_globalsounds.lua"
 
 dofile "main/netvars.lua"
 
