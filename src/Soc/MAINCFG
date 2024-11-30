@@ -2,9 +2,12 @@ MainCfg
 GameData = ZE2.dat
 DemoDelayTime = 6942069420
 TitlePicsMode = User
-TitlePicsName = ZE2_TTL
-TitlePicsScale = 3
+TitlePicsName = 0
+TitlePicsScale = 4
+TitlePicsX = 25
+TitlePicsY = 10
 LoopTitle = true
+TitleScrollXSpeed = 9
 
 # Unlock the funny unlockables
 
