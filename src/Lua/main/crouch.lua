@@ -16,7 +16,7 @@ local function CrouchHeightHook(player)
 	if gametype ~= GT_ZE2 then return end
 
     return (player["ze2_info"].crouching or (player.mo.ceilingz-player.mo.floorz < player.height + heightoffset)) 
-	and (player.spinheight + 4*FRACUNIT) 
+	and (player.spinheight) 
 	or player.height + heightoffset
 end
 
