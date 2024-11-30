@@ -98,3 +98,6 @@ dofile "main/netvars.lua"
 
 dofile "main/debug/cvmake.lua"
 dofile "main/debug/commands.lua"
+
+dofile "title_screen/scenery.lua"
+dofile "title_screen/hud.lua"
