@@ -1,7 +1,7 @@
 freeslot("sfx_UTMMRY")
 
 local UTWTRFLL_Timer1 = ZE2:AddTimer("Defend Rock",{
-	time = 25*TICRATE,
+	time = 35*TICRATE,
 	on_end = function(timernum,timername)
 		P_LinedefExecute(21)
 	end,
@@ -9,7 +9,7 @@ local UTWTRFLL_Timer1 = ZE2:AddTimer("Defend Rock",{
 })
 
 local UTWTRFLL_Timer2 = ZE2:AddTimer("Defend Barrier",{
-	time = 25*TICRATE,
+	time = 30*TICRATE,
 	on_end = function(timernum,timername)
 		P_LinedefExecute(22)
 	end,
@@ -17,7 +17,7 @@ local UTWTRFLL_Timer2 = ZE2:AddTimer("Defend Barrier",{
 })
 
 local UTWTRFLL_Timer3 = ZE2:AddTimer("Leaving platform",{
-	time = 17*TICRATE,
+	time = 25*TICRATE,
 	on_end = function(timernum,timername)
 		P_LinedefExecute(40)
 	end,
