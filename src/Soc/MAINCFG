@@ -79,7 +79,17 @@ NoZone = True
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 7
 
-
+Level N4
+Levelname = FATAL DESERT
+Subtitle = A dangerous Journey
+Act = 0
+Music = DESERT
+TypeOfLevel = ZE2
+NextLevel = N4
+SkyNum = 11
+NoZone = True
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 5
 
 ## SWARM MAP START
 
