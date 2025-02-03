@@ -19,6 +19,18 @@ Unlockable 23
 
 ## SURVIVAL MAP START
 
+Level J3
+Levelname = Spooky Flower
+Subtitle = Very scary.
+Act = 0
+Music = SFZZE2
+TypeOfLevel = ZE2
+NextLevel = J5
+SkyNum = 20
+NoZone = True
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 5
+
 Level WF
 Levelname = Waterfall
 Act = 0

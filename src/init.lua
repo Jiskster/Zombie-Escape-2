@@ -97,6 +97,7 @@ dofile "levelscripts/fataldesert.lua"
 dofile "levelscripts/alphacombs.lua"
 dofile "levelscripts/lostsewer.lua"
 dofile "levelscripts/lostsewer_enemies.lua"
+dofile "levelscripts/spookyflower.lua"
 
 dofile "main/netvars.lua"
 
