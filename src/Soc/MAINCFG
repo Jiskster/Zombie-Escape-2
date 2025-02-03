@@ -91,6 +91,18 @@ NoZone = True
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 5
 
+Level N9
+Levelname = Alphacombs
+Subtitle = The History
+Act = 0
+Music = ZEACPROTO
+TypeOfLevel = ZE2
+NextLevel = N9
+SkyNum = 11
+NoZone = True
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 7
+
 ## SWARM MAP START
 
 Level N6

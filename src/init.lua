@@ -94,6 +94,7 @@ dofile "levelscripts/doomedcorp_objects.lua"
 dofile "levelscripts/doomedcorp_timers.lua"
 dofile "levelscripts/doomedcorp_globalsounds.lua"
 dofile "levelscripts/fataldesert.lua"
+dofile "levelscripts/alphacombs.lua"
 
 dofile "main/netvars.lua"
 
