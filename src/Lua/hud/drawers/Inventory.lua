@@ -1,5 +1,4 @@
-ZE2.inventoryhud = function(v, player)
-	if gametype ~= GT_ZE2 then return end
+return "Inventory", function(v, player)
 	if player["ze2_info"].pregamemenu_active then return end
 	if ZE2.game_ended then return end
 	if player["ze2_info"].ghostmode then return end

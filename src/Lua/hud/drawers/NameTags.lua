@@ -1,56 +1,4 @@
---Original script by wired-aunt
---Heavily edited version by Jisk.
-
---Nearly every division operation is replaced with bit shifting where it is possible
-
 local sorted_mobjs = {}
-
-
-local string_linebreak = function(view, message, flags)
-	--print("string_linebreak( "..message..", "..flags..")")
-	local linelist = {}
-	local width = 130
-	local maxwidth = 170
-	local maxlines = 2
-	local i = 1
-	local line = ""
-	while i <= string.len(message) and #linelist < maxlines
-		local nextletter = string.sub(message, i, i)
-		--print("nextletter: "..nextletter)
-		if not (line == "" and nextletter == " ")
-			if view.stringWidth(line, flags, "thin") > maxwidth
-				if (#linelist == maxlines - 1)
-					linelist[#linelist + 1] = line
-				else
-					linelist[#linelist + 1] = line.."-"
-				end
-				line = ""
-				--print("NEW LINE")
-				continue
-			elseif view.stringWidth(line, flags, thin) > width and nextletter == " "
-				linelist[#linelist + 1] = line
-				line = ""
-				--print("NEW LINE")
-				continue
-			else
-				line = $ + string.sub(message, i, i)
-				--print("	added")
-			end
-		else
-			--print("	invalid space, skipping")
-		end
-		i = $ + 1
-		if i > string.len(message)
-			linelist[#linelist + 1] = line
-			line = ""
-			--print("FINISH, NEW LINE")
-		end
-	end
-	if (#linelist == maxlines)
-		linelist[maxlines] = $ .. "..."
-	end
-	return linelist
-end
 
 CV_RegisterVar({
 	name = "z_nametags",
@@ -58,7 +6,60 @@ CV_RegisterVar({
 	PossibleValue = CV_OnOff
 })
 
-ZE2.nametagshud = function(v, player, camera)
+local consoleplayer_camera = nil
+hud.add(function(v, player, camera)
+	consoleplayer_camera = camera
+end, "game")
+
+addHook("PostThinkFrame", function()
+	sorted_mobjs = {}
+	local range = 1024*FRACUNIT
+	local dplay
+	if (displayplayer and displayplayer.valid and 
+	displayplayer.realmo) then
+		dplay = displayplayer
+	end
+	
+	local function drawThink()
+		searchBlockmap("objects", function(refmobj,foundmobj)
+			if dplay and foundmobj.health then
+				
+				if foundmobj.player and foundmobj.player.spectator then
+					return
+					--print(foundmobj.player.name)
+				end
+				
+				local cam = dplay.realmo
+				if consoleplayer_camera and consoleplayer_camera.chase
+					cam = consoleplayer_camera
+				end
+				local thok = P_SpawnMobj(cam.x, cam.y, cam.z, MT_NULL)
+				local sight = P_CheckSight(thok, foundmobj)
+				P_RemoveMobj(thok)
+				if not sight -- if not sight
+					return
+				end
+				
+				table.insert(sorted_mobjs, foundmobj)
+			end
+		end,dplay.realmo,dplay.realmo.x-range,dplay.realmo.x+range,dplay.realmo.y-range,dplay.realmo.y+range)
+		
+		table.sort(sorted_mobjs, function(a, b)
+			return R_PointToDist(a.mo.x, a.mo.y) > R_PointToDist(b.mo.x, b.mo.y)
+		end)
+	end
+	
+	pcall(drawThink)
+end)
+
+addHook("MapLoad", function()
+	for player in players.iterate() do
+		player.lastmessage = nil
+		player.lastmessagetimer = nil
+	end
+end)
+
+return "NameTags", function(v, player)
 	if not CV_FindVar("z_nametags").value
 		return
 	end
@@ -168,56 +169,3 @@ ZE2.nametagshud = function(v, player, camera)
 		end
 	end
 end
-
-local consoleplayer_camera = nil
-hud.add(function(v, player, camera)
-	consoleplayer_camera = camera
-end, "game")
-
-addHook("PostThinkFrame", function()
-	sorted_mobjs = {}
-	local range = 1024*FRACUNIT
-	local dplay
-	if (displayplayer and displayplayer.valid and 
-	displayplayer.realmo) then
-		dplay = displayplayer
-	end
-	
-	local function drawThink()
-		searchBlockmap("objects", function(refmobj,foundmobj)
-			if dplay and foundmobj.health then
-				
-				if foundmobj.player and foundmobj.player.spectator then
-					return
-					--print(foundmobj.player.name)
-				end
-				
-				local cam = dplay.realmo
-				if consoleplayer_camera and consoleplayer_camera.chase
-					cam = consoleplayer_camera
-				end
-				local thok = P_SpawnMobj(cam.x, cam.y, cam.z, MT_NULL)
-				local sight = P_CheckSight(thok, foundmobj)
-				P_RemoveMobj(thok)
-				if not sight -- if not sight
-					return
-				end
-				
-				table.insert(sorted_mobjs, foundmobj)
-			end
-		end,dplay.realmo,dplay.realmo.x-range,dplay.realmo.x+range,dplay.realmo.y-range,dplay.realmo.y+range)
-		
-		table.sort(sorted_mobjs, function(a, b)
-			return R_PointToDist(a.mo.x, a.mo.y) > R_PointToDist(b.mo.x, b.mo.y)
-		end)
-	end
-	
-	pcall(drawThink)
-end)
-
-addHook("MapLoad", function()
-	for player in players.iterate() do
-		player.lastmessage = nil
-		player.lastmessagetimer = nil
-	end
-end)

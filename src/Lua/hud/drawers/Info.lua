@@ -1,5 +1,4 @@
-ZE2.infohud = function(v, player)
-	if gametype ~= GT_ZE2 then return end
+return "GameInfo", function(v, player)
 	if ZE2.game_ended then return end
 	if player["ze2_info"].zombie_shop_open then return end
 	if not player.realmo then return end

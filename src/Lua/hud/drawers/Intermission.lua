@@ -8,7 +8,8 @@ local ty = CV_RegisterVar({
 	defaultvalue = "0",
 	PossibleValue = CV_Unsigned,
 })
-ZE2.intermissionhud = function(v, player)
+
+return "Intermission", function(v, player)
 	if not ZE2.game_ended then return end
 	
 	local animlength = 3*TICRATE
@@ -32,7 +33,6 @@ ZE2.intermissionhud = function(v, player)
 		start = -300,
 		stop = 0
 	}
-
 	
 	local z_team = v.cachePatch("Z_SURVIVORS")
 	local z_w = v.cachePatch("Z_WIN")

@@ -38,6 +38,8 @@ ZE2.VoteTimeLimit = 12*TICRATE
 ZE2.queuing_round = false
 ZE2.rounds_left = 3
 
+ZE2.HUD = {}
+
 ZE2.init_gamevars = function(map) -- Variables vary per game.
 	ZE2.round_active = false;
 	ZE2.game_ended = false;

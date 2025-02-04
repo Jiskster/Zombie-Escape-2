@@ -1,4 +1,4 @@
-ZE2.damagefadehud = function(v, player)
+return "DamageFade", function(v, player)
 	if gametype ~= GT_ZE2 then return end
 	
 	if not player["ze2_info"].damage_fade then 

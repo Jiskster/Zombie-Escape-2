@@ -1,8 +1,6 @@
 -- Lazily Coded Shop For Now
 
-ZE2.zombie_shophud = function(v, player)
-	if gametype ~= GT_ZE2 then return end
-	
+return "ZombieShop", function(v, player)	
 	if player["ze2_info"].team ~= 2 then
 		return
 	end

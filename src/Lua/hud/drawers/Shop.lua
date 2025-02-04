@@ -1,5 +1,4 @@
-ZE2.shophud = function(v, player)
-	if gametype ~= GT_ZE2 then return end
+return "Shop", function(v, player)
 	if not player["ze2_info"].pregamemenu_active then
 		return
 	end

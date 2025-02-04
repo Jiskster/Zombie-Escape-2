@@ -1,7 +1,4 @@
-ZE2.debughud = function(v, player, camera)
-	if true then return end
-	
-	if gametype ~= GT_ZE2 then return end
+return "Debug", function(v, player)
 	if not player.mo then return end
 	
 	for target_player in players.iterate do

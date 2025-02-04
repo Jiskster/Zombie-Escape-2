@@ -7,8 +7,7 @@ ZE2.PregameTopMenuDef = {
 	}
 }
 
-ZE2.pregamehud = function(v, player, c)
-	if gametype ~= GT_ZE2 then return end
+return "Pregame", function(v, player)
 	local blackbgpatch
 	local pregamemenu_type
 	local pregamemenu_lasttype

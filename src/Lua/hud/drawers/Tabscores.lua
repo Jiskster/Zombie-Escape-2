@@ -1,4 +1,6 @@
-ZE2.tabscores = function(v)
+local hudtype = "scores"
+
+return "Tabscores", function(v)
  	local timeemb = v.cachePatch("NGRTIMER")
 	local the_time 
 	
@@ -110,6 +112,7 @@ ZE2.tabscores = function(v)
             -- wait, that's not a real icon
             skinpatch = v.cachePatch("Z_MISSINGICON")
         end
+		
         v.drawScaled(x,
             y,
             FU/3,     
@@ -209,6 +212,7 @@ ZE2.tabscores = function(v)
             -- wait, that's not a real icon
             skinpatch = v.cachePatch("Z_MISSINGICON")
         end
+		
         v.drawScaled(x,
             y,
             FU/3,     
@@ -324,5 +328,4 @@ ZE2.tabscores = function(v)
             FU
         )/FU) + 16
     end
-
-end
+end, (hudtype)

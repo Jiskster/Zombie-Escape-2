@@ -1,6 +1,6 @@
 local lastgt = GT_COOP
 
-ZE2.togglehud = function(v, player)
+return "ToggleHud", function(v, player)
 	if gametype == GT_ZE2 and lastgt ~= GT_ZE2 and netgame
 		hud.disable("rankings")
 		hud.disable("score")

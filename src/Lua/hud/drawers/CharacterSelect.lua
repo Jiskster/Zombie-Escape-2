@@ -9,9 +9,8 @@ ZE2.getSkinFromCharSelect = function(player)
 	return skins[ZE2.getSkinNames(player, true)[player["ze2_info"].charselect_selection]] or skins["sonic"]
 end
 
-ZE2.characterselecthud = function(v, player, c)
+return "CharacterSelect", function(v, player)
 	if ZE2.round_active then return end 
-	if gametype ~= GT_ZE2 then return end
 	
     local pmo = player.mo 
     if not pmo then 
