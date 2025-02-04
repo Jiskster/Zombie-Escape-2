@@ -1,7 +1,4 @@
-
 addHook("PlayerSpawn", ZE2.init_player)
-
-addHook("TouchSpecial", ZE2.HitMegaHP, MT_MEGAHP)
 
 addHook("PreThinkFrame", function()
 	for player in players.iterate do
