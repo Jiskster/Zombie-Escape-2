@@ -124,20 +124,26 @@ function ZE2:AddDamageIndicator(player, victim_mobj, damage)
 	*/
 
 	--TODO: test to make sure this doesnt spawn too much mobjs, check for desynchs
-	--TODO: scale up numbers the father you are from the victim?
 	do
 		local random = P_RandomRange(1,3)*FU + P_RandomFixed()
 		local randomthr = P_RandomRange(-2,2)*FU + P_RandomFixed() * (P_RandomChance(FU/2) and 1 or -1)
 		
 		damage = tostring($)
 		
-		local scale = victim_mobj.scale*2
+		local scale = FixedDiv(R_PointToDist(victim_mobj.x,victim_mobj.y), victim_mobj.radius * 10)
+		scale = max($, victim_mobj.scale * 2)
+
+		--random = FixedMul($, scale)
+		--randomthr = FixedMul($, scale)
+
+		--print(string.format("s: %f r: %f rt: %f", scale, random, randomthr))
+
 		local offset = FixedMul((string.len(damage)*width)*FU, scale) / 2
 		
 		local work = offset
 		local angle = R_PointToAngle(victim_mobj.x,victim_mobj.y) - ANGLE_90
 		
-		for i = 1,string.len(damage)
+		for i = 1,string.len(damage) do
 			local n = string.sub(damage,i,i)
 			local frame = tonumber(n)
 			
@@ -152,11 +158,12 @@ function ZE2:AddDamageIndicator(player, victim_mobj, damage)
 			num.tics = TICRATE
 			num.fuse = num.tics
 			num.scale = scale
-			num.color = SKINCOLOR_RED
+			num.color = victim_mobj.color or SKINCOLOR_RED
 			num.flags = $ &~MF_NOGRAVITY
+			num.renderflags = $|RF_NOCOLORMAPS
 			num.drawonlyforplayer = player
 			num.dispoffset = 100
-			P_SetObjectMomZ(num, random*2)
+			P_SetObjectMomZ(num, random)
 			P_Thrust(num,angle,randomthr)
 			
 			work = $ + width*scale
