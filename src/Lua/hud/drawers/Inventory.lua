@@ -9,7 +9,7 @@ local function PositionSlot(index, slot, slot_count, slot_gap)
 	
 	-- Add from the right
 	slot.x = $ + (slot_gap) * (index-1)
-	--slot.x = $ + slot_gap * (index-1)
+
 	-- Center whole inventory
 	slot.x = $ - (slot_gap/2) * (slot_count-1)
 end
