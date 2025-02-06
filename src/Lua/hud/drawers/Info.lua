@@ -136,10 +136,10 @@ return "GameInfo", function(v, player)
 						end
 						*/
 					end
-				else
-					customhud.CustomFontString(v, 0, 192-lower_hud_offset, "SPECTATOR MODE", "TNYFC",
-					(V_SNAPTOBOTTOM|V_SNAPTOLEFT|V_50TRANS), nil , nil, SKINCOLOR_WHITE)
 				end
+			else
+				customhud.CustomFontString(v, 0, 192-lower_hud_offset, "SPECTATOR MODE", "TNYFC",
+				(V_SNAPTOBOTTOM|V_SNAPTOLEFT|V_50TRANS), nil , nil, SKINCOLOR_WHITE)
 			end
 			-- Hardcoded display at the moment
 			if player["ze2_info"].team == 2 then
