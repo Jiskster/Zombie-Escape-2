@@ -64,6 +64,7 @@ dofile "main/teamchat.lua"
 
 dofile "objects/megahp.lua"
 dofile "objects/teleporter_gfx.lua"
+dofile "objects/corona.lua"
 
 dofile "hud/setup"
 
