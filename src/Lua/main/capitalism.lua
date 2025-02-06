@@ -293,6 +293,21 @@ addHook("MobjThinker", function(mobj)
 		mobj.spritexscale,
 		mobj.spriteyscale = $1+mom,$2-mom
 	end
+	
+	if P_RandomChance(FU/2)
+		local wind = P_SpawnMobj(
+			mobj.x + P_RandomRange(-18,18)*mobj.scale,
+			mobj.y + P_RandomRange(-18,18)*mobj.scale,
+			mobj.z + (mobj.height/2) + P_RandomRange(-20,20)*mobj.scale,
+			MT_BOXSPARKLE
+		)
+		wind.frame = $|FF_FULLBRIGHT
+		wind.renderflags = $|RF_FULLBRIGHT
+		wind.color = SKINCOLOR_RED
+		wind.colorized = true
+		
+		P_SetObjectMomZ(wind,P_RandomRange(1,3)*FU)
+	end
 
 	if pmofound and pmofound.valid then
 		P_FlyTo(mobj,pmofound.x,pmofound.y,pmofound.z,4*FRACUNIT,true)
