@@ -72,7 +72,9 @@ return "GameInfo", function(v, player)
 						end
 					end
 					
-					if player["ze2_info"].sprintmeter ~= nil and player["ze2_info"].team == 1 then			
+					if player["ze2_info"].sprintmeter ~= nil and player["ze2_info"].team == 1 then
+						local maxsprint = 100*FU
+						local maxsprintwidth = 48*FU
 						local sprintmeter = L_FixedDecimal(player["ze2_info"].sprintmeter, 1).."%"
 						
 						if not player["ze2_info"].sprintmeter then
@@ -87,8 +89,11 @@ return "GameInfo", function(v, player)
 						local staminabarhud = {
 							x = (30*FU),
 							y = (190*FU),
-							hscale = 48*FU,
+							hscale = maxsprintwidth,
 						}
+						
+						-- scale width from stamina
+						staminabarhud.hscale = FixedMul(FixedDiv(player["ze2_info"].sprintmeter, maxsprint), maxsprintwidth)
 						
 						staminabarhud.x = $ - FixedMul(barpatch.width*FU, staminabarhud.hscale)/2
 						
