@@ -1,3 +1,4 @@
+/*
 return "DamageIndicator", function(v, player)
 	if not player.mo then return end
 	
@@ -18,3 +19,4 @@ return "DamageIndicator", function(v, player)
 		end
 	end
 end
+*/

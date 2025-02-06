@@ -98,30 +98,8 @@ function ZE2.KillMobj(mo, inf, src, damagetype, killedbysomething)
 end
 
 local width = 14
-function ZE2:AddDamageIndicator(player, victim_mobj, damage)
-	/*
-	if not player["ze2_info"].damage_indicator_table[victim_mobj] then
-		player["ze2_info"].damage_indicator_table[victim_mobj] = {
-			tics_left = TICRATE*2,
-			number = damage,
-			draw_x = victim_mobj.x,
-			draw_y = victim_mobj.y,
-			draw_z = victim_mobj.z + (victim_mobj.height*2),
-		}
-	else
-		if player["ze2_info"].damage_indicator_table[victim_mobj].tics_left then
-			player["ze2_info"].damage_indicator_table[victim_mobj].tics_left = TICRATE*2
-		end
-		
-		if player["ze2_info"].damage_indicator_table[victim_mobj].number then
-			player["ze2_info"].damage_indicator_table[victim_mobj].number = $ + damage
-		end
-		
-		player["ze2_info"].damage_indicator_table[victim_mobj].draw_x = victim_mobj.x
-		player["ze2_info"].damage_indicator_table[victim_mobj].draw_y = victim_mobj.y
-		player["ze2_info"].damage_indicator_table[victim_mobj].draw_z = victim_mobj.z + (victim_mobj.height*2)
-	end
-	*/
+local function SpawnDamageNumbers(player, victim_mobj, damage)
+	local numbers = {}
 
 	--TODO: test to make sure this doesnt spawn too much mobjs, check for desynchs
 	do
@@ -155,19 +133,78 @@ function ZE2:AddDamageIndicator(player, victim_mobj, damage)
 			)
 			num.sprite = SPR_ZE2_DAMAGENUMBER
 			num.frame = (frame)|FF_FULLBRIGHT
-			num.tics = TICRATE
-			num.fuse = num.tics
 			num.scale = scale
 			num.color = victim_mobj.color or SKINCOLOR_RED
-			num.flags = $ &~MF_NOGRAVITY
+			
+			num.tics = TICRATE
+			num.fuse = num.tics
+			
+			--num.flags = $ &~MF_NOGRAVITY
+			
 			num.renderflags = $|RF_NOCOLORMAPS
 			num.drawonlyforplayer = player
 			num.dispoffset = 100
-			P_SetObjectMomZ(num, random)
-			P_Thrust(num,angle,randomthr)
-			
+
+			num.nu_momz = random
+			num.nu_thrust = randomthr
+			num.nu_width = width
+			table.insert(numbers, num)
+
 			work = $ + width*scale
 		end
+	end
+	return numbers
+end
+
+function ZE2:AddDamageIndicator(player, victim_mobj, damage)
+	if not player["ze2_info"].damage_indicator_table[victim_mobj] then
+		player["ze2_info"].damage_indicator_table[victim_mobj] = {
+			tics_left = TICRATE*2,
+			number = damage,
+			draw_x = victim_mobj.x,
+			draw_y = victim_mobj.y,
+			draw_z = victim_mobj.z + (victim_mobj.height*2),
+
+			real_position = {
+				x = victim_mobj.x,
+				y = victim_mobj.y,
+				z = victim_mobj.z,
+				scale = victim_mobj.scale,
+				height = victim_mobj.height,
+				radius = victim_mobj.radius
+			}
+		}
+
+		player["ze2_info"].damage_indicator_table[victim_mobj].damagenumbers = SpawnDamageNumbers(player, victim_mobj, damage)
+	else
+		if player["ze2_info"].damage_indicator_table[victim_mobj].tics_left then
+			player["ze2_info"].damage_indicator_table[victim_mobj].tics_left = TICRATE*2
+		end
+		
+		if player["ze2_info"].damage_indicator_table[victim_mobj].number then
+			player["ze2_info"].damage_indicator_table[victim_mobj].number = $ + damage
+		end
+		
+		player["ze2_info"].damage_indicator_table[victim_mobj].draw_x = victim_mobj.x
+		player["ze2_info"].damage_indicator_table[victim_mobj].draw_y = victim_mobj.y
+		player["ze2_info"].damage_indicator_table[victim_mobj].draw_z = victim_mobj.z + (victim_mobj.height*2)
+		
+		player["ze2_info"].damage_indicator_table[victim_mobj].real_position = {
+			x = victim_mobj.x,
+			y = victim_mobj.y,
+			z = victim_mobj.z,
+			scale = victim_mobj.scale,
+			height = victim_mobj.height,
+			radius = victim_mobj.radius
+		}
+
+		if player["ze2_info"].damage_indicator_table[victim_mobj].damagenumbers then
+			for k, mo in ipairs(player["ze2_info"].damage_indicator_table[victim_mobj].damagenumbers) do
+				P_RemoveMobj(mo)
+			end
+		end
+
+		player["ze2_info"].damage_indicator_table[victim_mobj].damagenumbers = SpawnDamageNumbers(player, victim_mobj, player["ze2_info"].damage_indicator_table[victim_mobj].number)
 	end
 end
 
