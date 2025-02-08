@@ -200,6 +200,8 @@ function ZE2:AddDamageIndicator(player, victim_mobj, damage)
 
 		if player["ze2_info"].damage_indicator_table[victim_mobj].damagenumbers then
 			for k, mo in ipairs(player["ze2_info"].damage_indicator_table[victim_mobj].damagenumbers) do
+				--game already did it for us, cool
+				if not (mo and mo.valid) then continue end
 				P_RemoveMobj(mo)
 			end
 		end
