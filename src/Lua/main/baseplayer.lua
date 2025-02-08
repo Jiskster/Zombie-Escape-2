@@ -285,7 +285,8 @@ ZE2.giveplayerflags = function(player)
 	if gametype == GT_ZE2 then
 		player.charflags = SF_NOJUMPSPIN|SF_NOJUMPDAMAGE|SF_NOSKID
 		player.pflags = $ & ~PF_DIRECTIONCHAR
-		player.pflags = $ & ~PF_ANALOGMODE 
+		player.pflags = $ & ~PF_ANALOGMODE
+		player.pflags = $ | PF_FORCESTRAFE
 		
 		if not ZE2.round_active and player["ze2_info"].pregamemenu_active then
 			if player.mo and player.mo.valid then
