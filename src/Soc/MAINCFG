@@ -115,6 +115,18 @@ NoZone = True
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 7
 
+Level CV
+Levelname = Corrupted Void
+Subtitle = DIE!
+Act = 0
+Music = ZECVM
+TypeOfLevel = ZE2
+NextLevel = NX
+SkyNum = 500
+NoZone = True
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 10
+
 Level LS
 Levelname = Lost Sewer
 TypeOfLevel = ZE2

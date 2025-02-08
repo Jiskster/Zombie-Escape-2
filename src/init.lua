@@ -85,6 +85,7 @@ dofile "levelscripts/alphacombs.lua"
 dofile "levelscripts/lostsewer.lua"
 dofile "levelscripts/lostsewer_enemies.lua"
 dofile "levelscripts/spookyflower.lua"
+dofile "levelscripts/corruptedvoid.lua"
 
 dofile "main/netvars.lua"
 
