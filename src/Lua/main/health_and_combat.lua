@@ -98,6 +98,15 @@ function ZE2.KillMobj(mo, inf, src, damagetype, killedbysomething)
 end
 
 local width = 14
+local cv_fov
+local function GetFOV()
+	if not cv_fov then
+		cv_fov = CV_FindVar("fov")
+	end
+
+	return FixedDiv(cv_fov.value, 90*FU)
+end
+
 local function SpawnDamageNumbers(player, victim_mobj, damage)
 	local numbers = {}
 
@@ -107,21 +116,43 @@ local function SpawnDamageNumbers(player, victim_mobj, damage)
 		local randomthr = P_RandomRange(-2,2)*FU + P_RandomFixed() * (P_RandomChance(FU/2) and 1 or -1)
 		
 		damage = tostring($)
+		local str_len = string.len(damage)
 		
 		local scale = FixedDiv(R_PointToDist(victim_mobj.x,victim_mobj.y), victim_mobj.radius * 10)
 		scale = max($, victim_mobj.scale * 2)
+		scale = FixedMul($, GetFOV())
 
 		--random = FixedMul($, scale)
 		--randomthr = FixedMul($, scale)
 
 		--print(string.format("s: %f r: %f rt: %f", scale, random, randomthr))
 
-		local offset = FixedMul((string.len(damage)*width)*FU, scale) / 2
+		local offset = FixedMul((str_len*width)*FU, scale) / 2
 		
 		local work = offset
 		local angle = R_PointToAngle(victim_mobj.x,victim_mobj.y) - ANGLE_90
 		
-		for i = 1,string.len(damage) do
+		/*
+		--TODO: 
+		do
+			local test = P_SpawnMobjFromMobj(victim_mobj,
+				P_ReturnThrustX(nil, angle, work + (str_len*width*scale)),
+				P_ReturnThrustY(nil, angle, work + (str_len*width*scale)),
+				FixedDiv(victim_mobj.height, victim_mobj.scale),
+				MT_RAY
+			)
+
+			--try swapping the to the other side?
+			if not P_CheckSight(test, player.mo) then
+				angle = R_PointToAngle(victim_mobj.x,victim_mobj.y) + ANGLE_90
+				work = -$
+			end
+
+			if (test and test.valid) then P_RemoveMobj(test) end
+		end
+		*/
+
+		for i = 1,str_len do
 			local n = string.sub(damage,i,i)
 			local frame = tonumber(n)
 			
@@ -136,7 +167,7 @@ local function SpawnDamageNumbers(player, victim_mobj, damage)
 			num.scale = scale
 			num.color = victim_mobj.color or SKINCOLOR_RED
 			
-			num.tics = TICRATE
+			num.tics = 2*TICRATE
 			num.fuse = num.tics
 			
 			--num.flags = $ &~MF_NOGRAVITY

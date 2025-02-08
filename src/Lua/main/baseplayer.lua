@@ -145,18 +145,48 @@ ZE2["default_ze2_info"] = {
 }
 
 local width = 14
+local cv_fov
+local function GetFOV()
+	if not cv_fov then
+		cv_fov = CV_FindVar("fov")
+	end
+
+	return FixedDiv(cv_fov.value, 90*FU)
+end
+
 local function UpdateDamageNumbers(p, numbers, properties, damage)
 	damage = tostring($)
-	
+	local str_len = string.len(damage)
+
 	local scale = FixedDiv(R_PointToDist(properties.x,properties.y), properties.radius * 10)
 	scale = max($, properties.scale * 2)
+	scale = FixedMul($, GetFOV())
 
-	local offset = FixedMul((string.len(damage)*width)*FU, scale) / 2
+	local offset = FixedMul((str_len*width)*FU, scale) / 2
 	
 	local work = offset
 	local angle = R_PointToAngle(properties.x,properties.y) - ANGLE_90
-	
-	for i = 1,string.len(damage) do
+
+	/*
+	do
+		local test = P_SpawnMobj(
+			properties.x + P_ReturnThrustX(nil, angle, work + (str_len*width*scale)),
+			properties.x + P_ReturnThrustY(nil, angle, work + (str_len*width*scale)),
+			properties.z + properties.height,
+			MT_RAY
+		)
+
+		--try swapping the to the other side?
+		if not P_CheckSight(test, p.mo) then
+			angle = R_PointToAngle(properties.x,properties.y) + ANGLE_90
+			work = -$
+		end
+
+		if (test and test.valid) then P_RemoveMobj(test) end
+	end
+	*/
+
+	for i = 1,str_len do
 		local n = string.sub(damage,i,i)
 		local frame = tonumber(n)
 		
@@ -177,7 +207,7 @@ local function UpdateDamageNumbers(p, numbers, properties, damage)
 		num.frame = (frame)|FF_FULLBRIGHT
 		num.scale = scale
 		
-		if num.fuse == TICRATE / 2 then
+		if num.fuse == TICRATE then
 			num.flags = $ &~MF_NOGRAVITY
 
 			P_SetObjectMomZ(num, num.nu_momz)
