@@ -1,5 +1,5 @@
 local CVOID_Timer1 = ZE2:AddTimer("SURVIVE",{
-	time = 62*TICRATE,
+	time = 55*TICRATE,
 	on_end = function(timernum,timername)
 		P_LinedefExecute(10)
 	end,
@@ -15,7 +15,7 @@ local CVOID_Timer2 = ZE2:AddTimer("Defend Barrier",{
 })
 
 local CVOID_Timer3 = ZE2:AddTimer("Good Luck!",{
-	time = 75*TICRATE,
+	time = 65*TICRATE,
 	on_end = function(timernum,timername)
 		P_LinedefExecute(22)
 	end,
