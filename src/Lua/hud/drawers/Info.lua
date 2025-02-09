@@ -111,6 +111,23 @@ return "GameInfo", function(v, player)
 							y = (165*FU),
 						}
 						
+						local healthstring = health -- Is a number not a string yet.
+						local healtbarcolor = SKINCOLOR_GREEN
+						
+						-- [Shield Health] --
+						-- TODO: There should be a hud option to display combined health or "health + shield HP" in hud.
+						if player.realmo.shield_health and player.realmo.shield_def then
+							local shield_color = player.realmo.shield_def.color or SKINCOLOR_WHITE
+							
+							local shield_health = player.realmo.shield_health
+							
+							healthstring = $ + shield_health -- Still a number
+							healtbarcolor = shield_color
+						end
+						
+						-- Now a string!
+						healthstring = $ .. " HP"
+						
 						local hpbarhud = {
 							x = (BASEVIDWIDTH*FU)/2,
 							y = 165*FU,
@@ -123,23 +140,10 @@ return "GameInfo", function(v, player)
 						-- center bar
 						hpbarhud.x = $ - FixedMul(barpatch.width*FU, hpbarhud.hscale)/2
 						
-						v.drawStretched(hpbarhud.x, hpbarhud.y, hpbarhud.hscale, FU, barpatch, V_SNAPTOBOTTOM|V_50TRANS|V_ADD)
+						v.drawStretched(hpbarhud.x, hpbarhud.y, hpbarhud.hscale, FU, barpatch, V_SNAPTOBOTTOM|V_50TRANS|V_ADD, v.getColormap(nil, healtbarcolor))
 						
-						local healthstring = health .. " HP"
 						customhud.CustomFontString(v, hphud.x, hphud.y, healthstring, "TNYFC", 
-						(V_SNAPTOBOTTOM), "center", FRACUNIT, SKINCOLOR_GREEN)
-						
-						-- [Shield Health] --
-						/*
-						if player.realmo.shield_health and player.realmo.shield_def then
-							local healthstring_width = customhud.CustomFontStringWidth(v, healthstring, "STCFC", FRACUNIT)
-							local shield_color = player.realmo.shield_def.color or SKINCOLOR_WHITE
-							
-							local shield_health = tostring(player.realmo.shield_health)
-							customhud.CustomFontString(v, 29*FU+(healthstring_width), (184*FU)-(lower_hud_offset*FU), "@ "..shield_health, "STCFC",
-							(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, shield_color)
-						end
-						*/
+						(V_SNAPTOBOTTOM), "center", FRACUNIT, healtbarcolor)
 					end
 				end
 			else
