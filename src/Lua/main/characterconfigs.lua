@@ -358,7 +358,7 @@ function ZE2:AddCharacterConfig(skinname, input_table)
 	
 	input_table.charability = CA_NONE
 	input_table.charability2 = CA2_NONE
-	input_table.jumpfactor = 4*FU/5
+	input_table.jumpfactor = FixedDiv(85*FU, 100*FU)
 	
 	ZE2.CharacterConfig[skinname] = input_table
 	ZE2.CharacterConfig[skinname].sprintboost = $ or ZE2.CharacterConfig["default"].sprintboost
