@@ -314,6 +314,7 @@ addHook("MobjThinker", function(mobj)
 	end
 end, MT_CRRUBY)
 
+--TODO: this code kinda sucks ngl
 addHook("MobjThinker",function(door)
 	if not (door and door.valid) then return end
 	
@@ -429,9 +430,9 @@ addHook("MobjThinker",function(door)
 				list[0+i].radius = 0
 				list[0+i].scale = door.scale
 				P_MoveOrigin(list[0+i],
-					door.x+P_ReturnThrustX(nil,angle,16*door.scale),
-					door.y+P_ReturnThrustY(nil,angle,16*door.scale),
-					GetActorZ(door,list[0+i],1)
+					door.x+P_ReturnThrustX(nil,angle,16*door.scale) + door.momx,
+					door.y+P_ReturnThrustY(nil,angle,16*door.scale) + door.momy,
+					GetActorZ(door,list[0+i],1) + door.momz
 				)
 			end
 			list[5].angle = door.angle
@@ -439,9 +440,9 @@ addHook("MobjThinker",function(door)
 			list[5].scale = door.scale
 			list[5].shadowscale = (door.scale/2)*14/10
 			P_MoveOrigin(list[5],
-				door.x,
-				door.y,
-				GetActorZ(door,list[5],2)
+				door.x + door.momx,
+				door.y + door.momy,
+				(P_MobjFlip(door) == 1 and door.z + door.height or door.z) + door.momz
 			)
 
 			P_SetOrigin(list[6],door.x,door.y,door.z)
@@ -449,9 +450,9 @@ addHook("MobjThinker",function(door)
 			list[6].height = 0
 			list[6].scale = door.scale
 			P_MoveOrigin(list[6],
-				door.x,
-				door.y,
-				GetActorZ(door,list[6],1)
+				door.x + door.momx,
+				door.y + door.momy,
+				(P_MobjFlip(door) == 1 and door.z or door.z + door.height) + door.momz
 			)
 			
 		end
