@@ -163,7 +163,13 @@ end)
 
 COM_AddCommand("z_giveshield", function(player, shieldtype)
 	if not (player.mo and player.mo.valid) then return end
-	if (shieldtype == nil or not tonumber(shieldtype)) then return end
+	if (shieldtype == nil or tonumber(shieldtype) == nil) then return end
+	
+	if tonumber(shieldtype) <= 0 then
+		CONS_Printf(player, "\x82\Cleared shield!")
+		ZE2:RemoveShieldFromMobj(player.mo)
+		return
+	end
 	
 	if not ZE2:GiveShieldToMobj(player.mo, tonumber(shieldtype)) then
 		CONS_Printf(player, "\x85\Invalid shieldtype!")

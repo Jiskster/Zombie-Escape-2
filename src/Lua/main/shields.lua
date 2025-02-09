@@ -75,10 +75,10 @@ end
 
 function ZE2:RemoveShieldFromMobj(mobj)
 	if mobj.shield_orb and mobj.shield_orb.valid then
-		P_RemoveMobj(mobj.shield_orb)
-		mobj.shield_orb = nil -- Just in case idk
+		P_RemoveMobj(mobj.shield_orb)	
 	end
 	
+	mobj.shield_orb = nil -- Just in case idk
 	mobj.shield_def = nil
 	mobj.sheild_health = 0
 end
@@ -132,5 +132,5 @@ end, MT_ZE2_SHIELD)
 
 addHook("MobjSpawn", function(mobj)
 	table.insert(ZE2.CachedShieldMobjs, mobj)
-	mobj.shield_cacheid = #ZE2.CachedShieldMobjs
+	mobj.shield_cacheid = #ZE2.CachedShieldMobjs + 1
 end, MT_ZE2_SHIELD)
