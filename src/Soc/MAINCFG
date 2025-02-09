@@ -141,7 +141,8 @@ LevelSelect = 1
 SaveGame = true
 SkyboxScale = 64
 NoVisitNeeded = true
-Lua.ze2_timelimit = 5
+Lua.ze2_timelimit = 6
+Lua.ze2_laddertag = 209
 
 ## SWARM MAP START
 
