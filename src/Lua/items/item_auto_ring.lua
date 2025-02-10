@@ -1,6 +1,7 @@
 local auto_ring = ZE2:CreateItem("Automatic Ring",  {
 	object = MT_THROWNAUTOMATIC,
 	icon = "AUTOIND",
+	sound = sfx_wpfir2,
 	firerate = 2,
 	color = SKINCOLOR_GREEN,
 	autouse = true,

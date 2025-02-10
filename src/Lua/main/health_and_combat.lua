@@ -596,6 +596,7 @@ function ZE2.SpawnMissile(m_table)
 	local allow_aim = m_table.allow_aim
 	local flags2 = m_table.flags2
 	local iteminfo = m_table.iteminfo
+	local firesound
 	local slope = 0
 	local x = source.x
 	local y = source.y
@@ -646,6 +647,8 @@ function ZE2.SpawnMissile(m_table)
 		if missile_velocity_multiplier then
 			speed = FixedMul($, missile_velocity_multiplier)
 		end
+		
+		firesound = ZE2:GetItemInfoIndex(temp_iteminfo, "sound", skin)
 	end
 	
 	if source.player then
@@ -662,8 +665,10 @@ function ZE2.SpawnMissile(m_table)
 		th.flags2 = $ | flags2
 	end
 
-	if (th.info.seesound and not (th.flags2 & MF2_RAILRING)) then
-		S_StartSound(source, th.info.seesound)
+	if not firesound then
+		if (th.info.seesound and not (th.flags2 & MF2_RAILRING)) then
+			S_StartSound(source, th.info.seesound)
+		end
 	end
 
 	th.target = source

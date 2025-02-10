@@ -1,6 +1,7 @@
 ZE2:CreateItem("Red Ring",  {
 	object = MT_REDRING,
 	icon = "RINGIND",
+	sound = sfx_wpfire,
 	firerate = 4,
 	color = SKINCOLOR_RED,
 	knockback = 10*FRACUNIT,
