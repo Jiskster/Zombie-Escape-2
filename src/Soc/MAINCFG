@@ -19,6 +19,20 @@ Unlockable 23
 
 ## SURVIVAL MAP START
 
+Level J0
+Levelname = Stonewood
+Subtitle = A very dark town.
+Act = 0
+Music = SWZEM
+TypeOfLevel = ZE2
+NextLevel = J0
+SkyNum = 11
+Weather = 1
+NoZone = True
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 5
+Lua.hidefromvote = true
+
 Level J1
 Levelname = Egypt
 Subtitle = No mummies in sight.
