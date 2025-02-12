@@ -123,6 +123,8 @@ ZE2["default_ze2_info"] = {
 	
 	nofrictiontics = 0; 
 	
+	isSprung = false,
+	
 	damage_indicator_table = {},
 	/*	damage_indicator_table
 		[mobj_t] = {
@@ -581,8 +583,13 @@ addHook("PlayerThink", function(player)
 			player["ze2_info"].isJumping = true
 		end
 		
+		if (player.mo.eflags & MFE_SPRUNG) then
+			player["ze2_info"].isSprung = true
+		end
+		
 		if P_IsObjectOnGround(player.mo) and player["ze2_info"].isJumping then
 			player["ze2_info"].isJumping = false
+			player["ze2_info"].isSprung = false
 		end
 		
 		if player.pflags & PF_BOUNCING and player.mo.eflags & MFE_JUSTHITFLOOR and player.mo.health then
