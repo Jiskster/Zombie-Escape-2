@@ -131,9 +131,9 @@ ZE2.SetCCtoplayer = function(player)
 		if P_IsObjectOnGround(pmo) or
 		(not P_IsObjectOnGround(pmo) and cmd.forwardmove < 0 and P_GetPlayerControlDirection(player) == 2) 
 		or player["ze2_info"].isSprung then
-			player.thrustfactor = 10
+			player.thrustfactor = 8
 		else
-			player.thrustfactor = 1
+			player.thrustfactor = 4
 			player["ze2_info"].nofrictiontics = 0
 		end
 		
@@ -248,7 +248,7 @@ ZE2.SetZCtoplayer = function(player)
 			or player["ze2_info"].isSprung then
 				player.thrustfactor = 8
 			else
-				player.thrustfactor = 1
+				player.thrustfactor = 4
 				player["ze2_info"].nofrictiontics = 0
 			end
 			
