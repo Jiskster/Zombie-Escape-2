@@ -163,6 +163,7 @@ local function UpdateDamageNumbers(p, numbers, properties, damage)
 	local scale = FixedDiv(R_PointToDist(properties.x,properties.y), properties.radius * 10)
 	scale = max($, properties.scale * 2)
 	scale = FixedMul($, GetFOV())
+	scale = $/2
 
 	local offset = FixedMul((str_len*width)*FU, scale) / 2
 	

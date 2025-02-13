@@ -121,6 +121,7 @@ local function SpawnDamageNumbers(player, victim_mobj, damage)
 		local scale = FixedDiv(R_PointToDist(victim_mobj.x,victim_mobj.y), victim_mobj.radius * 10)
 		scale = max($, victim_mobj.scale * 2)
 		scale = FixedMul($, GetFOV())
+		scale = $/2
 
 		--random = FixedMul($, scale)
 		--randomthr = FixedMul($, scale)
