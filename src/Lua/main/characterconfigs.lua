@@ -55,7 +55,6 @@ ZE2.ZombieConfig = {
 	},
 }
 
-
 ZE2.CharacterConfig = {
 	["default"] = {
 		normalspeed = 10 * FRACUNIT,
