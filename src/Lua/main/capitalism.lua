@@ -350,7 +350,7 @@ addHook("MobjThinker",function(door)
 		
 		dist = R_PointToDist2(cam.x,cam.y, door.x,door.y)
 		
-		local thok = P_SpawnMobj(cam.x, cam.y, cam.z, MT_NULL)
+		local thok = P_SpawnMobj(cam.x, cam.y, cam.z, MT_RAY)
 		thok.angle = cam.angle
 		thok.flags2 = $|MF2_DONTDRAW
 		if dist <= 5000*FU
