@@ -367,7 +367,6 @@ addHook("MobjThinker",function(door)
 	end
 	
 	if not cullout
-
 		if not door.made3d
 			local list
 			local flip = P_MobjFlip(door)
@@ -379,8 +378,9 @@ addHook("MobjThinker",function(door)
 			for i = 1,4
 				local angle = door.angle+(FixedAngle(90*FU*(i-1)))
 				list[0+i] = P_SpawnMobjFromMobj(door,
-					P_ReturnThrustX(nil,angle,16*door.scale),
-					P_ReturnThrustY(nil,angle,16*door.scale),
+					--dont scale up door.spritexscale, since the func already does
+					P_ReturnThrustX(nil,angle,16*door.spritexscale),
+					P_ReturnThrustY(nil,angle,16*door.spritexscale),
 					0,MT_THOK
 				)
 				list[0+i].frame = A
@@ -429,9 +429,11 @@ addHook("MobjThinker",function(door)
 				list[0+i].height = 32*FU
 				list[0+i].radius = 0
 				list[0+i].scale = door.scale
+				list[0+i].spritexscale = door.spritexscale
+				list[0+i].spriteyscale = door.spriteyscale
 				P_MoveOrigin(list[0+i],
-					door.x+P_ReturnThrustX(nil,angle,16*door.scale) + door.momx,
-					door.y+P_ReturnThrustY(nil,angle,16*door.scale) + door.momy,
+					door.x+P_ReturnThrustX(nil,angle,16*FixedMul(door.spritexscale, door.scale)) + door.momx,
+					door.y+P_ReturnThrustY(nil,angle,16*FixedMul(door.spritexscale, door.scale)) + door.momy,
 					GetActorZ(door,list[0+i],1) + door.momz
 				)
 			end
@@ -439,20 +441,24 @@ addHook("MobjThinker",function(door)
 			list[5].height = 0
 			list[5].scale = door.scale
 			list[5].shadowscale = (door.scale/2)*14/10
+			list[5].spritexscale = door.spritexscale
+			list[5].spriteyscale = door.spritexscale
 			P_MoveOrigin(list[5],
 				door.x + door.momx,
 				door.y + door.momy,
-				(P_MobjFlip(door) == 1 and door.z + door.height or door.z) + door.momz
+				(P_MobjFlip(door) == 1 and (door.z + FixedMul(door.height, door.spriteyscale)) or door.z) + door.momz
 			)
 
 			P_SetOrigin(list[6],door.x,door.y,door.z)
 			list[6].angle = door.angle
 			list[6].height = 0
 			list[6].scale = door.scale
+			list[5].spritexscale = door.spritexscale
+			list[5].spriteyscale = door.spritexscale
 			P_MoveOrigin(list[6],
 				door.x + door.momx,
 				door.y + door.momy,
-				(P_MobjFlip(door) == 1 and door.z or door.z + door.height) + door.momz
+				(P_MobjFlip(door) == 1 and door.z or door.z + FixedMul(door.height, door.spriteyscale)) + door.momz
 			)
 			
 		end
