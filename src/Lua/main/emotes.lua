@@ -142,18 +142,6 @@ addHook("PlayerThink", function(player)
 	if player.lastemotepress then
 		player.lastemotepress = $ - 1
 	end
-	
-	if player["ze2_info"].pregamemenu_active or player["ze2_info"].pro_controls then
-		return
-	end
-	
-	if (player.cmd.buttons & BT_WEAPONMASK) == 1 then
-		COM_BufInsertText(player, "z_emote "..player.emoteslots[1])
-	elseif (player.cmd.buttons & BT_WEAPONMASK) == 2 then
-		COM_BufInsertText(player, "z_emote "..player.emoteslots[2])
-	elseif (player.cmd.buttons & BT_WEAPONMASK) == 3 then
-		COM_BufInsertText(player, "z_emote "..player.emoteslots[3])
-	end
 end)
 
 addHook("MobjThinker", function(mobj)

@@ -177,26 +177,6 @@ COM_AddCommand("z_giveshield", function(player, shieldtype)
 	end
 end, COM_ADMIN)
 
-COM_AddCommand("z_procontrols", function(player, toggling)
-	if not (toggling) then
-		CONS_Printf(player, "z_procontrols <true/false>")
-		return
-	end
-	
-	if not (toggling == "true") and not (toggling == "false") then
-		CONS_Printf(player, "\x85\Invalid argument for z_procontrols")
-		return
-	end
-	
-	if (toggling == "true") then
-		player["ze2_info"].pro_controls = true
-		CONS_Printf(player, "Pro Controls has been enabled.")
-	elseif (toggling == "false") then
-		player["ze2_info"].pro_controls = false
-		CONS_Printf(player, "Pro Controls has been disabled.")
-	end
-end)
-
 COM_AddCommand("z_swapitem", function(player, slot1, slot2)
 	local help = "z_swapitem <slot1> <slot2>"
 	

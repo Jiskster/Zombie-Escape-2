@@ -138,8 +138,6 @@ ZE2["default_ze2_info"] = {
 		}
 	*/
 	
-	pro_controls = false,
-	
 	landfatigue = false,
 	landfatigue_timer = 0,
 	
@@ -901,16 +899,12 @@ addHook("PlayerThink", function(player)
 			}, true)
 			
 			-- Number Key Weapon Swap (Pro Controls)
-			if player["ze2_info"].pro_controls then
-				if cmd.buttons & BT_WEAPONMASK then
-					-- Dont do if on same slot as selected.
-					if not ((cmd.buttons & BT_WEAPONMASK) == (player["ze2_info"].inventory_selection)) then 
-						if cmd.buttons & BT_WEAPONMASK > ZE2:FetchInventoryLimit(player) then
-							player["ze2_info"].inventory_selection = ZE2:FetchInventoryLimit(player)
-						else
-							player["ze2_info"].inventory_selection = cmd.buttons & BT_WEAPONMASK
-						end
-
+			if cmd.buttons & BT_WEAPONMASK then
+				-- Dont do if on same slot as selected.
+				if not ((cmd.buttons & BT_WEAPONMASK) == (player["ze2_info"].inventory_selection)) then 
+					if cmd.buttons & BT_WEAPONMASK <= ZE2:FetchInventoryLimit(player) then
+						player["ze2_info"].inventory_selection = cmd.buttons & BT_WEAPONMASK
+						
 						S_StartSound(nil,sfx_mnu1a,player)
 						
 						player["ze2_info"].reload = 0
