@@ -70,6 +70,27 @@ mobjinfo[MT_REDBUZZ].npc_name_color = SKINCOLOR_RED
 mobjinfo[MT_REDBUZZ].rubydrop = {2,4}
 mobjinfo[MT_REDBUZZ].painsound = sfx_dmpain
 
+mobjinfo[MT_ROBOHOOD].npc_name = "Robo-Hood"
+mobjinfo[MT_ROBOHOOD].npc_spawnhealth = {10,15}
+mobjinfo[MT_ROBOHOOD].npc_name_color = SKINCOLOR_GREEN
+mobjinfo[MT_ROBOHOOD].rubydrop = {6,8}
+mobjinfo[MT_ROBOHOOD].painsound = sfx_dmpain
+mobjinfo[MT_ROBOHOOD].forcedamage = 10
+
+mobjinfo[MT_EGGGUARD].npc_name = "Egg Guard"
+mobjinfo[MT_EGGGUARD].npc_spawnhealth = {5,5}
+mobjinfo[MT_EGGGUARD].npc_name_color = SKINCOLOR_LAVENDER
+mobjinfo[MT_EGGGUARD].rubydrop = {5,7}
+mobjinfo[MT_EGGGUARD].painsound = sfx_dmpain
+mobjinfo[MT_EGGGUARD].forcedamage = 10
+
+mobjinfo[MT_FACESTABBER].npc_name = "Lance-a-bot"
+mobjinfo[MT_FACESTABBER].npc_spawnhealth = {80,150}
+mobjinfo[MT_FACESTABBER].npc_name_color = SKINCOLOR_RED
+mobjinfo[MT_FACESTABBER].rubydrop = {9,12}
+mobjinfo[MT_FACESTABBER].painsound = sfx_dmpain
+mobjinfo[MT_FACESTABBER].forcedamage = 15
+
 mobjinfo[MT_PENGUINATOR].npc_name = "Penguinator"
 mobjinfo[MT_PENGUINATOR].npc_spawnhealth = {10,20}
 mobjinfo[MT_PENGUINATOR].npc_name_color = SKINCOLOR_ICY

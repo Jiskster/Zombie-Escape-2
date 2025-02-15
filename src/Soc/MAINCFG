@@ -185,6 +185,15 @@ SkyboxScale = 64
 NoZone = true
 SelectHeading = ZE2 Survival Maps
 
+Level P1
+Levelname = Egg Fortress
+Subtitle = Deep in Eggman's Territory
+TypeOfLevel = ZE2
+SelectHeading = ZE2 Survival Maps
+Music = CEZ1
+Skynum = 10
+Weather = 1
+
 ## SWARM MAP START
 
 Level N6
