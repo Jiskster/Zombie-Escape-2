@@ -21,14 +21,43 @@ mobjinfo[MT_PROPWOOD].npc_name_color = SKINCOLOR_BROWN
 states[S_PROP1] = {
 	nextstate = S_PROP1,
 	sprite = SPR_WPRP,
-	frame = FF_FULLBRIGHT,
+	frame = FF_FULLBRIGHT|FF_PAPERSPRITE,
 	tics = 2
 }
 
 states[S_PROP1_BREAK] = {
 	nextstate = S_NULL,
 	sprite = SPR_WPRP,
-	action = A_Scream,
+	action = function(mo)
+		A_Scream(mo)
+
+		--Cool !
+		for i = 0,16
+			local fa = mo.angle
+			local sign = (i & 1) and 1 or -1
+			local real_rad = FixedDiv(mo.radius,mo.scale) >> FRACBITS
+			local plank = P_SpawnMobjFromMobj(mo,
+				P_ReturnThrustX(nil, fa, P_RandomRange(-real_rad, real_rad)*FU),
+				P_ReturnThrustY(nil, fa, P_RandomRange(-real_rad, real_rad)*FU),
+				P_RandomRange(0, FixedDiv(mo.height,mo.scale)>>FRACBITS)*FU,
+				MT_THOK
+			)
+			plank.tics = -1
+			plank.fuse = TICRATE
+
+			plank.state = S_WOODDEBRIS
+			plank.frame = $|FF_PAPERSPRITE
+
+			plank.flags = MF_NOCLIP|MF_NOCLIPHEIGHT
+
+			plank.angle = fa + P_RandomRange(-180,180)*ANG1
+			plank.rollangle = FixedAngle(P_RandomRange(0,359)*FU+P_RandomFixed())
+
+			P_Thrust(plank, fa, (P_RandomRange(1,10)*plank.scale +  P_RandomFixed()) * sign)
+			P_SetObjectMomZ(plank,P_RandomRange(2,10)*FU+P_RandomFixed())
+		end
+
+	end,
 	frame = B,
 	tics = 4
 }

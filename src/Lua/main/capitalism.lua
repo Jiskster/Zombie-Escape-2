@@ -141,10 +141,6 @@ states[S_RUBY_BOX_BREAK] = {
     frame = A,
 	action = function(mo)
 		mo.flags2 = $|MF2_DONTDRAW
-		--SpawnEnemyGibs(mo,mo,nil,true)
-		--SpawnEnemyGibs(mo,mo,nil,true)
-		--SpawnBam(mo,true)
-		
 		ZE2:DeleteCrate3D(mo)
 		
 		local sfx = P_SpawnGhostMobj(mo)
@@ -153,6 +149,28 @@ states[S_RUBY_BOX_BREAK] = {
 		S_StartSound(sfx,mo.info.deathsound)
 		
 		A_RubyDrop(mo, 5)
+
+		--Cool !
+		for i = 0,8
+			local fa = FixedAngle(45*FU*i)
+			local plank = P_SpawnMobjFromMobj(mo,
+				P_ReturnThrustX(nil, fa, FixedDiv(mo.radius,mo.scale)),
+				P_ReturnThrustY(nil, fa, FixedDiv(mo.radius,mo.scale)),
+				P_RandomRange(0, FixedDiv(mo.height,mo.scale)>>FRACBITS)*FU,
+				MT_THOK
+			)
+			plank.tics = -1
+			plank.fuse = TICRATE
+			plank.state = S_WOODDEBRIS
+			plank.frame = $|FF_PAPERSPRITE
+			plank.colorized = true
+			plank.color = SKINCOLOR_RED
+			plank.flags = MF_NOCLIP|MF_NOCLIPHEIGHT
+			plank.angle = fa + P_RandomRange(-180,180)*ANG1
+			plank.rollangle = FixedAngle(P_RandomRange(0,359)*FU+P_RandomFixed())
+			P_Thrust(plank, fa, P_RandomRange(1,5)*plank.scale+P_RandomFixed())
+			P_SetObjectMomZ(plank,P_RandomRange(2,10)*FU+P_RandomFixed())
+		end
 	end,
 	tics = 1,
 }

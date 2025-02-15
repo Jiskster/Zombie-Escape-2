@@ -259,7 +259,8 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		P_ExplodeMissile(inf)
 	end
 	
-	if inf and inf.player and mo and mo.player then
+	--check again incase above block removed inf
+	if (inf and inf.valid) and inf.player and mo and mo.player then
 		if mo.player["ze2_info"].team == inf.player["ze2_info"].team then
 			return false
 		end
@@ -299,7 +300,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		end
 	end
 	
-	if inf then
+	if inf and inf.valid then
 		if inf.iteminfo then
 			local srcskin
 			
@@ -354,7 +355,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		end
 	end
 	
-	if (inf and inf.player) then 
+	if (inf and inf.valid and inf.player) then 
 		P_AddPlayerScore(inf.player, dmg)
 	elseif (src and src.player) then 
 		P_AddPlayerScore(src.player, dmg) 
