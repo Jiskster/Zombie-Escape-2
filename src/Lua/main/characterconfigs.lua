@@ -35,24 +35,6 @@ ZE2.ZombieConfig = {
 			ZE2:CopyItemFromID(ITEM_INSTA_BURST),
 		},
 	},
-	["sigma"] = {
-		skincolor = SKINCOLOR_SUPERSILVER4,
-		normalspeed = 30 * FRACUNIT,
-		health = 20000,
-		charability = CA_THOK,
-		charability2 = CA2_NONE,
-		jumpfactor = ZE2.StandardJumpFactor,
-		actionspd = 40*FRACUNIT,
-		scale = 13*FRACUNIT/10,
-		killaward = 50,
-		knockback_multiplier = FRACUNIT/4,
-		--accelstart = 100,
-		--acceleration = 15,
-		inventory_limit = 1,
-		inventory = {
-			ZE2:CopyItemFromID(ITEM_INSTA_BURST),
-		},
-	},
 }
 
 ZE2.CharacterConfig = {
