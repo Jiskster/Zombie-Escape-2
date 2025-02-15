@@ -185,6 +185,17 @@ SkyboxScale = 64
 NoZone = true
 SelectHeading = ZE2 Survival Maps
 
+Level P0
+Levelname = Azure Sanctuary
+Subtitle = Far underground, mostly flooded.
+Nozone = true
+Music = KIRWAT
+TypeOfLevel = ZE2
+SkyNum = 101
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 6
+Lua.hidefromvote = true
+
 Level P1
 Levelname = Egg Fortress
 Subtitle = Deep in Eggman's Territory

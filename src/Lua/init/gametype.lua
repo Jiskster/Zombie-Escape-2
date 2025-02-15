@@ -205,3 +205,7 @@ sfxinfo[sfx_inf2].caption="\"We've been enslaved\""
 sfxinfo[sfx_pipe].caption="Pipe"
 
 sfxinfo[sfx_oldrad].caption="Typewriter"
+
+-- Multiple maps use this.
+freeslot("sfx_type")
+sfxinfo[sfx_type].caption = "Button Press"

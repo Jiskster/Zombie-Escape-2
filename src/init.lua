@@ -88,6 +88,7 @@ dofile "levelscripts/spookyflower.lua"
 dofile "levelscripts/corruptedvoid.lua"
 dofile "levelscripts/westopolis.lua"
 dofile "levelscripts/eggfortress.lua"
+dofile "levelscripts/azuresanctuary.lua"
 
 dofile "main/netvars.lua"
 

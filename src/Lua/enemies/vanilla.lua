@@ -77,6 +77,27 @@ mobjinfo[MT_ROBOHOOD].rubydrop = {6,8}
 mobjinfo[MT_ROBOHOOD].painsound = sfx_dmpain
 mobjinfo[MT_ROBOHOOD].forcedamage = 10
 
+mobjinfo[MT_CRUSHSTACEAN].npc_name = "Crushstacean"
+mobjinfo[MT_CRUSHSTACEAN].npc_spawnhealth = {10,15}
+mobjinfo[MT_CRUSHSTACEAN].npc_name_color = SKINCOLOR_RED
+mobjinfo[MT_CRUSHSTACEAN].rubydrop = {6,8}
+mobjinfo[MT_CRUSHSTACEAN].painsound = sfx_dmpain
+mobjinfo[MT_CRUSHSTACEAN].forcedamage = 10
+
+mobjinfo[MT_SKIM].npc_name = "Skim"
+mobjinfo[MT_SKIM].npc_spawnhealth = {5,5}
+mobjinfo[MT_SKIM].npc_name_color = SKINCOLOR_GREY
+mobjinfo[MT_SKIM].rubydrop = {5,7}
+mobjinfo[MT_SKIM].painsound = sfx_dmpain
+mobjinfo[MT_SKIM].forcedamage = 10
+
+mobjinfo[MT_JETJAW].npc_name = "Jet Jaw"
+mobjinfo[MT_JETJAW].npc_spawnhealth = {4,5}
+mobjinfo[MT_JETJAW].npc_name_color = SKINCOLOR_YELLOW
+mobjinfo[MT_JETJAW].rubydrop = {4,6}
+mobjinfo[MT_JETJAW].painsound = sfx_dmpain
+mobjinfo[MT_JETJAW].forcedamage = 4
+
 mobjinfo[MT_EGGGUARD].npc_name = "Egg Guard"
 mobjinfo[MT_EGGGUARD].npc_spawnhealth = {5,5}
 mobjinfo[MT_EGGGUARD].npc_name_color = SKINCOLOR_LAVENDER

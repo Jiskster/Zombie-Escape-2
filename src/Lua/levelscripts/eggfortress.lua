@@ -1,6 +1,3 @@
-freeslot("sfx_type")
-sfxinfo[sfx_type].caption = "Button Press"
-
 local FORT_Timer1 = ZE2:AddTimer("Defend the Gate",{
 	time = 20*TICRATE,
 	on_end = function(timernum,timername)
