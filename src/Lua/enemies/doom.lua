@@ -16,11 +16,6 @@ mobjinfo[MT_ZOMBIEMAN_MISSILE] = {
         flags = MF_NOBLOCKMAP|MF_MISSILE|MF_NOGRAVITY
 }
 
-mobjinfo[MT_ZOMBIEMAN_MISSILE].forcedamage = 12
-mobjinfo[MT_ZOMBIEMAN_MISSILE].forceknockback = 3*FU
-mobjinfo[MT_ZOMBIEMAN_MISSILE].forceverticalknockback = 3*FU
-mobjinfo[MT_ZOMBIEMAN_MISSILE].relativeknockback = true
-
 ---------------------------------------Zombie Man
 
 freeslot("MT_ZOMBIEMAN", "S_ZOMBIEMAN_STND", "S_ZOMBIEMAN_WALKSOUND1",
@@ -39,9 +34,6 @@ mobjinfo[MT_ZOMBIEMAN].npc_name_color = SKINCOLOR_GREEN
 mobjinfo[MT_ZOMBIEMAN].rubydrop = {3,5}
 mobjinfo[MT_ZOMBIEMAN].painsound = sfx_zpa2
 mobjinfo[MT_ZOMBIEMAN].forcedamage = 10
-mobjinfo[MT_ZOMBIEMAN].forceknockback = 9*FU
-mobjinfo[MT_ZOMBIEMAN].forceverticalknockback = 5*FU
-mobjinfo[MT_ZOMBIEMAN].relativeknockback = true
 
 states[S_ZOMBIEMAN_WALKSOUND1] = {SPR_DEN1, A, 2, A_PlaySound, sfx_zmwlk1, 1, S_ZOMBIEMAN_WALKSOUND1}
 states[S_ZOMBIEMAN_WALKSOUND2] = {SPR_DEN1, A, 2, A_PlaySound, sfx_zmwlk2, 1, S_ZOMBIEMAN_WALKSOUND1}
@@ -104,9 +96,6 @@ mobjinfo[MT_DEMONPINK].npc_name_color = SKINCOLOR_PINK
 mobjinfo[MT_DEMONPINK].rubydrop = {5,8}
 mobjinfo[MT_DEMONPINK].painsound = sfx_dphurt
 mobjinfo[MT_DEMONPINK].forcedamage = 10
-mobjinfo[MT_DEMONPINK].forceknockback = 20*FU
-mobjinfo[MT_DEMONPINK].forceverticalknockback = 10*FU
-mobjinfo[MT_DEMONPINK].relativeknockback = true
 
 states[S_DEMONPINK_WALKSOUND1] = {SPR_DEN1, A, 2, A_PlaySound, sfx_dpwlk1, 1, S_DEMONPINK_WALKSOUND1}
 states[S_DEMONPINK_WALKSOUND2] = {SPR_DEN1, A, 2, A_PlaySound, sfx_dpwlk2, 1, S_DEMONPINK_WALKSOUND1}
@@ -173,9 +162,6 @@ mobjinfo[MT_SPECTRE].npc_name_color = SKINCOLOR_JET
 mobjinfo[MT_SPECTRE].rubydrop = {5,8}
 mobjinfo[MT_SPECTRE].painsound = sfx_dphurt
 mobjinfo[MT_SPECTRE].forcedamage = 10
-mobjinfo[MT_SPECTRE].forceknockback = 20*FU
-mobjinfo[MT_SPECTRE].forceverticalknockback = 10*FU
-mobjinfo[MT_SPECTRE].relativeknockback = true
 
 states[S_SPECTRE_WALKSOUND1] = {SPR_SPCT, A, 2, A_PlaySound, sfx_dpwlk1, 1, S_SPECTRE_WALKSOUND1}
 states[S_SPECTRE_WALKSOUND2] = {SPR_SPCT, A, 2, A_PlaySound, sfx_dpwlk2, 1, S_SPECTRE_WALKSOUND1}

@@ -100,11 +100,12 @@ Act = 0
 Music = DM01
 Subtitle = Those Doom monsters did this...?
 TypeOfLevel = ze2
-SkyNum = 8
+SkyNum = 11
+Weather = PRECIP_STORM_NORAIN
 SelectHeading = ZE2 Survival Maps
 NoZone = True
 NextLevel = J1
-Lua.ze2_timelimit = 5
+Lua.ze2_timelimit = 6
 
 Level NX
 Levelname = NOXY
