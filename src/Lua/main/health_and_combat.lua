@@ -557,6 +557,8 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		ZE2.KillMobj(mo, inf, src, damagetype, not deathdamagetype)
 	end
 	
+	ZE2.LimitMobjHealth(mo)
+	
 	return false
 end)
 

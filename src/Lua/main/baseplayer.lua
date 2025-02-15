@@ -400,6 +400,8 @@ ZE2.giveplayerflags = function(player)
 				player["ze2_info"].landfatigue = false
 				player["ze2_info"].landfatigue_timer = $ + 20
 			end
+			
+			ZE2.LimitMobjHealth(pmo)
 		end
 		
 		if mapheaderinfo[gamemap].ze2_noabilities then

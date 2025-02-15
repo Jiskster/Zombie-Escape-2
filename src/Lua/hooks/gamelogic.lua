@@ -8,8 +8,6 @@ end)
 
 addHook("PlayerThink", ZE2.giveplayerflags)
 
-addHook("MobjThinker", ZE2.LimitMobjHealth)
-
 addHook("MapLoad", function(map)
 	if gametype == GT_ZE2 then
 		ZE2.init_gamevars(map)
