@@ -1,3 +1,5 @@
+ZE2.StandardJumpFactor = FixedDiv(85*FU, 100*FU)
+
 ZE2.ZombieConfig = {
 	["normal"] = {
 		skincolor = SKINCOLOR_MOSS,
@@ -5,7 +7,7 @@ ZE2.ZombieConfig = {
 		health = 5000,
 		charability = CA_NONE,
 		charability2 = CA2_NONE,
-		jumpfactor = 3*FU/4,
+		jumpfactor = ZE2.StandardJumpFactor,
 		actionspd = 9*FRACUNIT,
 		killaward = 10,
 		--accelstart = 100,
@@ -21,7 +23,7 @@ ZE2.ZombieConfig = {
 		health = 10000,
 		charability = CA_NONE,
 		charability2 = CA2_NONE,
-		jumpfactor = 3*FU/4,
+		jumpfactor = ZE2.StandardJumpFactor,
 		actionspd = 16*FRACUNIT,
 		scale = 13*FRACUNIT/10,
 		killaward = 20,
@@ -39,7 +41,7 @@ ZE2.ZombieConfig = {
 		health = 20000,
 		charability = CA_THOK,
 		charability2 = CA2_NONE,
-		jumpfactor = 3*FU/4,
+		jumpfactor = ZE2.StandardJumpFactor,
 		actionspd = 40*FRACUNIT,
 		scale = 13*FRACUNIT/10,
 		killaward = 50,
@@ -53,14 +55,13 @@ ZE2.ZombieConfig = {
 	},
 }
 
-
 ZE2.CharacterConfig = {
 	["default"] = {
 		normalspeed = 10 * FRACUNIT,
 		health = 40,
 		charability = CA_NONE,
 		charability2 = CA2_NONE,
-		jumpfactor = 17 * FRACUNIT / 19,
+		FixedDiv(85*FU, 100*FU),
 		sprintboost = 10 * FRACUNIT,
 	},
 }
@@ -360,7 +361,7 @@ function ZE2:AddCharacterConfig(skinname, input_table)
 	
 	input_table.charability = CA_NONE
 	input_table.charability2 = CA2_NONE
-	input_table.jumpfactor = FixedDiv(85*FU, 100*FU)
+	input_table.jumpfactor = ZE2.StandardJumpFactor
 	
 	ZE2.CharacterConfig[skinname] = input_table
 	ZE2.CharacterConfig[skinname].sprintboost = $ or ZE2.CharacterConfig["default"].sprintboost

@@ -588,8 +588,11 @@ addHook("PlayerThink", function(player)
 			player["ze2_info"].isSprung = true
 		end
 		
-		if P_IsObjectOnGround(player.mo) and player["ze2_info"].isJumping then
-			player["ze2_info"].isJumping = false
+		if P_IsObjectOnGround(player.mo) then
+			if player["ze2_info"].isJumping then
+				player["ze2_info"].isJumping = false
+			end
+			
 			player["ze2_info"].isSprung = false
 		end
 		
