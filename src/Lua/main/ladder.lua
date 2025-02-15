@@ -10,4 +10,4 @@ addHook("MobjMoveBlocked", function(mobj, thing, line)
 			end
 		end
     end
-end)
+end, MT_PLAYER)
