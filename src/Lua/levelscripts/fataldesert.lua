@@ -1,5 +1,5 @@
 local Desert_Timer1 = ZE2:AddTimer("Defend First Barrier",{
-	time = 20*TICRATE,
+	time = 18*TICRATE,
 	on_end = function(timernum,timername)
 		P_LinedefExecute(2)
 		S_StartSound(nil, 90, nil)
@@ -8,7 +8,7 @@ local Desert_Timer1 = ZE2:AddTimer("Defend First Barrier",{
 })
 
 local Desert_Timer2 = ZE2:AddTimer("Defend Second Barrier",{
-	time = 30*TICRATE,
+	time = 25*TICRATE,
 	on_end = function(timernum,timername)
 		P_LinedefExecute(8)
 		S_StartSound(nil,90,nil)
