@@ -533,17 +533,6 @@ addHook("JumpSpecial", function(player)
 	end
 end)
 
--- we hate griefers
-addHook("LinedefExecute", function(line, mobj, sector)
-	if mobj and mobj.valid and mobj.player and mobj.player.valid then
-		local player = mobj.player
-		
-		player.pflags = $ & ~PF_GLIDING
-		player.pflags = $ & ~PF_BOUNCING
-		player.powers[pw_tailsfly] = 0
-	end
-end, "NOABILITY")
-
 -- Limit character abilities. And side movement momentum for zombies
 addHook("PlayerThink", function(player) 
 	if gametype ~= GT_ZE2 then return end
