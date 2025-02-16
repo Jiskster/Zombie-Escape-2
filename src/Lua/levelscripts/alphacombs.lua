@@ -1,4 +1,4 @@
-local Alphacombs_Timer1 = ZE2:AddTimer("Defend First Barrier",{
+ZE2:AddTimer("Defend First Barrier",{
 	time = 25*TICRATE,
 	on_end = function(timernum,timername)
 		P_LinedefExecute(3)

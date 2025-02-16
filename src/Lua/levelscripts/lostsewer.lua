@@ -1,9 +1,11 @@
-local LS_Timer1 = ZE2:AddTimer("Defend Wall",{
+ZE2:AddTimer("LOSTSEWER_1",
+{
+	text = "Defend Wall"
 	time = 30*TICRATE,
 	on_end = function(timernum,timername)
 		P_LinedefExecute(30)
 	end,
-	extrainfo = {color = SKINCOLOR_SILVER},
+	textcolor = SKINCOLOR_SILVER,
 })
 
 local LS_Timer2 = ZE2:AddTimer("Defend Door",{
@@ -11,7 +13,7 @@ local LS_Timer2 = ZE2:AddTimer("Defend Door",{
 	on_end = function(timernum,timername)
 		P_LinedefExecute(69)
 	end,
-	extrainfo = {color = SKINCOLOR_SILVER},
+	textcolor = SKINCOLOR_SILVER,
 })
 
 local LS_Timer3 = ZE2:AddTimer("Defend Moving Platform",{
@@ -19,7 +21,7 @@ local LS_Timer3 = ZE2:AddTimer("Defend Moving Platform",{
 	on_end = function(timernum,timername)
 		P_LinedefExecute(70)
 	end,
-	extrainfo = {color = SKINCOLOR_SILVER},
+	textcolor = SKINCOLOR_SILVER,
 })
 
 addHook("LinedefExecute", function()

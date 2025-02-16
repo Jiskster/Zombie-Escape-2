@@ -219,7 +219,7 @@ return "GameInfo", function(v, player)
 			local event_time_string = ("* "..G_TicsToMTIME(timer.time).." *") or "Failed To Get Event Time"
 			local event_color
 			if timer.extrainfo then
-				event_color = timer.extrainfo.color or SKINCOLOR_TEAL
+				event_color = timer.textcolor or SKINCOLOR_TEAL
 			else
 				event_color = SKINCOLOR_TEAL
 			end

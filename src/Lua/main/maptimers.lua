@@ -12,30 +12,42 @@ function ZE2.AddMapTimer()
 	print("ZE2.AddMapTimer is deprecated, try ZE2:AddTimer instead")
 end
 
-function ZE2:AddTimer(_name,_table) 
+function ZE2:AddTimer(_id, _name, _table)
+	if _id == nil then
+		error("Timer: Arg1 is required (Arg1 _id)")
+	elseif type(_id) ~= "string" then
+		error("Timer: Arg1 must be string (Arg1 _id)")
+	end
+	
 	if _name == nil then
-		error("Timer: Arg1 is required (Arg1 _name)")
+		error("Timer: Arg2 is required (Arg2 _name)")
 	elseif type(_name) ~= "string" then
-		error("Timer: Arg1 must be string (Arg1 _name)")
+		error("Timer: Arg2 must be string (Arg2 _name)")
 	end
 	
 	if _table == nil then
-		error("Timer: Table is required (Arg2 _table)")
+		error("Timer: Table is required (Arg3 _table)")
 	elseif type(_table) ~= "table" then
-		error("Timer: Arg2 must be table (Arg2 _table)")
+		error("Timer: Arg3 must be table (Arg3 _table)")
+	end
+	
+	if ZE2.MapTimers[_id] then
+		local errortext = string.format('Timer: TimerID "%s" has already been defined.')
+		
+		error(errortext)
 	end
 	
 	local _table_recieve = _table
-	local _next_index = #ZE2.MapTimers + 1
 	
-	_table_recieve.name = $ or _name -- why would you wanna change after tho? lol
+	_table.recieve.id = _id
+	_table_recieve.name = _name
 	_table_recieve.active = $ or false
 	_table_recieve.time = $ or 15*TICRATE
 	_table_recieve.original_time = _table_recieve.time
 	
-	ZE2.MapTimers[_next_index] = _table_recieve
+	ZE2.MapTimers[_id] = _table_recieve
 	
-	return ZE2.MapTimers[#ZE2.MapTimers]
+	return ZE2.MapTimers[_id]
 end
 
 function ZE2:ResetTimer(_timer)
@@ -43,9 +55,14 @@ function ZE2:ResetTimer(_timer)
 	_timer.time = _timer.original_time
 end
 
+function ZE2:StartTimer(timer_id)
+	ZE2:ResetTimer(ZE2.MapTimers[timer_id])
+	ZE2.MapTimers[timer_id].active = true
+end
+
 function ZE2:GetActiveTimers()
 	local activetimers = {}
-	for i,timer in ipairs(ZE2.MapTimers) do
+	for i,timer in pairs(ZE2.MapTimers) do
 		if timer.active then
 			table.insert(activetimers, timer)
 		end
@@ -54,7 +71,7 @@ function ZE2:GetActiveTimers()
 end
 
 addHook("MapLoad", function()
-	for i,timer in ipairs(ZE2.MapTimers) do
+	for i,timer in pairs(ZE2.MapTimers) do
 		ZE2:ResetTimer(timer)
 	end
 end)
@@ -62,7 +79,7 @@ end)
 addHook("ThinkFrame",do
 	if ZE2.game_ended then return end
 	
-	for i,timer in ipairs(ZE2.MapTimers) do
+	for i,timer in pairs(ZE2.MapTimers) do
 		if (timer.active) then
 			if (ZE2.maptimerdebug.value) then
 				print(timer.name..": "..(timer.time/35)) end
@@ -92,6 +109,7 @@ addHook("ThinkFrame",do
 				*/
 				
 			end
+			
 			if timer.time <= 0 then 
 				if (timer.on_end) then
 					timer.on_end(i, timer.name)
