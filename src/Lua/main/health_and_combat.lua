@@ -74,18 +74,13 @@ function ZE2.KillMobj(mo, inf, src, damagetype, killedbysomething)
 			
 				ZE2:QueuePlayerRubies(killer.player, cash_award)
 				print("\x84"..player.name.." \x83\has been infected by \x85"..killer.player.name)
-				killer.player["ze2_info"].blood_currency = $ + 30
-				
+
 				CONS_Printf(killer.player, "\x83+ $"..cash_award.." cash gained from infecting a survivor!")
 			end
 		elseif team == 2 then
 			if ztype and ZE2.ZombieConfig[ztype] and ZE2.ZombieConfig[ztype].killaward then
 				local killaward = ZE2.ZombieConfig[ztype].killaward
 				A_RubyDrop(mo, killaward)
-			end
-			
-			if killer then
-				player["ze2_info"].blood_currency = $ + 100
 			end
 		end
 		
@@ -414,8 +409,6 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			
 			if inflictor_player then
 				ZE2:DecrementSprint(mo.player, 90*FRACUNIT)
-				
-				inflictor_player["ze2_info"].blood_currency = $ + 15
 			end
 		elseif mo.player["ze2_info"].team == 2 then
 			local ztype = mo.player["ze2_info"].zombie_type
@@ -459,10 +452,6 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			end
 			
 			S_StartSound(mo, chosen_hurtsound)
-			
-			if inflictor_player then
-				mo.player["ze2_info"].blood_currency = $ + 2
-			end
 		end
 	elseif mobjinfo[mo.type].npc_name then
 		if (not mo.target) and (inf or src.player) then --enemies wake up if you hit them from behind

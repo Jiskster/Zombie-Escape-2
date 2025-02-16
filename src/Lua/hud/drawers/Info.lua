@@ -153,12 +153,7 @@ return "GameInfo", function(v, player)
 			-- Hardcoded display at the moment
 			if player["ze2_info"].team == 2 then
 				local y = 168-lower_hud_offset
-				local text = "Blood: "..player["ze2_info"].blood_currency
-				
-				customhud.CustomFontString(v, 0, y, text, "TNYFC",
-				(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, SKINCOLOR_CRIMSON)
-				
-				--
+
 				if player["ze2_info"].zombie_type == "alpha" then
 					local special_cooldown = player["ze2_info"].special_cooldown
 					local y = 160-lower_hud_offset

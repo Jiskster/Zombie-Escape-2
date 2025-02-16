@@ -184,8 +184,7 @@ ZE2.SetZCtoplayer = function(player)
 			else
 				player.normalspeed = cc["default"].normalspeed
 			end
-			
-			player.normalspeed = $ + player["ze2_info"].zombie_speedbonus
+
 			player.normalspeed = max($ - (player["ze2_info"].landfatigue_timer)*FU, 0) 
 			
 			if player["ze2_info"].crouching and P_IsObjectOnGround(pmo) then
@@ -259,20 +258,15 @@ ZE2.SetZChealth = function(player)
 			local healthpersurvivor = zc[ztype].healthpersurvivor or 0
 			
 			if (zc[ztype].health) then
-				pmo.health = zc[ztype].health + player["ze2_info"].zombie_healthbonus + (ZE2.SurvivorCount()*healthpersurvivor)
-				
-				pmo.health = max($ - player["ze2_info"].zombie_healthdeduction, 1)
+				pmo.health = zc[ztype].health + (ZE2.SurvivorCount()*healthpersurvivor)
 				pmo.maxhealth = pmo.health
 			else
-				pmo.health = cc["default"].health + player["ze2_info"].zombie_healthbonus + (ZE2.SurvivorCount()*healthpersurvivor) -- cc still isnt a typo
-				
-				pmo.health = max($ - player["ze2_info"].zombie_healthdeduction, 1)
+				pmo.health = cc["default"].health + (ZE2.SurvivorCount()*healthpersurvivor) -- cc still isnt a typo
 				pmo.maxhealth = pmo.health
 			end
 		else
-			pmo.health = cc["default"].health + player["ze2_info"].zombie_healthbonus
-			
-			pmo.health = max($ - player["ze2_info"].zombie_healthdeduction, 1)
+			pmo.health = cc["default"].health
+
 			pmo.maxhealth = pmo.health
 		end
 	end

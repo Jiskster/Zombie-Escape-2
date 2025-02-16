@@ -101,9 +101,7 @@ ZE2["default_ze2_info"] = {
 	was_zombie = false,
 
 	zombie_type = "normal",
-
-	blood_currency = 0,
-
+	
 	damage_fade = 0, -- tic_t
 	damage_fade_max = 0,
 	
@@ -112,10 +110,7 @@ ZE2["default_ze2_info"] = {
 	
 	lower_hud_offset = 0,
 	special_cooldown = 0,
-	
-	zombie_healthbonus = 0, -- extra health you get from buying health bonuses 
-	zombie_healthdeduction = 0,
-	zombie_speedbonus = 0, -- normalspeed bonus
+
 	zombie_shop_open = false,
 	zombie_shop_selection = 1,
 	zombie_shop_c1_pressed = false,
