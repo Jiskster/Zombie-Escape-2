@@ -2,13 +2,13 @@ ZE2:CreateItem("Red Ring",  {
 	object = MT_REDRING,
 	icon = "RINGIND",
 	sound = sfx_wpfire,
-	firerate = 4,
+	firerate = 5,
 	color = SKINCOLOR_RED,
 	knockback = 7*FRACUNIT,
 	damage = 45,
 	velocity_multiplier = 3*FRACUNIT,
-	max_ammo = 35,
-	ammo = 35,
+	max_ammo = 30,
+	ammo = 30,
 	reload_time = 3*TICRATE/2,
 	skin_overwrite = {
 		["fang"] = {
