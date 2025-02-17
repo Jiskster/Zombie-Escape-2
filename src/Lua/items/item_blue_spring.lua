@@ -12,7 +12,7 @@ local blue_spring = ZE2:CreateItem("Blue Spring",  {
 		spring.angle = player.mo.angle+ANGLE_90
 		S_StartSound(player.mo, sfx_jshard)
 		spring.target = player.mo
-		sprint.fuse = 15*TICRATE
+		sprint.fuse = 5*TICRATE
 	end,
 	price = 350,
 })
