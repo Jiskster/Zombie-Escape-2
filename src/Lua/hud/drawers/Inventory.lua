@@ -4,8 +4,8 @@ local slot_gap = 20*FU
 
 local function PositionSlot(index, slot, slot_count, slot_gap)
 	-- Center Slot Position
-	slot.x = $ - (slot.patch.width*FU)/2
-	slot.y = $ - (slot.patch.height*FU)/2
+	slot.x = $ - FixedMul(slot.patch.width*FU, slot.scale)/2
+	slot.y = $ - FixedMul(slot.patch.height*FU, slot.scale)/2
 	
 	-- Add from the right
 	slot.x = $ + (slot_gap) * (index-1)
@@ -49,27 +49,26 @@ return "Inventory", function(v, player)
 		
 		local iteminfo = ZE2:FetchInventorySlot(player, i)
 		local item_icon = ZE2:GetItemInfoIndex(iteminfo, "icon", player.mo.skin)
+		local item_ammo = ZE2:GetItemInfoIndex(iteminfo, "ammo", player.mo.skin)
+		local item_count = ZE2:GetItemInfoIndex(iteminfo, "count", player.mo.skin)
+		local item_iconscale = ZE2:GetItemInfoIndex(iteminfo, "iconscale", player.mo.skin)
+		
+		if item_iconscale then
+			slot.scale = item_iconscale
+		end
 		
 		if item_icon then
 			slot.patch = v.cachePatch(item_icon)
 		end
 		
 		if selection == i then
-			PositionSlot(i,
-				selected_slot, 
-				slot_count, 
-				slot_gap
-			)
+			PositionSlot(i, selected_slot, slot_count, slot_gap)
 			
 			selected_slot.positioned_selection = true
 		end
 		
-		PositionSlot(i, 
-			slot, 
-			slot_count, 
-			slot_gap
-		)
-		
+		PositionSlot(i, slot, slot_count, slot_gap)
+
 		v.drawScaled(
 			slot.x,
 			slot.y,
@@ -77,6 +76,41 @@ return "Inventory", function(v, player)
 			slot.patch,
 			slot.flags
 		)
+		
+		do -- [Draw Ammo/Item Count] -- 
+			local xoffset = 16*FU
+			local yoffset = 8*FU
+			local extraflags = 0
+			local reloading = player["ze2_info"].reload > 0
+			local text
+
+			if item_ammo ~= nil then
+				text = item_ammo
+				extraflags = V_SKYMAP
+				
+				if item_ammo <= 0 then
+					-- Flicker color.
+					if ((leveltime/2) % 2) == 0 then
+						extraflags = V_REDMAP
+					end
+				end
+				
+				if reloading then
+					extraflags = V_50TRANS
+					
+					-- Flicker color but not transparency.
+					if ((leveltime/2) % 2) == 0 then
+						extraflags = V_50TRANS|V_REDMAP
+					end
+				end
+			elseif item_count ~= nil then
+				text = item_count
+			end
+			
+			if text ~= nil then
+				v.drawString(slot.x + xoffset, slot.y + yoffset, text, slot.flags|extraflags, "thin-fixed-right")
+			end
+		end
 	end
 	
 	if selected_slot.positioned_selection then
