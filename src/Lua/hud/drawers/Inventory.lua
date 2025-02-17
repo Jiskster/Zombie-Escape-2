@@ -1,7 +1,7 @@
 local invpos_y = 185*FU
 local empty_patch_name = "BLANKIND"
 local slot_gap = 20*FU
-
+	
 local function PositionSlot(index, slot, slot_count, slot_gap)
 	-- Center Slot Position
 	slot.x = $ - FixedMul(slot.patch.width*FU, slot.scale)/2
@@ -47,11 +47,17 @@ return "Inventory", function(v, player)
 			flags = V_SNAPTOBOTTOM,
 		}
 		
+		local reload_square = ZE2:Copy(slot)
+		local firerate_square = ZE2:Copy(slot)
+		
 		local iteminfo = ZE2:FetchInventorySlot(player, i)
 		local item_icon = ZE2:GetItemInfoIndex(iteminfo, "icon", player.mo.skin)
 		local item_ammo = ZE2:GetItemInfoIndex(iteminfo, "ammo", player.mo.skin)
 		local item_count = ZE2:GetItemInfoIndex(iteminfo, "count", player.mo.skin)
 		local item_iconscale = ZE2:GetItemInfoIndex(iteminfo, "iconscale", player.mo.skin)
+		local item_reload_time = ZE2:GetItemInfoIndex(iteminfo, "reload_time", player.mo.skin)
+		local item_firerate = ZE2:GetItemInfoIndex(iteminfo, "firerate", player.mo.skin)
+		local item_firerate_left = ZE2:GetItemInfoIndex(iteminfo, "firerate_left", player.mo.skin)
 		
 		if item_iconscale then
 			slot.scale = item_iconscale
@@ -68,7 +74,7 @@ return "Inventory", function(v, player)
 		end
 		
 		PositionSlot(i, slot, slot_count, slot_gap)
-
+		
 		v.drawScaled(
 			slot.x,
 			slot.y,
@@ -76,6 +82,44 @@ return "Inventory", function(v, player)
 			slot.patch,
 			slot.flags
 		)
+		
+		-- [Reload Animation] -- 
+		if selection == i and player["ze2_info"].reload > 0 then
+			reload_square.scale = FU
+			reload_square.patch = v.cachePatch("Z_GREENSQUARE")
+			
+			if item_reload_time then
+				reload_square.scale = FU - FixedDiv(player["ze2_info"].reload*FU, item_reload_time*FU)
+			end
+			
+			PositionSlot(i, reload_square, slot_count, slot_gap)
+			
+			v.drawScaled(
+				reload_square.x,
+				reload_square.y,
+				reload_square.scale,
+				reload_square.patch,
+				reload_square.flags|V_50TRANS,
+				v.getColormap(nil, SKINCOLOR_WHITE)
+			)
+		end
+		
+		-- [Firing Animation] --
+		if item_firerate_left and item_firerate then
+			firerate_square.scale = FixedDiv(item_firerate_left*FU, item_firerate*FU)
+			firerate_square.patch = v.cachePatch("Z_GREENSQUARE")
+			
+			PositionSlot(i, firerate_square, slot_count, slot_gap)
+			
+			v.drawScaled(
+				firerate_square.x,
+				firerate_square.y,
+				firerate_square.scale,
+				firerate_square.patch,
+				firerate_square.flags|V_50TRANS,
+				v.getColormap(nil, SKINCOLOR_YELLOW)
+			)
+		end
 		
 		do -- [Draw Ammo/Item Count] -- 
 			local xoffset = 16*FU
@@ -90,17 +134,19 @@ return "Inventory", function(v, player)
 				
 				if item_ammo <= 0 then
 					-- Flicker color.
-					if ((leveltime/2) % 2) == 0 then
+					if ((leveltime/4) % 2) == 0 then
 						extraflags = V_REDMAP
 					end
 				end
-				
-				if reloading then
-					extraflags = V_50TRANS
 					
-					-- Flicker color but not transparency.
-					if ((leveltime/2) % 2) == 0 then
-						extraflags = V_50TRANS|V_REDMAP
+				if selection == i then
+					if reloading then
+						extraflags = V_50TRANS
+						
+						-- Flicker color but not transparency.
+						if ((leveltime/4) % 2) == 0 then
+							extraflags = V_50TRANS|V_REDMAP
+						end
 					end
 				end
 			elseif item_count ~= nil then
