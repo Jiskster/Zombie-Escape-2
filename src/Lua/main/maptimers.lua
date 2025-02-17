@@ -42,13 +42,43 @@ function ZE2:AddTimer(_id, _table)
 	local _table_recieve = _table
 	
 	_table_recieve.id = _id
-	_table_recieve.active = $ or false
+	_table_recieve.active = false
 	_table_recieve.time = $ or 15*TICRATE
 	_table_recieve.original_time = _table_recieve.time
 	
 	ZE2.MapTimers[_id] = _table_recieve
 	
 	return ZE2.MapTimers[_id]
+end
+
+function ZE2:OverrideTimer(_id, _new)
+	local _timer
+	
+	if not ZE2.MapTimers[_id] then
+		local errortext = string.format('Timer: TimerID "%s" does not exist.', _id)
+		
+		error(errortext)
+	end
+
+	_timer = ZE2.MapTimers[_id]
+
+	local banned_attributes = {
+		["id"] = true,
+		["active"] = true,
+	}
+	
+	for i,v in pairs(_new) do
+		if banned_attributes[i] then -- ILLLEGALLLLLLL
+			continue
+		end
+		
+		_timer[i] = v -- replace
+		_timer.active = false
+		
+		if i == "time" then
+			_timer.original_time = v
+		end
+	end
 end
 
 function ZE2:ResetTimer(_timer)
