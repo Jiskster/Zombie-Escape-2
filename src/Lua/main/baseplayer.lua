@@ -461,10 +461,12 @@ ZE2.sprint_thinker = function(player)
 	-- TODO: Make the sidemove limiting code cleaner, and modular.
 	if not player["ze2_info"].pregamemenu_active
 	and not ZE2.game_ended then
-		if cmd.sidemove > 25 then
-			cmd.sidemove = 25
-		elseif cmd.sidemove < -25 then
-			cmd.sidemove = -25
+		if cmd.forwardmove then
+			if cmd.sidemove > 25 then
+				cmd.sidemove = 25
+			elseif cmd.sidemove < -25 then
+				cmd.sidemove = -25
+			end
 		end
 	end
 	
