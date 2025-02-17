@@ -212,18 +212,13 @@ return "GameInfo", function(v, player)
 			v.drawScaled(138*FRACUNIT, 0, FRACUNIT,
 			timeemb, (V_SNAPTOTOP))
 		end
-		-- [Event Timer HUD] --
 		
-		for i,timer in ipairs(ZE2:GetActiveTimers()) do 
-			local event_name_string = ("# "..timer.name.." #") or "Event Name Error"
+		-- [Event Timer HUD] --
+		for i,timer in pairs(ZE2:GetActiveTimers()) do 
+			local event_name_string = ("# "..timer.text.." #") or "Event Name Error"
 			local event_time_string = ("* "..G_TicsToMTIME(timer.time).." *") or "Failed To Get Event Time"
-			local event_color
-			if timer.extrainfo then
-				event_color = timer.textcolor or SKINCOLOR_TEAL
-			else
-				event_color = SKINCOLOR_TEAL
-			end
-			
+			local event_color = timer.textcolor or SKINCOLOR_TEAL
+
 			customhud.CustomFontString(v, 160, 10+((i-1)*16), (event_name_string), "STCFC", 
 			(V_SNAPTOTOP), "center" , nil, event_color)
 			

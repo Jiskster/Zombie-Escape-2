@@ -12,35 +12,36 @@ function ZE2.AddMapTimer()
 	print("ZE2.AddMapTimer is deprecated, try ZE2:AddTimer instead")
 end
 
-function ZE2:AddTimer(_id, _name, _table)
+function ZE2:AddTimer(_id, _table)
 	if _id == nil then
 		error("Timer: Arg1 is required (Arg1 _id)")
 	elseif type(_id) ~= "string" then
 		error("Timer: Arg1 must be string (Arg1 _id)")
 	end
 	
-	if _name == nil then
-		error("Timer: Arg2 is required (Arg2 _name)")
-	elseif type(_name) ~= "string" then
-		error("Timer: Arg2 must be string (Arg2 _name)")
-	end
-	
 	if _table == nil then
-		error("Timer: Table is required (Arg3 _table)")
+		error("Timer: Table is required (Arg2 _table)")
 	elseif type(_table) ~= "table" then
-		error("Timer: Arg3 must be table (Arg3 _table)")
+		error("Timer: Arg2 must be table (Arg2 _table)")
 	end
 	
 	if ZE2.MapTimers[_id] then
-		local errortext = string.format('Timer: TimerID "%s" has already been defined.')
+		local errortext = string.format('Timer: TimerID "%s" has already been defined.', _id)
 		
 		error(errortext)
 	end
 	
+	-- Macro to save mapper's time.
+	if _table.lua_linedef_exec then
+		local exec_name = _table.lua_linedef_exec
+		addHook("LinedefExecute", function()
+			ZE2:StartTimer(_id)
+		end, exec_name)
+	end
+	
 	local _table_recieve = _table
 	
-	_table.recieve.id = _id
-	_table_recieve.name = _name
+	_table_recieve.id = _id
 	_table_recieve.active = $ or false
 	_table_recieve.time = $ or 15*TICRATE
 	_table_recieve.original_time = _table_recieve.time
@@ -67,6 +68,11 @@ function ZE2:GetActiveTimers()
 			table.insert(activetimers, timer)
 		end
 	end
+	
+	table.sort(activetimers, function(a, b)
+		return a.time > b.time
+	end)
+	
 	return activetimers
 end
 
@@ -114,6 +120,11 @@ addHook("ThinkFrame",do
 				if (timer.on_end) then
 					timer.on_end(i, timer.name)
 				end
+				
+				if (timer.on_end_tag) then
+					P_LinedefExecute(timer.on_end_tag)
+				end
+				
 				timer.active = false
 			end
 		end

@@ -70,25 +70,8 @@ dofile "hud/setup"
 
 dofile "hooks/gamelogic.lua"
 
-dofile "levelscripts/waterfall_objects.lua"
-dofile "levelscripts/waterfall_timers.lua"
-dofile "levelscripts/noxylous.lua"
-dofile "levelscripts/grancolia.lua"
-dofile "levelscripts/ug_marble.lua"
-dofile "levelscripts/doomedcorp_sounds.lua"
-dofile "levelscripts/doomedcorp_electricsparkles.lua"
-dofile "levelscripts/doomedcorp_objects.lua"
-dofile "levelscripts/doomedcorp_timers.lua"
-dofile "levelscripts/doomedcorp_globalsounds.lua"
-dofile "levelscripts/fataldesert.lua"
-dofile "levelscripts/alphacombs.lua"
-dofile "levelscripts/lostsewer.lua"
-dofile "levelscripts/lostsewer_enemies.lua"
-dofile "levelscripts/spookyflower.lua"
-dofile "levelscripts/corruptedvoid.lua"
-dofile "levelscripts/westopolis.lua"
-dofile "levelscripts/eggfortress.lua"
-dofile "levelscripts/azuresanctuary.lua"
+-- [ Level Scripts ] -- 
+dofile "levelscripts/loadscripts.lua"
 
 dofile "main/netvars.lua"
 
