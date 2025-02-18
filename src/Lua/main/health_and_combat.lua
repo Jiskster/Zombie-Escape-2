@@ -95,6 +95,10 @@ end
 local width = 14
 local cv_fov
 local function GetFOV()
+	if isdedicatedserver then 
+		return 1 
+	end
+	
 	if not cv_fov then
 		cv_fov = CV_FindVar("fov")
 	end
