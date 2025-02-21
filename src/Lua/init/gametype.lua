@@ -5,7 +5,7 @@ what ZE2 has.
 rawset(_G, "XSLINGER", {});
 */
 
-freeslot("sfx_zdi1","sfx_zdi2","sfx_zish1","sfx_zpa1","sfx_zpa2", "sfx_bstdn", "sfx_bstup")
+freeslot("sfx_zdi1","sfx_zdi2","sfx_zish1","sfx_zish2","sfx_zish3","sfx_zpa1","sfx_zpa2", "sfx_bstdn", "sfx_bstup")
 freeslot("sfx_rstart", "sfx_secret", "sfx_cleva1")
 freeslot("sfx_eatapl", "sfx_oyahx", "sfx_mnu1a")
 freeslot("sfx_inf1", "sfx_inf2", "sfx_inf3", "sfx_inf4", "sfx_pipe")
