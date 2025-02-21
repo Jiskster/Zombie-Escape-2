@@ -771,7 +771,15 @@ function ZE2.DoPlayerFire(player, iteminfo)
 	end
 	
 	if item_sound then
-		S_StartSound(player.mo, item_sound)
+		if type(item_sound) == "number" then
+			S_StartSound(player.mo, item_sound)
+		elseif type(item_sound) == "table" then
+			local rng_range = P_RandomRange(1, #item_sound)
+			
+			S_StartSound(player.mo, item_sound[rng_range])
+		else
+			error("Invalid sound data type")
+		end
 	end
 
 	if ring then
