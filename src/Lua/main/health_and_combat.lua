@@ -2,6 +2,8 @@
 mobjinfo[MT_LHRT].forcedamage = 3
 mobjinfo[MT_LHRT].forceknockback = 8*FU
 
+freeslot("SPR_ZE2_DAMAGENUMBER")
+
 -- ze2_info only
 function ZE2:TryBooleanAction(player, _table, strict)
 	if not _table then
@@ -51,7 +53,7 @@ function ZE2.KillMobj(mo, inf, src, damagetype, killedbysomething)
 		local player = mo.player 
 		local ztype = player["ze2_info"].zombie_type
 		local team = player["ze2_info"].team
-		local ruby_award = 45
+		local cash_award = 150
 		local killer -- will be valid if player
 		
 		if inf and inf.player and inf.player.valid then
@@ -70,20 +72,15 @@ function ZE2.KillMobj(mo, inf, src, damagetype, killedbysomething)
 					player["ze2_info"].weapondelay = 3*TICRATE -- To prevent a chain effect when defending.
 				end
 			
-				ZE2:QueuePlayerRubies(killer.player, ruby_award)
+				ZE2:QueuePlayerRubies(killer.player, cash_award)
 				print("\x84"..player.name.." \x83\has been infected by \x85"..killer.player.name)
-				killer.player["ze2_info"].blood_currency = $ + 30
-				
-				CONS_Printf(killer.player, "\x85+"..ruby_award.." rubies gained from infecting a survivor!")
+
+				CONS_Printf(killer.player, "\x83+ $"..cash_award.." cash gained from infecting a survivor!")
 			end
 		elseif team == 2 then
 			if ztype and ZE2.ZombieConfig[ztype] and ZE2.ZombieConfig[ztype].killaward then
 				local killaward = ZE2.ZombieConfig[ztype].killaward
 				A_RubyDrop(mo, killaward)
-			end
-			
-			if killer then
-				player["ze2_info"].blood_currency = $ + 100
 			end
 		end
 		
@@ -95,6 +92,101 @@ function ZE2.KillMobj(mo, inf, src, damagetype, killedbysomething)
 	end
 end
 
+local width = 14
+local cv_fov
+local function GetFOV()
+	if isdedicatedserver then 
+		return 1 
+	end
+	
+	if not cv_fov then
+		cv_fov = CV_FindVar("fov")
+	end
+
+	return FixedDiv(cv_fov.value, 90*FU)
+end
+
+local function SpawnDamageNumbers(player, victim_mobj, damage)
+	local numbers = {}
+
+	--TODO: test to make sure this doesnt spawn too much mobjs, check for desynchs
+	do
+		local random = P_RandomRange(1,3)*FU + P_RandomFixed()
+		local randomthr = P_RandomRange(-2,2)*FU + P_RandomFixed() * (P_RandomChance(FU/2) and 1 or -1)
+		
+		damage = tostring($)
+		local str_len = string.len(damage)
+		
+		local scale = FixedDiv(R_PointToDist(victim_mobj.x,victim_mobj.y), victim_mobj.radius * 10)
+		scale = max($, victim_mobj.scale * 2)
+		scale = FixedMul($, GetFOV())
+		scale = $/2
+
+		--random = FixedMul($, scale)
+		--randomthr = FixedMul($, scale)
+
+		--print(string.format("s: %f r: %f rt: %f", scale, random, randomthr))
+
+		local offset = FixedMul((str_len*width)*FU, scale) / 2
+		
+		local work = offset
+		local angle = R_PointToAngle(victim_mobj.x,victim_mobj.y) - ANGLE_90
+		
+		/*
+		--TODO: 
+		do
+			local test = P_SpawnMobjFromMobj(victim_mobj,
+				P_ReturnThrustX(nil, angle, work + (str_len*width*scale)),
+				P_ReturnThrustY(nil, angle, work + (str_len*width*scale)),
+				FixedDiv(victim_mobj.height, victim_mobj.scale),
+				MT_RAY
+			)
+
+			--try swapping the to the other side?
+			if not P_CheckSight(test, player.mo) then
+				angle = R_PointToAngle(victim_mobj.x,victim_mobj.y) + ANGLE_90
+				work = -$
+			end
+
+			if (test and test.valid) then P_RemoveMobj(test) end
+		end
+		*/
+
+		for i = 1,str_len do
+			local n = string.sub(damage,i,i)
+			local frame = tonumber(n)
+			
+			local num = P_SpawnMobjFromMobj(victim_mobj,
+				P_ReturnThrustX(nil, angle, work),
+				P_ReturnThrustY(nil, angle, work),
+				FixedDiv(victim_mobj.height, victim_mobj.scale),
+				MT_THOK
+			)
+			num.sprite = SPR_ZE2_DAMAGENUMBER
+			num.frame = (frame)|FF_FULLBRIGHT
+			num.scale = scale
+			num.color = victim_mobj.color or SKINCOLOR_RED
+			
+			num.tics = 2*TICRATE
+			num.fuse = num.tics
+			
+			--num.flags = $ &~MF_NOGRAVITY
+			
+			num.renderflags = $|RF_NOCOLORMAPS
+			num.drawonlyforplayer = player
+			num.dispoffset = 100
+
+			num.nu_momz = random
+			num.nu_thrust = randomthr
+			num.nu_width = width
+			table.insert(numbers, num)
+
+			work = $ + width*scale
+		end
+	end
+	return numbers
+end
+
 function ZE2:AddDamageIndicator(player, victim_mobj, damage)
 	if not player["ze2_info"].damage_indicator_table[victim_mobj] then
 		player["ze2_info"].damage_indicator_table[victim_mobj] = {
@@ -103,7 +195,18 @@ function ZE2:AddDamageIndicator(player, victim_mobj, damage)
 			draw_x = victim_mobj.x,
 			draw_y = victim_mobj.y,
 			draw_z = victim_mobj.z + (victim_mobj.height*2),
+
+			real_position = {
+				x = victim_mobj.x,
+				y = victim_mobj.y,
+				z = victim_mobj.z,
+				scale = victim_mobj.scale,
+				height = victim_mobj.height,
+				radius = victim_mobj.radius
+			}
 		}
+
+		player["ze2_info"].damage_indicator_table[victim_mobj].damagenumbers = SpawnDamageNumbers(player, victim_mobj, damage)
 	else
 		if player["ze2_info"].damage_indicator_table[victim_mobj].tics_left then
 			player["ze2_info"].damage_indicator_table[victim_mobj].tics_left = TICRATE*2
@@ -116,6 +219,25 @@ function ZE2:AddDamageIndicator(player, victim_mobj, damage)
 		player["ze2_info"].damage_indicator_table[victim_mobj].draw_x = victim_mobj.x
 		player["ze2_info"].damage_indicator_table[victim_mobj].draw_y = victim_mobj.y
 		player["ze2_info"].damage_indicator_table[victim_mobj].draw_z = victim_mobj.z + (victim_mobj.height*2)
+		
+		player["ze2_info"].damage_indicator_table[victim_mobj].real_position = {
+			x = victim_mobj.x,
+			y = victim_mobj.y,
+			z = victim_mobj.z,
+			scale = victim_mobj.scale,
+			height = victim_mobj.height,
+			radius = victim_mobj.radius
+		}
+
+		if player["ze2_info"].damage_indicator_table[victim_mobj].damagenumbers then
+			for k, mo in ipairs(player["ze2_info"].damage_indicator_table[victim_mobj].damagenumbers) do
+				--game already did it for us, cool
+				if not (mo and mo.valid) then continue end
+				P_RemoveMobj(mo)
+			end
+		end
+
+		player["ze2_info"].damage_indicator_table[victim_mobj].damagenumbers = SpawnDamageNumbers(player, victim_mobj, player["ze2_info"].damage_indicator_table[victim_mobj].number)
 	end
 end
 
@@ -136,7 +258,8 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		P_ExplodeMissile(inf)
 	end
 	
-	if inf and inf.player and mo and mo.player then
+	--check again incase above block removed inf
+	if (inf and inf.valid) and inf.player and mo and mo.player then
 		if mo.player["ze2_info"].team == inf.player["ze2_info"].team then
 			return false
 		end
@@ -176,7 +299,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		end
 	end
 	
-	if inf then
+	if inf and inf.valid then
 		if inf.iteminfo then
 			local srcskin
 			
@@ -231,7 +354,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		end
 	end
 	
-	if (inf and inf.player) then 
+	if (inf and inf.valid and inf.player) then 
 		P_AddPlayerScore(inf.player, dmg)
 	elseif (src and src.player) then 
 		P_AddPlayerScore(src.player, dmg) 
@@ -259,6 +382,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	end
 	
 	if mo.player then
+		-- TODO: Merge both team kb code.
 		if mo.player["ze2_info"].team == 1 then
 			mo.player.powers[pw_flashing] = ZE2.survinvtics.value
 			
@@ -271,9 +395,13 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 
 			if inf and inf.valid then
 				if not relativeknockback then
+					mo.friction = FRACUNIT
+				
 					P_Thrust(mo, inf.angle, knockback)
 				else
 					local r_angle = R_PointToAngle2(mo.x, mo.y, inf.x, inf.y)
+					
+					mo.friction = FRACUNIT
 					
 					P_Thrust(mo, r_angle - ANGLE_180, knockback)
 				end
@@ -285,13 +413,16 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			
 			if inflictor_player then
 				ZE2:DecrementSprint(mo.player, 90*FRACUNIT)
-				
-				inflictor_player["ze2_info"].blood_currency = $ + 15
 			end
 		elseif mo.player["ze2_info"].team == 2 then
 			local ztype = mo.player["ze2_info"].zombie_type
 			local zombie_hurtsounds = {sfx_zpa1,sfx_zpa2}
 			local chosen_hurtsound = zombie_hurtsounds[P_RandomRange(1,2)]
+			
+			
+			if mo.player["ze2_info"].crouching then
+				knockback = $ * 3
+			end
 			
 			if ztype and ZE2.ZombieConfig[ztype] and ZE2.ZombieConfig[ztype].knockback_multiplier ~= nil then
 				local knockback_multiplier = ZE2.ZombieConfig[ztype].knockback_multiplier
@@ -299,28 +430,32 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 				knockback = FixedMul($, knockback_multiplier)
 			end
 			
+			mo.player["ze2_info"].landfatigue_timer = min($ + 5, 20)
+			
 			if not relativeknockback then
 				local r_momxy = FixedHypot(mo.momx, mo.momy)
+
+				if P_IsObjectOnGround(mo) then
+					P_InstaThrust(mo, inf.angle, knockback + r_momxy)
+				else
+					P_Thrust(mo, inf.angle, knockback)
+				end
 				
-				P_InstaThrust(mo, inf.angle, knockback)
+				mo.player["ze2_info"].nofrictiontics = min($ + 3, 5)
 			else
 				local r_angle = R_PointToAngle2(mo.x, mo.y, inf.x, inf.y)
 				local r_momxy = FixedHypot(mo.momx, mo.momy)
+
+				P_Thrust(mo, r_angle - ANGLE_180, knockback)
 				
-				P_InstaThrust(mo, r_angle - ANGLE_180, knockback)
+				mo.player["ze2_info"].nofrictiontics = min($ + 3, 5)
 			end
 		
 			if verticalknockback then
 				P_SetObjectMomZ(mo, verticalknockback, true)
 			end
 			
-			mo.player["ze2_info"].landfatigue_timer = 20
-			
 			S_StartSound(mo, chosen_hurtsound)
-			
-			if inflictor_player then
-				mo.player["ze2_info"].blood_currency = $ + 2
-			end
 		end
 	elseif mobjinfo[mo.type].npc_name then
 		if (not mo.target) and (inf or src.player) then --enemies wake up if you hit them from behind
@@ -376,9 +511,9 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		end
 	end
 	
-	if mo.rubiesholding and (mo.rubiesholding - (mo.rubiesholding/3)) > 0 then
-		A_RubyDrop(mo, mo.rubiesholding/3)
-		mo.rubiesholding = $ - mo.rubiesholding/3
+	if mo.cashholding and (mo.cashholding - (mo.cashholding/3)) > 0 then
+		A_RubyDrop(mo, mo.cashholding/3)
+		mo.cashholding = $ - mo.cashholding/3
 	end
 	
 	if mo.shield_health then
@@ -414,6 +549,8 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	if mo.health <= 0 then
 		ZE2.KillMobj(mo, inf, src, damagetype, not deathdamagetype)
 	end
+	
+	ZE2.LimitMobjHealth(mo)
 	
 	return false
 end)
@@ -459,6 +596,7 @@ function ZE2.SpawnMissile(m_table)
 	local allow_aim = m_table.allow_aim
 	local flags2 = m_table.flags2
 	local iteminfo = m_table.iteminfo
+	local firesound
 	local slope = 0
 	local x = source.x
 	local y = source.y
@@ -509,6 +647,8 @@ function ZE2.SpawnMissile(m_table)
 		if missile_velocity_multiplier then
 			speed = FixedMul($, missile_velocity_multiplier)
 		end
+		
+		firesound = ZE2:GetItemInfoIndex(temp_iteminfo, "sound", skin)
 	end
 	
 	if source.player then
@@ -525,8 +665,10 @@ function ZE2.SpawnMissile(m_table)
 		th.flags2 = $ | flags2
 	end
 
-	if (th.info.seesound and not (th.flags2 & MF2_RAILRING)) then
-		S_StartSound(source, th.info.seesound)
+	if not firesound then
+		if (th.info.seesound and not (th.flags2 & MF2_RAILRING)) then
+			S_StartSound(source, th.info.seesound)
+		end
 	end
 
 	th.target = source
@@ -537,9 +679,11 @@ function ZE2.SpawnMissile(m_table)
 	end
 	*/
 	
+	/*
 	if source.player and ZE2.CharacterConfig[source.skin] and ZE2.CharacterConfig[source.skin].bullet_speed_multiplier then
 		speed = FixedMul($, ZE2.CharacterConfig[source.skin].bullet_speed_multiplier)
 	end
+	*/
 	
 	th.angle = angle
 	
@@ -569,7 +713,6 @@ function ZE2.SpawnMissile(m_table)
 	end
 end
 
-
 function ZE2.CheckMissileSpawn(th)
 	if not (th.flags & MF_GRENADEBOUNCE) then -- From the Original: "hack: bad! should be a flag.""
 		P_SetOrigin(th, th.x + th.momx/2, th.y, th.z)
@@ -585,7 +728,6 @@ function ZE2.CheckMissileSpawn(th)
 	end
 	return true
 end
-
 
 function ZE2.DoPlayerFire(player, iteminfo)
 	local ring
@@ -629,7 +771,15 @@ function ZE2.DoPlayerFire(player, iteminfo)
 	end
 	
 	if item_sound then
-		S_StartSound(player.mo, item_sound)
+		if type(item_sound) == "number" then
+			S_StartSound(player.mo, item_sound)
+		elseif type(item_sound) == "table" then
+			local rng_range = P_RandomRange(1, #item_sound)
+			
+			S_StartSound(player.mo, item_sound[rng_range])
+		else
+			error("Invalid sound data type")
+		end
 	end
 
 	if ring then

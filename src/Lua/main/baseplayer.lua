@@ -1,9 +1,9 @@
 freeslot("sfx_zjump")
 sfxinfo[sfx_zjump].caption = "Jump"
 mobjinfo[MT_LHRT].forceknockback = 20*FRACUNIT
-ZE2.JumpSprintFatigue = 21*FRACUNIT
-ZE2.DefaultRubyCap = 500;
-ZE2.RubyStart = 100 -- the amount of rubies you start when you join a server
+ZE2.JumpSprintFatigue = 17*FRACUNIT
+ZE2.DefaultRubyCap = 25000;
+ZE2.RubyStart = 500 -- the amount of rubies you start when you join a server
 
 ZE2.Effect_ThinkerFuncs = {
 	["Alpha_Rage"] = function(player)
@@ -92,7 +92,7 @@ ZE2["default_ze2_info"] = {
 
 	team = 1,
 
-	rubies = ZE2.RubyStart,
+	cash = ZE2.RubyStart,
 	rubycap = ZE2.DefaultRubyCap,
 	rubyqueue = 0,
 	rubypickupdelay = 0,
@@ -101,9 +101,7 @@ ZE2["default_ze2_info"] = {
 	was_zombie = false,
 
 	zombie_type = "normal",
-
-	blood_currency = 0,
-
+	
 	damage_fade = 0, -- tic_t
 	damage_fade_max = 0,
 	
@@ -112,14 +110,15 @@ ZE2["default_ze2_info"] = {
 	
 	lower_hud_offset = 0,
 	special_cooldown = 0,
-	
-	zombie_healthbonus = 0, -- extra health you get from buying health bonuses 
-	zombie_healthdeduction = 0,
-	zombie_speedbonus = 0, -- normalspeed bonus
+
 	zombie_shop_open = false,
 	zombie_shop_selection = 1,
 	zombie_shop_c1_pressed = false,
 	zombie_next_type = nil,
+	
+	nofrictiontics = 0; 
+	
+	isSprung = false,
 	
 	damage_indicator_table = {},
 	/*	damage_indicator_table
@@ -129,16 +128,100 @@ ZE2["default_ze2_info"] = {
 			draw_z = (z),
 			number = 100,
 			tics_left = 35,
+			damagenumbers = {list of mobjs},
+			real_position = {x,y,z, scale, height, radius},
 		}
 	*/
-	
-	pro_controls = false,
 	
 	landfatigue = false,
 	landfatigue_timer = 0,
 	
 	teamchat_enabled = false,
 }
+
+local width = 14
+local cv_fov
+local function GetFOV()
+	if isdedicatedserver then 
+		return 1 
+	end
+	
+	if not cv_fov then
+		cv_fov = CV_FindVar("fov")
+	end
+
+	return FixedDiv(cv_fov.value, 90*FU)
+end
+
+local function UpdateDamageNumbers(p, numbers, properties, damage)
+	damage = tostring($)
+	local str_len = string.len(damage)
+
+	local scale = FixedDiv(R_PointToDist(properties.x,properties.y), properties.radius * 10)
+	scale = max($, properties.scale * 2)
+	scale = FixedMul($, GetFOV())
+	scale = $/2
+
+	local offset = FixedMul((str_len*width)*FU, scale) / 2
+	
+	local work = offset
+	local angle = R_PointToAngle(properties.x,properties.y) - ANGLE_90
+
+	/*
+	do
+		local test = P_SpawnMobj(
+			properties.x + P_ReturnThrustX(nil, angle, work + (str_len*width*scale)),
+			properties.x + P_ReturnThrustY(nil, angle, work + (str_len*width*scale)),
+			properties.z + properties.height,
+			MT_RAY
+		)
+
+		--try swapping the to the other side?
+		if not P_CheckSight(test, p.mo) then
+			angle = R_PointToAngle(properties.x,properties.y) + ANGLE_90
+			work = -$
+		end
+
+		if (test and test.valid) then P_RemoveMobj(test) end
+	end
+	*/
+
+	for i = 1,str_len do
+		local n = string.sub(damage,i,i)
+		local frame = tonumber(n)
+		
+		local num = numbers[i]
+		if not (num and num.valid) then
+			table.remove(numbers, i)
+			continue
+		end
+		if (num.flags & MF_NOGRAVITY) then
+			P_MoveOrigin(num,
+				properties.x + P_ReturnThrustX(nil, angle, work),
+				properties.y + P_ReturnThrustY(nil, angle, work),
+				properties.z + properties.height
+			)
+		end
+		
+		num.sprite = SPR_ZE2_DAMAGENUMBER
+		num.frame = (frame)|FF_FULLBRIGHT
+		num.scale = scale
+		
+		if num.fuse == TICRATE then
+			num.flags = $ &~MF_NOGRAVITY
+
+			P_SetObjectMomZ(num, num.nu_momz)
+			P_Thrust(num, angle, num.nu_thrust)
+		end
+
+		num.renderflags = $|RF_NOCOLORMAPS
+		num.drawonlyforplayer = p
+		num.dispoffset = 100
+
+		work = $ + width*scale
+	end
+
+end
 
 addHook("PlayerSpawn", function(player)
 	if gametype ~= GT_ZE2 then return end
@@ -202,7 +285,13 @@ ZE2.giveplayerflags = function(player)
 	if gametype == GT_ZE2 then
 		player.charflags = SF_NOJUMPSPIN|SF_NOJUMPDAMAGE|SF_NOSKID
 		player.pflags = $ & ~PF_DIRECTIONCHAR
-		player.pflags = $ & ~PF_ANALOGMODE 
+		
+		if (player.pflags & PF_ANALOGMODE) then
+			player.pflags = $ | PF_FORCESTRAFE
+			player.pflags = $ & ~PF_ANALOGMODE
+		else
+			player.pflags = $ & ~PF_FORCESTRAFE
+		end
 		
 		if not ZE2.round_active and player["ze2_info"].pregamemenu_active then
 			if player.mo and player.mo.valid then
@@ -271,6 +360,21 @@ ZE2.giveplayerflags = function(player)
 				if v.tics_left then
 					v.tics_left = $ - 1
 					
+					if (dmo and dmo.valid) then
+						v.real_position = {
+							x = dmo.x,
+							y = dmo.y,
+							z = dmo.z,
+							scale = dmo.scale,
+							height = dmo.height,
+							radius = dmo.radius
+						}
+					end
+
+					if (v.damagenumbers) then
+						UpdateDamageNumbers(player, v.damagenumbers, v.real_position, v.number)
+					end
+
 					if v.tics_left <= 0 then
 						player["ze2_info"].damage_indicator_table[dmo] = nil
 						continue
@@ -293,6 +397,8 @@ ZE2.giveplayerflags = function(player)
 				player["ze2_info"].landfatigue = false
 				player["ze2_info"].landfatigue_timer = $ + 20
 			end
+			
+			ZE2.LimitMobjHealth(pmo)
 		end
 		
 		if mapheaderinfo[gamemap].ze2_noabilities then
@@ -342,6 +448,7 @@ function ZE2:IncrementSprint(player, value)
 end
 
 -- sprint code
+-- TODO: Sprinting is no longer in the game, so this thing needs to be reorganized for the new name and stuff.
 ZE2.sprint_thinker = function(player)
 	if not (player.mo and player.mo.valid) return end
 	
@@ -354,6 +461,18 @@ ZE2.sprint_thinker = function(player)
 	
 	local increment = FRACUNIT/2
 	local decrement = fixedfromstring("0.142")
+	
+	-- TODO: Make the sidemove limiting code cleaner, and modular.
+	if not player["ze2_info"].pregamemenu_active
+	and not ZE2.game_ended then
+		if cmd.forwardmove then
+			if cmd.sidemove > 25 then
+				cmd.sidemove = 25
+			elseif cmd.sidemove < -25 then
+				cmd.sidemove = -25
+			end
+		end
+	end
 	
 	if player["ze2_info"].sprintdelay then
 		if player["ze2_info"].sprintmeter then
@@ -369,12 +488,12 @@ ZE2.sprint_thinker = function(player)
 		if not player.climbing then
 			if (player.speed/FU) > 12 then -- running
 				if P_IsObjectOnGround(pmo) and not player["ze2_info"].crouching then
-					P_SpawnSkidDust(player, 20*FRACUNIT)
+					--P_SpawnSkidDust(player, 20*FRACUNIT)
 				end
 				
 				ZE2:IncrementSprint(player, increment/2)
 				
-				player.runspeed = 5*FRACUNIT
+				player.runspeed = 32000*FRACUNIT
 			else
 				if not (player.speed/FU) then -- not moving
 					ZE2:IncrementSprint(player, increment*3)
@@ -396,6 +515,11 @@ addHook("JumpSpecial", function(player)
 	if gametype ~= GT_ZE2 then return end
 
 	if player.mo and player.mo.valid and not (player.pflags & PF_THOKKED) and P_IsObjectOnGround(player.mo) then
+		if (player.mo.ceilingz - player.mo.floorz) < player.height + ZE2.playerheightoffset
+		and player["ze2_info"].crouching then
+			return true
+		end
+		
 		if not (player.pflags & PF_JUMPDOWN) then
 			if player["ze2_info"].team == 1 then
 				ZE2:DecrementSprint(player, ZE2.JumpSprintFatigue)
@@ -408,27 +532,11 @@ addHook("JumpSpecial", function(player)
 	end
 end)
 
--- we hate griefers
-addHook("LinedefExecute", function(line, mobj, sector)
-	if mobj and mobj.valid and mobj.player and mobj.player.valid then
-		local player = mobj.player
-		
-		player.pflags = $ & ~PF_GLIDING
-		player.pflags = $ & ~PF_BOUNCING
-		player.powers[pw_tailsfly] = 0
-	end
-end, "NOABILITY")
-
 -- Limit character abilities. And side movement momentum for zombies
 addHook("PlayerThink", function(player) 
 	if gametype ~= GT_ZE2 then return end
     if player.mo and player.mo.valid then
 		local cmd = player.cmd
-		local floorz = P_FloorzAtPos(player.mo.x, player.mo.y, player.mo.z, player.mo.height)
-		
-		if cmd.sidemove and abs(player.mo.z - floorz) <= 16*FRACUNIT then
-			L_SpeedCapXY(player.mo, 16*FRACUNIT)
-		end
 		
         if player.climbing then
             ZE2:DecrementSprint(player, FRACUNIT)
@@ -466,8 +574,16 @@ addHook("PlayerThink", function(player)
 			player["ze2_info"].isJumping = true
 		end
 		
-		if P_IsObjectOnGround(player.mo) and player["ze2_info"].isJumping then
-			player["ze2_info"].isJumping = false
+		if (player.mo.eflags & MFE_SPRUNG) then
+			player["ze2_info"].isSprung = true
+		end
+		
+		if P_IsObjectOnGround(player.mo) then
+			if player["ze2_info"].isJumping then
+				player["ze2_info"].isJumping = false
+			end
+			
+			player["ze2_info"].isSprung = false
 		end
 		
 		if player.pflags & PF_BOUNCING and player.mo.eflags & MFE_JUSTHITFLOOR and player.mo.health then
@@ -714,6 +830,12 @@ addHook("PlayerThink", function(player)
 	
 	if player and not player.mo then return end
 	
+	if player["ze2_info"].nofrictiontics then
+		player.mo.friction = FRACUNIT
+		
+		player["ze2_info"].nofrictiontics = max(0, $ - 1)
+	end
+	
 	if player["ze2_info"].checkpoint_catchuptics then
 		player["ze2_info"].checkpoint_catchuptics = $ - 1
 		
@@ -778,16 +900,12 @@ addHook("PlayerThink", function(player)
 			}, true)
 			
 			-- Number Key Weapon Swap (Pro Controls)
-			if player["ze2_info"].pro_controls then
-				if cmd.buttons & BT_WEAPONMASK then
-					-- Dont do if on same slot as selected.
-					if not ((cmd.buttons & BT_WEAPONMASK) == (player["ze2_info"].inventory_selection)) then 
-						if cmd.buttons & BT_WEAPONMASK > ZE2:FetchInventoryLimit(player) then
-							player["ze2_info"].inventory_selection = ZE2:FetchInventoryLimit(player)
-						else
-							player["ze2_info"].inventory_selection = cmd.buttons & BT_WEAPONMASK
-						end
-
+			if cmd.buttons & BT_WEAPONMASK then
+				-- Dont do if on same slot as selected.
+				if not ((cmd.buttons & BT_WEAPONMASK) == (player["ze2_info"].inventory_selection)) then 
+					if cmd.buttons & BT_WEAPONMASK <= ZE2:FetchInventoryLimit(player) then
+						player["ze2_info"].inventory_selection = cmd.buttons & BT_WEAPONMASK
+						
 						S_StartSound(nil,sfx_mnu1a,player)
 						
 						player["ze2_info"].reload = 0

@@ -5,10 +5,12 @@ what ZE2 has.
 rawset(_G, "XSLINGER", {});
 */
 
-freeslot("sfx_zdi1","sfx_zdi2","sfx_zish1","sfx_zpa1","sfx_zpa2", "sfx_bstdn", "sfx_bstup")
+freeslot("sfx_zdi1","sfx_zdi2","sfx_zish1","sfx_zish2","sfx_zish3","sfx_zpa1","sfx_zpa2", "sfx_bstdn", "sfx_bstup")
 freeslot("sfx_rstart", "sfx_secret", "sfx_cleva1")
 freeslot("sfx_eatapl", "sfx_oyahx", "sfx_mnu1a")
 freeslot("sfx_inf1", "sfx_inf2", "sfx_inf3", "sfx_inf4", "sfx_pipe")
+
+freeslot("sfx_wpfire", "sfx_wpfir2")
 
 freeslot("sfx_z_rel1", "sfx_z_rel2")
 freeslot("sfx_z20s", "sfx_cone", "sfx_ctwo", "sfx_cthr", "sfx_cfou", "sfx_cfiv", "sfx_csix", "sfx_csev", "sfx_ceig", "sfx_cnin", "sfx_cten")
@@ -35,6 +37,10 @@ freeslot("TOL_ZE2");
 ZE2.wait_time = 15*TICRATE;
 ZE2.MapVoteStartFrame = 10*TICRATE
 ZE2.VoteTimeLimit = 12*TICRATE
+ZE2.queuing_round = false
+ZE2.rounds_left = 3
+
+ZE2.HUD = {}
 
 ZE2.init_gamevars = function(map) -- Variables vary per game.
 	ZE2.round_active = false;
@@ -52,14 +58,59 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 	ZE2.MapVoteList = {};
 	ZE2.MapVotes = {0,0,0};
 	ZE2.MapsOnVote = {
-	{0,1},
-	{0,1},
-	{0,1}
+		{votes = 0, mapnum = 1},
+		{votes = 0, mapnum = 1},
+		{votes = 0, mapnum = 1}
 	}; -- votes, mapnumber
 	
 	ZE2.NextMapVoted = 0;
 	
 	if map then
+		if ZE2.queuing_round then
+			ZE2.rounds_left = $ - 1
+			ZE2.queuing_round = false
+			
+			-- force reload everyone's weapon
+			for player in players.iterate do
+				if player["ze2_info"] then
+					-- TODO: Make a function for this process.
+					for i,v in pairs(player["ze2_info"].survivor_inventory) do
+						v.ammo = v.max_ammo
+						
+						if v.skin_overwrite then
+							for a,b in pairs(v.skin_overwrite) do
+								if b.ammo ~= nil then
+									if b.max_ammo ~= nil then
+										b.ammo = b.max_ammo
+									elseif v.max_ammo ~= nil then
+										b.ammo = v.max_ammo
+									end
+								end
+							end
+						end
+					end
+				else
+					continue
+				end
+			end
+		else
+			ZE2.rounds_left = tonumber(mapheaderinfo[map].ze2_rounds) or 3
+			
+			-- reset everyone's inventory
+			for player in players.iterate do
+				if player["ze2_info"] then
+					-- TODO: Reference the default table and copy that, instead of making a new one
+					player["ze2_info"].survivor_inventory = {
+						ZE2:CopyItemFromID(ITEM_RED_RING)
+					}
+				else
+					continue
+				end
+			end
+			
+			ZE2.queuing_round = false
+		end
+		
 		if mapheaderinfo[map].ze2_timelimit then
 			local input = tonumber(mapheaderinfo[map].ze2_timelimit)
 			ZE2.time_limit = input*60*TICRATE
@@ -78,10 +129,6 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 			player["ze2_info"].vote_selection = 1
 			player["ze2_info"].voted = false
 			player["ze2_info"].checkpoint_number = 0
-			player["ze2_info"].blood_currency = 0 -- happiness is temporary 
-			player["ze2_info"].zombie_healthbonus = 0
-			player["ze2_info"].zombie_healthdeduction = 0
-			player["ze2_info"].zombie_speedbonus = 0
 		end
 	end
 end; ZE2.init_gamevars();
@@ -100,6 +147,20 @@ function ZE2:Copy(orig)
         copy = orig
     end
     return copy
+end
+
+function ZE2.getMaxRoundsFromMap(map)
+	local output = 3
+	
+	if mapheaderinfo[map or gamemap].ze2_rounds then
+		output = tonumber(mapheaderinfo[map or gamemap].ze2_rounds)
+	end
+	
+	return output
+end
+
+function ZE2.getCurrentRound()
+	return (ZE2.getMaxRoundsFromMap() - ZE2.rounds_left) + 1
 end
 
 function ZE2.ZCollide(mo1,mo2)
@@ -140,3 +201,7 @@ sfxinfo[sfx_inf2].caption="\"We've been enslaved\""
 sfxinfo[sfx_pipe].caption="Pipe"
 
 sfxinfo[sfx_oldrad].caption="Typewriter"
+
+-- Multiple maps use this.
+freeslot("sfx_type")
+sfxinfo[sfx_type].caption = "Button Press"

@@ -23,10 +23,6 @@ ZE2.Survivor_ShopList = {
 	
 }
 
-ZE2.Zombie_ShopList = {
-
-}
-
 function ZE2:RegisterShop_ItemID(item_id)
 	local iteminfo = ZE2:CopyItemFromID(item_id)
 	local shop_def = {}
@@ -52,45 +48,6 @@ function ZE2.NumToShopDef(number)
 	return ZE2.ShopDefinitions[number]
 end
 
-local ZMBSHOP_100BONUSHP = ZE2:RegisterGenericShop("100_Bonus_HP", {
-	realname = "100 Bonus Health", -- For Zombie Shop Display
-	buyfunc = function(player)
-		player["ze2_info"].zombie_healthbonus = $ + 100
-	end,
-	for_zombies = true,
-}, 25)
-
-local ZMBSHOP_5BONUSSPEED300LESSHP = ZE2:RegisterGenericShop("5_Bonus_Speed_300_Less_HP", {
-	realname = "-300 HP +5 Speed", -- For Zombie Shop Display
-	buyfunc = function(player)
-		player["ze2_info"].zombie_healthdeduction = $ + 300
-		player["ze2_info"].zombie_speedbonus = $ + 5*FRACUNIT
-	end,
-	for_zombies = true,
-}, 200)
-
-local ZMBSHOP_ALPHA_ZOMBIE = ZE2:RegisterGenericShop("Alpha_Zombie", {
-	realname = "Alpha Zombie",
-	buyfunc = function(player)
-		player["ze2_info"].zombie_next_type = "alpha"
-	end,
-	for_zombies = true,
-}, 500)
-
-local ZMBSHOP_SIGMA_ZOMBIE = ZE2:RegisterGenericShop("Sigma_Zombie", {
-	realname = "Sigma Zombie",
-	buyfunc = function(player)
-		player["ze2_info"].zombie_next_type = "sigma"
-	end,
-	for_zombies = true,
-}, 1000)
-
-ZE2.Zombie_ShopList = {
-	ZMBSHOP_100BONUSHP,
-	ZMBSHOP_5BONUSSPEED300LESSHP,
-	ZMBSHOP_ALPHA_ZOMBIE,
-	ZMBSHOP_SIGMA_ZOMBIE
-}
 
 addHook("MapLoad", function()
 	if gametype ~= GT_ZE2 then return end
@@ -163,84 +120,5 @@ addHook("MapLoad", function()
 	
 	for player in players.iterate do
 		player["ze2_info"].shop_selection = 1
-	end
-end)
-
--- Handle Zombie Shop
-addHook("PlayerThink", function(player)
-	local cmd = player.cmd
-	
-	if ZE2.game_ended then
-		return
-	end
-	
-	if player.playerstate == PST_DEAD then
-		if player["ze2_info"].team == 2 then
-			--player["ze2_info"].zombie_shop_open = true
-			
-			if player["ze2_info"].zombie_shop_open then
-				ZE2:TryBooleanAction(player, {
-					condition = cmd.forwardmove > 40,
-					var = "zombie_shop_forward_pressed",
-					action = function()
-						if player["ze2_info"].zombie_shop_selection - 1 <= 0 then
-							player["ze2_info"].zombie_shop_selection = 1
-						else
-							player["ze2_info"].zombie_shop_selection = $ - 1
-						end
-						
-						S_StartSound(nil, sfx_menu1, player)
-					end
-				}, true)
-				
-				ZE2:TryBooleanAction(player, {
-					condition = cmd.forwardmove < -40,
-					var = "zombie_shop_backwards_pressed",
-					action = function()
-						if player["ze2_info"].zombie_shop_selection + 1 >= #ZE2.Zombie_ShopList then
-							player["ze2_info"].zombie_shop_selection = #ZE2.Zombie_ShopList
-						else
-							player["ze2_info"].zombie_shop_selection = $ + 1
-						end
-						
-						S_StartSound(nil, sfx_menu1, player)
-					end
-				}, true)
-				
-				ZE2:TryBooleanAction(player, {
-					condition = cmd.buttons & BT_CUSTOM1,
-					var = "zombie_shop_c1_pressed",
-					action = function()
-						local selection = player["ze2_info"].zombie_shop_selection
-						
-						if ZE2.Zombie_ShopList[selection] then
-							local shopdef = ZE2.NumToShopDef(ZE2.Zombie_ShopList[selection])
-						
-							if shopdef then
-								if shopdef.price > player["ze2_info"].blood_currency then
-									S_StartSound(nil, sfx_lose, player)
-								else
-									player["ze2_info"].blood_currency = $ - shopdef.price
-									
-									if shopdef.buyfunc then
-										shopdef.buyfunc(player)
-									end
-								
-									S_StartSound(nil, sfx_s1a1, player)
-								end
-							end
-						end
-					end
-				}, true)
-			else
-				ZE2:TryBooleanAction(player, {
-					condition = cmd.buttons & BT_CUSTOM1,
-					var = "zombie_shop_c1_pressed",
-					action = function()
-						player["ze2_info"].zombie_shop_open = true
-					end
-				}, true)
-			end
-		end
 	end
 end)

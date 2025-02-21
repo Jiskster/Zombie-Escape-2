@@ -2,9 +2,12 @@ MainCfg
 GameData = ZE2.dat
 DemoDelayTime = 6942069420
 TitlePicsMode = User
-TitlePicsName = ZE2_TTL
-TitlePicsScale = 3
+TitlePicsName = 0
+TitlePicsScale = 4
+TitlePicsX = 25
+TitlePicsY = 10
 LoopTitle = true
+TitleScrollXSpeed = 9
 
 # Unlock the funny unlockables
 
@@ -28,7 +31,7 @@ Weather = 1
 NoZone = True
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 5
-Lua.ze2_laddertag = 1000
+Lua.hidefromvote = true
 
 Level J1
 Levelname = Egypt
@@ -40,21 +43,8 @@ NextLevel = J1
 SkyNum = 15
 NoZone = True
 SelectHeading = ZE2 Survival Maps
-Lua.ze2_timelimit = 7
-Lua.ze2_zombiereleasetime = 10
-
-Level J2
-Levelname = Roblox Obby
-Subtitle = Easy parkour
-Act = 0
-SkyNum = 1
-Music = RBXO
-TypeOfLevel = ZE2
-NextLevel = J2
-NoZone = True
-SelectHeading = ZE2 Survival Maps
-Lua.ze2_timelimit = 7
-Lua.ze2_noabilities = true
+Lua.ze2_timelimit = 5
+Lua.hidefromvote = true
 
 Level J3
 Levelname = Spooky Flower
@@ -68,93 +58,119 @@ NoZone = True
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 5
 
-Level J4
-Levelname = Minecraft
-Subtitle = Watch for creepers!
+Level WF
+Levelname = Waterfall
 Act = 0
-Music = MC1
+Music = UTWTFL
+Subtitle = Fills you with determination...
 TypeOfLevel = ZE2
-NextLevel = J4
-SkyNum = 14
-NoZone = True
-SelectHeading = ZE2 Survival Maps
-Lua.ze2_timelimit = 7
-
-Level J5
-Levelname = Undertale
-Subtitle = You fell down. Survive.
-Act = 0
-Music = UTSTR1
-TypeOfLevel = ZE2
-NextLevel = J5
-SkyNum = 10
-NoZone = True
-SelectHeading = ZE2 Survival Maps
-Lua.ze2_timelimit = 10
-Lua.ze2_zombiereleasetime = 10
-Lua.ze2_solofail = true
-
-Level J6
-Levelname = Obby From Hell
-Subtitle = Easy parkour
-Act = 0
-SkyNum = 52
-Music = RBXC
-TypeOfLevel = ZE2
-NextLevel = J2
-NoZone = True
-SelectHeading = ZE2 Survival Maps
-Lua.ze2_timelimit = 7
-Lua.ze2_noabilities = true
-
-#  is to make it not recognized as the tutorial by Takis and anyone else who reacts to the tutorial
-
-Level Y0
-Levelname = Tutorial
-Act = 0
-Music = TUTORL
-TypeOfLevel = ZE2
-LevelSelect = 1
-NextLevel = J0
-SkyNum = 99
-SelectHeading = ZE2 Survival Maps
-Lua.ze2_timelimit = 5
-
-Level EB
-LevelName = Cave of the Past
-SubTitle = The war against Giygas?
-Act = 0
-NoZone = true
-Music = COTP
-TypeOfLevel = ZE2
-SelectHeading = ZE2 Survival Maps
-Lua.ze2_timelimit = 10
-NextLevel = T3
-SkyNum = 7300
-
-Level DC
-Levelname = Doomed Corp
-Act = 0
-Music = THZ2
-Subtitle = Those Doom monsters did this...?
-TypeOfLevel = ZE2
-SkyNum = 8
+SkyNum = 601
 SelectHeading = ZE2 Survival Maps
 NoZone = True
 NextLevel = J1
 Lua.ze2_timelimit = 6
 
-Level M1
-Levelname = Super Zombio Bros
+Level A0
+Levelname = Grancolia
 Act = 0
-Subtitle = Mamma mia.
+Music = ALGFZ1
+Subtitle = Oddly Nostalgic
 TypeOfLevel = ZE2
-Music = MARIO1
-Skynum = 31
+SkyNum = 2
 SelectHeading = ZE2 Survival Maps
 NoZone = True
 NextLevel = J1
+Lua.ze2_timelimit = 6
+
+Level A1
+Levelname = Marble Depths
+Act = 0
+Music = UMBZ01
+Subtitle = Ancient Plains
+TypeOfLevel = ZE2
+SkyNum = 2
+SelectHeading = ZE2 Survival Maps
+NoZone = True
+NextLevel = A1
+Lua.ze2_timelimit = 6
+
+Level DC
+Levelname = Doomed Corp
+Act = 0
+Music = DM01
+Subtitle = Those Doom monsters did this...?
+TypeOfLevel = ze2
+SkyNum = 11
+Weather = PRECIP_STORM_NORAIN
+SelectHeading = ZE2 Survival Maps
+NoZone = True
+NextLevel = J1
+Lua.ze2_timelimit = 6
+
+Level NX
+Levelname = NOXY
+Subtitle = ZE2 TEST MAP
+Act = 0
+Music = NOXY
+TypeOfLevel = ZE2
+NextLevel = NX
+SkyNum = 99
+NoZone = True
+SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 7
+
+Level N4
+Levelname = FATAL DESERT
+Subtitle = A dangerous Journey
+Act = 0
+Music = DESERT
+TypeOfLevel = ZE2
+NextLevel = N4
+SkyNum = 11
+NoZone = True
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 5
+
+Level N9
+Levelname = Alphacombs
+Subtitle = The History
+Act = 0
+Music = ZEACPR
+TypeOfLevel = ZE2
+NextLevel = N9
+SkyNum = 11
+NoZone = True
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 7
+
+Level CV
+Levelname = Corrupted Void
+Subtitle = DIE!
+Act = 0
+Music = ZECVM
+TypeOfLevel = ZE2
+NextLevel = NX
+SkyNum = 500
+NoZone = True
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 10
+
+Level LS
+Levelname = Lost Sewer
+TypeOfLevel = ZE2
+SelectHeading = ZE2 Survival Maps
+Subtitle = This place kinda smells like shi
+Act = 0
+Nozone = true
+Keywords = LSW
+SkyNum = 1
+RecordAttack = true
+LevelSelect = 1
+SaveGame = true
+SkyboxScale = 64
+NoVisitNeeded = true
+Lua.ze2_timelimit = 6
+Lua.ze2_laddertag = 209
 
 Level G0
 Levelname = Westopolis
@@ -168,52 +184,28 @@ LevelSelect = 1
 SkyboxScale = 64
 NoZone = true
 SelectHeading = ZE2 Survival Maps
-Lua.ze2_timelimit = 7
 
-Level N0
-Levelname = Ancient Catacombs
-Subtitle = Lost in the creepy catacombs
-Act = 0
-Music = ACZEM
+Level P0
+Levelname = Azure Sanctuary
+Subtitle = Far underground, mostly flooded.
+Nozone = true
+Music = KIRWAT
 TypeOfLevel = ZE2
-NextLevel = N0
-SkyNum = 11
-Weather = 1
-NoZone = True
+SkyNum = 101
 SelectHeading = ZE2 Survival Maps
-Lua.ze2_timelimit = 7
+Lua.ze2_timelimit = 6
+Lua.hidefromvote = true
+
+Level P1
+Levelname = Egg Fortress
+Subtitle = Deep in Eggman's Territory
+TypeOfLevel = ZE2
+SelectHeading = ZE2 Survival Maps
+Music = CEZ1
+Skynum = 10
+Weather = 1
 
 ## SWARM MAP START
-
-Level V0
-Levelname = South Snow
-Subtitle = Very snowy.
-Act = 0
-Music = SS_M
-TypeOfLevel = ZE2
-NextLevel = V0
-SkyNum = 17
-Palette = 5
-weather = 2
-NoZone = True
-SelectHeading = ZE2 Swarm Maps
-Lua.ze2_timelimit = 6
-Lua.ze2_zombieswarm = true
-Lua.hidefromvote = true
-
-Level K5
-LevelName = The Dam
-SelectHeading = ZE2 Swarm Maps
-Subtitle = By, LeoTM, Rare
-Act = 0
-SkyNum = 30
-TypeOfLevel = ZE2
-NextLevel = K5
-Lua.hidefromvote = true
-Lua.ze2_timelimit = 6
-Lua.ze2_zombieswarm = true
-Lua.hidefromvote = true
-#Lua.Author = LeoTM, Rare
 
 Level N6
 Levelname = Summer Forest
@@ -226,6 +218,3 @@ SkyNum = 40
 NoZone = true
 Subtitle = It's a Forest!
 Lua.hidefromvote = true
-
-Freeslot
-SFX_DAMFLL

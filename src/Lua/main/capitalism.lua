@@ -4,11 +4,11 @@ freeslot("MT_RUBY_BOX", "S_RUBY_BOX", "S_RUBY_BOX_BREAK",
 		"SPR_RBYM")
 
 function ZE2:GivePlayerRubies(player, amount)
-	if player["ze2_info"].rubies + amount > player["ze2_info"].rubycap then
-		player["ze2_info"].rubies = player["ze2_info"].rubycap
+	if player["ze2_info"].cash + amount > player["ze2_info"].rubycap then
+		player["ze2_info"].cash = player["ze2_info"].rubycap
 		return false
 	else
-		player["ze2_info"].rubies = $ + amount
+		player["ze2_info"].cash = $ + amount
 	end
 	
 	return true
@@ -141,10 +141,6 @@ states[S_RUBY_BOX_BREAK] = {
     frame = A,
 	action = function(mo)
 		mo.flags2 = $|MF2_DONTDRAW
-		--SpawnEnemyGibs(mo,mo,nil,true)
-		--SpawnEnemyGibs(mo,mo,nil,true)
-		--SpawnBam(mo,true)
-		
 		ZE2:DeleteCrate3D(mo)
 		
 		local sfx = P_SpawnGhostMobj(mo)
@@ -153,6 +149,28 @@ states[S_RUBY_BOX_BREAK] = {
 		S_StartSound(sfx,mo.info.deathsound)
 		
 		A_RubyDrop(mo, 5)
+
+		--Cool !
+		for i = 0,8
+			local fa = FixedAngle(45*FU*i)
+			local plank = P_SpawnMobjFromMobj(mo,
+				P_ReturnThrustX(nil, fa, FixedDiv(mo.radius,mo.scale)),
+				P_ReturnThrustY(nil, fa, FixedDiv(mo.radius,mo.scale)),
+				P_RandomRange(0, FixedDiv(mo.height,mo.scale)>>FRACBITS)*FU,
+				MT_THOK
+			)
+			plank.tics = -1
+			plank.fuse = TICRATE
+			plank.state = S_WOODDEBRIS
+			plank.frame = $|FF_PAPERSPRITE
+			plank.colorized = true
+			plank.color = SKINCOLOR_RED
+			plank.flags = MF_NOCLIP|MF_NOCLIPHEIGHT
+			plank.angle = fa + P_RandomRange(-180,180)*ANG1
+			plank.rollangle = FixedAngle(P_RandomRange(0,359)*FU+P_RandomFixed())
+			P_Thrust(plank, fa, P_RandomRange(1,5)*plank.scale+P_RandomFixed())
+			P_SetObjectMomZ(plank,P_RandomRange(2,10)*FU+P_RandomFixed())
+		end
 	end,
 	tics = 1,
 }
@@ -160,8 +178,8 @@ states[S_RUBY_BOX_BREAK] = {
 sfxinfo[sfx_rbyhit].caption = "Ruby"
 
 addHook("PlayerThink", function(player)
-	if player["ze2_info"].rubies > player["ze2_info"].rubycap then
-		player["ze2_info"].rubies = player["ze2_info"].rubycap
+	if player["ze2_info"].cash > player["ze2_info"].rubycap then
+		player["ze2_info"].cash = player["ze2_info"].rubycap
 	end
 	
 	if player["ze2_info"].rubypickupdelay then
@@ -186,9 +204,9 @@ end)
 addHook("MobjDeath", function(mobj)
 	if gametype ~= GT_ZE2 return end
 	
-	if mobj.rubiesholding then
-		A_RubyDrop(mobj,mobj.rubiesholding)
-		mobj.rubiesholding = 0
+	if mobj.cashholding then
+		A_RubyDrop(mobj,mobj.cashholding)
+		mobj.cashholding = 0
 	end
 end)
 
@@ -198,7 +216,7 @@ addHook("MobjSpawn", function(mobj)
 	if mobjinfo[mobj.type].rubydrop and type(mobjinfo[mobj.type].rubydrop) == "table" 
 	and #mobjinfo[mobj.type].rubydrop == 2 then
 		local ruby_count = P_RandomRange(mobjinfo[mobj.type].rubydrop[1],mobjinfo[mobj.type].rubydrop[2])
-		mobj.rubiesholding = ruby_count
+		mobj.cashholding = ruby_count
 	end
 end)
 
@@ -211,7 +229,7 @@ addHook("TouchSpecial", function(special, toucher)
 			return true
 		end
 		
-		if toucher.player["ze2_info"].rubies + 1 > toucher.player["ze2_info"].rubycap then
+		if toucher.player["ze2_info"].cash + 1 > toucher.player["ze2_info"].rubycap then
 			return true
 		elseif toucher.player["ze2_info"].rubypickupdelay then
 			return true
@@ -221,7 +239,8 @@ addHook("TouchSpecial", function(special, toucher)
 			S_StartSound(toucher, sfx_rbyhit)
 		end
 
-		ZE2:QueuePlayerRubies(toucher.player, 1)
+		ZE2:GivePlayerRubies(toucher.player, 5)
+		S_StartSound(toucher, sfx_rbyhit)
 		ZE2:IncrementSprint(toucher.player, 5*FRACUNIT)
 
 		toucher.player["ze2_info"].rubypickupdelay = ZE2.rubypickupdelay.value
@@ -262,7 +281,7 @@ addHook("MobjThinker", function(mobj)
 	for p in players.iterate
 		if p["ze2_info"].team ~= 1 then continue end
 		if p.spectator then continue end
-		if p["ze2_info"].rubies == p["ze2_info"].rubycap then continue end
+		if p["ze2_info"].cash == p["ze2_info"].rubycap then continue end
 		if not (p.mo and p.mo.valid) then continue end
 
 		local mo = p.mo
@@ -292,12 +311,29 @@ addHook("MobjThinker", function(mobj)
 		mobj.spritexscale,
 		mobj.spriteyscale = $1+mom,$2-mom
 	end
+	
+	if P_RandomChance(FU/8)
+		local wind = P_SpawnMobj(
+			mobj.x + P_RandomRange(-18,18)*mobj.scale,
+			mobj.y + P_RandomRange(-18,18)*mobj.scale,
+			mobj.z + (mobj.height/2) + P_RandomRange(-20,20)*mobj.scale,
+			MT_BOXSPARKLE
+		)
+		wind.frame = $|FF_FULLBRIGHT
+		wind.renderflags = $|RF_FULLBRIGHT
+		wind.color = P_RandomChance(FU/2) and SKINCOLOR_RED or SKINCOLOR_CRIMSON
+		wind.colorized = true
+		wind.alpha = FU/2
+		
+		P_SetObjectMomZ(wind,P_RandomRange(1,3)*FU)
+	end
 
 	if pmofound and pmofound.valid then
 		P_FlyTo(mobj,pmofound.x,pmofound.y,pmofound.z,4*FRACUNIT,true)
 	end
 end, MT_CRRUBY)
 
+--TODO: this code kinda sucks ngl
 addHook("MobjThinker",function(door)
 	if not (door and door.valid) then return end
 	
@@ -315,7 +351,7 @@ addHook("MobjThinker",function(door)
 		
 		dist = R_PointToDist2(cam.x,cam.y, door.x,door.y)
 		
-		local thok = P_SpawnMobj(cam.x, cam.y, cam.z, MT_NULL)
+		local thok = P_SpawnMobj(cam.x, cam.y, cam.z, MT_RAY)
 		thok.angle = cam.angle
 		thok.flags2 = $|MF2_DONTDRAW
 		if dist <= 5000*FU
@@ -350,7 +386,6 @@ addHook("MobjThinker",function(door)
 	end
 	
 	if not cullout
-
 		if not door.made3d
 			local list
 			local flip = P_MobjFlip(door)
@@ -362,8 +397,9 @@ addHook("MobjThinker",function(door)
 			for i = 1,4
 				local angle = door.angle+(FixedAngle(90*FU*(i-1)))
 				list[0+i] = P_SpawnMobjFromMobj(door,
-					P_ReturnThrustX(nil,angle,16*door.scale),
-					P_ReturnThrustY(nil,angle,16*door.scale),
+					--dont scale up door.spritexscale, since the func already does
+					P_ReturnThrustX(nil,angle,16*door.spritexscale),
+					P_ReturnThrustY(nil,angle,16*door.spritexscale),
 					0,MT_THOK
 				)
 				list[0+i].frame = A
@@ -412,30 +448,36 @@ addHook("MobjThinker",function(door)
 				list[0+i].height = 32*FU
 				list[0+i].radius = 0
 				list[0+i].scale = door.scale
+				list[0+i].spritexscale = door.spritexscale
+				list[0+i].spriteyscale = door.spriteyscale
 				P_MoveOrigin(list[0+i],
-					door.x+P_ReturnThrustX(nil,angle,16*door.scale),
-					door.y+P_ReturnThrustY(nil,angle,16*door.scale),
-					GetActorZ(door,list[0+i],1)
+					door.x+P_ReturnThrustX(nil,angle,16*FixedMul(door.spritexscale, door.scale)) + door.momx,
+					door.y+P_ReturnThrustY(nil,angle,16*FixedMul(door.spritexscale, door.scale)) + door.momy,
+					GetActorZ(door,list[0+i],1) + door.momz
 				)
 			end
 			list[5].angle = door.angle
 			list[5].height = 0
 			list[5].scale = door.scale
 			list[5].shadowscale = (door.scale/2)*14/10
+			list[5].spritexscale = door.spritexscale
+			list[5].spriteyscale = door.spritexscale
 			P_MoveOrigin(list[5],
-				door.x,
-				door.y,
-				GetActorZ(door,list[5],2)
+				door.x + door.momx,
+				door.y + door.momy,
+				(P_MobjFlip(door) == 1 and (door.z + FixedMul(door.height, door.spriteyscale)) or door.z) + door.momz
 			)
 
 			P_SetOrigin(list[6],door.x,door.y,door.z)
 			list[6].angle = door.angle
 			list[6].height = 0
 			list[6].scale = door.scale
+			list[5].spritexscale = door.spritexscale
+			list[5].spriteyscale = door.spritexscale
 			P_MoveOrigin(list[6],
-				door.x,
-				door.y,
-				GetActorZ(door,list[6],1)
+				door.x + door.momx,
+				door.y + door.momy,
+				(P_MobjFlip(door) == 1 and door.z or door.z + FixedMul(door.height, door.spriteyscale)) + door.momz
 			)
 			
 		end
@@ -458,7 +500,7 @@ COM_AddCommand("z_sendrubies", function(player, player2, rubies)
 		return
 	end
 	
-	if rubies > player["ze2_info"].rubies then
+	if rubies > player["ze2_info"].cash then
 		CONS_Printf(player, "\x85You don't have enough rubies to do this.")
 		return
 	end
@@ -468,11 +510,11 @@ COM_AddCommand("z_sendrubies", function(player, player2, rubies)
 		return
 	end
 	
-	player["ze2_info"].rubies = $ - rubies 
-	players[player2]["ze2_info"].rubies = $ + rubies
+	player["ze2_info"].cash = $ - rubies 
+	players[player2]["ze2_info"].cash = $ + rubies
 	
 	CONS_Printf(player, 
-	"\x82You sent "..rubies.." rubies to "..players[player2].name)
+	"\x82You sent "..cash.." rubies to "..players[player2].name)
 	CONS_Printf(players[player2], 
 	string.format("\x82%s\x82 sent you %s rubies", player.name, tostring(rubies))
 	)
@@ -495,7 +537,8 @@ COM_AddCommand("z_giverubies", function(player, rubies)
 		return
 	end
 
-	ZE2:QueuePlayerRubies(player, rubies)
+	ZE2:GivePlayerRubies(player, rubies)
+	S_StartSound(player.mo, sfx_rbyhit)
 	
-	CONS_Printf(player, "\x82You got "..rubies.." rubies")
+	CONS_Printf(player, "\x82You got "..cash.." rubies")
 end, COM_ADMIN)

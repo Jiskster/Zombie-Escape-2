@@ -44,7 +44,7 @@ local function CheckGameForWinRing()
 	return true
 end
 
-function ZE2:StartWin(team)
+function ZE2:StartWin(team, fromring)
 	self.game_ended = true
 	self.team_won = team
 	
@@ -68,6 +68,23 @@ function ZE2:StartWin(team)
 				continue
 			end
 		end
+	end
+	
+	local cash_base_award = 15
+	
+	if fromring then
+		cash_base_award = $ * 2
+	end
+	
+	local cash_award = ZE2.PlayerCount()*cash_base_award
+	
+	for player in players.iterate do
+		if player.spectator then continue end
+		if player["ze2_info"].team ~= team then continue end
+		
+		ZE2:GivePlayerRubies(player, cash_award)
+		S_StartSound(player.mo, sfx_rbyhit)
+		CONS_Printf(player, "\x83 + Awarded "..cash_award.." cash awarded for winning!")
 	end
 	
 	P_StartQuake(24*FRACUNIT, 3*TICRATE)
@@ -153,10 +170,10 @@ addHook("ThinkFrame", function()
 			if input ~= nil then
 				ZE2.zombie_releasetime = input*TICRATE
 			else
-				ZE2.zombie_releasetime = 12*TICRATE -- TODO: Un magic-number this
+				ZE2.zombie_releasetime = 10*TICRATE -- TODO: Un magic-number this
 			end
 		else
-			ZE2.zombie_releasetime = 12*TICRATE
+			ZE2.zombie_releasetime = 10*TICRATE
 		end
 		
 		choosingnums = nil -- release memory idk wtf
@@ -184,8 +201,8 @@ addHook("ThinkFrame", function()
 end)
 
 addHook("MobjThinker", function(mobj)
-	if ZE2.game_ended and leveltime and ZE2.win_tics >= ZE2.MapVoteStartFrame then
-
+	if ZE2.game_ended and leveltime and ZE2.win_tics >= ZE2.MapVoteStartFrame 
+	and not (ZE2.rounds_left > 1) then
 		mobj.flags = $ | MF_NOTHINK
 		return true
 	end
@@ -196,8 +213,7 @@ COM_AddCommand("z_forcewin", function(player, arg1)
  	if not arg1 or not tonumber(arg1) then return end
  	arg1 = tonumber(arg1)
 	
-	if (arg1>0 and arg1<3) then 
+	if (arg1 > 0 and arg1 < 3) then 
 		ZE2:StartWin(arg1) 
 	end
-	
 end,COM_ADMIN)

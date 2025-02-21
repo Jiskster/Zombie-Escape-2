@@ -117,7 +117,7 @@ ZE2.PregameMenuDef = {
 				if shoplistindex then
 					local shopdef = ZE2.NumToShopDef(shoplistindex.shopdefid)
 					local price = shopdef.price
-					local enoughrubies = (player["ze2_info"].rubies - price) >= 0
+					local enoughrubies = (player["ze2_info"].cash - price) >= 0
 
 					if not shoplistindex.sold then
 						if enoughrubies then
@@ -127,12 +127,12 @@ ZE2.PregameMenuDef = {
 							
 							if shopdef.iteminfo then
 								if ZE2:GiveItem(player, shopdef.iteminfo, nil) then
-									player["ze2_info"].rubies = $ - price
+									player["ze2_info"].cash = $ - price
 									S_StartSound(nil, sfx_strpst, player)
 									shoplistindex.sold = true
 								end
 							else
-								player["ze2_info"].rubies = $ - price
+								player["ze2_info"].cash = $ - price
 								S_StartSound(nil, sfx_strpst, player)
 								shoplistindex.sold = true
 							end

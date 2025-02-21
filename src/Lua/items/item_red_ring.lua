@@ -1,28 +1,29 @@
 ZE2:CreateItem("Red Ring",  {
 	object = MT_REDRING,
 	icon = "RINGIND",
-	firerate = 6,
+	sound = sfx_wpfire,
+	firerate = 5,
 	color = SKINCOLOR_RED,
-	knockback = 5*FRACUNIT,
+	knockback = 7*FRACUNIT,
 	damage = 45,
-	velocity_multiplier = 2*FRACUNIT,
-	max_ammo = 50,
-	ammo = 50,
-	reload_time = 1*TICRATE + TICRATE/2,
+	velocity_multiplier = 3*FRACUNIT,
+	max_ammo = 30,
+	ammo = 30,
+	reload_time = 3*TICRATE/2,
 	skin_overwrite = {
 		["fang"] = {
 			displayname = "Cork",
 			object = MT_CORK,
 			icon = "CORKIND",
-			firerate = 26,
+			firerate = 5,
 			color = SKINCOLOR_BROWN,
-			knockback = 80*FRACUNIT,
+			knockback = 20*FRACUNIT,
 			velocity_multiplier = 2*FRACUNIT,
 			damage = 100,
 			
 			max_ammo = 10,
 			ammo = 10,
-			reload_time = 3*TICRATE,
+			reload_time = 1*TICRATE,
 		}
 	},
 	onspawn = function(pmo, mo)

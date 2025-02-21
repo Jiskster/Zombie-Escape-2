@@ -5,7 +5,7 @@ local explosion_ring = ZE2:CreateItem("Explosion Ring", {
 	color = SKINCOLOR_BLACK,
 	damage = 120,
 	knockback = 90*FRACUNIT,
-	price = 140,
+	price = 700,
 })
 
 ZE2:RegisterShop_ItemID(explosion_ring)

@@ -39,7 +39,7 @@ local landmine = ZE2:CreateItem("Landmine",  {
 	count = 25,
 	max_count = 255,
 	sound = sfx_lndplc,
-	price = 100,
+	price = 500,
 	ontrigger = function(player)
 		local landmine = P_SpawnMobjFromMobj(player.mo, 0, 0, 0, MT_ZE2_LANDMINE)
 		

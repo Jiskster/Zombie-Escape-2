@@ -111,7 +111,7 @@ COM_AddCommand("z_sellinventory", function(player)
 			
 			CONS_Printf(player,toprint)
 			
-			player["ze2_info"].rubies = $ + item_cost
+			player["ze2_info"].cash = $ + item_cost
 		end
 	end
 	player["ze2_info"].survivor_inventory = {
@@ -146,13 +146,13 @@ COM_AddCommand("z_sellhand", function(player)
 		
 		item_cost = ($*3)/4 -- Give only 75% back.
 		
-		local toprint = string.format("%s sold for \x85\%s Rubies. (75 percent given back)",item_name,tostring(item_cost))
+		local toprint = string.format("%s sold for \x85\%s Cash. (75 percent given back)",item_name,tostring(item_cost))
 		
 		CONS_Printf(player,toprint)
 		
 		table.remove(inventory, player["ze2_info"].inventory_selection)
 		
-		player["ze2_info"].rubies = $ + item_cost
+		player["ze2_info"].cash = $ + item_cost
 		
 	elseif inventory_slot and not inventory_slot.price then -- Unsellable but has slot
 		CONS_Printf(player, "\x85\This item is unsellable!")
@@ -163,33 +163,19 @@ end)
 
 COM_AddCommand("z_giveshield", function(player, shieldtype)
 	if not (player.mo and player.mo.valid) then return end
-	if (shieldtype == nil or not tonumber(shieldtype)) then return end
+	if (shieldtype == nil or tonumber(shieldtype) == nil) then return end
+	
+	if tonumber(shieldtype) <= 0 then
+		CONS_Printf(player, "\x82\Cleared shield!")
+		ZE2:RemoveShieldFromMobj(player.mo)
+		return
+	end
 	
 	if not ZE2:GiveShieldToMobj(player.mo, tonumber(shieldtype)) then
 		CONS_Printf(player, "\x85\Invalid shieldtype!")
 		return
 	end
 end, COM_ADMIN)
-
-COM_AddCommand("z_procontrols", function(player, toggling)
-	if not (toggling) then
-		CONS_Printf(player, "z_procontrols <true/false>")
-		return
-	end
-	
-	if not (toggling == "true") and not (toggling == "false") then
-		CONS_Printf(player, "\x85\Invalid argument for z_procontrols")
-		return
-	end
-	
-	if (toggling == "true") then
-		player["ze2_info"].pro_controls = true
-		CONS_Printf(player, "Pro Controls has been enabled.")
-	elseif (toggling == "false") then
-		player["ze2_info"].pro_controls = false
-		CONS_Printf(player, "Pro Controls has been disabled.")
-	end
-end)
 
 COM_AddCommand("z_swapitem", function(player, slot1, slot2)
 	local help = "z_swapitem <slot1> <slot2>"

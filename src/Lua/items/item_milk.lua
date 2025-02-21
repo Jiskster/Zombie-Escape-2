@@ -12,7 +12,7 @@ local milk = ZE2:CreateItem("Milk", {
 	ontrigger = function(player)
 		ZE2:ChangeStamina(player, 40*FRACUNIT)
 	end,
-	price = 50,
+	price = 250,
 })
 
 ZE2:RegisterShop_ItemID(milk)

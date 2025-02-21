@@ -1,0 +1,135 @@
+Freeslot
+SPR_TELE
+SPR_H2VH
+SPR_H2BB
+SPR_ARAT
+MT_OHSHITARAT
+MT_H2BULB
+MT_H2VHS
+MT_TELE
+S_OH_SHIT_A_RAT
+S_OH_SHIT_A_RAT2
+S_OH_SHIT_A_RAT3
+S_OH_SHIT_A_RAT4
+S_OH_SHIT_A_RAT5
+S_OH_SHIT_A_RAT6
+S_TELESCENE
+S_H2VHS
+S_H2BULB
+
+State S_OH_SHIT_A_RAT
+SpriteName = ARAT
+SpriteFrame = A
+Duration = 1
+Next = S_OH_SHIT_A_RAT2
+Action = A_FindTarget
+Var1 = MT_plaYER
+
+State S_OH_SHIT_A_RAT2
+SpriteName = ARAT
+SpriteFrame = C
+Duration = 3
+Next = S_OH_SHIT_A_RAT3
+Action = A_Chase
+Var1 = 0
+Var2 = 0
+
+State S_OH_SHIT_A_RAT3
+SpriteName = ARAT
+SpriteFrame = D
+Duration = 3
+Next = S_OH_SHIT_A_RAT4
+Action = None
+
+State S_OH_SHIT_A_RAT4
+SpriteName = ARAT
+SpriteFrame = B
+Duration = 4
+Next = S_OH_SHIT_A_RAT5
+Action = None
+
+State S_OH_SHIT_A_RAT5
+SpriteName = ARAT
+SpriteFrame = B
+Action = A_Repeat
+Var1 = 2
+Var2 = S_OH_SHIT_A_RAT2
+Duration = 0
+Next = S_OH_SHIT_A_RAT6
+
+State S_OH_SHIT_A_RAT6
+SpriteName = ARAT
+SpriteFrame = D
+Duration = 0
+Next = S_OH_SHIT_A_RAT2
+Action = A_FaceTarget
+Var1 = 0
+Var2 = 0
+
+Object MT_OHSHITARAT
+MapThingNum = 6969
+SpawnState = S_OH_SHIT_A_RAT
+SpawnHealth = 1
+SeeState = S_OH_SHIT_A_RAT2
+SeeSound = sfx_None
+ReactionTime = 32
+AttackSound = sfx_None
+PainState = S_NULL
+PainChance = 200
+PainSound = sfx_None
+MeleeState = S_NULL
+MissileState = S_NULL
+DeathState = S_XPLD1
+XDeathState = S_NULL
+DeathSound = sfx_None
+Speed = 30
+Radius = 35*FRACUNIT
+Height = 25*FRACUNIT
+DispOffset = 0
+Mass = 100
+Damage = 0
+ActiveSound = sfx_None
+Flags = MF_ENEMY|MF_SPECIAL|MF_SHOOTABLE
+RaiseState = S_NULL
+
+State S_TELESCENE
+SpriteName = TELE
+SpriteFrame = A|FF_PAPERSPRITE
+Duration = -1
+
+State S_H2BULB
+SpriteName = H2BB
+SpriteFrame = A
+Duration = -1
+
+State S_H2VHS
+SpriteName = H2VH
+SpriteFrame = A
+Duration = -1
+
+Object MT_TELE
+MapThingNum = 4270
+Spawnstate = S_TELESCENE
+Spawnhealth = 6900
+Radius = 20*FRACUNIT
+Height = 90*FRACUNIT
+MaSS = 100
+Flags = MF_SOLID|MF_SCENERY|MF_NOTHINK|MF_PAPERCOLLISION
+
+Object MT_H2VHS
+MapThingNum = 4273
+Spawnstate = S_H2VHS
+Spawnhealth = 6900
+Radius = 20*FRACUNIT
+Height = 10*FRACUNIT
+MaSS = 100
+Flags = MF_SOLID|MF_SCENERY|MF_NOTHINK|MF_PAPERCOLLISION
+
+Object MT_H2BULB
+MapThingNum = 4274
+Spawnstate = S_H2BULB
+Spawnhealth = 6900
+Radius = 16*FRACUNIT
+Height = 8*FRACUNIT
+MaSS = 100
+Flags = MF_SOLID|MF_SCENERY|MF_NOTHINK|MF_PAPERCOLLISION

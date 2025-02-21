@@ -5,7 +5,7 @@ skincolors[SKINCOLOR_ALPHAZOMBIE] = {
     invcolor = SKINCOLOR_GREEN,
     invshade = 9,
     chatcolor = V_GREENMAP,
-    accessible = true
+    accessible = false
 }
 //these are the only two lines you need to edit!
 local flashColor = skincolors[SKINCOLOR_ALPHAZOMBIE] //change this to your desired skincolor!

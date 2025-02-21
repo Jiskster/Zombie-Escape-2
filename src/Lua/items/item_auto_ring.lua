@@ -1,23 +1,26 @@
 local auto_ring = ZE2:CreateItem("Automatic Ring",  {
 	object = MT_THROWNAUTOMATIC,
 	icon = "AUTOIND",
-	firerate = 4,
+	sound = sfx_wpfir2,
+	firerate = 2,
 	color = SKINCOLOR_GREEN,
 	autouse = true,
-	damage = 20,
-	velocity_multiplier = 2*FRACUNIT,
-	knockback = 3*FRACUNIT,
+	damage = 7,
+	velocity_multiplier = 3*FRACUNIT + 4*FRACUNIT/3,
+	knockback = 2*FRACUNIT,
 	flags2 = MF2_AUTOMATIC,
-	ammo = 50,
-	reload_time = TICRATE*3,
-	price = 50,
+	ammo = 30,
+	reload_time = TICRATE*2,
+	price = 250,
 	skin_overwrite = {
 		["knuckles"] = {
 			damage = 40,
-			max_ammo = 100,
-			ammo = 100,
-			firerate = 3,
-			reload_time = TICRATE*6,
+			max_ammo = 50,
+			ammo = 50,
+			firerate = 4,
+			knockback = 4*FRACUNIT,
+			velocity_multiplier = 2*FRACUNIT,
+			reload_time = TICRATE*3,
 		}
 	}
 })

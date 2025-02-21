@@ -1,7 +1,4 @@
-
 addHook("PlayerSpawn", ZE2.init_player)
-
-addHook("TouchSpecial", ZE2.HitMegaHP, MT_MEGAHP)
 
 addHook("PreThinkFrame", function()
 	for player in players.iterate do
@@ -10,8 +7,6 @@ addHook("PreThinkFrame", function()
 end)
 
 addHook("PlayerThink", ZE2.giveplayerflags)
-
-addHook("MobjThinker", ZE2.LimitMobjHealth)
 
 addHook("MapLoad", function(map)
 	if gametype == GT_ZE2 then
