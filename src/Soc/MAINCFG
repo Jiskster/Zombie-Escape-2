@@ -9,6 +9,8 @@ TitlePicsY = 10
 LoopTitle = true
 TitleScrollXSpeed = 9
 
+Clear All
+
 # Unlock the funny unlockables
 
 Unlockable 2
