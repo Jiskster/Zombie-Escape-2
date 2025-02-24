@@ -109,6 +109,19 @@ NoZone = True
 NextLevel = J1
 Lua.ze2_timelimit = 6
 
+Level N0
+Levelname = Ancient Catacombs
+Subtitle = Lost in the creepy catacombs
+Act = 0
+Music = ACZEM
+TypeOfLevel = ZE2
+NextLevel = N0
+SkyNum = 11
+Weather = 1
+NoZone = True
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 7
+
 Level NX
 Levelname = NOXY
 Subtitle = ZE2 TEST MAP

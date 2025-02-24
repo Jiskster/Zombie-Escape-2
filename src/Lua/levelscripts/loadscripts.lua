@@ -42,3 +42,5 @@ folder = "Westopolis"; dofolder("Timers");
 folder = "Egg Fortress"; dofolder("Timers");
 
 folder = "Azure Sanctuary"; dofolder("Timers");
+
+folder = "Ancient Catacombs"; dofolder("Timers");
