@@ -199,6 +199,7 @@ LevelSelect = 1
 SkyboxScale = 64
 NoZone = true
 SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 6
 
 Level P0
 Levelname = Azure Sanctuary
