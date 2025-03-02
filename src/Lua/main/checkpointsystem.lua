@@ -140,7 +140,7 @@ local function ActivateCheckpoint(mobj, checkpoint)
 					
 					--checkpoint.state = checkpoint.info.painstate
 					--S_StartSound(mobj, checkpoint.info.painsound)
-					---print("Checkpoint Activated: "..checkpoint_number)
+					--print("Checkpoint Activated: "..checkpoint_number)
 					
 					if not (checkpoint_extra_flags & DISABLECATCHUP_FLAG) then
 						for tplayer in players.iterate do 
@@ -244,7 +244,7 @@ addHook("ThinkFrame", function()
 				if checkpoint.subsector and checkpoint.subsector.valid 
 				and checkpoint.subsector.sector and checkpoint.subsector.sector.valid
 				and checkpoint.mobj and checkpoint.mobj.valid then
-					if pmo.subsector == checkpoint.subsector 
+					if pmo.subsector.sector == checkpoint.subsector.sector
 					and not checkpoint.disable_autotrigger then
 						local sector = checkpoint.subsector.sector
 						local cmo = checkpoint.mobj
