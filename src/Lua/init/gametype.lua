@@ -175,7 +175,7 @@ G_AddGametype({
 	name = "ZE2 Survival",
 	identifier = "ze2",
 	typeoflevel = TOL_ZE2,
-	rules = GTR_TIMELIMIT|GTR_ALLOWEXIT|GTR_SPAWNENEMIES|GTR_CUTSCENES|GTR_SPECTATORS|GTR_NOSPECTATORSPAWN,
+	rules = GTR_TIMELIMIT|GTR_ALLOWEXIT|GTR_SPAWNENEMIES|GTR_CUTSCENES|GTR_SPECTATORS|GTR_NOSPECTATORSPAWN|GTR_DEATHMATCHSTARTS,
 	intermissiontype = int_none, -- No intermission screen for possible inbuilt screen.
 	--headerleftcolor = 152,
 	--headerrightcolor = 40,
