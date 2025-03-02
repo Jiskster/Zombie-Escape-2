@@ -6,7 +6,7 @@ mobjinfo[MT_ZE2CHECKPOINT] = {
 	//$Sprite TGFXA0 
 	
 	//$Arg0 Checkpoint Number
-	//$Arg0Default 0
+	//$Arg0Default 1
 	
 	//$Arg1 Checkpoint Flags
 	//$Arg1Type 12
