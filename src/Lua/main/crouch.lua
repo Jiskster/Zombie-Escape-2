@@ -44,12 +44,22 @@ addHook("PreThinkFrame", function()
 		local skin = pmo.skin
 		
 		if (cmd.buttons & BT_SPIN) then
+			local limit = 5*FU
+			
 			if not player["ze2_info"].crouching then
-				if P_IsObjectOnGround(player.mo) and player.speed > 10*FU then
-					L_SpeedCap(player.mo, 5*FU) -- Halt ground movement
+				if not player["ze2_info"].nofrictiontics then
+					if (P_IsObjectOnGround(player.mo) or (player.mo.eflags & MFE_JUSTHITFLOOR)) and player.speed > 10*FU then
+						L_SpeedCap(player.mo, limit) -- Halt ground movement
+					end
 				end
 				
 				player["ze2_info"].crouching = true
+			else
+				if not player["ze2_info"].nofrictiontics then
+					if (P_IsObjectOnGround(player.mo) and (player.mo.eflags & MFE_JUSTHITFLOOR)) then
+						L_SpeedCap(player.mo, limit)
+					end
+				end
 			end
 		else
 			-- if gap higher than player height 
