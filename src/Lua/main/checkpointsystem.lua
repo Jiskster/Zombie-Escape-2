@@ -98,8 +98,9 @@ local function ActivateCheckpoint(mobj, checkpoint)
 					ZE2.LatestSurvivorCheckpoint = checkpoint_number
 					player["ze2_info"].checkpoint_number = ZE2.LatestSurvivorCheckpoint
 					
-					--checkpoint.state = checkpoint.info.painstate
-					--S_StartSound(mobj, checkpoint.info.painsound)
+					checkpoint.state = checkpoint.info.painstate
+					S_StartSound(mobj, checkpoint.info.painsound)
+					print("Checkpoint Activated: "..checkpoint_number)
 					
 					if not (checkpoint_extra_flags & DISABLECATCHUP_FLAG) then
 						for tplayer in players.iterate do 
@@ -134,8 +135,9 @@ local function ActivateCheckpoint(mobj, checkpoint)
 					ZE2.LatestZombieCheckpoint = checkpoint_number
 					player["ze2_info"].checkpoint_number = ZE2.LatestZombieCheckpoint
 					
-					--checkpoint.state = checkpoint.info.painstate
-					--S_StartSound(mobj, checkpoint.info.painsound)
+					checkpoint.state = checkpoint.info.painstate
+					S_StartSound(mobj, checkpoint.info.painsound)
+					print("Checkpoint Activated: "..checkpoint_number)
 					
 					if not (checkpoint_extra_flags & DISABLECATCHUP_FLAG) then
 						for tplayer in players.iterate do 
@@ -189,6 +191,9 @@ addHook("MapLoad", function()
 				y = thing.y,
 				z = P_FloorzAtPos(thing.x*FU, thing.y*FU, thing.z*FU, mobjinfo[MT_ZE2CHECKPOINT].height)/FU,
 				angle = thing.angle,
+				subsector = R_PointInSubsectorOrNil(thing.x*FU, thing.y*FU),
+				mobj = thing.mobj,
+				thing = thing,
 				catchup_delay = checkpoint_catchup_delay*TICRATE,
 				zombie_checkpoint = not not (checkpoint_flags & ZOMBIEFLAG),
 				survivor_checkpoint = not not (checkpoint_flags & SURVIVORFLAG),
@@ -197,6 +202,29 @@ addHook("MapLoad", function()
 	end
 end)
 
+addHook("ThinkFrame", function()
+	if gametype ~= GT_ZE2 then return end
+	if not #ZE2.Checkpoints then return end
+	
+	for player in players.iterate do
+		local pmo = player.mo
+		
+		if pmo and pmo.valid then
+			for checkpoint_num,checkpoint in pairs(ZE2.Checkpoints) do
+				print("A: "..P_FloorzAtPos(pmo.x, pmo.y, pmo.z, pmo.height))
+				print("B: "..checkpoint.z)
+				if checkpoint.subsector ~= nil 
+				and pmo.subsector == checkpoint.subsector 
+				and P_FloorzAtPos(pmo.x, pmo.y, pmo.z, pmo.height) == checkpoint.z
+				and checkpoint.mobj and checkpoint.mobj.valid then
+					ActivateCheckpoint(player, checkpoint.mobj)
+				end
+			end
+		end
+	end
+end)
+
+/*
 --minor TODO: Fix Iterating many times in the same checkpoint
 addHook("LinedefExecute", function(line, mobj, sector)
 	local checkpoint_doomednum = mobjinfo[MT_ZE2CHECKPOINT].doomednum
@@ -220,6 +248,7 @@ addHook("LinedefExecute", function(line, mobj, sector)
 		end
 	end
 end, "ZE2CHECKPOINT")
+*/
 
 addHook("PlayerSpawn", function(player)
 	if not leveltime then return end
@@ -229,10 +258,3 @@ addHook("PlayerSpawn", function(player)
 		ZE2.LatestCheckpointTeleport(player, true)
 	end
 end)
-
--- Deprecate older maps.
-addHook("LinedefExecute", function(line, mobj, sector)
-	if mobj and mobj.valid and mobj.player and mobj.player.valid then
-		print("ZCHECKPOINT Lua Linedef Executor is deprecated. X:"..mobj.x/FU.."|Y:"..mobj.y/FU.."|Z:"..mobj.z/FU) 
-	end
-end, "ZCHECKPOINT")
