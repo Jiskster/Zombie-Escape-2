@@ -297,13 +297,6 @@ ZE2.SetZCinventory = function(player)
 	end
 end
 
--- TODO: Remove this function on v1.0 release.
-ZE2.AddConfig = function(charname, input_table)
-	print("Failed to add character: "..charname.." (ZE2.AddConfig is disabled, and will be removed on v1.0 release)")
-	
-	return
-end
-
 function ZE2:AddCharacterConfig(skinname, input_table)
 	local ZE2 = self;
 	local speeds = {
