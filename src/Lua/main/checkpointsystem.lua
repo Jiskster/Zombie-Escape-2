@@ -277,31 +277,10 @@ addHook("ThinkFrame", function()
 	end
 end)
 
-/*
---minor TODO: Fix Iterating many times in the same checkpoint
+-- TODO: Remove this whole hook in Gamma 3
 addHook("LinedefExecute", function(line, mobj, sector)
-	local checkpoint_doomednum = mobjinfo[MT_ZE2CHECKPOINT].doomednum
-	
-	if mobj and mobj.valid and mobj.player and mobj.player.valid then
-		if line.tag then
-			local foundcheckpoint
-			
-			for mapthing in mapthings.tagged(line.tag) do
-				if mapthing.type ~= checkpoint_doomednum then continue end
-				
-				foundcheckpoint = mapthing
-				--print("Found Checkpoint")
-				break;
-			end
-			
-			if foundcheckpoint and foundcheckpoint.mobj and foundcheckpoint.mobj.valid then
-				--print("Valid checkpoint mobj")
-				ActivateCheckpoint(mobj, foundcheckpoint.mobj)
-			end
-		end
-	end
+	print("\x82WARNING:\x80 ".."ZE2CHECKPOINT linedef execute is deprecated! LINE NUMBER ["..#line.."]")
 end, "ZE2CHECKPOINT")
-*/
 
 addHook("PlayerSpawn", function(player)
 	if not leveltime then return end
