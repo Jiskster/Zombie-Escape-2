@@ -17,10 +17,10 @@ mobjinfo[MT_ZE2CHECKPOINT] = {
 	//$Arg2Default 25
 
 	//$Arg3 Extra Flags
-	//$Arg3ToolTip Indiscriminate Checkpoints: \nAllow any team to influence other team's catchup teleports.
+	//$Arg3ToolTip Indiscriminate Checkpoints: \nAllow any team to influence other team's catchup teleports.\n\nDisable Catchup: \nDisables the checkpoint catchup routine.\n\nDisable Auto Trigger: \nDisables the function where it auto triggers the checkpoint if you're in the same sector as it
 	//$Arg3Type 12
-	//$Arg3Enum {1="Indiscriminate Checkpoints"; 2="Disable Catchup";}
-	//$Arg3Flags {1="Indiscriminate Checkpoints"; 2="Disable Catchup";}
+	//$Arg3Enum {1="Indiscriminate Checkpoints"; 2="Disable Catchup"; 4="Disable Auto Trigger";}
+	//$Arg3Flags {1="Indiscriminate Checkpoints"; 2="Disable Catchup"; 4="Disable Auto Trigger";}
 	
 	doomednum = 5600,
 	spawnstate = S_INVISIBLE,
@@ -89,8 +89,11 @@ local function ActivateCheckpoint(mobj, checkpoint)
 		local checkpoint_catchup_delay = checkpoint.spawnpoint.args[2]
 		local checkpoint_extra_flags = checkpoint.spawnpoint.args[3]
 		local SURVIVORFLAG, ZOMBIEFLAG = 1<<0, 1<<1
-		local INDISCRIMINATE_FLAG = 1<<0 --Indiscriminate Checkpoints
-		local DISABLECATCHUP_FLAG = 1<<1 --Disable catchup (Makes it so others dont have to catch up to you)
+		
+		-- Indiscriminate Checkpoints (Triggering causes all teams to start the catch up routine)
+		local INDISCRIMINATE_FLAG = 1<<0 
+		-- Disable catchup (Makes it so others dont have to catch up to you)
+		local DISABLECATCHUP_FLAG = 1<<1
 		
 		if checkpoint_number then
 			if (checkpoint_flags & SURVIVORFLAG) and (player["ze2_info"].team == 1 or (checkpoint_extra_flags & INDISCRIMINATE_FLAG)) then
@@ -98,9 +101,9 @@ local function ActivateCheckpoint(mobj, checkpoint)
 					ZE2.LatestSurvivorCheckpoint = checkpoint_number
 					player["ze2_info"].checkpoint_number = ZE2.LatestSurvivorCheckpoint
 					
-					checkpoint.state = checkpoint.info.painstate
-					S_StartSound(mobj, checkpoint.info.painsound)
-					print("Checkpoint Activated: "..checkpoint_number)
+					--checkpoint.state = checkpoint.info.painstate
+					--S_StartSound(mobj, checkpoint.info.painsound)
+					--print("Checkpoint Activated: "..checkpoint_number)
 					
 					if not (checkpoint_extra_flags & DISABLECATCHUP_FLAG) then
 						for tplayer in players.iterate do 
@@ -135,9 +138,9 @@ local function ActivateCheckpoint(mobj, checkpoint)
 					ZE2.LatestZombieCheckpoint = checkpoint_number
 					player["ze2_info"].checkpoint_number = ZE2.LatestZombieCheckpoint
 					
-					checkpoint.state = checkpoint.info.painstate
-					S_StartSound(mobj, checkpoint.info.painsound)
-					print("Checkpoint Activated: "..checkpoint_number)
+					--checkpoint.state = checkpoint.info.painstate
+					--S_StartSound(mobj, checkpoint.info.painsound)
+					---print("Checkpoint Activated: "..checkpoint_number)
 					
 					if not (checkpoint_extra_flags & DISABLECATCHUP_FLAG) then
 						for tplayer in players.iterate do 
@@ -183,7 +186,12 @@ addHook("MapLoad", function()
 		local checkpoint_number = thing.args[0]
 		local checkpoint_flags = thing.args[1]
 		local checkpoint_catchup_delay = thing.args[2]
+		local checkpoint_extra_flags = thing.args[3]
+		
 		local SURVIVORFLAG, ZOMBIEFLAG = 1<<0, 1<<1
+		
+		-- Disable Auto Trigger (Disables the function where it auto triggers the checkpoint if you're in the same sector as it)
+		local DISABLEAUTOTRIGGER = 1<<2
 		
 		if checkpoint_number and thing.type == checkpoint_doomednum then
 			ZE2.Checkpoints[checkpoint_number] = {
@@ -194,14 +202,36 @@ addHook("MapLoad", function()
 				subsector = R_PointInSubsectorOrNil(thing.x*FU, thing.y*FU),
 				mobj = thing.mobj,
 				thing = thing,
+				tag = thing.tag,
 				catchup_delay = checkpoint_catchup_delay*TICRATE,
-				zombie_checkpoint = not not (checkpoint_flags & ZOMBIEFLAG),
-				survivor_checkpoint = not not (checkpoint_flags & SURVIVORFLAG),
+				zombie_checkpoint = (checkpoint_flags & ZOMBIEFLAG) > 0,
+				survivor_checkpoint = (checkpoint_flags & SURVIVORFLAG) > 0,
+				disable_autotrigger = (checkpoint_extra_flags & DISABLEAUTOTRIGGER) > 0,
 			}
 		end
 	end
 end)
 
+local function getMobjZSectorRange(mobj, sector)
+	local output = {
+		ceiling = sector.ceilingheight,
+		floor = sector.floorheight,
+	}
+	
+	for fof in sector.ffloors() do
+		if mobj.z + mobj.height < fof.bottomheight then -- if below fof
+			output.ceiling = min($, fof.bottomheight) -- cap it
+		end
+		
+		if mobj.z > fof.topheight then -- if above fof
+			output.floor = max($, fof.topheight) -- cap it
+		end 
+	end
+	
+	return output
+end
+
+-- Main checkpoint thinker.
 addHook("ThinkFrame", function()
 	if gametype ~= GT_ZE2 then return end
 	if not #ZE2.Checkpoints then return end
@@ -211,13 +241,36 @@ addHook("ThinkFrame", function()
 		
 		if pmo and pmo.valid then
 			for checkpoint_num,checkpoint in pairs(ZE2.Checkpoints) do
-				print("A: "..P_FloorzAtPos(pmo.x, pmo.y, pmo.z, pmo.height))
-				print("B: "..checkpoint.z)
-				if checkpoint.subsector ~= nil 
-				and pmo.subsector == checkpoint.subsector 
-				and P_FloorzAtPos(pmo.x, pmo.y, pmo.z, pmo.height) == checkpoint.z
+				if checkpoint.subsector and checkpoint.subsector.valid 
+				and checkpoint.subsector.sector and checkpoint.subsector.sector.valid
 				and checkpoint.mobj and checkpoint.mobj.valid then
-					ActivateCheckpoint(player, checkpoint.mobj)
+					if pmo.subsector == checkpoint.subsector 
+					and not checkpoint.disable_autotrigger then
+						local sector = checkpoint.subsector.sector
+						local cmo = checkpoint.mobj
+						
+						local zrange = getMobjZSectorRange(cmo, sector)
+						
+						-- use our floor and height caps
+						if pmo.z < zrange.ceiling and pmo.z + pmo.height > zrange.floor then
+							ActivateCheckpoint(pmo, checkpoint.mobj)
+						end
+					end
+					
+					if checkpoint.tag then
+						for sector in sectors.tagged(checkpoint.tag) do
+							if sector and sector.valid 
+							and pmo.subsector and pmo.subsector.valid 
+							and pmo.subsector.sector and pmo.subsector.sector.valid
+							and pmo.subsector.sector == sector then
+								local zrange = getMobjZSectorRange(pmo, sector)
+								
+								if pmo.z < zrange.ceiling and pmo.z + pmo.height > zrange.floor then
+									ActivateCheckpoint(pmo, checkpoint.mobj)
+								end
+							end
+						end
+					end
 				end
 			end
 		end
