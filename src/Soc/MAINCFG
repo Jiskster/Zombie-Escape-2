@@ -220,17 +220,3 @@ SelectHeading = ZE2 Survival Maps
 Music = CEZ1
 Skynum = 10
 Weather = 1
-
-## SWARM MAP START
-
-Level N6
-Levelname = Summer Forest
-Act = 0
-Music = MP_MED
-TypeOfLevel = ZE2
-SelectHeading = ZE2 Swarm Maps
-NextLevel = N4
-SkyNum = 40
-NoZone = true
-Subtitle = It's a Forest!
-Lua.hidefromvote = true
