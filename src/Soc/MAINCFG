@@ -21,7 +21,7 @@ Unlockable 23
 
 ## SURVIVAL MAP START
 
-Level J0
+Level 01
 Levelname = Stonewood
 Subtitle = A very dark town.
 Act = 0
@@ -35,7 +35,7 @@ SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 5
 Lua.hidefromvote = true
 
-Level J1
+Level 02
 Levelname = Egypt
 Subtitle = No mummies in sight.
 Act = 0
@@ -48,19 +48,7 @@ SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 5
 Lua.ze2_zombiereleasetime = 4 # Short so zombies can attack at door near spawn.
 
-Level J3
-Levelname = Spooky Flower
-Subtitle = Very scary.
-Act = 0
-Music = SFZZE2
-TypeOfLevel = ZE2
-NextLevel = J5
-SkyNum = 20
-NoZone = True
-SelectHeading = ZE2 Survival Maps
-Lua.ze2_timelimit = 5
-
-Level WF
+Level 04
 Levelname = Waterfall
 Act = 0
 Music = UTWTFL
@@ -72,31 +60,7 @@ NoZone = True
 NextLevel = J1
 Lua.ze2_timelimit = 6
 
-Level A0
-Levelname = Grancolia
-Act = 0
-Music = ALGFZ1
-Subtitle = Oddly Nostalgic
-TypeOfLevel = ZE2
-SkyNum = 2
-SelectHeading = ZE2 Survival Maps
-NoZone = True
-NextLevel = J1
-Lua.ze2_timelimit = 6
-
-Level A1
-Levelname = Marble Depths
-Act = 0
-Music = UMBZ01
-Subtitle = Ancient Plains
-TypeOfLevel = ZE2
-SkyNum = 2
-SelectHeading = ZE2 Survival Maps
-NoZone = True
-NextLevel = A1
-Lua.ze2_timelimit = 6
-
-Level DC
+Level 14
 Levelname = Doomed Corp
 Act = 0
 Music = DM01
@@ -109,7 +73,67 @@ NoZone = True
 NextLevel = J1
 Lua.ze2_timelimit = 6
 
-Level N0
+Level 15
+Levelname = Corrupted Void
+Subtitle = DIE!
+Act = 0
+Music = ZECVM
+TypeOfLevel = ZE2
+NextLevel = NX
+SkyNum = 500
+NoZone = True
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 7
+
+Level 16
+Levelname = Spooky Flower
+Subtitle = Very scary.
+Act = 0
+Music = SFZZE2
+TypeOfLevel = ZE2
+NextLevel = J5
+SkyNum = 20
+NoZone = True
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 5
+
+Level 17
+Levelname = Grancolia
+Act = 0
+Music = ALGFZ1
+Subtitle = Oddly Nostalgic
+TypeOfLevel = ZE2
+SkyNum = 2
+SelectHeading = ZE2 Survival Maps
+NoZone = True
+NextLevel = J1
+Lua.ze2_timelimit = 6
+
+Level 18
+Levelname = NOXY
+Subtitle = ZE2 TEST MAP
+Act = 0
+Music = NOXY
+TypeOfLevel = ZE2
+NextLevel = NX
+SkyNum = 99
+NoZone = True
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 7
+
+Level 20
+Levelname = Marble Depths
+Act = 0
+Music = UMBZ01
+Subtitle = Ancient Plains
+TypeOfLevel = ZE2
+SkyNum = 2
+SelectHeading = ZE2 Survival Maps
+NoZone = True
+NextLevel = A1
+Lua.ze2_timelimit = 6
+
+Level 22
 Levelname = Ancient Catacombs
 Subtitle = Lost in the creepy catacombs
 Act = 0
@@ -122,31 +146,7 @@ NoZone = True
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 7
 
-Level NX
-Levelname = NOXY
-Subtitle = ZE2 TEST MAP
-Act = 0
-Music = NOXY
-TypeOfLevel = ZE2
-NextLevel = NX
-SkyNum = 99
-NoZone = True
-SelectHeading = ZE2 Survival Maps
-Lua.ze2_timelimit = 7
-
-Level N4
-Levelname = FATAL DESERT
-Subtitle = A dangerous Journey
-Act = 0
-Music = DESERT
-TypeOfLevel = ZE2
-NextLevel = N4
-SkyNum = 11
-NoZone = True
-SelectHeading = ZE2 Survival Maps
-Lua.ze2_timelimit = 5
-
-Level N9
+Level 23
 Levelname = Alphacombs
 Subtitle = The History
 Act = 0
@@ -158,19 +158,19 @@ NoZone = True
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 7
 
-Level CV
-Levelname = Corrupted Void
-Subtitle = DIE!
+Level 24
+Levelname = FATAL DESERT
+Subtitle = A dangerous Journey
 Act = 0
-Music = ZECVM
+Music = DESERT
 TypeOfLevel = ZE2
-NextLevel = NX
-SkyNum = 500
+NextLevel = N4
+SkyNum = 11
 NoZone = True
 SelectHeading = ZE2 Survival Maps
-Lua.ze2_timelimit = 10
+Lua.ze2_timelimit = 5
 
-Level LS
+Level 25
 Levelname = Lost Sewer
 TypeOfLevel = ZE2
 SelectHeading = ZE2 Survival Maps
@@ -187,7 +187,7 @@ NoVisitNeeded = true
 Lua.ze2_timelimit = 6
 Lua.ze2_laddertag = 209
 
-Level G0
+Level 26
 Levelname = Westopolis
 SubTitle = Now EVERYBODY gets a gun!
 Act = 0
@@ -201,7 +201,7 @@ NoZone = true
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 6
 
-Level P0
+Level 27
 Levelname = Azure Sanctuary
 Subtitle = Far underground, mostly flooded.
 Nozone = true
@@ -212,7 +212,7 @@ SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 6
 Lua.hidefromvote = true
 
-Level P1
+Level 28
 Levelname = Egg Fortress
 Subtitle = Deep in Eggman's Territory
 TypeOfLevel = ZE2
