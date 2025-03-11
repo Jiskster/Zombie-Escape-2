@@ -102,12 +102,16 @@ mobjinfo[MT_CRRUBY]= {
 	--deathsound = sfx_rbyhit,
 	radius = 25*FU,
 	height = 45*FU,
-	flags = MF_SLIDEME|MF_SPECIAL,
+	flags = MF_SLIDEME|MF_SPECIAL|MF_RUNSPAWNFUNC,
 }
 
 states[S_CRRUBY] = {
 	sprite = SPR_RBY1,
 	frame = FF_FULLBRIGHT|A,
+    --MF_RUNSPAWNFUNC so we can always get this on the ruby, no matter how its spawned
+    action = function(mo)
+        mo.renderflags = $|RF_NOCOLORMAPS
+    end,
 	tics = -1,
 	nextstate = S_CRRUBY,
 }
