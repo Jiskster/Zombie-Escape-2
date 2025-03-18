@@ -9,6 +9,7 @@ freeslot("sfx_zdi1","sfx_zdi2","sfx_zish1","sfx_zish2","sfx_zish3","sfx_zpa1","s
 freeslot("sfx_rstart", "sfx_secret", "sfx_cleva1")
 freeslot("sfx_eatapl", "sfx_oyahx", "sfx_mnu1a")
 freeslot("sfx_inf1", "sfx_inf2", "sfx_inf3", "sfx_inf4", "sfx_pipe")
+freeslot("sfx_zbatk1", "sfx_zbatk2", "sfx_zbatk3")
 
 freeslot("sfx_wpfire", "sfx_wpfir2")
 

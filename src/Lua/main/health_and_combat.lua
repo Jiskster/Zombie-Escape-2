@@ -71,7 +71,6 @@ function ZE2.KillMobj(mo, inf, src, damagetype, killedbysomething)
 					
 					ZE2.ZombifyPlayer(player)
 					ZE2.PlayZombieSound(player, true)
-					player["ze2_info"].weapondelay = 3*TICRATE -- To prevent a chain effect when defending.
 				end
 			
 				ZE2:QueuePlayerRubies(killer.player, cash_award)
@@ -255,6 +254,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	local relativeknockback = false
 	local inflictor_player -- player_t
 	local attacker -- mobj_t
+	local attackedbyzombie = false
 	
 	if inf and inf.valid and (inf.flags & MF_MISSILE) then
 		P_ExplodeMissile(inf)
@@ -264,6 +264,8 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	if (inf and inf.valid) and inf.player and mo and mo.player then
 		if mo.player["ze2_info"].team == inf.player["ze2_info"].team then
 			return false
+		else
+			attackedbyzombie = true
 		end
 	end--player["ze2_info"].damage_indicator_table
 	
@@ -278,6 +280,8 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	if src and src.player and mo and mo.player then
 		if mo.player["ze2_info"].team == src.player["ze2_info"].team then
 			return false
+		else
+			attackedbyzombie = true
 		end
 	end
 	
@@ -386,13 +390,18 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	if mo.player then
 		-- TODO: Merge both team kb code.
 		if mo.player["ze2_info"].team == 1 then
-			mo.player.powers[pw_flashing] = ZE2.survinvtics.value
-			
-			if not mo.shield_health then
+			if not attackedbyzombie then
+				mo.player.powers[pw_flashing] = ZE2.survinvtics.value
+				
+				if not mo.shield_health then
+					ZE2:SetDamageFadeAnim(mo.player, 15)
+					S_StartSound(mo, sfx_s3kb9)
+				else -- 
+					S_StartSound(mo, sfx_shldls)
+				end
+			else -- if attacked by zombie
 				ZE2:SetDamageFadeAnim(mo.player, 15)
-				S_StartSound(mo, sfx_s3kb9)
-			else -- 
-				S_StartSound(mo, sfx_shldls)
+				S_StartSound(mo, sfx_zbatk1 + P_RandomRange(0,2))
 			end
 
 			if inf and inf.valid then
