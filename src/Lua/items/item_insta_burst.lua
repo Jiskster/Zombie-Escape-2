@@ -62,7 +62,8 @@ addHook("MobjMoveCollide", function(instaburst, mobj)
 		local range = 190*FU
 		local alreadyhit = false
 		
-		if not ZE2.ZCollide(mobj, instaburst) then 
+		if not ZE2.ZCollide(mobj, instaburst)
+		or not P_CheckSight(mobj, instaburst) then 
 			return
 		end
 		
