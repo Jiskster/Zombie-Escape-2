@@ -21,7 +21,7 @@ mobjinfo[MT_INSTABURST] = {
 	spawnhealth = 1,
 	spawnstate = S_INSTABURST,
 	radius = 128*FRACUNIT,
-	height = 128*FRACUNIT,
+	height = 96*FRACUNIT,
 	flags = MF_NOGRAVITY|MF_NOBLOCKMAP
 }
 
