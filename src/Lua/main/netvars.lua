@@ -27,6 +27,7 @@ addHook("NetVars", function(net)
 	ZE2.TWRITE_MAPNAME_COUNT = net($);
 	
 	ZE2.mapladdertag = net($);
+	ZE2.BulletList = net($);
 	
 	for i,v in ipairs(ZE2.MapTimers) do
 		v.name = net($);

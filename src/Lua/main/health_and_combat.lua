@@ -1,3 +1,5 @@
+ZE2.BulletList = {} -- For thinkers and basic caching.
+
 -- Amy's Hammer Hearts
 mobjinfo[MT_LHRT].forcedamage = 3
 mobjinfo[MT_LHRT].forceknockback = 8*FU
@@ -588,6 +590,37 @@ addHook("MobjSpawn", function(mobj)
 	mobj.shield_health = 0
 end)
 
+addHook("ThinkFrame", function()
+	for i,mobj in ipairs(ZE2.BulletList) do
+		if mobj and mobj.valid then
+			if mobj.iteminfo and ZE2.ItemPresets[mobj.iteminfo.item_id] 
+			and ZE2.ItemPresets[mobj.iteminfo.item_id].thinker and mobj.target then
+				ZE2.ItemPresets[mobj.iteminfo.item_id].thinker(mobj.target, mobj)
+			end
+			
+			if mobj.velprec then
+				for ii=1,mobj.velprec-1 do			
+					P_XYMovement(mobj)
+					P_ZMovement(mobj)
+					
+					if not P_TryMove(mobj, mobj.x, mobj.y, true) then
+						if (mobj and mobj.valid) then
+							P_ExplodeMissile(mobj)
+						end
+					else
+						if mobj.iteminfo and ZE2.ItemPresets[mobj.iteminfo.item_id] 
+						and ZE2.ItemPresets[mobj.iteminfo.item_id].precision_thinker and mobj.target then
+							ZE2.ItemPresets[mobj.iteminfo.item_id].precision_thinker(mobj.target, mobj)
+						end
+					end
+				end
+			end
+		else
+			table.remove(ZE2.BulletList, i)
+		end
+	end
+end)
+
 -- A P_SPMAngle clone to fit the needs of ZE2
 function ZE2.SpawnMissile(m_table)
 	local source = m_table.source
@@ -604,6 +637,8 @@ function ZE2.SpawnMissile(m_table)
 	local th -- Object that is shot.
 	local speed
 	
+	local missile_velocity_precision
+	
 	if allow_aim then
 		slope = sin(source.player.aiming)
 	end
@@ -619,6 +654,8 @@ function ZE2.SpawnMissile(m_table)
 		return
 	end
 	
+	table.insert(ZE2.BulletList, th)
+	
 	speed = th.info.speed
 	
 	if iteminfo then 
@@ -627,14 +664,18 @@ function ZE2.SpawnMissile(m_table)
 		local missile_fuse = ZE2:GetItemInfoIndex(temp_iteminfo, "fuse", skin)
 		local missile_color = ZE2:GetItemInfoIndex(temp_iteminfo, "color", skin)
 		local missile_velocity_multiplier = ZE2:GetItemInfoIndex(temp_iteminfo, "velocity_multiplier", skin)
+		missile_velocity_precision = ZE2:GetItemInfoIndex(temp_iteminfo, "velocity_precision", skin)
 
 		-- destroy functions
 		temp_iteminfo.onspawn = nil
 		temp_iteminfo.ontrigger = nil
 		temp_iteminfo.onhit = nil
 		temp_iteminfo.thinker = nil
+		temp_iteminfo.precision_thinker = nil
 		
 		th.iteminfo = temp_iteminfo
+		
+		th.velprec = missile_velocity_precision
 
 		if missile_fuse then
 			th.fuse = missile_fuse
@@ -686,6 +727,10 @@ function ZE2.SpawnMissile(m_table)
 	*/
 	
 	th.angle = angle
+	
+	if missile_velocity_precision then
+		speed = FixedDiv($, (missile_velocity_precision-1)*FU)
+	end
 	
 	th.momx = FixedMul(speed, cos(angle))
 	th.momy = FixedMul(speed, sin(angle))
@@ -805,26 +850,6 @@ function ZE2.DoPlayerReload(player)
 		end
 	end
 end
-
-addHook("MobjThinker", function(mobj)
-	if mobj and mobj.valid and mobj.iteminfo and ZE2.ItemPresets[mobj.iteminfo.item_id] 
-	and ZE2.ItemPresets[mobj.iteminfo.item_id].thinker and mobj.target then
-		ZE2.ItemPresets[mobj.iteminfo.item_id].thinker(mobj.target, mobj)
-	end
-end)
-
--- allow weapons to pop monitors
-addHook("MobjMoveCollide", function(tmthing, thing)
-	if tmthing and tmthing.valid and thing and thing.valid and L_ZCollide(thing,tmthing) then
-		if tmthing.shotbyplayer and thing.flags & MF_MONITOR then
-			P_KillMobj(thing, tmthing, tmthing.target)
-			S_StartSound(tmthing, tmthing.info.deathsound)
-			if (thing and thing.valid) then
-				P_RemoveMobj(thing)
-			end
-		end
-	end
-end)
 
 -- amy heart healing
 addHook("MobjMoveCollide", function(heart, victim)

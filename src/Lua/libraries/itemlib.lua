@@ -171,10 +171,13 @@ end
 
 function ZE2:CopyItemFromID(item_id)
 	local item = ZE2:Copy(ZE2.ItemPresets[item_id]) or error("Invalid item_id.")
+	
+	-- TODO: Iterate through available functions and nil them that way instead.
 	item.ontrigger = nil
 	item.onspawn = nil
 	item.onhit = nil
 	item.thinker = nil
+	item.precision_thinker = nil
 
 	return item
 end
