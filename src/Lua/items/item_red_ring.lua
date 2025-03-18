@@ -29,8 +29,8 @@ ZE2:CreateItem("Red Ring",  {
 	damage = 45,
 	velocity_precision = 8,
 	velocity_multiplier = 8*FRACUNIT,
-	max_ammo = 30,
-	ammo = 30,
+	max_ammo = 25,
+	ammo = 25,
 	reload_time = 3*TICRATE/2,
 	skin_overwrite = {
 		["fang"] = {
