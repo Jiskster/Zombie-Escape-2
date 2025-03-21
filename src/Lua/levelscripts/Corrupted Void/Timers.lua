@@ -2,6 +2,16 @@ ZE2:AddTimer("CORRUPTEDVOID_1", {
 	text = "SURVIVE",
 	time = 55*TICRATE,
 	on_end_tag = 10,
+	on_end = function()
+		for player in players.iterate do
+			if not (player.mo and player.mo.valid) then continue end
+			if (player.spectator) then continue end
+			if not player["ze2_info"] then continue end
+			if player["ze2_info"].team == 2 then continue end -- no zombies, this is survivor only
+			
+			P_LinedefExecute(38, player.mo) -- call teleport
+		end
+	end,
 	textcolor = SKINCOLOR_GREY,
 	lua_linedef_exec = "CVOIDTIMER1",
 })
