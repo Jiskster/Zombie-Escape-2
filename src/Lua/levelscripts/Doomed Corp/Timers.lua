@@ -26,6 +26,7 @@ ZE2:AddTimer("DOOMEDCORP_3", {
 })
 
 ZE2:AddTimer("DOOMEDCORP_RARE", {
+	text = "[RARE] Defend Ring",
 	time = 15*TICRATE,
 	on_end = function(timernum,timername)
 		P_LinedefExecute(77)
