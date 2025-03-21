@@ -176,6 +176,7 @@ TypeOfLevel = ZE2
 SelectHeading = ZE2 Survival Maps
 Subtitle = This place kinda smells like shi
 Act = 0
+Music = SEWAH
 Nozone = true
 Keywords = LSW
 SkyNum = 1
