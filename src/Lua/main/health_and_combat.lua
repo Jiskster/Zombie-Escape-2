@@ -107,6 +107,7 @@ local function GetFOV()
 	return FixedDiv(cv_fov.value, 90*FU)
 end
 
+--these are updated in baseplayer.lua
 local function SpawnDamageNumbers(player, victim_mobj, damage)
 	local numbers = {}
 
@@ -122,12 +123,12 @@ local function SpawnDamageNumbers(player, victim_mobj, damage)
 		scale = max($, victim_mobj.scale * 2)
 		scale = FixedMul($, GetFOV())
 		scale = $/2
-
+		
 		--random = FixedMul($, scale)
 		--randomthr = FixedMul($, scale)
-
+		
 		--print(string.format("s: %f r: %f rt: %f", scale, random, randomthr))
-
+		
 		local offset = FixedMul((str_len*width)*FU, scale) / 2
 		
 		local work = offset
@@ -142,17 +143,17 @@ local function SpawnDamageNumbers(player, victim_mobj, damage)
 				FixedDiv(victim_mobj.height, victim_mobj.scale),
 				MT_RAY
 			)
-
+			
 			--try swapping the to the other side?
 			if not P_CheckSight(test, player.mo) then
 				angle = R_PointToAngle(victim_mobj.x,victim_mobj.y) + ANGLE_90
 				work = -$
 			end
-
+			
 			if (test and test.valid) then P_RemoveMobj(test) end
 		end
 		*/
-
+		
 		for i = 1,str_len do
 			local n = string.sub(damage,i,i)
 			local frame = tonumber(n)
@@ -176,12 +177,15 @@ local function SpawnDamageNumbers(player, victim_mobj, damage)
 			num.renderflags = $|RF_NOCOLORMAPS
 			num.drawonlyforplayer = player
 			num.dispoffset = 100
-
+			
 			num.nu_momz = random
 			num.nu_thrust = randomthr
 			num.nu_width = width
+			if num.nu_offset == nil
+				num.nu_offset = (i == 1 and 6*FU or 0)
+			end
 			table.insert(numbers, num)
-
+			
 			work = $ + width*scale
 		end
 	end
@@ -196,7 +200,7 @@ function ZE2:AddDamageIndicator(player, victim_mobj, damage)
 			draw_x = victim_mobj.x,
 			draw_y = victim_mobj.y,
 			draw_z = victim_mobj.z + (victim_mobj.height*2),
-
+			
 			real_position = {
 				x = victim_mobj.x,
 				y = victim_mobj.y,
@@ -206,7 +210,7 @@ function ZE2:AddDamageIndicator(player, victim_mobj, damage)
 				radius = victim_mobj.radius
 			}
 		}
-
+		
 		player["ze2_info"].damage_indicator_table[victim_mobj].damagenumbers = SpawnDamageNumbers(player, victim_mobj, damage)
 	else
 		if player["ze2_info"].damage_indicator_table[victim_mobj].tics_left then
