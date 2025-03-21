@@ -46,7 +46,7 @@ SkyNum = 15
 NoZone = True
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 5
-Lua.ze2_zombiereleasetime = 4 # Short so zombies can attack at door near spawn.
+Lua.ze2_zombiereleasetime = 5 # Short so zombies can attack at door near spawn.
 
 Level 04
 Levelname = Waterfall
