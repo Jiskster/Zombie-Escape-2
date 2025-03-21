@@ -220,3 +220,4 @@ SelectHeading = ZE2 Survival Maps
 Music = CEZ1
 Skynum = 10
 Weather = 1
+Lua.ze2_timelimit = 6
