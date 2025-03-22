@@ -20,6 +20,10 @@ local function CrouchHeightHook(player)
 	or player.height + heightoffset
 end
 
+local function clamp(v, mx, mn)
+	return max(min(v,mn), mx)
+end
+
 local function SetCrouchState(mobj)
 	local skin = mobj.skin
 
@@ -42,22 +46,25 @@ addHook("PreThinkFrame", function()
 		local cmd = player.cmd
 		local pmo = player.mo
 		local skin = pmo.skin
-		
+
 		if (cmd.buttons & BT_SPIN) then
 			local limit = 5*FU
 			
 			if not player["ze2_info"].crouching then
+				if ZE2.sourcemovement.value and not (P_IsObjectOnGround(player.mo) or (player.mo.eflags & MFE_JUSTHITFLOOR)) then
+					player.mo.z = clamp($ + FixedMul(player.height - player.spinheight, pmo.scale) * P_MobjFlip(pmo), pmo.floorz, pmo.ceilingz-P_GetPlayerSpinHeight(player))
+				end
 				if not player["ze2_info"].nofrictiontics then
-					if (P_IsObjectOnGround(player.mo) or (player.mo.eflags & MFE_JUSTHITFLOOR)) and player.speed > 10*FU then
-						L_SpeedCap(player.mo, limit) -- Halt ground movement
+					if not ZE2.sourcemovement.value and (P_IsObjectOnGround(player.mo) or (player.mo.eflags & MFE_JUSTHITFLOOR)) and player.speed > 10*FU then
+						L_SpeedCapXY(player.mo, limit) -- Halt ground movement
 					end
 				end
 				
 				player["ze2_info"].crouching = true
 			else
 				if not player["ze2_info"].nofrictiontics then
-					if (P_IsObjectOnGround(player.mo) and (player.mo.eflags & MFE_JUSTHITFLOOR)) then
-						L_SpeedCap(player.mo, limit)
+					if not ZE2.sourcemovement.value and P_IsObjectOnGround(player.mo) and (player.mo.eflags & MFE_JUSTHITFLOOR) then
+						L_SpeedCapXY(player.mo, limit)
 					end
 				end
 			end
@@ -65,14 +72,21 @@ addHook("PreThinkFrame", function()
 			-- if gap higher than player height 
 			if (player.mo.ceilingz - player.mo.floorz) > player.height + heightoffset then
 				if player["ze2_info"].crouching then
-					if pmo.state == S_PLAY_CROUCH_ZE2 then
-						if (player.speed/FU) then
-							pmo.frame = A
-							pmo.state = S_PLAY_WALK
-						else
-							pmo.frame = A
-							pmo.state = S_PLAY_STND
+					if P_IsObjectOnGround(player.mo) or (player.mo.eflags & MFE_JUSTHITFLOOR) then
+						if pmo.state == S_PLAY_CROUCH_ZE2 then
+							if (player.speed/FU) then
+								pmo.frame = A
+								pmo.state = S_PLAY_WALK
+							else
+								pmo.frame = A
+								pmo.state = S_PLAY_STND
+							end
 						end
+					else
+						pmo.frame = A
+						pmo.state = S_PLAY_JUMP
+
+						if ZE2.sourcemovement.value then player.mo.z = clamp($ - FixedMul(player.height - player.spinheight, pmo.scale) * P_MobjFlip(pmo), pmo.floorz, pmo.ceilingz-P_GetPlayerHeight(player)+FixedMul(heightoffset, pmo.scale)) end
 					end
 				end
 			
@@ -84,11 +98,61 @@ addHook("PreThinkFrame", function()
 			end
 		end
 		
-		if P_IsObjectOnGround(player.mo) and player["ze2_info"].crouching then
+		if (P_IsObjectOnGround(player.mo) or ZE2.sourcemovement.value) and player["ze2_info"].crouching then
 			SetCrouchState(pmo)
 		end
 		
 		cmd.buttons = $ & ~BT_SPIN
+	end
+end)
+
+--camera movement and fix for a visual bug when jumping or landing
+
+--these states will be immediately be replaced with S_PLAY_CROUCH_ZE2 if your crouching
+local switchablestates = {
+	[S_PLAY_STND] = true,
+	[S_PLAY_WAIT] = true,
+	[S_PLAY_WALK] = true,
+	[S_PLAY_RUN] = true,
+	[S_PLAY_JUMP] = true,
+	[S_PLAY_SPRING] = true,
+	[S_PLAY_FALL] = true,
+	[S_PLAY_EDGE] = true
+}
+
+local crouchlerp = 0
+addHook("PostThinkFrame", function()
+	for player in players.iterate do
+		if not (player.mo and player.mo.valid) then continue end
+		if gametype ~= GT_ZE2 then continue end
+		if ZE2.game_ended then continue end
+		if ZE2.pregame_timeleft then continue end
+		if not player["ze2_info"] then continue end
+
+		if ZE2.sourcemovement.value and player["ze2_info"].crouching and switchablestates[player.mo.state] then
+			SetCrouchState(player.mo)
+		end
+
+		if player == displayplayer then
+			if P_IsObjectOnGround(player.mo) then
+				if player["ze2_info"].crouching then
+					crouchlerp = min($+FRACUNIT/7, FRACUNIT)
+				else
+					crouchlerp = max($-FRACUNIT/4, 0)
+				end
+				local newheight = player.mo.z + 41*P_GetPlayerHeight(player)/48 - ease.inoutquad(crouchlerp, 0, FixedMul(player.height - player.spinheight, player.mo.scale))
+				player.viewz = min($,newheight)
+			else
+				if player["ze2_info"].crouching then
+					crouchlerp = FRACUNIT
+					local newheight = player.mo.z + player.viewheight - FixedMul(player.height - player.spinheight, player.mo.scale)
+					player.viewz = min($,newheight)
+					--player.viewz = $ - FixedMul(player.height - player.spinheight, player.mo.scale)
+				else
+					crouchlerp = 0
+				end
+			end
+		end
 	end
 end)
 

@@ -70,6 +70,13 @@ ZE2.landingfatigue = CV_RegisterVar({
 	flags = CV_NETVAR,
 })
 
+ZE2.sourcemovement = CV_RegisterVar({
+	name = "z_experimentalmovement",
+	defaultvalue = "On",
+	PossibleValue = CV_OnOff,
+	flags = CV_NETVAR,
+})
+
 COM_AddCommand("z_giveitem", function(player, item_id, count, slot)
 	if player.mo and player.mo.valid and player["ze2_info"] and ZE2:FetchInventory(player) then
 		if item_id then

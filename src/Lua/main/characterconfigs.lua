@@ -111,17 +111,26 @@ ZE2.SetCCtoplayer = function(player)
 			player.acceleration = skins[pmo.skin].acceleration
 		end
 
-		if P_IsObjectOnGround(pmo) or
-		(not P_IsObjectOnGround(pmo) and cmd.forwardmove < 0 and P_GetPlayerControlDirection(player) == 2) 
-		or player["ze2_info"].isSprung then
-			player.thrustfactor = 8
+		if ZE2.sourcemovement.value then
+			player.thrustfactor = 0
+			if not (P_IsObjectOnGround(pmo) or
+			(not P_IsObjectOnGround(pmo) and cmd.forwardmove < 0 and P_GetPlayerControlDirection(player) == 2) 
+			or player["ze2_info"].isSprung) then
+				player["ze2_info"].nofrictiontics = 0
+			end
 		else
-			player.thrustfactor = 4
-			player["ze2_info"].nofrictiontics = 0
-		end
-		
-		if player["ze2_info"].nofrictiontics then
-			player.thrustfactor = 1
+			if P_IsObjectOnGround(pmo) or
+			(not P_IsObjectOnGround(pmo) and cmd.forwardmove < 0 and P_GetPlayerControlDirection(player) == 2) 
+			or player["ze2_info"].isSprung then
+				player.thrustfactor = 8
+			else
+				player.thrustfactor = 4
+				player["ze2_info"].nofrictiontics = 0
+			end
+			
+			if player["ze2_info"].nofrictiontics then
+				player.thrustfactor = 1
+			end
 		end
 		
 		if (cc[pmo.skin].charflags) then 
@@ -135,11 +144,11 @@ ZE2.SetCCtoplayer = function(player)
 		end
 		
 		if player["ze2_info"].sprintdelay then
-			player.jumpfactor = $ / 2
+			if ZE2.sourcemovement.value then player.jumpfactor = 3*$/4 else player.jumpfactor = $ / 2 end
 			player.actionspd = $ / 2
 			player.normalspeed = $ / 2
 		end
-		
+
 		if (cc[pmo.skin].speedcap) and not ZE2.MobjTouchingPolyObj(pmo) then 
 			local sprintboost = cc[pmo.skin].sprintboost or cc["default"].sprintboost
 			if (sprintboost) and (player["ze2_info"].isSprinting and player["ze2_info"].sprintmeter > 0) and (player["ze2_info"].team == 1) then
@@ -224,18 +233,27 @@ ZE2.SetZCtoplayer = function(player)
 			else
 				player.acceleration = 40
 			end
-			
-			if P_IsObjectOnGround(pmo) or
-			(not P_IsObjectOnGround(pmo) and cmd.forwardmove < 0 and P_GetPlayerControlDirection(player) == 2) 
-			or player["ze2_info"].isSprung then
-				player.thrustfactor = 8
+
+			if ZE2.sourcemovement.value then
+				player.thrustfactor = 0
+				if not (P_IsObjectOnGround(pmo) or
+				(not P_IsObjectOnGround(pmo) and cmd.forwardmove < 0 and P_GetPlayerControlDirection(player) == 2) 
+				or player["ze2_info"].isSprung) then
+					player["ze2_info"].nofrictiontics = 0
+				end
 			else
-				player.thrustfactor = 4
-				player["ze2_info"].nofrictiontics = 0
-			end
-			
-			if player["ze2_info"].nofrictiontics then
-				player.thrustfactor = 1
+				if P_IsObjectOnGround(pmo) or
+				(not P_IsObjectOnGround(pmo) and cmd.forwardmove < 0 and P_GetPlayerControlDirection(player) == 2) 
+				or player["ze2_info"].isSprung then
+					player.thrustfactor = 8
+				else
+					player.thrustfactor = 4
+					player["ze2_info"].nofrictiontics = 0
+				end
+				
+				if player["ze2_info"].nofrictiontics then
+					player.thrustfactor = 1
+				end
 			end
 
 			if (zc[ztype].charflags) then 
