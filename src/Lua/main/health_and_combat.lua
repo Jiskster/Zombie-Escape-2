@@ -447,25 +447,27 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			
 			mo.player["ze2_info"].landfatigue_timer = min($ + 5, 20)
 			
-			if not relativeknockback then
-				local r_momxy = FixedHypot(mo.momx, mo.momy)
+			if inf and inf.valid then
+				if not relativeknockback then
+					local r_momxy = FixedHypot(mo.momx, mo.momy)
 
-				if P_IsObjectOnGround(mo) then
-					P_InstaThrust(mo, inf.angle, knockback + r_momxy)
+					if P_IsObjectOnGround(mo) then
+						P_InstaThrust(mo, inf.angle, knockback + r_momxy)
+					else
+						P_Thrust(mo, inf.angle, knockback)
+					end
+					
+					mo.player["ze2_info"].nofrictiontics = min($ + 3, 5)
 				else
-					P_Thrust(mo, inf.angle, knockback)
-				end
-				
-				mo.player["ze2_info"].nofrictiontics = min($ + 3, 5)
-			else
-				local r_angle = R_PointToAngle2(mo.x, mo.y, inf.x, inf.y)
-				local r_momxy = FixedHypot(mo.momx, mo.momy)
+					local r_angle = R_PointToAngle2(mo.x, mo.y, inf.x, inf.y)
+					local r_momxy = FixedHypot(mo.momx, mo.momy)
 
-				P_Thrust(mo, r_angle - ANGLE_180, knockback)
-				
-				mo.player["ze2_info"].nofrictiontics = min($ + 3, 5)
+					P_Thrust(mo, r_angle - ANGLE_180, knockback)
+					
+					mo.player["ze2_info"].nofrictiontics = min($ + 3, 5)
+				end
 			end
-		
+			
 			if verticalknockback then
 				P_SetObjectMomZ(mo, verticalknockback, true)
 			end

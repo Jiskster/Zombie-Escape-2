@@ -1,4 +1,4 @@
--- Ported From RSNEO
+-- RS NEO port.
 
 freeslot(
 "MT_ZE2_THROWNSCATTER",

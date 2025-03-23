@@ -1,3 +1,5 @@
+-- RS NEO port.
+
 local raildmg = 450
 local railkb = 300*FRACUNIT
 

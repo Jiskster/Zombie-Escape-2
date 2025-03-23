@@ -134,6 +134,21 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 	end
 end; ZE2.init_gamevars();
 
+ZE2.Effects = {
+	["alphazombie.rage"] = {
+		thinker = function(player)
+			if player.mo and player.mo.valid then
+				P_SpawnGhostMobj(player.mo)
+			end
+		end,
+		on_end = function(player)
+			if player.mo and player.mo.valid then
+				S_StartSound(player.mo, sfx_bstdn)
+			end
+		end
+	}
+}
+
 -- http://lua-users.org/wiki/CopyTable
 function ZE2:Copy(orig)
     local orig_type = type(orig)
