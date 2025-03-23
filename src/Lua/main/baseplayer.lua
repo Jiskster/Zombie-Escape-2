@@ -5,36 +5,6 @@ ZE2.JumpSprintFatigue = 17*FRACUNIT
 ZE2.DefaultRubyCap = 25000;
 ZE2.RubyStart = 500 -- the amount of rubies you start when you join a server
 
-ZE2.Effect_ThinkerFuncs = {
-	["Alpha_Rage"] = function(player)
-		if player.mo and player.mo.valid then
-			P_SpawnGhostMobj(player.mo)
-		end
-	end,
-	["Energy_Drink"] = function(player)
-		if player.mo and player.mo.valid then
-			player["ze2_info"].sprintmeter = 100*FRACUNIT
-			
-			local ghost = P_SpawnGhostMobj(player.mo)
-			ghost.colorized = true
-			ghost.color = SKINCOLOR_MASTER
-		end
-	end,
-}
-
-ZE2.Effect_EndFuncs = {
-	["Alpha_Rage"] = function(player)
-		if player.mo and player.mo.valid then
-			S_StartSound(player.mo, sfx_bstdn)
-		end
-	end,
-	["Energy_Drink"] = function(player)
-		if player.mo and player.mo.valid then
-			S_StartSound(player.mo, sfx_edprdn)
-		end
-	end,
-}
-
 ZE2["default_ze2_info"] = {
 	crouching = false,
 
@@ -269,7 +239,7 @@ end
 function ZE2:GivePlayerEffect(player, effect_name, effect_table, effect_time)
 	if player["ze2_info"].effects and effect_name and effect_table and effect_time then
 		local tbl = effect_table
-		tbl.time_left = effect_time -- tics
+		tbl.time_left = effect_time or 1-- tics
 		
 		player["ze2_info"].effects[effect_name] = tbl
 	end
@@ -342,16 +312,16 @@ ZE2.giveplayerflags = function(player)
 					player.charability = v.charability
 				end
 				
-				if ZE2.Effect_ThinkerFuncs[i] then
-					ZE2.Effect_ThinkerFuncs[i](player)
-				end
-				
 				if v.time_left then
+					if ZE2.Effects[i].thinker then
+						ZE2.Effects[i].thinker(player, v.time_left)
+					end
+					
 					v.time_left = $ - 1
 					
 					if not v.time_left then
-						if ZE2.Effect_EndFuncs[i] then
-							ZE2.Effect_EndFuncs[i](player)
+						if ZE2.Effects[i].on_end then
+							ZE2.Effects[i].on_end (player)
 						end
 						
 						player["ze2_info"].effects[i] = nil
@@ -791,7 +761,7 @@ addHook("PlayerThink", function(player)
 				
 				S_StartSound(player.mo, sfx_bstup)
 				
-				ZE2:GivePlayerEffect(player, "Alpha_Rage", {
+				ZE2:GivePlayerEffect(player, "alphazombie.rage", {
 					normalspeed_multiplier = 4*FU,
 					actionspd_multiplier = 3*FU/2,
 					damage_multiplier = 2*FU,

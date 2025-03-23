@@ -14,22 +14,23 @@ dofile "libraries/basexx.lua" -- https://github.com/aiq/basexx
 dofile "main/shop.lua"
 
 // ITEMS
-dofile "items/item_red_ring.lua"
-dofile "items/item_auto_ring.lua"
-dofile "items/item_apple.lua"
-dofile "items/item_milk.lua"
-dofile "items/item_insta_burst.lua"
-dofile "items/item_ws_mirror.lua"
-dofile "items/item_wood_fence.lua"
-dofile "items/item_explosion_ring.lua"
-dofile "items/item_blue_spring.lua"
-dofile "items/item_scatter_ring.lua"
-dofile "items/item_rail_ring.lua"
-dofile "items/item_gfz_sphere.lua"
-dofile "items/item_infinity_ring.lua"
-dofile "items/item_grenade.lua"
-dofile "items/item_landmine.lua"
-dofile "items/item_energy_drink.lua"
+dofile "items/item_red_ring.lua" -- [1]
+dofile "items/item_auto_ring.lua" -- [2]
+dofile "items/item_apple.lua" -- [3]
+dofile "items/item_milk.lua" -- [4]
+dofile "items/item_insta_burst.lua" -- [5]
+dofile "items/item_ws_mirror.lua" -- [6]
+dofile "items/item_wood_fence.lua" -- [7]
+dofile "items/item_explosion_ring.lua" -- [8]
+dofile "items/item_blue_spring.lua" -- [9]
+dofile "items/item_scatter_ring.lua" -- [10]
+dofile "items/item_rail_ring.lua" -- [11]
+dofile "items/item_gfz_sphere.lua" -- [12]
+dofile "items/item_infinity_ring.lua" -- [13]
+dofile "items/item_grenade.lua" -- [14]
+dofile "items/item_landmine.lua" -- [15]
+dofile "items/item_energy_drink.lua" -- [16]
+dofile "items/item_flame_ring.lua" -- [17]
 
 // ITEMS END
 
