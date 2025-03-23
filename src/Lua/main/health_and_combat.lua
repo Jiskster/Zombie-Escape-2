@@ -182,8 +182,13 @@ local function SpawnDamageNumbers(player, victim_mobj, damage)
 			num.nu_thrust = randomthr
 			num.nu_width = width
 			if num.nu_offset == nil
-				num.nu_offset = (i == 1 and 6*FU or 0)
+				num.nu_offset = 0
 			end
+			if i == 1
+				num.z = $ + 6*scale
+				num.nu_offset = 6*FU
+			end
+			num.nu_anim = nil
 			table.insert(numbers, num)
 			
 			work = $ + width*scale
@@ -196,6 +201,7 @@ function ZE2:AddDamageIndicator(player, victim_mobj, damage)
 	if not player["ze2_info"].damage_indicator_table[victim_mobj] then
 		player["ze2_info"].damage_indicator_table[victim_mobj] = {
 			tics_left = TICRATE*2,
+			animation = 1,
 			number = damage,
 			draw_x = victim_mobj.x,
 			draw_y = victim_mobj.y,
@@ -215,6 +221,7 @@ function ZE2:AddDamageIndicator(player, victim_mobj, damage)
 	else
 		if player["ze2_info"].damage_indicator_table[victim_mobj].tics_left then
 			player["ze2_info"].damage_indicator_table[victim_mobj].tics_left = TICRATE*2
+			player["ze2_info"].damage_indicator_table[victim_mobj].animation = 1
 		end
 		
 		if player["ze2_info"].damage_indicator_table[victim_mobj].number then

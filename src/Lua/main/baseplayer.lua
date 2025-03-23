@@ -168,10 +168,13 @@ local function UpdateDamageNumbers(p, numbers, properties, damage)
 		if (num.flags & MF_NOGRAVITY) then
 			local offset = 0
 			if properties.tics
-				if TICRATE + 1 - (properties.tics / 2) == i
+				local animation = properties.animation
+				if animation == i
+				and not num.nu_anim
 					num.nu_offset = 6*FU
+					num.nu_anim = true
 				else
-					num.nu_offset = ease.linear(FU*4/5, $, 0)
+					num.nu_offset = max($ - FixedDiv(6*FU, FU*3), 0)
 				end
 			end
 			
@@ -186,7 +189,7 @@ local function UpdateDamageNumbers(p, numbers, properties, damage)
 		num.frame = (frame)|FF_FULLBRIGHT
 		num.scale = scale
 		
-		if num.fuse == TICRATE*3/2 then
+		if num.fuse == TICRATE*2/3 then
 			num.flags = $ &~MF_NOGRAVITY
 			
 			P_SetObjectMomZ(num, num.nu_momz)
@@ -335,7 +338,7 @@ ZE2.giveplayerflags = function(player)
 		
 		if player["ze2_info"].damage_indicator_table then
 			for dmo,v in pairs(player["ze2_info"].damage_indicator_table) do
-			
+				
 				if v.tics_left then
 					
 					if (dmo and dmo.valid) then
@@ -347,11 +350,16 @@ ZE2.giveplayerflags = function(player)
 							height = dmo.height,
 							radius = dmo.radius,
 							tics = v.tics_left,
+							animation = v.animation,
 						}
 					end
 					
 					if (v.damagenumbers) then
 						UpdateDamageNumbers(player, v.damagenumbers, v.real_position, v.number)
+					end
+					
+					if v.tics_left & 1
+						v.animation = $ + 1
 					end
 					
 					v.tics_left = $ - 1
