@@ -32,6 +32,43 @@ dofile "items/item_landmine.lua" -- [15]
 dofile "items/item_energy_drink.lua" -- [16]
 dofile "items/item_flame_ring.lua" -- [17]
 
+-- Optimized version of actions.
+-- TODO: Remake items that use this and remove this action override.
+function A_RingExplode2(actor, var1, var2)
+    local vfx = P_SpawnMobj(actor.x, actor.y, actor.z, MT_THOK)
+    vfx._override_tnt_explode = true
+    vfx.state = S_TNTBARREL_EXPL1
+    vfx.fuse = TICRATE
+    
+    actor.state = S_INVISIBLE
+    
+    S_StartSound(actor, sfx_prloop)
+    
+	P_StartQuake(64*FU, 10, {x = vfx.x, y = vfx.y, z = vfx.z})
+	
+    local real_range = 256*FU
+    local bm_range = real_range*4
+    searchBlockmap("objects", function(refmobj, foundmobj)
+        local dist = P_AproxDistance(P_AproxDistance(foundmobj.x - actor.x, foundmobj.y - actor.y), foundmobj.z - actor.z) 
+        if dist > FixedMul(real_range, actor.scale) then
+            return
+        end
+        
+        if (foundmobj.flags & MF_SHOOTABLE) then
+            actor.flags2 = $ | MF2_DEBRIS
+            P_DamageMobj(foundmobj, actor, actor.target, 1, 0)
+        end
+    end, actor, actor.x-bm_range, actor.x+bm_range, actor.y-bm_range, actor.y+bm_range)
+end
+
+function A_TNTExplode(actor, var1, var2)
+    if not actor._override_tnt_explode then
+        super(actor, var1, var2)
+    end
+end
+
+states[S_RINGEXPLODE] = {SPR_NULL, A, 1, A_RingExplode2, 0, 0, S_XPLD1, 0}
+
 // ITEMS END
 
 dofile "enemies/vanilla.lua"
