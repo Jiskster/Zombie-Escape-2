@@ -1036,9 +1036,6 @@ addHook("PlayerThink", function(player)
 			wishspd = $/2
 			acceleration = 2*$/3
 		end
-		if player["ze2_info"].crouching and P_IsObjectOnGround(pmo) then 
-			wishspd = 5*FRACUNIT
-		end
 
 		if pmo.standingslope and not (pmo.standingslope.flags & SL_NOPHYSICS) and abs(pmo.standingslope.zdelta) > FRACUNIT/2 then
 			local thrustangle = wishang-pmo.standingslope.xydirection;

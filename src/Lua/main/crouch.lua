@@ -141,11 +141,11 @@ addHook("PostThinkFrame", function()
 					crouchlerp = max($-FRACUNIT/4, 0)
 				end
 				local newheight = player.mo.z + 41*P_GetPlayerHeight(player)/48 - ease.inoutquad(crouchlerp, 0, FixedMul(player.height - player.spinheight, player.mo.scale))
-				player.viewz = min($,newheight)
+				if crouchlerp then player.viewz = min($,newheight) end
 			else
 				if player["ze2_info"].crouching then
 					crouchlerp = FRACUNIT
-					local newheight = player.mo.z + player.viewheight - FixedMul(player.height - player.spinheight, player.mo.scale)
+					local newheight = player.mo.z + 41*P_GetPlayerHeight(player)/48 - FixedMul(player.height - player.spinheight, player.mo.scale)
 					player.viewz = min($,newheight)
 					--player.viewz = $ - FixedMul(player.height - player.spinheight, player.mo.scale)
 				else
