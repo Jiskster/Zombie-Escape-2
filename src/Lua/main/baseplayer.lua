@@ -1027,6 +1027,7 @@ addHook("PlayerThink", function(player)
 	--source movement?
 	if ZE2.sourcemovement.value and FixedHypot(player.cmd.forwardmove * 1311, player.cmd.sidemove * 1311) and not player["ze2_info"].pregamemenu_active 
 	and CanPlayerMove(player) then
+		local pmo = player.mo
 		--remove conveyor movement
 		local cx = player.cmomx
 		local cy = player.cmomy

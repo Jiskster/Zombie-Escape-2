@@ -134,7 +134,7 @@ addHook("PostThinkFrame", function()
 		end
 
 		if player == displayplayer then
-			if P_IsObjectOnGround(player.mo) then
+			if P_IsObjectOnGround(player.mo) or not ZE2.sourcemovement.value then
 				if player["ze2_info"].crouching then
 					crouchlerp = min($+FRACUNIT/7, FRACUNIT)
 				else
