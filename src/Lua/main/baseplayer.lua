@@ -196,10 +196,19 @@ local function UpdateDamageNumbers(p, numbers, properties, damage)
 			continue
 		end
 		if (num.flags & MF_NOGRAVITY) then
+			local offset = 0
+			if properties.tics
+				if TICRATE + 1 - (properties.tics / 2) == i
+					num.nu_offset = 6*FU
+				else
+					num.nu_offset = ease.linear(FU*4/5, $, 0)
+				end
+			end
+			
 			P_MoveOrigin(num,
 				properties.x + P_ReturnThrustX(nil, angle, work),
 				properties.y + P_ReturnThrustY(nil, angle, work),
-				properties.z + properties.height
+				properties.z + properties.height + FixedMul((num.nu_offset or 0), scale)
 			)
 		end
 		
@@ -207,17 +216,17 @@ local function UpdateDamageNumbers(p, numbers, properties, damage)
 		num.frame = (frame)|FF_FULLBRIGHT
 		num.scale = scale
 		
-		if num.fuse == TICRATE then
+		if num.fuse == TICRATE*3/2 then
 			num.flags = $ &~MF_NOGRAVITY
-
+			
 			P_SetObjectMomZ(num, num.nu_momz)
 			P_Thrust(num, angle, num.nu_thrust)
 		end
-
+		
 		num.renderflags = $|RF_NOCOLORMAPS
 		num.drawonlyforplayer = p
 		num.dispoffset = 100
-
+		
 		work = $ + width*scale
 	end
 
@@ -358,7 +367,6 @@ ZE2.giveplayerflags = function(player)
 			for dmo,v in pairs(player["ze2_info"].damage_indicator_table) do
 			
 				if v.tics_left then
-					v.tics_left = $ - 1
 					
 					if (dmo and dmo.valid) then
 						v.real_position = {
@@ -367,14 +375,16 @@ ZE2.giveplayerflags = function(player)
 							z = dmo.z,
 							scale = dmo.scale,
 							height = dmo.height,
-							radius = dmo.radius
+							radius = dmo.radius,
+							tics = v.tics_left,
 						}
 					end
-
+					
 					if (v.damagenumbers) then
 						UpdateDamageNumbers(player, v.damagenumbers, v.real_position, v.number)
 					end
-
+					
+					v.tics_left = $ - 1
 					if v.tics_left <= 0 then
 						player["ze2_info"].damage_indicator_table[dmo] = nil
 						continue
