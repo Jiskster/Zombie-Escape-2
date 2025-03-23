@@ -33,6 +33,7 @@ ZE2:CreateItem("Red Ring",  {
 	ammo = 25,
 	reload_time = 3*TICRATE/2,
 	skin_overwrite = {
+		/*
 		["fang"] = {
 			displayname = "Cork",
 			object = MT_CORK,
@@ -48,6 +49,7 @@ ZE2:CreateItem("Red Ring",  {
 			ammo = 10,
 			reload_time = 1*TICRATE + TICRATE/2,
 		}
+		*/
 	},
 	onspawn = function(pmo, mo)
 		if mo.type == MT_CORK then
