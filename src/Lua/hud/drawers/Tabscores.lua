@@ -51,7 +51,7 @@ local function DrawTeammate(v,p, x,y, props)
 		SKINCOLOR_GREEN
 	)
 	if p.mo.shield_health and p.mo.shield_def then
-		local healthstring_width = customhud.CustomFontStringWidth(v,  " +"..p.mo.health.."/"..p.mo.maxhealth, "TNYFC", FU/2)
+		local healthstring_width = customhud.CustomFontStringWidth(v,  " +"..p.mo.health.."/"..p.mo.maxhealth, "TNYFC", FixedMul(FU/2, scale))
 		local shield_color = p.mo.shield_def.color or SKINCOLOR_WHITE
 		
 		local shield_health = tostring(p.mo.shield_health)

@@ -13,7 +13,7 @@ mobjinfo[MT_RS_THROWNFLAME] = {
 	spawnstate = S_RS_THROWNFLAME1,
 	deathstate = S_SPRK1,
 	deathsound = sfx_s3k7e,
-	speed = 80*FRACUNIT,
+	speed = 100*FRACUNIT,
 	radius = 24*FRACUNIT,
 	height = 48*FRACUNIT,
 	flags = MF_NOBLOCKMAP|MF_MISSILE|MF_NOGRAVITY|MF_SLIDEME
@@ -85,7 +85,6 @@ local flame_ring = ZE2:CreateItem("Flame Ring",  {
 		local pmo = player.mo
 		
 		local mt = MT_RS_THROWNFLAME
-		S_StartSound(mo, sfx_rs_fla)
 		local wave = sin(leveltime*ANG10) * 600
 		local shot = ZE2.SpawnMissile({
 			source = pmo, 
@@ -94,6 +93,8 @@ local flame_ring = ZE2:CreateItem("Flame Ring",  {
 			allow_aim = true,
 			iteminfo = iteminfo,
 		})
+		
+		S_StartSound(shot, sfx_rs_fla)
 		
 		if not P_IsObjectOnGround(pmo) then
 			local aim = max(-FRACUNIT, min(FRACUNIT, -player.aiming/13000))
