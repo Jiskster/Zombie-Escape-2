@@ -451,7 +451,8 @@ ZE2.sprint_thinker = function(player)
 	local decrement = fixedfromstring("0.142")
 	
 	-- TODO: Make the sidemove limiting code cleaner, and modular.
-	if not player["ze2_info"].pregamemenu_active
+	if not ZE2.sourcemovement.value
+	and not player["ze2_info"].pregamemenu_active
 	and not ZE2.game_ended then
 		if cmd.forwardmove then
 			if cmd.sidemove > 25 then
@@ -1024,43 +1025,40 @@ addHook("PlayerThink", function(player)
 		local movespd = FixedDiv(FixedHypot(pmo.momx, pmo.momy), pmo.scale)
 
 		local wishspd
-		wishspd = player.normalspeed
-
 		local angdiff
 		local curspeed
-		local addspeed
 		angdiff = abs(movedir - wishang)
 		curspeed = FixedMul(movespd, cos(angdiff))
 		
-		local acceleration
+		local acl
 		if P_IsObjectOnGround(pmo) then
-			acceleration = FixedMul(FixedMul(player.acceleration * 256, movespd) + player.accelstart * 288, analog)
+			wishspd = player.normalspeed
+			acl = FixedMul(FixedMul(player.acceleration * 320, movespd) + player.accelstart * 320, analog)
 		else
 			wishspd = 2*FRACUNIT
-			acceleration = FixedMul(FixedMul(player.acceleration * 48, movespd) + player.accelstart * 348, analog)
+			acl = FixedMul(FixedMul(player.acceleration * 80, movespd) + player.accelstart * 160, analog)
 		end
-
 		if pmo.eflags & MFE_UNDERWATER then 
-			wishspd = $/2
-			acceleration = 2*$/3
+			if P_IsObjectOnGround(pmo) then wishspd = $/2 end
+			acl = 3*$/4
 		end
 
 		if pmo.standingslope and not (pmo.standingslope.flags & SL_NOPHYSICS) and abs(pmo.standingslope.zdelta) > FRACUNIT/2 then
 			local thrustangle = wishang-pmo.standingslope.xydirection;
 
-			local mul = ease.outexpo(abs(cos(thrustangle)), FRACUNIT, abs(cos(pmo.standingslope.zangle)))
+			local mul = ease.linear(abs(cos(thrustangle)), FRACUNIT, abs(cos(pmo.standingslope.zangle)))
 			if pmo.standingslope.zdelta < 0 then
 				if thrustangle < ANGLE_90 or thrustangle > ANGLE_270 then
-					acceleration = FixedMul($, mul)
+					acl = FixedMul($, mul)
 				end
 			else
 				if thrustangle > ANGLE_90 and thrustangle < ANGLE_270 then
-					acceleration = FixedMul($, mul)
+					acl = FixedMul($, mul)
 				end
 			end
 		end
 
-		local addspd = min(max(wishspd - curspeed, 0), acceleration)
+		local addspd = min(max(wishspd - curspeed, 0), acl)
 
 		P_Thrust(pmo, wishang, FixedMul(addspd, pmo.scale))
 
