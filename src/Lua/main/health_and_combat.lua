@@ -623,7 +623,15 @@ addHook("ThinkFrame", function()
 			if mobj.velprec then
 				for ii=1,mobj.velprec-1 do			
 					P_XYMovement(mobj)
+					if not (mobj and mobj.valid) then
+						table.remove(ZE2.BulletList, i)
+						continue
+					end
 					P_ZMovement(mobj)
+					if not (mobj and mobj.valid) then
+						table.remove(ZE2.BulletList, i)
+						continue
+					end
 					
 					if not P_TryMove(mobj, mobj.x, mobj.y, true) then
 						if (mobj and mobj.valid) then
@@ -751,7 +759,7 @@ function ZE2.SpawnMissile(m_table)
 	th.angle = angle
 	
 	if missile_velocity_precision then
-		speed = FixedDiv($, (missile_velocity_precision-1)*FU)
+		speed = FixedDiv($, max(missile_velocity_precision-1, 1)*FU)
 	end
 	
 	th.momx = FixedMul(speed, cos(angle))
