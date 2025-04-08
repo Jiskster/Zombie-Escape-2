@@ -340,6 +340,9 @@ end, MT_CRRUBY)
 --TODO: this code kinda sucks ngl
 addHook("MobjThinker",function(door)
 	if not (door and door.valid) then return end
+
+	door.radius = FixedMul(mobjinfo[MT_RUBY_BOX].radius, door.spritexscale)
+	door.height = FixedMul(mobjinfo[MT_RUBY_BOX].height, door.spriteyscale)
 	
 	door.takis_flingme = false
 	door.takis_monitorgibs = true
@@ -414,6 +417,8 @@ addHook("MobjThinker",function(door)
 				list[0+i].angle = angle+ANGLE_90
 				list[0+i].height = 32*FU
 				list[0+i].radius = 0
+				list[0+i].spritexscale = door.spritexscale
+				list[0+i].spriteyscale = door.spriteyscale
 				P_SetOrigin(list[0+i],
 					list[0+i].x,
 					list[0+i].y,
@@ -428,6 +433,8 @@ addHook("MobjThinker",function(door)
 			list[5].renderflags = $|RF_FLOORSPRITE|RF_NOSPLATBILLBOARD
 			list[5].angle = door.angle
 			list[5].height = 0
+			list[5].spritexscale = door.spritexscale
+			list[5].spriteyscale = door.spritexscale
 			P_SetOrigin(list[5],list[5].x,list[5].y,GetActorZ(door,list[5],2))
 			
 			list[6] = P_SpawnMobjFromMobj(door,0,0,0,MT_THOK)
@@ -438,6 +445,8 @@ addHook("MobjThinker",function(door)
 			list[6].renderflags = $|RF_FLOORSPRITE|RF_NOSPLATBILLBOARD
 			list[6].angle = door.angle
 			list[6].height = 0
+			list[6].spritexscale = door.spritexscale
+			list[6].spriteyscale = door.spritexscale
 			P_SetOrigin(list[6],list[6].x,list[6].y,GetActorZ(door,list[6],1))
 			
 			door.made3d = true
@@ -463,25 +472,25 @@ addHook("MobjThinker",function(door)
 			list[5].angle = door.angle
 			list[5].height = 0
 			list[5].scale = door.scale
-			list[5].shadowscale = (door.scale/2)*14/10
+			list[5].shadowscale = (door.radius/32)*14/10
 			list[5].spritexscale = door.spritexscale
 			list[5].spriteyscale = door.spritexscale
 			P_MoveOrigin(list[5],
 				door.x + door.momx,
 				door.y + door.momy,
-				(P_MobjFlip(door) == 1 and (door.z + FixedMul(door.height, door.spriteyscale)) or door.z) + door.momz
+				(P_MobjFlip(door) == 1 and (door.z + door.height) or door.z) + door.momz
 			)
 
 			P_SetOrigin(list[6],door.x,door.y,door.z)
 			list[6].angle = door.angle
 			list[6].height = 0
 			list[6].scale = door.scale
-			list[5].spritexscale = door.spritexscale
-			list[5].spriteyscale = door.spritexscale
+			list[6].spritexscale = door.spritexscale
+			list[6].spriteyscale = door.spritexscale
 			P_MoveOrigin(list[6],
 				door.x + door.momx,
 				door.y + door.momy,
-				(P_MobjFlip(door) == 1 and door.z or door.z + FixedMul(door.height, door.spriteyscale)) + door.momz
+				(P_MobjFlip(door) == 1 and door.z or door.z + door.height) + door.momz
 			)
 			
 		end

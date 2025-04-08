@@ -79,7 +79,12 @@ return "NameTags", function(v, player)
 	local fov = (CV_FindVar("fov").value/FRACUNIT)*ANG1 --Can this be fetched live instead of assumed?
 	
 	--the "distance" the HUD plane is projected from the player
-	local hud_distance = FixedDiv(hudwidth>>1, tan(fov>>1))
+	--local hud_distance = FixedDiv(hudwidth>>1, tan(fov>>1)) -- Okay in srb2classic, theres a hud issue here.
+	
+	local hud_distance = 0 
+	if hudwidth>>1 and fov>>1 then 
+		hud_distance = FixedDiv(hudwidth>>1, tan(fov>>1))
+	end
 
 	for _, tmo in pairs(sorted_mobjs) do
 		if not tmo or not tmo.valid then continue end
