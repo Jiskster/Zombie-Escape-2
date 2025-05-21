@@ -65,26 +65,10 @@ return "NameTags", function(v, player)
 	end
 	if (gametype ~= GT_ZE2) return end
 	if ZE2.game_ended then return end
-	local width = 320
-	local height = 200
-	local realwidth = v.width()/v.dupx()
-	local realheight = v.height()/v.dupy()
 
 	local first_person = not camera.chase
 	local cam = first_person and player.realmo or camera
 	local spectator = player.spectator
-	local hudwidth = 320*FU
-	local hudheight =(300*v.height()/v.width())*FU
-
-	local fov = (CV_FindVar("fov").value/FRACUNIT)*ANG1 --Can this be fetched live instead of assumed?
-	
-	--the "distance" the HUD plane is projected from the player
-	--local hud_distance = FixedDiv(hudwidth>>1, tan(fov>>1)) -- Okay in srb2classic, theres a hud issue here.
-	
-	local hud_distance = 0 
-	if hudwidth>>1 and fov>>1 then 
-		hud_distance = FixedDiv(hudwidth>>1, tan(fov>>1))
-	end
 
 	for _, tmo in pairs(sorted_mobjs) do
 		if not tmo or not tmo.valid then continue end
@@ -131,8 +115,6 @@ return "NameTags", function(v, player)
 		
 		local namefont = "center"
 		local ringfont = "center"
-		local charwidth = 5
-		local lineheight = 8
 		local y_offset = 0
 
 		local flash = (leveltime/(TICRATE/6))%2 == 0
