@@ -49,14 +49,9 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 			
 			-- reset everyone's inventory
 			for player in players.iterate do
-				if player.ze2 then
-					-- TODO: Reference the default table and copy that, instead of making a new one
-					player.ze2.survivor_inventory = {
-						ZE2:CopyItemFromID(ITEM_RED_RING)
-					}
-				else
-					continue
-				end
+				player.ze2.survivor_inventory = {
+					ZE2:CopyItemFromID(ITEM_RED_RING)
+				}
 			end
 			
 			ZE2.queuing_round = false
