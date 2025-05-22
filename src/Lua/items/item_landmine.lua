@@ -46,7 +46,7 @@ local landmine = ZE2:CreateItem("Landmine",  {
 		landmine.target = player.mo
 		landmine.spritexscale = $*2
 		landmine.spriteyscale = $*2
-		landmine.mobjteam = player["ze2_info"].team
+		landmine.mobjteam = player.ze2.team
 		landmine.forcedamage = ZE2:FetchInventorySlot(player).damage
 	end,
 })
@@ -56,7 +56,7 @@ addHook("TouchSpecial", function(special, toucher)
 		if toucher and toucher.valid and toucher.player and toucher.player.valid then
 			local player = toucher.player
 			
-			if special.mobjteam ~= player["ze2_info"].team then
+			if special.mobjteam ~= player.ze2.team then
 				P_DamageMobj(toucher, special, special.target, special.forcedamage)
 				toucher.momx = 0
 				toucher.momy = 0

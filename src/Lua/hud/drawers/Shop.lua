@@ -1,12 +1,12 @@
 return "Shop", function(v, player)
-	if not player["ze2_info"].pregamemenu_active then
+	if not player.ze2.pregamemenu_active then
 		return
 	end
 	
-	if player["ze2_info"].pregamemenu_type ~= 2 then return end
+	if player.ze2.pregamemenu_type ~= 2 then return end
 	if not #ZE2.Survivor_ShopList then return end
 	
-	local topmenuflag = player["ze2_info"].pregamemenu_intopmenu and V_80TRANS or 0
+	local topmenuflag = player.ze2.pregamemenu_intopmenu and V_80TRANS or 0
 	
 	local x = 100*FU
 	local y = 50*FU
@@ -27,13 +27,13 @@ return "Shop", function(v, player)
 	
 	local selectionanim = (((leveltime/4)%2) == 0) and 2*FU or 0*FU
 	
-	local shop_selection = player["ze2_info"].shop_selection
+	local shop_selection = player.ze2.shop_selection
 	
 	local infobarpatch = v.cachePatch("Z_SHOPINFOBAR")
 	local minirubypatch = v.cachePatch("Z_MINI_RUBY")
 	local selectionpatch = v.cachePatch("Z_SHOPSELECTION")
 	
-	customhud.CustomFontString(v, 280*FU, 30*FU, "Cash: "..player["ze2_info"].cash, "STCFC", (V_SNAPTOTOP|V_SNAPTORIGHT|topmenuflag), "right" , FU, SKINCOLOR_FOREST)
+	customhud.CustomFontString(v, 280*FU, 30*FU, "Cash: "..player.ze2.cash, "STCFC", (V_SNAPTOTOP|V_SNAPTORIGHT|topmenuflag), "right" , FU, SKINCOLOR_FOREST)
 	
 	for i,b in ipairs(ZE2.Survivor_ShopList) do
 		local shopdefid = b.shopdefid
@@ -81,7 +81,7 @@ return "Shop", function(v, player)
 				customhud.CustomFontString(v, x + item_name_xoffset, y+item_name_yoffset+change, shop_def.name, "STCFC", (V_SNAPTOTOP|topmenuflag|soldflag), "center" , FU, color)
 			end
 			
-			if not player["ze2_info"].pregamemenu_intopmenu then
+			if not player.ze2.pregamemenu_intopmenu then
 				-- if selection is render index
 				if shop_selection == i then
 					local draw_info_table = {

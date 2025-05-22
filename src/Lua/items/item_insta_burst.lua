@@ -51,7 +51,7 @@ ZE2:CreateItem("Insta Burst", {
 		instaburst.target = player.mo
 		instaburst.spritexscale = $*2
 		instaburst.spriteyscale = $*2
-		instaburst.mobjteam = player["ze2_info"].team
+		instaburst.mobjteam = player.ze2.team
 		instaburst.forcedamage = ZE2:FetchInventorySlot(player).damage
 		instaburst.ib_hitlist = {}
 	end,

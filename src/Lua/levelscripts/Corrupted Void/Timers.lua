@@ -6,8 +6,8 @@ ZE2:AddTimer("CORRUPTEDVOID_1", {
 		for player in players.iterate do
 			if not (player.mo and player.mo.valid) then continue end
 			if (player.spectator) then continue end
-			if not player["ze2_info"] then continue end
-			if player["ze2_info"].team == 2 then continue end -- no zombies, this is survivor only
+			if not player.ze2 then continue end
+			if player.ze2.team == 2 then continue end -- no zombies, this is survivor only
 			
 			P_LinedefExecute(38, player.mo) -- call teleport
 		end

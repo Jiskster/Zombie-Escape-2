@@ -3,7 +3,7 @@ ZE2.debug_y = CV_RegisterVar({name = "z_debug_y", defaultvalue = 0, flags = CV_F
 
 return "GameInfo", function(v, player)
 	if ZE2.game_ended then return end
-	if player["ze2_info"].zombie_shop_open then return end
+	if player.ze2.zombie_shop_open then return end
 	if not player.realmo then return end
 	--if player and not player.realmo then return end
 	
@@ -32,10 +32,10 @@ return "GameInfo", function(v, player)
 		the_time = G_TicsToMTIME(ZE2.pregame_timeleft)
 	end
 	
-	local lower_hud_offset = player["ze2_info"].lower_hud_offset or 0
+	local lower_hud_offset = player.ze2.lower_hud_offset or 0
 	
-	if not player["ze2_info"].pregamemenu_active then
-		if not player["ze2_info"].ghostmode then
+	if not player.ze2.pregamemenu_active then
+		if not player.ze2.ghostmode then
 		
 			if not player.spectator then
 				-- [Player Icon] --
@@ -45,8 +45,8 @@ return "GameInfo", function(v, player)
 				skinpatch, (V_SNAPTOBOTTOM|V_SNAPTOLEFT), colormap)
 				*/
 				-- [Player Name] --
-				local display_name = (player["ze2_info"].zombie_type and player["ze2_info"].team == 2) 
-				and (player["ze2_info"].zombie_type + " Zombie") or skins[player.realmo.skin].realname
+				local display_name = (player.ze2.zombie_type and player.ze2.team == 2) 
+				and (player.ze2.zombie_type + " Zombie") or skins[player.realmo.skin].realname
 					
 				/*
 				customhud.CustomFontString(v, 25, 192-lower_hud_offset,
@@ -55,8 +55,8 @@ return "GameInfo", function(v, player)
 				*/
 				
 				-- [Cash] --
-				if player["ze2_info"].cash ~= nil then
-					customhud.CustomFontString(v, 320-10, 0+5, "$ "..player["ze2_info"].cash, "STCFC", 
+				if player.ze2.cash ~= nil then
+					customhud.CustomFontString(v, 320-10, 0+5, "$ "..player.ze2.cash, "STCFC", 
 					(V_SNAPTOTOP|V_SNAPTORIGHT), "right" , nil, SKINCOLOR_FOREST)
 				end
 				
@@ -67,17 +67,17 @@ return "GameInfo", function(v, player)
 					
 					-- flicker when no sprint energy left
 					if (leveltime/4) % 2 == 0 then
-						if not player["ze2_info"].sprintmeter then
+						if not player.ze2.sprintmeter then
 							sprintmeter_color = SKINCOLOR_RED
 						end
 					end
 					
-					if player["ze2_info"].sprintmeter ~= nil and player["ze2_info"].team == 1 then
+					if player.ze2.sprintmeter ~= nil and player.ze2.team == 1 then
 						local maxsprint = 100*FU
 						local maxsprintwidth = 48*FU
-						local sprintmeter = L_FixedDecimal(player["ze2_info"].sprintmeter, 1).."%"
+						local sprintmeter = L_FixedDecimal(player.ze2.sprintmeter, 1).."%"
 						
-						if not player["ze2_info"].sprintmeter then
+						if not player.ze2.sprintmeter then
 							sprintmeter = "LOW!"
 						end
 						
@@ -93,7 +93,7 @@ return "GameInfo", function(v, player)
 						}
 						
 						-- scale width from stamina
-						staminabarhud.hscale = FixedMul(FixedDiv(player["ze2_info"].sprintmeter, maxsprint), maxsprintwidth)
+						staminabarhud.hscale = FixedMul(FixedDiv(player.ze2.sprintmeter, maxsprint), maxsprintwidth)
 						
 						staminabarhud.x = $ - FixedMul(barpatch.width*FU, staminabarhud.hscale)/2
 						
@@ -151,11 +151,11 @@ return "GameInfo", function(v, player)
 				(V_SNAPTOBOTTOM|V_SNAPTOLEFT|V_50TRANS), nil , nil, SKINCOLOR_WHITE)
 			end
 			-- Hardcoded display at the moment
-			if player["ze2_info"].team == 2 then
+			if player.ze2.team == 2 then
 				local y = 168-lower_hud_offset
 
-				if player["ze2_info"].zombie_type == "alpha" then
-					local special_cooldown = player["ze2_info"].special_cooldown
+				if player.ze2.zombie_type == "alpha" then
+					local special_cooldown = player.ze2.special_cooldown
 					local y = 160-lower_hud_offset
 					local text = "Press C2 to Rage"
 					
@@ -170,14 +170,14 @@ return "GameInfo", function(v, player)
 			
 			/*
 			-- [Checkpoint Number] --
-			local checkpoint_number = player["ze2_info"].checkpoint_number
+			local checkpoint_number = player.ze2.checkpoint_number
 			customhud.CustomFontString(v, 0, 160, "Checkpoint: "..checkpoint_number, "TNYFC", 
 			(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, SKINCOLOR_YELLOW)
 			*/
 			
 			-- [Checkpoint Catch Up Timer] --
-			if player["ze2_info"].checkpoint_catchuptics then
-				local catchup_tics = player["ze2_info"].checkpoint_catchuptics
+			if player.ze2.checkpoint_catchuptics then
+				local catchup_tics = player.ze2.checkpoint_catchuptics
 				
 				customhud.CustomFontString(v, 160, 142, "Catching up in:", "TNYFC", 
 				(V_SNAPTOBOTTOM|V_50TRANS), "center", nil, SKINCOLOR_CHERRY)

@@ -4,7 +4,7 @@ freeslot("sfx_rblxdr")
 ZE2.Effects["energy_drink"] = {
 	thinker = function(player)
 		if player.mo and player.mo.valid then
-			player["ze2_info"].sprintmeter = 100*FRACUNIT
+			player.ze2.sprintmeter = 100*FRACUNIT
 			
 			local ghost = P_SpawnGhostMobj(player.mo)
 			ghost.colorized = true

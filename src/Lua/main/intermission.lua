@@ -19,53 +19,53 @@ end
 
 local function V_PlayerVoteCMD(player, cmd)
 	if cmd.sidemove < -40 then
-		if not player["ze2_info"].vote_leftpressed and not player["ze2_info"].voted then
+		if not player.ze2.vote_leftpressed and not player.ze2.voted then
 			S_StartSound(nil, sfx_s3kb7, player)
-			if player["ze2_info"].vote_selection - 1 <= 0 then
-				player["ze2_info"].vote_selection = 3
+			if player.ze2.vote_selection - 1 <= 0 then
+				player.ze2.vote_selection = 3
 			else
-				player["ze2_info"].vote_selection = $ - 1
+				player.ze2.vote_selection = $ - 1
 			end
-			player["ze2_info"].vote_leftpressed  = true
+			player.ze2.vote_leftpressed  = true
 		end
 	else
-		player["ze2_info"].vote_leftpressed = false
+		player.ze2.vote_leftpressed = false
 	end
 	
 	if cmd.sidemove > 40 then
-		if not player["ze2_info"].vote_rightpressed and not player["ze2_info"].voted then
+		if not player.ze2.vote_rightpressed and not player.ze2.voted then
 			S_StartSound(nil, sfx_s3kb7, player)
-			if player["ze2_info"].vote_selection + 1 > 3 then
-				player["ze2_info"].vote_selection = 1
+			if player.ze2.vote_selection + 1 > 3 then
+				player.ze2.vote_selection = 1
 			else
-				player["ze2_info"].vote_selection = $ + 1
+				player.ze2.vote_selection = $ + 1
 			end
-			player["ze2_info"].vote_rightpressed  = true
+			player.ze2.vote_rightpressed  = true
 		end
 	else
-		player["ze2_info"].vote_rightpressed = false
+		player.ze2.vote_rightpressed = false
 	end
 
 	if (cmd.buttons & BT_JUMP) and not (player.lastbuttons & BT_JUMP) then
-		if not player["ze2_info"].voted then
+		if not player.ze2.voted then
 			S_StartSound(nil, sfx_s3kad, player)
-			player["ze2_info"].voted = true
-			local sel = player["ze2_info"].vote_selection
+			player.ze2.voted = true
+			local sel = player.ze2.vote_selection
 			local seltomapnum = ZE2.MapsOnVote[sel]
 
-			ZE2.MapsOnVote[player["ze2_info"].vote_selection].votes = $ + 1
+			ZE2.MapsOnVote[player.ze2.vote_selection].votes = $ + 1
 		end
 	end
 	
 	if (cmd.buttons & BT_SPIN) and not (player.lastbuttons & BT_SPIN) then
-		if player["ze2_info"].voted then
+		if player.ze2.voted then
 			S_StartSound(nil, sfx_s3kc3s, player)
-			player["ze2_info"].voted = false
+			player.ze2.voted = false
 			
-			local sel = player["ze2_info"].vote_selection
+			local sel = player.ze2.vote_selection
 			local seltomapnum = ZE2.MapsOnVote[sel]
 
-			ZE2.MapsOnVote[player["ze2_info"].vote_selection].votes = $ - 1
+			ZE2.MapsOnVote[player.ze2.vote_selection].votes = $ - 1
 		end
 	end	
 end
@@ -101,7 +101,7 @@ local function V_StartVote()
 	end
 	
 	for player in players.iterate do
-		player["ze2_info"].vote_selection = P_RandomRange(1,3)
+		player.ze2.vote_selection = P_RandomRange(1,3)
 	end
 	
 	S_StartSound(nil,sfx_s3kb3)
@@ -157,7 +157,7 @@ addHook("PreThinkFrame", function()
 	
 	for player in players.iterate do
 		local cmd = player.cmd
-		if player.mo and player.mo.valid and player["ze2_info"] then
+		if player.mo and player.mo.valid and player.ze2 then
 			if ZE2.win_tics > ZE2.MapVoteStartFrame then
 				if ZE2.win_tics < ZE2.MapVoteStartFrame + ZE2.VoteTimeLimit 
 				and not (ZE2.rounds_left > 1) then

@@ -66,11 +66,11 @@ ZE2.SetCCtoplayer = function(player)
 		if cc[pmo.skin].normalspeed then 
 			player.normalspeed = cc[pmo.skin].normalspeed or cc["default"].normalspeed
 			
-			if (player["ze2_info"].team == 1) then
-				player.normalspeed = max($ - (player["ze2_info"].landfatigue_timer)*FU, 0)
+			if (player.ze2.team == 1) then
+				player.normalspeed = max($ - (player.ze2.landfatigue_timer)*FU, 0)
 			end
 			
-			if player["ze2_info"].crouching and P_IsObjectOnGround(pmo) then
+			if player.ze2.crouching and P_IsObjectOnGround(pmo) then
 				player.normalspeed = $ / 2
 			end
 		end
@@ -115,20 +115,20 @@ ZE2.SetCCtoplayer = function(player)
 			player.thrustfactor = 0
 			if not (P_IsObjectOnGround(pmo) or
 			(not P_IsObjectOnGround(pmo) and cmd.forwardmove < 0 and P_GetPlayerControlDirection(player) == 2) 
-			or player["ze2_info"].isSprung) then
-				player["ze2_info"].nofrictiontics = 0
+			or player.ze2.isSprung) then
+				player.ze2.nofrictiontics = 0
 			end
 		else
 			if P_IsObjectOnGround(pmo) or
 			(not P_IsObjectOnGround(pmo) and cmd.forwardmove < 0 and P_GetPlayerControlDirection(player) == 2) 
-			or player["ze2_info"].isSprung then
+			or player.ze2.isSprung then
 				player.thrustfactor = 8
 			else
 				player.thrustfactor = 4
-				player["ze2_info"].nofrictiontics = 0
+				player.ze2.nofrictiontics = 0
 			end
 			
-			if player["ze2_info"].nofrictiontics then
+			if player.ze2.nofrictiontics then
 				player.thrustfactor = 1
 			end
 		end
@@ -143,7 +143,7 @@ ZE2.SetCCtoplayer = function(player)
 			player.jumpfactor = FixedMul($, multi)
 		end
 		
-		if player["ze2_info"].sprintdelay then
+		if player.ze2.sprintdelay then
 			if ZE2.sourcemovement.value then player.jumpfactor = 3*$/4 else player.jumpfactor = $ / 2 end
 			player.actionspd = $ / 2
 			player.normalspeed = $ / 2
@@ -151,7 +151,7 @@ ZE2.SetCCtoplayer = function(player)
 
 		if (cc[pmo.skin].speedcap) and not ZE2.MobjTouchingPolyObj(pmo) then 
 			local sprintboost = cc[pmo.skin].sprintboost or cc["default"].sprintboost
-			if (sprintboost) and (player["ze2_info"].isSprinting and player["ze2_info"].sprintmeter > 0) and (player["ze2_info"].team == 1) then
+			if (sprintboost) and (player.ze2.isSprinting and player.ze2.sprintmeter > 0) and (player.ze2.team == 1) then
 				L_SpeedCap(pmo,cc[pmo.skin].speedcap + sprintboost)
 			else
 				L_SpeedCap(pmo,cc[pmo.skin].speedcap)
@@ -184,7 +184,7 @@ ZE2.SetZCtoplayer = function(player)
 	local cmd = player.cmd
 	local zc = ZE2.ZombieConfig
 	local cc = ZE2.CharacterConfig
-	local ztype = player["ze2_info"].zombie_type
+	local ztype = player.ze2.zombie_type
 	
 	if pmo and pmo.valid then
 		if zc[ztype] then
@@ -194,9 +194,9 @@ ZE2.SetZCtoplayer = function(player)
 				player.normalspeed = cc["default"].normalspeed
 			end
 
-			player.normalspeed = max($ - (player["ze2_info"].landfatigue_timer)*FU, 0) 
+			player.normalspeed = max($ - (player.ze2.landfatigue_timer)*FU, 0) 
 			
-			if player["ze2_info"].crouching and P_IsObjectOnGround(pmo) then
+			if player.ze2.crouching and P_IsObjectOnGround(pmo) then
 				player.normalspeed = $ / 2
 			end
 			
@@ -238,20 +238,20 @@ ZE2.SetZCtoplayer = function(player)
 				player.thrustfactor = 0
 				if not (P_IsObjectOnGround(pmo) or
 				(not P_IsObjectOnGround(pmo) and cmd.forwardmove < 0 and P_GetPlayerControlDirection(player) == 2) 
-				or player["ze2_info"].isSprung) then
-					player["ze2_info"].nofrictiontics = 0
+				or player.ze2.isSprung) then
+					player.ze2.nofrictiontics = 0
 				end
 			else
 				if P_IsObjectOnGround(pmo) or
 				(not P_IsObjectOnGround(pmo) and cmd.forwardmove < 0 and P_GetPlayerControlDirection(player) == 2) 
-				or player["ze2_info"].isSprung then
+				or player.ze2.isSprung then
 					player.thrustfactor = 8
 				else
 					player.thrustfactor = 4
-					player["ze2_info"].nofrictiontics = 0
+					player.ze2.nofrictiontics = 0
 				end
 				
-				if player["ze2_info"].nofrictiontics then
+				if player.ze2.nofrictiontics then
 					player.thrustfactor = 1
 				end
 			end
@@ -260,7 +260,7 @@ ZE2.SetZCtoplayer = function(player)
 				player.charflags = $|zc[ztype].charflags 
 			end
 		else
-			player["ze2_info"].zombie_type = "normal"
+			player.ze2.zombie_type = "normal"
 		end
 	end
 end
@@ -269,7 +269,7 @@ ZE2.SetZChealth = function(player)
 	local pmo = player.mo
 	local zc = ZE2.ZombieConfig
 	local cc = ZE2.CharacterConfig
-	local ztype = player["ze2_info"].zombie_type
+	local ztype = player.ze2.zombie_type
 	
 	if pmo and pmo.valid then
 		if zc[ztype] then
@@ -293,7 +293,7 @@ end
 ZE2.SetZCscale = function(player)
 	local pmo = player.mo
 	local zc = ZE2.ZombieConfig
-	local ztype = player["ze2_info"].zombie_type
+	local ztype = player.ze2.zombie_type
 	
 	if pmo and pmo.valid then
 		if ztype and zc[ztype] then
@@ -305,12 +305,12 @@ end
 ZE2.SetZCinventory = function(player)
 	local pmo = player.mo
 	local zc = ZE2.ZombieConfig
-	local ztype = player["ze2_info"].zombie_type
+	local ztype = player.ze2.zombie_type
 	
 	if pmo and pmo.valid then
-		if ztype and zc[ztype] and player["ze2_info"] then
-			player["ze2_info"].zombie_inventory = ZE2:Copy(zc[ztype].inventory) or {}
-			player["ze2_info"].zombie_inventory_limit = ZE2:Copy(zc[ztype].inventory_limit) or 2
+		if ztype and zc[ztype] and player.ze2 then
+			player.ze2.zombie_inventory = ZE2:Copy(zc[ztype].inventory) or {}
+			player.ze2.zombie_inventory_limit = ZE2:Copy(zc[ztype].inventory_limit) or 2
 		end
 	end
 end

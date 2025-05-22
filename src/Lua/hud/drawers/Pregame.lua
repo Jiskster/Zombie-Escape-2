@@ -18,17 +18,17 @@ return "Pregame", function(v, player)
     end
 	
 	if ZE2.pregame_timeleft 
-	or (ZE2.zombie_releasetime and player["ze2_info"].team == 2) then
+	or (ZE2.zombie_releasetime and player.ze2.team == 2) then
 		local offset = sin(ANG1*(leveltime*3))*3 
 		local offset2 = cos(ANG1*(leveltime*3))*3
 		local x = (160*FU) + offset
 		local y = (170*FU) + offset2
 		local text
 		
-		if player["ze2_info"].team == 1 then
-			if player["ze2_info"].pregamemenu_active then
-				if not player["ze2_info"].pregamemenu_intopmenu then
-					if player["ze2_info"].pregamemenu_type == 1 then
+		if player.ze2.team == 1 then
+			if player.ze2.pregamemenu_active then
+				if not player.ze2.pregamemenu_intopmenu then
+					if player.ze2.pregamemenu_type == 1 then
 						text = "Press SPIN to select a character."
 					end
 				end
@@ -40,8 +40,8 @@ return "Pregame", function(v, player)
 			text = "You will be released in: "..rtext.." seconds."
 		end
 		
-		if player["ze2_info"].charselect_hold then
-			local holdticoffset = (TICRATE - player["ze2_info"].charselect_hold)
+		if player.ze2.charselect_hold then
+			local holdticoffset = (TICRATE - player.ze2.charselect_hold)
 			text = tostring(G_TicsToSeconds(holdticoffset).."."..G_TicsToCentiseconds(holdticoffset))
 		end
 		
@@ -50,7 +50,7 @@ return "Pregame", function(v, player)
 		end
 	end
 	
-	if not player["ze2_info"].pregamemenu_active then
+	if not player.ze2.pregamemenu_active then
 		return
 	end
 	
@@ -59,25 +59,25 @@ return "Pregame", function(v, player)
 	end 
 	
 	blackbgpatch = v.cachePatch("Z_BG_BLACK")
-	pregamemenu_type = player["ze2_info"].pregamemenu_type
-	pregamemenu_lasttype = player["ze2_info"].pregamemenu_lasttype
+	pregamemenu_type = player.ze2.pregamemenu_type
+	pregamemenu_lasttype = player.ze2.pregamemenu_lasttype
 	
 	do -----------[Top menu drawing]-------------
 		for i,tabledef in ipairs(ZE2.PregameTopMenuDef) do
 			local color = SKINCOLOR_WHITE
 			
-			if (player["ze2_info"].pregamemenu_intopmenu and pregamemenu_type == i) then
+			if (player.ze2.pregamemenu_intopmenu and pregamemenu_type == i) then
 				color = SKINCOLOR_YELLOW
 			end
 			
-			local ease_offset = player["ze2_info"].pregamemenu_intopmenuanim_max - player["ze2_info"].pregamemenu_intopmenuanim
+			local ease_offset = player.ze2.pregamemenu_intopmenuanim_max - player.ze2.pregamemenu_intopmenuanim
 			local ese_div 
 			local ese = 0
 			
-			if player["ze2_info"].pregamemenu_intopmenuanim and ease_offset then
+			if player.ze2.pregamemenu_intopmenuanim and ease_offset then
 				local anim_start = (pregamemenu_lasttype-1)*spacing*FU
 				local anim_end = (pregamemenu_type-1)*spacing*FU
-				ese_div = FixedDiv(ease_offset*FU, player["ze2_info"].pregamemenu_intopmenuanim_max*FU)
+				ese_div = FixedDiv(ease_offset*FU, player.ze2.pregamemenu_intopmenuanim_max*FU)
 				ese = ease.outexpo(ese_div, anim_start, anim_end)
 			end
 			
@@ -86,7 +86,7 @@ return "Pregame", function(v, player)
 			
 			local x = (160*FU) + ((i-1)*spacing*FU) - (pregamemenu_type-1)*spacing*FU
 			
-			if player["ze2_info"].pregamemenu_intopmenuanim then
+			if player.ze2.pregamemenu_intopmenuanim then
 				x = (160*FU) + ((i-1)*spacing*FU) - ese -- pose as if you're in your last selection + easing offset
 			end
 			

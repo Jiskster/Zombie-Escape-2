@@ -73,10 +73,10 @@ local function DrawTeammate(v,p, x,y, props)
 	local rubiestring = ''
 	local rubiecolor
 	if drawcash
-		rubiestring = "$ "..p["ze2_info"].cash
+		rubiestring = "$ "..p.ze2.cash
 		rubiecolor = SKINCOLOR_FOREST
 	else
-		rubiestring = p["ze2_info"].zombie_type
+		rubiestring = p.ze2.zombie_type
 		rubiecolor = p.mo.color
 	end
 	customhud.CustomFontString(v,

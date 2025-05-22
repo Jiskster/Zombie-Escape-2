@@ -1,0 +1,1 @@
+dofile "variables/metatables/player"

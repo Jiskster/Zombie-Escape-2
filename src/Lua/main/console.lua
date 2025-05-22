@@ -77,8 +77,15 @@ ZE2.sourcemovement = CV_RegisterVar({
 	flags = CV_NETVAR,
 })
 
+ZE2.cv_debug = CV_RegisterVar({
+	name = "z_debug",
+	defaultvalue = "Off",
+	PossibleValue = CV_OnOff,
+	flags = CV_NETVAR,
+})
+
 COM_AddCommand("z_giveitem", function(player, item_id, count, slot)
-	if player.mo and player.mo.valid and player["ze2_info"] and ZE2:FetchInventory(player) then
+	if player.mo and player.mo.valid and player.ze2 and ZE2:FetchInventory(player) then
 		if item_id then
 			item_id = tonumber($)
 		else
@@ -99,15 +106,15 @@ COM_AddCommand("z_giveitem", function(player, item_id, count, slot)
 end, COM_ADMIN)
 
 COM_AddCommand("z_sellinventory", function(player)
-	for i=1,player["ze2_info"].survivor_inventory_limit do
-		if player["ze2_info"].survivor_inventory[i] and player["ze2_info"].survivor_inventory[i].price then
-			local item_name = player["ze2_info"].survivor_inventory[i].displayname
-			local item_cost = player["ze2_info"].survivor_inventory[i].price
+	for i=1,player.ze2.survivor_inventory_limit do
+		if player.ze2.survivor_inventory[i] and player.ze2.survivor_inventory[i].price then
+			local item_name = player.ze2.survivor_inventory[i].displayname
+			local item_cost = player.ze2.survivor_inventory[i].price
 			local item_count 
 			local item_maxcount
-			if player["ze2_info"].survivor_inventory[i].count then
-				item_count = player["ze2_info"].survivor_inventory[i].count
-				item_maxcount = player["ze2_info"].survivor_inventory[i].max_count
+			if player.ze2.survivor_inventory[i].count then
+				item_count = player.ze2.survivor_inventory[i].count
+				item_maxcount = player.ze2.survivor_inventory[i].max_count
 			end
 			if item_count and item_maxcount then
 				item_cost = (item_cost*item_count)/item_maxcount
@@ -118,13 +125,13 @@ COM_AddCommand("z_sellinventory", function(player)
 			
 			CONS_Printf(player,toprint)
 			
-			player["ze2_info"].cash = $ + item_cost
+			player.ze2.cash = $ + item_cost
 		end
 	end
-	player["ze2_info"].survivor_inventory = {
+	player.ze2.survivor_inventory = {
 		ZE2:CopyItemFromID(ITEM_RED_RING)
 	}
-	player["ze2_info"].zombie_inventory = {
+	player.ze2.zombie_inventory = {
 		ZE2:CopyItemFromID(ITEM_INSTA_BURST)
 	}
 	CONS_Printf(player, "\x85".."Cleared inventory!")
@@ -132,20 +139,20 @@ end)
 
 COM_AddCommand("z_sellhand", function(player)
 	local inventory 
-	if player["ze2_info"].team == 1 then
-		inventory = player["ze2_info"].survivor_inventory
-	elseif player["ze2_info"].team == 2 then
-		inventory = player["ze2_info"].zombie_inventory
+	if player.ze2.team == 1 then
+		inventory = player.ze2.survivor_inventory
+	elseif player.ze2.team == 2 then
+		inventory = player.ze2.zombie_inventory
 	end
-	local inventory_slot = inventory[player["ze2_info"].inventory_selection]
+	local inventory_slot = inventory[player.ze2.inventory_selection]
 	if inventory_slot and inventory_slot.price then -- Sellable
-		local item_name = inventory[player["ze2_info"].inventory_selection].displayname
-		local item_cost = inventory[player["ze2_info"].inventory_selection].price
+		local item_name = inventory[player.ze2.inventory_selection].displayname
+		local item_cost = inventory[player.ze2.inventory_selection].price
 		local item_count 
 		local item_maxcount
-		if inventory[player["ze2_info"].inventory_selection].count then
-			item_count = inventory[player["ze2_info"].inventory_selection].count
-			item_maxcount = inventory[player["ze2_info"].inventory_selection].max_count
+		if inventory[player.ze2.inventory_selection].count then
+			item_count = inventory[player.ze2.inventory_selection].count
+			item_maxcount = inventory[player.ze2.inventory_selection].max_count
 		end
 		if item_count and item_maxcount then
 			item_cost = (item_cost*item_count)/item_maxcount
@@ -157,9 +164,9 @@ COM_AddCommand("z_sellhand", function(player)
 		
 		CONS_Printf(player,toprint)
 		
-		table.remove(inventory, player["ze2_info"].inventory_selection)
+		table.remove(inventory, player.ze2.inventory_selection)
 		
-		player["ze2_info"].cash = $ + item_cost
+		player.ze2.cash = $ + item_cost
 		
 	elseif inventory_slot and not inventory_slot.price then -- Unsellable but has slot
 		CONS_Printf(player, "\x85\This item is unsellable!")

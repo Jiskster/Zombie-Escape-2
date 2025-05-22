@@ -16,8 +16,8 @@ local function ForceEndAllCharacterSelection()
 	for player in players.iterate do
 		if player.spectator then continue end
 		
-		if player["ze2_info"].pregamemenu_active == true then -- get tf out of character select
-			local selection_name = ZE2.getSkinNames(player, true)[player["ze2_info"].charselect_selection]
+		if player.ze2.pregamemenu_active == true then -- get tf out of character select
+			local selection_name = ZE2.getSkinNames(player, true)[player.ze2.charselect_selection]
 			ZE2.pickcharinselect(player,selection_name) 
 		end
 	end
@@ -58,8 +58,8 @@ function ZE2:StartWin(team, fromring)
 	
 	for mobj in mobjs.iterate() do
 		if mobj.valid then
-			if (mobj.player and mobj.player.valid and mobj.player["ze2_info"].team and 
-			mobj.player["ze2_info"].team == 2 and ZE2.killzombiesonwin.value and team == 1) then
+			if (mobj.player and mobj.player.valid and mobj.player.ze2.team and 
+			mobj.player.ze2.team == 2 and ZE2.killzombiesonwin.value and team == 1) then
 				P_KillMobj(mobj)
 				continue
 			end
@@ -80,7 +80,7 @@ function ZE2:StartWin(team, fromring)
 	
 	for player in players.iterate do
 		if player.spectator then continue end
-		if player["ze2_info"].team ~= team then continue end
+		if player.ze2.team ~= team then continue end
 		
 		ZE2:GivePlayerRubies(player, cash_award)
 		S_StartSound(player.mo, sfx_rbyhit)
@@ -91,7 +91,7 @@ function ZE2:StartWin(team, fromring)
 end
 
 addHook("PlayerThink", function(player)
-	player["ze2_info"].was_zombie = $ or false -- waszombie is to prevent repeating players
+	player.ze2.was_zombie = $ or false -- waszombie is to prevent repeating players
 end)
 
 addHook("ThinkFrame", function()
@@ -123,12 +123,12 @@ addHook("ThinkFrame", function()
 		for player in players.iterate do
 			if player.spectator then continue end
 			
-			if player["ze2_info"].pregamemenu_active == true then -- get tf out of character select
-				local selection_name = ZE2.getSkinNames(player, true)[player["ze2_info"].charselect_selection]
+			if player.ze2.pregamemenu_active == true then -- get tf out of character select
+				local selection_name = ZE2.getSkinNames(player, true)[player.ze2.charselect_selection]
 				ZE2.pickcharinselect(player,selection_name) 
 			end
 			
-			if not player["ze2_info"].was_zombie then
+			if not player.ze2.was_zombie then
 				table.insert(choosingnums, #player)
 			end
 		end
@@ -152,15 +152,15 @@ addHook("ThinkFrame", function()
 					print(string.format("\x83\%s\x83\ has risen from the dead!",player.name))
 				end
 				
-				player["ze2_info"].team = 2
-				player["ze2_info"].was_zombie = true
+				player.ze2.team = 2
+				player.ze2.was_zombie = true
 				table.remove(choosingnums,playernumindex)
 			end
 		end
 
 		for player in players.iterate do
-			if player["ze2_info"].was_zombie and player["ze2_info"].team == 1 then
-				player["ze2_info"].was_zombie = false
+			if player.ze2.was_zombie and player.ze2.team == 1 then
+				player.ze2.was_zombie = false
 			end
 		end
 		
@@ -191,7 +191,7 @@ addHook("ThinkFrame", function()
 	end
 	
 	for player in players.iterate do 
-		if player.mo and player.mo.valid and (ZE2.game_ended or player["ze2_info"].team == 2) then
+		if player.mo and player.mo.valid and (ZE2.game_ended or player.ze2.team == 2) then
 			player.powers[pw_underwater] = 0
 		end
 	end

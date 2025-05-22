@@ -43,14 +43,14 @@ local w_mirror = ZE2:CreateItem("W's mirror", {
 		mirrorclone.alias = player.name
 		mirrorclone.angle = player.mo.angle
 		mirrorclone.forcedamage = ZE2:FetchInventorySlot(player).damage
-		mirrorclone.mobjteam = player["ze2_info"].team
+		mirrorclone.mobjteam = player.ze2.team
 	end
 })
 
 addHook("MobjCollide", function(mo,toucher)
 	if mo.mobjteam then
 		if toucher.player then
-			if toucher.player["ze2_info"].team == mo.mobjteam then
+			if toucher.player.ze2.team == mo.mobjteam then
 				return false
 			end
 		elseif toucher.mobjteam and (toucher.flags & MF_MISSILE) then

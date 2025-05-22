@@ -25,7 +25,7 @@ function ZE2.DoTeamChat(player, text, team)
 		if tplayer.spectator then continue end
 		if tplayer == server and ZE2.server_showteamchat.value then return end
 	
-		if tplayer["ze2_info"].team == team then
+		if tplayer.ze2.team == team then
 			chatprintf(tplayer, hexcolor.."[T]<"..prefixrole..player.name.."> "..text, true)
 		end
 	end
@@ -35,19 +35,19 @@ addHook("PlayerMsg", function(source, msgtype, target, msg)
 	if gametype ~= GT_ZE2 then return end
 	
 	if (msg:sub(1,3) == "/tc") and (msg:len() == 3) then
-		source["ze2_info"].teamchat_enabled = not $
+		source.ze2.teamchat_enabled = not $
 	
-		local teamchatiswhat = source["ze2_info"].teamchat_enabled and "Enabled" or "Disabled"
+		local teamchatiswhat = source.ze2.teamchat_enabled and "Enabled" or "Disabled"
 		chatprintf(source, "\x89".."Team Chat is "..teamchatiswhat)
 		return true
 	elseif (msg:sub(1,4) == "/tc ") and (msg:len() > 4) 
-	and not source["ze2_info"].teamchat_enabled then
-		ZE2.DoTeamChat(source, msg:gsub("/tc ", ""), source["ze2_info"].team, 1)
+	and not source.ze2.teamchat_enabled then
+		ZE2.DoTeamChat(source, msg:gsub("/tc ", ""), source.ze2.team, 1)
 		return true
 	end
 	
-	if source["ze2_info"].teamchat_enabled then
-		ZE2.DoTeamChat(source, msg, source["ze2_info"].team)
+	if source.ze2.teamchat_enabled then
+		ZE2.DoTeamChat(source, msg, source.ze2.team)
 		return true
 	end
 end)

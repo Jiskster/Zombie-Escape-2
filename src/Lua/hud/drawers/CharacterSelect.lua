@@ -2,11 +2,11 @@ local round_active = false
 local hud_icon_scale = FU+(FU/4)
 
 ZE2.getCharacterSelection = function(player)
-	return player["ze2_info"].charselect_selection or 1
+	return player.ze2.charselect_selection or 1
 end
 
 ZE2.getSkinFromCharSelect = function(player)
-	return skins[ZE2.getSkinNames(player, true)[player["ze2_info"].charselect_selection]] or skins["sonic"]
+	return skins[ZE2.getSkinNames(player, true)[player.ze2.charselect_selection]] or skins["sonic"]
 end
 
 return "CharacterSelect", function(v, player)
@@ -24,13 +24,13 @@ return "CharacterSelect", function(v, player)
 
 	local cc = ZE2.CharacterConfig
 	
-	if not player["ze2_info"].pregamemenu_active then
+	if not player.ze2.pregamemenu_active then
 		return
 	end
 	
-	if player["ze2_info"].pregamemenu_type ~= 1 then return end
+	if player.ze2.pregamemenu_type ~= 1 then return end
 	
-	local topmenuflag = player["ze2_info"].pregamemenu_intopmenu and V_80TRANS or 0
+	local topmenuflag = player.ze2.pregamemenu_intopmenu and V_80TRANS or 0
 	
 	--Blue Bar
 	v.drawStretched(0, 67*FRACUNIT, 1500*FRACUNIT, FRACUNIT*3, barpatch, V_SNAPTOTOP|V_SNAPTOLEFT|topmenuflag)
@@ -43,10 +43,10 @@ return "CharacterSelect", function(v, player)
 		local y = 86*FRACUNIT
 
 		-- If animation is playing.
-		if player["ze2_info"].charselect_selection_anim ~= nil and player["ze2_info"].charselect_prevselection then
-			local div = FixedDiv(player["ze2_info"].charselect_selection_anim*FRACUNIT, ((TICRATE/2)*FRACUNIT))
-			local anim_start = (player["ze2_info"].charselect_prevselection*25)*FRACUNIT
-			local anim_end = (player["ze2_info"].charselect_selection*25)*FRACUNIT
+		if player.ze2.charselect_selection_anim ~= nil and player.ze2.charselect_prevselection then
+			local div = FixedDiv(player.ze2.charselect_selection_anim*FRACUNIT, ((TICRATE/2)*FRACUNIT))
+			local anim_start = (player.ze2.charselect_prevselection*25)*FRACUNIT
+			local anim_end = (player.ze2.charselect_selection*25)*FRACUNIT
 			local ese = ease.outexpo(div, anim_start, anim_end)
 
 			x = (157+(i*25))*FRACUNIT - (ese)
@@ -137,7 +137,7 @@ return "CharacterSelect", function(v, player)
 	}
 
 	for i=1,#charinfo_text do
-		local t_ese_div = FixedDiv(player["ze2_info"].charselect_selection_anim*FRACUNIT, ((TICRATE/2)*FRACUNIT))
+		local t_ese_div = FixedDiv(player.ze2.charselect_selection_anim*FRACUNIT, ((TICRATE/2)*FRACUNIT))
 		local t_ese = ease.outexpo(t_ese_div, 640*FRACUNIT, 320*FRACUNIT)
 		local output_color = charinfo_text[i].textcolor or SKINCOLOR_GREY
 		local output_text = charinfo_text[i].text or "????", "STCFC"

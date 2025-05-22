@@ -42,13 +42,13 @@ end
 
 function ZE2:FetchInventory(player)
 	if player and player.valid then
-		if player["ze2_info"] then
-			if player["ze2_info"].survivor_inventory and player["ze2_info"].team == 1 then
-				return player["ze2_info"].survivor_inventory
-			elseif player["ze2_info"].zombie_inventory and player["ze2_info"].team == 2 then
-				return player["ze2_info"].zombie_inventory
+		if player.ze2 then
+			if player.ze2.survivor_inventory and player.ze2.team == 1 then
+				return player.ze2.survivor_inventory
+			elseif player.ze2.zombie_inventory and player.ze2.team == 2 then
+				return player.ze2.zombie_inventory
 			else
-				return player["ze2_info"].survivor_inventory
+				return player.ze2.survivor_inventory
 			end
 		end
 	end
@@ -56,11 +56,11 @@ end
 
 function ZE2:FetchInventoryLimit(player)
 	if player and player.valid then
-		if player["ze2_info"] then
-			if player["ze2_info"].team == 1 then
-				return player["ze2_info"].survivor_inventory_limit
-			elseif player["ze2_info"].team == 2 then
-				return player["ze2_info"].zombie_inventory_limit
+		if player.ze2 then
+			if player.ze2.team == 1 then
+				return player.ze2.survivor_inventory_limit
+			elseif player.ze2.team == 2 then
+				return player.ze2.zombie_inventory_limit
 			end
 		end
 	end
@@ -69,8 +69,8 @@ end
 
 function ZE2:FetchInventorySlot(player, slot)
 	if player and player.valid then
-		if player["ze2_info"] and player["ze2_info"].inventory_selection then
-			return ZE2:FetchInventory(player)[slot or player["ze2_info"].inventory_selection] 
+		if player.ze2 and player.ze2.inventory_selection then
+			return ZE2:FetchInventory(player)[slot or player.ze2.inventory_selection] 
 		end
 	end
 end
@@ -78,8 +78,8 @@ end
 
 function ZE2:ClearInventorySlot(player, slot)
 	if player and player.valid then
-		if player["ze2_info"] and player["ze2_info"].inventory_selection then
-			ZE2:FetchInventory(player)[slot or player["ze2_info"].inventory_selection] = nil
+		if player.ze2 and player.ze2.inventory_selection then
+			ZE2:FetchInventory(player)[slot or player.ze2.inventory_selection] = nil
 			return true
 		end
 	end
@@ -115,7 +115,7 @@ end
 
 function ZE2:IsInventoryFull(player)
 	if player and player.valid then
-		if player["ze2_info"] and ZE2:FetchInventory(player) then
+		if player.ze2 and ZE2:FetchInventory(player) then
 			if #ZE2:FetchInventory(player) >= ZE2:FetchInventoryLimit(player) then
 				return true
 			else
@@ -192,7 +192,7 @@ function ZE2:GiveItem(player, item_input, count, slot)
 		if not item_input or (isTable and item_input and not item_input.item_id) 
 		or (isNumber and item_input and not ZE2.ItemPresets[item_input]) then
 			return false
-		elseif player["ze2_info"] and ZE2:FetchInventory(player) then
+		elseif player.ze2 and ZE2:FetchInventory(player) then
 			local item
 	
 			if isNumber then

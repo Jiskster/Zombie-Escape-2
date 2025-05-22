@@ -15,13 +15,13 @@ local function PositionSlot(index, slot, slot_count, slot_gap)
 end
 
 return "Inventory", function(v, player)
-	if player["ze2_info"].pregamemenu_active then return end
+	if player.ze2.pregamemenu_active then return end
 	if ZE2.game_ended then return end
-	if player["ze2_info"].ghostmode then return end
-	if player["ze2_info"].zombie_shop_open then return end
+	if player.ze2.ghostmode then return end
+	if player.ze2.zombie_shop_open then return end
 	
 	if ZE2.pregame_timeleft then return end -- if in pregame, dont display
-	if ZE2.zombie_releasetime and player["ze2_info"].team == 2 then return end -- if zombie and hasn't been released, dont display
+	if ZE2.zombie_releasetime and player.ze2.team == 2 then return end -- if zombie and hasn't been released, dont display
 	
 	if player and not player.mo then return end
 	
@@ -37,7 +37,7 @@ return "Inventory", function(v, player)
 	}
 	
 	for i=1, slot_count do
-		local selection = player["ze2_info"].inventory_selection
+		local selection = player.ze2.inventory_selection
 		
 		local slot = {
 			x = (BASEVIDWIDTH*FU)/2, -- In middle of screen
@@ -84,12 +84,12 @@ return "Inventory", function(v, player)
 		)
 		
 		-- [Reload Animation] -- 
-		if selection == i and player["ze2_info"].reload > 0 then
+		if selection == i and player.ze2.reload > 0 then
 			reload_square.scale = FU
 			reload_square.patch = v.cachePatch("Z_GREENSQUARE")
 			
 			if item_reload_time then
-				reload_square.scale = FU - FixedDiv(player["ze2_info"].reload*FU, item_reload_time*FU)
+				reload_square.scale = FU - FixedDiv(player.ze2.reload*FU, item_reload_time*FU)
 			end
 			
 			PositionSlot(i, reload_square, slot_count, slot_gap)
@@ -125,7 +125,7 @@ return "Inventory", function(v, player)
 			local xoffset = 16*FU
 			local yoffset = 8*FU
 			local extraflags = 0
-			local reloading = player["ze2_info"].reload > 0
+			local reloading = player.ze2.reload > 0
 			local text
 
 			if item_ammo ~= nil then
@@ -160,7 +160,7 @@ return "Inventory", function(v, player)
 	end
 	
 	if selected_slot.positioned_selection then
-		local selection = player["ze2_info"].inventory_selection
+		local selection = player.ze2.inventory_selection
 		
 		v.drawScaled(
 			selected_slot.x,

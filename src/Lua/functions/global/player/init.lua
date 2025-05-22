@@ -1,0 +1,41 @@
+ZE2.init_player = function(player)
+	if gametype ~= GT_ZE2 and leveltime then return end
+	
+	local pmo = player.mo
+	
+	if player and pmo and pmo.valid then
+		if (ZE2.round_active and ZE2.PlayerCount() > 1) then
+			player.ze2.team = 2
+			player.ze2.zombie_type = "normal"
+			
+			if ZE2.round_active and ZE2.PlayerCount() > 1 and leveltime then
+				-- killedbysomething variable is to prevent players from suiciding to get a special zombie
+				-- same goes for was_spectating
+				if player.ze2.zombie_next_type then
+					player.ze2.zombie_type = player.ze2.zombie_next_type
+					player.ze2.zombie_next_type = nil
+				else
+					player.ze2.zombie_type = "normal"
+				end
+				
+				player.ze2.killedbysomething = false
+			end
+			
+			player.ze2.zombie_shop_open = false
+			
+			player.ze2.was_spectating = false
+			
+			P_SpawnMobj(pmo.x, pmo.y, pmo.z, MT_ZE2_TELEGFX)
+		else
+			player.ze2.team = 1
+		end
+		
+		ZE2.ResetPlayer(player, true)
+
+		if player.ze2.team == 2 then 
+			R_SetPlayerSkin(player, "zzombie") 
+		end
+
+		player.ze2.sprintmeter = 100*FRACUNIT
+	end
+end

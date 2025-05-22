@@ -97,7 +97,7 @@ return "Intermission", function(v, player)
 				diff2<<V_ALPHASHIFT, "center", 2*FRACUNIT, round_color)
 			end
 		elseif ZE2.MapsOnVote and #ZE2.MapsOnVote >= 3 then -- map vote
-			local selection = player["ze2_info"].vote_selection
+			local selection = player.ze2.vote_selection
 			local cursor_patch = v.cachePatch("SLCT1LVL")
 			local cursor_patch2 = v.cachePatch("SLCT2LVL")
 			
@@ -123,7 +123,7 @@ return "Intermission", function(v, player)
 			end
 
 			-- Selection Flicker Code
-			if (player["ze2_info"].voted)
+			if (player.ze2.voted)
 				v.drawScaled(-80*FU+((selection)*100*FU),map_y,votepatchsize,cursor_patch)
 			else
 				if ((leveltime/2)%2 == 0) then 

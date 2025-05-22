@@ -1,15 +1,17 @@
+rawset(_G, "ZE2", {});
+
 dofile "init/gametype.lua"
+
+dofile "functions/main"
 
 dofile "libraries/fixedfromstring.lua"
 dofile "libraries/json.lua"
 dofile "libraries/mobjlib.lua"
 dofile "libraries/customhudlib.lua"
 dofile "libraries/countingplayers.lua"
-dofile "libraries/getcharacterlist.lua"
 dofile "libraries/itemlib.lua"
 dofile "libraries/mtimeconv.lua"
 dofile "libraries/sglib.lua" -- https://github.com/GenericHeroGuy/ringracers-scripts
-dofile "libraries/basexx.lua" -- https://github.com/aiq/basexx
 
 dofile "main/shop.lua"
 
@@ -31,6 +33,10 @@ dofile "items/item_grenade.lua" -- [14]
 dofile "items/item_landmine.lua" -- [15]
 dofile "items/item_energy_drink.lua" -- [16]
 dofile "items/item_flame_ring.lua" -- [17]
+
+dofile "variables/main"
+
+dofile "freeslot/sounds"
 
 -- Optimized version of actions.
 -- TODO: Remake items that use this and remove this action override.

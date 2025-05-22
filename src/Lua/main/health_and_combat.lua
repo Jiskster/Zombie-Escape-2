@@ -24,15 +24,15 @@ function ZE2:TryBooleanAction(player, _table, strict)
 	end
 	
 	if (_table.condition) then
-		if not player["ze2_info"][_table.var] then
+		if not player.ze2[_table.var] then
 			if _table.action then
 				_table.action()
 			end
 		end
 		
-		player["ze2_info"][_table.var] = true
+		player.ze2[_table.var] = true
 	else
-		player["ze2_info"][_table.var] = false
+		player.ze2[_table.var] = false
 	end
 	
 	return true
@@ -53,8 +53,8 @@ function ZE2.KillMobj(mo, inf, src, damagetype, killedbysomething)
 
 	if mo.player and mo.player.valid then
 		local player = mo.player 
-		local ztype = player["ze2_info"].zombie_type
-		local team = player["ze2_info"].team
+		local ztype = player.ze2.zombie_type
+		local team = player.ze2.team
 		local cash_award = 150
 		local killer -- will be valid if player
 		
@@ -85,7 +85,7 @@ function ZE2.KillMobj(mo, inf, src, damagetype, killedbysomething)
 			end
 		end
 		
-		player["ze2_info"].killedbysomething = killedbysomething
+		player.ze2.killedbysomething = killedbysomething
 	end
 	
 	if killing then
@@ -198,8 +198,8 @@ local function SpawnDamageNumbers(player, victim_mobj, damage)
 end
 
 function ZE2:AddDamageIndicator(player, victim_mobj, damage)
-	if not player["ze2_info"].damage_indicator_table[victim_mobj] then
-		player["ze2_info"].damage_indicator_table[victim_mobj] = {
+	if not player.ze2.damage_indicator_table[victim_mobj] then
+		player.ze2.damage_indicator_table[victim_mobj] = {
 			tics_left = TICRATE*2,
 			animation = 1,
 			number = damage,
@@ -217,22 +217,22 @@ function ZE2:AddDamageIndicator(player, victim_mobj, damage)
 			}
 		}
 		
-		player["ze2_info"].damage_indicator_table[victim_mobj].damagenumbers = SpawnDamageNumbers(player, victim_mobj, damage)
+		player.ze2.damage_indicator_table[victim_mobj].damagenumbers = SpawnDamageNumbers(player, victim_mobj, damage)
 	else
-		if player["ze2_info"].damage_indicator_table[victim_mobj].tics_left then
-			player["ze2_info"].damage_indicator_table[victim_mobj].tics_left = TICRATE*2
-			player["ze2_info"].damage_indicator_table[victim_mobj].animation = 1
+		if player.ze2.damage_indicator_table[victim_mobj].tics_left then
+			player.ze2.damage_indicator_table[victim_mobj].tics_left = TICRATE*2
+			player.ze2.damage_indicator_table[victim_mobj].animation = 1
 		end
 		
-		if player["ze2_info"].damage_indicator_table[victim_mobj].number then
-			player["ze2_info"].damage_indicator_table[victim_mobj].number = $ + damage
+		if player.ze2.damage_indicator_table[victim_mobj].number then
+			player.ze2.damage_indicator_table[victim_mobj].number = $ + damage
 		end
 		
-		player["ze2_info"].damage_indicator_table[victim_mobj].draw_x = victim_mobj.x
-		player["ze2_info"].damage_indicator_table[victim_mobj].draw_y = victim_mobj.y
-		player["ze2_info"].damage_indicator_table[victim_mobj].draw_z = victim_mobj.z + (victim_mobj.height*2)
+		player.ze2.damage_indicator_table[victim_mobj].draw_x = victim_mobj.x
+		player.ze2.damage_indicator_table[victim_mobj].draw_y = victim_mobj.y
+		player.ze2.damage_indicator_table[victim_mobj].draw_z = victim_mobj.z + (victim_mobj.height*2)
 		
-		player["ze2_info"].damage_indicator_table[victim_mobj].real_position = {
+		player.ze2.damage_indicator_table[victim_mobj].real_position = {
 			x = victim_mobj.x,
 			y = victim_mobj.y,
 			z = victim_mobj.z,
@@ -241,15 +241,15 @@ function ZE2:AddDamageIndicator(player, victim_mobj, damage)
 			radius = victim_mobj.radius
 		}
 
-		if player["ze2_info"].damage_indicator_table[victim_mobj].damagenumbers then
-			for k, mo in ipairs(player["ze2_info"].damage_indicator_table[victim_mobj].damagenumbers) do
+		if player.ze2.damage_indicator_table[victim_mobj].damagenumbers then
+			for k, mo in ipairs(player.ze2.damage_indicator_table[victim_mobj].damagenumbers) do
 				--game already did it for us, cool
 				if not (mo and mo.valid) then continue end
 				P_RemoveMobj(mo)
 			end
 		end
 
-		player["ze2_info"].damage_indicator_table[victim_mobj].damagenumbers = SpawnDamageNumbers(player, victim_mobj, player["ze2_info"].damage_indicator_table[victim_mobj].number)
+		player.ze2.damage_indicator_table[victim_mobj].damagenumbers = SpawnDamageNumbers(player, victim_mobj, player.ze2.damage_indicator_table[victim_mobj].number)
 	end
 end
 
@@ -273,12 +273,12 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	
 	--check again incase above block removed inf
 	if (inf and inf.valid) and inf.player and mo and mo.player then
-		if mo.player["ze2_info"].team == inf.player["ze2_info"].team then
+		if mo.player.ze2.team == inf.player.ze2.team then
 			return false
 		else
 			attackedbyzombie = true
 		end
-	end--player["ze2_info"].damage_indicator_table
+	end--player.ze2.damage_indicator_table
 	
 	if inf and inf.valid and inf.player then
 		inflictor_player = inf.player
@@ -289,7 +289,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	end
 	
 	if src and src.player and mo and mo.player then
-		if mo.player["ze2_info"].team == src.player["ze2_info"].team then
+		if mo.player.ze2.team == src.player.ze2.team then
 			return false
 		else
 			attackedbyzombie = true
@@ -308,10 +308,10 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			return false
 		end
 		
-		mo.player["ze2_info"].shop_open = false
-		mo.player["ze2_info"].shop_anim = 0
+		mo.player.ze2.shop_open = false
+		mo.player.ze2.shop_anim = 0
 		
-		if inflictor_player and (ZE2.zombie_releasetime and mo.player["ze2_info"].team == 2) then
+		if inflictor_player and (ZE2.zombie_releasetime and mo.player.ze2.team == 2) then
 			return false
 		end
 	end
@@ -400,7 +400,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	
 	if mo.player then
 		-- TODO: Merge both team kb code.
-		if mo.player["ze2_info"].team == 1 then
+		if mo.player.ze2.team == 1 then
 			if not attackedbyzombie then
 				mo.player.powers[pw_flashing] = ZE2.survinvtics.value
 				
@@ -436,13 +436,13 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			if inflictor_player then
 				ZE2:DecrementSprint(mo.player, 90*FRACUNIT)
 			end
-		elseif mo.player["ze2_info"].team == 2 then
-			local ztype = mo.player["ze2_info"].zombie_type
+		elseif mo.player.ze2.team == 2 then
+			local ztype = mo.player.ze2.zombie_type
 			local zombie_hurtsounds = {sfx_zpa1,sfx_zpa2}
 			local chosen_hurtsound = zombie_hurtsounds[P_RandomRange(1,2)]
 			
 			
-			if mo.player["ze2_info"].crouching then
+			if mo.player.ze2.crouching then
 				knockback = $ * 3
 			end
 			
@@ -452,7 +452,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 				knockback = FixedMul($, knockback_multiplier)
 			end
 			
-			mo.player["ze2_info"].landfatigue_timer = min($ + 5, 20)
+			mo.player.ze2.landfatigue_timer = min($ + 5, 20)
 			
 			if inf and inf.valid then
 				if not relativeknockback then
@@ -464,14 +464,14 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 						P_Thrust(mo, inf.angle, knockback)
 					end
 					
-					mo.player["ze2_info"].nofrictiontics = min($ + 3, 5)
+					mo.player.ze2.nofrictiontics = min($ + 3, 5)
 				else
 					local r_angle = R_PointToAngle2(mo.x, mo.y, inf.x, inf.y)
 					local r_momxy = FixedHypot(mo.momx, mo.momy)
 
 					P_Thrust(mo, r_angle - ANGLE_180, knockback)
 					
-					mo.player["ze2_info"].nofrictiontics = min($ + 3, 5)
+					mo.player.ze2.nofrictiontics = min($ + 3, 5)
 				end
 			end
 			
@@ -584,8 +584,8 @@ end)
 addHook("MobjMoveCollide", function(thing,tmthing)
 	if (gametype ~= GT_ZE2) return end
 	if (ZE2.game_ended) then return end
-	if L_ZCollide(thing,tmthing) and tmthing.player and tmthing.player["ze2_info"].team == 2 and thing.player
-	and thing.player["ze2_info"].team ~= 2 then
+	if L_ZCollide(thing,tmthing) and tmthing.player and tmthing.player.ze2.team == 2 and thing.player
+	and thing.player.ze2.team ~= 2 then
 		local speed1 = FixedHypot(FixedHypot(tmthing.momx, tmthing.momy), tmthing.momz)
 		local speed2 = FixedHypot(FixedHypot(thing.momx, thing.momy), thing.momz)
 		
@@ -723,7 +723,7 @@ function ZE2.SpawnMissile(m_table)
 	end
 	
 	if source.player then
-		th.mobjteam = tonumber(source.player["ze2_info"].team)
+		th.mobjteam = tonumber(source.player.ze2.team)
 	end
 	
 	if source.eflags & MFE_VERTICALFLIP then
@@ -816,7 +816,7 @@ function ZE2.DoPlayerFire(player, iteminfo)
 		return
 	end
 	
-	if ZE2.game_ended or player["ze2_info"].pregamemenu_active then 
+	if ZE2.game_ended or player.ze2.pregamemenu_active then 
 		return
 	end
 
@@ -873,9 +873,9 @@ function ZE2.DoPlayerReload(player)
 	local max_ammo = ZE2:GetItemInfoIndex(iteminfo, "max_ammo", skin)
 	local reload_time = ZE2:GetItemInfoIndex(iteminfo, "reload_time", skin)
 	
-	if iteminfo and reload_time and not player["ze2_info"].reload then
+	if iteminfo and reload_time and not player.ze2.reload then
 		if ammo ~= max_ammo then
-			player["ze2_info"].reload = reload_time or 2*TICRATE
+			player.ze2.reload = reload_time or 2*TICRATE
 			S_StartSound(player.mo, sfx_z_rel1)
 		end
 	end
@@ -890,7 +890,7 @@ addHook("MobjMoveCollide", function(heart, victim)
 				local inf_player = imo.player
 				local victim_player = victim.player 
 				
-				if (inf_player["ze2_info"].team == victim_player["ze2_info"].team) 
+				if (inf_player.ze2.team == victim_player.ze2.team) 
 				and not (imo == victim) and L_ZCollide(heart,victim) then
 					if victim.health + 3 > victim.maxhealth then
 						victim.health = victim.maxhealth
@@ -913,8 +913,8 @@ end, MT_LHRT)
 addHook("MobjMoveCollide", function(tmthing, thing)
 	if tmthing and tmthing.valid and thing and thing.valid then
 		if (tmthing.target and tmthing.flags & MF_MISSILE and tmthing.target.player and thing.player) then
-			local team = thing.player["ze2_info"].team or thing.target.player["ze2_info"].team
-			if tmthing.target.player["ze2_info"].team == team then
+			local team = thing.player.ze2.team or thing.target.player.ze2.team
+			if tmthing.target.player.ze2.team == team then
 				return false
 			end
 		end

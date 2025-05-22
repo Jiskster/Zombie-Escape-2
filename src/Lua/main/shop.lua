@@ -48,7 +48,6 @@ function ZE2.NumToShopDef(number)
 	return ZE2.ShopDefinitions[number]
 end
 
-
 addHook("MapLoad", function()
 	if gametype ~= GT_ZE2 then return end
 	
@@ -119,6 +118,6 @@ addHook("MapLoad", function()
 	*/
 	
 	for player in players.iterate do
-		player["ze2_info"].shop_selection = 1
+		player.ze2.shop_selection = 1
 	end
 end)
