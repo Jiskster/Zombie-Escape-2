@@ -99,7 +99,7 @@ dofile "main/exiting.lua"
 dofile "main/mapinfo_animation.lua"
 dofile "main/timers.lua"
 dofile "main/emotes.lua"
---dofile "main/savedata.lua"
+
 dofile "main/maptimers.lua"
 dofile "main/checkpointsystem.lua"
 dofile "main/shields.lua"
