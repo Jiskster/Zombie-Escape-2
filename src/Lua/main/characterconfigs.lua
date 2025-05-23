@@ -1,4 +1,4 @@
-ZE2.StandardJumpFactor = FixedDiv(85*FU, 100*FU)
+ZE2.StandardJumpFactor = FixedDiv(90*FU, 100*FU)
 
 ZE2.ZombieConfig = {
 	["normal"] = {
