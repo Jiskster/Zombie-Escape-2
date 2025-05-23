@@ -115,7 +115,7 @@ local flame_ring = ZE2:CreateItem("Flame Ring",  {
 				normalspeed_multiplier = FU/2,
 				actionspd_multiplier = 3*FU/2,
 				damage_multiplier = FU/2,
-			}, 2*TICRATE)
+			}, 4*TICRATE)
 			
 			player.flameringtarget = src
 		end
