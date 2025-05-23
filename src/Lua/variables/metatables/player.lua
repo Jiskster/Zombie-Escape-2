@@ -31,7 +31,7 @@ p_mt.__index = function(player, key) -- Create player_t.ze2
     if key == "ze2" or key == "ze2_info" then
         if player and player.valid then
 			if not showed_deprecated_warning and key == "ze2_info" then
-				print("\x82WARNING: \x80Accessing player_t.ze2_info is deprecated and will be removed soon!")
+				print("\x82\WARNING: \x80\Accessing player_t.ze2_info is deprecated and will be removed soon!")
 				showed_deprecated_warning = true
 			end
 		
