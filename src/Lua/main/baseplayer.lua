@@ -3,7 +3,6 @@ sfxinfo[sfx_zjump].caption = "Jump"
 mobjinfo[MT_LHRT].forceknockback = 20*FRACUNIT
 ZE2.JumpSprintFatigue = 17*FRACUNIT
 
-
 addHook("PlayerSpawn", function(player)
 	if gametype ~= GT_ZE2 then return end
 	
@@ -12,36 +11,6 @@ addHook("PlayerSpawn", function(player)
 	player.ze2.effects = {}
 	player.ze2.damage_indicator_table = {}
 end)
-
-function ZE2:SetDamageFadeAnim(player, tics)
-	player.ze2.damage_fade = tics
-	player.ze2.damage_fade_max = tics
-end
-
-function ZE2:ChangeHealth(mobj, amount)
-	if amount > mobj.maxhealth then
-		mobj.health = mobj.maxhealth
-	else
-		mobj.health = $ + amount
-	end
-end
-
-function ZE2:ChangeStamina(player, amount)
-	if amount + player.ze2.sprintmeter > 100*FRACUNIT then
-		player.ze2.sprintmeter = 100*FRACUNIT
-	else
-		player.ze2.sprintmeter = $ + amount
-	end
-end
-
-function ZE2:GivePlayerEffect(player, effect_name, effect_table, effect_time)
-	if player.ze2.effects and effect_name and effect_table and effect_time then
-		local tbl = effect_table
-		tbl.time_left = effect_time or 1-- tics
-		
-		player.ze2.effects[effect_name] = tbl
-	end
-end
 
 function ZE2:FindEffectAttributes(player, attribute)
 	local tb = {}
@@ -55,40 +24,6 @@ function ZE2:FindEffectAttributes(player, attribute)
 	end
 	
 	return tb
-end
-
-function ZE2:DecrementSprint(player, value)
-	local cc = ZE2.CharacterConfig
-	local newsprintexhaust -- custom config value
-	
-	if cc[player.mo.skin] and cc[player.mo.skin].sprintexhaust then
-		newsprintexhaust = cc[player.mo.skin].sprintexhaust
-	end
-	
-	if player.ze2.team ~= 1 then return end
-
-	if player.ze2.sprintmeter - abs(value) <= 0 then
-		if newsprintexhaust ~= nil then
-			player.ze2.sprintdelay = abs(newsprintexhaust)
-		else
-			player.ze2.sprintdelay = TICRATE*2 -- do default
-		end
-		
-		player.ze2.sprintmeter = 0
-	else
-		player.ze2.sprintmeter = $ - abs(value)
-	end
-end
-
-function ZE2:IncrementSprint(player, value)
-	if player.ze2.team ~= 1 then return end
-	if player.ze2.sprintdelay then return end
-	
-	if player.ze2.sprintmeter + abs(value) >= 100*FRACUNIT then
-		player.ze2.sprintmeter = 100*FRACUNIT
-	else
-		player.ze2.sprintmeter = $ + abs(value)
-	end
 end
 
 -- sprint code
@@ -136,14 +71,14 @@ ZE2.sprint_thinker = function(player)
 					--P_SpawnSkidDust(player, 20*FRACUNIT)
 				end
 				
-				ZE2:IncrementSprint(player, increment/2)
+				player.ze2:ChangeStamina(increment/2)
 				
 				player.runspeed = 32000*FRACUNIT
 			else
 				if not (player.speed/FU) then -- not moving
-					ZE2:IncrementSprint(player, increment*3)
+					player.ze2:ChangeStamina(increment*3)
 				else -- moving but slower than running speed
-					ZE2:IncrementSprint(player, increment)
+					player.ze2:ChangeStamina(increment)
 				end
 				
 				player.runspeed = 32000*FRACUNIT
@@ -167,7 +102,7 @@ addHook("JumpSpecial", function(player)
 		
 		if not (player.pflags & PF_JUMPDOWN) then
 			if player.ze2.team == 1 then
-				ZE2:DecrementSprint(player, ZE2.JumpSprintFatigue)
+				player.ze2:ChangeStamina(-ZE2.JumpSprintFatigue)
 			end
 			
 			if ZE2.landingfatigue.value then
@@ -184,7 +119,7 @@ addHook("PlayerThink", function(player)
 		local cmd = player.cmd
 		
         if player.climbing then
-            ZE2:DecrementSprint(player, FRACUNIT)
+            player.ze2:ChangeStamina(FRACUNIT)
 			
 			if not player.ze2.sprintmeter then
 				player.climbing = 0
@@ -205,14 +140,14 @@ addHook("PlayerThink", function(player)
 		
 		if player.powers[pw_tailsfly] then
 			if not (player.speed/FU) then
-				ZE2:DecrementSprint(player, FRACUNIT*3)
+				player.ze2:ChangeStamina(-FRACUNIT*3)
 			else
-				ZE2:DecrementSprint(player, 3*FRACUNIT/2)
+				player.ze2:ChangeStamina(-3*FRACUNIT/2)
 			end
 		end
 
 		if player.glidetime then
-			ZE2:DecrementSprint(player, (player.glidetime*FRACUNIT)/32)
+			player.ze2:ChangeStamina(-(player.glidetime*FRACUNIT)/32)
 		end
 		
 		if (player.pflags & PF_JUMPED) then
@@ -236,7 +171,7 @@ addHook("PlayerThink", function(player)
 		end 
 		
 		if player.mo.state == S_PLAY_BOUNCE_LANDING then
-			ZE2:DecrementSprint(player, 3*FRACUNIT)
+			player.ze2:ChangeStamina(-FRACUNIT*3)
 		end
     end
 end)

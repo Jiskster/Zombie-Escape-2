@@ -108,13 +108,16 @@ local flame_ring = ZE2:CreateItem("Flame Ring",  {
 	onhit = function(src, mo, inf)
 		if src and src.valid and src.player and src.player.valid 
 		and mo and mo.valid and mo.player and mo.player.valid then
-			ZE2:GivePlayerEffect(mo.player, "flame_ring.on_fire", {
+			local player = mo.player -- mobj that was hit
+			local pv = player.ze2
+
+			player.ze2:GiveEffect("flame_ring.on_fire", {
 				normalspeed_multiplier = FU/2,
 				actionspd_multiplier = 3*FU/2,
 				damage_multiplier = FU/2,
 			}, 2*TICRATE)
 			
-			mo.player.flameringtarget = src
+			player.flameringtarget = src
 		end
 	end
 })

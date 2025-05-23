@@ -7,7 +7,7 @@ local apple = ZE2:CreateItem("Apple", {
 	max_count = 100,
 	color = SKINCOLOR_RED,
 	ontrigger = function(player)
-		ZE2:ChangeHealth(player.mo, 16)
+		player.mo:ChangeHealth(16)
 	end,
 	price = 50,
 })

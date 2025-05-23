@@ -10,7 +10,7 @@ local milk = ZE2:CreateItem("Milk", {
 	max_count = 25,
 	color = SKINCOLOR_WHITE,
 	ontrigger = function(player)
-		ZE2:ChangeStamina(player, 40*FRACUNIT)
+		player.ze2:ChangeStamina(40*FRACUNIT)
 	end,
 	price = 250,
 })

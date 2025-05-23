@@ -245,7 +245,7 @@ addHook("TouchSpecial", function(special, toucher)
 
 		ZE2:GivePlayerRubies(toucher.player, 5)
 		S_StartSound(toucher, sfx_rbyhit)
-		ZE2:IncrementSprint(toucher.player, 5*FRACUNIT)
+		toucher.player.ze2:ChangeStamina(5*FRACUNIT)
 
 		toucher.player.ze2.rubypickupdelay = ZE2.rubypickupdelay.value
 	end

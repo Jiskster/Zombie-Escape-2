@@ -2,6 +2,8 @@ rawset(_G, "ZE2", {});
 
 dofile "init/gametype.lua"
 
+dofile "freeslot/sounds"
+
 dofile "functions/main"
 
 dofile "libraries/fixedfromstring.lua"
@@ -35,8 +37,6 @@ dofile "items/item_energy_drink.lua" -- [16]
 dofile "items/item_flame_ring.lua" -- [17]
 
 dofile "variables/main"
-
-dofile "freeslot/sounds"
 
 -- Optimized version of actions.
 -- TODO: Remake items that use this and remove this action override.

@@ -27,7 +27,9 @@ local energydrink = ZE2:CreateItem("Energy Drink", {
 	max_count = 15,
 	color = SKINCOLOR_MASTER,
 	ontrigger = function(player)
-		ZE2:GivePlayerEffect(player, "energy_drink", {
+		local pv = player.ze2
+		
+		pv:GiveEffect("energy_drink", {
 			normalspeed_multiplier = 10*FRACUNIT/7,
 			damage_multiplier = 2*FRACUNIT,
 			knockback_multiplier = 5*FRACUNIT,

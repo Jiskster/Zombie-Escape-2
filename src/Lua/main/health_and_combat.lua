@@ -399,19 +399,22 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	end
 	
 	if mo.player then
+		local player = mo.player
+		local pv = player.ze2
+		
 		-- TODO: Merge both team kb code.
-		if mo.player.ze2.team == 1 then
+		if player.ze2.team == 1 then
 			if not attackedbyzombie then
-				mo.player.powers[pw_flashing] = ZE2.survinvtics.value
+				player.powers[pw_flashing] = ZE2.survinvtics.value
 				
 				if not mo.shield_health then
-					ZE2:SetDamageFadeAnim(mo.player, 15)
+					pv:DamageFade(15)
 					S_StartSound(mo, sfx_s3kb9)
 				else -- 
 					S_StartSound(mo, sfx_shldls)
 				end
 			else -- if attacked by zombie
-				ZE2:SetDamageFadeAnim(mo.player, 15)
+				pv:DamageFade(15)
 				S_StartSound(mo, sfx_zbatk1 + P_RandomRange(0,2))
 			end
 
@@ -434,15 +437,15 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			end
 			
 			if inflictor_player then
-				ZE2:DecrementSprint(mo.player, 90*FRACUNIT)
+				player.ze2:ChangeStamina(-90*FRACUNIT)
 			end
-		elseif mo.player.ze2.team == 2 then
-			local ztype = mo.player.ze2.zombie_type
+		elseif pv.team == 2 then
+			local ztype = pv.zombie_type
 			local zombie_hurtsounds = {sfx_zpa1,sfx_zpa2}
 			local chosen_hurtsound = zombie_hurtsounds[P_RandomRange(1,2)]
 			
 			
-			if mo.player.ze2.crouching then
+			if pv.crouching then
 				knockback = $ * 3
 			end
 			
@@ -452,7 +455,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 				knockback = FixedMul($, knockback_multiplier)
 			end
 			
-			mo.player.ze2.landfatigue_timer = min($ + 5, 20)
+			pv.landfatigue_timer = min($ + 5, 20)
 			
 			if inf and inf.valid then
 				if not relativeknockback then
@@ -464,14 +467,14 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 						P_Thrust(mo, inf.angle, knockback)
 					end
 					
-					mo.player.ze2.nofrictiontics = min($ + 3, 5)
+					pv.nofrictiontics = min($ + 3, 5)
 				else
 					local r_angle = R_PointToAngle2(mo.x, mo.y, inf.x, inf.y)
 					local r_momxy = FixedHypot(mo.momx, mo.momy)
 
 					P_Thrust(mo, r_angle - ANGLE_180, knockback)
 					
-					mo.player.ze2.nofrictiontics = min($ + 3, 5)
+					pv.nofrictiontics = min($ + 3, 5)
 				end
 			end
 			
@@ -578,24 +581,6 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	
 	return false
 end)
-
---ram into players as zombie
-/*
-addHook("MobjMoveCollide", function(thing,tmthing)
-	if (gametype ~= GT_ZE2) return end
-	if (ZE2.game_ended) then return end
-	if L_ZCollide(thing,tmthing) and tmthing.player and tmthing.player.ze2.team == 2 and thing.player
-	and thing.player.ze2.team ~= 2 then
-		local speed1 = FixedHypot(FixedHypot(tmthing.momx, tmthing.momy), tmthing.momz)
-		local speed2 = FixedHypot(FixedHypot(thing.momx, thing.momy), thing.momz)
-		
-		if speed1 > speed2 and tmthing.player and tmthing.player.valid
-		and not tmthing.player.powers[pw_flashing] then
-			P_DamageMobj(thing, tmthing, tmthing, 15)
-		end
-	end
-end)
-*/
 
 addHook("MobjSpawn", function(mobj)
 	if gametype ~= GT_ZE2 then return end
