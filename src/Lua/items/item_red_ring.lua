@@ -29,6 +29,7 @@ ZE2:CreateItem("Red Ring",  {
 	damage = 45,
 	velocity_precision = 8,
 	velocity_multiplier = 8*FRACUNIT,
+	autouse = true,
 	max_ammo = 25,
 	ammo = 25,
 	reload_time = 3*TICRATE/2,
