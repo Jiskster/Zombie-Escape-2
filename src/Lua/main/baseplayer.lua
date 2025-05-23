@@ -117,17 +117,18 @@ addHook("PlayerThink", function(player)
 	if gametype ~= GT_ZE2 then return end
     if player.mo and player.mo.valid then
 		local cmd = player.cmd
+		local pv = player.ze2
 		
         if player.climbing then
-            player.ze2:ChangeStamina(FRACUNIT)
+            pv:ChangeStamina(FRACUNIT)
 			
-			if not player.ze2.sprintmeter then
+			if not pv.sprintmeter then
 				player.climbing = 0
 				player.mo.state = S_PLAY_ROLL
 			end
         end
 		
-		if player.ze2.sprintmeter <= 0 then
+		if pv.sprintmeter <= 0 then
 			if (player.pflags & PF_GLIDING) then
 				player.pflags = $ & ~PF_GLIDING
 				player.mo.state = S_PLAY_ROLL
@@ -140,30 +141,30 @@ addHook("PlayerThink", function(player)
 		
 		if player.powers[pw_tailsfly] then
 			if not (player.speed/FU) then
-				player.ze2:ChangeStamina(-FRACUNIT*3)
+				pv:ChangeStamina(-FRACUNIT*3)
 			else
-				player.ze2:ChangeStamina(-3*FRACUNIT/2)
+				pv:ChangeStamina(-3*FRACUNIT/2)
 			end
 		end
 
 		if player.glidetime then
-			player.ze2:ChangeStamina(-(player.glidetime*FRACUNIT)/32)
+			pv:ChangeStamina(-(player.glidetime*FRACUNIT)/32)
 		end
 		
 		if (player.pflags & PF_JUMPED) then
-			player.ze2.isJumping = true
+			pv.isJumping = true
 		end
 		
 		if (player.mo.eflags & MFE_SPRUNG) then
-			player.ze2.isSprung = true
+			pv.isSprung = true
 		end
 		
 		if P_IsObjectOnGround(player.mo) then
-			if player.ze2.isJumping then
-				player.ze2.isJumping = false
+			if pv.isJumping then
+				pv.isJumping = false
 			end
 			
-			player.ze2.isSprung = false
+			pv.isSprung = false
 		end
 		
 		if player.pflags & PF_BOUNCING and player.mo.eflags & MFE_JUSTHITFLOOR and player.mo.health then
@@ -171,7 +172,7 @@ addHook("PlayerThink", function(player)
 		end 
 		
 		if player.mo.state == S_PLAY_BOUNCE_LANDING then
-			player.ze2:ChangeStamina(-FRACUNIT*3)
+			pv:ChangeStamina(-FRACUNIT*3)
 		end
     end
 end)
