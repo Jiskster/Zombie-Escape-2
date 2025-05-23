@@ -6,11 +6,11 @@ local grenade = ZE2:CreateItem("Grenade",  {
 	knockback = 100*FRACUNIT,
 	damage = 150,
 	limited = true,
-	count = 45,
+	count = 15,
 	max_count = 255,
 	fuse = 2*TICRATE,
 	velocity_multiplier = FRACUNIT/2,
-	price = 500,
+	price = 300,
 })
 
 ZE2:RegisterShop_ItemID(grenade)
