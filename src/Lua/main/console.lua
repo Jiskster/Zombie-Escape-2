@@ -105,6 +105,28 @@ COM_AddCommand("z_giveitem", function(player, item_id, count, slot)
 	end
 end, COM_ADMIN)
 
+COM_AddCommand("z_changeztype", function(player, new_ztype)
+	if not (player.mo and player.mo.valid) then return end
+	if player.ze2.team ~= 2 then
+		print("You must be a zombie to run this command.")
+		return
+	end
+	
+	if not new_ztype then
+		print("z_changeztype <ztype>: changes your zombie type.")
+		return
+	end
+	
+	local zc = ZE2.ZombieConfig
+	
+	if zc[new_ztype] then
+		player.ze2.zombie_type = new_ztype
+		ZE2.ResetPlayer(player)
+	else
+		print("Invalid ztype. "..'"'..new_ztype..'"')
+	end
+end, 1)
+
 COM_AddCommand("z_sellinventory", function(player)
 	for i=1,player.ze2.survivor_inventory_limit do
 		if player.ze2.survivor_inventory[i] and player.ze2.survivor_inventory[i].price then

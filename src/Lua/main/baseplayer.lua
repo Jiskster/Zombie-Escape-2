@@ -283,28 +283,6 @@ addHook("PlayerThink", function(player)
 	end
 end)
 
-COM_AddCommand("z_changeztype", function(player, new_ztype)
-	if not (player.mo and player.mo.valid) then return end
-	if player.ze2.team ~= 2 then
-		print("You must be a zombie to run this command.")
-		return
-	end
-	
-	if not new_ztype then
-		print("z_changeztype <ztype>: changes your zombie type.")
-		return
-	end
-	
-	local zc = ZE2.ZombieConfig
-	
-	if zc[new_ztype] then
-		player.ze2.zombie_type = new_ztype
-		ZE2.ResetPlayer(player)
-	else
-		print("Invalid ztype. "..'"'..new_ztype..'"')
-	end
-end, 1)
-
 -- Alpha Zombie Rage, sort of hardcoded for the time being
 addHook("PlayerThink", function(player)
 	if not (player.mo and player.mo.valid) then return end
