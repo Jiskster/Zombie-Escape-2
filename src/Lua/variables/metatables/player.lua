@@ -2,6 +2,7 @@ local p_mt = userdataMetatable("player_t")
 local p_mt_oldindex = p_mt.__index -- save old __index
 local ze2_players = {} -- the grand table!!
 local default_player = ZE2.Require "variables/default/player"
+local showed_deprecated_warning = false
 
 local ze2_funcs_path = "variables/metatables/player_functions/"
 
@@ -27,8 +28,13 @@ addHook("NetVars", function(net)
 end)
 
 p_mt.__index = function(player, key) -- Create player_t.ze2
-    if key == "ze2" then
+    if key == "ze2" or key == "ze2_info" then
         if player and player.valid then
+			if not showed_deprecated_warning and key == "ze2_info" then
+				print("\x82WARNING: \x80Accessing player_t.ze2_info is deprecated and will be removed soon!")
+				showed_deprecated_warning = true
+			end
+		
             if ze2_players[player] then
                 return ze2_players[player]
             else
