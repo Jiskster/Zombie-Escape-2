@@ -298,7 +298,7 @@ addHook("PlayerThink", function(player)
 				
 				S_StartSound(player.mo, sfx_bstup)
 				
-				ZE2:GivePlayerEffect(player, "alphazombie.rage", {
+				player.ze2:GiveEffect("alphazombie.rage", {
 					normalspeed_multiplier = 4*FU,
 					actionspd_multiplier = 3*FU/2,
 					damage_multiplier = 2*FU,
