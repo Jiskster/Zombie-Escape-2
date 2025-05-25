@@ -61,6 +61,7 @@ local hook_names = {
 		"Skin&ColorLock";
 		"AlphaZombie";
 	};
+	JumpSpecial = {"JumpFatigue"};
 	ViewpointSwitch = {"Main"};
 }
 
