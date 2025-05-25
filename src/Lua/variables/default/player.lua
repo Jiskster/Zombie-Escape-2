@@ -54,6 +54,7 @@ return {
 	sprintdelay = 0, -- x > 0 = sprintmeter wont increase
 	
 	isJumping = false,
+	isRunning = false,
 
 	team = 1,
 

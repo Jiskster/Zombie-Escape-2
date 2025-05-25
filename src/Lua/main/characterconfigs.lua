@@ -148,6 +148,10 @@ ZE2.SetCCtoplayer = function(player)
 			player.actionspd = $ / 2
 			player.normalspeed = $ / 2
 		end
+		
+		if player.ze2.isRunning then
+			player.normalspeed = $ + 7*FU
+		end
 
 		if (cc[pmo.skin].speedcap) and not ZE2.MobjTouchingPolyObj(pmo) then 
 			local sprintboost = cc[pmo.skin].sprintboost or cc["default"].sprintboost
@@ -254,6 +258,10 @@ ZE2.SetZCtoplayer = function(player)
 				if player.ze2.nofrictiontics then
 					player.thrustfactor = 1
 				end
+			end
+			
+			if player.ze2.isRunning then
+				player.normalspeed = $ + 7*FU
 			end
 
 			if (zc[ztype].charflags) then 

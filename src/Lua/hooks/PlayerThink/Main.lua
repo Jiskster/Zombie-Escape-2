@@ -22,13 +22,9 @@ if pv.sprintmeter < 0 then
 	pv.sprintmeter = 0
 end
 
-if pv.team == 1 then
-	ZE2.SetCCtoplayer(player)
-elseif pv.team == 2 then
-	ZE2.SetZCtoplayer(player)
-end
-
 if pmo and pmo.valid then
+	local spd = FixedHypot(pmo.momx, pmo.momy)
+	
 	if pv.landfatigue and (pmo.eflags & MFE_JUSTHITFLOOR) then
 		pv.landfatigue = false
 		pv.landfatigue_timer = $ + 20
@@ -52,12 +48,34 @@ if pmo and pmo.valid then
 		pv.isSprung = false
 	end
 	
+	/* WIP SPRINT MECHANIC
+	if (pmo.eflags & MFE_JUSTHITFLOOR) then
+		local spd = FixedHypot(pmo.momx, pmo.momy)
+		
+		if spd >= 19*FU then
+			pv.isRunning = true
+		end
+	end
+	*/
+	
+	if spd < 19*FU then
+		pv.isRunning = false
+		--print(FixedInt(spd))
+		--print(pv.isRunning)
+	end
+	
 	if not pmo.health then
 		if ZE2.round_active and not ZE2_game_ended and 
 		((ZE2.PlayerCount() > 1) or (mapheaderinfo[gamemap].ze2_solofail)) then
 			player.ze2.team = 2
 		end
 	end
+end
+
+if pv.team == 1 then
+	ZE2.SetCCtoplayer(player)
+elseif pv.team == 2 then
+	ZE2.SetZCtoplayer(player)
 end
 
 if mapheaderinfo[gamemap].ze2_noabilities then
