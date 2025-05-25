@@ -208,6 +208,7 @@ function ZE2:GiveItem(player, item_input, count, slot)
 			item.onspawn = nil
 			item.onhit = nil
 			item.thinker = nil
+			item.precision_thinker = nil
 			
 			if count ~= nil then
 				item.count = count
