@@ -1,5 +1,8 @@
 -- TODO: Organize into different files and label each freeslotted sfx.
 
+freeslot("sfx_zjump")
+sfxinfo[sfx_zjump].caption = "Jump"
+
 freeslot("sfx_zdi1","sfx_zdi2","sfx_zish1","sfx_zish2","sfx_zish3","sfx_zpa1","sfx_zpa2", "sfx_bstdn", "sfx_bstup")
 freeslot("sfx_rstart", "sfx_secret", "sfx_cleva1")
 freeslot("sfx_eatapl", "sfx_oyahx", "sfx_mnu1a")

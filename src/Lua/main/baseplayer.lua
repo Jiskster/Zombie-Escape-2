@@ -1,5 +1,3 @@
-freeslot("sfx_zjump")
-sfxinfo[sfx_zjump].caption = "Jump"
 mobjinfo[MT_LHRT].forceknockback = 20*FRACUNIT
 ZE2.JumpSprintFatigue = 17*FRACUNIT
 
