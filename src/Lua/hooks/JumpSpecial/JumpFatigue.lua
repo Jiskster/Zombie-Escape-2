@@ -1,10 +1,6 @@
-local player = select(1, ...)
-
 -- This hook handles:
 -- Disabling jump when in a tight spot
 -- Jump Fatigue (Decreasing stamina when jumping)
-
-if gametype ~= GT_ZE2 then return end
 
 if player.mo and player.mo.valid and not (player.pflags & PF_THOKKED) and P_IsObjectOnGround(player.mo) then
 	if (player.mo.ceilingz - player.mo.floorz) < player.height + ZE2.playerheightoffset

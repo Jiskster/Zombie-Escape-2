@@ -1,5 +1,3 @@
-local player = select(1, ...)
-
 if gametype ~= GT_ZE2 and leveltime then return end
 
 local pmo = player.mo
