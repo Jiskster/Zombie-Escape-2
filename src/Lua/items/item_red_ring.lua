@@ -29,12 +29,14 @@ ZE2:CreateItem("Red Ring",  {
 	damage = 45,
 	velocity_precision = 8,
 	velocity_multiplier = 8*FRACUNIT,
-	autouse = true,
+	autouse = false,
 	max_ammo = 25,
 	ammo = 25,
 	reload_time = 3*TICRATE/2,
 	skin_overwrite = {
-		
+		["tails"] = {
+			autouse = true
+		},
 		["fang"] = {
 			displayname = "Cork",
 			object = MT_CORK,
@@ -50,7 +52,6 @@ ZE2:CreateItem("Red Ring",  {
 			ammo = 10,
 			reload_time = 1*TICRATE + TICRATE/2,
 		}
-		
 	},
 	onspawn = function(pmo, mo)
 		if mo.type == MT_CORK then
