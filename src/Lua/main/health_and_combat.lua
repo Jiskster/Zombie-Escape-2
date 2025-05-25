@@ -606,7 +606,11 @@ addHook("ThinkFrame", function()
 			end
 			
 			if mobj.velprec then
-				for ii=1,mobj.velprec-1 do			
+				for ii=1,mobj.velprec-1 do		
+					if not (mobj and mobj.valid) then
+						table.remove(ZE2.BulletList, i)
+						continue
+					end
 					P_XYMovement(mobj)
 					if not (mobj and mobj.valid) then
 						table.remove(ZE2.BulletList, i)
