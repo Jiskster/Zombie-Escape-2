@@ -52,6 +52,8 @@ return {
 	sprintmeter = 100*FU,
 	isSprinting = false,
 	sprintdelay = 0, -- x > 0 = sprintmeter wont increase
+	
+	isJumping = false,
 
 	team = 1,
 

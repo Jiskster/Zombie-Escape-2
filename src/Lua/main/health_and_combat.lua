@@ -500,8 +500,8 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	end
 	
 	if inflictor_player and inflictor_player.valid then
-		local dmg_attributes = ZE2:FindEffectAttributes(inflictor_player, "damage_multiplier") 
-		local kb_attributes = ZE2:FindEffectAttributes(inflictor_player, "knockback_multiplier")
+		local dmg_attributes = inflictor_player.ze2:FindEffectAttributes("damage_multiplier") 
+		local kb_attributes = inflictor_player.ze2:FindEffectAttributes("knockback_multiplier") 
 		
 		-- all of this should be a function lol
 		

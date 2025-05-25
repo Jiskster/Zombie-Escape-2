@@ -14,6 +14,8 @@ ZE2.VoteTimeLimit = 12*TICRATE
 ZE2.queuing_round = false
 ZE2.rounds_left = 3
 
+ZE2.JumpSprintFatigue = 17*FRACUNIT
+
 ZE2.HUD = {}
 
 ZE2.Effects = {

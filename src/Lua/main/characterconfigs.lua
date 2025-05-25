@@ -400,18 +400,3 @@ ZE2:AddCharacterConfig("metalsonic", {
 	desc1 = "He might the the real sonic.",
 	desc2 = "Just a fella with an identity crisis.",
 })
-
-ZE2.RevertChars = function(p)
-	if not p.realmo then return end
-	local skin_name = p.realmo.skin
-	p.charability = skins[skin_name].ability
-	p.charability2 = skins[skin_name].ability2
-	p.actionspd = skins[skin_name].actionspd
-	p.charflags = skins[skin_name].flags
-	p.actionspd = skins[skin_name].actionspd
-	p.normalspeed = skins[skin_name].normalspeed
-	p.runspeed = skins[skin_name].runspeed
-	p.jumpfactor = skins[skin_name].jumpfactor
-	p.mindash = skins[skin_name].mindash
-	p.maxdash = skins[skin_name].maxdash
-end

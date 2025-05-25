@@ -1,6 +1,6 @@
 rawset(_G, "ZE2", {});
 
-dofile "init/gametype.lua"
+dofile "gametype.lua"
 
 dofile "freeslot/sounds"
 
@@ -80,8 +80,6 @@ states[S_RINGEXPLODE] = {SPR_NULL, A, 1, A_RingExplode2, 0, 0, S_XPLD1, 0}
 dofile "enemies/vanilla.lua"
 dofile "enemies/doom.lua"
 
-dofile "main/baseplayer.lua"
-
 dofile "main/zombie/zombie_colors.lua"
 
 dofile "main/pregame_logic.lua"
@@ -106,13 +104,13 @@ dofile "main/shields.lua"
 dofile "main/ladder.lua"
 dofile "main/teamchat.lua"
 
+dofile "hooks/main"
+
 dofile "objects/megahp.lua"
 dofile "objects/teleporter_gfx.lua"
 dofile "objects/corona.lua"
 
 dofile "hud/setup"
-
-dofile "hooks/gamelogic.lua"
 
 -- [ Level Scripts ] -- 
 dofile "levelscripts/loadscripts.lua"
