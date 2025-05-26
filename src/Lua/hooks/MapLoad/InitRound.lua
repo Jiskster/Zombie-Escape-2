@@ -1,1 +1,1 @@
-ZE2.init_gamevars(map)
+return ZE2.init_gamevars
