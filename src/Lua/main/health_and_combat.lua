@@ -82,6 +82,10 @@ function ZE2.KillMobj(mo, inf, src, damagetype, killedbysomething)
 			if ztype and ZE2.ZombieConfig[ztype] and ZE2.ZombieConfig[ztype].killaward then
 				local killaward = ZE2.ZombieConfig[ztype].killaward
 				A_RubyDrop(mo, killaward)
+				
+				if P_RandomChance(FU/8) then
+					player.ze2.zombie_next_type = "alpha"
+				end
 			end
 		end
 		
