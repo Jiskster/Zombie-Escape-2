@@ -235,3 +235,17 @@ Music = CEZ1
 Skynum = 10
 Weather = 1
 Lua.ze2_timelimit = 6
+
+Level 30
+Levelname = Legacy Stonewood
+Subtitle = Back to the beginning...
+Act = 0
+Music = SWZEM
+TypeOfLevel = ZE2
+NextLevel = J0
+SkyNum = 11
+Weather = 1
+NoZone = True
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 5
+Lua.ze2_laddertag = 1000
