@@ -102,8 +102,11 @@ local function ActivateCheckpoint(mobj, checkpoint)
 					player.ze2.checkpoint_number = ZE2.LatestSurvivorCheckpoint
 					
 					--checkpoint.state = checkpoint.info.painstate
-					--S_StartSound(mobj, checkpoint.info.painsound)
-					--print("Checkpoint Activated: "..checkpoint_number)
+					
+					if ZE2.cv_debug.value then
+						S_StartSound(mobj, checkpoint.info.painsound)
+						print("Checkpoint Activated: "..checkpoint_number)
+					end
 					
 					if not (checkpoint_extra_flags & DISABLECATCHUP_FLAG) then
 						for tplayer in players.iterate do 
@@ -139,8 +142,11 @@ local function ActivateCheckpoint(mobj, checkpoint)
 					player.ze2.checkpoint_number = ZE2.LatestZombieCheckpoint
 					
 					--checkpoint.state = checkpoint.info.painstate
-					--S_StartSound(mobj, checkpoint.info.painsound)
-					--print("Checkpoint Activated: "..checkpoint_number)
+					
+					if ZE2.cv_debug.value then
+						S_StartSound(mobj, checkpoint.info.painsound)
+						print("Checkpoint Activated: "..checkpoint_number)
+					end
 					
 					if not (checkpoint_extra_flags & DISABLECATCHUP_FLAG) then
 						for tplayer in players.iterate do 
