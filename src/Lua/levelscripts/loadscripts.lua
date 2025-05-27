@@ -44,3 +44,5 @@ folder = "Egg Fortress"; dofolder("Timers");
 folder = "Azure Sanctuary"; dofolder("Timers");
 
 folder = "Ancient Catacombs"; dofolder("Timers");
+
+folder = "Minecraft"; dofolder("Timers");

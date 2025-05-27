@@ -60,6 +60,18 @@ NoZone = True
 NextLevel = J1
 Lua.ze2_timelimit = 6
 
+Level 08
+Levelname = Minecraft
+Subtitle = Watch for creepers!
+Act = 0
+Music = MC1
+TypeOfLevel = ZE2
+NextLevel = J2
+SkyNum = 14
+NoZone = True
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 7
+
 Level 14
 Levelname = Doomed Corp
 Act = 0
