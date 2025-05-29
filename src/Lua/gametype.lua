@@ -45,3 +45,23 @@ G_AddGametype({
 	--headerrightcolor = 40,
 	description = "Escape from the Zombies! Don't get caught and eaten by them! They can catch up with you anytime..."
 })
+
+
+for i=0,255 do
+	freeslot("SKINCOLOR__"..i)
+	
+	local new_ramp = {}
+	
+	for ii=1,16 do
+		new_ramp[ii] = i
+	end
+	
+	skincolors[_G["SKINCOLOR__"..i]] = {
+		name = "_"..tostring(i);
+		ramp = new_ramp;
+		invcolor = SKINCOLOR_ORANGE;
+		invshade = 9;
+		chatcolor = V_BLUEMAP;
+		accessible = false;
+	}
+end
