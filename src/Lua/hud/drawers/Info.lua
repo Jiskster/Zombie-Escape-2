@@ -115,6 +115,7 @@ local function health(v,p,me,ze)
 			local diff = (store_info.health - health)/2
 			if diff > 0
 				local shake = (abs(diff or 1)*FU)/4 * (leveltime & 1 and 1 or -1)
+				shake = $/2
 				if ze.team == 2 then shake = $/6 end
 				y = $ + shake
 				x = $ + shake
@@ -132,6 +133,7 @@ local function health(v,p,me,ze)
 		else
 			if store_info.health ~= -1
 				local diff = max(abs(store_info.health - health)/5, 1)
+				if diff == 1 and (leveltime & 1) then diff = 0; end
 				if store_info.health < health
 					store_info.health = $ + diff
 				else
