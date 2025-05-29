@@ -26,11 +26,6 @@ return function(player)
 	if pmo and pmo.valid then
 		local spd = FixedHypot(pmo.momx, pmo.momy)
 		
-		if pv.landfatigue and (pmo.eflags & MFE_JUSTHITFLOOR) then
-			pv.landfatigue = false
-			pv.landfatigue_timer = $ + 20
-		end
-		
 		ZE2.LimitMobjHealth(pmo)
 		
 		if (player.pflags & PF_JUMPED) then
@@ -47,6 +42,18 @@ return function(player)
 			end
 			
 			pv.isSprung = false
+		end
+		
+		if ZE2.landingfatigue.value then
+			local bhopped = false
+			
+			if (player.cmd.buttons & BT_JUMP) and not (player.lastbuttons & BT_JUMP) then
+				bhopped = true
+			end
+			
+			if (pmo.eflags & MFE_JUSTHITFLOOR) and not bhopped then
+				pmo:speedCapXY(5*FU)
+			end
 		end
 		
 		if not pmo.health then

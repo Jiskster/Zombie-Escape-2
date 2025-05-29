@@ -99,8 +99,5 @@ return {
 		}
 	*/
 	
-	landfatigue = false,
-	landfatigue_timer = 0,
-	
 	teamchat_enabled = false,
 }

@@ -5,6 +5,7 @@ local ze2_funcs_path = "variables/metatables/mobj_functions/"
 
 local ze2_funcs = {
 	["ChangeHealth"] = ZE2.Require(ze2_funcs_path + "ChangeHealth");
+	["speedCapXY"]   = ZE2.Require(ze2_funcs_path + "speedCapXY");
 }
 
 mobj_mt.__index = function(mobj, key)

@@ -33,8 +33,4 @@ return function(player)
 	elseif player.ze2.sprintdelay < 0 then
 		player.ze2.sprintdelay = 0
 	end
-
-	if player.ze2.landfatigue_timer then
-		player.ze2.landfatigue_timer = $ - 1
-	end
 end

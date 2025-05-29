@@ -12,10 +12,6 @@ return function(player)
 			if player.ze2.team == 1 then
 				player.ze2:ChangeStamina(-ZE2.JumpSprintFatigue)
 			end
-			
-			if ZE2.landingfatigue.value then
-				player.ze2.landfatigue = true
-			end
 		end
 	end
 end

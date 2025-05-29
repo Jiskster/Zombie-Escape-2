@@ -459,8 +459,6 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 				knockback = FixedMul($, knockback_multiplier)
 			end
 			
-			pv.landfatigue_timer = min($ + 5, 20)
-			
 			if inf and inf.valid then
 				if not relativeknockback then
 					local r_momxy = FixedHypot(mo.momx, mo.momy)

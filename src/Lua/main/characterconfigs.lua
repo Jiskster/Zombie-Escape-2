@@ -66,10 +66,6 @@ ZE2.SetCCtoplayer = function(player)
 		if cc[pmo.skin].normalspeed then 
 			player.normalspeed = cc[pmo.skin].normalspeed or cc["default"].normalspeed
 			
-			if (player.ze2.team == 1) then
-				player.normalspeed = max($ - (player.ze2.landfatigue_timer)*FU, 0)
-			end
-			
 			if player.ze2.crouching and P_IsObjectOnGround(pmo) then
 				player.normalspeed = $ / 2
 			end
