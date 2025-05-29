@@ -38,12 +38,21 @@ return "Inventory", function(v, player)
 	
 	for i=1, slot_count do
 		local selection = player.ze2.inventory_selection
+		local empty_patch = v.cachePatch(empty_patch_name)
 		
 		local slot = {
 			x = (BASEVIDWIDTH*FU)/2, -- In middle of screen
 			y = invpos_y,
 			scale = FRACUNIT,
-			patch = v.cachePatch(empty_patch_name),
+			patch = empty_patch,
+			flags = V_SNAPTOBOTTOM,
+		}
+		
+		local slot_bg = {
+			x = (BASEVIDWIDTH*FU)/2, -- In middle of screen
+			y = invpos_y,
+			scale = FRACUNIT,
+			patch = empty_patch,
 			flags = V_SNAPTOBOTTOM,
 		}
 		
@@ -74,6 +83,17 @@ return "Inventory", function(v, player)
 		end
 		
 		PositionSlot(i, slot, slot_count, slot_gap)
+		PositionSlot(i, slot_bg, slot_count, slot_gap)
+		
+		if slot.patch ~= empty_patch then
+			v.drawScaled(
+				slot_bg.x,
+				slot_bg.y,
+				slot_bg.scale,
+				slot_bg.patch,
+				slot_bg.flags
+			)
+		end
 		
 		v.drawScaled(
 			slot.x,
