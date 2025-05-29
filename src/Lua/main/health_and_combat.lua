@@ -546,6 +546,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	end
 	
 	if mo.shield_health then
+		--not enough shield to take the hit (TODO: play ring loss sound and damage fade when this happens)
 		if mo.shield_health - dmg <= 0 then
 			dmg = $ - abs(mo.shield_health)
 			
@@ -554,6 +555,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			end
 			
 			mo.shield_health = 0
+		--shield negates damage
 		else
 			if inflictor_player and attacker then
 				ZE2:AddDamageIndicator(inflictor_player, mo, dmg)

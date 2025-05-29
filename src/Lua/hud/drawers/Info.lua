@@ -29,6 +29,7 @@ local store_info = {
 	stamina = -1,
 	shield = -1,
 }
+local old_disp = nil
 
 local function ResetInfos()
 	old_info = {
@@ -63,6 +64,19 @@ local function health(v,p,me,ze)
 	
 	if (health == nil) or (maxhealth == nil) then ResetInfos(); return end
 	if ZE2.pregame_timeleft then ResetInfos(); return end
+	
+	if old_disp == nil
+		old_disp = p
+	elseif old_disp ~= p
+		old_info.health = me.health
+		fake_info.health = me.health
+		
+		old_info.stamina = ze.sprintmeter
+		fake_info.stamina = ze.sprintmeter
+		
+		old_info.shield = me.shield_health
+		fake_info.shield = me.shield_health
+	end
 	
 	if old_info.health == -1
 		old_info.health = me.health
@@ -172,9 +186,76 @@ local function health(v,p,me,ze)
 		)
 	end
 	
+	--shield
+	local shields = me.shield_health or (store_info.shield == -1 and -1 or 0)
+	shields = intlerp(2, fake_info.shield, $)
+	fake_info.shield = shields
+	
+	local drawshields = false
+	if shields ~= -1
+		drawshields = (me.shield_def or (fake_info.shielddef ~= -1))
+	elseif store_info.shield ~= -1
+		drawshields = true
+	end
+	
+	if drawshields
+		if me.shield_def
+			if fake_info.shielddef ~= me.shield_def
+				old_info.shield = shields
+			end
+			fake_info.shielddef = me.shield_def
+		end
+		local def = fake_info.shielddef
+		local color = (def.color or SKINCOLOR_WHITE)
+		
+		local maxshields = def.health
+		local percentage = FixedDiv(shields, maxshields)
+		
+		local x = x + max_width + 20*FU
+		local y = y
+		local shield_icon = v.cachePatch("Z_SHIELDSICO")
+		
+		local crop_height = shield_icon.height*FU - FixedMul(shield_icon.height*FU, percentage)
+		crop_height = max($, 0)
+		
+		--BG
+		if percentage ~= FU
+			v.drawCropped(x,y,
+				FU,FU,
+				shield_icon,
+				flags|V_REVERSESUBTRACT,
+				v.getColormap(nil,SKINCOLOR_CARBON, "Grayscale"),
+				0, 0,
+				shield_icon.width*FU,
+				crop_height
+			)
+		end
+		
+		v.drawCropped(x,
+			y + crop_height, --move down by what we cropped
+			FU,FU,
+			shield_icon,
+			flags|V_ADD|V_30TRANS,
+			v.getColormap(nil,color),
+			0, crop_height,
+			shield_icon.width*FU,
+			shield_icon.height*FU
+		)
+		
+		v.drawString(x,y - (FU * 7/2),
+			string.format("%.0f%%", percentage*100),
+			flags,
+			"thin-fixed-center"
+		)
+	else
+		fake_info.shielddef = -1
+		store_info.shield = -1
+	end
+	
 	old_info.health = me.health
 	old_info.stamina = ze.sprintmeter
 	old_info.shield = me.shield_health
+	old_disp = p
 end
 
 local function roundinfo(v,p,me,ze)
