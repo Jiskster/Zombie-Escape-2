@@ -19,6 +19,7 @@ local function DrawTeammate(v,p, x,y, props)
 	end
 	
 	local icon_adjust = FixedMul(32*FU, FixedMul(FU/3, scale))
+	local maxhealth = p.mo.maxhealth or "???"
 	
 	v.drawScaled(x, y,
 		FixedMul(FU/3, scale),     
@@ -43,7 +44,7 @@ local function DrawTeammate(v,p, x,y, props)
 	customhud.CustomFontString(v,
 		x + icon_adjust,
 		y + 4*scale,
-		"+"..p.mo.health.."/"..p.mo.maxhealth,
+		"+"..p.mo.health.."/"..maxhealth,
 		"TNYFC",
 		flags,
 		nil,
@@ -51,7 +52,7 @@ local function DrawTeammate(v,p, x,y, props)
 		SKINCOLOR_GREEN
 	)
 	if p.mo.shield_health and p.mo.shield_def then
-		local healthstring_width = customhud.CustomFontStringWidth(v,  " +"..p.mo.health.."/"..p.mo.maxhealth, "TNYFC", FixedMul(FU/2, scale))
+		local healthstring_width = customhud.CustomFontStringWidth(v,  " +"..p.mo.health.."/"..maxhealth, "TNYFC", FixedMul(FU/2, scale))
 		local shield_color = p.mo.shield_def.color or SKINCOLOR_WHITE
 		
 		local shield_health = tostring(p.mo.shield_health)
