@@ -81,8 +81,8 @@ local function health(v,p,me,ze)
 	health = intlerp(2,fake_info.health,health)
 	fake_info.health = health
 	
-	local max_width = 80*FU
-	local height = 10*FU
+	local max_width = 50*FU
+	local height = 8*FU
 	
 	local pad = 6*FU
 	local shadow = 2*FU
