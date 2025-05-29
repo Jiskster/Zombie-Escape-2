@@ -193,8 +193,6 @@ ZE2.SetZCtoplayer = function(player)
 			else
 				player.normalspeed = cc["default"].normalspeed
 			end
-
-			player.normalspeed = max($ - (player.ze2.landfatigue_timer)*FU, 0) 
 			
 			if player.ze2.crouching and P_IsObjectOnGround(pmo) then
 				player.normalspeed = $ / 2
