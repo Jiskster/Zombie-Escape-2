@@ -98,14 +98,15 @@ local function health(v,p,me,ze)
 		local x = x
 		local y = y
 		if store_info.health ~= -1
-			local diff = max(abs(store_info.health - health)/2, 1)
+			local diff = (store_info.health - health)/2
 			if diff > 0
-				local shake = (diff*FU)/4 * (leveltime & 1 and 1 or -1)
+				local shake = (abs(diff or 1)*FU)/4 * (leveltime & 1 and 1 or -1)
+				if ze.team == 2 then shake = $/6 end
 				y = $ + shake
 				x = $ + shake
 			end
 		end
-	
+		
 		local width = FixedMul(max_width, FixedDiv(health,maxhealth))
 		drawSkewFill(v, x+shadow,y+shadow, max_width,height, flags, SKINCOLOR__31) -- 31
 		if old_info.health > health
