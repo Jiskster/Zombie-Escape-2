@@ -81,7 +81,7 @@ local function health(v,p,me,ze)
 	health = intlerp(2,fake_info.health,health)
 	fake_info.health = health
 	
-	local max_width = 50*FU
+	local max_width = 65*FU
 	local height = 8*FU
 	
 	local pad = 6*FU
@@ -239,10 +239,10 @@ local function eventtimers(v,p,me,ze)
 		local time = "  ("..G_TicsToMTIME(timer.time)..")"
 		local color = timer.textcolor or SKINCOLOR_TEAL
 
-		customhud.CustomFontString(v, x, y, name, "STCFC", 
+		customhud.CustomFontString(v, x, y, name, "TNYFC", 
 			flags, "left" , nil, color
 		)
-		customhud.CustomFontString(v, x, y + 8, time, "STCFC", 
+		customhud.CustomFontString(v, x, y + 8, time, "TNYFC", 
 			flags, "left" , nil, color
 		)
 		
