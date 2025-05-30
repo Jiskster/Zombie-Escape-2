@@ -527,9 +527,10 @@ COM_AddCommand("z_sendrubies", function(player, player2, rubies)
 	players[player2].ze2.cash = $ + rubies
 	
 	CONS_Printf(player, 
-	"\x82You sent "..cash.." rubies to "..players[player2].name)
+		string.format("\x82You sent $%s rubies to %s", tostring(rubies), players[player2].name)
+	)
 	CONS_Printf(players[player2], 
-	string.format("\x82%s\x82 sent you %s rubies", player.name, tostring(rubies))
+		string.format("\x82%s\x82 sent you $%s", player.name, tostring(rubies))
 	)
 end)
 
