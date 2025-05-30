@@ -14,21 +14,9 @@ local function drawSkewFill(v, x,y, w,h, flags, c)
 	end
 end
 
-local old_info = {
-	health = -1,
-	stamina = -1,
-	shield = -1,
-}
-local fake_info = {
-	health = -1,
-	stamina = -1,
-	shield = -1,
-}
-local store_info = {
-	health = -1,
-	stamina = -1,
-	shield = -1,
-}
+local old_info = {}
+local fake_info = {}
+local store_info = {}
 local old_disp = nil
 
 local function ResetInfos()
@@ -37,20 +25,24 @@ local function ResetInfos()
 		stamina = -1,
 		shield = -1,
 		shielddef = -1,
+		rage = -1,
 	}
 	fake_info = {
 		health = -1,
 		stamina = -1,
 		shield = -1,
 		shielddef = -1,
+		rage = -1,
 	}
 	store_info = {
 		health = -1,
 		stamina = -1,
 		shield = -1,
 		shielddef = -1,
+		rage = -1,
 	}
 end
+ResetInfos()
 
 addHook("MapLoad",ResetInfos)
 
@@ -91,7 +83,14 @@ local function health(v,p,me,ze)
 		old_info.shield = me.shield_health
 		fake_info.shield = me.shield_health
 	end
-	
+	/*
+	if old_info.rage == -1
+	and ze.ragemeter ~= nil
+		old_info.rage = ze.ragemeter
+		fake_info.rage = ze.ragemeter
+	end
+	*/
+
 	health = intlerp(2,fake_info.health,health)
 	fake_info.health = health
 	
@@ -186,6 +185,24 @@ local function health(v,p,me,ze)
 			string.format("%.0f%%", FixedDiv(sprint, maxsprint)*100),
 			flags, "thin-fixed"
 		)
+	--rage meter
+	/*
+	elseif (ze.team == 2)
+		local rage = ze.sprintmeter --rage variable
+		sprint = intlerp(2, fake_info.rage, $)
+		fake_info.rage = rage
+		
+		local maxsprint = 100*FU
+		local y = y - (height + pad)
+		local width = FixedMul(max_width, FixedDiv(rage,maxsprint))
+		drawSkewFill(v, x+shadow,y+shadow, max_width,height, flags, SKINCOLOR__31) --31
+		drawSkewFill(v, x,y, width,height, flags, SKINCOLOR__45)
+
+		v.drawString(x + textspace, y + shadow,
+			string.format("RAGE: %.0f%%", FixedDiv(rage, maxsprint)*100),
+			flags, "thin-fixed"
+		)
+	*/
 	end
 	
 	--shield
@@ -257,6 +274,7 @@ local function health(v,p,me,ze)
 	old_info.health = me.health
 	old_info.stamina = ze.sprintmeter
 	old_info.shield = me.shield_health
+	-- old_info.rage = ze.ragemeter
 	old_disp = p
 end
 

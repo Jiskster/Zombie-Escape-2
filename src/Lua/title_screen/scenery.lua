@@ -5,7 +5,6 @@ states[S_SCENERYPLAY_WALK] = {states[S_PLAY_WALK].sprite, states[S_PLAY_WALK].fr
 
 mobjinfo[MT_SCENERYPLAYER] = {
 		--$Title Scenery Player
-		--$Sprite STNDA1
 		--$Category Doomed Corp
 		--$Color 1
         doomednum = 1735,
@@ -18,7 +17,6 @@ mobjinfo[MT_SCENERYPLAYER] = {
 
 mobjinfo[MT_SCENERYZOMBIE] = {
 		--$Title Scenery Zombie
-		--$Sprite DEADA0
 		--$Category Doomed Corp
 		--$Color 1
         doomednum = 1736,

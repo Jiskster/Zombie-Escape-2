@@ -44,6 +44,7 @@ local w_mirror = ZE2:CreateItem("W's mirror", {
 		mirrorclone.angle = player.mo.angle
 		mirrorclone.forcedamage = ZE2:FetchInventorySlot(player).damage
 		mirrorclone.mobjteam = player.ze2.team
+		mirrorclone.shadowscale = player.mo.shadowscale
 	end
 })
 
