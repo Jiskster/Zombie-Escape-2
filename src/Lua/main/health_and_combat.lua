@@ -206,7 +206,7 @@ function ZE2:AddDamageIndicator(player, victim_mobj, damage)
 		player.ze2.damage_indicator_table[victim_mobj] = {
 			tics_left = TICRATE*2,
 			animation = 1,
-			number = damage,
+			number = max(damage, victum_mobj.health),
 			draw_x = victim_mobj.x,
 			draw_y = victim_mobj.y,
 			draw_z = victim_mobj.z + (victim_mobj.height*2),
