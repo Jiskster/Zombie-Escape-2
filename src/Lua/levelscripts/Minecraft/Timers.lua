@@ -42,7 +42,7 @@ states[S_CREEPER] = {
 
 ZE2:AddTimer("MC_PART1", {
 	text = "Wooden Platform",
-	time = 30*TICRATE,
+	time = 42*TICRATE,
 	on_end = function(timernum,timername)
 		chatprint("\x8D\Wooden Platform is now leaving!")
 		P_LinedefExecute(46)
@@ -83,7 +83,7 @@ ZE2:AddTimer("MC_PART4", {
 }) 
 
 local function Minecraft_Part1()
-	chatprint("\x8D\Wooden Platform \x80will leave in\x85 30 \x80seconds")
+	chatprint("\x8D\Wooden Platform \x80will leave in\x85 42 \x80seconds")
 	S_StartSound(nil, sfx_oldrad)
 	ZE2:StartTimer("MC_PART1")
 end

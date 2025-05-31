@@ -71,8 +71,8 @@ ZE2.landingfatigue = CV_RegisterVar({
 })
 
 ZE2.sourcemovement = CV_RegisterVar({
-	name = "z_experimentalmovement",
-	defaultvalue = "On",
+	name = "z_sourcemovement",
+	defaultvalue = "Off",
 	PossibleValue = CV_OnOff,
 	flags = CV_NETVAR,
 })

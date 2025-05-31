@@ -383,6 +383,7 @@ ZE2:AddCharacterConfig("knuckles", {
 
 ZE2:AddCharacterConfig("amy", {
 	health = 75,
+	charflags = SF_FASTWAIT,
 	speed = "fast",
 	desc1 = "Pink Pink Pink.",
 	desc2 = "WIP ABILITIES"
@@ -390,6 +391,7 @@ ZE2:AddCharacterConfig("amy", {
 
 ZE2:AddCharacterConfig("fang", {
 	health = 110,
+	charflags = SF_FASTEDGE,
 	speed = "normal",
 	desc1 = "He shoots the shooty shoot.",
 	desc2 = "Have less momentum to shoot."
