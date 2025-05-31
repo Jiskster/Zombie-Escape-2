@@ -221,7 +221,7 @@ function ZE2:AddDamageIndicator(player, victim_mobj, damage)
 			}
 		}
 		
-		player.ze2.damage_indicator_table[victim_mobj].damagenumbers = SpawnDamageNumbers(player, victim_mobj, damage)
+		player.ze2.damage_indicator_table[victim_mobj].damagenumbers = SpawnDamageNumbers(player, victim_mobj, min(damage, victim_mobj.health))
 	else
 		if player.ze2.damage_indicator_table[victim_mobj].tics_left then
 			player.ze2.damage_indicator_table[victim_mobj].tics_left = TICRATE*2
@@ -229,7 +229,7 @@ function ZE2:AddDamageIndicator(player, victim_mobj, damage)
 		end
 		
 		if player.ze2.damage_indicator_table[victim_mobj].number then
-			player.ze2.damage_indicator_table[victim_mobj].number = $ + damage
+			player.ze2.damage_indicator_table[victim_mobj].number = min($ + damage, victim_mobj.maxhealth)
 		end
 		
 		player.ze2.damage_indicator_table[victim_mobj].draw_x = victim_mobj.x
