@@ -681,7 +681,7 @@ function ZE2.SpawnMissile(m_table)
 	
 	speed = th.info.speed
 	
-	if iteminfo then 
+	if iteminfo then
 		local skin = source.skin
 		local temp_iteminfo = ZE2:Copy(iteminfo)
 		local missile_fuse = ZE2:GetItemInfoIndex(temp_iteminfo, "fuse", skin)
@@ -690,11 +690,11 @@ function ZE2.SpawnMissile(m_table)
 		missile_velocity_precision = ZE2:GetItemInfoIndex(temp_iteminfo, "velocity_precision", skin)
 
 		-- destroy functions
-		temp_iteminfo.onspawn = nil
-		temp_iteminfo.ontrigger = nil
-		temp_iteminfo.onhit = nil
-		temp_iteminfo.thinker = nil
-		temp_iteminfo.precision_thinker = nil
+		for i,v in pairs(temp_iteminfo) do
+			if type(v) == "function" then
+				temp_iteminfo[i] = nil
+			end
+		end
 		
 		th.iteminfo = temp_iteminfo
 		

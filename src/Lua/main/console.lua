@@ -84,21 +84,21 @@ ZE2.cv_debug = CV_RegisterVar({
 	flags = CV_NETVAR,
 })
 
-COM_AddCommand("z_giveitem", function(player, item_id, count, slot)
-	if player.mo and player.mo.valid and player.ze2 and ZE2:FetchInventory(player) then
-		if item_id then
-			item_id = tonumber($)
-		else
-			CONS_Printf(player, "z_giveitem <item_id> <count> <slot>: gives an item to yourself.")
+COM_AddCommand("z_giveitem", function(player, item_id, slot, count)
+	if player.mo and player.mo.valid and ZE2:FetchInventory(player) then
+		if not item_id then
+			CONS_Printf(player, "z_giveitem <item_id> <slot> <count>: gives an item to yourself.")
 			return
-		end
-
-		if count then
-			count = tonumber($)
+		else
+			print(item_id)
 		end
 
 		if slot then 
 			slot = tonumber($)
+		end
+		
+		if count then
+			count = tonumber($)
 		end
 
 		ZE2:GiveItem(player,item_id,count,slot)
@@ -127,76 +127,6 @@ COM_AddCommand("z_changeztype", function(player, new_ztype)
 	end
 end, 1)
 
-COM_AddCommand("z_sellinventory", function(player)
-	for i=1,player.ze2.survivor_inventory_limit do
-		if player.ze2.survivor_inventory[i] and player.ze2.survivor_inventory[i].price then
-			local item_name = player.ze2.survivor_inventory[i].displayname
-			local item_cost = player.ze2.survivor_inventory[i].price
-			local item_count 
-			local item_maxcount
-			if player.ze2.survivor_inventory[i].count then
-				item_count = player.ze2.survivor_inventory[i].count
-				item_maxcount = player.ze2.survivor_inventory[i].max_count
-			end
-			if item_count and item_maxcount then
-				item_cost = (item_cost*item_count)/item_maxcount
-			end
-			item_cost = ($*3)/4 -- Give only 75% back.
-			
-			local toprint = string.format("%s sold for \x85%s Rubies. (75 percent given back)",item_name,tostring(item_cost))
-			
-			CONS_Printf(player,toprint)
-			
-			player.ze2.cash = $ + item_cost
-		end
-	end
-	player.ze2.survivor_inventory = {
-		ZE2:CopyItemFromID(ITEM_RED_RING)
-	}
-	player.ze2.zombie_inventory = {
-		ZE2:CopyItemFromID(ITEM_INSTA_BURST)
-	}
-	CONS_Printf(player, "\x85".."Cleared inventory!")
-end)
-
-COM_AddCommand("z_sellhand", function(player)
-	local inventory 
-	if player.ze2.team == 1 then
-		inventory = player.ze2.survivor_inventory
-	elseif player.ze2.team == 2 then
-		inventory = player.ze2.zombie_inventory
-	end
-	local inventory_slot = inventory[player.ze2.inventory_selection]
-	if inventory_slot and inventory_slot.price then -- Sellable
-		local item_name = inventory[player.ze2.inventory_selection].displayname
-		local item_cost = inventory[player.ze2.inventory_selection].price
-		local item_count 
-		local item_maxcount
-		if inventory[player.ze2.inventory_selection].count then
-			item_count = inventory[player.ze2.inventory_selection].count
-			item_maxcount = inventory[player.ze2.inventory_selection].max_count
-		end
-		if item_count and item_maxcount then
-			item_cost = (item_cost*item_count)/item_maxcount
-		end
-		
-		item_cost = ($*3)/4 -- Give only 75% back.
-		
-		local toprint = string.format("%s sold for \x85\%s Cash. (75 percent given back)",item_name,tostring(item_cost))
-		
-		CONS_Printf(player,toprint)
-		
-		table.remove(inventory, player.ze2.inventory_selection)
-		
-		player.ze2.cash = $ + item_cost
-		
-	elseif inventory_slot and not inventory_slot.price then -- Unsellable but has slot
-		CONS_Printf(player, "\x85\This item is unsellable!")
-	else -- Nothing in slot at all
-		CONS_Printf(player, "\x85\Blank inventory slot!")
-	end
-end)
-
 COM_AddCommand("z_giveshield", function(player, shieldtype)
 	if not (player.mo and player.mo.valid) then return end
 	if (shieldtype == nil or tonumber(shieldtype) == nil) then return end
@@ -207,6 +137,7 @@ COM_AddCommand("z_giveshield", function(player, shieldtype)
 		return
 	end
 	
+	ZE2:RemoveShieldFromMobj(player.mo)
 	if not ZE2:GiveShieldToMobj(player.mo, tonumber(shieldtype)) then
 		CONS_Printf(player, "\x85\Invalid shieldtype!")
 		return

@@ -1,5 +1,5 @@
 freeslot("MT_MIRRORCLONE", "sfx_mrr12")
-sfxinfo[sfx_mrr12].caption="W's Mirror"
+sfxinfo[sfx_mrr12].caption = "W's Mirror"
 
 mobjinfo[MT_MIRRORCLONE] = {
     doomednum = -1,
@@ -25,7 +25,8 @@ local function flashpmo(pmo, source)
 	P_RemoveMobj(source)
 end
 
-local w_mirror = ZE2:CreateItem("W's mirror", {
+local magic_mirror = ZE2:CreateItem("magic_mirror", {
+	displayname = "Magic Mirror",
 	icon = "MIRRORIND",
 	firerate = TICRATE*5,
 	sound = sfx_mrr12,
@@ -108,4 +109,4 @@ addHook("MobjDeath", function(mo, inf, src)
 	end
 end, MT_MIRRORCLONE)
 
-ZE2:RegisterShop_ItemID(w_mirror)
+ZE2:RegisterShop_ItemID(magic_mirror)

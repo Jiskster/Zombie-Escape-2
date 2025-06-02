@@ -29,7 +29,8 @@ states[S_ZE2_LANDMINE2] = {
 	tics = 70,
 }
 
-local landmine = ZE2:CreateItem("Landmine",  {
+local landmine = ZE2:CreateItem("landmine",  {
+	displayname = "Landmine",
 	--object = MT_THROWNGRENADE,
 	icon = "LANDMINEIND",
 	firerate = 15,

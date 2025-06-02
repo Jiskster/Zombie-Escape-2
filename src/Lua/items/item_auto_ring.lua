@@ -1,4 +1,5 @@
-local auto_ring = ZE2:CreateItem("Automatic Ring",  {
+local auto_ring = ZE2:CreateItem("auto_ring",  {
+	displayname = "Automatic Ring",
 	object = MT_THROWNAUTOMATIC,
 	icon = "AUTOIND",
 	sound = sfx_wpfir2,

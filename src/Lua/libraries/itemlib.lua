@@ -2,24 +2,25 @@ ZE2.ItemPresets = {
 
 }
 
-function ZE2:CreateItem(name,input_table)
+function ZE2:CreateItem(item_id,input_table)
 	local temp_table
-	if not name then
+	
+	if not item_id then
 		error("Name not included.")
-	end
-	if type(name) ~= "string" then
-		error("Arg1 is not a string.")
-	end
-	if not input_table then
+	elseif not input_table then
 		error("Table not found.")
-	end
-	if type(input_table) ~= "table" then
+	elseif type(input_table) ~= "table" then
 		error("Arg2 is not a table.")
 	end
+	
 	temp_table = ZE2:Copy(input_table) -- temp_table is supposed to add extra info before shipping.
 
-	temp_table.item_id = #self.ItemPresets + 1
-	temp_table.displayname = name
+	temp_table.item_id = item_id
+	
+	if not temp_table.displayname then
+		temp_table.displayname = item_id
+	end
+	
 	if temp_table.count and temp_table.max_count == nil then
 		temp_table.max_count = temp_table.count
 	end
@@ -30,13 +31,14 @@ function ZE2:CreateItem(name,input_table)
 	
 	temp_table.firerate_left = 0
 	
-	local idname = ("ITEM_"..name:upper()):gsub(" ","_"):gsub("'","")
+	local idname = ("ITEM_"..item_id:upper()):gsub(" ","_"):gsub("'","")
 	local idglobal 
-	table.insert(self.ItemPresets, temp_table) -- Push new item
-	rawset(_G, idname, #self.ItemPresets) -- Define Item Global
 	
-	print("\x84ZE2:".."\x82 Item ".."\""..name.." ("..idname..")".."\" included ["..(#self.ItemPresets).."]")
-	return #self.ItemPresets -- Item ID
+	ZE2.ItemPresets[item_id] = temp_table -- Push new item
+	rawset(_G, idname, item_id) -- Define Item Global
+	
+	print("\x84ZE2:".."\x82 Item ".."\""..item_id.." ("..idname..")".."\" included ["..(#self.ItemPresets).."]")
+	return item_id -- Item ID
 end
 
 
@@ -171,14 +173,13 @@ end
 
 function ZE2:CopyItemFromID(item_id)
 	local item = ZE2:Copy(ZE2.ItemPresets[item_id]) or error("Invalid item_id.")
-	
-	-- TODO: Iterate through available functions and nil them that way instead.
-	item.ontrigger = nil
-	item.onspawn = nil
-	item.onhit = nil
-	item.thinker = nil
-	item.precision_thinker = nil
 
+	for i,v in pairs(item) do
+		if type(v) == "function" then
+			item[i] = nil
+		end
+	end
+	
 	return item
 end
 
@@ -186,16 +187,16 @@ end
 function ZE2:GiveItem(player, item_input, count, slot) 
 	local datatype = type(item_input)
 	local isTable = datatype == "table"
-	local isNumber = datatype == "number"
+	local isString = datatype == "string"
 	
 	if player and player.valid then
 		if not item_input or (isTable and item_input and not item_input.item_id) 
-		or (isNumber and item_input and not ZE2.ItemPresets[item_input]) then
+		or (isString and item_input and not ZE2.ItemPresets[item_input]) then
 			return false
 		elseif player.ze2 and ZE2:FetchInventory(player) then
 			local item
 	
-			if isNumber then
+			if isString then
 				item = ZE2:Copy(ZE2.ItemPresets[item_input])
 			elseif isTable then
 				item = ZE2:Copy(item_input)
@@ -204,11 +205,11 @@ function ZE2:GiveItem(player, item_input, count, slot)
 			end
 			
 			--destroy functions
-			item.ontrigger = nil
-			item.onspawn = nil
-			item.onhit = nil
-			item.thinker = nil
-			item.precision_thinker = nil
+			for i,v in pairs(item) do
+				if type(v) == "function" then
+					item[i] = nil
+				end
+			end
 			
 			if count ~= nil then
 				item.count = count
@@ -223,7 +224,7 @@ function ZE2:GiveItem(player, item_input, count, slot)
 				
 				local item_id
 				
-				if isNumber then
+				if isString then
 					item_id = item_input
 				elseif isTable then
 					item_id = item_input.item_id

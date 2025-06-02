@@ -39,7 +39,8 @@ states[S_INSTABURST5B] = {SPR_NULL, 0, 1, A_CapeChase, 0, 0, S_INSTABURST6A}
 states[S_INSTABURST6A] = {SPR_ZMSH, 5|FF_FULLBRIGHT, 1, A_CapeChase, 0, 0, S_INSTABURST6B}
 states[S_INSTABURST6B] = {SPR_NULL, 0, 1, A_CapeChase, 0, 0, S_NULL}
 
-ZE2:CreateItem("Insta Burst", {
+ZE2:CreateItem("insta_burst", {
+	displayname = "Insta Burst",
 	icon = "ZMISHIND",
 	firerate = 28,
 	sound = {sfx_zish1, sfx_zish2, sfx_zish3},

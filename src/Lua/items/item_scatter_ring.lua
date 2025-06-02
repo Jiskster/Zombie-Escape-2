@@ -70,7 +70,8 @@ states[S_ZE2_THROWNSCATTER7] = {
 	tics = 1,
 }
 
-local scatter_ring = ZE2:CreateItem("Scatter Ring",  {
+local scatter_ring = ZE2:CreateItem("scatter_ring",  {
+	displayname = "Scatter Ring",
 	icon = "SCATIND",
 	firerate = TICRATE,
 	sound = sfx_shgn,

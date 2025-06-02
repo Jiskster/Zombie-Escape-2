@@ -96,7 +96,8 @@ local function trigger_func(player, iteminfo)
 	end
 end
 
-local rail_ring = ZE2:CreateItem("Rail Ring", {
+local rail_ring = ZE2:CreateItem("rail_ring", {
+	displayname = "Rail Ring",
 	shake = 20,
 	icon = "RAILIND",
 	firerate = 5,

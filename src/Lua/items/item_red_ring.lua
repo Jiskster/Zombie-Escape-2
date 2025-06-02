@@ -19,7 +19,8 @@ local precision_thinkers = {
 	end,
 } 
 
-ZE2:CreateItem("Red Ring",  {
+ZE2:CreateItem("red_ring",  {
+	displayname = "Red Ring",
 	object = MT_REDRING,
 	icon = "RINGIND",
 	sound = sfx_wpfire,

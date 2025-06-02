@@ -1,4 +1,5 @@
-local grenade = ZE2:CreateItem("Grenade",  {
+local grenade = ZE2:CreateItem("grenade_ring",  {
+	displayname = "Grenade",
 	object = MT_THROWNGRENADE,
 	icon = "GRENIND",
 	firerate = 15,
