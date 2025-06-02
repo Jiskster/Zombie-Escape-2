@@ -8,9 +8,9 @@ local apple = ZE2:CreateItem("apple", {
 	max_count = 100,
 	color = SKINCOLOR_RED,
 	ontrigger = function(player)
-		player.mo:ChangeHealth(16)
+		player.mo:ChangeHealth(20)
 	end,
-	price = 50,
+	price = 150,
 })
 
 ZE2:RegisterShop_ItemID(apple)
