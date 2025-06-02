@@ -6,11 +6,9 @@ return function(player)
 
 	if player and not player.mo then return end
 
-	-- Remove player's friction if > 0
-	if player.ze2.nofrictiontics then
-		player.mo.friction = FRACUNIT
-		
-		player.ze2.nofrictiontics = max(0, $ - 1)
+	-- Make zombies slow after hit
+	if player.ze2.zombie_slowtics then
+		player.ze2.zombie_slowtics = max(0, $ - 1)
 	end
 
 	-- When this hits zero, catch up to your teammates!

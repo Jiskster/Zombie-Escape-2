@@ -54,18 +54,17 @@ addHook("PreThinkFrame", function()
 				if ZE2.sourcemovement.value and not (P_IsObjectOnGround(player.mo) or (player.mo.eflags & MFE_JUSTHITFLOOR)) then
 					player.mo.z = clamp($ + FixedMul(player.height - player.spinheight, pmo.scale) * P_MobjFlip(pmo), pmo.floorz, pmo.ceilingz-P_GetPlayerSpinHeight(player))
 				end
-				if not player.ze2.nofrictiontics then
-					if (P_IsObjectOnGround(player.mo) or (player.mo.eflags & MFE_JUSTHITFLOOR)) and player.speed > 10*FU then
-						L_SpeedCapXY(player.mo, limit) -- Halt ground movement
-					end
+
+				-- mama luigi
+				if (P_IsObjectOnGround(player.mo) or (player.mo.eflags & MFE_JUSTHITFLOOR)) and player.speed > 10*FU then
+					L_SpeedCapXY(player.mo, limit) -- Halt ground movement
 				end
 				
 				player.ze2.crouching = true
 			else
-				if not player.ze2.nofrictiontics then
-					if P_IsObjectOnGround(player.mo) and (player.mo.eflags & MFE_JUSTHITFLOOR) then
-						L_SpeedCapXY(player.mo, limit)
-					end
+				-- mama luigi
+				if P_IsObjectOnGround(player.mo) and (player.mo.eflags & MFE_JUSTHITFLOOR) then
+					L_SpeedCapXY(player.mo, limit)
 				end
 			end
 		else

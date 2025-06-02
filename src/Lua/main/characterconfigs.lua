@@ -109,11 +109,6 @@ ZE2.SetCCtoplayer = function(player)
 
 		if ZE2.sourcemovement.value then
 			player.thrustfactor = 0
-			if not (P_IsObjectOnGround(pmo) or
-			(not P_IsObjectOnGround(pmo) and cmd.forwardmove < 0 and P_GetPlayerControlDirection(player) == 2) 
-			or player.ze2.isSprung) then
-				player.ze2.nofrictiontics = 0
-			end
 		else
 			if P_IsObjectOnGround(pmo) or
 			(not P_IsObjectOnGround(pmo) and cmd.forwardmove < 0 and P_GetPlayerControlDirection(player) == 2) 
@@ -121,11 +116,6 @@ ZE2.SetCCtoplayer = function(player)
 				player.thrustfactor = 8
 			else
 				player.thrustfactor = 4
-				player.ze2.nofrictiontics = 0
-			end
-			
-			if player.ze2.nofrictiontics then
-				player.thrustfactor = 1
 			end
 		end
 		
@@ -234,11 +224,6 @@ ZE2.SetZCtoplayer = function(player)
 
 			if ZE2.sourcemovement.value then
 				player.thrustfactor = 0
-				if not (P_IsObjectOnGround(pmo) or
-				(not P_IsObjectOnGround(pmo) and cmd.forwardmove < 0 and P_GetPlayerControlDirection(player) == 2) 
-				or player.ze2.isSprung) then
-					player.ze2.nofrictiontics = 0
-				end
 			else
 				if P_IsObjectOnGround(pmo) or
 				(not P_IsObjectOnGround(pmo) and cmd.forwardmove < 0 and P_GetPlayerControlDirection(player) == 2) 
@@ -246,16 +231,11 @@ ZE2.SetZCtoplayer = function(player)
 					player.thrustfactor = 8
 				else
 					player.thrustfactor = 4
-					player.ze2.nofrictiontics = 0
 				end
 				
-				if player.ze2.nofrictiontics then
+				if player.ze2.zombie_slowtics then
 					player.thrustfactor = 1
 				end
-			end
-			
-			if player.ze2.isRunning then
-				player.normalspeed = $ + 7*FU
 			end
 
 			if (zc[ztype].charflags) then 

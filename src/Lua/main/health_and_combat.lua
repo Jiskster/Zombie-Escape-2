@@ -407,7 +407,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		local pv = player.ze2
 		
 		-- TODO: Merge both team kb code.
-		if player.ze2.team == 1 then
+		if pv.team == 1 then
 			if not attackedbyzombie then
 				player.powers[pw_flashing] = ZE2.survinvtics.value
 				
@@ -424,13 +424,9 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 
 			if inf and inf.valid then
 				if not relativeknockback then
-					mo.friction = FRACUNIT
-				
 					P_Thrust(mo, inf.angle, knockback)
 				else
 					local r_angle = R_PointToAngle2(mo.x, mo.y, inf.x, inf.y)
-					
-					mo.friction = FRACUNIT
 					
 					P_Thrust(mo, r_angle - ANGLE_180, knockback)
 				end
@@ -447,7 +443,6 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			local ztype = pv.zombie_type
 			local zombie_hurtsounds = {sfx_zpa1,sfx_zpa2}
 			local chosen_hurtsound = zombie_hurtsounds[P_RandomRange(1,2)]
-			
 			
 			if pv.crouching then
 				knockback = $ * 3
@@ -468,16 +463,14 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 					else
 						P_Thrust(mo, inf.angle, knockback)
 					end
-					
-					pv.nofrictiontics = min($ + 3, 5)
 				else
 					local r_angle = R_PointToAngle2(mo.x, mo.y, inf.x, inf.y)
 					local r_momxy = FixedHypot(mo.momx, mo.momy)
 
 					P_Thrust(mo, r_angle - ANGLE_180, knockback)
-					
-					pv.nofrictiontics = min($ + 3, 5)
 				end
+
+				pv.zombie_slowtics = 5
 			end
 			
 			if verticalknockback then

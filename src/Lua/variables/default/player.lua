@@ -82,8 +82,8 @@ return {
 	zombie_shop_c1_pressed = false,
 	zombie_next_type = nil,
 	
-	nofrictiontics = 0; 
-	
+	zombie_slowtics = 0,
+
 	isSprung = false,
 	
 	damage_indicator_table = {},
