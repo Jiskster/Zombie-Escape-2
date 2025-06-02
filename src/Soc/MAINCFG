@@ -158,6 +158,7 @@ Weather = 1
 NoZone = True
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 7
+Lua.ze2_zombiereleasetime = 14
 
 Level 23
 Levelname = Alphacombs
