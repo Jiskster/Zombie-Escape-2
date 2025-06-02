@@ -1,4 +1,5 @@
-local apple = ZE2:CreateItem("Apple", {
+local apple = ZE2:CreateItem("apple", {
+	displayname = "Apple",
 	icon = "APPLEIND",
 	firerate = 50,
 	sound = sfx_eatapl,

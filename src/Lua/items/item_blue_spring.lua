@@ -1,4 +1,5 @@
-local blue_spring = ZE2:CreateItem("Blue Spring",  {
+local blue_spring = ZE2:CreateItem("blue_spring",  {
+	displayname = "Blue Spring",
 	icon = "BLUESPRINGIND",
 	firerate = 2*TICRATE,
 	limited = true,

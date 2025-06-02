@@ -69,7 +69,8 @@ ZE2.Effects["flame_ring.on_fire"] = {
 	end
 }
 
-local flame_ring = ZE2:CreateItem("Flame Ring",  {
+local flame_ring = ZE2:CreateItem("flame_ring",  {
+	displayname = "Flame Ring",
 	icon = "FLAMIND",
 	sound = sfx_None,
 	firerate = 2,

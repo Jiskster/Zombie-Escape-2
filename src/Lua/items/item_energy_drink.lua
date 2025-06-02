@@ -18,7 +18,8 @@ ZE2.Effects["energy_drink"] = {
 	end,
 }
 
-local energydrink = ZE2:CreateItem("Energy Drink", {
+local energydrink = ZE2:CreateItem("energy_drink", {
+	displayname = "Energy Drink",
 	icon = "ENERGYDRINKIND",
 	firerate = TICRATE*30,
 	sound = sfx_rblxdr,

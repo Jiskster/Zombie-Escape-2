@@ -1,4 +1,5 @@
-local infinity_ring = ZE2:CreateItem("Infinity Ring",	{
+local infinity_ring = ZE2:CreateItem("infinity_ring",	{
+	displayname = "Infinity Ring",
 	object = MT_THROWNINFINITY,
 	icon = "INFNIND",
 	firerate = 7,

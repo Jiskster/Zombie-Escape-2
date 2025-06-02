@@ -62,7 +62,8 @@ states[S_PROP1_BREAK] = {
 	tics = 4
 }
 
-local wood_fence = ZE2:CreateItem("Wood Fence", {
+local wood_fence = ZE2:CreateItem("wood_fence", {
+	displayname = "Wood Fence",
 	icon = "FENCEIND",
 	firerate = TICRATE*5,
 	limited = true,

@@ -1,6 +1,7 @@
 freeslot("sfx_gulpy")
 
-local milk = ZE2:CreateItem("Milk", {
+local milk = ZE2:CreateItem("milk", {
+	displayname = "Milk",
 	icon = "MILKIND",
 	iconscale = FU/2,
 	firerate = 20,
