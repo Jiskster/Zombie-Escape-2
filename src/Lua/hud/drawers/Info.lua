@@ -165,6 +165,7 @@ local function health(v,p,me,ze)
 	if ze.team == 1
 	and ze.sprintmeter ~= nil
 		local sprint = ze.sprintmeter
+		
 		sprint = intlerp(2, fake_info.stamina, $)
 		fake_info.stamina = sprint
 		
@@ -180,9 +181,22 @@ local function health(v,p,me,ze)
 				drawSkewFill(v, x,y, width,height, flags|(fade << V_ALPHASHIFT), SKINCOLOR__35) -- 35
 			end
 		end
-		
+		local sprint_text = string.format("%.0f%%", FixedDiv(sprint, maxsprint)*100)
+
+		if ze.sprintdelay then
+			sprint_text = "EXHAUSTED!"
+
+			if (leveltime % 2) == 0 then
+				x = $ - FU
+			end
+
+			if (leveltime % 2)/4 == 0 then
+				sprint_text = "\x85"..$
+			end
+		end
+
 		v.drawString(x + textspace, y + shadow,
-			string.format("%.0f%%", FixedDiv(sprint, maxsprint)*100),
+			sprint_text,
 			flags, "thin-fixed"
 		)
 	--rage meter
