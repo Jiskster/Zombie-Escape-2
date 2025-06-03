@@ -59,9 +59,8 @@ return {
 	team = 1,
 
 	cash = 500,
-	rubycap = 25000,
-	rubyqueue = 0,
-	rubypickupdelay = 0,
+	cash_limit = 25000,
+	currencydelay = 0,
 
 	injoinqueue = false,
 	injoinqueue_delay = 0,

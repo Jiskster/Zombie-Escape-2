@@ -3,19 +3,15 @@ freeslot("MT_CRRUBY","S_CRRUBY","SPR_RBY1", "sfx_rbyhit") -- idk what CR means b
 freeslot("MT_RUBY_BOX", "S_RUBY_BOX", "S_RUBY_BOX_BREAK",
 		"SPR_RBYM")
 
-function ZE2:GivePlayerRubies(player, amount)
-	if player.ze2.cash + amount > player.ze2.rubycap then
-		player.ze2.cash = player.ze2.rubycap
+function ZE2:GivePlayerCash(player, amount)
+	if player.ze2.cash + amount > player.ze2.cash_limit then
+		player.ze2.cash = player.ze2.cash_limit
 		return false
 	else
 		player.ze2.cash = $ + amount
 	end
 	
 	return true
-end
-
-function ZE2:QueuePlayerRubies(player, amount)
-	player.ze2.rubyqueue = $ + amount
 end
 
 function ZE2:DeleteCrate3D(door)
@@ -69,8 +65,8 @@ function ZE2:GetCameraMobj()
 	return cam
 end
 
-ZE2.rubypickupdelay = CV_RegisterVar({
-	name = "z_rubypickupdelay",
+ZE2.currencydelay = CV_RegisterVar({
+	name = "z_currencydelay",
 	defaultvalue = "0",
 	PossibleValue = {MIN = 0, MAX = 12},
 	flags = CV_NETVAR,
@@ -182,26 +178,12 @@ states[S_RUBY_BOX_BREAK] = {
 sfxinfo[sfx_rbyhit].caption = "Ruby"
 
 addHook("PlayerThink", function(player)
-	if player.ze2.cash > player.ze2.rubycap then
-		player.ze2.cash = player.ze2.rubycap
+	if player.ze2.cash > player.ze2.cash_limit then
+		player.ze2.cash = player.ze2.cash_limit
 	end
 	
-	if player.ze2.rubypickupdelay then
-		player.ze2.rubypickupdelay = $ - 1
-	end
-
-	if player.mo and player.mo.valid then
-		if player.ze2.rubyqueue then
-			local ghost = P_SpawnGhostMobj(player.mo)
-			ghost.color = SKINCOLOR_RED
-			ghost.colorized = true
-			ghost.frame = $|FF_TRANS10
-			ghost.fuse = 4
-			
-			ZE2:GivePlayerRubies(player, 1)
-			S_StartSound(player.mo, sfx_rbyhit)
-			player.ze2.rubyqueue = $ - 1
-		end
+	if player.ze2.currencydelay then
+		player.ze2.currencydelay = $ - 1
 	end
 end)
 
@@ -233,21 +215,19 @@ addHook("TouchSpecial", function(special, toucher)
 			return true
 		end
 		
-		if toucher.player.ze2.cash + 1 > toucher.player.ze2.rubycap then
+		if toucher.player.ze2.cash + 1 > toucher.player.ze2.cash_limit then
 			return true
-		elseif toucher.player.ze2.rubypickupdelay then
+		elseif toucher.player.ze2.currencydelay then
 			return true
 		end
 
-		if not toucher.player.ze2.rubyqueue then
-			S_StartSound(toucher, sfx_rbyhit)
-		end
+		S_StartSound(toucher, sfx_rbyhit)
 
-		ZE2:GivePlayerRubies(toucher.player, 5)
+		ZE2:GivePlayerCash(toucher.player, 5)
 		S_StartSound(toucher, sfx_rbyhit)
 		toucher.player.ze2:ChangeStamina(5*FRACUNIT)
 
-		toucher.player.ze2.rubypickupdelay = ZE2.rubypickupdelay.value
+		toucher.player.ze2.currencydelay = ZE2.currencydelay.value
 	end
 end, MT_CRRUBY)
 
@@ -285,7 +265,7 @@ addHook("MobjThinker", function(mobj)
 	for p in players.iterate
 		if p.ze2.team ~= 1 then continue end
 		if p.spectator then continue end
-		if p.ze2.cash == p.ze2.rubycap then continue end
+		if p.ze2.cash == p.ze2.cash_limit then continue end
 		if not (p.mo and p.mo.valid) then continue end
 
 		local mo = p.mo
@@ -551,7 +531,7 @@ COM_AddCommand("z_giverubies", function(player, rubies)
 		return
 	end
 
-	ZE2:GivePlayerRubies(player, rubies)
+	ZE2:GivePlayerCash(player, rubies)
 	S_StartSound(player.mo, sfx_rbyhit)
 	
 	CONS_Printf(player, "\x82You got "..cash.." rubies")

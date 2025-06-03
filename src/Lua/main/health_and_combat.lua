@@ -73,7 +73,8 @@ function ZE2.KillMobj(mo, inf, src, damagetype, killedbysomething)
 					ZE2.PlayZombieSound(player, true)
 				end
 			
-				ZE2:QueuePlayerRubies(killer.player, cash_award)
+				killer.player.ze2.cash = $ + cash_award
+				S_StartSound(killer.player.mo, sfx_rbyhit)
 				print("\x84"..player.name.." \x83\has been infected by \x85"..killer.player.name)
 
 				CONS_Printf(killer.player, "\x83+ $"..cash_award.." cash gained from infecting a survivor!")

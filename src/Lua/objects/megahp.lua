@@ -32,7 +32,7 @@ ZE2.HitMegaHP = function(special, toucher)
 	if toucher and toucher.valid and toucher.player and toucher.player.ze2.team and toucher.player.ze2.team == 1 then
 		toucher.health = toucher.maxhealth
 		ZE2:GiveShieldToMobj(toucher, 1)
-		ZE2:GivePlayerRubies(toucher.player, cash_given)
+		ZE2:GivePlayerCash(toucher.player, cash_given)
 		CONS_Printf(toucher.player,"\x83+ $"..cash_given.." cash bonus!")
 	else
 		return true

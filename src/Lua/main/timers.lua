@@ -82,7 +82,7 @@ function ZE2:StartWin(team, fromring)
 		if player.spectator then continue end
 		if player.ze2.team ~= team then continue end
 		
-		ZE2:GivePlayerRubies(player, cash_award)
+		ZE2:GivePlayerCash(player, cash_award)
 		S_StartSound(player.mo, sfx_rbyhit)
 		CONS_Printf(player, "\x83 + Awarded "..cash_award.." cash awarded for winning!")
 	end
