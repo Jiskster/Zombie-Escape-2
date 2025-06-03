@@ -91,7 +91,6 @@ dofile "main/characterconfigs.lua"
 dofile "main/console.lua"
 dofile "main/health_and_combat.lua" -- main stuff 
 
-dofile "main/intermission.lua"
 dofile "main/capitalism.lua"
 dofile "main/exiting.lua"
 dofile "main/mapinfo_animation.lua"
