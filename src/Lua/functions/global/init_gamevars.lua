@@ -75,6 +75,14 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 			player.ze2.vote_selection = 1
 			player.ze2.voted = false
 			player.ze2.checkpoint_number = 0
+			if player.ze2.outofgame or player.ze2.injoinqueue then
+				player.spectator = false
+				player.playerstate = PST_REBORN
+				G_DoReborn(#player)
+			end
+			player.ze2.injoinqueue = false
+			player.ze2.outofgame = false
+			player.ze2.respawntics = 0
 		end
 	end
 end; ZE2.init_gamevars();

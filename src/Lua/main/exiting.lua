@@ -44,10 +44,3 @@ addHook("TouchSpecial", function(special,toucher)
 		return true
 	end
 end, MT_CRRING)
-
-addHook("ThinkFrame", function()
-	if gametype ~= GT_ZE2 or gamestate ~= GS_LEVEL then return end --stop the trolling
-	if ((ZE2.PlayerCount() > 1) or (mapheaderinfo[gamemap].ze2_solofail)) and ZE2.SurvivorCount() == 0 and not ZE2.game_ended then
-		ZE2:StartWin(2)
-	end
-end)

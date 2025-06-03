@@ -12,11 +12,21 @@ return function(player)
 		player.pflags = $ & ~PF_FORCESTRAFE
 	end
 
+	if not ZE2.round_active and leveltime and player.spectator and player.jointime <= TICRATE then
+		player.spectator = false
+		player.playerstate = PST_REBORN
+		G_DoReborn(#player)
+	end
+
 	-- Hide player when in pregame menu
 	if not ZE2.round_active and pv.pregamemenu_active then
 		if player.mo and player.mo.valid then
 			player.mo.flags2 = $|MF2_DONTDRAW
 		end
+	end
+	
+	if pv.injoinqueue and not player.spectator then
+		pv.injoinqueue = false
 	end
 
 	if pv.sprintmeter < 0 then
@@ -56,10 +66,14 @@ return function(player)
 			end
 		end
 		
-		if not pmo.health then
-			if ZE2.round_active and not ZE2_game_ended and 
-			((ZE2.PlayerCount() > 1) or (mapheaderinfo[gamemap].ze2_solofail)) then
-				player.ze2.team = 2
+		if player.playerstate == PST_DEAD then
+			if ZE2.round_active and not ZE2_game_ended and not player.ze2.respawntics then
+				if player.ze2.team == 1 then
+					player.ze2.respawntics = 10*TICRATE
+					player.ze2.outofgame = true
+				elseif player.ze2.team == 2 then
+					player.ze2.respawntics = 45*TICRATE
+				end
 			end
 		end
 	end

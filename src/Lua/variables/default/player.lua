@@ -63,6 +63,11 @@ return {
 	rubyqueue = 0,
 	rubypickupdelay = 0,
 
+	injoinqueue = false,
+	injoinqueue_delay = 0,
+	outofgame = false,
+	respawntics = 0,
+
 	was_spectating = false,
 	was_zombie = false,
 

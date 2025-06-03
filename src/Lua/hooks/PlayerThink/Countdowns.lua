@@ -1,10 +1,14 @@
 return function(player)
+	if player.ze2.injoinqueue_delay then
+		player.ze2.injoinqueue_delay = max(0, $ - 1)
+	end
+
+	if player and not player.mo then return end
+
 	-- Special Ability
 	if player.ze2.special_cooldown then
 		player.ze2.special_cooldown = $ - 1
 	end
-
-	if player and not player.mo then return end
 
 	-- Make zombies slow after hit
 	if player.ze2.zombie_slowtics then
@@ -17,6 +21,27 @@ return function(player)
 		
 		if not player.ze2.checkpoint_catchuptics then
 			ZE2.LatestCheckpointTeleport(player, true)
+		end
+	end
+	
+	if player.ze2.respawntics then
+		if player.playerstate == PST_REBORN then
+			player.playerstate = PST_DEAD
+		end
+	
+		player.ze2.respawntics = max(0, $ - 1)
+		
+		if not player.ze2.respawntics then
+			if player.ze2.team == 1 then
+				player.ze2.outofgame = true
+				player.ze2.injoinqueue = false
+				player.spectator = true
+				player.playerstate = PST_REBORN
+				G_DoReborn(#player)
+			elseif player.ze2.team == 2 then
+				player.playerstate = PST_REBORN
+				G_DoReborn(#player)
+			end
 		end
 	end
 

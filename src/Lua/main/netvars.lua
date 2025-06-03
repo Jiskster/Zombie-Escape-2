@@ -28,6 +28,8 @@ addHook("NetVars", function(net)
 	
 	ZE2.mapladdertag = net($);
 	ZE2.BulletList = net($);
+
+	ZE2.QueueSpectate = net($);
 	
 	for i,v in ipairs(ZE2.MapTimers) do
 		v.name = net($);
