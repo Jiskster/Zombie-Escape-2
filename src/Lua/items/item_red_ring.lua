@@ -27,13 +27,13 @@ ZE2:CreateItem("red_ring",  {
 	firerate = 4,
 	color = SKINCOLOR_RED,
 	knockback = 5*FRACUNIT,
-	damage = 45,
+	damage = 25,
 	velocity_precision = 8,
 	velocity_multiplier = 8*FRACUNIT,
 	autouse = false,
-	max_ammo = 25,
-	ammo = 25,
-	reload_time = 3*TICRATE/2,
+	max_ammo = 30,
+	ammo = 30,
+	reload_time = 7*TICRATE/4,
 	skin_overwrite = {
 		["tails"] = {
 			autouse = true
