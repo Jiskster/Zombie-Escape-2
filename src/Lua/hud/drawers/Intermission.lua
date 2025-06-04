@@ -16,6 +16,7 @@ return "Intermission", function(v, player)
 		wtics2 = 0
 		return
 	end
+	
 	local wtics = ZE2.win_tics
 	local team_won = ZE2.team_won
 
@@ -23,11 +24,13 @@ return "Intermission", function(v, player)
 	local win_patch = v.cachePatch("Z_WIN")
 	local lower_patch = v.cachePatch("Z_BANG_LOWER_BLUE")
 	local upper_patch = v.cachePatch("Z_BANG_UPPER_BLUE")
+	local bg_patch = v.cachePatch("Z_BG_BLUE")
 	
 	if team_won == 2 then
 		team_patch = v.cachePatch("Z_ZOMBIES")
 		lower_patch = v.cachePatch("Z_BANG_LOWER_RED")
 		upper_patch = v.cachePatch("Z_BANG_UPPER_RED")
+		bg_patch = v.cachePatch("Z_BG_RED")
 	end
 	
 	local end_goals = { -- fixed x values
@@ -46,15 +49,14 @@ return "Intermission", function(v, player)
 	local anim_time2 = 2*TICRATE
 	local div2 = FixedDiv(min(wtics2*FU,anim_time2*FU), anim_time2*FU)
 	local triangle_y = ease.inoutsine(div2, upper_patch.height*FU, 0)
+	local bg_ease = ease.inoutsine(div2, 9, 5)
 	
 	if wtics >= 100 then
 		wtics2 = $ + 1
+		v.drawScaled(-500*FU,-500*FU, FU*1000, bg_patch, bg_ease<<V_ALPHASHIFT)
 	end
 	
-	v.drawScaled(team_x, 100*FU, FU, team_patch)
-	v.drawScaled(win_x, 100*FU, FU, win_patch)
-	
-	for i=-3,3 do
+	for i=-2,2 do
 		local x_movement = ((leveltime*FU)%(lower_patch.width*FU))
 		local bottom_x = i*(lower_patch.width*FU) + x_movement
 		local bottom_y = ((200*FU)-lower_patch.height*FU) + triangle_y
@@ -64,4 +66,7 @@ return "Intermission", function(v, player)
 		v.drawScaled(top_x, top_y, FU, upper_patch, V_SNAPTOTOP)
 		v.drawScaled(bottom_x, bottom_y, FU, lower_patch, V_SNAPTOBOTTOM)
 	end
+
+	v.drawScaled(team_x, 100*FU, FU, team_patch)
+	v.drawScaled(win_x, 100*FU, FU, win_patch)
 end
