@@ -45,4 +45,8 @@ folder = "Azure Sanctuary"; dofolder("Timers");
 
 folder = "Ancient Catacombs"; dofolder("Timers");
 
-folder = "Minecraft"; dofolder("Timers");
+folder = "Minecraft"; 
+
+dofolder("Timers");
+dofolder("Footsteps");
+dofolder("Sounds_and_Objects");
