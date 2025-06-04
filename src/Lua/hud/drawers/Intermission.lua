@@ -45,7 +45,7 @@ return "Intermission", function(v, player)
 	-- animations for making the triangle appear
 	local anim_time2 = 2*TICRATE
 	local div2 = FixedDiv(min(wtics2*FU,anim_time2*FU), anim_time2*FU)
-	local triangle_y = ease.linear(div2, upper_patch.height*FU, 0)
+	local triangle_y = ease.inoutsine(div2, upper_patch.height*FU, 0)
 	
 	if wtics >= 100 then
 		wtics2 = $ + 1
@@ -60,6 +60,7 @@ return "Intermission", function(v, player)
 		local bottom_y = ((200*FU)-lower_patch.height*FU) + triangle_y
 		local top_x = i*(upper_patch.width*FU) - x_movement
 		local top_y = 0 - triangle_y -- could do -triangle_y but this is visually better
+		
 		v.drawScaled(top_x, top_y, FU, upper_patch, V_SNAPTOTOP)
 		v.drawScaled(bottom_x, bottom_y, FU, lower_patch, V_SNAPTOBOTTOM)
 	end
