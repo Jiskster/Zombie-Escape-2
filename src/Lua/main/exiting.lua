@@ -1,6 +1,10 @@
 freeslot("MT_CRRING","S_CRRING") 
 
 mobjinfo[MT_CRRING] = {
+	//$Category Zombie Escape 2
+	//$Name Exit Ring
+	//$Sprite SIGNF0
+
 	doomednum = 860,
 	spawnstate = S_CRRING,
 	spawnhealth = 1,

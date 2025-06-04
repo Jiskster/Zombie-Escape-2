@@ -1,19 +1,3 @@
-freeslot("MT_SHOPKEEPER")
-freeslot("SPR_TAK1")
-
-mobjinfo[MT_SHOPKEEPER] = {
-    doomednum = 861,
-    spawnstate = S_NULL,
-    spawnhealth = 1,
-    radius = 32*FRACUNIT,
-    height = 48*FRACUNIT,
-    flags = MF_SOLID,
-}
-
-mobjinfo[MT_SHOPKEEPER].npc_name = "Shop Keeper"
-mobjinfo[MT_SHOPKEEPER].npc_spawnhealth = {100,100}
-mobjinfo[MT_SHOPKEEPER].disablehealthhud = true
-
 ZE2.ShopDefinitions = {
 
 }
