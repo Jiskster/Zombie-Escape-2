@@ -1,6 +1,10 @@
 -- Also a timer for survivors to turn into spectators after they die.
 
 return "RespawnTimer", function(v, player)
+	if ZE2.game_ended then
+		return
+	end
+	
 	if player.playerstate == PST_DEAD and not player.spectator then
 		local respawntics = player.ze2.respawntics
 		local respawntics2 = G_TicsToSeconds(respawntics) .. "." .. G_TicsToCentiseconds(respawntics)

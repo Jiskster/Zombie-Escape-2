@@ -29,18 +29,20 @@ return function(player)
 			player.playerstate = PST_DEAD
 		end
 	
-		player.ze2.respawntics = max(0, $ - 1)
-		
-		if not player.ze2.respawntics then
-			if player.ze2.team == 1 then
-				player.ze2.outofgame = true
-				player.ze2.injoinqueue = false
-				player.spectator = true
-				player.playerstate = PST_REBORN
-				G_DoReborn(#player)
-			elseif player.ze2.team == 2 then
-				player.playerstate = PST_REBORN
-				G_DoReborn(#player)
+		if not ZE2.game_ended then
+			player.ze2.respawntics = max(0, $ - 1)
+			
+			if not player.ze2.respawntics then
+				if player.ze2.team == 1 then
+					player.ze2.outofgame = true
+					player.ze2.injoinqueue = false
+					player.spectator = true
+					player.playerstate = PST_REBORN
+					G_DoReborn(#player)
+				elseif player.ze2.team == 2 then
+					player.playerstate = PST_REBORN
+					G_DoReborn(#player)
+				end
 			end
 		end
 	end
