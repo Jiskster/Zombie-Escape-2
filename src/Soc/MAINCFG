@@ -225,7 +225,6 @@ TypeOfLevel = ZE2
 SkyNum = 101
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 6
-Lua.hidefromvote = true
 
 Level 28
 Levelname = Egg Fortress

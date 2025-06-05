@@ -21,3 +21,11 @@ ZE2:AddTimer("AZURESANCTUARY_3", {
 	textcolor = SKINCOLOR_PURPLE,
 	lua_linedef_exec = "AZURTIMER3",
 })
+
+ZE2:AddTimer("AZURESANCTUARY_4", {
+	text = "Protect the Raft",
+	time = 15*TICRATE,
+	on_end_tag = 92,
+	textcolor = SKINCOLOR_BROWN,
+	lua_linedef_exec = "AZURTIMER4",
+})
