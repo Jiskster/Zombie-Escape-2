@@ -9,10 +9,23 @@ rawset(_G, "ze2_modname", "ze2"); -- For customhud.
 freeslot("TOL_ZE2");
 
 ZE2.wait_time = 15*TICRATE;
-ZE2.MapVoteStartFrame = 10*TICRATE
-ZE2.VoteTimeLimit = 12*TICRATE
+ZE2.MapVoteStartFrame = 10*TICRATE -- TODO: Remove
+ZE2.VoteTimeLimit = 12*TICRATE -- TODO: Remove
+
+-- so it looks better by adding idk
+local newroundframe = 15*TICRATE
+local newmapframe = newroundframe + 8*TICRATE
+
+ZE2.IntermissionVars = {
+	newroundframe = newroundframe;
+	newmapframe = newmapframe;
+	slideout_anim = 3*TICRATE/2;
+}
+
 ZE2.queuing_round = false
 ZE2.rounds_left = 3
+
+ZE2.PreviousMaps = {}
 
 ZE2.JumpSprintFatigue = 17*FRACUNIT
 

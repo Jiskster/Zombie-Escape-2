@@ -31,6 +31,8 @@ addHook("NetVars", function(net)
 
 	ZE2.QueueSpectate = net($);
 	
+	ZE2.PreviousMaps = net($);
+	
 	for i,v in ipairs(ZE2.MapTimers) do
 		v.name = net($);
 		v.time = net($);

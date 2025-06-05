@@ -46,10 +46,24 @@ return "Intermission", function(v, player)
 	local win_x = ease.outquint(div, end_goals.win + 200*FU, end_goals.win)
 	
 	-- Animations for when the triangles appear
-	local anim_time2 = 2*TICRATE
+	local anim_time2 = 3*TICRATE/2
 	local div2 = FixedDiv(min(wtics2*FU,anim_time2*FU), anim_time2*FU)
 	local triangle_y = ease.inoutsine(div2, upper_patch.height*FU, 0)
 	local bg_ease = ease.inoutsine(div2, 9, 5)
+	
+	local newroundframe = ZE2.IntermissionVars.newroundframe
+	local newmapframe = ZE2.IntermissionVars.newmapframe
+	local slideout_anim = ZE2.IntermissionVars.slideout_anim
+	
+	if ZE2.getCurrentRound() == ZE2.getMaxRoundsFromMap() then
+		local diff_a = min(max(0, ZE2.win_tics - newroundframe), slideout_anim)
+		local div_a = FixedDiv(diff_a*FU, slideout_anim*FU)
+		
+		if ZE2.win_tics >= newroundframe then
+			team_x = ease.inquint(div_a, end_goals.team, end_goals.team - 300*FU)
+			win_x = ease.inquint(div_a, end_goals.win, end_goals.win + 300*FU)
+		end
+	end
 	
 	-- Colored Background
 	if wtics >= 100 then
@@ -67,6 +81,27 @@ return "Intermission", function(v, player)
 		
 		v.drawScaled(top_x, top_y, FU, upper_patch, V_SNAPTOTOP)
 		v.drawScaled(bottom_x, bottom_y, FU, lower_patch, V_SNAPTOBOTTOM)
+	end
+
+	if ZE2.win_tics >= newroundframe + slideout_anim then
+		local newmap = ZE2.NextMapVoted
+		local newmap_anim_time = TICRATE/2
+		local newmap_diff = min(ZE2.win_tics - (newroundframe + slideout_anim), newmap_anim_time)
+		local newmap_div = FixedDiv(newmap_diff*FU, newmap_anim_time*FU)
+		local newmap_easescale = ease.inoutsine(newmap_div, 0, FU/2)
+		
+		local newmap_patch = v.cachePatch(G_BuildMapName(newmap).."P")
+		local newmap_name = (mapheaderinfo[newmap].lvlttl)
+		local newmap_x = 160*FU
+		local newmap_y = 100*FU
+		
+		local top_text = "NEXT MAP: \x82"..newmap_name
+		
+		newmap_x = $ - FixedMul(newmap_patch.width*FU, newmap_easescale)/2
+		newmap_y = $ - FixedMul(newmap_patch.height*FU, newmap_easescale)/2
+		
+		v.drawScaled(newmap_x, newmap_y, newmap_easescale, newmap_patch)
+		v.drawString(160, 130, top_text, nil, "thin-center")
 	end
 
 	-- "Survivors Win" | "Zombies Win"

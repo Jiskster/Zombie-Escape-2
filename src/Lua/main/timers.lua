@@ -200,14 +200,6 @@ addHook("ThinkFrame", function()
 	if (ZE2.round_active) and not (ZE2.game_ended) then ZE2.game_time = $ + 1 end
 end)
 
-addHook("MobjThinker", function(mobj)
-	if ZE2.game_ended and leveltime and ZE2.win_tics >= ZE2.MapVoteStartFrame 
-	and not (ZE2.rounds_left > 1) then
-		mobj.flags = $ | MF_NOTHINK
-		return true
-	end
-end)
-
 COM_AddCommand("z_forcewin", function(player, arg1)
 	local teamtowin = 1
  	if not arg1 or not tonumber(arg1) then return end
