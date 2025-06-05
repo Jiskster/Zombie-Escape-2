@@ -145,12 +145,8 @@ addHook("ThinkFrame", function()
 				local playernum = choosingnums[playernumindex]
 				local player = players[playernum]
 				
-				if ZE2.killwhenchosen.value then
-					ZE2.KillMobj(player.mo, nil, nil, DMG_INSTAKILL, true)
-				else
-					ZE2.ZombifyPlayer(player)
-					ZE2.PlayZombieSound(player, true)
-				end
+				ZE2.ZombifyPlayer(player)
+				ZE2.PlayZombieSound(player, true)
 				
 				if ZE2.choosenotice.value then
 					print(string.format("\x83\%s\x83\ has risen from the dead!",player.name))

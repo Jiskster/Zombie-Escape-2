@@ -35,13 +35,6 @@ ZE2.repeatshopitems = CV_RegisterVar({
 	flags = CV_NETVAR,
 })
 
-ZE2.killwhenchosen = CV_RegisterVar({
-	name = "z_killwhenchosen",
-	defaultvalue = "Off",
-	PossibleValue = CV_OnOff,
-	flags = CV_NETVAR,
-})
-
 ZE2.choosenotice = CV_RegisterVar({
 	name = "z_choosenotice",
 	defaultvalue = "On",
