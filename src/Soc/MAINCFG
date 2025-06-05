@@ -33,7 +33,7 @@ Weather = 1
 NoZone = True
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 5
-Lua.hidefromvote = true
+Lua.ze2_hidden = true
 
 Level 02
 Levelname = Egypt
