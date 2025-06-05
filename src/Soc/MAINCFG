@@ -195,6 +195,7 @@ SkyNum = 11
 NoZone = True
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 5
+Lua.ze2_rounds = 2
 
 Level 25
 Levelname = Lost Sewer
@@ -213,6 +214,7 @@ SkyboxScale = 64
 NoVisitNeeded = true
 Lua.ze2_timelimit = 6
 Lua.ze2_laddertag = 209
+Lua.ze2_rounds = 2
 
 Level 26
 Levelname = Westopolis
@@ -227,6 +229,7 @@ SkyboxScale = 64
 NoZone = true
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 6
+Lua.ze2_rounds = 1
 
 Level 27
 Levelname = Azure Sanctuary
