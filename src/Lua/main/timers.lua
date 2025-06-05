@@ -90,10 +90,6 @@ function ZE2:StartWin(team, fromring)
 	P_StartQuake(24*FRACUNIT, 3*TICRATE)
 end
 
-addHook("PlayerThink", function(player)
-	player.ze2.was_zombie = $ or false -- waszombie is to prevent repeating players
-end)
-
 addHook("ThinkFrame", function()
 	if gametype ~= GT_ZE2 or gamestate ~= GS_LEVEL then return end --stop the trolling
 	
