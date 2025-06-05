@@ -45,17 +45,19 @@ return "Intermission", function(v, player)
 	local team_x = ease.outquint(div, end_goals.team - 200*FU, end_goals.team)
 	local win_x = ease.outquint(div, end_goals.win + 200*FU, end_goals.win)
 	
-	-- animations for making the triangle appear
+	-- Animations for when the triangles appear
 	local anim_time2 = 2*TICRATE
 	local div2 = FixedDiv(min(wtics2*FU,anim_time2*FU), anim_time2*FU)
 	local triangle_y = ease.inoutsine(div2, upper_patch.height*FU, 0)
 	local bg_ease = ease.inoutsine(div2, 9, 5)
 	
+	-- Colored Background
 	if wtics >= 100 then
 		wtics2 = $ + 1
 		v.drawScaled(-500*FU,-500*FU, FU*1000, bg_patch, bg_ease<<V_ALPHASHIFT)
 	end
 	
+	-- Triangle Thingies
 	for i=-2,2 do
 		local x_movement = ((leveltime*FU)%(lower_patch.width*FU))
 		local bottom_x = i*(lower_patch.width*FU) + x_movement
@@ -67,6 +69,7 @@ return "Intermission", function(v, player)
 		v.drawScaled(bottom_x, bottom_y, FU, lower_patch, V_SNAPTOBOTTOM)
 	end
 
+	-- "Survivors Win" | "Zombies Win"
 	v.drawScaled(team_x, 100*FU, FU, team_patch)
 	v.drawScaled(win_x, 100*FU, FU, win_patch)
 end

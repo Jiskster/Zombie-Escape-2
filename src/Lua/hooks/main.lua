@@ -19,7 +19,7 @@ local hook_names = {
 	};
 	TeamSwitch = {"Main"};
 	PreThinkFrame = {"Sprint"};
-	ThinkFrame = {"WinHandler"};
+	ThinkFrame = {"WinHandler", "Intermission"};
 	PlayerThink = {
 		"Main";
 		"ReplaceJumpSound";

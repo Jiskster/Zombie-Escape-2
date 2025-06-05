@@ -44,6 +44,8 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 					end
 				end
 			end
+			
+			chatprint("\x84\* [ROUND " .. ZE2.getCurrentRound() .. "] *")
 		else
 			ZE2.rounds_left = tonumber(mapheaderinfo[map].ze2_rounds) or 3
 			
@@ -53,6 +55,8 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 					ZE2:CopyItemFromID(ITEM_RED_RING)
 				}
 			end
+			
+			chatprint("\x84\* [ROUND " .. ZE2.getCurrentRound() .. "] *")
 			
 			ZE2.queuing_round = false
 		end
