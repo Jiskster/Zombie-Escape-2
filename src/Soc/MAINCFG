@@ -134,6 +134,18 @@ NoZone = True
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 7
 
+Level 19
+Levelname = Acid Base
+Subtitle = The prequel of NOXY
+Act = 0
+Music = MEOW
+TypeOfLevel = ZE2
+NextLevel = NX
+SkyNum = 30
+NoZone = True
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 7
+
 Level 20
 Levelname = Marble Depths
 Act = 0
