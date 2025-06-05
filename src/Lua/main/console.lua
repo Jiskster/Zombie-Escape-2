@@ -56,13 +56,6 @@ ZE2.killenemiesonwin = CV_RegisterVar({
 	flags = CV_NETVAR,
 })
 
-ZE2.killzombiesonwin = CV_RegisterVar({
-	name = "z_killzombiesonwin",
-	defaultvalue = "On",
-	PossibleValue = CV_OnOff,
-	flags = CV_NETVAR,
-})
-
 ZE2.landingfatigue = CV_RegisterVar({
 	name = "z_landingfatigue",
 	defaultvalue = "On",

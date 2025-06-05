@@ -56,13 +56,21 @@ function ZE2:StartWin(team, fromring)
 		mapmusname = "ZWIN"
 	end
 	
+	-- TODO: stop using mobj iterate and remove killenemiesonwin functionality
+	
 	for mobj in mobjs.iterate() do
 		if mobj.valid then
-			if (mobj.player and mobj.player.valid and mobj.player.ze2.team and 
-			mobj.player.ze2.team == 2 and ZE2.killzombiesonwin.value and team == 1) then
-				P_KillMobj(mobj)
+			local player = mobj.player
+			if (player and player.valid) then
+				local pv = player.ze2
+				
+				if pv.team ~= team then
+					P_KillMobj(mobj)
+				end
+				
 				continue
 			end
+			
 			if (mobj.flags & MF_ENEMY) and (ZE2.killenemiesonwin.value) then
 				P_KillMobj(mobj)
 				continue
