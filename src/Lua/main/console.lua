@@ -14,13 +14,6 @@ ZE2.instantinfection = CV_RegisterVar({
 	flags = CV_NETVAR,
 })
 
-ZE2.server_intermissionmusic = CV_RegisterVar({
-	name = "server_intermissionmusic",
-	defaultvalue = "Off",
-	PossibleValue = CV_OnOff,
-	flags = CV_NETVAR,
-})
-
 ZE2.server_showteamchat = CV_RegisterVar({
 	name = "server_showteamchat",
 	defaultvalue = "Off",
