@@ -1,6 +1,6 @@
 -- RS NEO port.
 
-local raildmg = 2500
+local raildmg = 1500
 local railkb = 300*FRACUNIT
 
 freeslot("MT_ZE2_RAILSHOT")
