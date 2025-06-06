@@ -21,11 +21,13 @@ Modelers:
 Mappers:
 "Tuxe" - N/A (Different intrests, problematic community member)
 "Hammito" - N/A (Left the community)
+"Jisk"
 "Tempestissimo"
 "Neonius|Next"
 "jovier"
 "bypigs2"
 "GLide KS"
+"Pyrodiac"
 
 Testers:
 "bullymaguire1991" - Chao's step father
@@ -37,6 +39,7 @@ Testers:
 "jovier"
 "GLide KS"
 "Neonius|Next"
+"greenbulb"
 
 This mod is not open assets, it is encouraged to patch the mod via external addons.
 You will be credited for your contributions.
