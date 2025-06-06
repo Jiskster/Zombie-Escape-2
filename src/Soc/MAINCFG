@@ -48,6 +48,18 @@ SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 5
 Lua.ze2_zombiereleasetime = 5 # Short so zombies can attack at door near spawn.
 
+Level 03
+Levelname = The Ruins
+Subtitle = You fell down. Survive.
+Act = 0
+Music = UTSTR1
+TypeOfLevel = ZE2
+NextLevel = 03
+SkyNum = 10
+NoZone = True
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 10
+
 Level 04
 Levelname = Waterfall
 Act = 0
