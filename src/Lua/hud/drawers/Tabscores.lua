@@ -82,7 +82,7 @@ local function DrawTeammate(v,p, x,y, props)
 	end
 	customhud.CustomFontString(v,
 		x + icon_adjust,
-		y + 8*scale,
+		y + 8*scale - FU,
 		rubiestring,
 		"TNYFC",
 		flags,
@@ -104,7 +104,7 @@ local function DrawTeammate(v,p, x,y, props)
 	local pingcolor = (p.quittime) and SKINCOLOR_RED or (p.ping < 128 and SKINCOLOR_GREEN or (p.ping < 256 and SKINCOLOR_YELLOW or SKINCOLOR_RED))
 	customhud.CustomFontString(v,
 		x + icon_adjust + rubielength + 4*scale,
-		y + 8*scale,
+		y + 8*scale - FU,
 		p == server and "SERVER" or pingas,
 		"TNYFC",
 		flags,
