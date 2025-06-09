@@ -58,9 +58,9 @@ function ZE2.KillMobj(mo, inf, src, damagetype, killedbysomething)
 		local cash_award = 150
 		local killer -- will be valid if player
 		
-		if inf and inf.player and inf.player.valid then
+		if inf and inf.valid and inf.player and inf.player.valid then
 			killer = inf
-		elseif src and src.player and src.player.valid then
+		elseif src and src.valid and src.player and src.player.valid then
 			killer = src
 		end
 		
