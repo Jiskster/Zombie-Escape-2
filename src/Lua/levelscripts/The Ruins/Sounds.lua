@@ -1,0 +1,9 @@
+freeslot(
+	"sfx_utatk",
+	"sfx_utdi",
+	"sfx_fwtlk",
+	"sfx_trtlk",
+	"sfx_utbtl",
+	"sfx_utdgr",
+	"sfx_utesc"
+)
