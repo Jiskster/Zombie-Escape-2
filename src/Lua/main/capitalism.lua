@@ -534,5 +534,5 @@ COM_AddCommand("z_giverubies", function(player, rubies)
 	ZE2:GivePlayerCash(player, rubies)
 	S_StartSound(player.mo, sfx_rbyhit)
 	
-	CONS_Printf(player, "\x82You got "..cash.." rubies")
+	CONS_Printf(player, "\x82You got $"..rubies.."")
 end, COM_ADMIN)

@@ -52,21 +52,30 @@ local landmine = ZE2:CreateItem("landmine",  {
 	end,
 })
 
-addHook("TouchSpecial", function(special, toucher)
-	if special and special.valid and special.mobjteam and special.forcedamage then
-		if toucher and toucher.valid and toucher.player and toucher.player.valid then
-			local player = toucher.player
-			
-			if special.mobjteam ~= player.ze2.team then
-				P_DamageMobj(toucher, special, special.target, special.forcedamage)
-				toucher.momx = 0
-				toucher.momy = 0
-				P_KillMobj(special, toucher)
-			end
-		end
-	end
-	
+--short for specialoverride
+local function SO(card)
+	card.flags = $|MF_SPECIAL
+	card.health = card.info.spawnhealth
 	return true
+end
+
+addHook("TouchSpecial", function(special, toucher)
+	if not (special and special.valid) then return end
+	if not (toucher and toucher.valid) then return end
+	if not (special.health) then return end
+	if not (toucher.health) then return SO(special); end
+
+	if (special.mobjteam == nil or special.forcedamage == nil) then return SO(special); end
+	
+	local p = toucher.player
+	if not (p and p.valid) then return SO(special); end
+	if (p.ze2.team == special.mobjteam) then return SO(special); end
+
+	-- so the toucher must be of a different team
+	P_DamageMobj(toucher, special, special.target, special.forcedamage)
+	toucher.momx = 0
+	toucher.momy = 0
+	P_KillMobj(special, toucher)
 end, MT_ZE2_LANDMINE)
 
 ZE2:RegisterShop_ItemID(landmine)
