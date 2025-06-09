@@ -74,3 +74,57 @@ ZE2:AddTimer("THERUINSUT_4", {
 	end,
 	lua_linedef_exec = "THERUINSUT4",
 })
+
+ZE2:AddTimer("THERUINSUT_5", {
+	text = "Toriel Encounter",
+	time = 20*TICRATE,
+	extrainfo = {
+		-- Presidential Speech
+		[1] = {
+			event_time = 19*TICRATE,
+			event_func = do
+				chatprint("\x89\<Toriel>\x80 You want to leave so badly? Hmph...")
+				S_StartSound(nil, sfx_trtlk)
+			end
+		},
+		[2] = {
+			event_time = 15*TICRATE,
+			event_func = do
+				chatprint("\x89\<Toriel>\x80 You are just like the others. There is only one solution to this")
+				S_StartSound(nil, sfx_trtlk)
+			end
+		},
+		[3] = {
+			event_time = 5*TICRATE,
+			event_func = do
+				chatprint("\x89\<Toriel>\x80 Prove yourself... Prove to me you are strong enough to survive.")
+				S_StartSound(nil, sfx_trtlk)
+			end
+		},
+		[4] = {
+			event_time = 1*TICRATE,
+			event_func = do
+				S_StartSound(nil, sfx_utbtl)
+			end
+		}
+	},
+	on_end = function()
+		S_ChangeMusic("UTBTLT", true)
+		mapmusname = "UTBTLT"
+		
+		for player in players.iterate do
+			if player.mo and player.mo.valid then
+				if (player.ze2.team == 1) then
+					P_LinedefExecute(115, player.mo)
+				elseif (player.ze2.team == 2) then
+					P_LinedefExecute(116, player.mo)
+				end
+				
+				player.mo.health = 1
+				player.mo.maxhealth = 1
+			end
+		end
+	end,
+	textcolor = SKINCOLOR_WHITE,
+	lua_linedef_exec = "THERUINSUT5",
+})
