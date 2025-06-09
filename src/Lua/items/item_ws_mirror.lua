@@ -45,6 +45,8 @@ local magic_mirror = ZE2:CreateItem("magic_mirror", {
 		mirrorclone.angle = player.mo.angle
 		mirrorclone.forcedamage = ZE2:FetchInventorySlot(player).damage
 		mirrorclone.mobjteam = player.ze2.team
+		mirrorclone.height = player.mo.height
+		mirrorclone.radius = player.mo.radius
 		mirrorclone.shadowscale = player.mo.shadowscale
 	end
 })
