@@ -9,7 +9,6 @@ ZE2:AddTimer("THERUINSUT_1", {
 ZE2:AddTimer("THERUINSUT_2", {
 	text = "Break Time! (Toriel's house)",
 	time = 35*TICRATE,
-	on_end_tag = 202,
 	extrainfo = {
 		[1] = {
 			event_time = 10*TICRATE,
@@ -122,6 +121,11 @@ ZE2:AddTimer("THERUINSUT_5", {
 				
 				player.mo.health = 1
 				player.mo.maxhealth = 1
+				
+				-- umm
+				if player.mo.shield_health then
+					player.mo.shield_health = 2
+				end
 			end
 		end
 	end,

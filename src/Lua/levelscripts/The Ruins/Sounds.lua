@@ -1,6 +1,7 @@
 freeslot(
 	"sfx_utatk",
 	"sfx_utatk2",
+	"sfx_utack",
 	"sfx_utdi",
 	"sfx_fwtlk",
 	"sfx_trtlk",
