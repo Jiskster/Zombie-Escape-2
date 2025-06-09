@@ -403,6 +403,10 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		end
 	end
 	
+	if mo.info.antiknockback then
+		knockback = 0
+	end
+	
 	if mo.player then
 		local player = mo.player
 		local pv = player.ze2
