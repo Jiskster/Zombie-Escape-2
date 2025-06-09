@@ -62,6 +62,10 @@ ZE2:AddTimer("THERUINSUT_4", {
 	time = 50*TICRATE,
 	textcolor = SKINCOLOR_GREEN,
 	on_end = function()	
+		S_StartSound(nil, sfx_utesc)
+		S_ChangeMusic("UNGRN", true)
+		mapmusname = "UNGRN"
+		
 		for player in players.iterate do
 			if player.mo and player.mo.valid and (player.ze2.team == 1) then
 				P_LinedefExecute(114, player.mo) -- 114 is the teleport after the zombie attack

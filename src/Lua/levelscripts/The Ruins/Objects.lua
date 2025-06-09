@@ -1,5 +1,6 @@
 freeslot("MT_FLOWEY1", "S_FLOWEY1", "SPR_FLWE")
 freeslot("MT_DTREE", "S_DTREE", "SPR_DTRE")
+freeslot("MT_TORIEL2", "SPR_TORI", "S_TORI_FRIENDLY")
 
 states[S_FLOWEY1] = {
     sprite = SPR_FLWE,
@@ -47,4 +48,28 @@ mobjinfo[MT_DTREE] = {
     painstate = 0,
     painsound = 0,
     deathsound = 0
+}
+
+mobjinfo[MT_TORIEL2] = {
+	--$Title Toriel Prop
+	--$Sprite TORIA0
+	--$Category Undertale
+	doomednum = 1563,
+	spawnstate = S_TORI_FRIENDLY,
+	painstate = S_TORI_FRIENDLY,
+	deathstate = S_TORI_FRIENDLY,
+	spawnhealth = 1,
+	speed = 0,
+	radius = 150*FRACUNIT,
+	height = 205*FRACUNIT,
+	painsound = 0,
+	deathsound = 0,
+	flags = MF_NOCLIPTHING,
+}
+
+states[S_TORI_FRIENDLY] = {
+	sprite = SPR_TORI,
+	frame = A,
+	tics = 2,
+	nextstate = S_TORI_FRIENDLY
 }
