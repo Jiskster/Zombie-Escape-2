@@ -475,7 +475,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 					P_Thrust(mo, r_angle - ANGLE_180, knockback)
 				end
 
-				pv.zombie_slowtics = 5
+				pv.zombie_slowtics = 7
 			end
 			
 			if verticalknockback then

@@ -26,7 +26,7 @@ ZE2:CreateItem("red_ring",  {
 	sound = sfx_wpfire,
 	firerate = 4,
 	color = SKINCOLOR_RED,
-	knockback = 5*FRACUNIT,
+	knockback = 3*FRACUNIT,
 	damage = 25,
 	velocity_precision = 8,
 	velocity_multiplier = 8*FRACUNIT,
