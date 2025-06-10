@@ -300,13 +300,13 @@ end
 function ZE2:AddCharacterConfig(skinname, input_table)
 	local ZE2 = self;
 	local speeds = {
-		[1] = 14*FRACUNIT, -- slow
-		[2] = 15*FRACUNIT, -- normal
-		[3] = 16*FRACUNIT, -- fast
+		[1] = 15*FRACUNIT, -- slow
+		[2] = 16*FRACUNIT, -- normal
+		[3] = 17*FRACUNIT, -- fast
 		
-		["slow"] = 14*FRACUNIT,
-		["normal"] = 15*FRACUNIT,
-		["fast"] = 16*FRACUNIT,
+		["slow"] = 15*FRACUNIT,
+		["normal"] = 16*FRACUNIT,
+		["fast"] = 17*FRACUNIT,
 	}
 	
 	if ZE2.CharacterConfig[skinname] then
