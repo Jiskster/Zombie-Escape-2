@@ -28,6 +28,7 @@ Mappers:
 "bypigs2"
 "GLide KS"
 "Pyrodiac"
+"Lemerksdagaming"
 
 Testers:
 "bullymaguire1991" - Chao's step father
@@ -40,6 +41,7 @@ Testers:
 "GLide KS"
 "Neonius|Next"
 "greenbulb"
+"Lemerksdagaming"
 
 This mod is not open assets, it is encouraged to patch the mod via external addons.
 You will be credited for your contributions.
