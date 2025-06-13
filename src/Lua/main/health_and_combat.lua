@@ -601,43 +601,52 @@ end)
 
 addHook("ThinkFrame", function()
 	for i,mobj in ipairs(ZE2.BulletList) do
-		if mobj and mobj.valid then
-			if mobj.iteminfo and ZE2.ItemPresets[mobj.iteminfo.item_id] 
-			and ZE2.ItemPresets[mobj.iteminfo.item_id].thinker and mobj.target then
-				ZE2.ItemPresets[mobj.iteminfo.item_id].thinker(mobj.target, mobj)
+		if not (mobj and mobj.valid) then
+			table.remove(ZE2.BulletList, i)
+			continue
+		end
+
+		if mobj.iteminfo and ZE2.ItemPresets[mobj.iteminfo.item_id] 
+		and ZE2.ItemPresets[mobj.iteminfo.item_id].thinker and mobj.target then
+			ZE2.ItemPresets[mobj.iteminfo.item_id].thinker(mobj.target, mobj)
+		end
+		
+		-- No reason to "raycast" this missile.
+		if not (mobj.velprec) then continue; end
+
+		for ii=1,mobj.velprec-1 do		
+			if not (mobj and mobj.valid) then
+				table.remove(ZE2.BulletList, i)
+				break
+			end
+
+			P_XYMovement(mobj)
+			if not (mobj and mobj.valid) then
+				table.remove(ZE2.BulletList, i)
+				break
 			end
 			
-			if mobj.velprec then
-				for ii=1,mobj.velprec-1 do		
-					if not (mobj and mobj.valid) then
-						table.remove(ZE2.BulletList, i)
-						continue
-					end
-					P_XYMovement(mobj)
-					if not (mobj and mobj.valid) then
-						table.remove(ZE2.BulletList, i)
-						continue
-					end
-					P_ZMovement(mobj)
-					if not (mobj and mobj.valid) then
-						table.remove(ZE2.BulletList, i)
-						continue
-					end
-					
-					if not P_TryMove(mobj, mobj.x, mobj.y, true) then
-						if (mobj and mobj.valid) then
-							P_ExplodeMissile(mobj)
-						end
-					else
-						if mobj.iteminfo and ZE2.ItemPresets[mobj.iteminfo.item_id] 
-						and ZE2.ItemPresets[mobj.iteminfo.item_id].precision_thinker and mobj.target then
-							ZE2.ItemPresets[mobj.iteminfo.item_id].precision_thinker(mobj.target, mobj)
-						end
-					end
+			P_ZMovement(mobj)
+			if not (mobj and mobj.valid) then
+				table.remove(ZE2.BulletList, i)
+				break
+			end
+			
+			if not P_TryMove(mobj, mobj.x, mobj.y, true) then
+				if (mobj and mobj.valid) then
+					P_ExplodeMissile(mobj)
+				end
+				table.remove(ZE2.BulletList, i)
+			else
+				if mobj.iteminfo and ZE2.ItemPresets[mobj.iteminfo.item_id] 
+				and ZE2.ItemPresets[mobj.iteminfo.item_id].precision_thinker and mobj.target then
+					ZE2.ItemPresets[mobj.iteminfo.item_id].precision_thinker(mobj.target, mobj)
 				end
 			end
-		else
+		end
+		if not (mobj and mobj.valid) then
 			table.remove(ZE2.BulletList, i)
+			continue
 		end
 	end
 end)
