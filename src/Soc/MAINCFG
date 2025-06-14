@@ -158,6 +158,7 @@ SkyNum = 30
 NoZone = True
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 7
+Lua.ze2_rounds = 2
 
 Level 20
 Levelname = Marble Depths
