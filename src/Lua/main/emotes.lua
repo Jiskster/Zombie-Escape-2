@@ -152,9 +152,15 @@ addHook("MobjThinker", function(mobj)
 	if mobj.isemotebubble ~= true then return end
 	mobj.em_inc = $ or 0
 	mobj.em_inc = $ + 1
+	
 	if mobj.target and mobj.target.valid and mobj.target.player then
 		P_MoveOrigin(mobj, mobj.target.x, mobj.target.y, mobj.target.z+mobj.target.height)
+	else
+		if mobj and mobj.valid then
+			P_RemoveMobj(mobj)
+		end
 	end
+	
 	if mobj.target and mobj.target.player.emotetime then
 		if mobj.em_inc > (mobj.target.player.emotetime + 10) then
 			mobj.target.emotebubble = nil
@@ -168,9 +174,10 @@ addHook("MobjThinker", function(mobj)
 			return
 		end
 	end
+	
 	if mobj.target and mobj.target.player.emotetime
 		if mobj.em_inc > mobj.target.player.emotetime then
 			mobj.scale = $/2
 		end
 	end
-end)
+end, MT_ZEMO_BUBBLE)
