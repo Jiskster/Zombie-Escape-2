@@ -61,7 +61,7 @@ function ZE2:StartWin(team, fromring)
 	for mobj in mobjs.iterate() do
 		if mobj.valid then
 			local player = mobj.player
-			if (player and player.valid) then
+			if (player and player.valid and not player.spectator) then
 				local pv = player.ze2
 				
 				if pv.team ~= team then
