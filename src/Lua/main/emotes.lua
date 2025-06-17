@@ -149,7 +149,10 @@ addHook("PlayerThink", function(player)
 end)
 
 addHook("MobjThinker", function(mobj)
-	if mobj.isemotebubble ~= true then return end
+	if mobj.isemotebubble ~= true then 
+		return 
+	end
+	
 	mobj.em_inc = $ or 0
 	mobj.em_inc = $ + 1
 	
