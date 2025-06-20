@@ -125,6 +125,11 @@ rawset(_G, "SG_ObjectTracking", function(v, p, c, point, reverse, allowspectator
 	result.scale = FixedDiv(screenHalfW, h+1)
 
 	result.onScreen = not ((abs(da) > ANG60) or (abs(viewpointAiming - R_PointToAngle2(0, 0, h, (viewz - point.z))) > ANGLE_45))
+	
+	-- Required hack for fixing backwards perfect angles rendering anywars.
+	if result.angle == INT32_MIN then
+		result.onScreen = false
+	end
 
 	// Cheap dirty hacks for some split-screen related cases
 	if result.x < 0 or result.x > (screenWidth << FRACBITS) then
