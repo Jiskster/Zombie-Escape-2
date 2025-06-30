@@ -6,6 +6,8 @@ dofile "freeslot/sounds"
 
 dofile "functions/main"
 
+dofile "main/skincolors.lua"
+
 dofile "libraries/fixedfromstring.lua"
 dofile "libraries/json.lua"
 dofile "libraries/mobjlib.lua"

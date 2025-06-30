@@ -27,7 +27,21 @@ states[S_CRRING] = {
 addHook("MobjSpawn", function(mobj)
 	mobj.scale = $ * 4
 	mobj.colorized = true
-	mobj.color = SKINCOLOR_BLUE
+	mobj.color = SKINCOLOR_CHROMA
+	
+	mobj.corona = P_SpawnMobjFromMobj(mobj, 0, 0, 16*FU*P_MobjFlip(mobj), MT_CORONA)
+end, MT_CRRING)
+
+addHook("MobjThinker", function(mobj)
+	if mobj.corona and mobj.corona.valid then
+		local corona = mobj.corona
+		
+		corona.color = mobj.color
+		corona.alpha = (FU/4) + abs(cos(leveltime*ANG1*5))/2
+		corona.scale = FRACUNIT
+		corona.colorized = true
+		corona.dispoffset = 3
+	end
 end, MT_CRRING)
 
 addHook("TouchSpecial", function(special,toucher)
