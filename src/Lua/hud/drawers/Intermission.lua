@@ -35,7 +35,7 @@ return "Intermission", function(v, player)
 	
 	local end_goals = { -- fixed x values
 		team = 20*FU; -- come from the left
-		win = 220*FU; -- come from the right
+		win = 240*FU; -- come from the right
 	}
 	
 	local anim_time = TICRATE + TICRATE/2
