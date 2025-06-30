@@ -335,6 +335,26 @@ local function roundinfo(v,p,me,ze)
 	end
 end
 
+local function alpharage(v,p,me,ze)
+	-- Hardcoded display at the moment
+	if ze.team == 2 then
+		local y = 168-ze.lower_hud_offset
+
+		if ze.zombie_type == "alpha" then
+			local special_cooldown = ze.special_cooldown
+			local y = 160-ze.lower_hud_offset
+			local text = "Press C2 to Rage"
+			
+			if special_cooldown then
+				text = "Cooldown "..G_TicsToSeconds(special_cooldown).."."..G_TicsToCentiseconds(special_cooldown).." secs"
+			end
+			
+			customhud.CustomFontString(v, 0, y, text, "TNYFC",
+			(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, SKINCOLOR_KETCHUP)
+		end
+	end
+end
+
 local function eventtimers(v,p,me,ze)
 	local x = 5
 	local y = 12
@@ -377,6 +397,7 @@ local function wrapper(v,p)
 	health(v,p,me,ze)
 	roundinfo(v,p,me,ze)
 	eventtimers(v,p,me,ze)
+	alpharage(v,p,me,ze)
 end
 
 return "GameInfo", wrapper
