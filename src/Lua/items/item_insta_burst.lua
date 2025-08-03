@@ -63,11 +63,14 @@ addHook("MobjMoveCollide", function(instaburst, mobj)
 		local range = 190*FU
 		local alreadyhit = false
 		
-		if not ZE2.ZCollide(mobj, instaburst)
-		or not P_CheckSight(mobj, instaburst) then 
+		if not ZE2.ZCollide(mobj, instaburst) then 
 			return
 		end
-		
+
+		-- Just pretend we can see the fences
+		local cansee = mobj.type == MT_PROPWOOD and true or P_CheckSight(mobj, instaburst)
+		if not cansee then return end
+
 		-- Check if you hit this individual before in another frame
 		for i,v in ipairs(instaburst.ib_hitlist) do
 			if v and v.valid and v == mobj then

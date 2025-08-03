@@ -19,10 +19,16 @@ mobjinfo[MT_PROPWOOD].npc_spawnhealth = {300,600}
 mobjinfo[MT_PROPWOOD].npc_name_color = SKINCOLOR_BROWN
 
 states[S_PROP1] = {
-	nextstate = S_PROP1,
+	tics = 1,
 	sprite = SPR_WPRP,
 	frame = FF_FULLBRIGHT|FF_PAPERSPRITE,
-	tics = 2
+	nextstate = S_PROP1,
+	action = function(mo)
+		--Crush the fence if its getting crushed (duh)
+		if (mo.ceilingz - mo.floorz < mo.height)
+			P_KillMobj(mo, nil,nil, DMG_CRUSHED)
+		end
+	end
 }
 
 states[S_PROP1_BREAK] = {
@@ -32,10 +38,10 @@ states[S_PROP1_BREAK] = {
 		A_Scream(mo)
 
 		--Cool !
+		local real_rad = FixedDiv(mo.radius,mo.scale) >> FRACBITS
+		local fa = mo.angle
 		for i = 0,16
-			local fa = mo.angle
 			local sign = (i & 1) and 1 or -1
-			local real_rad = FixedDiv(mo.radius,mo.scale) >> FRACBITS
 			local plank = P_SpawnMobjFromMobj(mo,
 				P_ReturnThrustX(nil, fa, P_RandomRange(-real_rad, real_rad)*FU),
 				P_ReturnThrustY(nil, fa, P_RandomRange(-real_rad, real_rad)*FU),
@@ -56,7 +62,6 @@ states[S_PROP1_BREAK] = {
 			P_Thrust(plank, fa, (P_RandomRange(1,10)*plank.scale +  P_RandomFixed()) * sign)
 			P_SetObjectMomZ(plank,P_RandomRange(2,10)*FU+P_RandomFixed())
 		end
-
 	end,
 	frame = B,
 	tics = 4
@@ -70,6 +75,8 @@ local wood_fence = ZE2:CreateItem("wood_fence", {
 	count = 2,
 	max_count = 100,
 	color = SKINCOLOR_BROWN,
+	--TODO: it would be nice if we could get like a sort of indicator
+	--		where the fence would be placed in first person
 	ontrigger = function(player)
 		local wood = P_SpawnMobj(player.mo.x+FixedMul(128*FRACUNIT, cos(player.mo.angle)),
 					             player.mo.y+FixedMul(128*FRACUNIT, sin(player.mo.angle)), 
