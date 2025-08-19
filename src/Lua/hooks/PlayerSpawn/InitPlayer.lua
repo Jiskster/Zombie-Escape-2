@@ -2,17 +2,25 @@ return function(player)
 	if gametype ~= GT_ZE2 and leveltime then return end
 
 	local pmo = player.mo
-
+	
 	if player and pmo and pmo.valid then
-		if (ZE2.round_active and ZE2.PlayerCount() > 1) then
+		local player_count = ZE2.PlayerCount()
+		
+		if (ZE2.round_active and player_count > 1) then
 			player.ze2.team = 2
 			player.ze2.zombie_type = "normal"
 			
-			if P_RandomChance(FU/8) then
+			local chance = FU/8
+			
+			if player_count < 8 then
+				chance = FU/4
+			end
+			
+			if P_RandomChance(chance) then
 				player.ze2.zombie_next_type = "alpha"
 			end
 			
-			if ZE2.round_active and ZE2.PlayerCount() > 1 and leveltime then
+			if ZE2.round_active and player_count > 1 and leveltime then
 				-- killedbysomething variable is to prevent players from suiciding to get a special zombie
 				-- same goes for was_spectating
 				if player.ze2.zombie_next_type then
