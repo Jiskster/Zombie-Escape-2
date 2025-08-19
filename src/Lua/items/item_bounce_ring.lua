@@ -36,5 +36,5 @@ addHook("MobjMoveCollide", function(tm, t)
 	return true
 end, MT_THROWNBOUNCE)
 
-ZE2:RegisterShop_ItemID(bounce_ring)
+--ZE2:RegisterShop_ItemID(bounce_ring)
 
