@@ -8,6 +8,10 @@ return function(player)
 			player.ze2.team = 2
 			player.ze2.zombie_type = "normal"
 			
+			if P_RandomChance(FU/8) then
+				player.ze2.zombie_next_type = "alpha"
+			end
+			
 			if ZE2.round_active and ZE2.PlayerCount() > 1 and leveltime then
 				-- killedbysomething variable is to prevent players from suiciding to get a special zombie
 				-- same goes for was_spectating
