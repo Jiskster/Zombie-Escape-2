@@ -72,7 +72,7 @@ return function(player)
 					player.ze2.respawntics = 10*TICRATE
 					player.ze2.outofgame = true
 				elseif player.ze2.team == 2 then
-					player.ze2.respawntics = 45*TICRATE
+					player.ze2.respawntics = 25*TICRATE
 				end
 			end
 		end
