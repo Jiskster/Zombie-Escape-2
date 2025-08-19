@@ -72,6 +72,32 @@ NoZone = True
 NextLevel = J1
 Lua.ze2_timelimit = 6
 
+Level 05
+Levelname = Secret Lab 1
+Subtitle = Zombie Escape
+Subtitle = Through the SCP Lab
+Act = 0
+Music = SCP1
+TypeOfLevel = ZE2
+NextLevel = 43
+SkyNum = 21
+NoZone = True
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_zombiereleasetime = 15
+Lua.ze2_timelimit = 6
+
+Level 06
+Levelname = Secret Lab 2
+Subtitle = Caution! Escape from anomalies!
+Act = 0
+Music = ZE0
+TypeOfLevel = ZE2
+NextLevel = 45
+NoZone = True
+SelectHeading = ZE2 Survival Maps
+Lua.ze2_timelimit = 5
+Skynum = 21
+
 Level 08
 Levelname = Minecraft
 Subtitle = Watch for creepers!
