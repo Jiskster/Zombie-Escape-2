@@ -78,4 +78,4 @@ addHook("TouchSpecial", function(special, toucher)
 	P_KillMobj(special, toucher)
 end, MT_ZE2_LANDMINE)
 
-ZE2:RegisterShop_ItemID(landmine)
+--ZE2:RegisterShop_ItemID(landmine)
