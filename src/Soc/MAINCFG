@@ -271,6 +271,7 @@ NoZone = true
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 6
 Lua.ze2_rounds = 1
+Lua.ze2_hidden = true
 
 Level 27
 Levelname = Azure Sanctuary
