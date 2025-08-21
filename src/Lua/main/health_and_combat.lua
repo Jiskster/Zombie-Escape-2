@@ -608,12 +608,28 @@ addHook("MobjSpawn", function(mobj)
 end)
 
 addHook("ThinkFrame", function()
+	/*
+		This can be done 2 ways, use a numeric for loop and validate every entry there;
+		```
+		for k = 1, #feed
+			local mo = feed[k]
+			if not (mo and info.valid)
+				table.remove(feed, k)
+			end
+		end
+		```
+		
+		Or, insert everything we need to remove while iterating, and clean up after the
+		generic for loop.
+	*/
+	local removedelayed = {}
+	
 	for i,mobj in ipairs(ZE2.BulletList) do
 		if not (mobj and mobj.valid) then
-			table.remove(ZE2.BulletList, i)
+			table.insert(removedelayed, {key = i})
 			continue
 		end
-
+		
 		if mobj.iteminfo and ZE2.ItemPresets[mobj.iteminfo.item_id] 
 		and ZE2.ItemPresets[mobj.iteminfo.item_id].thinker and mobj.target then
 			ZE2.ItemPresets[mobj.iteminfo.item_id].thinker(mobj.target, mobj)
@@ -621,22 +637,18 @@ addHook("ThinkFrame", function()
 		
 		-- No reason to "raycast" this missile.
 		if not (mobj.velprec) then continue; end
-
+		
 		for ii=1,mobj.velprec-1 do		
 			if not (mobj and mobj.valid) then
-				table.remove(ZE2.BulletList, i)
-				break
-			end
-
-			P_XYMovement(mobj)
-			if not (mobj and mobj.valid) then
-				table.remove(ZE2.BulletList, i)
+				table.insert(removedelayed, {key = i})
 				break
 			end
 			
-			P_ZMovement(mobj)
-			if not (mobj and mobj.valid) then
-				table.remove(ZE2.BulletList, i)
+			--XY Movement should never remove a mobj.
+			P_XYMovement(mobj)
+			
+			if not P_ZMovement(mobj) then
+				table.insert(removedelayed, {key = i})
 				break
 			end
 			
@@ -644,7 +656,7 @@ addHook("ThinkFrame", function()
 				if (mobj and mobj.valid) then
 					P_ExplodeMissile(mobj)
 				end
-				table.remove(ZE2.BulletList, i)
+				table.insert(removedelayed, {key = i})
 			else
 				if mobj.iteminfo and ZE2.ItemPresets[mobj.iteminfo.item_id] 
 				and ZE2.ItemPresets[mobj.iteminfo.item_id].precision_thinker and mobj.target then
@@ -653,9 +665,13 @@ addHook("ThinkFrame", function()
 			end
 		end
 		if not (mobj and mobj.valid) then
-			table.remove(ZE2.BulletList, i)
+			table.insert(removedelayed, {key = i})
 			continue
 		end
+	end
+	
+	for k, todo in ipairs(removedelayed)
+		table.remove(ZE2.BulletList, todo.key)
 	end
 end)
 
