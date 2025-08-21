@@ -320,9 +320,12 @@ end, MT_CRRUBY)
 --TODO: this code kinda sucks ngl
 addHook("MobjThinker",function(door)
 	if not (door and door.valid) then return end
-
+	
+	/*
+	--You should really be using `mobjscale` in the Custom tab.
 	door.radius = FixedMul(mobjinfo[MT_RUBY_BOX].radius, door.spritexscale)
 	door.height = FixedMul(mobjinfo[MT_RUBY_BOX].height, door.spriteyscale)
+	*/
 	
 	door.takis_flingme = false
 	door.takis_monitorgibs = true
@@ -452,7 +455,7 @@ addHook("MobjThinker",function(door)
 			list[5].angle = door.angle
 			list[5].height = 0
 			list[5].scale = door.scale
-			list[5].shadowscale = (door.radius/32)*14/10
+			list[5].shadowscale = (FU/2)*14/10
 			list[5].spritexscale = door.spritexscale
 			list[5].spriteyscale = door.spritexscale
 			P_MoveOrigin(list[5],
