@@ -197,6 +197,7 @@ SelectHeading = ZE2 Survival Maps
 NoZone = True
 NextLevel = A1
 Lua.ze2_timelimit = 6
+Lua.ze2_rounds = 2
 
 Level 22
 Levelname = Ancient Catacombs
