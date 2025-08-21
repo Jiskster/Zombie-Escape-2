@@ -1,5 +1,7 @@
 ZE2.StandardJumpFactor = FixedDiv(90*FU, 100*FU)
 
+-- TODO(?): Maybe each new entry added through modding could have a metatable applied to it
+--			so we can be sure there are no "holes" in them? Maybe `newentry.__index = ZE2.CharacterConfig["default"]`
 ZE2.ZombieConfig = {
 	["normal"] = {
 		skincolor = SKINCOLOR_MOSS,
@@ -16,6 +18,16 @@ ZE2.ZombieConfig = {
 		inventory = {
 			ZE2:CopyItemFromID(ITEM_INSTA_BURST)
 		},
+		special = {
+			button = 0, -- no button to disable
+			/*
+			effect = string_t,
+			effect_table = table, (just whatever you plug into player.ze2:GiveEffect)
+			effect_duration = tic_t,
+			cooldown = tic_t,
+			sound = sfx, (maybe make an ontrigger func?)
+			*/
+		}
 	},
 	["alpha"] = {
 		skincolor = SKINCOLOR_ALPHAZOMBIE,
@@ -34,6 +46,19 @@ ZE2.ZombieConfig = {
 		inventory = {
 			ZE2:CopyItemFromID(ITEM_INSTA_BURST),
 		},
+		special = {
+			button = BT_CUSTOM2,
+			effect = "alphazombie.rage",
+			effect_table = {
+				normalspeed_multiplier = 2*FU,
+				actionspd_multiplier = tofixed("1.17"),
+				damage_multiplier = 3*FU/2,
+				charability = CA_JUMPTHOK,
+			},
+			effect_duration = 3*TICRATE,
+			cooldown = 40*TICRATE,
+			sound = sfx_bstup,
+		}
 	},
 }
 
