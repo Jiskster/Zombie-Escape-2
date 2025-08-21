@@ -1,7 +1,7 @@
 local blue_spring = ZE2:CreateItem("blue_spring",  {
 	displayname = "Blue Spring",
 	icon = "BLUESPRINGIND",
-	firerate = 2*TICRATE,
+	firerate = 4*TICRATE,
 	limited = true,
 	count = 10,
 	max_count = 50,
@@ -13,7 +13,7 @@ local blue_spring = ZE2:CreateItem("blue_spring",  {
 		spring.angle = player.mo.angle+ANGLE_90
 		S_StartSound(player.mo, sfx_jshard)
 		spring.target = player.mo
-		spring.fuse = 5*TICRATE
+		spring.fuse = 3*TICRATE
 	end,
 	price = 350,
 })
