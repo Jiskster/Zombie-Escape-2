@@ -2,24 +2,28 @@ ZE2.debug_x = CV_RegisterVar({name = "z_debug_x", defaultvalue = 0, flags = CV_F
 ZE2.debug_y = CV_RegisterVar({name = "z_debug_y", defaultvalue = 0, flags = CV_FLOAT})
 
 local function drawSkewFill(v, x,y, w,h, flags, c)
+	if (w == nil or w <= 0) then return end
+	
 	x = $ + (FixedDiv(h, 2*FU) - FU)
 	while h >= 0
-		
 		v.drawStretched(x, y, w, 2*FU, v.cachePatch("ZE2_C"), flags, v.getColormap(TC_DEFAULT, c))
 		--v.drawFixedFill(x,y, w,2*FU, c)
 		h = $ - 2*FU
 		y = $ + 2*FU
 		x = $ - FU
-		
 	end
 end
 
 local old_info = {}
 local fake_info = {}
 local store_info = {}
+local health_shake = 0
 local old_disp = nil
 
+local AlreadyReset = false
 local function ResetInfos()
+	if AlreadyReset then return end
+	health_shake = 0
 	old_info = {
 		health = -1,
 		stamina = -1,
@@ -41,13 +45,18 @@ local function ResetInfos()
 		shielddef = -1,
 		rage = -1,
 	}
+	AlreadyReset = true
 end
 ResetInfos()
 
 addHook("MapLoad",ResetInfos)
 
-local function intlerp(frac,to,from)
+local function intlerp(frac,from,to)
+	if abs(to - from) < frac then return to; end
 	return from + (to - from)/frac
+end
+local function flerp(frac,from,to)
+	return from + FixedMul(to - from, frac)
 end
 
 local function health(v,p,me,ze)
@@ -56,12 +65,14 @@ local function health(v,p,me,ze)
 	
 	if (health == nil) or (maxhealth == nil) then ResetInfos(); return end
 	if ZE2.pregame_timeleft then ResetInfos(); return end
+	maxhealth = $*FU
+	AlreadyReset = false
 	
 	if old_disp == nil
 		old_disp = p
 	elseif old_disp ~= p
-		old_info.health = me.health
-		fake_info.health = me.health
+		old_info.health = me.health*FU
+		fake_info.health = me.health*FU
 		
 		old_info.stamina = ze.sprintmeter
 		fake_info.stamina = ze.sprintmeter
@@ -71,8 +82,8 @@ local function health(v,p,me,ze)
 	end
 	
 	if old_info.health == -1
-		old_info.health = me.health
-		fake_info.health = me.health
+		old_info.health = me.health*FU
+		fake_info.health = me.health*FU
 	end
 	if old_info.stamina == -1
 	and ze.sprintmeter ~= nil
@@ -91,7 +102,7 @@ local function health(v,p,me,ze)
 	end
 	*/
 
-	health = intlerp(2,fake_info.health,health)
+	health = flerp(FU/5, fake_info.health, health*FU)
 	fake_info.health = health
 	
 	local max_width = 65*FU
@@ -110,27 +121,30 @@ local function health(v,p,me,ze)
 	do
 		local x = x
 		local y = y
-		if store_info.health ~= -1
-			local diff = (store_info.health - health)/2
-			if diff > 0
-				local shake = (abs(diff or 1)*FU)/4 * (leveltime & 1 and 1 or -1)
-				shake = $/2
-				if ze.team == 2 then shake = $/6 end
-				y = $ + shake
-				x = $ + shake
-			end
+		local drawRed = false
+		local redWidth = 0
+		
+		health_shake = flerp(FU/8, $, 0)
+		do
+			local shake = (health_shake * (leveltime & 1 and 1 or -1))
+			if (ze.team == 2) then shake = $/2; end
+			y = $ + shake
+			x = $ - shake/2
 		end
 		
 		local width = FixedMul(max_width, FixedDiv(health,maxhealth))
 		drawSkewFill(v, x+shadow,y+shadow, max_width,height, flags, SKINCOLOR__31) -- 31
-		if old_info.health > health
+		if old_info.health > health --we lost health!
+			health_shake = $ + abs(old_info.health - health)
 			if store_info.health == -1
 				store_info.health = old_info.health
 			end
-			local s_width = FixedMul(max_width, FixedDiv(store_info.health,maxhealth))
-			drawSkewFill(v, x,y, s_width,height, flags|V_20TRANS, SKINCOLOR__35) -- 35
+			redWidth = FixedMul(max_width, FixedDiv(store_info.health,maxhealth))
+			drawRed = true
 		else
 			if store_info.health ~= -1
+			and (abs(me.health*FU - health) <= FU)
+			and (health_shake <= FU/10)
 				local diff = max(abs(store_info.health - health)/5, 1)
 				if diff == 1 and (leveltime & 1) then diff = 0; end
 				if store_info.health < health
@@ -143,12 +157,15 @@ local function health(v,p,me,ze)
 			or store_info.health == -1
 				store_info.health = -1
 			else
-				local s_width = FixedMul(max_width, FixedDiv(store_info.health,maxhealth))
-				drawSkewFill(v, x,y, s_width,height, flags|V_20TRANS, SKINCOLOR__35) --35		
+				drawRed = true
+				redWidth = FixedMul(max_width, FixedDiv(store_info.health,maxhealth))
 			end
 		end
+		if drawRed
+			drawSkewFill(v, x,y, redWidth,height, flags|V_20TRANS, SKINCOLOR__35) --35
+		end
 		drawSkewFill(v, x,y, width,height, flags, SKINCOLOR__96) -- 96
-		if me.health <= maxhealth/2
+		if me.health*FU <= maxhealth/2
 			local fade = FixedMul(10*FU, fade_sin)/FU
 			
 			if fade ~= 10
@@ -156,7 +173,7 @@ local function health(v,p,me,ze)
 			end
 		end
 		v.drawString(x + textspace, y + shadow,
-			string.format("%d | %d", health, maxhealth),
+			string.format("%.0f | %.0f", health, maxhealth),
 			flags, "thin-fixed"
 		)
 	end
@@ -164,9 +181,10 @@ local function health(v,p,me,ze)
 	--stamina
 	if ze.team == 1
 	and ze.sprintmeter ~= nil
+		--sprint is fixed here, Yay!!
 		local sprint = ze.sprintmeter
 		
-		sprint = intlerp(2, fake_info.stamina, $)
+		sprint = flerp(FU/5, fake_info.stamina, $)
 		fake_info.stamina = sprint
 		
 		local maxsprint = 100*FU
@@ -182,19 +200,20 @@ local function health(v,p,me,ze)
 			end
 		end
 		local sprint_text = string.format("%.0f%%", FixedDiv(sprint, maxsprint)*100)
-
+		
 		if ze.sprintdelay then
 			sprint_text = "EXHAUSTED!"
-
-			if (leveltime % 2) == 0 then
+			local ticker = (leveltime % 4)
+			
+			if (ticker & 1) then
 				x = $ - FU
 			end
-
-			if (leveltime % 2)/4 == 0 then
+			
+			if ticker <= 1 then
 				sprint_text = "\x85"..$
 			end
 		end
-
+		
 		v.drawString(x + textspace, y + shadow,
 			sprint_text,
 			flags, "thin-fixed"
@@ -285,7 +304,7 @@ local function health(v,p,me,ze)
 		store_info.shield = -1
 	end
 	
-	old_info.health = me.health
+	old_info.health = me.health*FU
 	old_info.stamina = ze.sprintmeter
 	old_info.shield = me.shield_health
 	-- old_info.rage = ze.ragemeter
