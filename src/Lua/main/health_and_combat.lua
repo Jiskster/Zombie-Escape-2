@@ -238,7 +238,7 @@ function ZE2:AddDamageIndicator(player, victim_mobj, damage)
 		end
 		
 		if player.ze2.damage_indicator_table[victim_mobj].number then
-			player.ze2.damage_indicator_table[victim_mobj].number = min($ + damage, victim_mobj.maxhealth)
+			player.ze2.damage_indicator_table[victim_mobj].number = min($ + damage, victim_mobj.maxhealth or 0)
 		end
 		
 		player.ze2.damage_indicator_table[victim_mobj].draw_x = victim_mobj.x
