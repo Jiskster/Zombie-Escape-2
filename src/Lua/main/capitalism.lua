@@ -263,13 +263,12 @@ addHook("MobjThinker", function(mobj)
 	local pmofound
 	
 	for p in players.iterate
-		if p.ze2.team ~= 1 then continue end
 		if p.spectator then continue end
-		if p.ze2.cash == p.ze2.cash_limit then continue end
 		if not (p.mo and p.mo.valid) then continue end
-
+		if p.ze2.team ~= 1 then continue end
+		if p.ze2.cash >= p.ze2.cash_limit then continue end
+		
 		local mo = p.mo
-
 		local dist = FixedHypot(FixedHypot(mobj.x - mo.x, mobj.y - mo.y), mobj.z - mo.z)
 
 		if abs(mobj.z - mo.z) <= 300*mobj.scale
