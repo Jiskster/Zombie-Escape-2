@@ -13,7 +13,11 @@ local blue_spring = ZE2:CreateItem("blue_spring",  {
 		spring.angle = player.mo.angle+ANGLE_90
 		S_StartSound(player.mo, sfx_jshard)
 		spring.target = player.mo
-		spring.fuse = 3*TICRATE
+		if (spring.ceilingz - spring.floorz < (spring.height*5))
+			spring.fuse = 3 -- Kills crouch parts spring softlocking
+		else
+			spring.fuse = 5*TICRATE
+		end
 	end,
 	price = 350,
 })
