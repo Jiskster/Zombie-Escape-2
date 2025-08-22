@@ -59,17 +59,17 @@ G_AddGametype({
 	description = "Escape from the Zombies! Don't get caught and eaten by them! They can catch up with you anytime..."
 })
 
-
+--LUT
+ZE2.paletteToColor = {}
 for i=0,255 do
-	freeslot("SKINCOLOR__"..i)
+	local color = freeslot("SKINCOLOR__"..i)
 	
 	local new_ramp = {}
-	
 	for ii=1,16 do
 		new_ramp[ii] = i
 	end
 	
-	skincolors[_G["SKINCOLOR__"..i]] = {
+	skincolors[color] = {
 		name = "_"..tostring(i);
 		ramp = new_ramp;
 		invcolor = SKINCOLOR_ORANGE;
@@ -77,4 +77,5 @@ for i=0,255 do
 		chatcolor = V_BLUEMAP;
 		accessible = false;
 	}
+	ZE2.paletteToColor[i] = color
 end

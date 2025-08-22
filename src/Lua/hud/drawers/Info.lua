@@ -1,12 +1,27 @@
-ZE2.debug_x = CV_RegisterVar({name = "z_debug_x", defaultvalue = 0, flags = CV_FLOAT})
-ZE2.debug_y = CV_RegisterVar({name = "z_debug_y", defaultvalue = 0, flags = CV_FLOAT})
-
-local function drawSkewFill(v, x,y, w,h, flags, c)
+--if skincolor is TRUE, itll be assumed that 'c' is a valid skincolor,
+--and the function will draw ramp gradient
+--TODO?: accept a custom ramp? we could draw gradients or scrolling colors
+--		 without having to make a new skincolor freeslot
+local function drawSkewFill(v, x,y, w,h, flags, c, skincolor)
 	if (w == nil or w <= 0) then return end
+	if skincolor
+		w = FixedDiv($,16*FU)
+	end
 	
 	x = $ + (FixedDiv(h, 2*FU) - FU)
 	while h >= 0
-		v.drawStretched(x, y, w, 2*FU, v.cachePatch("ZE2_C"), flags, v.getColormap(TC_DEFAULT, c))
+		if (not skincolor)
+			v.drawStretched(x, y, w, 2*FU, v.cachePatch("ZE2_C"), flags, v.getColormap(TC_DEFAULT, c))
+		else
+			local ramp = skincolors[c].ramp
+			local new_x = x
+			for i = 0,15
+				local newcolor = ZE2.paletteToColor[ramp[i]]
+				v.drawStretched(new_x, y, w, 2*FU, v.cachePatch("ZE2_C"), flags, v.getColormap(TC_DEFAULT, newcolor))
+				new_x = $ + w
+			end
+		end
+		
 		--v.drawFixedFill(x,y, w,2*FU, c)
 		h = $ - 2*FU
 		y = $ + 2*FU
@@ -19,6 +34,17 @@ local fake_info = {}
 local store_info = {}
 local health_shake = 0
 local old_disp = nil
+
+local button_to_tooltip = {
+	[BT_CUSTOM1] =		"C1",
+	[BT_CUSTOM2] =		"C2",
+	[BT_CUSTOM3] =		"C3",
+	[BT_SPIN] =			"S",
+	[BT_JUMP] =			"J",
+	[BT_ATTACK] =		"RT",
+	[BT_FIRENORMAL] =	"RN",
+	[BT_TOSSFLAG] =		"TF",
+}
 
 local AlreadyReset = false
 local function ResetInfos()
@@ -62,6 +88,7 @@ end
 local function health(v,p,me,ze)
 	local health = me.health
 	local maxhealth = me.maxhealth
+	local zc = ZE2.ZombieConfig[p.ze2.zombie_type or ""]
 	
 	if (health == nil) or (maxhealth == nil) then ResetInfos(); return end
 	if ZE2.pregame_timeleft then ResetInfos(); return end
@@ -94,13 +121,11 @@ local function health(v,p,me,ze)
 		old_info.shield = me.shield_health
 		fake_info.shield = me.shield_health
 	end
-	/*
 	if old_info.rage == -1
-	and ze.ragemeter ~= nil
-		old_info.rage = ze.ragemeter
-		fake_info.rage = ze.ragemeter
+	and ze.special_cooldown ~= nil
+		old_info.rage = ze.special_cooldown
+		fake_info.rage = ze.special_cooldown
 	end
-	*/
 
 	health = flerp(FU/5, fake_info.health, health*FU)
 	fake_info.health = health
@@ -126,16 +151,19 @@ local function health(v,p,me,ze)
 		
 		health_shake = flerp(FU/8, $, 0)
 		do
-			local shake = (health_shake * (leveltime & 1 and 1 or -1))
-			if (ze.team == 2) then shake = $/2; end
+			local shake = (health_shake)
+			if (ze.team == 2) then shake = $/16; end
+			shake = min($, 8*FU) * (leveltime & 1 and 1 or -1)
 			y = $ + shake
 			x = $ - shake/2
 		end
 		
 		local width = FixedMul(max_width, FixedDiv(health,maxhealth))
 		drawSkewFill(v, x+shadow,y+shadow, max_width,height, flags, SKINCOLOR__31) -- 31
-		if old_info.health > health --we lost health!
+		if (old_info.health > me.health*FU)
 			health_shake = $ + abs(old_info.health - health)
+		end
+		if old_info.health > health --we lost health!
 			if store_info.health == -1
 				store_info.health = old_info.health
 			end
@@ -145,8 +173,7 @@ local function health(v,p,me,ze)
 			if store_info.health ~= -1
 			and (abs(me.health*FU - health) <= FU)
 			and (health_shake <= FU/10)
-				local diff = max(abs(store_info.health - health)/5, 1)
-				if diff == 1 and (leveltime & 1) then diff = 0; end
+				local diff = max(abs(store_info.health - health)/15, 1)
 				if store_info.health < health
 					store_info.health = $ + diff
 				else
@@ -219,23 +246,40 @@ local function health(v,p,me,ze)
 			flags, "thin-fixed"
 		)
 	--rage meter
-	/*
 	elseif (ze.team == 2)
-		local rage = ze.sprintmeter --rage variable
-		sprint = intlerp(2, fake_info.rage, $)
+	and (zc and zc.special and zc.special.button)
+		local spec = zc.special
+		local rage = ze.special_cooldown --rage variable
+		rage = intlerp(2, fake_info.rage, $)
 		fake_info.rage = rage
 		
-		local maxsprint = 100*FU
+		local maxsprint = spec.cooldown
+		local adjust = 15*FU
+		local button_pad = 3*FU
+		local max_width = (max_width - adjust)
+		local x = x + adjust
 		local y = y - (height + pad)
-		local width = FixedMul(max_width, FixedDiv(rage,maxsprint))
+		local width = FixedMul(max_width, FU - FixedDiv(rage,maxsprint))
 		drawSkewFill(v, x+shadow,y+shadow, max_width,height, flags, SKINCOLOR__31) --31
-		drawSkewFill(v, x,y, width,height, flags, SKINCOLOR__45)
-
-		v.drawString(x + textspace, y + shadow,
-			string.format("RAGE: %.0f%%", FixedDiv(rage, maxsprint)*100),
+		--this effect is a little too intense, but its whatever
+		drawSkewFill(v, x,y, width,height, flags, SKINCOLOR_ALPHAZOMBIE, true)
+		
+		local pname = "Z_TT_"..(button_to_tooltip[spec.button])
+		if (v.patchExists(pname))
+			v.drawScaled(x - adjust - button_pad, y - button_pad, FU,
+				v.cachePatch(pname),
+				flags|(ze.special_cooldown and V_50TRANS or 0)
+			)
+		else
+			v.drawString(x - adjust, y + shadow,
+				button_to_tooltip[spec.button]..":",
+				flags, "thin-fixed"
+			)
+		end
+		v.drawString(x + (textspace/2), y + shadow,
+			string.format("RAGE: %.0f%%", (FU - FixedDiv(rage, maxsprint))*100),
 			flags, "thin-fixed"
 		)
-	*/
 	end
 	
 	--shield
@@ -354,26 +398,6 @@ local function roundinfo(v,p,me,ze)
 	end
 end
 
-local function alpharage(v,p,me,ze)
-	-- Hardcoded display at the moment
-	if ze.team == 2 then
-		local y = 168-ze.lower_hud_offset
-
-		if ze.zombie_type == "alpha" then
-			local special_cooldown = ze.special_cooldown
-			local y = 160-ze.lower_hud_offset
-			local text = "Press C2 to Rage"
-			
-			if special_cooldown then
-				text = "Cooldown "..G_TicsToSeconds(special_cooldown).."."..G_TicsToCentiseconds(special_cooldown).." secs"
-			end
-			
-			customhud.CustomFontString(v, 0, y, text, "TNYFC",
-			(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, SKINCOLOR_KETCHUP)
-		end
-	end
-end
-
 local function eventtimers(v,p,me,ze)
 	local x = 5
 	local y = 12
@@ -416,7 +440,6 @@ local function wrapper(v,p)
 	health(v,p,me,ze)
 	roundinfo(v,p,me,ze)
 	eventtimers(v,p,me,ze)
-	alpharage(v,p,me,ze)
 end
 
 return "GameInfo", wrapper
