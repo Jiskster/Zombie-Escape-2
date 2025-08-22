@@ -35,6 +35,17 @@ local store_info = {}
 local health_shake = 0
 local old_disp = nil
 
+local button_to_tooltip = {
+	[BT_CUSTOM1] =		"C1",
+	[BT_CUSTOM2] =		"C2",
+	[BT_CUSTOM3] =		"C3",
+	[BT_SPIN] =			"S",
+	[BT_JUMP] =			"J",
+	[BT_ATTACK] =		"RT",
+	[BT_FIRENORMAL] =	"RN",
+	[BT_TOSSFLAG] =		"TF",
+}
+
 local AlreadyReset = false
 local function ResetInfos()
 	if AlreadyReset then return end
@@ -77,6 +88,7 @@ end
 local function health(v,p,me,ze)
 	local health = me.health
 	local maxhealth = me.maxhealth
+	local zc = ZE2.ZombieConfig[p.ze2.zombie_type or ""]
 	
 	if (health == nil) or (maxhealth == nil) then ResetInfos(); return end
 	if ZE2.pregame_timeleft then ResetInfos(); return end
@@ -109,13 +121,11 @@ local function health(v,p,me,ze)
 		old_info.shield = me.shield_health
 		fake_info.shield = me.shield_health
 	end
-	/*
 	if old_info.rage == -1
-	and ze.ragemeter ~= nil
-		old_info.rage = ze.ragemeter
-		fake_info.rage = ze.ragemeter
+	and ze.special_cooldown ~= nil
+		old_info.rage = ze.special_cooldown
+		fake_info.rage = ze.special_cooldown
 	end
-	*/
 
 	health = flerp(FU/5, fake_info.health, health*FU)
 	fake_info.health = health
@@ -142,8 +152,8 @@ local function health(v,p,me,ze)
 		health_shake = flerp(FU/8, $, 0)
 		do
 			local shake = (health_shake)
-			if (ze.team == 2) then shake = $/8; end
-			shake = min($, 20*FU) * (leveltime & 1 and 1 or -1)
+			if (ze.team == 2) then shake = $/16; end
+			shake = min($, 8*FU) * (leveltime & 1 and 1 or -1)
 			y = $ + shake
 			x = $ - shake/2
 		end
@@ -236,23 +246,40 @@ local function health(v,p,me,ze)
 			flags, "thin-fixed"
 		)
 	--rage meter
-	/*
 	elseif (ze.team == 2)
-		local rage = ze.sprintmeter --rage variable
-		sprint = intlerp(2, fake_info.rage, $)
+	and (zc and zc.special and zc.special.button)
+		local spec = zc.special
+		local rage = ze.special_cooldown --rage variable
+		rage = intlerp(2, fake_info.rage, $)
 		fake_info.rage = rage
 		
-		local maxsprint = 100*FU
+		local maxsprint = spec.cooldown
+		local adjust = 15*FU
+		local button_pad = 3*FU
+		local max_width = (max_width - adjust)
+		local x = x + adjust
 		local y = y - (height + pad)
-		local width = FixedMul(max_width, FixedDiv(rage,maxsprint))
+		local width = FixedMul(max_width, FU - FixedDiv(rage,maxsprint))
 		drawSkewFill(v, x+shadow,y+shadow, max_width,height, flags, SKINCOLOR__31) --31
-		drawSkewFill(v, x,y, width,height, flags, SKINCOLOR__45)
-
-		v.drawString(x + textspace, y + shadow,
-			string.format("RAGE: %.0f%%", FixedDiv(rage, maxsprint)*100),
+		--this effect is a little too intense, but its whatever
+		drawSkewFill(v, x,y, width,height, flags, SKINCOLOR_ALPHAZOMBIE, true)
+		
+		local pname = "Z_TT_"..(button_to_tooltip[spec.button])
+		if (v.patchExists(pname))
+			v.drawScaled(x - adjust - button_pad, y - button_pad, FU,
+				v.cachePatch(pname),
+				flags|(ze.special_cooldown and V_50TRANS or 0)
+			)
+		else
+			v.drawString(x - adjust, y + shadow,
+				button_to_tooltip[spec.button]..":",
+				flags, "thin-fixed"
+			)
+		end
+		v.drawString(x + (textspace/2), y + shadow,
+			string.format("RAGE: %.0f%%", (FU - FixedDiv(rage, maxsprint))*100),
 			flags, "thin-fixed"
 		)
-	*/
 	end
 	
 	--shield
@@ -371,26 +398,6 @@ local function roundinfo(v,p,me,ze)
 	end
 end
 
-local function alpharage(v,p,me,ze)
-	-- Hardcoded display at the moment
-	if ze.team == 2 then
-		local y = 168-ze.lower_hud_offset
-
-		if ze.zombie_type == "alpha" then
-			local special_cooldown = ze.special_cooldown
-			local y = 160-ze.lower_hud_offset
-			local text = "Press C2 to Rage"
-			
-			if special_cooldown then
-				text = "Cooldown "..G_TicsToSeconds(special_cooldown).."."..G_TicsToCentiseconds(special_cooldown).." secs"
-			end
-			
-			customhud.CustomFontString(v, 0, y, text, "TNYFC",
-			(V_SNAPTOBOTTOM|V_SNAPTOLEFT), nil , nil, SKINCOLOR_KETCHUP)
-		end
-	end
-end
-
 local function eventtimers(v,p,me,ze)
 	local x = 5
 	local y = 12
@@ -433,7 +440,6 @@ local function wrapper(v,p)
 	health(v,p,me,ze)
 	roundinfo(v,p,me,ze)
 	eventtimers(v,p,me,ze)
-	alpharage(v,p,me,ze)
 end
 
 return "GameInfo", wrapper
