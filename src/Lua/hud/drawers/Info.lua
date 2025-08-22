@@ -1,12 +1,27 @@
-ZE2.debug_x = CV_RegisterVar({name = "z_debug_x", defaultvalue = 0, flags = CV_FLOAT})
-ZE2.debug_y = CV_RegisterVar({name = "z_debug_y", defaultvalue = 0, flags = CV_FLOAT})
-
-local function drawSkewFill(v, x,y, w,h, flags, c)
+--if skincolor is TRUE, itll be assumed that 'c' is a valid skincolor,
+--and the function will draw ramp gradient
+--TODO?: accept a custom ramp? we could draw gradients or scrolling colors
+--		 without having to make a new skincolor freeslot
+local function drawSkewFill(v, x,y, w,h, flags, c, skincolor)
 	if (w == nil or w <= 0) then return end
+	if skincolor
+		w = FixedDiv($,16*FU)
+	end
 	
 	x = $ + (FixedDiv(h, 2*FU) - FU)
 	while h >= 0
-		v.drawStretched(x, y, w, 2*FU, v.cachePatch("ZE2_C"), flags, v.getColormap(TC_DEFAULT, c))
+		if (not skincolor)
+			v.drawStretched(x, y, w, 2*FU, v.cachePatch("ZE2_C"), flags, v.getColormap(TC_DEFAULT, c))
+		else
+			local ramp = skincolors[c].ramp
+			local new_x = x
+			for i = 0,15
+				local newcolor = ZE2.paletteToColor[ramp[i]]
+				v.drawStretched(new_x, y, w, 2*FU, v.cachePatch("ZE2_C"), flags, v.getColormap(TC_DEFAULT, newcolor))
+				new_x = $ + w
+			end
+		end
+		
 		--v.drawFixedFill(x,y, w,2*FU, c)
 		h = $ - 2*FU
 		y = $ + 2*FU
@@ -126,16 +141,19 @@ local function health(v,p,me,ze)
 		
 		health_shake = flerp(FU/8, $, 0)
 		do
-			local shake = (health_shake * (leveltime & 1 and 1 or -1))
-			if (ze.team == 2) then shake = $/2; end
+			local shake = (health_shake)
+			if (ze.team == 2) then shake = $/8; end
+			shake = min($, 20*FU) * (leveltime & 1 and 1 or -1)
 			y = $ + shake
 			x = $ - shake/2
 		end
 		
 		local width = FixedMul(max_width, FixedDiv(health,maxhealth))
 		drawSkewFill(v, x+shadow,y+shadow, max_width,height, flags, SKINCOLOR__31) -- 31
-		if old_info.health > health --we lost health!
+		if (old_info.health > me.health*FU)
 			health_shake = $ + abs(old_info.health - health)
+		end
+		if old_info.health > health --we lost health!
 			if store_info.health == -1
 				store_info.health = old_info.health
 			end
@@ -145,8 +163,7 @@ local function health(v,p,me,ze)
 			if store_info.health ~= -1
 			and (abs(me.health*FU - health) <= FU)
 			and (health_shake <= FU/10)
-				local diff = max(abs(store_info.health - health)/5, 1)
-				if diff == 1 and (leveltime & 1) then diff = 0; end
+				local diff = max(abs(store_info.health - health)/15, 1)
 				if store_info.health < health
 					store_info.health = $ + diff
 				else
