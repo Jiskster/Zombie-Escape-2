@@ -261,8 +261,14 @@ local function health(v,p,me,ze)
 		local y = y - (height + pad)
 		local width = FixedMul(max_width, FU - FixedDiv(rage,maxsprint))
 		drawSkewFill(v, x+shadow,y+shadow, max_width,height, flags, SKINCOLOR__31) --31
-		--this effect is a little too intense, but its whatever
-		drawSkewFill(v, x,y, width,height, flags, SKINCOLOR_ALPHAZOMBIE, true)
+		
+		local color = SKINCOLOR_ALPHAZOMBIE
+		local usecolor = true
+		if ze.special_cooldown
+			color = SKINCOLOR__71
+			usecolor = false
+		end
+		drawSkewFill(v, x,y, width,height, flags, color, usecolor)
 		
 		local pname = "Z_TT_"..(button_to_tooltip[spec.button])
 		if (v.patchExists(pname))
