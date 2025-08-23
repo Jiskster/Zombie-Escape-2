@@ -4,6 +4,7 @@ ZE2.StandardJumpFactor = FixedDiv(90*FU, 100*FU)
 --			so we can be sure there are no "holes" in them? Maybe `newentry.__index = ZE2.CharacterConfig["default"]`
 ZE2.ZombieConfig = {
 	["normal"] = {
+		skin = "zzombie",
 		skincolor = SKINCOLOR_MOSS,
 		normalspeed = 18 * FRACUNIT,
 		health = 10000,
@@ -30,6 +31,7 @@ ZE2.ZombieConfig = {
 		}
 	},
 	["alpha"] = {
+		skin = "zzombie",
 		skincolor = SKINCOLOR_ALPHAZOMBIE,
 		normalspeed = 17 * FRACUNIT,
 		health = 15000,
