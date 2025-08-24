@@ -80,7 +80,7 @@ function ZE2:RemoveShieldFromMobj(mobj)
 	
 	mobj.shield_orb = nil -- Just in case idk
 	mobj.shield_def = nil
-	mobj.sheild_health = 0
+	mobj.shield_health = 0
 end
 
 addHook("MapLoad", function()
