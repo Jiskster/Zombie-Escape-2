@@ -342,7 +342,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			local iteminfo = ZE2:Copy(inf.iteminfo)
 			local item_damage = ZE2:GetItemInfoIndex(iteminfo, "damage", srcskin)
 			local item_knockback = ZE2:GetItemInfoIndex(iteminfo, "knockback", srcskin)
-			local item_knockback_tics = ZE2:GetItemInfoIndex(iteminfo, "item_knockback_tics", srcskin)
+			local item_knockback_tics = ZE2:GetItemInfoIndex(iteminfo, "knockback_tics", srcskin)
 			
 			if item_damage then
 				dmg = item_damage
