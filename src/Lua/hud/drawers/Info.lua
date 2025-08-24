@@ -215,6 +215,7 @@ local function health(v,p,me,ze)
 		fake_info.stamina = sprint
 		
 		local maxsprint = 100*FU
+		local x = x
 		local y = y - (height + pad)
 		local width = FixedMul(max_width, FixedDiv(sprint,maxsprint))
 		drawSkewFill(v, x+shadow,y+shadow, max_width,height, flags, SKINCOLOR__31) --31
