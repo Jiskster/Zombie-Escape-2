@@ -122,8 +122,11 @@ addHook("ThinkFrame", function()
 		S_StartSound(nil, sfx_rstart)
 		local choosingnums = {}
 		local playercount = ZE2.PlayerCount()
-		local amountchoosing = FixedDiv(playercount*FU,3*FU) -- lmao
+		local denominator = (7*FU)/2 -- 3.5
+		local amountchoosing = FixedDiv(playercount*FU, denominator) -- lmao
+		
 		amountchoosing = FixedCeil($)/FU
+		
 		-- simpler than ze's rng for sure.
 		for player in players.iterate do
 			if player.spectator then continue end
