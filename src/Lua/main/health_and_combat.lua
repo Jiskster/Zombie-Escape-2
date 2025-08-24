@@ -608,6 +608,10 @@ addHook("MobjSpawn", function(mobj)
 		end
 	end
 	
+	if mobjinfo[mobj.type].disablehealthhud then
+		mobj.dontshowhealth = true
+	end
+	
 	mobj.shield_health = 0
 end)
 
@@ -957,11 +961,5 @@ end, MT_PLAYER)
 addHook("SeenPlayer", function(player)
 	if gametype == GT_ZE2 then
 		return false
-	end
-end)
-
-addHook("MobjSpawn", function(mobj)
-	if mobjinfo[mobj.type].disablehealthhud then
-		mobj.dontshowhealth = true
 	end
 end)
