@@ -121,7 +121,8 @@ addHook("ThinkFrame", function()
 		ZE2.round_active = true
 		S_StartSound(nil, sfx_rstart)
 		local choosingnums = {}
-		local amountchoosing = FixedDiv(ZE2.PlayerCount()*FU,3*FU) -- lmao
+		local playercount = ZE2.PlayerCount()
+		local amountchoosing = FixedDiv(playercount*FU,3*FU) -- lmao
 		amountchoosing = FixedCeil($)/FU
 		-- simpler than ze's rng for sure.
 		for player in players.iterate do
@@ -132,14 +133,16 @@ addHook("ThinkFrame", function()
 				ZE2.pickcharinselect(player,selection_name) 
 			end
 			
-			if not player.ze2.was_zombie then
+			-- Check if we have 4 or less players, and if we do, always let them be a zombie.
+			-- We do this so 2 players won't always be paired together.
+			if (not player.ze2.was_zombie) or (playercount <= 4) then
 				table.insert(choosingnums, #player)
 			end
 		end
+
 		-- At this point, every player's playernum is sorted in choosingnums
 		-- except for the players that were zombies last game.
-
-		if ZE2.PlayerCount() > 1 then
+		if playercount > 1 then
 			for _I_=1,amountchoosing do
 				local playernumindex = P_RandomRange(1,#choosingnums)
 				local playernum = choosingnums[playernumindex]
