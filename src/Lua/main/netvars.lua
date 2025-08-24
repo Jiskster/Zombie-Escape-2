@@ -1,3 +1,5 @@
+local KB = ZE2.Knockback
+
 addHook("NetVars", function(net)
 	ZE2.time_limit = net($);
 	ZE2.wait_time = net($);
@@ -32,6 +34,8 @@ addHook("NetVars", function(net)
 	ZE2.QueueSpectate = net($);
 	
 	ZE2.PreviousMaps = net($);
+	
+	KB.list = net($);
 	
 	for i,v in ipairs(ZE2.MapTimers) do
 		v.name = net($);

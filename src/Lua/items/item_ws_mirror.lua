@@ -1,3 +1,5 @@
+local KB = ZE2.Knockback
+
 freeslot("MT_MIRRORCLONE", "sfx_mrr12")
 sfxinfo[sfx_mrr12].caption = "W's Mirror"
 
@@ -18,7 +20,9 @@ local function flashpmo(pmo, source)
 	thok.color = source.color
 	thok.fuse = 17
 	pmo.player.ze2:DamageFade(5*TICRATE)
-	P_Thrust(pmo, source.angle, 180*FRACUNIT)
+	P_Thrust(pmo, source.angle, )
+	local ang = R_PointToDist2(pmo.x, pmo.y, source.x, source.y)
+	KB.addKnockback(mo, 12, ang - ANGLE_180, 180*FRACUNIT)
 	pmo.health = 1
 	S_StartSound(pmo, sfx_bewar2)
 	P_SetScale(thok,thok.scale*3)

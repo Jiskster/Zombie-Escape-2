@@ -2,16 +2,18 @@
 -- Initiate require.lua first.
 
 local queue = {
-	"Require", -- Remember, initiate this first!!!
-	"Copy", -- Always second.
-	"init_gamevars",
-	"getMaxRoundsFromMap",
-	"getCurrentRound",
-	"ZCollide",
-	"skinlist",
-	"ResetPlayer",
-	"PlayZombieSound",
-	"ZombifyPlayer",
+	"Require"; -- Remember, initiate this first!!!
+	"Copy"; -- Always second.
+	"init_gamevars";
+	"getMaxRoundsFromMap";
+	"getCurrentRound";
+	"ZCollide";
+	"skinlist";
+	"ResetPlayer";
+	"PlayZombieSound";
+	"ZombifyPlayer";
+	"Knockback/initKnockback";
+	"Knockback/addKnockback";
 }
 
 print("<ZE2>: Loading ZE2 Functions")

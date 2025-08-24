@@ -1,3 +1,5 @@
+local KB = ZE2.Knockback
+
 ZE2.init_gamevars = function(map) -- Variables vary per game.
 	ZE2.round_active = false;
 	ZE2.game_ended = false;
@@ -20,6 +22,8 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 	}; -- votes, mapnumber
 	
 	ZE2.NextMapVoted = nil;
+	
+	KB.list = {};
 	
 	if map then
 		if ZE2.queuing_round then

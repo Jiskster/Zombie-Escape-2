@@ -1,3 +1,4 @@
+local KB = ZE2.Knockback
 ZE2.BulletList = {} -- For thinkers and basic caching.
 
 -- Amy's Hammer Hearts
@@ -437,11 +438,11 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 
 			if inf and inf.valid then
 				if not relativeknockback then
-					P_Thrust(mo, inf.angle, knockback)
+					KB.addKnockback(mo, 12, inf.angle, knockback)
 				else
 					local r_angle = R_PointToAngle2(mo.x, mo.y, inf.x, inf.y)
 					
-					P_Thrust(mo, r_angle - ANGLE_180, knockback)
+					KB.addKnockback(mo, 12, r_angle - ANGLE_180, knockback)
 				end
 				
 				if verticalknockback then
@@ -469,18 +470,15 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			
 			if inf and inf.valid then
 				if not relativeknockback then
-					local r_momxy = FixedHypot(mo.momx, mo.momy)
-
-					if P_IsObjectOnGround(mo) then
-						P_InstaThrust(mo, inf.angle, knockback + r_momxy)
-					else
-						P_Thrust(mo, inf.angle, knockback)
-					end
+					KB.addKnockback(mo, 12, inf.angle, knockback)
 				else
 					local r_angle = R_PointToAngle2(mo.x, mo.y, inf.x, inf.y)
-					local r_momxy = FixedHypot(mo.momx, mo.momy)
-
-					P_Thrust(mo, r_angle - ANGLE_180, knockback)
+					
+					KB.addKnockback(mo, 12, r_angle - ANGLE_180, knockback)
+				end
+				
+				if verticalknockback then
+					P_SetObjectMomZ(mo, verticalknockback, true)
 				end
 
 				pv.zombie_slowtics = 7
@@ -503,7 +501,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		end
 		
 		if inf and inf.valid then
-			P_Thrust(mo, inf.angle, knockback)
+			KB.addKnockback(mo, 12, inf.angle, knockback)
 		end
 	end
 	

@@ -1,4 +1,6 @@
-rawset(_G, "ZE2", {});
+rawset(_G, "ZE2", {
+	Knockback = {};
+});
 
 dofile "gametype.lua"
 
