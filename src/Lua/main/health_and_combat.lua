@@ -648,8 +648,13 @@ addHook("ThinkFrame", function()
 				break
 			end
 			
-			--XY Movement should never remove a mobj.
+			--XY Movement should never remove a mobj...
 			P_XYMovement(mobj)
+			--...except for when it does...
+			if not (mobj and mobj.valid)
+				table.insert(removedelayed, {key = i})
+				break
+			end
 			
 			if not P_ZMovement(mobj) then
 				table.insert(removedelayed, {key = i})
