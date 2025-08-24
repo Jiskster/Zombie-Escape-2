@@ -69,7 +69,7 @@ COM_AddCommand("z_giveitem", function(player, item_id, slot, count)
 			CONS_Printf(player, "z_giveitem <item_id> <slot> <count>: gives an item to yourself.")
 			return
 		else
-			print(item_id)
+			CONS_Printf(player, item_id.." (If you asked nicely)")
 		end
 
 		if slot then 
