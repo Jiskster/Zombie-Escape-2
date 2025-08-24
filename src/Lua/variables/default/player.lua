@@ -55,6 +55,8 @@ return {
 	
 	isJumping = false,
 	isRunning = false,
+	isSprung = false,
+	lastJumped = false,
 
 	team = 1,
 
@@ -88,8 +90,6 @@ return {
 	
 	zombie_slowtics = 0,
 
-	isSprung = false,
-	
 	damage_indicator_table = {},
 	/*	damage_indicator_table
 		[mobj_t] = {

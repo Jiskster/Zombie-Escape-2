@@ -54,7 +54,9 @@ return function(player)
 			pv.isSprung = false
 		end
 		
-		if ZE2.landingfatigue.value then
+		--lastJumped is shitty ik but i cant think of a good way to do this
+		--WITHOUT having to make a new variable in the ze2 table
+		if ZE2.landingfatigue.value and (pv.lastJumped) then
 			local bhopped = false
 			
 			if (player.cmd.buttons & BT_JUMP) and not (player.lastbuttons & BT_JUMP) then
@@ -89,6 +91,7 @@ return function(player)
 		player.pflags = $ & ~PF_BOUNCING
 		player.powers[pw_tailsfly] = 0
 	end
+	pv.lastJumped = (player.pflags & PF_JUMPED == PF_JUMPED)
 end
 
 
