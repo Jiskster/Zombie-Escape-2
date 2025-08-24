@@ -275,6 +275,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	local deathdamagetype = (damagetype >= DMG_INSTAKILL and damagetype <= DMG_SPECTATOR)
 	
 	local knockback = 0
+	local knockback_tics = 12
 	local verticalknockback = 0
 	local relativeknockback = false
 	local inflictor_player -- player_t
@@ -341,6 +342,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			local iteminfo = ZE2:Copy(inf.iteminfo)
 			local item_damage = ZE2:GetItemInfoIndex(iteminfo, "damage", srcskin)
 			local item_knockback = ZE2:GetItemInfoIndex(iteminfo, "knockback", srcskin)
+			local item_knockback_tics = ZE2:GetItemInfoIndex(iteminfo, "item_knockback_tics", srcskin)
 			
 			if item_damage then
 				dmg = item_damage
@@ -348,6 +350,10 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			
 			if item_knockback then
 				knockback = item_knockback
+			end
+			
+			if item_knockback_tics ~= nil then
+				knockback_tics = item_knockback_tics
 			end
 		end
 		
@@ -438,11 +444,11 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 
 			if inf and inf.valid then
 				if not relativeknockback then
-					KB.addKnockback(mo, 12, inf.angle, knockback)
+					KB.addKnockback(mo, knockback_tics, inf.angle, knockback)
 				else
 					local r_angle = R_PointToAngle2(mo.x, mo.y, inf.x, inf.y)
 					
-					KB.addKnockback(mo, 12, r_angle - ANGLE_180, knockback)
+					KB.addKnockback(mo, knockback_tics, r_angle - ANGLE_180, knockback)
 				end
 				
 				if verticalknockback then
@@ -470,11 +476,11 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			
 			if inf and inf.valid then
 				if not relativeknockback then
-					KB.addKnockback(mo, 12, inf.angle, knockback)
+					KB.addKnockback(mo, knockback_tics, inf.angle, knockback)
 				else
 					local r_angle = R_PointToAngle2(mo.x, mo.y, inf.x, inf.y)
 					
-					KB.addKnockback(mo, 12, r_angle - ANGLE_180, knockback)
+					KB.addKnockback(mo, knockback_tics, r_angle - ANGLE_180, knockback)
 				end
 				
 				if verticalknockback then
@@ -501,7 +507,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		end
 		
 		if inf and inf.valid then
-			KB.addKnockback(mo, 12, inf.angle, knockback)
+			KB.addKnockback(mo, knockback_tics, inf.angle, knockback)
 		end
 	end
 	
