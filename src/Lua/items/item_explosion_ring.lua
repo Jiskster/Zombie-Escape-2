@@ -5,7 +5,7 @@ local explosion_ring = ZE2:CreateItem("explosion_ring", {
 	firerate = TICRATE*3,
 	color = SKINCOLOR_BLACK,
 	damage = 120,
-	knockback = 50*FRACUNIT,
+	knockback = 160*FRACUNIT,
 	price = 700,
 })
 
