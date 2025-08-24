@@ -943,7 +943,7 @@ addHook("MobjMoveCollide", function(heart, victim)
 end, MT_LHRT)
 
 -- dont let teammates and teamate's weapons collide with your weapon 
-addHook("MobjMoveCollide", function(tmthing, thing)
+addHook("MobjCollide", function(thing, tmthing)
 	if tmthing and tmthing.valid and thing and thing.valid then
 		if (tmthing.target and tmthing.flags & MF_MISSILE and tmthing.target.player and thing.player) then
 			local team = thing.player.ze2.team or thing.target.player.ze2.team
@@ -952,7 +952,7 @@ addHook("MobjMoveCollide", function(tmthing, thing)
 			end
 		end
 	end
-end)
+end, MT_PLAYER)
 
 addHook("SeenPlayer", function(player)
 	if gametype == GT_ZE2 then
