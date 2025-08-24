@@ -2,20 +2,22 @@
 -- Initiate require.lua first.
 
 local queue = {
-	"require", -- Remember, initiate this first!!!
-	"copy", -- Always second.
+	"Require", -- Remember, initiate this first!!!
+	"Copy", -- Always second.
 	"init_gamevars",
 	"getMaxRoundsFromMap",
 	"getCurrentRound",
-	"zCollide",
+	"ZCollide",
 	"skinlist",
 	"ResetPlayer",
 	"PlayZombieSound",
 	"ZombifyPlayer",
 }
 
-print("<ZE2>: Loading Global Functions")
+print("<ZE2>: Loading ZE2 Functions")
 for i,path in ipairs(queue) do
-	dofile("functions/global/" + path)
+	local full_path = ("functions/ZE2/"..path)
+	
+	dofile(full_path)
 end
-print("<ZE2>: Finished Global Functions")
+print("<ZE2>: Finished ZE2 Functions")
