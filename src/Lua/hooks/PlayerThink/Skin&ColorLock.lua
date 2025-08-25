@@ -5,7 +5,7 @@ return function(player)
 	local zc = ZE2.ZombieConfig
 
 	if player.ze2.team == 2 then
-		local zskin = "zzombie"
+		local zskin = "zsonic"
 		if (ztype and zc[ztype]) then
 			zskin = zc[ztype].skin
 		end
@@ -14,7 +14,7 @@ return function(player)
 			R_SetPlayerSkin(player, zskin)
 		end
 	elseif player.ze2.team == 1 then
-		local badskin = skins[player.skin].name == "zzombie"
+		local badskin = skins[player.skin].name == "zsonic"
 		for name,_ in pairs(zc) do
 			if skins[player.skin].name == name then
 				badskin = true

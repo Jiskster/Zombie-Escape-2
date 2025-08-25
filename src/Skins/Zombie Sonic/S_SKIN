@@ -1,6 +1,6 @@
-name = zzombie
-realname = Zombie
-hudname = zombie
+name = zsonic
+realname = Zed
+hudname = zed
 prefcolor = SKINCOLOR_MOSS
 supercolor = SKINCOLOR_MOSS
 ability = CA_NONE

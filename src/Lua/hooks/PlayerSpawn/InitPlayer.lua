@@ -45,7 +45,7 @@ return function(player)
 		ZE2.ResetPlayer(player, true)
 
 		if player.ze2.team == 2 then 
-			R_SetPlayerSkin(player, "zzombie") 
+			R_SetPlayerSkin(player, "zsonic") 
 		end
 
 		player.ze2.sprintmeter = 100*FRACUNIT

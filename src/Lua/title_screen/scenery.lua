@@ -58,7 +58,7 @@ end, MT_SCENERYPLAYER)
 addHook("MobjThinker", function(mo)
 	if mo and mo.valid
 		if not mo.stuffdone
-			mo.skin = "zzombie"
+			mo.skin = "zsonic"
 			local alphachance = P_RandomChance(FU/8)
 			if alphachance == true
 				mo.color = SKINCOLOR_ALPHAZOMBIE

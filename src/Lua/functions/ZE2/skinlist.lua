@@ -1,4 +1,4 @@
-ZE2.blacklisted_characters = {"zzombie"} -- blacklisted characters from showing
+ZE2.blacklisted_characters = {"zsonic"} -- blacklisted characters from showing
 ZE2.registered_skins = {}
 
 ZE2.getSkinNames = function(player, getunlockables, timesrepeated)
