@@ -293,7 +293,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		else
 			attackedbyzombie = true
 		end
-	end--player.ze2.damage_indicator_table
+	end
 	
 	if inf and inf.valid and inf.player then
 		inflictor_player = inf.player
@@ -425,8 +425,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	if mo.player then
 		local player = mo.player
 		local pv = player.ze2
-		
-		-- TODO: Merge both team kb code.
+
 		if pv.team == 1 then
 			if not attackedbyzombie then
 				player.powers[pw_flashing] = ZE2.survinvtics.value
@@ -440,20 +439,6 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			else -- if attacked by zombie
 				pv:DamageFade(15)
 				S_StartSound(mo, sfx_zbatk1 + P_RandomRange(0,2))
-			end
-
-			if inf and inf.valid then
-				if not relativeknockback then
-					KB.addKnockback(mo, knockback_tics, inf.angle, knockback)
-				else
-					local r_angle = R_PointToAngle2(mo.x, mo.y, inf.x, inf.y)
-					
-					KB.addKnockback(mo, knockback_tics, r_angle - ANGLE_180, knockback)
-				end
-				
-				if verticalknockback then
-					P_SetObjectMomZ(mo, verticalknockback, true)
-				end
 			end
 			
 			if inflictor_player then
@@ -474,25 +459,7 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 				knockback = FixedMul($, knockback_multiplier)
 			end
 			
-			if inf and inf.valid then
-				if not relativeknockback then
-					KB.addKnockback(mo, knockback_tics, inf.angle, knockback)
-				else
-					local r_angle = R_PointToAngle2(mo.x, mo.y, inf.x, inf.y)
-					
-					KB.addKnockback(mo, knockback_tics, r_angle - ANGLE_180, knockback)
-				end
-				
-				if verticalknockback then
-					P_SetObjectMomZ(mo, verticalknockback, true)
-				end
-
-				pv.zombie_slowtics = 7
-			end
-			
-			if verticalknockback then
-				P_SetObjectMomZ(mo, verticalknockback, true)
-			end
+			pv.zombie_slowtics = 7
 			
 			S_StartSound(mo, chosen_hurtsound)
 		end
@@ -505,9 +472,20 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		if mobjinfo[mo.type].painsound and mobjinfo[mo.type].painsound ~= sfx_None then
 			S_StartSound(mo,mobjinfo[mo.type].painsound)
 		end
-		
-		if inf and inf.valid then
+	end
+	
+	-- BOOM! Knockback! 
+	if inf and inf.valid then
+		if not relativeknockback then
 			KB.addKnockback(mo, knockback_tics, inf.angle, knockback)
+		else
+			local r_angle = R_PointToAngle2(mo.x, mo.y, inf.x, inf.y)
+			
+			KB.addKnockback(mo, knockback_tics, r_angle - ANGLE_180, knockback)
+		end
+		
+		if verticalknockback then
+			P_SetObjectMomZ(mo, verticalknockback, true)
 		end
 	end
 	
