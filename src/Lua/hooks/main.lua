@@ -1,14 +1,4 @@
-local base_hooks = {
-	MapLoad = {};
-	PreThinkFrame = {};
-	ThinkFrame = {};
-	PlayerSpawn = {};
-	PlayerThink = {};
-	ViewpointSwitch = {};
-	TeamSwitch = {};
-	JumpSpecial = {};
-	ShouldDamage = {};
-}
+local base_hooks = {}
 
 local hook_names = {
 	MapLoad = {"InitRound"};
@@ -45,6 +35,10 @@ for hookname,hooktable in pairs(hook_names) do
 		local full_path = "hooks/"..hookname.."/"..filename
 
 		local func = dofile(full_path..".lua")
+	
+		if hookname and not base_hooks[hookname] then
+			base_hooks[hookname] = {}
+		end
 	
 		table.insert(base_hooks[hookname], func)
 	
