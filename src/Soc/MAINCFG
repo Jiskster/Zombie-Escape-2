@@ -215,14 +215,15 @@ Lua.ze2_zombiereleasetime = 14
 Lua.ze2_rounds = 2
 
 Level 23
-Levelname = Alphacombs
-Subtitle = The History
+Levelname = Frozen Chaos
+Subtitle = ???
 Act = 0
-Music = ZEACPR
+Music = FRCH
 TypeOfLevel = ZE2
-NextLevel = N9
-SkyNum = 11
+NextLevel = NX
+SkyNum = 1025
 NoZone = True
+Weather = PRECIP_SNOW
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 7
 
