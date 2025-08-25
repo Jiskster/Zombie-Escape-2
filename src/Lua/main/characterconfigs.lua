@@ -52,7 +52,6 @@ ZE2.ZombieConfig = {
 		health = 12000,
 		charability = CA_NONE,
 		charability2 = CA2_NONE,
-		jumpfactor = ZE2.StandardJumpFactor,
 		actionspd = 9*FRACUNIT,
 		killaward = 10,
 		knockback_multiplier = 8*(FU/10),
