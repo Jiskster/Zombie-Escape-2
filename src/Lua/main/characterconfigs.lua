@@ -10,14 +10,11 @@ ZE2.ZombieConfig = {
 		health = 10000,
 		charability = CA_NONE,
 		charability2 = CA2_NONE,
-		jumpfactor = ZE2.StandardJumpFactor,
 		actionspd = 9*FRACUNIT,
 		killaward = 10,
-		--accelstart = 100,
-		--acceleration = 29,
 		inventory_limit = 1,
 		inventory = {
-			ZE2:CopyItemFromID(ITEM_INSTA_BURST)
+			ZE2:CopyItemFromID(ITEM_INSTA_BURST);
 		},
 		special = {
 			button = 0, -- no button to disable
@@ -30,6 +27,43 @@ ZE2.ZombieConfig = {
 			*/
 		}
 	},
+	["ranged"] = {
+		skin = "ztails",
+		skincolor = SKINCOLOR_MOSS,
+		normalspeed = 20 * FRACUNIT,
+		health = 4000,
+		charability = CA_NONE,
+		charability2 = CA2_NONE,
+		actionspd = 9*FRACUNIT,
+		killaward = 5,
+		knockback_multiplier = (3*FU)/2,
+		inventory_limit = 1,
+		inventory = {
+			ZE2:CopyItemFromID(ITEM_INSTA_BURST);
+		},
+		special = {
+			button = 0,
+		}
+	},
+	["heavy"] = {
+		skin = "zknuckles",
+		skincolor = SKINCOLOR_MOSS,
+		normalspeed = 16 * FRACUNIT,
+		health = 12000,
+		charability = CA_NONE,
+		charability2 = CA2_NONE,
+		jumpfactor = ZE2.StandardJumpFactor,
+		actionspd = 9*FRACUNIT,
+		killaward = 10,
+		knockback_multiplier = 8*(FU/10),
+		inventory_limit = 1,
+		inventory = {
+			ZE2:CopyItemFromID(ITEM_INSTA_BURST);
+		},
+		special = {
+			button = 0,
+		}
+	},
 	["alpha"] = {
 		skin = "zsonic",
 		skincolor = SKINCOLOR_ALPHAZOMBIE,
@@ -37,16 +71,13 @@ ZE2.ZombieConfig = {
 		health = 15000,
 		charability = CA_NONE,
 		charability2 = CA2_NONE,
-		jumpfactor = ZE2.StandardJumpFactor,
 		actionspd = 16*FRACUNIT,
 		scale = 11*FRACUNIT/10,
 		killaward = 30,
-		knockback_multiplier = tofixed("0.80"),
-		--accelstart = 130,
-		--acceleration = 24,
+		knockback_multiplier = 7*(FU/10),
 		inventory_limit = 1,
 		inventory = {
-			ZE2:CopyItemFromID(ITEM_INSTA_BURST),
+			ZE2:CopyItemFromID(ITEM_INSTA_BURST);
 		},
 		special = {
 			button = BT_CUSTOM2,
@@ -72,6 +103,7 @@ ZE2.CharacterConfig = {
 		charability2 = CA2_NONE,
 		FixedDiv(85*FU, 100*FU),
 		sprintboost = 10 * FRACUNIT,
+		jumpfactor = ZE2.StandardJumpFactor,
 	},
 }
 
