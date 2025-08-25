@@ -119,8 +119,6 @@ dofile "hud/setup"
 -- [ Level Scripts ] -- 
 dofile "levelscripts/loadscripts.lua"
 
-dofile "main/netvars.lua"
-
 dofile "main/debug/cvmake.lua"
 dofile "main/debug/commands.lua"
 

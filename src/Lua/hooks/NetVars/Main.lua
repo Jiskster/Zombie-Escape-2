@@ -1,6 +1,6 @@
 local KB = ZE2.Knockback
 
-addHook("NetVars", function(net)
+return function(net)
 	ZE2.time_limit = net($);
 	ZE2.wait_time = net($);
 	ZE2.round_active = net($); -- stays on even if the end screen is on
@@ -42,5 +42,4 @@ addHook("NetVars", function(net)
 		v.time = net($);
 		v.active = net($);
 	end
-end)
-
+end

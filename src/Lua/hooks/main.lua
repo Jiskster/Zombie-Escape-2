@@ -26,6 +26,7 @@ local hook_names = {
 	ShouldDamage = {"DamageSystem"};
 	JumpSpecial = {"JumpFatigue"};
 	ViewpointSwitch = {"Main"};
+	NetVars = {"Main"};
 }
 
 -- Register Hooks.
