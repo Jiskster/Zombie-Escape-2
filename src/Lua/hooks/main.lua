@@ -7,6 +7,7 @@ local base_hooks = {
 	ViewpointSwitch = {};
 	TeamSwitch = {};
 	JumpSpecial = {};
+	ShouldDamage = {};
 }
 
 local hook_names = {
@@ -32,6 +33,7 @@ local hook_names = {
 		"Skin&ColorLock";
 		"AlphaZombie";
 	};
+	ShouldDamage = {"DamageSystem"};
 	JumpSpecial = {"JumpFatigue"};
 	ViewpointSwitch = {"Main"};
 }
