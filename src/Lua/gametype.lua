@@ -35,7 +35,12 @@ ZE2.Effects = {
 	["alphazombie.rage"] = {
 		thinker = function(player)
 			if player.mo and player.mo.valid then
-				P_SpawnGhostMobj(player.mo)
+				local g = P_SpawnGhostMobj(player.mo)
+				g.destscale = 0
+				g.fuse = TICRATE
+				g.scalespeed = FixedDiv(g.scale, g.fuse*FU)
+				g.blendmode = AST_SUBTRACT
+				g.renderflags = RF_FULLBRIGHT
 			end
 		end,
 		on_end = function(player)
