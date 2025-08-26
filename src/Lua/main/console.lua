@@ -87,12 +87,12 @@ end, COM_ADMIN)
 COM_AddCommand("z_changeztype", function(player, new_ztype)
 	if not (player.mo and player.mo.valid) then return end
 	if player.ze2.team ~= 2 then
-		print("You must be a zombie to run this command.")
+		CONS_Printf(player,"You must be a zombie to run this command.")
 		return
 	end
 	
 	if not new_ztype then
-		print("z_changeztype <ztype>: changes your zombie type.")
+		CONS_Printf(player,"z_changeztype <ztype>: changes your zombie type.")
 		return
 	end
 	
@@ -102,9 +102,9 @@ COM_AddCommand("z_changeztype", function(player, new_ztype)
 		player.ze2.zombie_type = new_ztype
 		ZE2.ResetPlayer(player)
 	else
-		print("Invalid ztype. "..'"'..new_ztype..'"')
+		CONS_Printf(player,"Invalid ztype. "..'"'..new_ztype..'"')
 	end
-end, 1)
+end, COM_ADMIN)
 
 COM_AddCommand("z_giveshield", function(player, shieldtype)
 	if not (player.mo and player.mo.valid) then return end
@@ -173,3 +173,24 @@ COM_AddCommand("z_swapitem", function(player, slot1, slot2)
 		ZE2:ClearInventorySlot(player, slot2)
 	end
 end)
+
+-- No extravars parser yet.
+COM_AddCommand("z_giveeffect", function(player, effectname, duration)
+	if not (player.mo and player.mo.valid) then return end
+	
+	if not effectname then
+		CONS_Printf(player, "z_giveeffect <effect_name> <duration (seconds)>: adds an effect to you.")
+		return
+	end
+	if ZE2.Effects[effectname] == nil then
+		CONS_Printf(player, ("Effect name '%s' not valid."):format(effectname))
+		return
+	end
+
+	local dur = TICRATE
+	if (duration ~= nil and tonumber(duration) ~= nil) then
+		dur = tonumber(duration)*TICRATE
+	end
+	
+	player.ze2:GiveEffect(effectname, {}, dur)
+end, COM_ADMIN)

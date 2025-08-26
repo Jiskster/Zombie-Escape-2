@@ -85,6 +85,22 @@ local function flerp(frac,from,to)
 	return from + FixedMul(to - from, frac)
 end
 
+local hud_fires = {}
+local flame_colors = {
+	SKINCOLOR_FLAME, SKINCOLOR_KETCHUP, SKINCOLOR_GARNET, SKINCOLOR_ORANGE, --SKINCOLOR_RUST, SKINCOLOR_COPPER
+}
+local function makefire(v, x,y, width,height)
+	table.insert(hud_fires, {
+		x = x + v.RandomRange(0,width)*FU,
+		y = y + v.RandomRange(0,height)*FU,
+		scale = v.RandomRange(FU/4, tofixed(".7")),
+		tics = v.RandomRange(12, 30),
+		momy = v.RandomRange(FU/4, FU),
+		color = flame_colors[v.RandomRange(1,#flame_colors)],
+		lifetime = 0,
+	})
+end
+
 local function health(v,p,me,ze)
 	local health = me.health
 	local maxhealth = me.maxhealth
@@ -144,6 +160,7 @@ local function health(v,p,me,ze)
 	
 	--health
 	do
+		local real_x,real_y = x,y
 		local x = x
 		local y = y
 		local drawRed = false
@@ -153,6 +170,7 @@ local function health(v,p,me,ze)
 		do
 			local shake = (health_shake)
 			if (ze.team == 2) then shake = $/16; end
+			-- if (#hud_fires) then shake = max($,FU); end
 			shake = min($, 8*FU) * (leveltime & 1 and 1 or -1)
 			y = $ + shake
 			x = $ - shake/2
@@ -203,8 +221,22 @@ local function health(v,p,me,ze)
 			string.format("%.0f | %.0f", health, maxhealth),
 			flags, "thin-fixed"
 		)
+
+		-- hardcoded...
+		if (ze.effects)
+			local hasfire = false
+			for name, _ in pairs(ze.effects) do
+				if name == "flame_ring.on_fire"
+					hasfire = true
+					break
+				end
+			end
+			if hasfire
+				makefire(v, real_x,real_y+height, width/FU, -(height/FU))
+			end
+		end
 	end
-	
+
 	--stamina
 	if ze.team == 1
 	and ze.sprintmeter ~= nil
@@ -353,6 +385,29 @@ local function health(v,p,me,ze)
 	else
 		fake_info.shielddef = -1
 		store_info.shield = -1
+	end
+	
+	--fire effect
+	if #hud_fires
+		for k,fire in ipairs(hud_fires)
+			if fire.tics <= 0
+				table.remove(hud_fires,k)
+			end
+		end
+		for k,fire in ipairs(hud_fires)
+			local frame = (fire.lifetime/2) % 5
+			if (frame > 2)
+				frame = E - $
+			end
+			v.drawScaled(fire.x,fire.y, fire.scale/4,
+				v.getSpritePatch(SPR_RNGF, frame+1, 0,0), flags|V_ADD|V_10TRANS,
+				v.getColormap(TC_DEFAULT, fire.color)
+			)
+
+			fire.y = $ - fire.momy
+			fire.tics = $ - 1
+			fire.lifetime = $ + 1
+		end
 	end
 	
 	old_info.health = me.health*FU
