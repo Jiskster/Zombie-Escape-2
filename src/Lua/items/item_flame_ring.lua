@@ -48,7 +48,11 @@ ZE2.Effects["flame_ring.on_fire"] = {
 	thinker = function(player, time_left)
 		if player and player.valid and player.mo and player.mo.valid then
 			if (time_left % 20) == 0 then
-				P_DamageMobj(player.mo, nil, player.flameringtarget, 35)
+				local damage = 35
+				if (player.ze2.team == 1) then
+					damage = 2
+				end
+				P_DamageMobj(player.mo, nil, player.flameringtarget, damage)
 				S_StartSoundAtVolume(nil, sfx_s248, 127, player)
 				S_StartSoundAtVolume(nil, sfx_s3kc2s, 127, player)
 			end
@@ -70,17 +74,20 @@ ZE2.Effects["flame_ring.on_fire"] = {
 					-- Make it look cool!
 					flm.color = flame_colors[P_RandomRange(1, #flame_colors)]
 					flm.frame = $ &~FF_TRANSMASK
-					flm.destscale = 0
-					flm.fuse = (i == 0) and TICRATE*3/4 or 3*TICRATE
 					if (i == 0) then
+						flm.fuse = TICRATE*3/4
 						flm.scale = FU/2
+					else
+						flm.fuse = P_RandomRange(15,29)
+						flm.scale = $ + P_RandomRange(0,FU/2)
 					end
+					flm.destscale = 0
 					flm.scalespeed = FixedDiv(flm.scale, flm.fuse*FU)
 					flm.blendmode = AST_ADD
 					flm.renderflags = $|RF_FULLBRIGHT|RF_NOCOLORMAPS
 					flm.dontdrawforviewmobj = player.mo
 					if (i == 0) then
-						P_SetObjectMomZ(flm,P_RandomRange(2,4)*player.mo.scale+P_RandomFixed())
+						-- P_SetObjectMomZ(flm,P_RandomRange(2,4)*player.mo.scale+P_RandomFixed())
 					else
 						P_SetObjectMomZ(flm, P_RandomRange(3,6)*FU)
 					end
