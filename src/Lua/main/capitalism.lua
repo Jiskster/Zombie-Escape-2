@@ -124,7 +124,7 @@ mobjinfo[MT_RUBY_BOX] = {
 	spawnhealth = 1,
 	height = 32*FRACUNIT,
 	radius = 16*FRACUNIT,
-	flags = MF_MONITOR|MF_SOLID|MF_SHOOTABLE|MF_RUNSPAWNFUNC
+	flags = MF_SOLID|MF_SHOOTABLE|MF_RUNSPAWNFUNC
 }
 
 states[S_RUBY_BOX] = {
