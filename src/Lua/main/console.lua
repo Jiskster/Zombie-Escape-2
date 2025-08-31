@@ -194,3 +194,64 @@ COM_AddCommand("z_giveeffect", function(player, effectname, duration)
 	
 	player.ze2:GiveEffect(effectname, {}, dur)
 end, COM_ADMIN)
+
+COM_AddCommand("z_sendcash", function(player, player2, cash)
+	local function giveinstructions()
+		CONS_Printf(player, "z_sendcash <receivingplayernum> <cash>: gives cash to a player")
+	end
+	if (not player2) or (not cash) or (not tonumber(cash)) then
+		giveinstructions()
+		return
+	end
+	
+	cash = tonumber($)
+	player2 = tonumber($)
+	if not players[player2] then
+		CONS_Printf(player, "\x85\This player does not exist.")
+		return
+	end
+	
+	if cash > player.ze2.cash then
+		CONS_Printf(player, "\x85\You don't have enough cash to do this.")
+		return
+	end
+	
+	if cash <= 0 then 
+		CONS_Printf(player, "\x85\Cash must be positive value.")
+		return
+	end
+	
+	player.ze2.cash = $ - cash 
+	players[player2].ze2.cash = $ + cash
+	
+	CONS_Printf(player, 
+		string.format("\x82You sent $%s cash to %s", tostring(cash), players[player2].name)
+	)
+	
+	CONS_Printf(players[player2], 
+		string.format("\x82%s\x82 sent you $%s", player.name, tostring(cash))
+	)
+end)
+
+COM_AddCommand("z_spawncash", function(player, cash)
+	local function giveinstructions()
+		CONS_Printf(player, "z_spawncash <cash>: gives cash to yourself")
+	end
+
+	if (not cash) or (not tonumber(cash)) then
+		giveinstructions()
+		return
+	end
+	
+	cash = tonumber($)
+	
+	if cash <= 0 then 
+		CONS_Printf(player, "\x85Cash must be positive value.")
+		return
+	end
+
+	ZE2:GivePlayerCash(player, cash)
+	S_StartSound(player.mo, sfx_rbyhit)
+	
+	CONS_Printf(player, "\x82You got $"..cash.."")
+end, COM_ADMIN)
