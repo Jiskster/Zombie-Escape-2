@@ -493,7 +493,6 @@ end
 
 local function wrapper(v,p)
 	if ZE2.game_ended then return end
-	if p.ze2.zombie_shop_open then return end
 	if not p.realmo then return end
 	
 	local me = p.realmo

@@ -40,7 +40,7 @@ addHook("MapLoad", function()
 	local shopdef_numsleft = {}
     local picked_shopdefs = {}
 	local itemnumsdiscarded = {}
-	local numitemstolist = 6 --P_RandomRange(3,6)
+	local numitemstolist = 5
 	local numitemstolistleft = numitemstolist
 	local tries = 0
 	

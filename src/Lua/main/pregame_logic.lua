@@ -99,7 +99,7 @@ ZE2.PregameMenuDef = {
 			condition = (cmd.forwardmove > 40),
 			var = "pregamemenu_forwardpressed",
 			action = function()
-				player.ze2.shop_selection = max(0, $ - 1)
+				player.ze2.shop_selection = max(1, $ - 1)
 				S_StartSound(nil, sfx_menu1, player)
 			end,
 		}, true)
@@ -151,7 +151,7 @@ ZE2.PregameMenuDef = {
 				end
 			end,
 		}, true)
-		
+
 		-- Spin Press (Exit Shop Menu)
 		ZE2:TryBooleanAction(player, {
 			condition = (buttons & BT_SPIN),

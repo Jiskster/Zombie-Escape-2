@@ -33,8 +33,6 @@ return function(player)
 				player.ze2.killedbysomething = false
 			end
 			
-			player.ze2.zombie_shop_open = false
-			
 			player.ze2.was_spectating = false
 			
 			P_SpawnMobj(pmo.x, pmo.y, pmo.z, MT_ZE2_TELEGFX)

@@ -79,10 +79,7 @@ return {
 	
 	lower_hud_offset = 0,
 	special_cooldown = 0,
-
-	zombie_shop_open = false,
-	zombie_shop_selection = 1,
-	zombie_shop_c1_pressed = false,
+	
 	zombie_next_type = nil,
 	
 	zombie_slowtics = 0,
