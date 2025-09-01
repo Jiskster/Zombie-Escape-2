@@ -162,12 +162,11 @@ addHook("PreThinkFrame", function()
 	for player in players.iterate do
 		if not (player.mo and player.mo.valid) then continue end
 		
+		-- You cannot be in an active round and still be on pregame menu and be invisible to enemies :P
 		if ZE2.round_active then
 			player.ze2.pregamemenu_active = false
 			player.pflags = $ &~PF_INVIS
 		end
-		
-		player.ze2.charselect_selection_anim = $ or 0
 		
 		local cmd = player.cmd
 		local buttons = cmd.buttons
@@ -178,16 +177,11 @@ addHook("PreThinkFrame", function()
 		local selection_name = ZE2.getSkinNames(player, true)[player.ze2.charselect_selection] or "sonic"
 		local pregamemenu_type = player.ze2.pregamemenu_type
 
-		if player.ze2.pregamemenu_active then
-			if not ZE2.round_active then
-				cmd.angleturn = 0
-				cmd.aiming = 0
-			end
-			
-			if ZE2.PregameMenuDef[pregamemenu_type] then
+		if player.ze2.pregamemenu_active then -- If you haven't spawned in yet. (as in spawn animation when you aren't "ready")
+			if ZE2.PregameMenuDef[pregamemenu_type] then -- Menu callbacks!
 				ZE2.PregameMenuDef[pregamemenu_type](player, cmd)
 			end
-		elseif ZE2.pregame_timeleft then
+		elseif ZE2.pregame_timeleft then -- When you are "ready" (Also when you're visible in pregame)
 			ZE2:TryBooleanAction(player, {
 				condition = buttons & BT_JUMP,
 				var = "pregamemenu_jumppressed",
@@ -199,6 +193,8 @@ addHook("PreThinkFrame", function()
 			}, true)
 		end
 		
+		-- Stun Survivors (Before the game starts)
+		-- Stun Zombies (Before & After the game starts and before they are released)
 		if ZE2.pregame_timeleft 
 		or (ZE2.zombie_releasetime and player.ze2.team == 2) then
 			player.pflags = $|PF_FULLSTASIS|PF_INVIS
@@ -206,10 +202,12 @@ addHook("PreThinkFrame", function()
 			buttons = 0
 		end
 		
+		-- Selection Animation
 		if player.ze2.charselect_selection_anim < (TICRATE/2) + 1 then
 			player.ze2.charselect_selection_anim = $ + 1
 		end
 
+		-- Wrap Around
 		if player.ze2.charselect_selection == nil or player.ze2.charselect_selection <= 0 then
 			player.ze2.charselect_selection = 1
 		elseif player.ze2.charselect_selection > skincount then
