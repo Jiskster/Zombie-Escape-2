@@ -25,24 +25,9 @@ return "Pregame", function(v, player)
 		local y = (170*FU) + offset2
 		local text
 		
-		if player.ze2.team == 1 then
-			if player.ze2.pregamemenu_active then
-				if not player.ze2.pregamemenu_intopmenu then
-					if player.ze2.pregamemenu_type == 1 then
-						text = "Press SPIN to select a character."
-					end
-				end
-			else
-				text = "Press SPIN to open pregame menu."
-			end
-		elseif ZE2.zombie_releasetime then
+		if ZE2.zombie_releasetime then
 			local rtext = tostring(G_TicsToSeconds(ZE2.zombie_releasetime).."."..G_TicsToCentiseconds(ZE2.zombie_releasetime))
 			text = "You will be released in: "..rtext.." seconds."
-		end
-		
-		if player.ze2.charselect_hold then
-			local holdticoffset = (TICRATE - player.ze2.charselect_hold)
-			text = tostring(G_TicsToSeconds(holdticoffset).."."..G_TicsToCentiseconds(holdticoffset))
 		end
 		
 		if text then

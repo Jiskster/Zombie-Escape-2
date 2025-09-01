@@ -47,7 +47,6 @@ return {
 	charselect_selection = 1,
 	charselect_prevselection = 1,
 	charselect_selection_anim = 1,
-	charselect_hold = 0,
 
 	sprintmeter = 100*FU,
 	isSprinting = false,

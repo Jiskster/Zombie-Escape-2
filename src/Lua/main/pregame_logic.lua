@@ -8,20 +8,6 @@ ZE2.PregameMenuDef = {
 		local selection_name = ZE2.getSkinNames(player, true)[player.ze2.charselect_selection] or "sonic"
 		local pregamemenu_type = player.ze2.pregamemenu_type
 		
-		
-		/* Scrapped holding mechanic
-		if (buttons & BT_SPIN) then -- hold button to choose character
-			player.ze2.charselect_hold = $ + 1
-			
-			if player.ze2.charselect_hold >= TICRATE then
-				ZE2.pickcharinselect(player,selection_name)
-				player.ze2.charselect_hold = 0
-			end
-		else
-			player.ze2.charselect_hold = 0
-		end
-		*/
-		
 		-- Pressed forward to go to main menu
 		ZE2:TryBooleanAction(player, {
 			condition = cmd.forwardmove > 40,
@@ -314,5 +300,4 @@ addHook("PlayerSpawn", function(player)
 		
 	player.ze2.charselect_prevselection = 1
 	player.ze2.charselect_selection_anim = (TICRATE/2) + 1 
-	player.ze2.charselect_hold = 0
 end)	
