@@ -94,6 +94,7 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 		player.ze2.team = 1;
 		if player.ze2 then
 			player.ze2.ghostmode = false
+			player.ze2.pregamemenu_selection = 1
 			player.ze2.vote_selection = 1
 			player.ze2.voted = false
 			player.ze2.checkpoint_number = 0
