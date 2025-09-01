@@ -34,7 +34,7 @@ ZE2.PregameMenuDef = {
 					player.ze2.charselect_selection = skincount - 1			
 				end
 				S_StartSound(nil, sfx_s3kb7, player)
-				player.ze2.charselect_selection_anim = 0
+				player.ze2.charselect_anim = 0
 			end
 		}, true)
 		
@@ -50,7 +50,7 @@ ZE2.PregameMenuDef = {
 					player.ze2.charselect_selection = 1
 				end
 				S_StartSound(nil, sfx_s3kb7, player)
-				player.ze2.charselect_selection_anim = 0
+				player.ze2.charselect_anim = 0
 			end
 		}, true)
 	end,
@@ -203,8 +203,8 @@ addHook("PreThinkFrame", function()
 		end
 		
 		-- Selection Animation
-		if player.ze2.charselect_selection_anim < (TICRATE/2) + 1 then
-			player.ze2.charselect_selection_anim = $ + 1
+		if player.ze2.charselect_anim < (TICRATE/2) + 1 then
+			player.ze2.charselect_anim = $ + 1
 		end
 
 		-- Wrap Around
@@ -233,5 +233,5 @@ addHook("PlayerSpawn", function(player)
 	player.ze2.pregamemenu_type = 2	
 		
 	player.ze2.charselect_prevselection = 1
-	player.ze2.charselect_selection_anim = (TICRATE/2) + 1 
+	player.ze2.charselect_anim = (TICRATE/2) + 1 
 end)	

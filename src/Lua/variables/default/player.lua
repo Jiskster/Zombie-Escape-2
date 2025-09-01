@@ -43,7 +43,7 @@ return {
 	
 	charselect_selection = 1,
 	charselect_prevselection = 1,
-	charselect_selection_anim = 1,
+	charselect_anim = 1,
 
 	sprintmeter = 100*FU,
 	isSprinting = false,

@@ -41,8 +41,8 @@ return "CharacterSelect", function(v, player)
 		local y = 86*FRACUNIT
 
 		-- If animation is playing.
-		if player.ze2.charselect_selection_anim ~= nil and player.ze2.charselect_prevselection then
-			local div = FixedDiv(player.ze2.charselect_selection_anim*FRACUNIT, ((TICRATE/2)*FRACUNIT))
+		if player.ze2.charselect_anim ~= nil and player.ze2.charselect_prevselection then
+			local div = FixedDiv(player.ze2.charselect_anim*FRACUNIT, ((TICRATE/2)*FRACUNIT))
 			local anim_start = (player.ze2.charselect_prevselection*25)*FRACUNIT
 			local anim_end = (player.ze2.charselect_selection*25)*FRACUNIT
 			local ese = ease.outexpo(div, anim_start, anim_end)
@@ -135,7 +135,7 @@ return "CharacterSelect", function(v, player)
 	}
 
 	for i=1,#charinfo_text do
-		local t_ese_div = FixedDiv(player.ze2.charselect_selection_anim*FRACUNIT, ((TICRATE/2)*FRACUNIT))
+		local t_ese_div = FixedDiv(player.ze2.charselect_anim*FRACUNIT, ((TICRATE/2)*FRACUNIT))
 		local t_ese = ease.outexpo(t_ese_div, 640*FRACUNIT, 320*FRACUNIT)
 		local output_color = charinfo_text[i].textcolor or SKINCOLOR_GREY
 		local output_text = charinfo_text[i].text or "????", "STCFC"
