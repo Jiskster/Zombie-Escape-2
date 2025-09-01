@@ -10,7 +10,7 @@ local apple = ZE2:CreateItem("apple", {
 	ontrigger = function(player)
 		player.mo:ChangeHealth(20)
 	end,
-	price = 150,
+	price = 120,
 })
 
 ZE2:RegisterShop_ItemID(apple)

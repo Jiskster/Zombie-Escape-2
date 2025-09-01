@@ -11,7 +11,7 @@ local grenade = ZE2:CreateItem("grenade_ring",  {
 	max_count = 255,
 	fuse = 2*TICRATE,
 	velocity_multiplier = FRACUNIT/2,
-	price = 300,
+	price = 240,
 })
 
 ZE2:RegisterShop_ItemID(grenade)
