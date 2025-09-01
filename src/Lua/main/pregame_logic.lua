@@ -9,29 +9,16 @@ ZE2.PregameMenuDef = {
 		local right = cmd.sidemove > 40
 		local skincount = #ZE2.getSkinNames(player, true) + 1
 		local selection_name = ZE2.getSkinNames(player, true)[player.ze2.charselect_selection] or "sonic"
-		local pregamemenu_type = player.ze2.pregamemenu_type
-		
-		-- Pressed forward to go to main menu
-
-		/*
-		ZE2:TryBooleanAction(player, {
-			condition = cmd.forwardmove > 40,
-			var = "pregamemenu_forwardpressed",
-			action = function()
-				player.ze2.pregamemenu_intopmenu = true
-				--print("Going to top menu")
-			end
-		}, true)
-		*/
-
 
 		-- Pressed spin to pick character
 		
 		ZE2:TryBooleanAction(player, {
-			condition = (buttons & BT_SPIN),
-			var = "pregamemenu_spinpressed",
+			condition = (buttons & BT_JUMP),
+			var = "pregamemenu_jumppressed",
 			action = function()
-				ZE2.pickcharinselect(player,selection_name)
+				ZE2.switchCharacter(player,selection_name)
+				player.ze2.pregamemenu_lasttype = 1
+				player.ze2.pregamemenu_type = 1
 			end
 		}, true)
 		
@@ -150,10 +137,8 @@ addHook("MapLoad", function()
 	end
 end)
 
-ZE2.pickcharinselect = function(player, skinname)
+ZE2.switchCharacter = function(player, skinname, animation)
 	local pmo = player.mo
-
-	player.ze2.pregamemenu_active = false
 	
 	if R_SkinUsable(player, skinname) then
 		R_SetPlayerSkin(player, skinname)
@@ -164,8 +149,10 @@ ZE2.pickcharinselect = function(player, skinname)
 	ZE2.ResetPlayer(player)
 	--S_StartSound(nil, sfx_strpst, player)
 	
-	P_SpawnMobj(pmo.x, pmo.y, pmo.z, MT_ZE2_TELEGFX)
-	
+	if animation then
+		P_SpawnMobj(pmo.x, pmo.y, pmo.z, MT_ZE2_TELEGFX)
+	end
+
 	pmo.flags2 = $ & ~MF2_DONTDRAW
 	player.pflags = $ & ~PF_INVIS
 end
@@ -245,7 +232,7 @@ addHook("PlayerSpawn", function(player)
 	end
 	
 	player.ze2.pregamemenu_intopmenu = false
-	player.ze2.pregamemenu_type = 1	
+	player.ze2.pregamemenu_type = 2	
 		
 	player.ze2.charselect_prevselection = 1
 	player.ze2.charselect_selection_anim = (TICRATE/2) + 1 

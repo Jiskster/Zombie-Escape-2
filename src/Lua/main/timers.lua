@@ -18,7 +18,7 @@ local function ForceEndAllCharacterSelection()
 		
 		if player.ze2.pregamemenu_active == true then -- get tf out of character select
 			local selection_name = ZE2.getSkinNames(player, true)[player.ze2.charselect_selection]
-			ZE2.pickcharinselect(player,selection_name) 
+			ZE2.switchCharacter(player,selection_name) 
 		end
 	end
 end
@@ -133,7 +133,7 @@ addHook("ThinkFrame", function()
 			
 			if player.ze2.pregamemenu_active == true then -- get tf out of character select
 				local selection_name = ZE2.getSkinNames(player, true)[player.ze2.charselect_selection]
-				ZE2.pickcharinselect(player,selection_name) 
+				ZE2.switchCharacter(player,selection_name,true) 
 			end
 			
 			-- Check if we have 4 or less players, and if we do, always let them be a zombie.
