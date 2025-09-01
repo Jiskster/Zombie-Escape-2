@@ -9,9 +9,16 @@ ZE2.typewriterdelay = CV_RegisterVar({
 })
 
 addHook("ThinkFrame", function()
-	if gametype ~= GT_ZE2 or gamestate ~= GS_LEVEL then return end
-	if player.ze2.pregamemenu_type ~= 2 then return end
-	
+	if gametype ~= GT_ZE2 or gamestate ~= GS_LEVEL then 
+		return
+	end
+
+	if displayplayer and displayplayer.valid then
+		if displayplayer.ze2.pregamemenu_type ~= 2 then 
+			return 
+		end
+	end
+
 	local mapinfo = mapheaderinfo[gamemap]
 	
 	if mapinfo and leveltime > ZE2.typewriterdelay.value and leveltime%2 then

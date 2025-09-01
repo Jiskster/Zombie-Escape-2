@@ -1,6 +1,41 @@
 ZE2.PregameMenuDef = {
 	[1] = function(player, cmd) -- Main Menu
+		local max_menus = 2
 
+		local buttons = cmd.buttons
+		local left = cmd.sidemove < -40
+		local right = cmd.sidemove > 40
+
+		-- Pressed left in main menu
+		ZE2:TryBooleanAction(player, {
+			condition = left,
+			var = "pregamemenu_leftpressed",
+			action = function()
+				player.ze2.pregamemenu_selection = max(1, $ - 1)
+				S_StartSound(nil, sfx_menu1, player)
+			end
+		}, true)
+		
+		-- Pressed right in main menu
+		ZE2:TryBooleanAction(player, {
+			condition = right,
+			var = "pregamemenu_rightpressed",
+			action = function()
+				player.ze2.pregamemenu_selection = min($ + 1, max_menus)
+				S_StartSound(nil, sfx_menu1, player)
+			end
+		}, true)
+
+		ZE2:TryBooleanAction(player, {
+			condition = (buttons & BT_JUMP),
+			var = "pregamemenu_jumppressed",
+			action = function()
+				local new_menu = player.ze2.pregamemenu_selection + 1
+
+				player.ze2.pregamemenu_lasttype = new_menu
+				player.ze2.pregamemenu_type = new_menu
+			end
+		}, true)
 	end,
 	[2] = function(player, cmd) -- Character Select.
 		local buttons = cmd.buttons
@@ -122,8 +157,8 @@ ZE2.PregameMenuDef = {
 			condition = (buttons & BT_SPIN),
 			var = "pregamemenu_spinpressed",
 			action = function()
-				player.ze2.pregamemenu_intopmenu = true -- Return to top menu
-				player.ze2.shop_selection = 1
+				player.ze2.pregamemenu_lasttype = 1
+				player.ze2.pregamemenu_type = 1
 			end
 		}, true)
 	end
@@ -228,8 +263,7 @@ addHook("PlayerSpawn", function(player)
 			player.ze2.pregamemenu_active = true
 		end
 	end
-	
-	player.ze2.pregamemenu_intopmenu = false
+
 	player.ze2.pregamemenu_type = 2	
 		
 	player.ze2.charselect_prevselection = 1

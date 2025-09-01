@@ -34,6 +34,7 @@ return {
 	pregamemenu_type = 1, -- [1]: Character Select
 	pregamemenu_lasttype = 1, -- [1]: Character Select
 	pregamemenu_active = false,
+	pregamemenu_selection = 1, -- in main menu
 	pregamemenu_leftpressed = false,
 	pregamemenu_rightpressed = false, 
 	pregamemenu_forwardpressed = false,
