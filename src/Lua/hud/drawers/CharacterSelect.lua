@@ -28,12 +28,10 @@ return "CharacterSelect", function(v, player)
 		return
 	end
 	
-	if player.ze2.pregamemenu_type ~= 1 then return end
-	
-	local topmenuflag = player.ze2.pregamemenu_intopmenu and V_80TRANS or 0
+	if player.ze2.pregamemenu_type ~= 2 then return end
 	
 	--Blue Bar
-	v.drawStretched(0, 67*FRACUNIT, 1500*FRACUNIT, FRACUNIT*3, barpatch, V_SNAPTOTOP|V_SNAPTOLEFT|topmenuflag)
+	v.drawStretched(0, 67*FRACUNIT, 1500*FRACUNIT, FRACUNIT*3, barpatch, V_SNAPTOTOP|V_SNAPTOLEFT)
 	
 	--Character Icons
     for i,skinname in ipairs(ZE2.getSkinNames(player,true)) do
@@ -58,7 +56,7 @@ return "CharacterSelect", function(v, player)
         
         local flags = V_SNAPTOTOP
 		local colormap = v.getColormap(skinname, skins[ZE2.getSkinNums(player,true)[i]].prefcolor)
-        v.drawScaled(x, y, scale, skinpatch, flags|topmenuflag, colormap)
+        v.drawScaled(x, y, scale, skinpatch, flags, colormap)
     end
 
 	--Selection Square
@@ -72,12 +70,12 @@ return "CharacterSelect", function(v, player)
         
         local flags = V_SNAPTOTOP
         
-        v.drawScaled(x, y, scale, cursorpatch, flags|topmenuflag)
+        v.drawScaled(x, y, scale, cursorpatch, flags)
     end
 	
 	local the_color = ZE2.getSkinFromCharSelect(player).prefcolor
 	local the_name = ZE2.getSkinFromCharSelect(player).realname
-	customhud.CustomFontString(v, 160*FU, 50*FU, the_name, "STCFC", (V_SNAPTOTOP|topmenuflag), "center" , 2*FRACUNIT, the_color)
+	customhud.CustomFontString(v, 160*FU, 50*FU, the_name, "STCFC", (V_SNAPTOTOP), "center" , 2*FRACUNIT, the_color)
 
 	local charinfo_text = {
 		[1] = {
@@ -141,6 +139,6 @@ return "CharacterSelect", function(v, player)
 		local t_ese = ease.outexpo(t_ese_div, 640*FRACUNIT, 320*FRACUNIT)
 		local output_color = charinfo_text[i].textcolor or SKINCOLOR_GREY
 		local output_text = charinfo_text[i].text or "????", "STCFC"
-		customhud.CustomFontString(v, t_ese, 100*FU + (i*(8*FU)), output_text, "TNYFC", (V_SNAPTORIGHT|V_SNAPTOTOP|topmenuflag), "right", FU, output_color)
+		customhud.CustomFontString(v, t_ese, 100*FU + (i*(8*FU)), output_text, "TNYFC", (V_SNAPTORIGHT|V_SNAPTOTOP), "right", FU, output_color)
 	end
 end

@@ -1,6 +1,6 @@
 return "Mapinfo_Animation", function(v, player)
 	if not player.ze2.pregamemenu_active then return end
-	if player.ze2.pregamemenu_type ~= 1 then return end
+	if player.ze2.pregamemenu_type ~= 2 then return end
 	local mapinfo = mapheaderinfo[gamemap]
 
 	local lvlttlY = 44*FU

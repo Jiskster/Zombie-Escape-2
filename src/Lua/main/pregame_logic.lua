@@ -1,5 +1,8 @@
 ZE2.PregameMenuDef = {
-	[1] = function(player, cmd)
+	[1] = function(player, cmd) -- Main Menu
+
+	end,
+	[2] = function(player, cmd) -- Character Select.
 		local buttons = cmd.buttons
 		
 		local left = cmd.sidemove < -40
@@ -9,6 +12,8 @@ ZE2.PregameMenuDef = {
 		local pregamemenu_type = player.ze2.pregamemenu_type
 		
 		-- Pressed forward to go to main menu
+
+		/*
 		ZE2:TryBooleanAction(player, {
 			condition = cmd.forwardmove > 40,
 			var = "pregamemenu_forwardpressed",
@@ -17,7 +22,9 @@ ZE2.PregameMenuDef = {
 				--print("Going to top menu")
 			end
 		}, true)
-		
+		*/
+
+
 		-- Pressed spin to pick character
 		
 		ZE2:TryBooleanAction(player, {
@@ -60,7 +67,7 @@ ZE2.PregameMenuDef = {
 			end
 		}, true)
 	end,
-	[2] = function(player, cmd)
+	[3] = function(player, cmd) -- Shop
 		if player.ze2.team ~= 1 then return end -- not risking it
 	
 		local buttons = cmd.buttons
@@ -70,12 +77,8 @@ ZE2.PregameMenuDef = {
 			condition = (cmd.forwardmove > 40),
 			var = "pregamemenu_forwardpressed",
 			action = function()
-				if (player.ze2.shop_selection - 1 <= 0) then 
-					player.ze2.pregamemenu_intopmenu = true -- Return to top menu
-				else 
-					player.ze2.shop_selection = $ - 1 
-					S_StartSound(nil, sfx_menu1, player)
-				end
+				player.ze2.shop_selection = max(0, $ - 1)
+				S_StartSound(nil, sfx_menu1, player)
 			end,
 		}, true)
 		
@@ -84,13 +87,8 @@ ZE2.PregameMenuDef = {
 			condition = (cmd.forwardmove < -40),
 			var = "pregamemenu_backwardspressed",
 			action = function()			
+				player.ze2.shop_selection = min($ + 1, #ZE2.Survivor_ShopList)
 				S_StartSound(nil, sfx_menu1, player)
-				
-				if player.ze2.shop_selection + 1 > #ZE2.Survivor_ShopList
-					player.ze2.shop_selection = #ZE2.Survivor_ShopList
-				else
-				   player.ze2.shop_selection = $ + 1
-				end
 			end,
 		}, true)
 		
@@ -183,7 +181,6 @@ addHook("PreThinkFrame", function()
 		end
 		
 		player.ze2.charselect_selection_anim = $ or 0
-		--if ZE2.round_active then return end 
 		
 		local cmd = player.cmd
 		local buttons = cmd.buttons
@@ -196,63 +193,21 @@ addHook("PreThinkFrame", function()
 
 		if player.ze2.pregamemenu_active then
 			if not ZE2.round_active then
-				--player.pflags = $|PF_FULLSTASIS|PF_INVIS
-				
-				--buttons = 0
 				cmd.angleturn = 0
 				cmd.aiming = 0
 			end
 			
-			if not player.ze2.pregamemenu_intopmenu then
-				if ZE2.PregameMenuDef[pregamemenu_type] then
-					ZE2.PregameMenuDef[pregamemenu_type](player, cmd)
-				end
-			else
-				ZE2:TryBooleanAction(player, {
-					condition = cmd.forwardmove < -40,
-					var = "pregamemenu_backwardspressed",
-					action = function()
-						player.ze2.pregamemenu_intopmenu = false
-					end
-				}, true)
-				
-				ZE2:TryBooleanAction(player, {
-					condition = left,
-					var = "pregamemenu_leftpressed",
-					action = function()
-						if player.ze2.pregamemenu_type ~= 1 then
-							player.ze2.pregamemenu_lasttype = player.ze2.pregamemenu_type
-							player.ze2.pregamemenu_type = 1
-							player.ze2.pregamemenu_intopmenuanim = player.ze2.pregamemenu_intopmenuanim_max
-						end
-						
-						--print("Character Select Menu")
-					end
-				}, true)
-				
-				ZE2:TryBooleanAction(player, {
-					condition = right,
-					var = "pregamemenu_rightpressed",
-					action = function()
-						if player.ze2.pregamemenu_type ~= 2 then
-							player.ze2.pregamemenu_lasttype = player.ze2.pregamemenu_type
-							player.ze2.pregamemenu_type = 2
-							player.ze2.pregamemenu_intopmenuanim = player.ze2.pregamemenu_intopmenuanim_max
-						end
-						
-						--print("Shop Menu")
-					end
-				}, true)
+			if ZE2.PregameMenuDef[pregamemenu_type] then
+				ZE2.PregameMenuDef[pregamemenu_type](player, cmd)
 			end
 		elseif ZE2.pregame_timeleft then
 			ZE2:TryBooleanAction(player, {
-				condition = buttons & BT_SPIN,
-				var = "pregamemenu_spinpressed",
+				condition = buttons & BT_JUMP,
+				var = "pregamemenu_jumppressed",
 				action = function()
 					player.ze2.pregamemenu_lasttype = 1
 					player.ze2.pregamemenu_type = 1
 					player.ze2.pregamemenu_active = true
-					player.ze2.pregamemenu_intopmenu = false
 				end
 			}, true)
 		end
@@ -262,12 +217,6 @@ addHook("PreThinkFrame", function()
 			player.pflags = $|PF_FULLSTASIS|PF_INVIS
 			
 			buttons = 0
-			--cmd.angleturn = 0
-			--cmd.aiming = 0
-		end
-		
-		if player.ze2.pregamemenu_intopmenuanim then
-			player.ze2.pregamemenu_intopmenuanim = $ - 1
 		end
 		
 		if player.ze2.charselect_selection_anim < (TICRATE/2) + 1 then
