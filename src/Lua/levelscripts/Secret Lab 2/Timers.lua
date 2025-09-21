@@ -32,7 +32,7 @@ ZE2:AddTimer("SecretLab2_4", {
 
 ZE2:AddTimer("SecretLab2_5", {
 	text = "The Final Gate will open in:",
-	time = 60*TICRATE,
+	time = 30*TICRATE,
 	on_end_tag = 30,
 	textcolor = SKINCOLOR_YELLOW,
 	lua_linedef_exec = "SCLAB2_5",
