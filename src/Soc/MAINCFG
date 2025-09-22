@@ -83,7 +83,7 @@ NextLevel = 43
 SkyNum = 21
 NoZone = True
 SelectHeading = ZE2 Survival Maps
-Lua.ze2_zombiereleasetime = 15
+Lua.ze2_zombiereleasetime = 9
 Lua.ze2_timelimit = 6
 
 Level 06
@@ -211,7 +211,7 @@ Weather = 1
 NoZone = True
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 7
-Lua.ze2_zombiereleasetime = 14
+Lua.ze2_zombiereleasetime = 12
 Lua.ze2_rounds = 2
 
 Level 23
