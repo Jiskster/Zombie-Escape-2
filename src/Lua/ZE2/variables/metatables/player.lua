@@ -1,10 +1,10 @@
 local p_mt = userdataMetatable("player_t")
 local p_mt_oldindex = p_mt.__index -- save old __index
 local ze2_players = {} -- the grand table!!
-local default_player = ZE2.Require "variables/default/player"
+local default_player = ZE2.Require "ZE2/variables/default/player"
 local showed_deprecated_warning = false
 
-local ze2_funcs_path = "variables/metatables/player_functions/"
+local ze2_funcs_path = "ZE2/variables/metatables/player_functions/"
 
 local ze2_funcs = {
 	["UpdateDamageNumbers"] = ZE2.Require(ze2_funcs_path + "UpdateDamageNumbers");

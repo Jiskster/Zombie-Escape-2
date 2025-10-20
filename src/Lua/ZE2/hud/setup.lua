@@ -6,7 +6,7 @@ customhud.SetupFont("DSTCF", -1, 4);
 customhud.SetupFont("DTNYF", -1, 4);
 
 local function SetupHud(filename)
-	local funcname, drawfunc, type, hudlayer = dofile(path.."/"..filename)
+	local funcname, drawfunc, type, hudlayer = dofile("ZE2/"..path.."/"..filename)
 	
 	-- Make a new function from the current function.
 	-- Currently makes it so huds don't draw if it's not Zombie Escape.

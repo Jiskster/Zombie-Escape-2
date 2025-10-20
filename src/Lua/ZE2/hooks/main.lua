@@ -33,7 +33,7 @@ local hook_names = {
 -- TODO: Merge all functions in one hook each, instead of creating a new hook for each file.
 for hookname,hooktable in pairs(hook_names) do
 	for i,filename in ipairs(hooktable) do
-		local full_path = "hooks/"..hookname.."/"..filename
+		local full_path = "ZE2/hooks/"..hookname.."/"..filename
 
 		local func = dofile(full_path..".lua")
 	

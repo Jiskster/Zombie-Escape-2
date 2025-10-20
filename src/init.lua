@@ -1,47 +1,110 @@
+local dofile = dofile;
+
+local path = ""
+local subpath = ""
+
 rawset(_G, "ZE2", {
 	Knockback = {};
 });
 
-dofile "gametype.lua"
+local function ze2file(path)
+	print("ZE2/"..subpath..path)
+	
+	return dofile("ZE2/"..subpath..path)
+end
 
-dofile "freeslot/sounds"
+local function set_subpath(var)
+	if var ~= nil then
+		subpath = var
+	else
+		error("missing subpath input")
+	end
+end
 
-dofile "functions/main"
+local function I_LoadLibs(sp)	
+	set_subpath (sp);
 
-dofile "main/skincolors.lua"
+	ze2file "fixedfromstring.lua"
+	ze2file "json.lua"
+	ze2file "mobjlib.lua"
+	ze2file "customhudlib.lua"
+	ze2file "countingplayers.lua"
+	ze2file "itemlib.lua"
+	ze2file "mtimeconv.lua"
+	ze2file "sglib.lua" -- https://github.com/GenericHeroGuy/ringracers-scripts
+	
+	set_subpath "";
+end; 
 
-dofile "libraries/fixedfromstring.lua"
-dofile "libraries/json.lua"
-dofile "libraries/mobjlib.lua"
-dofile "libraries/customhudlib.lua"
-dofile "libraries/countingplayers.lua"
-dofile "libraries/itemlib.lua"
-dofile "libraries/mtimeconv.lua"
-dofile "libraries/sglib.lua" -- https://github.com/GenericHeroGuy/ringracers-scripts
+local function I_LoadItems(sp)
+	set_subpath (sp);
+	
+	ze2file "item_red_ring.lua"
+	ze2file "item_auto_ring.lua"
+	ze2file "item_apple.lua"
+	ze2file "item_milk.lua"
+	ze2file "item_wood_fence.lua" 
+	ze2file "item_insta_burst.lua"
+	ze2file "item_ws_mirror.lua"
+	ze2file "item_explosion_ring.lua"
+	ze2file "item_blue_spring.lua"
+	ze2file "item_scatter_ring.lua"
+	ze2file "item_bounce_ring.lua"
+	ze2file "item_rail_ring.lua"
+	ze2file "item_gfz_sphere.lua"
+	ze2file "item_infinity_ring.lua"
+	ze2file "item_grenade.lua" 
+	ze2file "item_landmine.lua"
+	ze2file "item_energy_drink.lua"
+	ze2file "item_flame_ring.lua"
+	
+	set_subpath "";
+end
 
-dofile "main/shop.lua"
+local function I_Main(sp)
+	set_subpath (sp);
+	
+	ze2file "zombie/zombie_colors.lua"
+	
+	ze2file "skincolors.lua"
+	
+	ze2file "pregame_logic.lua"
 
-// ITEMS
-dofile "items/item_red_ring.lua"
-dofile "items/item_auto_ring.lua"
-dofile "items/item_apple.lua"
-dofile "items/item_milk.lua"
-dofile "items/item_wood_fence.lua" 
-dofile "items/item_insta_burst.lua"
-dofile "items/item_ws_mirror.lua"
-dofile "items/item_explosion_ring.lua"
-dofile "items/item_blue_spring.lua"
-dofile "items/item_scatter_ring.lua"
-dofile "items/item_bounce_ring.lua"
-dofile "items/item_rail_ring.lua"
-dofile "items/item_gfz_sphere.lua"
-dofile "items/item_infinity_ring.lua"
-dofile "items/item_grenade.lua" 
-dofile "items/item_landmine.lua"
-dofile "items/item_energy_drink.lua"
-dofile "items/item_flame_ring.lua"
+	ze2file "crouch.lua"
 
-dofile "variables/main"
+	ze2file "characterconfigs.lua"
+
+	ze2file "console.lua"
+	ze2file "health_and_combat.lua" -- main stuff 
+
+	ze2file "capitalism.lua"
+	ze2file "exiting.lua"
+	ze2file "mapinfo_animation.lua"
+	ze2file "timers.lua"
+	ze2file "emotes.lua"
+
+	ze2file "maptimers.lua"
+	ze2file "checkpointsystem.lua"
+	ze2file "shields.lua"
+	ze2file "ladder.lua"
+	ze2file "teamchat.lua"
+	
+	set_subpath "";
+end;
+
+ze2file "gametype.lua"
+
+ze2file "freeslot/sounds"
+
+ze2file "functions/main"
+
+I_LoadLibs("libraries/")
+
+ze2file "shop/main.lua"
+
+I_LoadItems("items/")
+
+ze2file "variables/main"
 
 -- Optimized version of actions.
 -- TODO: Remake items that use this and remove this action override.
@@ -80,47 +143,24 @@ end
 
 states[S_RINGEXPLODE] = {SPR_NULL, A, 1, A_RingExplode2, 0, 0, S_XPLD1, 0}
 
-// ITEMS END
+ze2file "enemies/vanilla.lua"
+ze2file "enemies/doom.lua"
 
-dofile "enemies/vanilla.lua"
-dofile "enemies/doom.lua"
+I_Main("main/")
 
-dofile "main/zombie/zombie_colors.lua"
+ze2file "hooks/main"
 
-dofile "main/pregame_logic.lua"
+ze2file "objects/megahp.lua"
+ze2file "objects/teleporter_gfx.lua"
+ze2file "objects/corona.lua"
 
-dofile "main/crouch.lua"
-
-dofile "main/characterconfigs.lua"
-
-dofile "main/console.lua"
-dofile "main/health_and_combat.lua" -- main stuff 
-
-dofile "main/capitalism.lua"
-dofile "main/exiting.lua"
-dofile "main/mapinfo_animation.lua"
-dofile "main/timers.lua"
-dofile "main/emotes.lua"
-
-dofile "main/maptimers.lua"
-dofile "main/checkpointsystem.lua"
-dofile "main/shields.lua"
-dofile "main/ladder.lua"
-dofile "main/teamchat.lua"
-
-dofile "hooks/main"
-
-dofile "objects/megahp.lua"
-dofile "objects/teleporter_gfx.lua"
-dofile "objects/corona.lua"
-
-dofile "hud/setup"
+ze2file "hud/setup"
 
 -- [ Level Scripts ] -- 
-dofile "levelscripts/loadscripts.lua"
+ze2file "levelscripts/loadscripts.lua"
 
-dofile "main/debug/cvmake.lua"
-dofile "main/debug/commands.lua"
+ze2file "main/debug/cvmake.lua"
+ze2file "main/debug/commands.lua"
 
-dofile "title_screen/scenery.lua"
-dofile "title_screen/hud.lua"
+ze2file "title_screen/scenery.lua"
+ze2file "title_screen/hud.lua"

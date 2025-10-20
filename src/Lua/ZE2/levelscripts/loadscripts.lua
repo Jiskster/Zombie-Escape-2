@@ -2,7 +2,7 @@ local path = "levelscripts"
 local folder
 
 local function dofolder(file)
-	dofile(path.."/"..folder.."/"..file)
+	dofile("ZE2/"..path.."/"..folder.."/"..file)
 end
 
 folder = "Waterfall";
