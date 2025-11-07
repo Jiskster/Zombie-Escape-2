@@ -6,7 +6,7 @@ ZE2.ZombieConfig = {
 	["normal"] = {
 		skin = "zsonic",
 		skincolor = SKINCOLOR_MOSS,
-		normalspeed = 18 * FRACUNIT,
+		normalspeed = 21 * FRACUNIT,
 		health = 10000,
 		charability = CA_NONE,
 		charability2 = CA2_NONE,
@@ -30,7 +30,7 @@ ZE2.ZombieConfig = {
 	["ranged"] = {
 		skin = "ztails",
 		skincolor = SKINCOLOR_MOSS,
-		normalspeed = 20 * FRACUNIT,
+		normalspeed = 23 * FRACUNIT,
 		health = 4000,
 		charability = CA_NONE,
 		charability2 = CA2_NONE,
@@ -48,7 +48,7 @@ ZE2.ZombieConfig = {
 	["heavy"] = {
 		skin = "zknuckles",
 		skincolor = SKINCOLOR_MOSS,
-		normalspeed = 16 * FRACUNIT,
+		normalspeed = 19 * FRACUNIT,
 		health = 12000,
 		charability = CA_NONE,
 		charability2 = CA2_NONE,
@@ -66,7 +66,7 @@ ZE2.ZombieConfig = {
 	["alpha"] = {
 		skin = "zsonic",
 		skincolor = SKINCOLOR_ALPHAZOMBIE,
-		normalspeed = 17 * FRACUNIT,
+		normalspeed = 20 * FRACUNIT,
 		health = 15000,
 		charability = CA_NONE,
 		charability2 = CA2_NONE,
@@ -358,13 +358,13 @@ end
 function ZE2:AddCharacterConfig(skinname, input_table)
 	local ZE2 = self;
 	local speeds = {
-		[1] = 15*FRACUNIT, -- slow
-		[2] = 16*FRACUNIT, -- normal
-		[3] = 17*FRACUNIT, -- fast
+		[1] = 18*FRACUNIT, -- slow
+		[2] = 19*FRACUNIT, -- normal
+		[3] = 20*FRACUNIT, -- fast
 		
-		["slow"] = 15*FRACUNIT,
-		["normal"] = 16*FRACUNIT,
-		["fast"] = 17*FRACUNIT,
+		["slow"] = 18*FRACUNIT,
+		["normal"] = 19*FRACUNIT,
+		["fast"] = 20*FRACUNIT,
 	}
 	
 	if ZE2.CharacterConfig[skinname] then
