@@ -29,6 +29,41 @@ local function drawSkewFill(v, x,y, w,h, flags, c, skincolor)
 	end
 end
 
+-- `skincolor` can be a table with palette indicies, or a skincolornum_t
+-- if `skincolor` isnt nil, `c` wont be used
+local function drawSkewFill(v, x,y, w,h, flags, c, skincolor)
+	if (w == nil or w <= 0) then return end
+	local table_clr = type(skincolor) == "table"
+	local clr_len = 16
+	if skincolor ~= nil
+		if table_clr
+			clr_len = #skincolor
+		end
+		w = FixedDiv($, clr_len*FU)
+	end
+	if not table_clr then clr_len = $ - 1; end
+	
+	x = $ + (FixedDiv(h, 2*FU) - FU)
+	while h >= 0
+		if (not skincolor)
+			v.drawStretched(x, y, w, 2*FU, v.cachePatch("ZE2_C"), flags, v.getColormap(TC_DEFAULT, c))
+		else
+			local ramp = table_clr and skincolor or skincolors[skincolor].ramp
+			local new_x = x
+			for i = (table_clr and 1 or 0), clr_len
+				local newcolor = ZE2.paletteToColor[ramp[i]]
+				v.drawStretched(new_x, y, w, 2*FU, v.cachePatch("ZE2_C"), flags, v.getColormap(TC_DEFAULT, newcolor))
+				new_x = $ + w
+			end
+		end
+		
+		--v.drawFixedFill(x,y, w,2*FU, c)
+		h = $ - 2*FU
+		y = $ + 2*FU
+		x = $ - FU
+	end
+end
+
 local old_info = {}
 local fake_info = {}
 local store_info = {}
