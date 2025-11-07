@@ -417,43 +417,41 @@ local function health(v,p,me,ze)
 	old_disp = p
 end
 
-local function roundinfo(v,p,me,ze)
-	local timeemb = v.cachePatch("NGRTIMER")
-	local the_time 
-	
-	-- [Survivor Count] --			
-	v.drawStretched((138-28-7)*FU, 2*FU, 16*FU, 6*FU, v.cachePatch("Z_BG_BLUE"), 
-	V_SNAPTOTOP)
-	
-	customhud.CustomFontString(v, 138-28, 1, tostring(ZE2.SurvivorCount()), "STCFC", 
-	(V_SNAPTOTOP), "center" , nil, SKINCOLOR_BLUE)
-
-	-- [Zombie Count] --
-	
-	v.drawStretched((138+64-7)*FU, 2*FU, 16*FU, 6*FU, v.cachePatch("Z_BG_RED"), 
-	V_SNAPTOTOP)
-	
-	customhud.CustomFontString(v, 138+64, 1, tostring(ZE2.ZombieCount()), "STCFC", 
-	(V_SNAPTOTOP), "center" , nil, SKINCOLOR_RED)
-	
+local function getTimeString()
 	if ZE2.round_active then
 		if ZE2.time_limit then
-			the_time = G_TicsToMTIME(ZE2.time_limit - ZE2.game_time)
+			return G_TicsToMTIME(ZE2.time_limit - ZE2.game_time)
 		else
-			the_time = G_TicsToMTIME(ZE2.game_time)
+			return G_TicsToMTIME(ZE2.game_time)
 		end
 	else
-		the_time = G_TicsToMTIME(ZE2.pregame_timeleft)
+		return G_TicsToMTIME(ZE2.pregame_timeleft)
 	end
+end
 
-	if the_time ~= nil
-		customhud.CustomFontString(v, 150, 1, the_time, "STCFC", 
-		(V_SNAPTOTOP), nil , nil, SKINCOLOR_BEIGE)
-		
-		v.drawScaled(138*FRACUNIT, 0, FRACUNIT,
-		timeemb, (V_SNAPTOTOP))
-	end
+local function roundinfo(v,p,me,ze)
+	local top = v.cachePatch("Z_TOP")
+	local topwidth = top.width
+	local topred = v.cachePatch("Z_TOP_RED")
+	local topredwidth = topred.width
+	local topblue = v.cachePatch("Z_TOP_BLUE")
+	local topbluewidth = topblue.width
+	local timestring = getTimeString()
+	local zombie_count = ZE2.ZombieCount()
+	local survivor_count = ZE2.SurvivorCount()
+	
+	local spread = 40
+	
+	v.draw(160-(topwidth/2), 0, top, V_SNAPTOTOP|V_20TRANS)
+	v.draw(160-(topredwidth/2) -spread, 0, topred , V_SNAPTOTOP|V_20TRANS)
+	v.draw(160-(topbluewidth/2) +spread, 0, topblue, V_SNAPTOTOP|V_20TRANS)
+	v.drawString(160, 2, timestring, V_SNAPTOTOP, "center")
+	
+	v.drawString(160-spread, 2, zombie_count, V_REDMAP|V_SNAPTOTOP, "center")
+	v.drawString(160+spread, 2, survivor_count, V_BLUEMAP|V_SNAPTOTOP, "center")
+end
 
+local function cashinfo(v,p,me,ze)
 	if ze.cash ~= nil then
 		customhud.CustomFontString(v, 320-10, 0+5, "$ "..ze.cash, "STCFC", 
 		(V_SNAPTOTOP|V_SNAPTORIGHT), "right" , nil, SKINCOLOR_FOREST)
@@ -500,6 +498,7 @@ local function wrapper(v,p)
 	
 	health(v,p,me,ze)
 	roundinfo(v,p,me,ze)
+	cashinfo(v,p,me,ze)
 	eventtimers(v,p,me,ze)
 end
 
