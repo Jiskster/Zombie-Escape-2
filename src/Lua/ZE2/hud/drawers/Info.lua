@@ -487,9 +487,13 @@ local function roundinfo(v,p,me,ze)
 end
 
 local function cashinfo(v,p,me,ze)
+	local green = v.cachePatch("Z_TOP_GREEN")
+	local greenwidth = green.width
 	if ze.cash ~= nil then
-		customhud.CustomFontString(v, 320-10, 0+5, "$ "..ze.cash, "STCFC", 
-		(V_SNAPTOTOP|V_SNAPTORIGHT), "right" , nil, SKINCOLOR_FOREST)
+		local left_offset = 2
+		
+		v.draw(320-greenwidth, 0, green, V_SNAPTOTOP|V_SNAPTORIGHT|V_20TRANS)
+		v.drawString(320-left_offset, 2, "$"..ze.cash, V_GREENMAP|V_SNAPTOTOP|V_SNAPTORIGHT, "thin-right")
 	end
 end
 
