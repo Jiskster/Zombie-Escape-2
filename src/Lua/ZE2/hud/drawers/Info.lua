@@ -177,7 +177,7 @@ local function health(v,p,me,ze)
 		end
 		
 		local width = FixedMul(max_width, FixedDiv(health,maxhealth))
-		drawSkewFill(v, x+shadow,y+shadow, max_width,height, flags, SKINCOLOR__31) -- 31
+		drawSkewFill(v, x+shadow,y+shadow, max_width,height, flags|V_50TRANS, SKINCOLOR__31) -- 31
 		if (old_info.health > me.health*FU)
 			health_shake = $ + abs(old_info.health - health)
 		end
@@ -250,7 +250,7 @@ local function health(v,p,me,ze)
 		local x = x
 		local y = y - (height + pad)
 		local width = FixedMul(max_width, FixedDiv(sprint,maxsprint))
-		drawSkewFill(v, x+shadow,y+shadow, max_width,height, flags, SKINCOLOR__31) --31
+		drawSkewFill(v, x+shadow,y+shadow, max_width,height, flags|V_50TRANS, SKINCOLOR__31) --31
 		drawSkewFill(v, x,y, width,height, flags, SKINCOLOR__149)
 		if sprint <= maxsprint/2
 			local fade = FixedMul(10*FU, fade_sin)/FU
@@ -293,7 +293,7 @@ local function health(v,p,me,ze)
 		local x = x + adjust
 		local y = y - (height + pad)
 		local width = FixedMul(max_width, FU - FixedDiv(rage,maxsprint))
-		drawSkewFill(v, x+shadow,y+shadow, max_width,height, flags, SKINCOLOR__31) --31
+		drawSkewFill(v, x+shadow,y+shadow, max_width,height, flags|V_50TRANS, SKINCOLOR__31) --31
 		
 		local color = SKINCOLOR_ALPHAZOMBIE
 		local usecolor = true
