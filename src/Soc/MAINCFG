@@ -173,32 +173,6 @@ NoZone = True
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 7
 
-Level 19
-Levelname = Acid Base
-Subtitle = The prequel of NOXY
-Act = 0
-Music = MEOW
-TypeOfLevel = ZE2
-NextLevel = NX
-SkyNum = 30
-NoZone = True
-SelectHeading = ZE2 Survival Maps
-Lua.ze2_timelimit = 7
-Lua.ze2_rounds = 2
-
-Level 20
-Levelname = Marble Depths
-Act = 0
-Music = UMBZ01
-Subtitle = Ancient Plains
-TypeOfLevel = ZE2
-SkyNum = 2
-SelectHeading = ZE2 Survival Maps
-NoZone = True
-NextLevel = A1
-Lua.ze2_timelimit = 6
-Lua.ze2_rounds = 2
-
 Level 22
 Levelname = Ancient Catacombs
 Subtitle = Lost in the creepy catacombs
@@ -226,19 +200,6 @@ NoZone = True
 Weather = PRECIP_SNOW
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 7
-
-Level 24
-Levelname = FATAL DESERT
-Subtitle = A dangerous Journey
-Act = 0
-Music = DESERT
-TypeOfLevel = ZE2
-NextLevel = N4
-SkyNum = 11
-NoZone = True
-SelectHeading = ZE2 Survival Maps
-Lua.ze2_timelimit = 5
-Lua.ze2_rounds = 2
 
 Level 25
 Levelname = Lost Sewer

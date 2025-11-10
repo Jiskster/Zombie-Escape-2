@@ -14,8 +14,6 @@ folder = "Noxy"; dofolder("Timers");
 
 folder = "Grancolia"; dofolder("Timers");
 
-folder = "Marble Depths"; dofolder("Timers");
-
 folder = "Doomed Corp";
 
 dofolder("Sounds");
@@ -23,8 +21,6 @@ dofolder("Electric_Sparkles");
 dofolder("Objects");
 dofolder("Timers");
 dofolder("Global_Sounds");
-
-folder = "Fatal Desert"; dofolder("Timers");
 
 folder = "Frozen Chaos"; dofolder("Timers");
 
@@ -50,8 +46,6 @@ folder = "Minecraft";
 dofolder("Timers");
 dofolder("Footsteps");
 dofolder("Sounds_and_Objects");
-
-folder = "Acid Base"; dofolder("Timers");
 
 folder = "The Ruins"; 
 
