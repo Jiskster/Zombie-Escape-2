@@ -160,9 +160,9 @@ ZE2.SetCCtoplayer = function(player)
 		end
 		
 		if (cc[pmo.skin].acceleration) then 
-			player.acceleration = cc[pmo.skin].acceleration 
+			player.acceleration = (cc[pmo.skin].acceleration/8)*6
 		else
-			player.acceleration = skins[pmo.skin].acceleration
+			player.acceleration = (skins[pmo.skin].acceleration/8)*6
 		end
 
 		if ZE2.sourcemovement.value then
