@@ -201,6 +201,7 @@ NoZone = True
 Weather = PRECIP_SNOW
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 7
+Lua.ze2_laddertag = 300
 
 Level 25
 Levelname = Lost Sewer
