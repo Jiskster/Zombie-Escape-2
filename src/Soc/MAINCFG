@@ -122,6 +122,7 @@ SelectHeading = ZE2 Survival Maps
 NoZone = True
 NextLevel = J1
 Lua.ze2_timelimit = 6
+Lua.ze2_laddertag = 300
 Lua.ze2_zombiereleasetime = 11
 
 Level 15
