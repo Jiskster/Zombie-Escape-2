@@ -31,6 +31,9 @@ ZE2.JumpSprintFatigue = 17*FRACUNIT
 
 ZE2.HUD = {}
 
+local flame_colors = {
+	SKINCOLOR_FLAME, SKINCOLOR_KETCHUP, SKINCOLOR_GARNET, SKINCOLOR_ORANGE, --SKINCOLOR_RUST, SKINCOLOR_COPPER
+}
 ZE2.Effects = {
 	["alphazombie.rage"] = {
 		thinker = function(player)
@@ -48,8 +51,131 @@ ZE2.Effects = {
 				S_StartSound(player.mo, sfx_bstdn)
 			end
 		end
+	},
+	-- still has left-over functionality of the flame ring
+	["flaming_effect"] = {
+		thinker = function(player, time_left)
+			if player and player.valid and player.mo and player.mo.valid then
+				if (time_left % 20) == 0 then
+					local damage = 35
+					if (player.ze2.team == 1) then
+						damage = 2
+					end
+					P_DamageMobj(player.mo, nil, player.flameringtarget, damage)
+					S_StartSoundAtVolume(nil, sfx_s248, 127, player)
+					S_StartSoundAtVolume(nil, sfx_s3kc2s, 127, player)
+				end
+				
+				local rad = FixedDiv(player.mo.radius, player.mo.scale)/FU
+				local hei = FixedDiv(player.mo.height, player.mo.scale)/FU
+				if (time_left % 3) == 0 then
+					for i = 0,1
+						-- P_SpawnMobjFromMobj already scales offsets.
+						local flm = P_SpawnMobjFromMobj(player.mo, 
+										P_RandomRange(-rad,rad)*FU, 
+										P_RandomRange(-rad,rad)*FU, 
+										P_RandomRange(0, hei)*FU,
+									i and MT_FLAMEPARTICLE or MT_RS_THROWNFLAME)
+						
+						-- Make intangible.
+						flm.flags = $|MF_NOCLIPTHING &~(MF_MISSILE)
+						
+						-- Make it look cool!
+						flm.color = flame_colors[P_RandomRange(1, #flame_colors)]
+						flm.frame = $ &~FF_TRANSMASK
+						if (i == 0) then
+							flm.fuse = TICRATE*3/4
+							flm.scale = FU/2
+						else
+							flm.fuse = P_RandomRange(15,29)
+							flm.scale = $ + P_RandomRange(0,FU/2)
+						end
+						flm.destscale = 0
+						flm.scalespeed = FixedDiv(flm.scale, flm.fuse*FU)
+						flm.blendmode = AST_ADD
+						flm.renderflags = $|RF_FULLBRIGHT|RF_NOCOLORMAPS
+						flm.dontdrawforviewmobj = player.mo
+						if (i == 0) then
+							-- P_SetObjectMomZ(flm,P_RandomRange(2,4)*player.mo.scale+P_RandomFixed())
+						else
+							P_SetObjectMomZ(flm, P_RandomRange(3,6)*FU)
+						end
+					end
+				end
+				local smoke = P_SpawnMobjFromMobj(player.mo,
+					P_RandomRange(-rad,rad)*FU,
+					P_RandomRange(-rad,rad)*FU,
+					P_RandomRange(0,hei)*FU,
+					MT_SMOKE
+				)
+				P_SetObjectMomZ(smoke,P_RandomRange(1,2)*player.mo.scale+P_RandomFixed())
+				smoke.scale = $ + P_RandomRange(0,FU/2)
+				smoke.alpha = FU/2
+				smoke.dontdrawforviewmobj = player.mo
+			end
+		end,
+		on_end = function(player)
+			player.flameringtarget = nil
+		end
 	}
 }
+
+/*
+	Linedef arguments:
+
+	String arg2: effect name
+
+	(Set arguments to -1 to have them be ignored)
+	argument 1: Effect duration (in tics)
+
+	argument 2: player->normalspeed (in int)
+	argument 3: normalspeed multiplier (in fixed)
+				how to calculate fixed scale:
+				1. take a decimal (1.75)
+				2. multiply 65536 by the decimal (65536 * 1.75 = 114 688)
+				3. round down if necessary
+
+	argument 4: player->actionspd (in int)
+	argument 5: actionspd multiplier (in fixed)
+
+	argument 6: charability
+*/
+local index_to_attrib = {
+	[1] = "normalspeed",
+	[2] = "normalspeed_multiplier",
+	[3] = "actionspd",
+	[4] = "actionspd_multiplier",
+	[5] = "charability",
+}
+local index_mul = {
+	[1] = FU,
+	[2] = 1,
+	[3] = FU,
+	[4] = 1,
+	[5] = 1,
+}
+addHook("LinedefExecute", function(line, mo)
+	if not udmf then return end
+	if not (mo.player and mo.player.valid) then return end
+	if not (mo.player.health) then return end
+
+	local args = line.args
+
+	local effect_attribs = {}
+	local effect_name = line.stringargs[1]
+	local effect_duration = args[0]
+	for i = 1, 5 do
+		if args[i] == -1 then continue; end
+		effect_attribs[index_to_attrib[i]] = args[i] * index_mul[i]
+	end
+
+	if ZE2.Effects[effect_name] == nil
+		print('\x82WARNING\x80: Effect name "'..effect_name..'" is not valid. (line #'..(#line)..')')
+		return
+	end
+
+	mo.player.ze2:GiveEffect(effect_name, effect_attribs, effect_duration)
+end, "ZE2_ADDEFFECT")
 
 ZE2.teams = {"Survivors", "Zombies"}
 

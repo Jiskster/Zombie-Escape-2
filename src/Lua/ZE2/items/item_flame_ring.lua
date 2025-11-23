@@ -40,76 +40,6 @@ sfxinfo[sfx_rs_fla] = {
 	flags = SF_NOMULTIPLESOUND
 }
 
-local flame_colors = {
-	SKINCOLOR_FLAME, SKINCOLOR_KETCHUP, SKINCOLOR_GARNET, SKINCOLOR_ORANGE, --SKINCOLOR_RUST, SKINCOLOR_COPPER
-}
-
-ZE2.Effects["flame_ring.on_fire"] = {
-	thinker = function(player, time_left)
-		if player and player.valid and player.mo and player.mo.valid then
-			if (time_left % 20) == 0 then
-				local damage = 35
-				if (player.ze2.team == 1) then
-					damage = 2
-				end
-				P_DamageMobj(player.mo, nil, player.flameringtarget, damage)
-				S_StartSoundAtVolume(nil, sfx_s248, 127, player)
-				S_StartSoundAtVolume(nil, sfx_s3kc2s, 127, player)
-			end
-			
-			local rad = FixedDiv(player.mo.radius, player.mo.scale)/FU
-			local hei = FixedDiv(player.mo.height, player.mo.scale)/FU
-			if (time_left % 3) == 0 then
-				for i = 0,1
-					--P_SpawnMobjFromMobj already scales offsets.
-					local flm = P_SpawnMobjFromMobj(player.mo, 
-									P_RandomRange(-rad,rad)*FU, 
-									P_RandomRange(-rad,rad)*FU, 
-									P_RandomRange(0, hei)*FU,
-								i and MT_FLAMEPARTICLE or MT_RS_THROWNFLAME)
-					
-					-- Make intangible.
-					flm.flags = $|MF_NOCLIPTHING &~(MF_MISSILE)
-					
-					-- Make it look cool!
-					flm.color = flame_colors[P_RandomRange(1, #flame_colors)]
-					flm.frame = $ &~FF_TRANSMASK
-					if (i == 0) then
-						flm.fuse = TICRATE*3/4
-						flm.scale = FU/2
-					else
-						flm.fuse = P_RandomRange(15,29)
-						flm.scale = $ + P_RandomRange(0,FU/2)
-					end
-					flm.destscale = 0
-					flm.scalespeed = FixedDiv(flm.scale, flm.fuse*FU)
-					flm.blendmode = AST_ADD
-					flm.renderflags = $|RF_FULLBRIGHT|RF_NOCOLORMAPS
-					flm.dontdrawforviewmobj = player.mo
-					if (i == 0) then
-						-- P_SetObjectMomZ(flm,P_RandomRange(2,4)*player.mo.scale+P_RandomFixed())
-					else
-						P_SetObjectMomZ(flm, P_RandomRange(3,6)*FU)
-					end
-				end
-			end
-			local smoke = P_SpawnMobjFromMobj(player.mo,
-				P_RandomRange(-rad,rad)*FU,
-				P_RandomRange(-rad,rad)*FU,
-				P_RandomRange(0,hei)*FU,
-				MT_SMOKE
-			)
-			P_SetObjectMomZ(smoke,P_RandomRange(1,2)*player.mo.scale+P_RandomFixed())
-			smoke.scale = $ + P_RandomRange(0,FU/2)
-			smoke.alpha = FU/2
-			smoke.dontdrawforviewmobj = player.mo
-		end
-	end,
-	on_end = function(player)
-		player.flameringtarget = nil
-	end
-}
-
 local flame_ring = ZE2:CreateItem("flame_ring",  {
 	displayname = "Flame Ring",
 	icon = "FLAMIND",
@@ -153,7 +83,7 @@ local flame_ring = ZE2:CreateItem("flame_ring",  {
 			local player = mo.player -- mobj that was hit
 			local pv = player.ze2
 
-			player.ze2:GiveEffect("flame_ring.on_fire", {
+			player.ze2:GiveEffect("flaming_effect", {
 				normalspeed_multiplier = FU/2,
 				actionspd_multiplier = 3*FU/2,
 				damage_multiplier = FU/2,

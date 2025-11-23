@@ -179,7 +179,7 @@ COM_AddCommand("z_giveeffect", function(player, effectname, duration)
 	if not (player.mo and player.mo.valid) then return end
 	
 	if not effectname then
-		CONS_Printf(player, "z_giveeffect <effect_name> <duration (seconds)>: adds an effect to you.")
+		CONS_Printf(player, "z_giveeffect <effect_name> <duration (seconds)>: adds an effect to you")
 		return
 	end
 	if ZE2.Effects[effectname] == nil then

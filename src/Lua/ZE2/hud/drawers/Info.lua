@@ -261,7 +261,7 @@ local function health(v,p,me,ze)
 		if (ze.effects)
 			local hasfire = false
 			for name, _ in pairs(ze.effects) do
-				if name == "flame_ring.on_fire"
+				if name == "flaming_effect"
 					hasfire = true
 					break
 				end

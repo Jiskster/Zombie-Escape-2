@@ -121,6 +121,15 @@ return function(mo, inf, src, dmg, damagetype)
 				ZE2.ItemPresets[inf.iteminfo.item_id].onhit(src, mo, inf)
 			end
 		end
+
+		-- ehh whatever, throw this in here too
+		if (inf.flags & MF_FIRE) then
+			mo.player.ze2:GiveEffect("flaming_effect", {
+				normalspeed_multiplier = FU/2,
+				actionspd_multiplier = 3*FU/2,
+				damage_multiplier = FU/2,
+			}, 4*TICRATE)
+		end
 	end
 	
 	if (inf and inf.valid and inf.player) then 
