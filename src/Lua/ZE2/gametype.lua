@@ -165,7 +165,7 @@ local index_mul = {
 addHook("LinedefExecute", function(line, mo)
 	if not udmf then return end
 	if not (mo.player and mo.player.valid) then return end
-	if not (mo.player.health) then return end
+	if not (mo.health) then return end
 
 	local args = line.args
 
