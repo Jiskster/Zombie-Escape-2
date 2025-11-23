@@ -31,8 +31,6 @@ dofolder("Enemies");
 
 folder = "Spooky Flower"; dofolder("Timers");
 
-folder = "Corrupted Void"; dofolder("Timers");
-
 folder = "Westopolis"; dofolder("Timers");
 
 folder = "Egg Fortress"; dofolder("Timers");

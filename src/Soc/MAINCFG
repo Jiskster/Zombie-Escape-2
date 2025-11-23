@@ -113,19 +113,6 @@ Lua.ze2_timelimit = 6
 Lua.ze2_laddertag = 300
 Lua.ze2_zombiereleasetime = 11
 
-Level 15
-Levelname = Corrupted Void
-Subtitle = DIE!
-Act = 0
-Music = ZECVM
-TypeOfLevel = ZE2
-NextLevel = NX
-SkyNum = 500
-NoZone = True
-SelectHeading = ZE2 Survival Maps
-Lua.ze2_timelimit = 7
-Lua.ze2_rounds = 2
-
 Level 16
 Levelname = Spooky Flower
 Subtitle = Very scary.
