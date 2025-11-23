@@ -139,6 +139,10 @@ ZE2.Effects = {
 	argument 5: actionspd multiplier (in fixed)
 
 	argument 6: charability
+
+	argument 7: damage multiplier (in fixed)
+	argument 8: knockback multiplier (in fixed)
+
 */
 local index_to_attrib = {
 	[1] = "normalspeed",
@@ -146,6 +150,8 @@ local index_to_attrib = {
 	[3] = "actionspd",
 	[4] = "actionspd_multiplier",
 	[5] = "charability",
+	[6] = "damage_multiplier",
+	[7] = "knockback_multiplier"
 }
 local index_mul = {
 	[1] = FU,
@@ -153,6 +159,8 @@ local index_mul = {
 	[3] = FU,
 	[4] = 1,
 	[5] = 1,
+	[6] = 1,
+	[7] = 1
 }
 addHook("LinedefExecute", function(line, mo)
 	if not udmf then return end
