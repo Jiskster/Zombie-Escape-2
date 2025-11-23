@@ -69,6 +69,7 @@ ZE2:AddTimer("MC_PART3", {
 		chatprint("\x8F\The Iron Door has broken!")
 		P_LinedefExecute(61)
 	end,
+	on_end_tag = 61, -- bro trigger???
 	textcolor = SKINCOLOR_WHITE,
 }) 
 
