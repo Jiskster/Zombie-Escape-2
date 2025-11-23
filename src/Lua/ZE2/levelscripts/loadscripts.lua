@@ -57,4 +57,3 @@ dofolder("TorielBoss")
 dofolder("FloweyStuff")
 
 folder = "Secret Lab"; dofolder("Timers");
-folder = "Secret Lab Alt"; dofolder("Timers");

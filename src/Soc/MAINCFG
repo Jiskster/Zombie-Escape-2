@@ -86,18 +86,6 @@ SelectHeading = ZE2 Survival Maps
 Lua.ze2_zombiereleasetime = 9
 Lua.ze2_timelimit = 6
 
-Level 06
-Levelname = Secret Lab Alt
-Subtitle = Caution! Escape from anomalies!
-Act = 0
-Music = ZE0
-TypeOfLevel = ZE2
-NextLevel = 45
-NoZone = True
-SelectHeading = ZE2 Survival Maps
-Lua.ze2_timelimit = 5
-Skynum = 21
-
 Level 08
 Levelname = Minecraft
 Subtitle = Watch for creepers!
