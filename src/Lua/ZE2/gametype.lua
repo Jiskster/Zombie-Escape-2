@@ -175,7 +175,7 @@ addHook("LinedefExecute", function(line, mo)
 	end
 
 	mo.player.ze2:GiveEffect(effect_name, effect_attribs, effect_duration)
-end, "ZE2_ADDEFFECT")
+end, "ZE2_GIVEPLREFFECT")
 
 ZE2.teams = {"Survivors", "Zombies"}
 
