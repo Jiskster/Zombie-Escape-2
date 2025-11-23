@@ -56,5 +56,5 @@ dofolder("BlockZombies")
 dofolder("TorielBoss")
 dofolder("FloweyStuff")
 
-folder = "Secret Lab 1"; dofolder("Timers");
-folder = "Secret Lab 2"; dofolder("Timers");
+folder = "Secret Lab"; dofolder("Timers");
+folder = "Secret Lab Alt"; dofolder("Timers");

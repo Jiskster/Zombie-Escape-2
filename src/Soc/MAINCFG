@@ -73,7 +73,7 @@ NextLevel = J1
 Lua.ze2_timelimit = 6
 
 Level 05
-Levelname = Secret Lab 1
+Levelname = Secret Lab
 Subtitle = Zombie Escape
 Subtitle = Through the SCP Lab
 Act = 0
@@ -87,7 +87,7 @@ Lua.ze2_zombiereleasetime = 9
 Lua.ze2_timelimit = 6
 
 Level 06
-Levelname = Secret Lab 2
+Levelname = Secret Lab Alt
 Subtitle = Caution! Escape from anomalies!
 Act = 0
 Music = ZE0
