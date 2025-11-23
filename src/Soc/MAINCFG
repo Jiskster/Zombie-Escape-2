@@ -97,6 +97,7 @@ SkyNum = 14
 NoZone = True
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 7
+Lua.ze2_laddertag = 200
 
 Level 14
 Levelname = Doomed Corp
