@@ -17,13 +17,9 @@ return "DebugTools", function(v,p)
 	local by = 105
 	local bflags = V_PERPLAYER|V_SNAPTOLEFT|V_SNAPTOBOTTOM
 
-	if (IsPlayerAdmin(p) or p == server) then
-		if #ZE2.Checkpoints then
-			v.drawString(bx,by,"\130C2: \128previous checkpoint",bflags,"thin")
-			v.drawString(bx,by+spacing,"\130C3: \128next checkpoint",bflags,"thin")
-		else
-			v.drawString(bx,by,"No checkpoints to teleport",bflags|V_REDMAP,"thin")
-		end
+	if (IsPlayerAdmin(p) or p == server)
+	and not #ZE2.Checkpoints then
+		v.drawString(bx,by,"No checkpoints available",bflags|V_REDMAP,"thin")
 	end
 
 	-- Checkpoint info
