@@ -8,6 +8,12 @@ rawset(_G, "ze2_modname", "ze2"); -- For customhud.
 
 freeslot("TOL_ZE2");
 
+--debug
+ZE2.debug = {
+	nocd = false,
+	checkpoints_show = false
+}
+
 ZE2.wait_time = 15*TICRATE;
 ZE2.MapVoteStartFrame = 10*TICRATE -- TODO: Remove
 ZE2.VoteTimeLimit = 12*TICRATE -- TODO: Remove

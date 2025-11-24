@@ -161,6 +161,8 @@ ze2file "levelscripts/loadscripts.lua"
 
 ze2file "main/debug/cvmake.lua"
 ze2file "main/debug/commands.lua"
+ze2file "main/debug/object modifications.lua"
+ze2file "main/debug/player.lua"
 
 ze2file "title_screen/scenery.lua"
 ze2file "title_screen/hud.lua"

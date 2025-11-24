@@ -1,6 +1,7 @@
 local KB = ZE2.Knockback
 
 return function(net)
+	ZE2.debug = net($);
 	ZE2.time_limit = net($);
 	ZE2.wait_time = net($);
 	ZE2.round_active = net($); -- stays on even if the end screen is on
