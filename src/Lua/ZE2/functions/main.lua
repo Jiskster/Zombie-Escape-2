@@ -12,6 +12,7 @@ local queue = {
 	"ResetPlayer";
 	"PlayZombieSound";
 	"ZombifyPlayer";
+	"Debug";
 	"Knockback/initKnockback";
 	"Knockback/addKnockback";
 }

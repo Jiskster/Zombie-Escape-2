@@ -149,3 +149,18 @@ addHook("PostThinkFrame", function()
 	end
 end)
 
+--Teleport to next Checkpoint
+COM_AddCommand("zd_nextcheckpoint", function(p)
+	if not ZE2 then return end
+	if not ZE2.cv_debug.value then return end
+	if not (p and p.mo) then return end
+	ZE2.debug.Teleport2Checkpoint(p, 1)
+end, COM_ADMIN)
+
+--Teleport to previous Checkpoint
+COM_AddCommand("zd_prevcheckpoint", function(p)
+	if not ZE2 then return end
+	if not ZE2.cv_debug.value then return end
+	if not (p and p.mo) then return end
+	ZE2.debug.Teleport2Checkpoint(p, -1)
+end, COM_ADMIN)
