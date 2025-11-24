@@ -42,13 +42,11 @@ ZE2:AddTimer("MC_PART4", {
 }) 
 
 local function Minecraft_Part1()
-	chatprint("\x8D\Wooden Platform \x80will leave in\x85 42 \x80seconds")
 	S_StartSound(nil, sfx_oldrad)
 	ZE2:StartTimer("MC_PART1")
 end
 
 local function Minecraft_Part2()
-	chatprint("\x8F\Obsidian Wall \x80will break in\x85 40 \x80seconds")
 	S_StartSound(nil, sfx_oldrad)
 	S_ChangeMusic("MC2", true)
 	mapmusname = "MC2"
@@ -56,13 +54,11 @@ local function Minecraft_Part2()
 end
 
 local function Minecraft_Part3()
-	chatprint("Iron Door will open in\x82 30 \x80seconds")
 	S_StartSound(nil, sfx_oldrad)
 	ZE2:StartTimer("MC_PART3")
 end
 
 local function Minecraft_Part4()
-	chatprint("\x86\Stone Platform \x80will leave in\x85 30 \x80seconds")
 	S_StartSound(nil, sfx_oldrad)
 	S_ChangeMusic("MC3", true)
 	mapmusname = "MC3"
