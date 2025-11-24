@@ -3,10 +3,10 @@ ZE2:AddTimer("MC_PART1", {
 	time = 42*TICRATE,
 	on_end = function(timernum,timername)
 		chatprint("\x8D\Wooden Platform is now leaving!")
-		P_LinedefExecute(46)
 		P_LinedefExecute(48)
 		P_LinedefExecute(51)
 	end,
+	on_end_tag = 46,
 	textcolor = SKINCOLOR_BROWN,
 }) 
 
@@ -15,8 +15,8 @@ ZE2:AddTimer("MC_PART2", {
 	time = 40*TICRATE,
 	on_end = function(timernum,timername)
 		chatprint("\x8F\The Obsidian Wall has broken!")
-		P_LinedefExecute(56)
 	end,
+	on_end_tag = 56,
 	textcolor = SKINCOLOR_BLACK,
 }) 
 
@@ -25,9 +25,8 @@ ZE2:AddTimer("MC_PART3", {
 	time = 30*TICRATE,
 	on_end = function(timernum,timername)
 		chatprint("\x8F\The Iron Door has broken!")
-		P_LinedefExecute(61)
 	end,
-	on_end_tag = 61, -- bro trigger???
+	on_end_tag = 61,
 	textcolor = SKINCOLOR_WHITE,
 }) 
 
@@ -36,8 +35,8 @@ ZE2:AddTimer("MC_PART4", {
 	time = 30*TICRATE,
 	on_end = function(timernum,timername)
 		chatprint("\x86\The Stone Platform is now leaving the area!")
-		P_LinedefExecute(63)
 	end,
+	on_end_tag = 63,
 	textcolor = SKINCOLOR_GREY,
 }) 
 
