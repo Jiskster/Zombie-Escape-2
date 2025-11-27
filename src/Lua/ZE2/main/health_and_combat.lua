@@ -1,10 +1,6 @@
 local KB = ZE2.Knockback
 ZE2.BulletList = {} -- For thinkers and basic caching.
 
--- Amy's Hammer Hearts
-mobjinfo[MT_LHRT].forcedamage = 3
-mobjinfo[MT_LHRT].forceknockback = 8*FU
-
 freeslot("SPR_ZE2_DAMAGENUMBER")
 
 -- ze2_info only
@@ -588,34 +584,6 @@ function ZE2.DoPlayerReload(player)
 		end
 	end
 end
-
--- amy heart healing
-addHook("MobjMoveCollide", function(heart, victim)
-	if heart and heart.valid and victim and victim.valid then
-		local imo = heart.target
-		if imo and imo.valid and imo.player and imo.player.valid then
-			if victim.player and victim.player.valid then
-				local inf_player = imo.player
-				local victim_player = victim.player 
-				
-				if (inf_player.ze2.team == victim_player.ze2.team) 
-				and not (imo == victim) and L_ZCollide(heart,victim) then
-					if victim.health + 3 > victim.maxhealth then
-						victim.health = victim.maxhealth
-					else
-						victim.health = $ + 3
-					end
-					
-					local pinkghost = P_SpawnGhostMobj(victim)
-					pinkghost.color = SKINCOLOR_ROSY
-					
-					return true
-				end
-				heart.shotbyplayer = true
-			end
-		end
-	end
-end, MT_LHRT)
 
 -- dont let teammates and teamate's weapons collide with your weapon 
 addHook("MobjCollide", function(thing, tmthing)
