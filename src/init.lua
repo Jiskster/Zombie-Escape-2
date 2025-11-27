@@ -159,7 +159,6 @@ ze2file "hud/setup"
 -- [ Level Scripts ] -- 
 ze2file "levelscripts/loadscripts.lua"
 
-ze2file "main/debug/cvmake.lua"
 ze2file "main/debug/commands.lua"
 
 ze2file "title_screen/scenery.lua"
