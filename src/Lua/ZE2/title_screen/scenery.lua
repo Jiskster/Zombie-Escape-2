@@ -64,7 +64,7 @@ addHook("MobjThinker", function(mo)
 				mo.color = SKINCOLOR_ALPHAZOMBIE
 				mo.scale = mo.scale*3/2
 			else
-				mo.color = SKINCOLOR_MOSS
+				mo.color = SKINCOLOR_ZOMBIE
 			end
 			mo.stuffdone = 1
 		end

@@ -1,55 +1,66 @@
-freeslot("SKINCOLOR_ALPHAZOMBIE")
+freeslot("SKINCOLOR_ZOMBIE", "SKINCOLOR_ALPHAZOMBIE")
+
+local function shallowcopy(orig)
+    local orig_type = type(orig)
+    local copy
+    if orig_type == 'table' then
+        copy = {}
+        for orig_key, orig_value in pairs(orig) do
+            copy[orig_key] = orig_value
+        end
+    else -- number, string, boolean, etc
+        copy = orig
+    end
+    return copy
+end
+
+local zombie_ramp = {35,36,37,38,39,40,41,46,47,47,30,30,30,30,31,31}
+skincolors[SKINCOLOR_ZOMBIE] = {
+	name = "Zombie",
+	ramp = shallowcopy(zombie_ramp),
+	invcolor = SKINCOLOR_SKY,
+	invshade = 0,
+	chatcolor = V_REDMAP,
+	accessible = false
+}
+
+local alpha_ramp = {82,50,51,52,52,53,55,35,35,37,46,47,47,30,31,31}
 skincolors[SKINCOLOR_ALPHAZOMBIE] = {
     name = "Alpha Zombie",
-    ramp = {89,85,223,55,56,37,38,39,41,42,43,45,46,47,30,31},
+    ramp = shallowcopy(alpha_ramp),
     invcolor = SKINCOLOR_GREEN,
     invshade = 9,
     chatcolor = V_GREENMAP,
     accessible = false
 }
-//these are the only two lines you need to edit!
-local flashColor = skincolors[SKINCOLOR_ALPHAZOMBIE] //change this to your desired skincolor!
-local flashDelay = 2 //change this to how many tics it takes to animate
 
-local rampPos = 1
-local rampDir = true
-local ramps = {}
+local cos = cos
+local sin = sin
+local abs = abs
+local min = min
+local max = max
+local color = color
+local FU = FU
+local anim_speed = 1024
 
-//convert the ramp to a table
-ramps[1] = {}
-for i = 0, 15, 1
-	ramps[1][i+1] = flashColor.ramp[i]
-end
+addHook("ThinkFrame", function()
+    local percent = cos(leveltime*FU*anim_speed)
 
-//create the offset versions of the ramp
-for i = 2, 16,1
-	ramps[i] = {}
+    for i=1,16 do
+        local index = zombie_ramp[i]
+        local alpha_index = alpha_ramp[i]
 
-	for pos,val in ipairs(ramps[i-1]) do
-		if not (pos == 16) then
-			ramps[i][pos+1] = val
-		else
-			ramps[i][1] = val
-		end
-	end
-end
+        local r, g, b = color.paletteToRgb(index)
 
-local function RampWave()
-	if not (leveltime % flashDelay) then
+        local ar, ag, ab = color.paletteToRgb(alpha_index)
 
-		rampPos = $1+1
-		
-		//too high, time to go back
-		if not (ramps[rampPos])
-			rampPos = 1
-		end
+        ar = ease.linear(percent, r, ar)
+        ag = ease.linear(percent, g, ag)
+        ab = ease.linear(percent, b, ab)
 
-		flashColor.ramp = ramps[rampPos]
-	end
-end
-
-addHook("ThinkFrame", RampWave)
-
-
-
-
+        alpha_index = color.rgbToPalette(max(0,min(ar,255)), 
+                                        max(0,min(ag,255)), 
+                                        max(0,min(ab,255)))
+        skincolors[SKINCOLOR_ALPHAZOMBIE].ramp[i-1] = alpha_index
+    end
+end)
