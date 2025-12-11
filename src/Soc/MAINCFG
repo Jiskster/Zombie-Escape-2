@@ -8,8 +8,6 @@ TitlePicsX = 25
 TitlePicsY = 10
 LoopTitle = true
 TitleScrollXSpeed = 9
-SStage_Start = 0
-SMPStage_Start = 0
 
 Clear All
 
