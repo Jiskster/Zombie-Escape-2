@@ -27,42 +27,6 @@ ZE2.ZombieConfig = {
 			*/
 		}
 	},
-	["ranged"] = {
-		skin = "ztails",
-		skincolor = SKINCOLOR_MOSS,
-		normalspeed = 23 * FRACUNIT,
-		health = 4000,
-		charability = CA_NONE,
-		charability2 = CA2_NONE,
-		actionspd = 9*FRACUNIT,
-		killaward = 5,
-		knockback_multiplier = (3*FU)/2,
-		inventory_limit = 1,
-		inventory = {
-			ZE2:CopyItemFromID(ITEM_INSTA_BURST);
-		},
-		special = {
-			button = 0,
-		}
-	},
-	["heavy"] = {
-		skin = "zknuckles",
-		skincolor = SKINCOLOR_MOSS,
-		normalspeed = 19 * FRACUNIT,
-		health = 12000,
-		charability = CA_NONE,
-		charability2 = CA2_NONE,
-		actionspd = 9*FRACUNIT,
-		killaward = 10,
-		knockback_multiplier = 8*(FU/10),
-		inventory_limit = 1,
-		inventory = {
-			ZE2:CopyItemFromID(ITEM_INSTA_BURST);
-		},
-		special = {
-			button = 0,
-		}
-	},
 	["alpha"] = {
 		skin = "zsonic",
 		skincolor = SKINCOLOR_ALPHAZOMBIE,
