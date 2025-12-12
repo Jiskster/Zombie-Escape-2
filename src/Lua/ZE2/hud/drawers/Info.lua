@@ -48,7 +48,7 @@ local function drawSkewFill(v, x,y, w,h, flags, c, skincolor)
 		if (not skincolor)
 			v.drawStretched(x, y, w, 2*FU, v.cachePatch("ZE2_C"), flags, v.getColormap(TC_DEFAULT, c))
 		else
-			local ramp = table_clr and skincolor or skincolors[skincolor].ramp
+			local ramp = (table_clr) and skincolor or skincolors[skincolor].ramp
 			local new_x = x
 			for i = (table_clr and 1 or 0), clr_len
 				local newcolor = ZE2.paletteToColor[ramp[i]]
@@ -336,7 +336,7 @@ local function health(v,p,me,ze)
 			color = SKINCOLOR__71
 			usecolor = false
 		end
-		drawSkewFill(v, x,y, width,height, flags, color, usecolor)
+		drawSkewFill(v, x,y, width,height, flags, color, usecolor and color or nil)
 		
 		local pname = "Z_TT_"..(button_to_tooltip[spec.button])
 		if (v.patchExists(pname))
