@@ -3,12 +3,14 @@ freeslot("SPR_ZT00","SPR_ZT01", "SPR_ZT02", "SPR_ZT03", "SPR_ZT04", "SPR_ZT05")
 freeslot("SPR_ZT06","SPR_ZT07", "SPR_ZT08", "SPR_ZT09", "SPR_ZT0A", "SPR_ZT0B")
 freeslot("SPR_ZT0C","SPR_ZT0D", "SPR_ZT0E", "SPR_ZT0F", "SPR_ZT10", "SPR_ZT11")
 freeslot("SPR_ZT12","SPR_ZT13", "SPR_ZT14", "SPR_ZT15", "SPR_ZT16", "SPR_ZT17")
+freeslot("SPR_ZT18")
 
 freeslot("sfx_huhem", "sfx_vboom", "sfx_thwop", "sfx_heheha", "sfx_4ayo")
 freeslot("sfx_syeah", "sfx_kohno", "sfx_yccom", "sfx_noiscr", "sfx_pepscr")
 freeslot("sfx_actu", "sfx_memore", "sfx_dumba", "sfx_demoem", "sfx_whoinv")
 freeslot("sfx_bruh", "sfx_haha1", "sfx_orchit", "sfx_wtsig2", "sfx_mrjisk")
 freeslot("sfx_csgogo", "sfx_csflbk")
+freeslot("sfx_ddblud")
 
 mobjinfo[MT_ZEMO_BUBBLE] = {		
 	doomednum = -1,
@@ -78,6 +80,7 @@ ZE2:AddEmote(SPR_ZT14, "Umm what the sigma", "siggmaa", sfx_wtsig2)
 ZE2:AddEmote(SPR_ZT15, "Mister Jisk", "mrjisk", sfx_mrjisk)
 ZE2:AddEmote(SPR_ZT16, "GO GO GO!", "Counter Strike 1.6 radio command", sfx_csgogo)
 ZE2:AddEmote(SPR_ZT17, "TEAM FALL BACK!", "Counter Strike 1.6 radio command", sfx_csflbk)
+ZE2:AddEmote(SPR_ZT18, "einstein", "what is this diddy blud doing on the calculator", sfx_ddblud)
 
 COM_AddCommand("z_emote", function(player, emotenum)
 	if player.mo and player.mo.valid 
