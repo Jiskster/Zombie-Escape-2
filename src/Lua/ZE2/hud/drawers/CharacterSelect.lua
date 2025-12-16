@@ -22,7 +22,7 @@ return "CharacterSelect", function(v, player)
 	
     local skincount = #ZE2.getSkinNums(player,true)
 
-	local cc = ZE2.CharacterConfig
+	local cc = ZE2.SurvivorConfig
 	
 	if not player.ze2.pregamemenu_active then
 		return
@@ -105,9 +105,9 @@ return "CharacterSelect", function(v, player)
 		[4] = {
 			textcolor = SKINCOLOR_YELLOW,
 			text = (
-				(cc[ZE2.getSkinFromCharSelect(player).name] and cc[ZE2.getSkinFromCharSelect(player).name].desc1) 
+				(cc[ZE2.getSkinFromCharSelect(player).name] and cc[ZE2.getSkinFromCharSelect(player).name].description) 
 				
-				and cc[ZE2.getSkinFromCharSelect(player).name].desc1
+				and cc[ZE2.getSkinFromCharSelect(player).name].description[1]
 				
 				or ""
 			)
@@ -115,9 +115,9 @@ return "CharacterSelect", function(v, player)
 		[5] = {
 			textcolor = SKINCOLOR_LIME,
 			text = (
-				(cc[ZE2.getSkinFromCharSelect(player).name] and cc[ZE2.getSkinFromCharSelect(player).name].desc2) 
+				(cc[ZE2.getSkinFromCharSelect(player).name] and cc[ZE2.getSkinFromCharSelect(player).name].description) 
 				
-				and cc[ZE2.getSkinFromCharSelect(player).name].desc2
+				and cc[ZE2.getSkinFromCharSelect(player).name].description[2]
 				
 				or ""
 			)
@@ -125,9 +125,9 @@ return "CharacterSelect", function(v, player)
 		[6] = {
 			textcolor = SKINCOLOR_PERIDOT,
 			text = (
-				(cc[ZE2.getSkinFromCharSelect(player).name] and cc[ZE2.getSkinFromCharSelect(player).name].desc3) 
+				(cc[ZE2.getSkinFromCharSelect(player).name] and cc[ZE2.getSkinFromCharSelect(player).name].description) 
 				
-				and cc[ZE2.getSkinFromCharSelect(player).name].desc3
+				and cc[ZE2.getSkinFromCharSelect(player).name].description[3]
 				
 				or ""
 			)

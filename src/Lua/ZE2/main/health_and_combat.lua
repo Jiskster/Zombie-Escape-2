@@ -455,8 +455,8 @@ function ZE2.SpawnMissile(m_table)
 	*/
 	
 	/*
-	if source.player and ZE2.CharacterConfig[source.skin] and ZE2.CharacterConfig[source.skin].bullet_speed_multiplier then
-		speed = FixedMul($, ZE2.CharacterConfig[source.skin].bullet_speed_multiplier)
+	if source.player and ZE2.SurvivorConfig[source.skin] and ZE2.SurvivorConfig[source.skin].bullet_speed_multiplier then
+		speed = FixedMul($, ZE2.SurvivorConfig[source.skin].bullet_speed_multiplier)
 	end
 	*/
 	

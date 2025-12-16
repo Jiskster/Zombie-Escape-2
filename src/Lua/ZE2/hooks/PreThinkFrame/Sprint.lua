@@ -5,7 +5,7 @@ return function()
 		local cmd = player.cmd
 
 		local pmo = player.mo
-		local cc = ZE2.CharacterConfig
+		local cc = ZE2.SurvivorConfig
 		local grounded = P_IsObjectOnGround(pmo)
 
 		local increment = FRACUNIT/2

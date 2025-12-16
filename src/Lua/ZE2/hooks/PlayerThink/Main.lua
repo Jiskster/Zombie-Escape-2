@@ -80,12 +80,8 @@ return function(player)
 		end
 	end
 
-	if pv.team == 1 then
-		ZE2.SetCCtoplayer(player)
-	elseif pv.team == 2 then
-		ZE2.SetZCtoplayer(player)
-	end
-
+	ZE2.applyPlayerConfig(player)
+	
 	if mapheaderinfo[gamemap].ze2_noabilities then
 		player.pflags = $ & ~PF_GLIDING
 		player.pflags = $ & ~PF_BOUNCING

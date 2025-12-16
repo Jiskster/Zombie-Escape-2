@@ -11,7 +11,7 @@ return function(self, amount)
 			player.ze2.sprintmeter = 100*FRACUNIT
 		elseif player.ze2.sprintmeter < 0 then
 			if player.mo and player.mo.valid then
-				local cc = ZE2.CharacterConfig
+				local cc = ZE2.SurvivorConfig
 				local newsprintexhaust
 				
 				if cc[player.mo.skin] and cc[player.mo.skin].sprintexhaust then

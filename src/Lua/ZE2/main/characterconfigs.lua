@@ -1,13 +1,13 @@
 ZE2.StandardJumpFactor = FixedDiv(90*FU, 100*FU)
 
 -- TODO(?): Maybe each new entry added through modding could have a metatable applied to it
---			so we can be sure there are no "holes" in them? Maybe `newentry.__index = ZE2.CharacterConfig["default"]`
+--			so we can be sure there are no "holes" in them? Maybe `newentry.__index = ZE2.SurvivorConfig["default"]`
 ZE2.ZombieConfig = {
 	["normal"] = {
 		skin = "zsonic",
 		skincolor = SKINCOLOR_ZOMBIE,
-		normalspeed = 21 * FRACUNIT,
-		health = 10000,
+		normalspeed = 25 * FRACUNIT,
+		health = 2500,
 		charability = CA_NONE,
 		charability2 = CA2_NONE,
 		actionspd = 9*FRACUNIT,
@@ -30,8 +30,8 @@ ZE2.ZombieConfig = {
 	["alpha"] = {
 		skin = "zsonic",
 		skincolor = SKINCOLOR_ALPHAZOMBIE,
-		normalspeed = 20 * FRACUNIT,
-		health = 15000,
+		normalspeed = 27 * FRACUNIT,
+		health = 5000,
 		charability = CA_NONE,
 		charability2 = CA2_NONE,
 		actionspd = 16*FRACUNIT,
@@ -58,17 +58,7 @@ ZE2.ZombieConfig = {
 	},
 }
 
-ZE2.CharacterConfig = {
-	["default"] = {
-		normalspeed = 10 * FRACUNIT,
-		health = 40,
-		charability = CA_NONE,
-		charability2 = CA2_NONE,
-		FixedDiv(85*FU, 100*FU),
-		sprintboost = 10 * FRACUNIT,
-		jumpfactor = ZE2.StandardJumpFactor,
-	},
-}
+ZE2.SurvivorConfig = {}
 
 ZE2.MobjTouchingPolyObj = function(mobj)
 	for polyobj in polyobjects.iterate do
@@ -79,230 +69,167 @@ ZE2.MobjTouchingPolyObj = function(mobj)
 	return false
 end
 
-ZE2.SetCCtoplayer = function(player)
-	local pmo = player.mo
-	local cc = ZE2.CharacterConfig
-	local cmd = player.cmd
+function ZE2.resetPlayerHealth(player)
+	local mo = player.mo
+	local ze2 = player.ze2
+	local team = ze2.team
+	local ztype = ze2.zombie_type
+	local skin = mo.skin
+	local cc = ZE2.SurvivorConfig
+	local zc = ZE2.ZombieConfig
+	local config = (team == 1) and cc[skin] or zc[ztype]
+
+	if not (mo and mo.valid) then
+		return end;
+
+	if config.health then
+		mo.health = config.health
+		mo.maxhealth = config.health
+	else
+		mo.health = 1
+		mo.maxhealth = 1
+	end
+end
+
+local health_lookup = {
+	[1] = 55;
+	[2] = 65;
+	[3] = 75;
+	[4] = 90;
+	[5] = 100;
+	[6] = 110;
+	[7] = 120;
+	[8] = 180;
+	[9] = 190;
+	[10] = 200;
+}
+
+-- [example] = {27, 6}; -- 27.6 fracunits
+local speed_lookup = {
+	[1] = {24, 5};
+	[2] = {23, 0};
+	[3] = {22, 0};
+	[4] = {20, 0};
+	[5] = {19, 0};
+	[6] = {18, 5};
+	[7] = {18, 0};
+	[8] = {16, 5};
+	[9] = {16, 0};
+	[10]= {15, 5};
+}
+
+local acceleration_lookup = {
+	[1] = 13;
+	[2] = 14;
+	[3] = 15;
+	[4] = 19;
+	[5] = 20;
+	[6] = 21;
+	[7] = 22;
+	[8] = 32;
+	[9] = 34;
+	[10] = 36;
+}
+
+local function weightToHealth(weight)
+	weight = max(1, min($, 10))
+
+	return health_lookup[weight]
+end
+
+local function weightToSpeed(weight)
+	weight = max(1, min($, 10))
+
+	return (speed_lookup[weight][1]*FU + FixedDiv(speed_lookup[weight][2]*FU, 10*FU))
+end
+
+local function weightToAcceleration(weight)
+	weight = max(1, min($, 10))
+
+	return acceleration_lookup[weight]
+end
+
+function ZE2.applyPlayerConfig(player)
+	local mo = player.mo
 	
-	if pmo and pmo.valid and cc[pmo.skin] then
-		if cc[pmo.skin].normalspeed then 
-			player.normalspeed = cc[pmo.skin].normalspeed or cc["default"].normalspeed
-			
-			if player.ze2.crouching and P_IsObjectOnGround(pmo) then
-				player.normalspeed = $ / 2
-			end
-		end
+	if not (mo and mo.valid) then
+		return end;
 
-		if (cc[pmo.skin].charability) then
-			player.charability = cc[pmo.skin].charability
-		else
-			player.charability = cc["default"].charability 
-		end
-		
-		if (cc[pmo.skin].charability2) then 
-			player.charability2 = cc[pmo.skin].charability2
-		else
-			player.charability2 = cc["default"].charability2
-		end
-		
-		if (cc[pmo.skin].jumpfactor) then 
-			player.jumpfactor = cc[pmo.skin].jumpfactor
-		else
-			player.jumpfactor = cc["default"].jumpfactor
-		end
-		
-		if (cc[pmo.skin].actionspd) then 
-			player.actionspd = cc[pmo.skin].actionspd 
-		else
-			player.actionspd = skins[pmo.skin].actionspd
-		end
+	local ze2 = player.ze2
+	local cmd = player.cmd
+	local team = ze2.team
+	local zc = ZE2.ZombieConfig
+	local cc = ZE2.SurvivorConfig
+	local ztype = ze2.zombie_type
+	local skin = mo.skin
+	local TEAM_SURVIVOR = 1
+	local TEAM_ZOMBIE = 2
+	
+	local config = (team == TEAM_SURVIVOR) and cc[skin] or zc[ztype]
 
-		if (cc[pmo.skin].accelstart) then 
-			player.accelstart = cc[pmo.skin].accelstart 
-		else
-			player.accelstart = skins[pmo.skin].accelstart
-		end
+	-- Set zombie type to "normal" if the zombie type doesn't exist.
+	if team == TEAM_ZOMBIE 
+	and not zc[ztype] then
+		ze2.zombie_type = "normal"
+		config = zc["normal"]
+	end
+	
+	if config.normalspeed then
+		player.normalspeed = config.normalspeed
 		
-		if (cc[pmo.skin].acceleration) then 
-			player.acceleration = (cc[pmo.skin].acceleration/8)*6
-		else
-			player.acceleration = (skins[pmo.skin].acceleration/8)*6
-		end
-
-		if ZE2.sourcemovement.value then
-			player.thrustfactor = 0
-		else
-			if P_IsObjectOnGround(pmo) or
-			(not P_IsObjectOnGround(pmo) and cmd.forwardmove < 0 and P_GetPlayerControlDirection(player) == 2) 
-			or player.ze2.isSprung then
-				player.thrustfactor = 8
-			else
-				player.thrustfactor = 4
-			end
-		end
-		
-		if (cc[pmo.skin].charflags) then 
-			player.charflags = $|cc[pmo.skin].charflags 
-		end
-		
-		if pmo.shield_def and pmo.shield_def.jumpfactor_multiplier then
-			local multi = pmo.shield_def.jumpfactor_multiplier
-			
-			player.jumpfactor = FixedMul($, multi)
-		end
-		
-		if player.ze2.sprintdelay then
-			if ZE2.sourcemovement.value then player.jumpfactor = 3*$/4 else player.jumpfactor = $ / 2 end
-			player.actionspd = $ / 2
+		if ze2.crouching and P_IsObjectOnGround(mo) then
 			player.normalspeed = $ / 2
 		end
+	end
+
+	player.jumpfactor = config.jumpfactor or ZE2.StandardJumpFactor
+
+	if config.actionspd then
+		player.actionspd = config.actionspd 
+	end
+
+	player.accelstart = config.accelstart or 128 -- survivors and zombies should have the same accelstart
+	player.acceleration = config.acceleration or 20
+
+	player.charability = config.charability or CA_NONE
+	player.charability2 = config.charability2 or CA2_NONE
+
+	-- thrustfactor doesn't need to be a config option by the way.
+	if ZE2.sourcemovement.value then
+		player.thrustfactor = 0
+	else
+		if P_IsObjectOnGround(mo) or
+		(not P_IsObjectOnGround(mo) and cmd.forwardmove < 0 and P_GetPlayerControlDirection(player) == 2) 
+		or ze2.isSprung then
+			player.thrustfactor = 8
+		else
+			player.thrustfactor = 4
+		end
 		
-		if player.ze2.isRunning then
-			player.normalspeed = $ + 7*FU
-		end
-
-		if (cc[pmo.skin].speedcap) and not ZE2.MobjTouchingPolyObj(pmo) then 
-			local sprintboost = cc[pmo.skin].sprintboost or cc["default"].sprintboost
-			if (sprintboost) and (player.ze2.isSprinting and player.ze2.sprintmeter > 0) and (player.ze2.team == 1) then
-				L_SpeedCap(pmo,cc[pmo.skin].speedcap + sprintboost)
-			else
-				L_SpeedCap(pmo,cc[pmo.skin].speedcap)
-			end
+		if ze2.zombie_slowtics then
+			player.thrustfactor = 1
 		end
 	end
-end
 
-ZE2.SetCChealth = function(player)
-	local pmo = player.mo
-	local cc = ZE2.CharacterConfig
-	if pmo and pmo.valid then
-		if cc[pmo.skin] then
-			if (cc[pmo.skin].health) then
-				pmo.health = cc[pmo.skin].health
-				pmo.maxhealth = pmo.health
-			else
-				pmo.health = cc["default"].health
-				pmo.maxhealth = pmo.health
-			end
-		else
-			pmo.health = cc["default"].health
-			pmo.maxhealth = pmo.health
-		end
+	if (config.charflags) then 
+		player.charflags = $|(config.charflags)
 	end
-end
 
-ZE2.SetZCtoplayer = function(player)
-	local pmo = player.mo
-	local cmd = player.cmd
-	local zc = ZE2.ZombieConfig
-	local cc = ZE2.CharacterConfig
-	local ztype = player.ze2.zombie_type
+	if mo.shield_def and mo.shield_def.jumpfactor_multiplier then
+		local multi = mo.shield_def.jumpfactor_multiplier
+		
+		player.jumpfactor = FixedMul($, multi)
+	end
 	
-	if pmo and pmo.valid then
-		if zc[ztype] then
-			if (zc[ztype].normalspeed) then
-				player.normalspeed = zc[ztype].normalspeed
-			else
-				player.normalspeed = cc["default"].normalspeed
-			end
-			
-			if player.ze2.crouching and P_IsObjectOnGround(pmo) then
-				player.normalspeed = $ / 2
-			end
-			
-			if (zc[ztype].charability) then
-				player.charability = zc[ztype].charability
-			else
-				player.charability = cc["default"].charability -- cc isnt a typo
-			end
-			
-			if (zc[ztype].charability2) then 
-				player.charability2 = zc[ztype].charability2
-			else
-				player.charability2 = cc["default"].charability2
-			end
-			
-			if (zc[ztype].jumpfactor) then 
-				player.jumpfactor = zc[ztype].jumpfactor
-			else
-				player.jumpfactor = cc["default"].jumpfactor
-			end
-			
-			if (zc[ztype].actionspd) then 
-				player.actionspd = zc[ztype].actionspd 
-			end
-			
-			if (zc[ztype].accelstart) then 
-				player.accelstart = zc[ztype].accelstart 
-			else
-				player.accelstart = 128
-			end
-			
-			if (zc[ztype].acceleration) then 
-				player.acceleration = zc[ztype].acceleration 
-			else
-				player.acceleration = 40
-			end
-
-			if ZE2.sourcemovement.value then
-				player.thrustfactor = 0
-			else
-				if P_IsObjectOnGround(pmo) or
-				(not P_IsObjectOnGround(pmo) and cmd.forwardmove < 0 and P_GetPlayerControlDirection(player) == 2) 
-				or player.ze2.isSprung then
-					player.thrustfactor = 8
-				else
-					player.thrustfactor = 4
-				end
-				
-				if player.ze2.zombie_slowtics then
-					player.thrustfactor = 1
-				end
-			end
-
-			if (zc[ztype].charflags) then 
-				player.charflags = $|zc[ztype].charflags 
-			end
-		else
-			player.ze2.zombie_type = "normal"
+	if ze2.sprintdelay then
+		if ZE2.sourcemovement.value then 
+			player.jumpfactor = 3*$/4 
+		else 
+			player.jumpfactor = $ / 2 
 		end
-	end
-end
 
-ZE2.SetZChealth = function(player)
-	local pmo = player.mo
-	local zc = ZE2.ZombieConfig
-	local cc = ZE2.CharacterConfig
-	local ztype = player.ze2.zombie_type
-	
-	if pmo and pmo.valid then
-		if zc[ztype] then
-			local healthpersurvivor = zc[ztype].healthpersurvivor or 0
-			
-			if (zc[ztype].health) then
-				pmo.health = zc[ztype].health + (ZE2.SurvivorCount()*healthpersurvivor)
-				pmo.maxhealth = pmo.health
-			else
-				pmo.health = cc["default"].health + (ZE2.SurvivorCount()*healthpersurvivor) -- cc still isnt a typo
-				pmo.maxhealth = pmo.health
-			end
-		else
-			pmo.health = cc["default"].health
-
-			pmo.maxhealth = pmo.health
-		end
-	end
-end
-
-ZE2.SetZCscale = function(player)
-	local pmo = player.mo
-	local zc = ZE2.ZombieConfig
-	local ztype = player.ze2.zombie_type
-	
-	if pmo and pmo.valid then
-		if ztype and zc[ztype] then
-			pmo.scale = zc[ztype].scale or FRACUNIT
-		end
+		player.actionspd = $ / 2
+		player.normalspeed = $ / 2
 	end
 end
 
@@ -319,90 +246,82 @@ ZE2.SetZCinventory = function(player)
 	end
 end
 
-function ZE2:AddCharacterConfig(skinname, input_table)
-	local ZE2 = self;
-	local speeds = {
-		[1] = 18*FRACUNIT, -- slow
-		[2] = 19*FRACUNIT, -- normal
-		[3] = 20*FRACUNIT, -- fast
-		
-		["slow"] = 18*FRACUNIT,
-		["normal"] = 19*FRACUNIT,
-		["fast"] = 20*FRACUNIT,
-	}
+function ZE2.AddSurvivor(skinname, input_table)
+	local weight = input_table.weight
 	
-	if ZE2.CharacterConfig[skinname] then
+	if ZE2.SurvivorConfig[skinname] then
 		print("Failed to add character: "..skinname.." (Character already registered)")
 		return 
+	end	
+
+	if type(weight) ~= "number" then
+		print("Failed to add character: "..skinname.." (weight is "..type(weight)..")")
+		return
 	end
-	
-	if input_table.speed ~= nil then
-		if type(input_table.speed) == ("string") then
-			input_table.speed = $:lower()
-		end
-		
-		if speeds[input_table.speed] then
-			input_table.normalspeed = speeds[input_table.speed]
-		else
-			input_table.normalspeed = speeds["normal"]
-		end
-	else
-		input_table.normalspeed = speeds["normal"]
-	end
-	
+
+	input_table.health = weightToHealth(weight)
+	input_table.normalspeed = weightToSpeed(weight)
+	input_table.acceleration = weightToAcceleration(weight)
 	input_table.charability = CA_NONE
 	input_table.charability2 = CA2_NONE
 	input_table.jumpfactor = ZE2.StandardJumpFactor
 	
-	ZE2.CharacterConfig[skinname] = input_table
-	ZE2.CharacterConfig[skinname].sprintboost = $ or ZE2.CharacterConfig["default"].sprintboost
+	ZE2.SurvivorConfig[skinname] = input_table
 	table.insert(ZE2.registered_skins, skinname)
 	
-	print("Added chararacter config: ".. skinname)
+	print("Added survivor config: ".. skinname)
 end
 
-ZE2:AddCharacterConfig("sonic", {
-	health = 100,
-	speed = "fast",
-	desc1 = "Fast hedgehog born to speed.",
-	desc2 = "Has Low HP, and High Speed",
-	desc3 = "Are you up for the challenge?"
+ZE2.AddSurvivor("sonic", {
+	weight = 3;
+	description = {
+		"Fast hedgehog, born to speed.";
+		"Has Low HP, and High Speed";
+		"A character for players who want a challenge.";
+	};
 })
 
-ZE2:AddCharacterConfig("tails", {
-	health = 150,
-	speed = "normal",
-	desc1 = "Has the brains. Without the plane.",
-	desc2 = "Flies slow. Slower than sonic."
+ZE2.AddSurvivor("tails", {
+	weight = 5;
+	description = {
+		"Has the brains. Without the plane.";
+		"Has Average HP, and Average Speed.";
+		"A character for beginners.";
+	};
 })
 
-ZE2:AddCharacterConfig("knuckles", {
-	health = 200,
-	speed = "slow",
-	desc1 = "Very Strong feller",
-	desc2 = "Glides slow. The slowest."
+ZE2.AddSurvivor("knuckles", {
+	weight = 8;
+	description = {
+		"No time to chuckle.";
+		"Has High HP, and Low Speed.";
+		"A character for good defenders.";
+	};
 })
 
-ZE2:AddCharacterConfig("amy", {
-	health = 75,
-	charflags = SF_FASTWAIT,
-	speed = "fast",
-	desc1 = "Pink Pink Pink.",
-	desc2 = "WIP ABILITIES"
+ZE2.AddSurvivor("amy", {
+	weight = 1;
+	description = {
+		"Don't be fooled, she's fierce.";
+		"Has Low HP, and High Speed.";
+		"A character for good healers.";
+	};
 })
 
-ZE2:AddCharacterConfig("fang", {
-	health = 110,
-	charflags = SF_FASTEDGE,
-	speed = "normal",
-	desc1 = "He shoots the shooty shoot.",
-	desc2 = "Have less momentum to shoot."
+ZE2.AddSurvivor("metalsonic", {
+	weight = 7;
+	description = {
+		"The real sonic.";
+		"Has Above Average HP, and Average Speed.";
+		"A good fragging character.";
+	};
 })
 
-ZE2:AddCharacterConfig("metalsonic", {
-	health = 105,
-	speed = "fast",
-	charflags = SF_MACHINE,
-	desc1 = "He might the the real sonic.",
-	desc2 = "Just a fella with an identity crisis.",
+ZE2.AddSurvivor("fang", {
+	weight = 6;
+	description = {
+		"Pesky bounty hunter.";
+		"Has Above Average HP, and Average Speed.";
+		"A character with unique weapon combat.";
+	};
 })
