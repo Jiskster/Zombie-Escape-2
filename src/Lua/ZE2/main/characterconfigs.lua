@@ -31,6 +31,7 @@ ZE2.ZombieConfig = {
 		skin = "zsonic",
 		skincolor = SKINCOLOR_ALPHAZOMBIE,
 		normalspeed = 27 * FRACUNIT,
+		acceleration = 16,
 		health = 5000,
 		charability = CA_NONE,
 		charability2 = CA2_NONE,
