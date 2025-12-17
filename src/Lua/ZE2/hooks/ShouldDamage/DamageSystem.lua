@@ -183,7 +183,7 @@ return function(mo, inf, src, dmg, damagetype)
 			end
 			
 			if inflictor_player then
-				player.ze2:ChangeStamina(-90*FRACUNIT)
+				player.ze2:ChangeStamina(-40*FRACUNIT)
 			end
 		elseif pv.team == 2 then
 			local ztype = pv.zombie_type
