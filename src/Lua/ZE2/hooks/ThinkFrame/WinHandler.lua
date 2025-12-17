@@ -40,7 +40,7 @@ return function()
 	end
 
 	if player_count > 1 and not ZE2.game_ended then
-		if survivors and not zombies then -- if all zombies are dead
+		if survivors and not zombies and player_count >= 12 then -- if all zombies are dead
 			ZE2:StartWin(1)
 		elseif zombies and not survivors then -- if all survivors are dead
 			ZE2:StartWin(2)
