@@ -162,7 +162,7 @@ Weather = 1
 NoZone = True
 SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 7
-Lua.ze2_zombiereleasetime = 12
+Lua.ze2_zombiereleasetime = 13
 Lua.ze2_rounds = 2
 
 Level 23
