@@ -177,7 +177,9 @@ function ZE2.applyPlayerConfig(player)
 	if config.normalspeed then
 		player.normalspeed = config.normalspeed
 		
-		if ze2.crouching and P_IsObjectOnGround(mo) then
+		if (player.speed/FU) > 12 and player.ze2.isRunning then
+			player.normalspeed = ($*5)/4
+		elseif ze2.crouching and P_IsObjectOnGround(mo) then
 			player.normalspeed = $ / 2
 		end
 	end
@@ -220,7 +222,7 @@ function ZE2.applyPlayerConfig(player)
 		
 		player.jumpfactor = FixedMul($, multi)
 	end
-	
+
 	if ze2.sprintdelay then
 		if ZE2.sourcemovement.value then 
 			player.jumpfactor = 3*$/4 
