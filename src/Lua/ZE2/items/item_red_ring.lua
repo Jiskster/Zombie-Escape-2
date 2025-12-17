@@ -34,7 +34,7 @@ ZE2:CreateItem("red_ring",  {
 	autouse = false,
 	max_ammo = 25,
 	ammo = 25,
-	reload_time = 7*TICRATE/4,
+	reload_time = 5*TICRATE/4,
 	skin_overwrite = {
 		["tails"] = {
 			autouse = true
