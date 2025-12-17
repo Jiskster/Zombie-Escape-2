@@ -42,7 +42,7 @@ states[S_INSTABURST6B] = {SPR_NULL, 0, 1, A_CapeChase, 0, 0, S_NULL}
 ZE2:CreateItem("insta_burst", {
 	displayname = "Insta Burst",
 	icon = "ZMISHIND",
-	firerate = 30,
+	firerate = 34,
 	sound = {sfx_zish1, sfx_zish2, sfx_zish3},
 	damage = 40,
 	color = SKINCOLOR_RED,
