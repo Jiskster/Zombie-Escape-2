@@ -266,6 +266,10 @@ function ZE2.AddSurvivor(skinname, input_table)
 	input_table.charability2 = CA2_NONE
 	input_table.jumpfactor = ZE2.StandardJumpFactor
 	
+	if input_table.health_penalty then
+		input_table.health = max(1, $ - abs(input_table.health_penalty))
+	end
+
 	ZE2.SurvivorConfig[skinname] = input_table
 	table.insert(ZE2.registered_skins, skinname)
 	
