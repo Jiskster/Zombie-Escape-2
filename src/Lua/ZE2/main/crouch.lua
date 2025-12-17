@@ -32,16 +32,23 @@ local function SetCrouchState(mobj)
 		mobj.frame = A
 	end
 	*/
-	
 	mobj.state = S_PLAY_CROUCH_ZE2
+end
+
+local function crouchcondition(player)
+	if not (player.mo and player.mo.valid) then return false end
+	if gametype ~= GT_ZE2 then return false end
+	if ZE2.game_ended then return false end
+	if ZE2.pregame_timeleft return false end
+	return true
 end
 
 addHook("PreThinkFrame", function()
 	for player in players.iterate do
-		if not (player.mo and player.mo.valid) then continue end
-		if gametype ~= GT_ZE2 then continue end
-		if ZE2.game_ended then continue end
-		if ZE2.pregame_timeleft then continue end
+		local stateset = false
+		if not crouchcondition(player) then
+			continue 
+		end
 		
 		local cmd = player.cmd
 		local pmo = player.mo
@@ -56,15 +63,20 @@ addHook("PreThinkFrame", function()
 				end
 
 				-- mama luigi
-				if (P_IsObjectOnGround(player.mo) or (player.mo.eflags & MFE_JUSTHITFLOOR)) and player.speed > 10*FU then
+				if (P_IsObjectOnGround(player.mo) or (player.mo.eflags & MFE_JUSTHITFLOOR)) and player.speed > 10*FU and not player.ze2.isRunning then
 					L_SpeedCapXY(player.mo, limit) -- Halt ground movement
 				end
 				
 				player.ze2.crouching = true
 			else
 				-- mama luigi
-				if P_IsObjectOnGround(player.mo) and (player.mo.eflags & MFE_JUSTHITFLOOR) then
+				if P_IsObjectOnGround(player.mo) and (player.mo.eflags & MFE_JUSTHITFLOOR) and not player.ze2.isRunning then
 					L_SpeedCapXY(player.mo, limit)
+				end
+
+				if not stateset then
+					stateset = true
+					SetCrouchState(pmo)
 				end
 			end
 		else
@@ -87,18 +99,26 @@ addHook("PreThinkFrame", function()
 
 						if ZE2.sourcemovement.value then player.mo.z = clamp($ - FixedMul(player.height - player.spinheight, pmo.scale) * P_MobjFlip(pmo), pmo.floorz, pmo.ceilingz-P_GetPlayerHeight(player)+FixedMul(heightoffset, pmo.scale)) end
 					end
+
+					player.pflags = $ & ~PF_SPINNING
 				end
 			
 				player.ze2.crouching = false
 			else
 				if player.ze2.crouching then
-					SetCrouchState(pmo)
+					if not stateset then
+						stateset = true
+						SetCrouchState(pmo)
+					end
 				end
 			end
 		end
 		
 		if (P_IsObjectOnGround(player.mo) or ZE2.sourcemovement.value) and player.ze2.crouching then
-			SetCrouchState(pmo)
+			if not stateset then
+				stateset = true
+				SetCrouchState(pmo)
+			end
 		end
 		
 		cmd.buttons = $ & ~BT_SPIN
@@ -128,28 +148,23 @@ addHook("PostThinkFrame", function()
 		if ZE2.pregame_timeleft then continue end
 		if not player.ze2 then continue end
 
-		if ZE2.sourcemovement.value and player.ze2.crouching and switchablestates[player.mo.state] then
-			SetCrouchState(player.mo)
+		if player.ze2.crouching and switchablestates[player.mo.state] then
+			if not (player.mo.state == S_PLAY_CROUCH_ZE2) then
+				SetCrouchState(player.mo)
+			end
 		end
 
 		if player == displayplayer then
-			if P_IsObjectOnGround(player.mo) or not ZE2.sourcemovement.value then
-				if player.ze2.crouching then
-					crouchlerp = min($+FRACUNIT/7, FRACUNIT)
-				else
-					crouchlerp = max($-FRACUNIT/4, 0)
-				end
-				local newheight = player.mo.z + player.viewheight - ease.inoutquad(crouchlerp, 0, FixedMul(player.height - player.spinheight, player.mo.scale))
-				if crouchlerp then player.viewz = min($,newheight) end
+			if player.ze2.crouching then
+				crouchlerp = min($+FRACUNIT/7, FRACUNIT)
 			else
-				if player.ze2.crouching then
-					crouchlerp = FRACUNIT
-					local newheight = player.mo.z + player.viewheight - FixedMul(player.height - player.spinheight, player.mo.scale)
-					player.viewz = min($,newheight)
-					--player.viewz = $ - FixedMul(player.height - player.spinheight, player.mo.scale)
-				else
-					crouchlerp = 0
-				end
+				crouchlerp = max($-FRACUNIT/4, 0)
+			end
+			
+			local newheight = player.mo.z + player.viewheight - ease.inoutquad(crouchlerp, 0, FixedMul(player.height - player.spinheight, player.mo.scale))
+
+			if crouchlerp then 
+				player.viewz = min($,newheight)
 			end
 		end
 	end
