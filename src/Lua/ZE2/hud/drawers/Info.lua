@@ -221,9 +221,9 @@ local function health(v,p,me,ze)
 		end
 		drawSkewFill(v, x,y, width,height, flags, SKINCOLOR__96) -- 96
 		if me.health*FU <= maxhealth/2
-			local fade = FixedMul(10*FU, fade_sin)/FU
+			local fade = FixedMul(11*FU, fade_sin)/FU
 			
-			if fade ~= 10
+			if fade < 10
 				drawSkewFill(v, x,y, width,height, flags|(fade << V_ALPHASHIFT), SKINCOLOR__35) -- 35
 			end
 		end
@@ -265,9 +265,9 @@ local function health(v,p,me,ze)
 		drawSkewFill(v, x+shadow,y+shadow, max_width,height, flags|V_REVERSESUBTRACT, SHADOWCOLOR) --31
 		drawSkewFill(v, x,y, width,height, flags, SKINCOLOR__149)
 		if sprint <= maxsprint/2
-			local fade = FixedMul(10*FU, fade_sin)/FU
+			local fade = FixedMul(11*FU, fade_sin)/FU
 			
-			if fade ~= 10
+			if fade < 10
 				drawSkewFill(v, x,y, width,height, flags|(fade << V_ALPHASHIFT), SKINCOLOR__35) -- 35
 			end
 		end
