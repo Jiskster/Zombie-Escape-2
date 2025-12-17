@@ -92,10 +92,10 @@ function ZE2.resetPlayerHealth(player)
 end
 
 local health_lookup = {
-	[1] = 55;
-	[2] = 65;
-	[3] = 75;
-	[4] = 90;
+	[1] = 60;
+	[2] = 80;
+	[3] = 90;
+	[4] = 95;
 	[5] = 100;
 	[6] = 110;
 	[7] = 120;
