@@ -31,11 +31,11 @@ ZE2.ZombieConfig = {
 		skin = "zsonic",
 		skincolor = SKINCOLOR_ALPHAZOMBIE,
 		normalspeed = 28 * FRACUNIT,
-		acceleration = 16,
+		acceleration = 15,
 		health = 5000,
 		charability = CA_NONE,
 		charability2 = CA2_NONE,
-		actionspd = 16*FRACUNIT,
+		actionspd = 26*FRACUNIT,
 		scale = 11*FRACUNIT/10,
 		killaward = 30,
 		knockback_multiplier = 7*(FU/10),
@@ -48,7 +48,6 @@ ZE2.ZombieConfig = {
 			effect = "alphazombie.rage",
 			effect_table = {
 				normalspeed_multiplier = 2*FU,
-				actionspd_multiplier = tofixed("1.17"),
 				damage_multiplier = 3*FU/2,
 				charability = CA_JUMPTHOK,
 			},
@@ -190,7 +189,7 @@ function ZE2.applyPlayerConfig(player)
 	end
 
 	player.accelstart = config.accelstart or 128 -- survivors and zombies should have the same accelstart
-	player.acceleration = config.acceleration or 20
+	player.acceleration = config.acceleration or 18
 
 	player.charability = config.charability or CA_NONE
 	player.charability2 = config.charability2 or CA2_NONE
