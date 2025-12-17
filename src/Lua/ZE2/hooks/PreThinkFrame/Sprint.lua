@@ -9,7 +9,7 @@ return function()
 		local grounded = P_IsObjectOnGround(pmo)
 
 		local increment = FRACUNIT/2
-		local decrement = fixedfromstring("0.6") --tofixed?
+		local decrement = fixedfromstring("0.5") --tofixed?
 
 		if player.ze2.team ~= 1 then continue end
 		if player.climbing then continue end
