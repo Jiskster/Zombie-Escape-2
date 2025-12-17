@@ -23,7 +23,7 @@ return function(player)
 			if ZE2.round_active and player_count > 1 and leveltime then
 				-- killedbysomething variable is to prevent players from suiciding to get a special zombie
 				-- same goes for was_spectating
-				if player.ze2.zombie_next_type then
+				if player.ze2.zombie_next_type and (player.ze2.killedbysomething) then
 					player.ze2.zombie_type = player.ze2.zombie_next_type
 					player.ze2.zombie_next_type = nil
 				else

@@ -96,6 +96,9 @@ function ZE2.KillMobj(mo, inf, src, damagetype, killedbysomething)
 		end
 		
 		player.ze2.killedbysomething = killedbysomething
+		if not (src and src.valid)
+			player.ze2.killedbysomething = false
+		end
 	end
 	
 	if killing then
