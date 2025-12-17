@@ -20,6 +20,7 @@ dofolder("Sounds");
 dofolder("Electric_Sparkles");
 dofolder("Objects");
 dofolder("Timers");
+dofolder("AltPath_Triggering");
 dofolder("Global_Sounds");
 
 folder = "Frozen Chaos"; dofolder("Timers");
