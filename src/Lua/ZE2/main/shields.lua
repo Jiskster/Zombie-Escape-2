@@ -121,6 +121,7 @@ addHook("MobjThinker", function(shield)
 			if shield.target.player and shield.target.player.valid then
 				local player = shield.target.player
 				
+				shield.dontdrawforviewmobj = shield.target
 				scale = FixedMul($, player.shieldscale)
 			end
 			
