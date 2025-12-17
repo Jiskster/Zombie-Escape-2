@@ -277,7 +277,7 @@ function ZE2.AddSurvivor(skinname, input_table)
 end
 
 ZE2.AddSurvivor("sonic", {
-	weight = 3;
+	weight = 2;
 	description = {
 		"Fast hedgehog, born to speed.";
 		"Has Low HP, and High Speed";
@@ -304,12 +304,13 @@ ZE2.AddSurvivor("knuckles", {
 })
 
 ZE2.AddSurvivor("amy", {
-	weight = 1;
+	weight = 4;
 	description = {
 		"Don't be fooled, she's fierce.";
-		"Has Low HP, and High Speed.";
+		"Has Low HP, and Average Speed.";
 		"A character for good healers.";
 	};
+	health_penalty = 40;
 })
 
 ZE2.AddSurvivor("metalsonic", {
