@@ -47,7 +47,6 @@ return "Inventory", function(v, player)
 		scale = FRACUNIT,
 		patch = v.cachePatch("CURWEAP"),
 		flags = V_SNAPTOBOTTOM,
-		positioned_selection = false, -- Has the selected slot been found to render?
 	}
 	
 	for i=1, slot_count do
@@ -93,7 +92,13 @@ return "Inventory", function(v, player)
 		if selection == i then
 			PositionSlot(i, selected_slot, slot_count, slot_gap)
 			
-			selected_slot.positioned_selection = true
+			v.drawScaled(
+				selected_slot.x,
+				selected_slot.y,
+				selected_slot.scale,
+				selected_slot.patch,
+				selected_slot.flags
+			)
 		end
 		
 		PositionSlot(i, slot, slot_count, slot_gap)
@@ -156,8 +161,8 @@ return "Inventory", function(v, player)
 		end
 		
 		do -- [Draw Ammo/Item Count] -- 
-			local xoffset = 16*FU
-			local yoffset = 8*FU
+			local xoffset = 16*FU + 1*FU
+			local yoffset = 8*FU + 2*FU
 			local extraflags = 0
 			local reloading = player.ze2.reload > 0
 			local text
@@ -191,18 +196,6 @@ return "Inventory", function(v, player)
 				v.drawString(slot.x + xoffset, slot.y + yoffset, text, slot.flags|extraflags, "thin-fixed-right")
 			end
 		end
-	end
-	
-	if selected_slot.positioned_selection then
-		local selection = player.ze2.inventory_selection
-		
-		v.drawScaled(
-			selected_slot.x,
-			selected_slot.y,
-			selected_slot.scale,
-			selected_slot.patch,
-			selected_slot.flags
-		)
 	end
 	
 	-- Item info.
