@@ -126,9 +126,6 @@ local function SpawnDamageNumbers(player, victim_mobj, damage)
 
 	--TODO: test to make sure this doesnt spawn too much mobjs, check for desynchs
 	do
-		local random = P_RandomRange(1,3)*FU + P_RandomFixed()
-		local randomthr = P_RandomRange(-2,2)*FU + P_RandomFixed() * (P_RandomChance(FU/2) and 1 or -1)
-		
 		damage = tostring($)
 		local str_len = string.len(damage)
 		
@@ -136,36 +133,12 @@ local function SpawnDamageNumbers(player, victim_mobj, damage)
 		scale = max($, victim_mobj.scale * 2)
 		scale = FixedMul($, GetFOV())
 		scale = $/2
-		
-		--random = FixedMul($, scale)
-		--randomthr = FixedMul($, scale)
-		
 		--print(string.format("s: %f r: %f rt: %f", scale, random, randomthr))
 		
 		local offset = FixedMul((str_len*width)*FU, scale) / 2
 		
 		local work = offset
 		local angle = R_PointToAngle(victim_mobj.x,victim_mobj.y) - ANGLE_90
-		
-		/*
-		--TODO: 
-		do
-			local test = P_SpawnMobjFromMobj(victim_mobj,
-				P_ReturnThrustX(nil, angle, work + (str_len*width*scale)),
-				P_ReturnThrustY(nil, angle, work + (str_len*width*scale)),
-				FixedDiv(victim_mobj.height, victim_mobj.scale),
-				MT_RAY
-			)
-			
-			--try swapping the to the other side?
-			if not P_CheckSight(test, player.mo) then
-				angle = R_PointToAngle(victim_mobj.x,victim_mobj.y) + ANGLE_90
-				work = -$
-			end
-			
-			if (test and test.valid) then P_RemoveMobj(test) end
-		end
-		*/
 		
 		for i = 1,str_len do
 			local n = string.sub(damage,i,i)
@@ -191,8 +164,8 @@ local function SpawnDamageNumbers(player, victim_mobj, damage)
 			num.drawonlyforplayer = player
 			num.dispoffset = 100
 			
-			num.nu_momz = random
-			num.nu_thrust = randomthr
+			num.nu_momz = 3 * FU
+			num.nu_thrust = 2 * FU * (leveltime % 2 and 1 or -1)
 			num.nu_width = width
 			if num.nu_offset == nil
 				num.nu_offset = 0

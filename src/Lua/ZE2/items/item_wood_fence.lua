@@ -1,9 +1,9 @@
-freeslot("MT_PROPWOOD","S_PROP1","S_PROP1_BREAK","SPR_WPRP")
+freeslot("MT_PROPWOOD","S_PROP1","S_PROP1_PAIN","S_PROP1_BREAK","SPR_WPRP")
 
 mobjinfo[MT_PROPWOOD] = {
     sprite = SPR_WPRP,
 	spawnstate = S_PROP1,
-	painstate = S_PROP1,
+	painstate = S_PROP1_PAIN,
 	painsound = sfx_dmpain,
 	deathstate = S_PROP1_BREAK,
 	deathsound = sfx_wbreak,
@@ -29,6 +29,13 @@ states[S_PROP1] = {
 			P_KillMobj(mo, nil,nil, DMG_CRUSHED)
 		end
 	end
+}
+
+states[S_PROP1_PAIN] = {
+	tics = 4,
+	sprite = SPR_WPRP,
+	frame = C|FF_FULLBRIGHT|FF_PAPERSPRITE,
+	nextstate = S_PROP1,
 }
 
 states[S_PROP1_BREAK] = {
@@ -62,9 +69,10 @@ states[S_PROP1_BREAK] = {
 			P_Thrust(plank, fa, (P_RandomRange(1,10)*plank.scale +  P_RandomFixed()) * sign)
 			P_SetObjectMomZ(plank,P_RandomRange(2,10)*FU+P_RandomFixed())
 		end
+		mo.flags2 = $|MF2_DONTDRAW
 	end,
 	frame = B,
-	tics = 4
+	tics = TICRATE
 }
 
 local wood_fence = ZE2:CreateItem("wood_fence", {
