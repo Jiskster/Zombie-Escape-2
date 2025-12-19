@@ -36,10 +36,9 @@ local function OpenAltPath(v, p)
         drawString(posx+22, (posy-40), "Path unlocked!", flags|V_YELLOWMAP, "center")
         drawScaled(posx*FU, posy*FU, FU/2, zomb, flags|V_FLIP, zomb_color)
         drawScaled((posx+15)*FU, (posy-30)*FU, FU/2, openingpath, flags, zomb_color)
-
-        DoomedCorp.pathunlock_timer = $-1
     end
-
+	
+	if DoomedCorp.pathunlock_timer then DoomedCorp.pathunlock_timer = $-1 end
 end
 addHook("HUD", OpenAltPath)
 
