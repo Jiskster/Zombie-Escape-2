@@ -50,9 +50,9 @@ local flame_ring = ZE2:CreateItem("flame_ring",  {
 	damage = 8,
 	knockback = 1*FRACUNIT,
 	flags2 = MF2_AUTOMATIC,
-	ammo = 30,
-	reload_time = TICRATE*5,
-	price = 750,
+	ammo = 50,
+	reload_time = TICRATE*4,
+	price = 850,
 	ontrigger = function(player, iteminfo)
 		local pmo = player.mo
 		
@@ -87,7 +87,7 @@ local flame_ring = ZE2:CreateItem("flame_ring",  {
 				normalspeed_multiplier = FU/2,
 				actionspd_multiplier = 3*FU/2,
 				damage_multiplier = FU/2,
-			}, 2*TICRATE)
+			}, 4*TICRATE)
 			
 			player.flameringtarget = src
 		end
