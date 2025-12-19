@@ -1,6 +1,6 @@
 ZE2:AddTimer("DOOMEDCORP_1", {
 	text = "Defend Elevator",
-	time = 19*TICRATE,
+	time = 20*TICRATE,
 	on_end_tag = 30,
 	textcolor = SKINCOLOR_BLUE,
 	lua_linedef_exec = "DOOMEDC1",
@@ -8,7 +8,7 @@ ZE2:AddTimer("DOOMEDCORP_1", {
 
 ZE2:AddTimer("DOOMEDCORP_2", {
 	text = "Defend Cave",
-	time = 14*TICRATE,
+	time = 20*TICRATE,
 	on_end_tag = 62,
 	textcolor = SKINCOLOR_GALAXY,
 	lua_linedef_exec = "DOOMEDC2",
