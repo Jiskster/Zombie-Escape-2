@@ -11,7 +11,7 @@ ZE2:AddTimer("FROZENCHAOS_1", {
 
 ZE2:AddTimer("FROZENCHAOS_2", {
 	text = "Defend Second Barrier",
-	time = 20*TICRATE,
+	time = 25*TICRATE,
 	on_end = function(timernum,timername)
 		P_LinedefExecute(11)
 		S_StartSound(nil,90,nil)
@@ -22,7 +22,7 @@ ZE2:AddTimer("FROZENCHAOS_2", {
 
 ZE2:AddTimer("FROZENCHAOS_3", {
 	text = "Defend Final Barrier",
-	time = 15*TICRATE,
+	time = 20*TICRATE,
 	on_end = function(timernum,timername)
 		P_LinedefExecute(7)
 		S_StartSound(nil,90,nil)
