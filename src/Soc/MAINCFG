@@ -164,6 +164,7 @@ SelectHeading = ZE2 Survival Maps
 Lua.ze2_timelimit = 7
 Lua.ze2_zombiereleasetime = 12
 Lua.ze2_rounds = 2
+Lua.ze2_laddertag = 200
 
 Level 23
 Levelname = Frozen Chaos
