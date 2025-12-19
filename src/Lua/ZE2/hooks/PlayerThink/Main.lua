@@ -12,7 +12,7 @@ return function(player)
 		player.pflags = $ & ~PF_FORCESTRAFE
 	end
 
-	if not ZE2.round_active and leveltime and player.spectator and player.jointime <= TICRATE then
+	if not ZE2.round_active and player.spectator and player.jointime <= TICRATE then
 		player.spectator = false
 		player.playerstate = PST_REBORN
 		G_DoReborn(#player)
