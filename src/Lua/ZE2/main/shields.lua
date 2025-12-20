@@ -48,6 +48,8 @@ ZE2:RegisterGenericShop("Whirlwind Shield", {
 function ZE2:GiveShieldToMobj(mobj, shieldid)
 	if not ZE2.ShieldDefinitions[shieldid] then return false end
 	
+	ZE2:RemoveShieldFromMobj(mobj)
+	
 	mobj.shield_def = ZE2.ShieldDefinitions[shieldid]
 	
 	if mobj.shield_def.health then
