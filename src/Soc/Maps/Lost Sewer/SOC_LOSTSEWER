@@ -67,6 +67,9 @@ Var1 = 0
 Var2 = 0
 
 Object MT_OHSHITARAT
+#$Name Oh shit a rat
+#$Sprite ARATA2
+#$Category Lost Sewer
 MapThingNum = 6969
 SpawnState = S_OH_SHIT_A_RAT
 SpawnHealth = 1
@@ -108,6 +111,9 @@ SpriteFrame = A
 Duration = -1
 
 Object MT_TELE
+#$Name TV
+#$Sprite TELEA0
+#$Category Lost Sewer
 MapThingNum = 4270
 Spawnstate = S_TELESCENE
 Spawnhealth = 6900
@@ -117,6 +123,9 @@ MaSS = 100
 Flags = MF_SOLID|MF_SCENERY|MF_NOTHINK|MF_PAPERCOLLISION
 
 Object MT_H2VHS
+#$Name House VHS
+#$Sprite H2VHA0
+#$Category Lost Sewer
 MapThingNum = 4273
 Spawnstate = S_H2VHS
 Spawnhealth = 6900
@@ -126,6 +135,9 @@ MaSS = 100
 Flags = MF_SOLID|MF_SCENERY|MF_NOTHINK|MF_PAPERCOLLISION
 
 Object MT_H2BULB
+#$Name Bulb
+#$Sprite H2BBA0
+#$Category Lost Sewer
 MapThingNum = 4274
 Spawnstate = S_H2BULB
 Spawnhealth = 6900

@@ -24,6 +24,8 @@ VAR1 = 0
 VAR2 = 0
 
 Thing MT_Pumpkin
+#$Name Old Pumpkin
+#$Category Spooky Flower
 #$Sprite PUMPA0
 MAPTHINGNUM = 4025
 SPAWNSTATE = S_PUMP_EXST
