@@ -11,7 +11,7 @@ mobjinfo[MT_PROPWOOD] = {
 	speed = 0,
 	radius = 96*FRACUNIT,
 	height = 138*FRACUNIT,
-	flags = MF_SHOOTABLE|MF_SOLID,
+	flags = MF_SHOOTABLE|MF_SOLID|MF_SPECIAL,
 }
 
 mobjinfo[MT_PROPWOOD].npc_name = "Wood Fence"
@@ -116,6 +116,10 @@ addHook("MobjCollide", function(wood, tmo)
 			end
 		end
 	end
+end, MT_PROPWOOD)
+
+addHook("TouchSpecial", function(special, toucher)
+	return true
 end, MT_PROPWOOD)
 
 ZE2:RegisterShop_ItemID(wood_fence)
