@@ -54,6 +54,7 @@ local function I_LoadItems(sp)
 	ze2file "insta_burst.lua"
 	ze2file "flame_ring.lua"
 	ze2file "gfz_sphere.lua"
+	ze2file "energy_drink.lua"
 	
 	/*
 	ze2file "item_bounce_ring.lua"
@@ -61,7 +62,7 @@ local function I_LoadItems(sp)
 	ze2file "item_infinity_ring.lua"
 	
 	ze2file "item_landmine.lua"
-	ze2file "item_energy_drink.lua"
+	
 	*/
 	
 	set_subpath "";

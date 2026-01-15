@@ -4,8 +4,8 @@ local function drawSkewFill(v, x,y, w,h, flags, c, skincolor)
 	if (w == nil or w <= 0) then return end
 	local table_clr = type(skincolor) == "table"
 	local clr_len = 16
-	if skincolor ~= nil
-		if table_clr
+	if skincolor ~= nil then
+		if table_clr then
 			clr_len = #skincolor
 		end
 		w = FixedDiv($, clr_len*FU)
@@ -13,15 +13,15 @@ local function drawSkewFill(v, x,y, w,h, flags, c, skincolor)
 	if not table_clr then clr_len = $ - 1; end
 	
 	x = $ - (FixedDiv(h, 2*FU) - FU)
-	while h >= 0
-		if (not skincolor)
+	while h >= 0 do
+		if (not skincolor) then
 			v.drawStretched(x, y, w, 2*FU, v.cachePatch("ZE2_C"), flags, v.getColormap(TC_DEFAULT, c))
 		else
 			local ramp = (table_clr) and skincolor or skincolors[skincolor].ramp
 			local new_x = x
-			for i = (table_clr and 1 or 0), clr_len
+			for i = (table_clr and 1 or 0), clr_len do
 				local workind = i
-				if not table_clr
+				if not table_clr then
 					workind = clr_len - i
 				end
 				local newcolor = ZE2.paletteToColor[ramp[workind]]
@@ -122,9 +122,9 @@ local function health(v,p,me,ze)
 	maxhealth = $*FU
 	AlreadyReset = false
 	
-	if old_disp == nil
+	if old_disp == nil then
 		old_disp = p
-	elseif old_disp ~= p
+	elseif old_disp ~= p then
 		old_info.health = me.health*FU
 		fake_info.health = me.health*FU
 		
@@ -135,21 +135,21 @@ local function health(v,p,me,ze)
 		fake_info.shield = me.shield_health
 	end
 	
-	if old_info.health == -1
+	if old_info.health == -1 then
 		old_info.health = me.health*FU
 		fake_info.health = me.health*FU
 	end
 	if old_info.stamina == -1
-	and ze.sprintmeter ~= nil
+	and ze.sprintmeter ~= nil then
 		old_info.stamina = ze.sprintmeter
 		fake_info.stamina = ze.sprintmeter
 	end
-	if old_info.shield == -1
+	if old_info.shield == -1 then
 		old_info.shield = me.shield_health
 		fake_info.shield = me.shield_health
 	end
 	if old_info.rage == -1
-	and ze.special_cooldown ~= nil
+	and ze.special_cooldown ~= nil then
 		old_info.rage = ze.special_cooldown
 		fake_info.rage = ze.special_cooldown
 	end
@@ -189,10 +189,10 @@ local function health(v,p,me,ze)
 		
 		local width = FixedMul(max_width, FixedDiv(health,maxhealth))
 		drawSkewFill(v, x+shadow,y+shadow, max_width,height, flags|V_REVERSESUBTRACT, SHADOWCOLOR) -- 31
-		if (old_info.health > me.health*FU)
+		if (old_info.health > me.health*FU) then
 			health_shake = $ + abs(old_info.health - health)
 		end
-		if old_info.health > health --we lost health!
+		if old_info.health > health then --we lost health!
 			if store_info.health == -1
 				store_info.health = old_info.health
 			end
@@ -201,7 +201,7 @@ local function health(v,p,me,ze)
 		else
 			if store_info.health ~= -1
 			and (abs(me.health*FU - health) <= FU)
-			and (health_shake <= FU/10)
+			and (health_shake <= FU/10) then
 				local diff = max(abs(store_info.health - health)/15, 1)
 				if store_info.health < health
 					store_info.health = $ + diff
@@ -210,18 +210,18 @@ local function health(v,p,me,ze)
 				end
 			end
 			if store_info.health == health
-			or store_info.health == -1
+			or store_info.health == -1 then
 				store_info.health = -1
 			else
 				drawRed = true
 				redWidth = FixedMul(max_width, FixedDiv(store_info.health,maxhealth))
 			end
 		end
-		if drawRed
+		if drawRed then
 			drawSkewFill(v, x,y, redWidth,height, flags|V_20TRANS, SKINCOLOR__35) --35
 		end
 		drawSkewFill(v, x,y, width,height, flags, SKINCOLOR__96) -- 96
-		if me.health*FU <= maxhealth/2
+		if me.health*FU <= maxhealth/2 then
 			local fade = FixedMul(11*FU, fade_sin)/FU
 			
 			if fade < 10
@@ -234,15 +234,15 @@ local function health(v,p,me,ze)
 		)
 
 		-- hardcoded...
-		if (ze.effects)
+		if (me.effects) then
 			local hasfire = false
-			for name, _ in pairs(ze.effects) do
-				if name == "flaming_effect"
+			for i, effect in ipairs(me.effects) do
+				if effect.name == "burning" then
 					hasfire = true
 					break
 				end
 			end
-			if hasfire
+			if hasfire then
 				makefire(v, real_x,real_y+height, width/FU, -(height/FU))
 			end
 		end
@@ -252,7 +252,7 @@ local function health(v,p,me,ze)
 
 	--stamina
 	if team == 1
-	and ze.sprintmeter ~= nil
+	and ze.sprintmeter ~= nil then
 		--sprint is fixed here, Yay!!
 		local sprint = ze.sprintmeter
 		
@@ -265,7 +265,7 @@ local function health(v,p,me,ze)
 		local width = FixedMul(max_width, FixedDiv(sprint,maxsprint))
 		drawSkewFill(v, x+shadow,y+shadow, max_width,height, flags|V_REVERSESUBTRACT, SHADOWCOLOR) --31
 		drawSkewFill(v, x,y, width,height, flags, SKINCOLOR__149)
-		if sprint <= maxsprint/2
+		if sprint <= maxsprint/2 then
 			local fade = FixedMul(11*FU, fade_sin)/FU
 			
 			if fade < 10
@@ -293,7 +293,7 @@ local function health(v,p,me,ze)
 		)
 	--rage meter
 	elseif (team == 2)
-	and (zc and zc.special and zc.special.button)
+	and (zc and zc.special and zc.special.button) then
 		local spec = zc.special
 		local rage = ze.special_cooldown --rage variable
 		rage = intlerp(2, fake_info.rage, $)
@@ -310,14 +310,14 @@ local function health(v,p,me,ze)
 		
 		local color = SKINCOLOR_ALPHAZOMBIE
 		local usecolor = true
-		if ze.special_cooldown
+		if ze.special_cooldown then
 			color = SKINCOLOR__71
 			usecolor = false
 		end
 		drawSkewFill(v, x,y, width,height, flags, color, usecolor and color or nil)
 		
 		local pname = "Z_TT_"..(button_to_tooltip[spec.button])
-		if (v.patchExists(pname))
+		if (v.patchExists(pname)) then
 			v.drawScaled(x - adjust - button_pad, y - button_pad, FU,
 				v.cachePatch(pname),
 				flags|(ze.special_cooldown and V_50TRANS or 0)
@@ -340,15 +340,15 @@ local function health(v,p,me,ze)
 	fake_info.shield = shields
 	
 	local drawshields = false
-	if shields ~= -1
+	if shields ~= -1 then
 		drawshields = (me.shield_def or (fake_info.shielddef ~= -1))
-	elseif store_info.shield ~= -1
+	elseif store_info.shield ~= -1 then
 		drawshields = true
 	end
 	
-	if drawshields
-		if me.shield_def
-			if fake_info.shielddef ~= me.shield_def
+	if drawshields then
+		if me.shield_def then
+			if fake_info.shielddef ~= me.shield_def then
 				old_info.shield = shields
 			end
 			fake_info.shielddef = me.shield_def
@@ -367,7 +367,7 @@ local function health(v,p,me,ze)
 		crop_height = max($, 0)
 		
 		--BG
-		if percentage ~= FU
+		if percentage ~= FU then
 			v.drawCropped(x,y,
 				FU,FU,
 				shield_icon,
@@ -401,15 +401,15 @@ local function health(v,p,me,ze)
 	end
 	
 	--fire effect
-	if #hud_fires
-		for k,fire in ipairs(hud_fires)
+	if #hud_fires then
+		for k,fire in ipairs(hud_fires) do
 			if fire.tics <= 0
 				table.remove(hud_fires,k)
 			end
 		end
-		for k,fire in ipairs(hud_fires)
+		for k,fire in ipairs(hud_fires) do
 			local frame = (fire.lifetime/2) % 5
-			if (frame > 2)
+			if (frame > 2) then
 				frame = E - $
 			end
 			v.drawScaled(fire.x,fire.y, fire.scale/4,

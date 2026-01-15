@@ -51,7 +51,7 @@ xSlinger.registerItem("flame_ring", {
 	
 	autouse = true;
 	
-	damage = 8;
+	damage = 3;
 	
 	knockback = 1*FRACUNIT;
 	
@@ -87,21 +87,13 @@ xSlinger.registerItem("flame_ring", {
 		end
 	end;
 	hitfunc = function(self, src, mo, inf)
-		if src and src.valid and src.player and src.player.valid 
-		and mo and mo.valid and mo.player and mo.player.valid then
-			local player = mo.player -- mobj that was hit
-			local pv = player.ze2
-
-			/*
-			player.ze2:GiveEffect("flaming_effect", {
-				normalspeed_multiplier = FU/2,
-				actionspd_multiplier = 3*FU/2,
-				damage_multiplier = FU/2,
-			}, 4*TICRATE)
-			*/
-			
-			player.flameringtarget = src
-		end
+		mo:give_effect("burning", {
+			normalspeed_multiplier = FU/2,
+			actionspd_multiplier = 3*FU/2,
+			damage_multiplier = FU/2,
+		}, 9, true)
+		
+		mo.flameringtarget = src
 	end;
 })
 

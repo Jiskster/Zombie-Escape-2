@@ -16,12 +16,14 @@ return function(player)
 				if special.sound ~= nil
 					S_StartSound(player.mo, special.sound)
 				end
+				
 				if special.effect ~= nil
 					local effect_table = {}
 					if special.effect_table ~= nil
 						effect_table = special.effect_table
 					end
-					player.ze2:GiveEffect(special.effect, effect_table, special.effect_duration)
+
+					player.mo:give_effect(special.effect, effect_table, special.effect_duration)
 				end
 			end
 		end

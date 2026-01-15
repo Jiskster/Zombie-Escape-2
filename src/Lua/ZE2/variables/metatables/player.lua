@@ -10,8 +10,6 @@ local ze2_funcs = {
 	["UpdateDamageNumbers"] = ZE2.Require(ze2_funcs_path + "UpdateDamageNumbers");
 	["DamageFade"] = ZE2.Require(ze2_funcs_path + "DamageFade");
 	["ChangeStamina"] = ZE2.Require(ze2_funcs_path + "ChangeStamina");
-	["GiveEffect"] = ZE2.Require(ze2_funcs_path + "GiveEffect");
-	["FindEffectAttributes"] = ZE2.Require(ze2_funcs_path + "FindEffectAttributes");
 }
 
 local ze2_mt = { -- Metatable for the player_t.ze2 table.

@@ -122,16 +122,15 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 			end
 		end
 
-		/*
-		-- ehh whatever, throw this in here too
 		if (inf.flags & MF_FIRE) then
-			mo.player.ze2:GiveEffect("flaming_effect", {
-				normalspeed_multiplier = FU/2,
-				actionspd_multiplier = 3*FU/2,
-				damage_multiplier = FU/2,
-			}, 4*TICRATE)
+			if xSlinger.Effects["burning"] then
+				mo:give_effect("burning", {
+					normalspeed_multiplier = FU/2,
+					actionspd_multiplier = 3*FU/2,
+					damage_multiplier = FU/2,
+				}, 18, true)
+			end
 		end
-		*/
 	end
 	
 	if (inf and inf.valid and inf.player) then 
@@ -208,43 +207,15 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	end
 	
 	if inflictor_player then
-		/*
-		local dmg_attributes = inflictor_player.ze2:FindEffectAttributes("damage_multiplier") 
-		local kb_attributes = inflictor_player.ze2:FindEffectAttributes("knockback_multiplier") 
-		
-		-- all of this should be a function lol
-		if #dmg_attributes then
-			local multi = 0
-			
-			for i=1,#dmg_attributes do
-				if i == 1 then
-					multi = dmg_attributes[i]
-				else
-					multi = FixedMul($, dmg_attributes[i])
-				end
+		for i,effect in ipairs(mo.effects) do
+			if effect.damage_multiplier then
+				dmg = FixedMul($, effect.damage_multiplier)/FU
 			end
-			
-			if multi then
-				dmg = FixedMul($*FU, multi)/FU
+
+			if effect.knockback_multiplier then
+				knockback = FixedMul($, effect.knockback_multiplier)
 			end
 		end
-		
-		if #kb_attributes then
-			local multi = 0 
-			
-			for i=1,#kb_attributes do
-				if i == 1 then
-					multi = kb_attributes[i]
-				else
-					multi = FixedMul($, kb_attributes[i])
-				end
-			end
-			
-			if multi then
-				knockback = FixedMul($, multi)
-			end
-		end
-		*/
 	end
 	
 	if mo.shield_health then

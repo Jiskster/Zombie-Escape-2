@@ -34,92 +34,87 @@ ZE2.HUD = {}
 local flame_colors = {
 	SKINCOLOR_FLAME, SKINCOLOR_KETCHUP, SKINCOLOR_GARNET, SKINCOLOR_ORANGE, --SKINCOLOR_RUST, SKINCOLOR_COPPER
 }
-ZE2.Effects = {
-	["alphazombie.rage"] = {
-		thinker = function(player)
-			if player.mo and player.mo.valid then
-				local g = P_SpawnGhostMobj(player.mo)
-				g.destscale = 0
-				g.fuse = TICRATE
-				g.scalespeed = FixedDiv(g.scale, g.fuse*FU)
-				g.blendmode = AST_SUBTRACT
-				g.renderflags = RF_FULLBRIGHT
-			end
-		end,
-		on_end = function(player)
-			if player.mo and player.mo.valid then
-				S_StartSound(player.mo, sfx_bstdn)
-			end
-		end
-	},
-	-- still has left-over functionality of the flame ring
-	["flaming_effect"] = {
-		thinker = function(player, time_left)
-			if player and player.valid and player.mo and player.mo.valid then
-				local team = player.xSlinger.team
-				if (time_left % 20) == 0 then
-					local damage = 35
-					if (team == 1) then
-						damage = 2
-					end
-					P_DamageMobj(player.mo, nil, player.flameringtarget, damage)
-					S_StartSoundAtVolume(nil, sfx_s248, 127, player)
-					S_StartSoundAtVolume(nil, sfx_s3kc2s, 127, player)
+
+xSlinger.registerEffect("alphazombie.rage", {
+	tick = function(effect, mobj, time_left)
+		local g = P_SpawnGhostMobj(mobj)
+		g.destscale = 0
+		g.fuse = TICRATE
+		g.scalespeed = FixedDiv(g.scale, g.fuse*FU)
+		g.blendmode = AST_SUBTRACT
+		g.renderflags = RF_FULLBRIGHT
+	end;
+	endfunc = function(effect, mobj)
+		S_StartSound(mobj, sfx_bstdn)
+	end
+})
+
+xSlinger.registerEffect("burning", {
+	tick = function(effect, mobj, time_left)
+		if mobj and mobj.valid then
+			if (time_left % 20) == 0 then
+				local damage = 35
+				if (mobj.team == 1) then
+					damage = 2
 				end
 				
-				local rad = FixedDiv(player.mo.radius, player.mo.scale)/FU
-				local hei = FixedDiv(player.mo.height, player.mo.scale)/FU
-				if (time_left % 3) == 0 then
-					for i = 0,1
-						-- P_SpawnMobjFromMobj already scales offsets.
-						local flm = P_SpawnMobjFromMobj(player.mo, 
-										P_RandomRange(-rad,rad)*FU, 
-										P_RandomRange(-rad,rad)*FU, 
-										P_RandomRange(0, hei)*FU,
-									i and MT_FLAMEPARTICLE or MT_RS_THROWNFLAME)
-						
-						-- Make intangible.
-						flm.flags = $|MF_NOCLIPTHING &~(MF_MISSILE)
-						
-						-- Make it look cool!
-						flm.color = flame_colors[P_RandomRange(1, #flame_colors)]
-						flm.frame = $ &~FF_TRANSMASK
-						if (i == 0) then
-							flm.fuse = TICRATE*3/4
-							flm.scale = FU/2
-						else
-							flm.fuse = P_RandomRange(15,29)
-							flm.scale = $ + P_RandomRange(0,FU/2)
-						end
-						flm.destscale = 0
-						flm.scalespeed = FixedDiv(flm.scale, flm.fuse*FU)
-						flm.blendmode = AST_ADD
-						flm.renderflags = $|RF_FULLBRIGHT|RF_NOCOLORMAPS
-						flm.dontdrawforviewmobj = player.mo
-						if (i == 0) then
-							-- P_SetObjectMomZ(flm,P_RandomRange(2,4)*player.mo.scale+P_RandomFixed())
-						else
-							P_SetObjectMomZ(flm, P_RandomRange(3,6)*FU)
-						end
+				P_DamageMobj(mobj, nil, mobj.flameringtarget, damage)
+				S_StartSoundAtVolume(nil, sfx_s248, 127, mobj.player)
+				S_StartSoundAtVolume(nil, sfx_s3kc2s, 127, mobj.player)
+			end
+			
+			local rad = FixedDiv(mobj.radius, mobj.scale)/FU
+			local hei = FixedDiv(mobj.height, mobj.scale)/FU
+			if (time_left % 3) == 0 then
+				for i = 0,1
+					-- P_SpawnMobjFromMobj already scales offsets.
+					local flm = P_SpawnMobjFromMobj(mobj, 
+									P_RandomRange(-rad,rad)*FU, 
+									P_RandomRange(-rad,rad)*FU, 
+									P_RandomRange(0, hei)*FU,
+								i and MT_FLAMEPARTICLE or MT_RS_THROWNFLAME)
+					
+					-- Make intangible.
+					flm.flags = $|MF_NOCLIPTHING &~(MF_MISSILE)
+					
+					-- Make it look cool!
+					flm.color = flame_colors[P_RandomRange(1, #flame_colors)]
+					flm.frame = $ &~FF_TRANSMASK
+					if (i == 0) then
+						flm.fuse = TICRATE*3/4
+						flm.scale = FU/2
+					else
+						flm.fuse = P_RandomRange(15,29)
+						flm.scale = $ + P_RandomRange(0,FU/2)
+					end
+					flm.destscale = 0
+					flm.scalespeed = FixedDiv(flm.scale, flm.fuse*FU)
+					flm.blendmode = AST_ADD
+					flm.renderflags = $|RF_FULLBRIGHT|RF_NOCOLORMAPS
+					flm.dontdrawforviewmobj = mobj
+					if (i == 0) then
+						-- P_SetObjectMomZ(flm,P_RandomRange(2,4)*mobj.scale+P_RandomFixed())
+					else
+						P_SetObjectMomZ(flm, P_RandomRange(3,6)*FU)
 					end
 				end
-				local smoke = P_SpawnMobjFromMobj(player.mo,
-					P_RandomRange(-rad,rad)*FU,
-					P_RandomRange(-rad,rad)*FU,
-					P_RandomRange(0,hei)*FU,
-					MT_SMOKE
-				)
-				P_SetObjectMomZ(smoke,P_RandomRange(1,2)*player.mo.scale+P_RandomFixed())
-				smoke.scale = $ + P_RandomRange(0,FU/2)
-				smoke.alpha = FU/2
-				smoke.dontdrawforviewmobj = player.mo
 			end
-		end,
-		on_end = function(player)
-			player.flameringtarget = nil
+			local smoke = P_SpawnMobjFromMobj(mobj,
+				P_RandomRange(-rad,rad)*FU,
+				P_RandomRange(-rad,rad)*FU,
+				P_RandomRange(0,hei)*FU,
+				MT_SMOKE
+			)
+			P_SetObjectMomZ(smoke,P_RandomRange(1,2)*mobj.scale+P_RandomFixed())
+			smoke.scale = $ + P_RandomRange(0,FU/2)
+			smoke.alpha = FU/2
+			smoke.dontdrawforviewmobj = mobj
 		end
-	}
-}
+	end;
+	endfunc = function(self, mobj)
+		mobj.flameringtarget = nil
+	end;
+})
 
 /*
 	Linedef arguments:
@@ -154,6 +149,7 @@ local index_to_attrib = {
 	[6] = "damage_multiplier",
 	[7] = "knockback_multiplier"
 }
+
 local index_mul = {
 	[1] = FU,
 	[2] = 1,
@@ -163,6 +159,7 @@ local index_mul = {
 	[6] = 1,
 	[7] = 1
 }
+
 addHook("LinedefExecute", function(line, mo)
 	if not udmf then return end
 	if not (mo.player and mo.player.valid) then return end
@@ -178,12 +175,12 @@ addHook("LinedefExecute", function(line, mo)
 		effect_attribs[index_to_attrib[i]] = args[i] * index_mul[i]
 	end
 
-	if ZE2.Effects[effect_name] == nil
+	if xSlinger.Effects[effect_name] == nil
 		print('\x82WARNING\x80: Effect name "'..effect_name..'" is not valid. (line #'..(#line)..')')
 		return
 	end
 
-	mo.player.ze2:GiveEffect(effect_name, effect_attribs, effect_duration)
+	mo:give_effect(effect_name, effect_attribs, effect_duration)
 end, "ZE2_GIVEPLREFFECT")
 
 G_AddGametype({

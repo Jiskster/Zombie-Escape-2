@@ -20,7 +20,7 @@ ZE2.ZombieConfig = {
 			button = 0, -- no button to disable
 			/*
 			effect = string_t,
-			effect_table = table, (just whatever you plug into player.ze2:GiveEffect)
+			effect_table = table, (just whatever you plug into player.mo:give_effect(...)'s  2nd arg)
 			effect_duration = tic_t,
 			cooldown = tic_t,
 			sound = sfx, (maybe make an ontrigger func?)
@@ -243,6 +243,28 @@ function ZE2.applyPlayerConfig(player)
 		player.actionspd = $ / 2
 		player.normalspeed = $ / 2
 	end
+
+	for i,effect in ipairs(mo.effects) do
+		if effect.normalspeed then
+			player.normalspeed = effect.normalspeed
+		end
+
+		if effect.actionspd then
+			player.actionspd = effect.actionspd
+		end
+
+		if effect.charability then
+			player.charability = effect.charability
+		end
+
+		if effect.normalspeed_multiplier then
+			player.normalspeed = FixedMul($, effect.normalspeed_multiplier)
+		end
+
+		if effect.actionspd_multiplier then
+			player.actionspd = FixedMul($, effect.actionspd_multiplier)
+		end
+	end
 end
 
 ZE2.SetZCinventory = function(player)
@@ -412,7 +434,6 @@ function xSlinger.initPlayerSpawn(player)
 	
 	player.ze2.lower_hud_offset = 0
 	player.ze2.special_cooldown = 0
-	player.ze2.effects = {}
 	player.ze2.damage_indicator_table = {}
 end
 
