@@ -21,12 +21,13 @@ mobjinfo[MT_BLUECRAWLA].forcedamage = 10
 mobjinfo[MT_BLUECRAWLA].relativeknockback = true
 
 mobjinfo[MT_REDCRAWLA].npc_name = "Red Crawla"
-mobjinfo[MT_REDCRAWLA].npc_spawnhealth = {30,45}
+mobjinfo[MT_REDCRAWLA].npc_spawnhealth = {50,85}
 mobjinfo[MT_REDCRAWLA].npc_name_color = SKINCOLOR_RED
-mobjinfo[MT_REDCRAWLA].rubydrop = {3,5}
+mobjinfo[MT_REDCRAWLA].rubydrop = {15, 25}
 mobjinfo[MT_REDCRAWLA].painsound = sfx_dmpain
 mobjinfo[MT_REDCRAWLA].forcedamage = 20
 mobjinfo[MT_REDCRAWLA].relativeknockback = true
+mobjinfo[MT_REDCRAWLA].forceknockback = 22*FRACUNIT
 
 mobjinfo[MT_GOLDCRAWLA] = {
 	doomednum = -1,
