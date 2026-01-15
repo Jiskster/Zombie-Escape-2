@@ -1,0 +1,506 @@
+Freeslot
+sfx_smbm
+SPR_WSD1
+SPR_WSD2
+SPR_WSD3
+SPR_SMXP
+MT_WESTDEBRS1
+MT_WESTDEBRS2
+MT_WESTDEBRS3
+MT_SUMMAEXPLOSION
+S_SUMMAEXPLOSION1
+S_SUMMAEXPLOSION2
+S_SUMMAEXPLOSION3
+S_SUMMAEXPLOSION4
+S_SUMMAEXPLOSION5
+S_SUMMAEXPLOSION6
+S_SUMMAEXPLOSION7
+S_SUMMAEXPLOSION8
+S_SUMMAEXPLOSION9
+S_SUMMAEXPLOSION10
+S_SUMMAEXPLOSION11
+S_SUMMAEXPLOSION12
+S_SUMMAEXPLOSION13
+S_SUMMAEXPLOSION14
+S_SUMMAEXPLOSION15
+S_SUMMAEXPLOSION16
+S_SUMMAEXPLOSION17
+S_SUMMAEXPLOSION18
+S_SUMMAEXPLOSION19
+S_SUMMAEXPLOSION20
+S_SUMMAEXPLOSION21
+S_WESTDEBRS1
+S_WESTDEBRS2
+S_WESTDEBRS3
+S_WESTDEBRS4
+S_WESTDEBRS5
+S_WESTDEBRS6
+S_WESTDEBRS7
+S_WESTDEBRS8
+S_WESTDEBRS9
+S_WESTDEBRS10
+S_WESTDEBRS11
+S_WESTDEBRS12
+S_WESTDEBRS13
+S_WESTDEBRS14
+S_WESTDEBRS15
+S_WESTD2BRS1
+S_WESTD2BRS2
+S_WESTD2BRS3
+S_WESTD2BRS4
+S_WESTD2BRS5
+S_WESTD2BRS6
+S_WESTD2BRS7
+S_WESTD2BRS8
+S_WESTD2BRS9
+S_WESTD2BRS10
+S_WESTD2BRS11
+S_WESTD2BRS12
+S_WESTD2BRS13
+S_WESTD2BRS14
+S_WESTD2BRS15
+S_WESTD3BRS1
+S_WESTD3BRS2
+S_WESTD3BRS3
+S_WESTD3BRS4
+S_WESTD3BRS5
+S_WESTD3BRS6
+S_WESTD3BRS7
+S_WESTD3BRS8
+S_WESTD3BRS9
+S_WESTD3BRS10
+S_WESTD3BRS11
+S_WESTD3BRS12
+S_WESTD3BRS13
+S_WESTD3BRS14
+S_WESTD3BRS15
+
+Object MT_WESTDEBRS1
+MapThingNum = 6970
+Spawnstate = S_WESTDEBRS1
+Spawnhealth = 6900
+ReactionTime = 8
+Radius = 8*FRACUNIT
+Height = 8*FRACUNIT
+MaSS = 100
+Flags = MF_SCENERY|MF_NOCLIP|MF_NOCLIPHEIGHT
+
+Object MT_SUMMAEXPLOSION
+SpawnState = S_SUMMAEXPLOSION1
+Flags = MF_NOGRAVITY
+
+State S_SUMMAEXPLOSION1
+SpriteName = SMXP
+SpriteFrame = A
+Duration = 1
+Next = S_SUMMAEXPLOSION2
+
+State S_SUMMAEXPLOSION2
+SpriteName = SMXP
+SpriteFrame = B
+Duration = 1
+Next = S_SUMMAEXPLOSION3
+
+State S_SUMMAEXPLOSION3
+SpriteName = SMXP
+SpriteFrame = C
+Duration = 1
+Next = S_SUMMAEXPLOSION4
+
+State S_SUMMAEXPLOSION4
+SpriteName = SMXP
+SpriteFrame = D
+Duration = 1
+Next = S_SUMMAEXPLOSION5
+
+State S_SUMMAEXPLOSION5
+SpriteName = SMXP
+SpriteFrame = E
+Duration = 1
+Next = S_SUMMAEXPLOSION6
+
+State S_SUMMAEXPLOSION6
+SpriteName = SMXP
+SpriteFrame = F
+Duration = 1
+Next = S_SUMMAEXPLOSION7
+
+State S_SUMMAEXPLOSION7
+SpriteName = SMXP
+SpriteFrame = G
+Duration = 1
+Next = S_SUMMAEXPLOSION8
+
+State S_SUMMAEXPLOSION8
+SpriteName = SMXP
+SpriteFrame = H
+Duration = 1
+Next = S_SUMMAEXPLOSION9
+
+State S_SUMMAEXPLOSION9
+SpriteName = SMXP
+SpriteFrame = I
+Duration = 1
+Next = S_SUMMAEXPLOSION10
+
+State S_SUMMAEXPLOSION10
+SpriteName = SMXP
+SpriteFrame = J
+Duration = 3
+Next = S_SUMMAEXPLOSION11
+
+State S_SUMMAEXPLOSION11
+SpriteName = SMXP
+SpriteFrame = K
+Duration = 3
+Next = S_SUMMAEXPLOSION12
+
+State S_SUMMAEXPLOSION12
+SpriteName = SMXP
+SpriteFrame = L
+Duration = 3
+Next = S_SUMMAEXPLOSION13
+
+State S_SUMMAEXPLOSION13
+SpriteName = SMXP
+SpriteFrame = M
+Duration = 3
+Next = S_SUMMAEXPLOSION14
+
+State S_SUMMAEXPLOSION14
+SpriteName = SMXP
+SpriteFrame = N
+Duration = 3
+Next = S_SUMMAEXPLOSION15
+
+State S_SUMMAEXPLOSION15
+SpriteName = SMXP
+SpriteFrame = O
+Duration = 3
+Next = S_SUMMAEXPLOSION16
+
+State S_SUMMAEXPLOSION16
+SpriteName = SMXP
+SpriteFrame = P
+Duration = 3
+Next = S_SUMMAEXPLOSION17
+
+State S_SUMMAEXPLOSION17
+SpriteName = SMXP
+SpriteFrame = Q
+Duration = 3
+Next = S_SUMMAEXPLOSION18
+
+State S_SUMMAEXPLOSION18
+SpriteName = SMXP
+SpriteFrame = R
+Duration = 3
+Next = S_SUMMAEXPLOSION19
+
+State S_SUMMAEXPLOSION19
+SpriteName = SMXP
+SpriteFrame = S
+Duration = 3
+Next = S_SUMMAEXPLOSION20
+
+State S_SUMMAEXPLOSION20
+SpriteName = SMXP
+SpriteFrame = T
+Duration = 3
+Next = S_SUMMAEXPLOSION21
+
+State S_SUMMAEXPLOSION21
+SpriteName = SMXP
+SpriteFrame = U
+Duration = 3
+Next = S_NULL
+
+State S_WESTDEBRS1
+SpriteName = WSD1
+SpriteFrame = A
+Duration = 5
+Next = S_WESTDEBRS2
+
+State S_WESTDEBRS2
+SpriteName = WSD1
+SpriteFrame = B
+Duration = 5
+Next = S_WESTDEBRS3
+
+State S_WESTDEBRS3
+SpriteName = WSD1
+SpriteFrame = C
+Duration = 5
+Next = S_WESTDEBRS4
+
+State S_WESTDEBRS4
+SpriteName = WSD1
+SpriteFrame = D
+Duration = 5
+Next = S_WESTDEBRS5
+
+State S_WESTDEBRS5
+SpriteName = WSD1
+SpriteFrame = E
+Duration = 5
+Next = S_WESTDEBRS6
+
+State S_WESTDEBRS6
+SpriteName = WSD1
+SpriteFrame = F
+Duration = 5
+Next = S_WESTDEBRS7
+
+State S_WESTDEBRS7
+SpriteName = WSD1
+SpriteFrame = G
+Duration = 5
+Next = S_WESTDEBRS8
+
+State S_WESTDEBRS8
+SpriteName = WSD1
+SpriteFrame = H
+Duration = 5
+Next = S_WESTDEBRS9
+
+State S_WESTDEBRS9
+SpriteName = WSD1
+SpriteFrame = I
+Duration = 5
+Next = S_WESTDEBRS10
+
+State S_WESTDEBRS10
+SpriteName = WSD1
+SpriteFrame = J
+Duration = 5
+Next = S_WESTDEBRS11
+
+State S_WESTDEBRS11
+SpriteName = WSD1
+SpriteFrame = K
+Duration = 5
+Next = S_WESTDEBRS12
+
+State S_WESTDEBRS12
+SpriteName = WSD1
+SpriteFrame = L
+Duration = 5
+Next = S_WESTDEBRS13
+
+State S_WESTDEBRS13
+SpriteName = WSD1
+SpriteFrame = M
+Duration = 5
+Next = S_WESTDEBRS14
+
+State S_WESTDEBRS14
+SpriteName = WSD1
+SpriteFrame = N
+Duration = 5
+Next = S_WESTDEBRS15
+
+State S_WESTDEBRS15
+SpriteName = WSD1
+SpriteFrame = O
+Duration = 5
+Next = S_WESTDEBRS1
+
+Object MT_WESTDEBRS2
+MapThingNum = 6980
+Spawnstate = S_WESTD2BRS1
+Spawnhealth = 6900
+ReactionTime = 8
+Radius = 8*FRACUNIT
+Height = 8*FRACUNIT
+MaSS = 100
+Flags = MF_SCENERY|MF_NOCLIP|MF_NOCLIPHEIGHT
+
+State S_WESTD2BRS1
+SpriteName = WSD2
+SpriteFrame = A
+Duration = 5
+Next = S_WESTD2BRS2
+
+State S_WESTD2BRS2
+SpriteName = WSD2
+SpriteFrame = B
+Duration = 5
+Next = S_WESTD2BRS3
+
+State S_WESTD2BRS3
+SpriteName = WSD2
+SpriteFrame = C
+Duration = 5
+Next = S_WESTD2BRS4
+
+State S_WESTD2BRS4
+SpriteName = WSD2
+SpriteFrame = D
+Duration = 5
+Next = S_WESTD2BRS5
+
+State S_WESTD2BRS5
+SpriteName = WSD2
+SpriteFrame = E
+Duration = 5
+Next = S_WESTD2BRS6
+
+State S_WESTD2BRS6
+SpriteName = WSD2
+SpriteFrame = F
+Duration = 5
+Next = S_WESTD2BRS7
+
+State S_WESTD2BRS7
+SpriteName = WSD2
+SpriteFrame = G
+Duration = 5
+Next = S_WESTD2BRS8
+
+State S_WESTD2BRS8
+SpriteName = WSD2
+SpriteFrame = H
+Duration = 5
+Next = S_WESTD2BRS9
+
+State S_WESTD2BRS9
+SpriteName = WSD2
+SpriteFrame = I
+Duration = 5
+Next = S_WESTD2BRS10
+
+State S_WESTD2BRS10
+SpriteName = WSD2
+SpriteFrame = J
+Duration = 5
+Next = S_WESTD2BRS11
+
+State S_WESTD2BRS11
+SpriteName = WSD2
+SpriteFrame = K
+Duration = 5
+Next = S_WESTD2BRS12
+
+State S_WESTD2BRS12
+SpriteName = WSD2
+SpriteFrame = L
+Duration = 5
+Next = S_WESTD2BRS13
+
+State S_WESTD2BRS13
+SpriteName = WSD2
+SpriteFrame = M
+Duration = 5
+Next = S_WESTD2BRS14
+
+State S_WESTD2BRS14
+SpriteName = WSD2
+SpriteFrame = N
+Duration = 5
+Next = S_WESTD2BRS15
+
+State S_WESTD2BRS15
+SpriteName = WSD2
+SpriteFrame = O
+Duration = 5
+Next = S_WESTD2BRS1
+
+Object MT_WESTDEBRS3
+MapThingNum = 6990
+Spawnstate = S_WESTD3BRS1
+Spawnhealth = 6900
+ReactionTime = 8
+Radius = 8*FRACUNIT
+Height = 8*FRACUNIT
+MaSS = 100
+Flags = MF_SCENERY|MF_NOCLIP|MF_NOCLIPHEIGHT
+
+State S_WESTD3BRS1
+SpriteName = WSD3
+SpriteFrame = A
+Duration = 5
+Next = S_WESTD3BRS2
+
+State S_WESTD3BRS2
+SpriteName = WSD3
+SpriteFrame = B
+Duration = 5
+Next = S_WESTD3BRS3
+
+State S_WESTD3BRS3
+SpriteName = WSD3
+SpriteFrame = C
+Duration = 5
+Next = S_WESTD3BRS4
+
+State S_WESTD3BRS4
+SpriteName = WSD3
+SpriteFrame = D
+Duration = 5
+Next = S_WESTD3BRS5
+
+State S_WESTD3BRS5
+SpriteName = WSD3
+SpriteFrame = E
+Duration = 5
+Next = S_WESTD3BRS6
+
+State S_WESTD3BRS6
+SpriteName = WSD3
+SpriteFrame = F
+Duration = 5
+Next = S_WESTD3BRS7
+
+State S_WESTD3BRS7
+SpriteName = WSD3
+SpriteFrame = G
+Duration = 5
+Next = S_WESTD3BRS8
+
+State S_WESTD3BRS8
+SpriteName = WSD3
+SpriteFrame = H
+Duration = 5
+Next = S_WESTD3BRS9
+
+State S_WESTD3BRS9
+SpriteName = WSD3
+SpriteFrame = I
+Duration = 5
+Next = S_WESTD3BRS10
+
+State S_WESTD3BRS10
+SpriteName = WSD3
+SpriteFrame = J
+Duration = 5
+Next = S_WESTD3BRS11
+
+State S_WESTD3BRS11
+SpriteName = WSD3
+SpriteFrame = K
+Duration = 5
+Next = S_WESTD3BRS12
+
+State S_WESTD3BRS12
+SpriteName = WSD3
+SpriteFrame = L
+Duration = 5
+Next = S_WESTD3BRS13
+
+State S_WESTD3BRS13
+SpriteName = WSD3
+SpriteFrame = M
+Duration = 5
+Next = S_WESTD3BRS14
+
+State S_WESTD3BRS14
+SpriteName = WSD3
+SpriteFrame = N
+Duration = 5
+Next = S_WESTD3BRS15
+
+State S_WESTD3BRS15
+SpriteName = WSD3
+SpriteFrame = O
+Duration = 5
+Next = S_WESTD3BRS1
