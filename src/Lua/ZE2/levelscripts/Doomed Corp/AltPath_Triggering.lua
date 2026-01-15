@@ -21,7 +21,7 @@ local function OpenAltPath(v, p)
     if drawScaled == nil then drawScaled = v.drawScaled end
     if drawString == nil then drawString = v.drawString end
 
-    if DoomedCorp.pathunlock_timer and p.ze2.team == 2 then
+    if DoomedCorp.pathunlock_timer and p.xSlinger.team == 2 then
         local anim
         if DoomedCorp.pathunlock_timer >= TICRATE*2 then anim = 1
         else anim = 2 end

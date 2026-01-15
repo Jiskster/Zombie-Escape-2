@@ -20,7 +20,7 @@ return function(mo, inf, src, dmg, damagetype)
 	
 	--check again incase above block removed inf
 	if (inf and inf.valid) and inf.player and mo and mo.player then
-		if mo.player.ze2.team == inf.player.ze2.team then
+		if mo.player.xSlinger.team == inf.player.xSlinger.team then
 			return false
 		else
 			attackedbyzombie = true
@@ -36,7 +36,7 @@ return function(mo, inf, src, dmg, damagetype)
 	end
 	
 	if src and src.player and mo and mo.player then
-		if mo.player.ze2.team == src.player.ze2.team then
+		if mo.player.xSlinger.team == src.player.xSlinger.team then
 			return false
 		else
 			attackedbyzombie = true
@@ -58,7 +58,7 @@ return function(mo, inf, src, dmg, damagetype)
 		mo.player.ze2.shop_open = false
 		mo.player.ze2.shop_anim = 0
 		
-		if inflictor_player and (ZE2.zombie_releasetime and mo.player.ze2.team == 2) then
+		if inflictor_player and (ZE2.zombie_releasetime and mo.player.xSlinger.team == 2) then
 			return false
 		end
 	end

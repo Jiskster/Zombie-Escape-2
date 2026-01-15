@@ -1,8 +1,8 @@
 local zc = ZE2.ZombieConfig
 
 ZE2.ZombifyPlayer = function(player, ztype)
-	player.ze2.team = 2
-	
+	local xS = player.xSlinger
+
 	if not ztype then
 		player.ze2.zombie_type = "normal"
 	elseif zc[ztype] then
@@ -12,5 +12,5 @@ ZE2.ZombifyPlayer = function(player, ztype)
 		player.ze2.zombie_type = "normal"
 	end
 	
-	ZE2.ResetPlayer(player)
+	ZE2.ResetPlayer(player, 2, true)
 end

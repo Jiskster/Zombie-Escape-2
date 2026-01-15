@@ -12,6 +12,7 @@ freeslot("sfx_zbatk1", "sfx_zbatk2", "sfx_zbatk3")
 freeslot("sfx_wpfire", "sfx_wpfir2")
 
 freeslot("sfx_z_rel1", "sfx_z_rel2")
+freeslot("sfx_zbatk1", "sfx_zbatk2", "sfx_zbatk3")
 freeslot("sfx_z20s", "sfx_cone", "sfx_ctwo", "sfx_cthr", "sfx_cfou", "sfx_cfiv", "sfx_csix", "sfx_csev", "sfx_ceig", "sfx_cnin", "sfx_cten")
 
 freeslot("sfx_zmrel")

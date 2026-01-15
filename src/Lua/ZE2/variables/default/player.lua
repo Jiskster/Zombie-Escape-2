@@ -1,51 +1,8 @@
 return {
 	crouching = false,
 
-	inventory_selection = 1,
-
 	survivor_inventory_limit = 5,
 	
-	survivor_inventory = {
-		ZE2:CopyItemFromID(ITEM_RED_RING)
-	},
-
-	weapondelay = 0,
-	ghostmode = false,
-	
-	await_fire = false,
-	
-	reload = 0,
-	
-	fire_pressed = false,
-	
-	weaponprev_pressed = false,
-	weaponnext_pressed = false,
-	weaponkey_pressed = false,
-	
-	reload_pressed = false,
-	
-	vote_selection = 1,
-	voted = false,
-	vote_leftpressed = false,
-	vote_rightpressed = false,
-	
-	shop_selection = 1,
-
-	pregamemenu_type = 1, -- [1]: Character Select
-	pregamemenu_lasttype = 1, -- [1]: Character Select
-	pregamemenu_active = false,
-	pregamemenu_selection = 1, -- in main menu
-	pregamemenu_leftpressed = false,
-	pregamemenu_rightpressed = false, 
-	pregamemenu_forwardpressed = false,
-	pregamemenu_backwardspressed = false,
-	pregamemenu_spinpressed = false,
-	pregamemenu_jumppressed = false,
-	
-	charselect_selection = 1,
-	charselect_prevselection = 1,
-	charselect_anim = 1,
-
 	sprintmeter = 100*FU,
 	isSprinting = false,
 	sprintdelay = 0, -- x > 0 = sprintmeter wont increase
@@ -54,8 +11,6 @@ return {
 	isRunning = false,
 	isSprung = false,
 	lastJumped = false,
-
-	team = 1,
 
 	cash = 500,
 	cash_limit = 25000,

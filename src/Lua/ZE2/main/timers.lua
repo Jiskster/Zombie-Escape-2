@@ -64,7 +64,7 @@ function ZE2:StartWin(team, fromring)
 			if (player and player.valid and not player.spectator) then
 				local pv = player.ze2
 				
-				if pv.team ~= team then
+				if player.xSlinger.team ~= team then
 					P_KillMobj(mobj)
 				end
 				
@@ -88,7 +88,7 @@ function ZE2:StartWin(team, fromring)
 	
 	for player in players.iterate do
 		if player.spectator then continue end
-		if player.ze2.team ~= team then continue end
+		if player.xSlinger.team ~= team then continue end
 		
 		ZE2:GivePlayerCash(player, cash_award)
 		S_StartSound(player.mo, sfx_rbyhit)
@@ -158,14 +158,14 @@ addHook("ThinkFrame", function()
 					print(string.format("\x83\%s\x83\ has risen from the dead!",player.name))
 				end
 				
-				player.ze2.team = 2
+				player.xSlinger.team = 2
 				player.ze2.was_zombie = true
 				table.remove(choosingnums,playernumindex)
 			end
 		end
 
 		for player in players.iterate do
-			if player.ze2.was_zombie and player.ze2.team == 1 then
+			if player.ze2.was_zombie and player.xSlinger.team == 1 then
 				player.ze2.was_zombie = false
 			end
 		end
@@ -197,7 +197,7 @@ addHook("ThinkFrame", function()
 	end
 	
 	for player in players.iterate do 
-		if player.mo and player.mo.valid and (ZE2.game_ended or player.ze2.team == 2) then
+		if player.mo and player.mo.valid and (ZE2.game_ended or player.xSlinger.team == 2) then
 			player.powers[pw_underwater] = 0
 		end
 	end

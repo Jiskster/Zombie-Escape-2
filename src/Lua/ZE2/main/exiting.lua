@@ -56,7 +56,7 @@ addHook("TouchSpecial", function(special,toucher)
 			end
 			S_StartSound(nil,sfx_s3kb3)
 			
-			ZE2:StartWin(player.ze2.team, true)
+			ZE2:StartWin(player.xSlinger.team, true)
 		end
 		
 		return true

@@ -1,5 +1,3 @@
-local KB = ZE2.Knockback
-
 ZE2.init_gamevars = function(map) -- Variables vary per game.
 	ZE2.round_active = false;
 	ZE2.game_ended = false;
@@ -23,13 +21,21 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 	
 	ZE2.NextMapVoted = nil;
 	
-	KB.list = {};
+	xSlinger.visible_huds.health = false;
+
+	-- reset everyone
+	for player in players.iterate do
+		player.xSlinger.team = 1
+		ZE2.lockPlayer(player) -- To make sure the player is the right skin for the team!
+		ZE2.resetPlayerHealth(player)
+	end
 	
 	if map then
 		if ZE2.queuing_round then
 			ZE2.rounds_left = $ - 1
 			ZE2.queuing_round = false
 			
+			/*
 			-- force reload everyone's weapon
 			for player in players.iterate do
 				for i,v in pairs(player.ze2.survivor_inventory) do
@@ -48,6 +54,7 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 					end
 				end
 			end
+			*/
 			
 			chatprint("\x84\* [ROUND " .. ZE2.getCurrentRound() .. "] *")
 		else
@@ -66,12 +73,9 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 				matches_ago = 0;
 			}
 			
-			
-			-- reset everyone's inventory
+			-- reset everyone
 			for player in players.iterate do
-				player.ze2.survivor_inventory = {
-					ZE2:CopyItemFromID(ITEM_RED_RING)
-				}
+				ZE2.ResetPlayer(player, 1, true)
 			end
 			
 			chatprint("\x84\* [ROUND " .. ZE2.getCurrentRound() .. "] *")
@@ -91,7 +95,6 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 	end
 	
 	for player in players.iterate do
-		player.ze2.team = 1;
 		if player.ze2 then
 			player.ze2.ghostmode = false
 			player.ze2.pregamemenu_selection = 1
@@ -102,6 +105,7 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 				player.spectator = false
 				player.playerstate = PST_REBORN
 				G_DoReborn(#player)
+				ZE2.ResetPlayer(player, 1, true) -- Change to survivor and reset inventory
 			end
 			player.ze2.injoinqueue = false
 			player.ze2.outofgame = false

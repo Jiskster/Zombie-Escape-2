@@ -12,10 +12,13 @@ return function(player)
 		player.pflags = $ & ~PF_FORCESTRAFE
 	end
 
+	-- If player joined the server before the game starts
 	if not ZE2.round_active and player.spectator and player.jointime <= TICRATE then
 		player.spectator = false
 		player.playerstate = PST_REBORN
 		G_DoReborn(#player)
+
+		ZE2.ResetPlayer(player, 1, true) -- Change to survivor and reset inventory
 	end
 
 	-- Hide player when in pregame menu
@@ -70,10 +73,10 @@ return function(player)
 		
 		if player.playerstate == PST_DEAD then
 			if ZE2.round_active and not ZE2_game_ended and not player.ze2.respawntics then
-				if player.ze2.team == 1 then
+				if player.xSlinger.team == 1 then
 					player.ze2.respawntics = 10*TICRATE
 					player.ze2.outofgame = true
-				elseif player.ze2.team == 2 then
+				elseif player.xSlinger.team == 2 then
 					player.ze2.respawntics = 25*TICRATE
 				end
 			end

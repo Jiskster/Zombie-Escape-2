@@ -41,9 +41,9 @@ ZE2.LatestZombieCheckpoint = 0
 ZE2.Checkpoints = {}
 
 function ZE2.GetLatestCheckpoint(player)
-	if player.ze2.team == 1 then
+	if player.xSlinger.team == 1 then
 		return ZE2.LatestSurvivorCheckpoint
-	elseif player.ze2.team == 2 then
+	elseif player.xSlinger.team == 2 then
 		return ZE2.LatestZombieCheckpoint
 	end
 end
@@ -96,7 +96,7 @@ local function ActivateCheckpoint(mobj, checkpoint)
 		local DISABLECATCHUP_FLAG = 1<<1
 		
 		if checkpoint_number then
-			if (checkpoint_flags & SURVIVORFLAG) and (player.ze2.team == 1 or (checkpoint_extra_flags & INDISCRIMINATE_FLAG)) then
+			if (checkpoint_flags & SURVIVORFLAG) and (player.xSlinger.team == 1 or (checkpoint_extra_flags & INDISCRIMINATE_FLAG)) then
 				if ZE2.LatestSurvivorCheckpoint < checkpoint_number then -- Is activating a newer checkpoint
 					ZE2.LatestSurvivorCheckpoint = checkpoint_number
 					player.ze2.checkpoint_number = ZE2.LatestSurvivorCheckpoint
@@ -113,8 +113,7 @@ local function ActivateCheckpoint(mobj, checkpoint)
 							if tplayer.spectator then continue end
 							if player == tplayer then continue end 
 							
-							
-							if tplayer.ze2 and tplayer.ze2.team == 1 and tplayer.ze2.checkpoint_number < checkpoint_number then
+							if tplayer.ze2 and tplayer.xSlinger.team == 1 and tplayer.ze2.checkpoint_number < checkpoint_number then
 								if tplayer.ze2.checkpoint_catchuptics then
 									ZE2.DeductCatchupTics(player, 5*TICRATE)
 									continue
@@ -124,7 +123,7 @@ local function ActivateCheckpoint(mobj, checkpoint)
 							end
 						end
 					end
-				elseif player.ze2.team == 1 then
+				elseif player.xSlinger.team == 1 then
 					if player.ze2.checkpoint_number < checkpoint_number and checkpoint_number ~= ZE2.GetLatestCheckpoint(player) then
 						ZE2.DeductCatchupTics(player, 5*TICRATE)
 						--print("Not same checkpoint number, deducting tics")
@@ -136,7 +135,7 @@ local function ActivateCheckpoint(mobj, checkpoint)
 				end
 			end
 			
-			if (checkpoint_flags & ZOMBIEFLAG) and (player.ze2.team == 2 or (checkpoint_extra_flags & INDISCRIMINATE_FLAG)) then
+			if (checkpoint_flags & ZOMBIEFLAG) and (player.xSlinger.team == 2 or (checkpoint_extra_flags & INDISCRIMINATE_FLAG)) then
 				if ZE2.LatestZombieCheckpoint < checkpoint_number then
 					ZE2.LatestZombieCheckpoint = checkpoint_number
 					player.ze2.checkpoint_number = ZE2.LatestZombieCheckpoint
@@ -153,7 +152,7 @@ local function ActivateCheckpoint(mobj, checkpoint)
 							if tplayer.spectator then continue end
 							if player == tplayer then continue end 
 							
-							if tplayer.ze2 and tplayer.ze2.team == 2 and tplayer.ze2.checkpoint_number < checkpoint_number then
+							if tplayer.ze2 and tplayer.xSlinger.team == 2 and tplayer.ze2.checkpoint_number < checkpoint_number then
 								if tplayer.ze2.checkpoint_catchuptics then
 									ZE2.DeductCatchupTics(player, 5*TICRATE)
 									continue
@@ -163,7 +162,7 @@ local function ActivateCheckpoint(mobj, checkpoint)
 							end
 						end
 					end
-				elseif player.ze2.team == 2 then
+				elseif player.xSlinger.team == 2 then
 					if player.ze2.checkpoint_number < checkpoint_number and checkpoint_number ~= ZE2.GetLatestCheckpoint(player) then
 						player.ze2.checkpoint_number = checkpoint_number
 						ZE2.DeductCatchupTics(player, 5*TICRATE)
@@ -283,7 +282,6 @@ addHook("ThinkFrame", function()
 	end
 end)
 
--- TODO: Remove this whole hook in Gamma 3
 addHook("LinedefExecute", function(line, mobj, sector)
 	local checkpoint_doomednum = mobjinfo[MT_ZE2CHECKPOINT].doomednum
 	

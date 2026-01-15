@@ -115,9 +115,10 @@ local function health(v,p,me,ze)
 	local health = me.health
 	local maxhealth = me.maxhealth
 	local zc = ZE2.ZombieConfig[p.ze2.zombie_type or ""]
+	local team = p.xSlinger.team
 	
 	if (health == nil) or (maxhealth == nil) then ResetInfos(); return end
-	if ZE2.pregame_timeleft then ResetInfos(); return end
+	-- if ZE2.pregame_timeleft then ResetInfos(); return end
 	maxhealth = $*FU
 	AlreadyReset = false
 	
@@ -179,7 +180,7 @@ local function health(v,p,me,ze)
 		health_shake = flerp(FU/8, $, 0)
 		do
 			local shake = (health_shake)
-			if (ze.team == 2) then shake = $/16; end
+			if (team == 2) then shake = $/16; end
 			-- if (#hud_fires) then shake = max($,FU); end
 			shake = min($, 8*FU) * (leveltime & 1 and 1 or -1)
 			y = $ + shake
@@ -250,7 +251,7 @@ local function health(v,p,me,ze)
 	x = $ - (height - 2*FU)
 
 	--stamina
-	if ze.team == 1
+	if team == 1
 	and ze.sprintmeter ~= nil
 		--sprint is fixed here, Yay!!
 		local sprint = ze.sprintmeter
@@ -291,7 +292,7 @@ local function health(v,p,me,ze)
 			flags, "thin-fixed"
 		)
 	--rage meter
-	elseif (ze.team == 2)
+	elseif (team == 2)
 	and (zc and zc.special and zc.special.button)
 		local spec = zc.special
 		local rage = ze.special_cooldown --rage variable

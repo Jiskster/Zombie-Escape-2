@@ -1,5 +1,6 @@
-ZE2.ResetPlayer = function(player, choosenewztype)
+ZE2.ResetPlayer = function(player, set_team, resetinventory)
 	local ze2 = player.ze2
+	local xS = player.xSlinger
 
 	local TEAM_SURVIVOR = 1
 	local TEAM_ZOMBIE = 2
@@ -12,21 +13,41 @@ ZE2.ResetPlayer = function(player, choosenewztype)
 	if not (mo and mo.valid) then
 		return end;
 	
-	local team = ze2.team
+	if set_team ~= nil then
+		xS.team = set_team
+	end
+
+	ZE2.lockPlayer(player) -- To make sure the player is the right skin for the team!
+
+	local team = xS.team
 
 	local skin = mo.skin
 	local ztype = ze2.zombie_type
 
-	local config = (team == TEAM_SURVIVOR) and cc[skin] or zc[ztype]
+	local config
+
+	if (team == TEAM_SURVIVOR) then
+		config = cc[skin]
+	elseif (team == TEAM_ZOMBIE) then
+		config = zc[ztype]
+	end
 
 	ZE2.applyPlayerConfig(player)
-	ZE2.resetPlayerHealth(player)
 
-	mo.scale = config.scale or FRACUNIT
+	if config then
+		mo.scale = config.scale or FRACUNIT
+	end
 
 	if team == 1 then
 		ze2.zombie_type = "normal"
+		xS:inv_set("survivor")
 	elseif team == 2 then
-		ZE2.SetZCinventory(player)
+		xS:inv_set("zombie")
+	end
+
+	ZE2.resetPlayerHealth(player)
+
+	if resetinventory then
+		ZE2.setConfigInventory(player)
 	end
 end

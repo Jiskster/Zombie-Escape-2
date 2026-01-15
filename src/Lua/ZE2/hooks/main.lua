@@ -5,25 +5,21 @@ local hook_names = {
 	PlayerSpawn = {
 		"InitPlayer";
 		"ZombieSpawn"; 
-		"ResetVars";
 		"LatestCheckpoint";
 	};
 	TeamSwitch = {"Main"};
 	PreThinkFrame = {"Sprint"};
-	ThinkFrame = {"WinHandler", "Intermission", "Knockback"};
+	ThinkFrame = {"WinHandler", "Intermission"};
 	PlayerThink = {
 		"Main";
 		"ReplaceJumpSound";
 		"Countdowns";
-		"ItemSystem";
 		"DamageIndicator";
-		"EffectHandler";
 		"DamageFade";
 		"SourceMovement";
 		"Skin&ColorLock";
 		"AlphaZombie";
 	};
-	ShouldDamage = {"DamageSystem"};
 	JumpSpecial = {"JumpFatigue"};
 	ViewpointSwitch = {"Main"};
 	NetVars = {"Main"};

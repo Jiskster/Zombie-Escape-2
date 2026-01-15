@@ -31,7 +31,7 @@ return "Pregame", function(v, player)
     end
 	
 	if ZE2.pregame_timeleft 
-	or (ZE2.zombie_releasetime and player.ze2.team == 2) then
+	or (ZE2.zombie_releasetime and player.xSlinger.team == 2) then
 		local offset = sin(ANG1*(leveltime*3))*3 
 		local offset2 = cos(ANG1*(leveltime*3))*3
 		local x = (160*FU) + offset

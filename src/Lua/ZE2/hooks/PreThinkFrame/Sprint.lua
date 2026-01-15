@@ -11,7 +11,7 @@ return function()
 		local increment = FRACUNIT/2
 		local decrement = fixedfromstring("0.5") --tofixed?
 
-		if player.ze2.team ~= 1 then continue end
+		if player.xSlinger.team ~= 1 then continue end
 		if player.climbing then continue end
 
 		if (player.speed/FU) > 12 then -- running

@@ -56,9 +56,10 @@ ZE2.Effects = {
 	["flaming_effect"] = {
 		thinker = function(player, time_left)
 			if player and player.valid and player.mo and player.mo.valid then
+				local team = player.xSlinger.team
 				if (time_left % 20) == 0 then
 					local damage = 35
-					if (player.ze2.team == 1) then
+					if (team == 1) then
 						damage = 2
 					end
 					P_DamageMobj(player.mo, nil, player.flameringtarget, damage)
@@ -185,8 +186,6 @@ addHook("LinedefExecute", function(line, mo)
 	mo.player.ze2:GiveEffect(effect_name, effect_attribs, effect_duration)
 end, "ZE2_GIVEPLREFFECT")
 
-ZE2.teams = {"Survivors", "Zombies"}
-
 G_AddGametype({
 	name = "ZE2 Survival",
 	identifier = "ze2",
@@ -197,6 +196,22 @@ G_AddGametype({
 	--headerrightcolor = 40,
 	description = "Escape from the Zombies! Don't get caught and eaten by them! They can catch up with you anytime..."
 })
+
+xSlinger.registerGametype(GT_ZE2, {
+	teams = {
+		{
+			name = "Survivors";
+		},
+		{
+			name = "Zombies";
+			iframes = 0;
+		}
+	}
+})
+
+xSlinger.skin_properties["zsonic"] = {
+	hurtsound = {sfx_zpa1, sfx_zpa2};
+}
 
 --LUT
 ZE2.paletteToColor = {}

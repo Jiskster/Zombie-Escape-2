@@ -31,7 +31,7 @@ ZE2:AddTimer("THERUINSUT_2", {
 		ZE2:StartTimer("THERUINSUT_3")
 		
 		for player in players.iterate do
-			if player.mo and player.mo.valid and (player.ze2.team == 1) then
+			if player.mo and player.mo.valid and (player.xSlinger.team == 1) then
 				P_LinedefExecute(113, player.mo)
 			end
 		end
@@ -48,7 +48,7 @@ ZE2:AddTimer("THERUINSUT_3", {
 		ZE2:StartTimer("THERUINSUT_4")
 	
 		for player in players.iterate do
-			if player.mo and player.mo.valid and (player.ze2.team == 2) then
+			if player.mo and player.mo.valid and (player.xSlinger.team == 2) then
 				P_LinedefExecute(113, player.mo)
 			end
 		end
@@ -66,7 +66,7 @@ ZE2:AddTimer("THERUINSUT_4", {
 		mapmusname = "UNGRN"
 		
 		for player in players.iterate do
-			if player.mo and player.mo.valid and (player.ze2.team == 1) then
+			if player.mo and player.mo.valid and (player.xSlinger.team == 1) then
 				P_LinedefExecute(114, player.mo) -- 114 is the teleport after the zombie attack
 			end
 		end
@@ -113,9 +113,9 @@ ZE2:AddTimer("THERUINSUT_5", {
 		
 		for player in players.iterate do
 			if player.mo and player.mo.valid then
-				if (player.ze2.team == 1) then
+				if (player.xSlinger.team == 1) then
 					P_LinedefExecute(115, player.mo)
-				elseif (player.ze2.team == 2) then
+				elseif (player.xSlinger.team == 2) then
 					P_LinedefExecute(116, player.mo)
 				end
 				

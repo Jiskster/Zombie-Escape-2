@@ -12,8 +12,8 @@ local queue = {
 	"ResetPlayer";
 	"PlayZombieSound";
 	"ZombifyPlayer";
-	"Knockback/initKnockback";
-	"Knockback/addKnockback";
+	"switchCharacter";
+	"lockPlayer";
 }
 
 print("<ZE2>: Loading ZE2 Functions")

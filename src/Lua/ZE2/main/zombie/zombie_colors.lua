@@ -43,6 +43,7 @@ local color = color
 local FU = FU
 local anim_speed = 1024
 
+-- TODO: precalculate ramps
 addHook("ThinkFrame", function()
     local percent = cos(leveltime*FU*anim_speed)
 

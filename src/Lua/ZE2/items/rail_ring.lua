@@ -1,0 +1,134 @@
+-- RS NEO port.
+
+local raildmg = 950
+local railkb = 350*FRACUNIT
+
+freeslot("MT_ZE2_RAILSHOT")
+
+mobjinfo[MT_ZE2_RAILSHOT] = {
+	spawnstate = S_RRNG1,
+	deathstate = S_SPRK1,
+	deathsound = sfx_rs_die,
+	speed = 128*FRACUNIT,
+	radius = 16*FRACUNIT,
+	height = 32*FRACUNIT,
+	flags = MF_NOBLOCKMAP|MF_MISSILE|MF_NOGRAVITY,
+}
+
+local ring = function(x,y,z,scale,angle)
+	local th = P_SpawnMobj(x, y, z, MT_THOK)
+	if th and th.valid
+		th.angle = angle + ANGLE_90
+		th.spriteyoffset = -20*FRACUNIT
+		th.sprite = SPR_STAB
+		th.frame = FF_PAPERSPRITE|TR_TRANS80
+		th.color = SKINCOLOR_WHITE
+		th.blendmode = AST_ADD
+		th.colorized = true
+		th.scale = scale
+		th.destscale = th.scale*6
+		th.scalespeed = $ * 2
+		th.tics = 6
+	end
+end
+	
+local function trigger_func(self, mo)
+	mo.momx = $ / 3
+	mo.momy = $ / 3
+	P_SetObjectMomZ(mo, 2*FRACUNIT, false)
+	mo.state = S_PLAY_SPRING
+	
+	if mo.player and mo.player.valid then
+		mo.player.pflags = $ & ~(PF_JUMPED | PF_SPINNING)
+	end
+
+	local rail = xSlinger.SpawnMissile({
+		source = mo, 
+		type = MT_ZE2_RAILSHOT,
+		angle = mo.angle,
+		allow_aim = true,
+		iteminfo = self,
+		flags2 = MF2_DONTDRAW,
+	})
+	
+	if rail and rail.valid then
+		local range = 16
+		
+		for i = 0, range do
+			if i % 2 == 0 then
+				local spark = P_SpawnMobj(rail.x, rail.y, rail.z, MT_SPARK)
+				
+				if spark and spark.valid then
+					if i % 3 == 0 then
+						spark.color = mo.color
+						spark.colorized = true
+					else
+						spark.scale = $ * 3/4
+					end
+				
+					if (i - 2) % 10 == 0 then
+						ring(rail.x,rail.y,rail.z,rail.scale/2,rail.angle)
+					end
+				end
+			end
+			
+			if rail.momx or rail.momy then
+				P_XYMovement(rail)
+				if not rail.valid then
+					break
+				end
+			end
+			
+			if rail.momz then
+				P_ZMovement(rail)
+				if not rail.valid then
+					break
+				end
+			end
+			
+			if (not rail.valid) or (xx == rail.x and y == rail.y and z == rail.z) then
+				break
+			end
+		end
+
+		if rail and rail.valid then
+			ring(rail.x,rail.y,rail.z,rail.scale,rail.angle)
+			P_KillMobj(rail)
+		end
+	end
+end
+
+xSlinger.registerItem("rail_ring", {
+	displayname = "Rail Ring";
+	
+	shake = 20;
+	
+	icon = "XSG_RAIL";
+	
+	sounds = {
+		use = sfx_rail1;
+		reload = {sfx_xsrel1, sfx_xsrel2};
+		pickup = sfx_None;
+		drop = sfx_None;
+	};
+	
+	firerate = 5;
+	
+	knockback = 350*FRACUNIT;
+	
+	damage = 950;
+	
+	ammo = 1;
+	
+	color = SKINCOLOR_AZURE;
+	
+	reload_time = 7*TICRATE;
+	
+	usefunc = trigger_func;
+	
+	skin_override = {
+		["fang"] = {
+			reload_time = 3*TICRATE,
+		}
+	};
+})

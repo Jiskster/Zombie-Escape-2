@@ -209,7 +209,7 @@ end)
 
 addHook("TouchSpecial", function(special, toucher)
 	if toucher and toucher.valid and toucher.player then
-		local team = toucher.player.ze2.team 
+		local team = toucher.player.xSlinger.team 
 		
 		if team == 2 then
 			return true
@@ -265,7 +265,7 @@ addHook("MobjThinker", function(mobj)
 	for p in players.iterate
 		if p.spectator then continue end
 		if not (p.mo and p.mo.valid) then continue end
-		if p.ze2.team ~= 1 then continue end
+		if p.xSlinger.team ~= 1 then continue end
 		if p.ze2.cash >= p.ze2.cash_limit then continue end
 		
 		local mo = p.mo

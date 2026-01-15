@@ -1,5 +1,7 @@
 local dofile = dofile;
 
+dofile "xSlinger/init" -- Load xSlinger
+
 local path = ""
 local subpath = ""
 
@@ -29,36 +31,42 @@ local function I_LoadLibs(sp)
 	ze2file "mobjlib.lua"
 	ze2file "customhudlib.lua"
 	ze2file "countingplayers.lua"
-	ze2file "itemlib.lua"
 	ze2file "mtimeconv.lua"
-	ze2file "sglib.lua" -- https://github.com/GenericHeroGuy/ringracers-scripts
 	
 	set_subpath "";
+	
+	print("I_LoadLibs();")
 end; 
 
 local function I_LoadItems(sp)
 	set_subpath (sp);
 	
-	ze2file "item_red_ring.lua"
-	ze2file "item_auto_ring.lua"
-	ze2file "item_apple.lua"
-	ze2file "item_milk.lua"
-	ze2file "item_wood_fence.lua" 
-	ze2file "item_insta_burst.lua"
-	ze2file "item_ws_mirror.lua"
-	ze2file "item_explosion_ring.lua"
-	ze2file "item_blue_spring.lua"
-	ze2file "item_scatter_ring.lua"
+	ze2file "apple.lua"
+	ze2file "red_ring.lua"
+	ze2file "scatter_ring.lua"
+	ze2file "auto_ring.lua"
+	ze2file "blue_spring.lua"
+	ze2file "explosion_ring.lua"
+	ze2file "wood_fence.lua" 
+	ze2file "rail_ring.lua" -- new and after
+	ze2file "milk.lua"
+	ze2file "grenade.lua"
+	ze2file "insta_burst.lua"
+	ze2file "flame_ring.lua"
+	ze2file "gfz_sphere.lua"
+	
+	/*
 	ze2file "item_bounce_ring.lua"
-	ze2file "item_rail_ring.lua"
-	ze2file "item_gfz_sphere.lua"
+	
 	ze2file "item_infinity_ring.lua"
-	ze2file "item_grenade.lua" 
+	
 	ze2file "item_landmine.lua"
 	ze2file "item_energy_drink.lua"
-	ze2file "item_flame_ring.lua"
+	*/
 	
 	set_subpath "";
+	
+	print("I_LoadItems();")
 end
 
 local function I_Main(sp)
@@ -67,8 +75,6 @@ local function I_Main(sp)
 	ze2file "zombie/zombie_colors.lua"
 	
 	ze2file "skincolors.lua"
-	
-	ze2file "pregame_logic.lua"
 
 	ze2file "crouch.lua"
 
@@ -79,28 +85,27 @@ local function I_Main(sp)
 
 	ze2file "capitalism.lua"
 	ze2file "exiting.lua"
-	ze2file "mapinfo_animation.lua"
 	ze2file "timers.lua"
 	ze2file "emotes.lua"
 
 	ze2file "maptimers.lua"
 	ze2file "checkpointsystem.lua"
-	ze2file "shields.lua"
+	
 	ze2file "ladder.lua"
 	ze2file "teamchat.lua"
 	
 	set_subpath "";
+	
+	print("I_Main();")
 end;
 
-ze2file "gametype.lua"
-
 ze2file "freeslot/sounds"
+
+ze2file "gametype.lua"
 
 ze2file "functions/main"
 
 I_LoadLibs("libraries/")
-
-ze2file "shop/main.lua"
 
 I_LoadItems("items/")
 
@@ -127,6 +132,10 @@ function A_RingExplode2(actor, var1, var2)
         if dist > FixedMul(real_range, actor.scale) then
             return
         end
+		
+		if (foundmobj.team == actor.team) then
+			return
+		end
         
         if (foundmobj.flags & MF_SHOOTABLE) then
             actor.flags2 = $ | MF2_DEBRIS

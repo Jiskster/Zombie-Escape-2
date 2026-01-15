@@ -36,15 +36,16 @@ return function(player)
 				player.ze2.respawntics = max(0, $ - 1)
 				
 				if not player.ze2.respawntics then
-					if player.ze2.team == 1 then
+					if player.xSlinger.team == 1 then
 						player.ze2.outofgame = true
 						player.ze2.injoinqueue = false
 						player.spectator = true
 						player.playerstate = PST_REBORN
 						G_DoReborn(#player)
-					elseif player.ze2.team == 2 then
+					elseif player.xSlinger.team == 2 then
 						player.playerstate = PST_REBORN
 						G_DoReborn(#player)
+						ZE2.ResetPlayer(player, 2, true) -- Mainly to reset inventory
 					end
 				end
 			end

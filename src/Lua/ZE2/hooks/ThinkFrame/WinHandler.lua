@@ -30,9 +30,9 @@ return function()
             end
             
             if player.mo.health then
-                if player.ze2.team == 1 then
+                if player.xSlinger.team == 1 then
                     survivors = $ + 1
-                elseif player.ze2.team == 2 then
+                elseif player.xSlinger.team == 2 then
                     zombies = $ + 1
                 end
             end

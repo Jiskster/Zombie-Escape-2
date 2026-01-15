@@ -13,8 +13,8 @@ ZE2.ZombieConfig = {
 		actionspd = 9*FRACUNIT,
 		killaward = 10,
 		inventory_limit = 1,
-		inventory = {
-			ZE2:CopyItemFromID(ITEM_INSTA_BURST);
+		items = {
+			"insta_burst";
 		},
 		special = {
 			button = 0, -- no button to disable
@@ -40,8 +40,9 @@ ZE2.ZombieConfig = {
 		killaward = 30,
 		knockback_multiplier = 7*(FU/10),
 		inventory_limit = 1,
-		inventory = {
-			ZE2:CopyItemFromID(ITEM_INSTA_BURST);
+		items = {
+			"insta_burst";
+			--ZE2:CopyItemFromID(ITEM_INSTA_BURST);
 		},
 		special = {
 			button = BT_CUSTOM2,
@@ -72,17 +73,25 @@ end
 function ZE2.resetPlayerHealth(player)
 	local mo = player.mo
 	local ze2 = player.ze2
-	local team = ze2.team
+	local xS = player.xSlinger
+	local team = xS.team
 	local ztype = ze2.zombie_type
-	local skin = mo.skin
+	
 	local cc = ZE2.SurvivorConfig
 	local zc = ZE2.ZombieConfig
-	local config = (team == 1) and cc[skin] or zc[ztype]
-
+	
 	if not (mo and mo.valid) then
 		return end;
+		
+	local skin = mo.skin
+	
+	local config = cc[skin]
 
-	if config.health then
+	if (team == 2) then
+		config = zc[ztype]
+	end
+	
+	if config and config.health then
 		mo.health = config.health
 		mo.maxhealth = config.health
 	else
@@ -157,7 +166,8 @@ function ZE2.applyPlayerConfig(player)
 
 	local ze2 = player.ze2
 	local cmd = player.cmd
-	local team = ze2.team
+	local xS = player.xSlinger
+	local team = xS.team
 	local zc = ZE2.ZombieConfig
 	local cc = ZE2.SurvivorConfig
 	local ztype = ze2.zombie_type
@@ -240,10 +250,40 @@ ZE2.SetZCinventory = function(player)
 	local zc = ZE2.ZombieConfig
 	local ztype = player.ze2.zombie_type
 	
+	/*
 	if pmo and pmo.valid then
 		if ztype and zc[ztype] and player.ze2 then
 			player.ze2.zombie_inventory = ZE2:Copy(zc[ztype].inventory) or {}
 			player.ze2.zombie_inventory_limit = ZE2:Copy(zc[ztype].inventory_limit) or 2
+		end
+	end
+	*/
+end
+
+-- WARNING: This clears the inventory.
+function ZE2.setConfigInventory(player)
+	local xS = player.xSlinger
+	local sc = ZE2.SurvivorConfig
+	local zc = ZE2.ZombieConfig
+	local ztype = player.ze2.zombie_type
+	local mo = player.mo
+	local team = xS.team
+	
+	if mo and mo.valid then
+		local skin = mo.skin
+		
+		if team == 1 and sc[skin] and sc[skin].items then
+			xS:inv_add("survivor", 5)
+		
+			for i,item in ipairs(sc[skin].items) do
+				xS:give_item(item, nil, nil, "survivor") -- being strict with the inventory
+			end
+		elseif team == 2 and zc[ztype] and zc[ztype].items then
+			xS:inv_add("zombie", 3)
+			
+			for i,item in ipairs(zc[ztype].items) do
+				xS:give_item(item, nil, nil, "zombie")
+			end
 		end
 	end
 end
@@ -285,6 +325,10 @@ ZE2.AddSurvivor("sonic", {
 		"Has Low HP, and High Speed";
 		"A character for players who want a challenge.";
 	};
+	items = {
+		"red_ring";
+		"scatter_ring";
+	};
 })
 
 ZE2.AddSurvivor("tails", {
@@ -294,6 +338,10 @@ ZE2.AddSurvivor("tails", {
 		"Has Average HP, and Average Speed.";
 		"A character for beginners.";
 	};
+	items = {
+		"flame_ring";
+		"scatter_ring";
+	};
 })
 
 ZE2.AddSurvivor("knuckles", {
@@ -302,6 +350,10 @@ ZE2.AddSurvivor("knuckles", {
 		"No time to chuckle.";
 		"Has High HP, and Low Speed.";
 		"A character for good defenders.";
+	};
+	items = {
+		"auto_ring";
+		"GFZSPHERE";
 	};
 })
 
@@ -313,14 +365,9 @@ ZE2.AddSurvivor("amy", {
 		"A character for good healers.";
 	};
 	health_penalty = 40;
-})
-
-ZE2.AddSurvivor("metalsonic", {
-	weight = 7;
-	description = {
-		"The real sonic.";
-		"Has Above Average HP, and Average Speed.";
-		"A good fragging character.";
+	items = {
+		"apple";
+		"apple";
 	};
 })
 
@@ -331,4 +378,45 @@ ZE2.AddSurvivor("fang", {
 		"Has Above Average HP, and Average Speed.";
 		"A character with unique weapon combat.";
 	};
+	items = {
+		"rail_ring";
+		"rail_ring";
+	};
 })
+
+ZE2.AddSurvivor("metalsonic", {
+	weight = 7;
+	description = {
+		"The real sonic.";
+		"Has Above Average HP, and Average Speed.";
+		"A good fragging character.";
+	};
+	items = {
+		"explosion_ring";
+		"explosion_ring";
+	};
+})
+
+function xSlinger.initPlayerSpawn(player)
+	local xS = player.xSlinger
+
+	if not xS:inv_get("survivor") then
+		xS:inv_add("survivor", 5)
+	end
+	
+	if not xS:inv_get("zombie") then
+		xS:inv_add("zombie", 3)
+	end
+	
+	xS:inv_set("survivor")
+	
+	player.ze2.lower_hud_offset = 0
+	player.ze2.special_cooldown = 0
+	player.ze2.effects = {}
+	player.ze2.damage_indicator_table = {}
+end
+
+-- Health Fallback
+function xSlinger.initPlayerHealth(player)
+	ZE2.resetPlayerHealth(player)
+end
