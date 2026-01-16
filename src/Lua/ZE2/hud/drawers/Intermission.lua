@@ -49,7 +49,7 @@ return "Intermission", function(v, player)
 	local anim_time2 = 3*TICRATE/2
 	local div2 = FixedDiv(min(wtics2*FU,anim_time2*FU), anim_time2*FU)
 	local triangle_y = ease.inoutsine(div2, upper_patch.height*FU, 0)
-	local bg_ease = ease.inoutsine(div2, 9, 5)
+	local bg_ease = ease.inoutsine(div2, 9*FU, 4*FU)
 	
 	local newroundframe = ZE2.IntermissionVars.newroundframe
 	local newmapframe = ZE2.IntermissionVars.newmapframe
@@ -68,7 +68,7 @@ return "Intermission", function(v, player)
 	-- Colored Background
 	if wtics >= 100 then
 		wtics2 = $ + 1
-		v.drawScaled(-500*FU,-500*FU, FU*1000, bg_patch, bg_ease<<V_ALPHASHIFT)
+		v.drawScaled(-500*FU,-500*FU, FU*1000, bg_patch, (bg_ease/FU)<<V_ALPHASHIFT)
 	end
 	
 	-- Triangle Thingies
