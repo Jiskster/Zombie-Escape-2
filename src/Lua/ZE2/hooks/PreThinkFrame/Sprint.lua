@@ -7,17 +7,20 @@ return function()
 		local pmo = player.mo
 		local cc = ZE2.SurvivorConfig
 		local grounded = P_IsObjectOnGround(pmo)
+		
+		local ze2 = player.ze2
 
 		local increment = FRACUNIT/2
-		local decrement = fixedfromstring("0.5") --tofixed?
+		local decrement = FRACUNIT/2
+		local boostdecrement = 25*FU
 
 		if player.xSlinger.team ~= 1 then continue end
 		if player.climbing then continue end
 
 		if (player.speed/FU) > 12 then -- running
 			local run = false
-			if grounded and not player.ze2.crouching and player.ze2.isRunning then
-				player.ze2:ChangeStamina(-decrement)
+			if grounded and not ze2.crouching and ze2.isRunning then
+				ze2:ChangeStamina(-decrement)
 				P_SpawnSkidDust(player, 20*FRACUNIT)
 				player.runspeed = 1
 				run = true
@@ -25,24 +28,71 @@ return function()
 			
 			if not (player.pflags & PF_SPINNING) then
 				if not run then
-					player.ze2:ChangeStamina(increment/2)
+					ze2:ChangeStamina(increment/2)
 					player.runspeed = 32000*FRACUNIT
 				end
 			else
-				player.ze2:ChangeStamina(-decrement)
+				ze2:ChangeStamina(-decrement)
 				P_SpawnSkidDust(player, 20*FRACUNIT)
 			end
 		else
-			if player.ze2.isRunning then
+			if ze2.isRunning then
 				player.pflags = $ & ~PF_SPINNING
 			end
 
 			if (player.speed/FU == 0) and grounded then -- not moving
-				player.ze2:ChangeStamina(increment*3)
+				ze2:ChangeStamina(increment*3)
 			else -- moving but slower than running speed
-				player.ze2:ChangeStamina(increment)
+				ze2:ChangeStamina(increment)
 			end
 			player.runspeed = 32000*FRACUNIT
+		end
+
+		-- Stop running if you meet these requirements:
+		if (not cmd.forwardmove) or (not ze2.sprintmeter) or (ze2.sprintdelay) then
+			if ze2.isRunning then
+				player.pflags = $ & ~PF_SPINNING
+			end
+
+			ze2.runstart = 0
+			ze2.isRunning = false
+		end
+
+		-- "Acceleration" boost when starting to run.
+		if ze2.runstart then
+			P_Thrust(pmo, pmo.angle, 2*FU)
+			ze2.runstart = $ - 1
+		end
+
+		if not grounded then
+			continue
+		end
+
+		-- Rollin Time
+		if ze2.crouching and ze2.isRunning then
+			player.pflags = $|PF_SPINNING
+		end
+
+		-- Initial Running code
+		if ze2.rundelay then
+			ze2.rundelay = max(0, $ - 1)
+		elseif ze2.sprintmeter then
+			if (cmd.forwardmove > 0 and (cmd.buttons & BT_CUSTOM1) and not ze2.runstart) then
+				if (not ze2.isRunning) and (not ze2.crouching) then
+					ze2:ChangeStamina(-boostdecrement) 
+					S_StartSound(pmo, sfx_s3ka2)
+					ze2.runstart = 8
+				end
+
+				player.drawangle = pmo.angle
+				ze2.isRunning = true
+			elseif not (cmd.buttons & BT_CUSTOM1) then
+				if ze2.isRunning then
+					ze2.rundelay = 12 -- delay when letting go
+				end
+
+				ze2.isRunning = false
+			end
 		end
 	end
 end

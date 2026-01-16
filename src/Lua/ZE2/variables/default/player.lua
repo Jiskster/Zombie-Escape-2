@@ -11,6 +11,9 @@ return {
 	isRunning = false,
 	isSprung = false,
 	lastJumped = false,
+	
+	runstart = 0,
+	rundelay = 0,
 
 	cash = 500,
 	cash_limit = 25000,
