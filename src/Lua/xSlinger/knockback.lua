@@ -5,8 +5,7 @@ KB.list = {}
 KB.initKnockback = function(mo)
 	mo.knockback = {
 		list = {},
-		thrust = {x=0,y=0},
-		wait = 0,
+		thrust = {x=0,y=0}
 	}
 end
 
@@ -15,17 +14,12 @@ KB.addKnockback = function(mo, tics, angle, thrust)
 		KB.initKnockback(mo) 
 	end
 	
-	if mo.knockback.wait then 
-		return end;
-		
 	table.insert(mo.knockback.list, {
 		tics = tics,
 		angle = angle,
 		thrust = thrust,
 		frac = (FU / tics),
 	})
-	
-	mo.knockback.wait = 3
 	
 	local wasinlist = false
 	for id,othermo in ipairs(KB.list) do
@@ -113,7 +107,5 @@ addHook("ThinkFrame", function()
 				mo.momy = P_ReturnThrustY(nil,ang,newspeed)
 			end
 		end
-		
-		k.wait = max($-1, 0)
 	end
 end)
