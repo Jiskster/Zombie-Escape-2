@@ -1,6 +1,9 @@
 local hudtype = "game"
 
 local function DrawTooltips(v, player)
+	if not (player.mo and player.mo.valid) then
+		return end;
+
 	local textflags = V_SNAPTOBOTTOM|V_SNAPTORIGHT|V_ALLOWLOWERCASE
 	local x = 316
 	local y = 189
