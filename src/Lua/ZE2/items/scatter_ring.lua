@@ -83,12 +83,14 @@ xSlinger.registerItem("scatter_ring", {
 	
 	color = SKINCOLOR_PURPLE;
 	
-	damage = 50;
+	damage = 27;
 	
 	velocity_multiplier = 2*FRACUNIT;
 	
-	knockback = 60*FRACUNIT;
-	knockback_tics = (3*TICRATE)/2;
+	spread = 4;
+	
+	knockback = 21*FRACUNIT;
+	knockback_tics = 33;
 	
 	fuse = TICRATE/4;
 	
@@ -97,7 +99,7 @@ xSlinger.registerItem("scatter_ring", {
 	
 	autouse = false;
 
-	firerate = 6*TICRATE/4;
+	firerate = TICRATE;
 	
 	flags2 = 0; -- MF2_...
 	
@@ -110,7 +112,7 @@ xSlinger.registerItem("scatter_ring", {
 	
 	usefunc = function(self, mo)
 		local mt = MT_ZE2_THROWNSCATTER
-		local spread = 3
+		local spread = self.spread
 		local player = mo.player
 
 		-- Horizontal
