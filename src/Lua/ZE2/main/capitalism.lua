@@ -313,6 +313,10 @@ addHook("MobjThinker", function(mobj)
 
 	if pmofound and pmofound.valid then
 		P_FlyTo(mobj,pmofound.x,pmofound.y,pmofound.z,4*FRACUNIT,true)
+		local ghost = P_SpawnGhostMobj(mobj)
+		ghost.fuse = 7
+		ghost.renderflags = $|(RF_FULLBRIGHT)
+		ghost.blendmode = AST_ADD
 	end
 end, MT_CRRUBY)
 
