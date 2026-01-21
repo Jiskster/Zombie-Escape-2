@@ -58,6 +58,9 @@ dofile "xSlinger/metatables/player_t"
 dofile "xSlinger/metatables/xSlinger_t"
 dofile "xSlinger/metatables/iteminfo_t"
 
+xSlinger.default_item_background = "XSG_BACKGROUND"
+xSlinger.default_item_background_color = SKINCOLOR_SILVER
+
 xSlinger.registered_items = {}
 xSlinger.registered_items_ordered = {}
 
@@ -69,7 +72,9 @@ xSlinger.registered_items[-1] = {
 	
 	icon = "M_FNOPE";
 	icon_autoscale = true;
-	background = "XSG_BACKGROUND";
+	
+	background = xSlinger.default_item_background;
+	background_color = xSlinger.default_item_background_color;
 	
 	missile = MT_NULL;
 	
@@ -111,6 +116,9 @@ xSlinger.registered_items[""] = {
 	displayname = "Empty";
 
 	id = "";
+	
+	background = xSlinger.default_item_background;
+	background_color = xSlinger.default_item_background_color;
 	
 	sounds = {
 		use = sfx_None;

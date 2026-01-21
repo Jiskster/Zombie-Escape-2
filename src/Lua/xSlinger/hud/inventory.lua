@@ -2,6 +2,9 @@ local invpos_y = 185*FU
 local slot_gap = 20*FU
 	
 local function PositionSlot(index, slot, slot_count, slot_gap)
+	if not (slot.patch and slot.patch.valid) then
+		return end;
+		
 	-- Center Slot Position
 	slot.x = $ - FixedMul(slot.patch.width*FU, slot.scale)/2
 	slot.y = $ - FixedMul(slot.patch.height*FU, slot.scale)/2
@@ -40,13 +43,16 @@ addHook("HUD", function(v, player)
 	for i=1, slot_count do
 		local iteminfo = xS:slot_get(i) --ZE2:FetchInventorySlot(player, i)
 		local selection = xS.slot
-		local empty_patch = v.cachePatch(iteminfo.background or "XSG_BACKGROUND")
+		
+		local item_background = iteminfo:getIndex("background", player.mo.skin)
+		local item_background_color = iteminfo:getIndex("background_color", player.mo.skin)
+		local item_background_colormap = v.getColormap(nil, item_background_color)
 		
 		local slot = {
 			x = (BASEVIDWIDTH*FU)/2, -- In middle of screen
 			y = invpos_y,
 			scale = FRACUNIT,
-			patch = empty_patch,
+			patch = nil,
 			flags = V_SNAPTOBOTTOM,
 		}
 		
@@ -54,35 +60,30 @@ addHook("HUD", function(v, player)
 			x = (BASEVIDWIDTH*FU)/2, -- In middle of screen
 			y = invpos_y,
 			scale = FRACUNIT,
-			patch = empty_patch,
+			patch = v.cachePatch(item_background),
 			flags = V_SNAPTOBOTTOM,
 		}
 		
 		local reload_square = xSlinger.deepcopy(slot)
 		local firerate_square = xSlinger.deepcopy(slot)
 		
-		local item_icon =  iteminfo:getIndex("icon", player.mo.skin) --iteminfo.getIndex("icon", player.mo.skin)
+		local item_icon = iteminfo:getIndex("icon", player.mo.skin) --iteminfo.getIndex("icon", player.mo.skin)
 		local item_ammo = iteminfo:getIndex("ammo", player.mo.skin)
 		local item_count = iteminfo:getIndex("count", player.mo.skin)
 		local item_reload_time = iteminfo:getIndex("reload_time", player.mo.skin)
 		local item_firerate = iteminfo:getIndex("firerate", player.mo.skin)
 		local item_firerate_left = iteminfo:getIndex("firerate_left", player.mo.skin)
 		
-		/*
-		if item_iconscale then
-			slot.scale = item_iconscale
-		end
-		*/
-		
-		--print(item_icon)
-		
 		if item_icon then
 			slot.patch = v.cachePatch(item_icon)
 			
 			local patch = slot.patch
 			
-			if patch.width ~= 16 or patch.height ~= 16 then
-				slot.scale = FixedDiv(FU, FixedDiv(patch.width*FU, 16*FU))
+			-- Auto Scale Item
+			if patch then
+				if patch.width ~= 16 or patch.height ~= 16 then
+					slot.scale = FixedDiv(FU, FixedDiv(patch.width*FU, 16*FU))
+				end
 			end
 		end
 		
@@ -95,23 +96,26 @@ addHook("HUD", function(v, player)
 		PositionSlot(i, slot, slot_count, slot_gap)
 		PositionSlot(i, slot_bg, slot_count, slot_gap)
 		
-		if slot.patch ~= empty_patch then
+		-- Draw Item Background
+		v.drawScaled(
+			slot_bg.x,
+			slot_bg.y,
+			slot_bg.scale,
+			slot_bg.patch,
+			slot_bg.flags,
+			item_background_colormap
+		)
+		
+		-- Draw Item
+		if slot.patch then
 			v.drawScaled(
-				slot_bg.x,
-				slot_bg.y,
-				slot_bg.scale,
-				slot_bg.patch,
-				slot_bg.flags
+				slot.x,
+				slot.y,
+				slot.scale,
+				slot.patch,
+				slot.flags
 			)
 		end
-		
-		v.drawScaled(
-			slot.x,
-			slot.y,
-			slot.scale,
-			slot.patch,
-			slot.flags
-		)
 		
 		-- [Reload Animation] -- 
 		if selection == i and xS.reload > 0 then
