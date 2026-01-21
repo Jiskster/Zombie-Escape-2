@@ -6,7 +6,7 @@ rawset(_G, "XSLINGER", {});
 
 rawset(_G, "ze2_modname", "ze2"); -- For customhud.
 
-freeslot("TOL_ZE2");
+freeslot("TOL_ESCAPE");
 
 ZE2.wait_time = 15*TICRATE;
 ZE2.MapVoteStartFrame = 10*TICRATE -- TODO: Remove
@@ -186,7 +186,7 @@ end, "ZE2_GIVEPLREFFECT")
 G_AddGametype({
 	name = "Escape Mode",
 	identifier = "ze2",
-	typeoflevel = TOL_ZE2,
+	typeoflevel = TOL_ESCAPE,
 	rules = GTR_TIMELIMIT|GTR_ALLOWEXIT|GTR_SPAWNENEMIES|GTR_CUTSCENES|GTR_SPECTATORS|GTR_DEATHMATCHSTARTS,
 	intermissiontype = int_none, -- No intermission screen for possible inbuilt screen.
 	--headerleftcolor = 152,
