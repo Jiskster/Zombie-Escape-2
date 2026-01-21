@@ -38,6 +38,36 @@ local function I_LoadLibs(sp)
 	print("I_LoadLibs();")
 end; 
 
+local function I_Main(sp)
+	set_subpath (sp);
+	
+	ze2file "zombie/zombie_colors.lua"
+	
+	ze2file "skincolors.lua"
+
+	ze2file "crouch.lua"
+
+	ze2file "characterconfigs.lua"
+
+	ze2file "console.lua"
+	ze2file "health_and_combat.lua" -- main stuff 
+
+	ze2file "capitalism.lua"
+	ze2file "exiting.lua"
+	ze2file "timers.lua"
+	ze2file "emotes.lua"
+
+	ze2file "maptimers.lua"
+	ze2file "checkpointsystem.lua"
+	
+	ze2file "ladder.lua"
+	ze2file "teamchat.lua"
+	
+	set_subpath "";
+	
+	print("I_Main();")
+end;
+
 local function I_LoadItems(sp)
 	set_subpath (sp);
 	
@@ -70,36 +100,6 @@ local function I_LoadItems(sp)
 	print("I_LoadItems();")
 end
 
-local function I_Main(sp)
-	set_subpath (sp);
-	
-	ze2file "zombie/zombie_colors.lua"
-	
-	ze2file "skincolors.lua"
-
-	ze2file "crouch.lua"
-
-	ze2file "characterconfigs.lua"
-
-	ze2file "console.lua"
-	ze2file "health_and_combat.lua" -- main stuff 
-
-	ze2file "capitalism.lua"
-	ze2file "exiting.lua"
-	ze2file "timers.lua"
-	ze2file "emotes.lua"
-
-	ze2file "maptimers.lua"
-	ze2file "checkpointsystem.lua"
-	
-	ze2file "ladder.lua"
-	ze2file "teamchat.lua"
-	
-	set_subpath "";
-	
-	print("I_Main();")
-end;
-
 ze2file "freeslot/sounds"
 
 ze2file "gametype.lua"
@@ -107,8 +107,6 @@ ze2file "gametype.lua"
 ze2file "functions/main"
 
 I_LoadLibs("libraries/")
-
-I_LoadItems("items/")
 
 ze2file "variables/main"
 
@@ -159,6 +157,8 @@ ze2file "enemies/doom.lua"
 I_Main("main/")
 
 ze2file "hooks/main"
+
+I_LoadItems("items/")
 
 ze2file "objects/megahp.lua"
 ze2file "objects/teleporter_gfx.lua"
