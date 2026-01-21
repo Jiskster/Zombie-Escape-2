@@ -184,7 +184,7 @@ addHook("LinedefExecute", function(line, mo)
 end, "ZE2_GIVEPLREFFECT")
 
 G_AddGametype({
-	name = "ZE2 Survival",
+	name = "Escape Mode",
 	identifier = "ze2",
 	typeoflevel = TOL_ZE2,
 	rules = GTR_TIMELIMIT|GTR_ALLOWEXIT|GTR_SPAWNENEMIES|GTR_CUTSCENES|GTR_SPECTATORS|GTR_DEATHMATCHSTARTS,
