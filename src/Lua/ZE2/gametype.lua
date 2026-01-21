@@ -6,7 +6,7 @@ rawset(_G, "XSLINGER", {});
 
 rawset(_G, "ze2_modname", "ze2"); -- For customhud.
 
-freeslot("TOL_ESCAPE");
+freeslot("TOL_ESCAPE", "TOL_SWARM", "TOL_PLAGUE");
 
 ZE2.wait_time = 15*TICRATE;
 ZE2.MapVoteStartFrame = 10*TICRATE -- TODO: Remove
@@ -188,10 +188,32 @@ G_AddGametype({
 	identifier = "ze2",
 	typeoflevel = TOL_ESCAPE,
 	rules = GTR_TIMELIMIT|GTR_ALLOWEXIT|GTR_SPAWNENEMIES|GTR_CUTSCENES|GTR_SPECTATORS|GTR_DEATHMATCHSTARTS,
-	intermissiontype = int_none, -- No intermission screen for possible inbuilt screen.
-	--headerleftcolor = 152,
-	--headerrightcolor = 40,
+	intermissiontype = int_none, -- We have ingame intermission, so we dont need an intermission type
+	headerleftcolor = 152,
+	headerrightcolor = 40,
 	description = "Escape from the Zombies! Don't get caught and eaten by them! They can catch up with you anytime..."
+})
+
+G_AddGametype({
+	name = "Swarm Mode",
+	identifier = "swarm",
+	typeoflevel = TOL_SWARM,
+	rules = GTR_TIMELIMIT|GTR_ALLOWEXIT|GTR_SPAWNENEMIES|GTR_CUTSCENES|GTR_SPECTATORS|GTR_DEATHMATCHSTARTS,
+	intermissiontype = int_none,
+	eaderleftcolor = 152,
+	headerrightcolor = 40,
+	description = "WIP"
+})
+
+G_AddGametype({
+	name = "Plague Mode",
+	identifier = "plague",
+	typeoflevel = TOL_PLAGUE,
+	rules = GTR_TIMELIMIT|GTR_ALLOWEXIT|GTR_SPAWNENEMIES|GTR_CUTSCENES|GTR_SPECTATORS|GTR_DEATHMATCHSTARTS,
+	intermissiontype = int_none,
+	eaderleftcolor = 152,
+	headerrightcolor = 40,
+	description = "WIP"
 })
 
 xSlinger.registerGametype(GT_ZE2, {
