@@ -53,24 +53,27 @@ addHook("HUD", function(v, player)
 		local result = K_GetScreenCoords(v,player,camera,{
 			x = i_obj.x;
 			y = i_obj.y;
-			z = i_obj.z + i_obj.height;
+			z = i_obj.z + (i_obj.height*3)/4;
 			eflags = i_obj.eflags;
 		})
 			
 		if result and result.onscreen then
 			local interaction_text = i_obj.interaction.text or "ERROR!"
 			local interaction_holdtime = i_obj.interaction.holdtime or 0
+			local interaction_type = i_obj.interaction.type
 
 			local div = FixedDiv(xS.interaction_hold*FU,interaction_holdtime*FU)
 			local progress_num = FixedMul(div,360*FU)/FU
 			
-			drawInteraction(v, player, {
-				x = FixedRound(result.x) + 8*FU;
-				y = FixedRound(result.y);
-				progress = progress_num;
-				text = interaction_text;
-				disable_circle = (xS.interaction_hold == 0);
-			})
+			if interaction_type == "generic" then
+				drawInteraction(v, player, {
+					x = FixedRound(result.x) + 8*FU;
+					y = FixedRound(result.y);
+					progress = progress_num;
+					text = interaction_text;
+					disable_circle = (xS.interaction_hold == 0);
+				})
+			end
 		end
 	end
 end)
