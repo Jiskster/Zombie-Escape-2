@@ -27,6 +27,7 @@ mt.__index = function(player, key)
 			-- Update references just in case.
 			xS_players[player].player = player
 			xS_players[player].mo = player.mo
+			xS_players[player].team = 1
 			
 			return xS_players[player]
 		end
