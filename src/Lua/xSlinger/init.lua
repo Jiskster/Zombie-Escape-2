@@ -160,6 +160,7 @@ dofile "xSlinger/teams"
 dofile "xSlinger/gametypes"
 
 -- HUD
+dofile "xSlinger/hud/interactions"
 dofile "xSlinger/hud/tags"
 dofile "xSlinger/hud/inventory"
 dofile "xSlinger/hud/health"
@@ -199,6 +200,8 @@ end, COM_ADMIN)
 dofile "xSlinger/health"
 
 dofile "xSlinger/shields"
+
+dofile "xSlinger/interactions"
 
 -- separate into own file
 mobjinfo[MT_BLUECRAWLA].npc_name = "Blue Crawla"
