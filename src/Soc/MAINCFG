@@ -139,8 +139,8 @@ NextLevel = J1
 Lua.ze2_timelimit = 6
 
 Level 18
-Levelname = NOXY
-Subtitle = ZE2 TEST MAP
+Levelname = Database Z
+Subtitle = Testing Escape
 Act = 0
 Music = NOXY
 TypeOfLevel = Escape
