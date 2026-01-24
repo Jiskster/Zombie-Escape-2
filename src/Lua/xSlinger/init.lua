@@ -203,6 +203,8 @@ dofile "xSlinger/shields"
 
 dofile "xSlinger/interactions"
 
+dofile "xSlinger/itemdrop"
+
 -- separate into own file
 mobjinfo[MT_BLUECRAWLA].npc_name = "Blue Crawla"
 mobjinfo[MT_BLUECRAWLA].npc_spawnhealth = {120,230}

@@ -1,0 +1,9 @@
+freeslot("MT_XS_DROPPEDITEM")
+freeslot("S_XS_DROPPEDITEM_FALLBACK")
+
+states[S_XS_DROPPEDITEM_FALLBACK] = {
+	sprite = SPR_THOK,
+	frame = FF_FULLBRIGHT|FF_TRANS40|A,
+	tics = -1,
+	nextstate = S_XS_DROPPEDITEM_FALLBACK,
+}
