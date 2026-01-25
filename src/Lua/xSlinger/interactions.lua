@@ -110,6 +110,18 @@ addHook("PlayerThink", function(player)
 					interaction.cooldown = interaction.set_cooldown
 				end
 				
+				if (interaction.type == "item") 
+				and (i_obj.target and i_obj.target.valid and i_obj.target.iteminfo) then
+					local iteminfo = i_obj.target.iteminfo
+					local itemid = iteminfo:getIndex("id")
+					P_RemoveMobj(i_obj.target)
+					P_RemoveMobj(i_obj)
+					
+					if type("itemid") == "string" then
+						xS:give_item(itemid, nil, nil, iteminfo)
+					end
+				end
+				
 				xS.interaction_delay = 4 -- keep this low
 			end
 		else

@@ -1,9 +1,22 @@
+freeslot("S_XS_REDRING_DROP")
+
+states[S_XS_REDRING_DROP] = {
+	sprite = SPR_RRNG,
+	frame = FF_ANIMATE|FF_FULLBRIGHT,
+	tics = -1,
+	var1 = 6,
+	var2 = 2,
+	nextstate = S_XS_REDRING_DROP,
+}
+
 xSlinger.registerItem("red_ring", {
 	displayname = "Red Ring";
 	
 	icon = "XSG_RING";
 	
 	missile = MT_REDRING;
+	
+	dropstate = S_XS_REDRING_DROP;
 	
 	sounds = {
 		use = sfx_wpfire;

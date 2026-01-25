@@ -138,7 +138,7 @@ local funcs = {
 			end
 		end
 	end;
-	["give_item"] = function(self, item_name, count, slotnum, target_inv)
+	["give_item"] = function(self, item_name, count, slotnum, newiteminfo, target_inv)
 		local obj = getLambdaObject(self)
 		local xS = obj.xSlinger
 		local inv = xS:inv_get(target_inv)
@@ -184,7 +184,7 @@ local funcs = {
 			local empty_slot_num = xS:find_empty_slot_number(target_inv)
 			while empty_slot_num and remainder > 0 do
 				local slot
-				inv[empty_slot_num] = xSlinger.new(item_name)
+				inv[empty_slot_num] = newiteminfo or xSlinger.new(item_name)
 				
 				slot = inv[empty_slot_num] -- set ref
 				
@@ -206,17 +206,17 @@ local funcs = {
 			
 			return newitems, remainder
 		else
-		
 			local empty_slot_num = xS:find_empty_slot_number(target_inv)
 			if empty_slot_num then
-				inv[empty_slot_num] = xSlinger.new(item_name)
-				return inv[new_slot_num]
+				inv[empty_slot_num] = newiteminfo or xSlinger.new(item_name)
+				
+				return inv[empty_slot_num]
 			else
 				return false
 			end
 		end
 		
-		--print(remainder)
+		print(remainder)
 	end;
 }
 

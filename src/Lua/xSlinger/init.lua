@@ -193,7 +193,7 @@ COM_AddCommand("giveitem", function(player, item, count)
 	local item = xS:give_item(item, tonumber(count))
 	
 	if not item then
-		CONS_Printf(player, "inventory full bruh")
+		CONS_Printf(player, "inventory full bruh: "..tostring(item))
 	end
 end, COM_ADMIN)
 

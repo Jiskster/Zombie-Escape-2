@@ -145,21 +145,24 @@ addHook("HUD", function(v, player)
 			
 			if interaction_type == "generic" then
 				drawInteraction(v, player, {
-					x = FixedRound(result.x) + 8*FU;
+					x = FixedRound(result.x) + 12*FU;
 					y = FixedRound(result.y);
 					progress = progress_num;
 					text = interaction_text;
 					disable_circle = (xS.interaction_hold == 0);
 				})
 			elseif interaction_type == "item" then
-				local droppeditem = interaction.droppeditem -- MT_XS_DROPPEDITEM (mobj_t)
+				if not (i_obj.target and i_obj.target.valid) then
+					return end;
+					
+				local droppeditem = i_obj.target -- MT_XS_DROPPEDITEM (mobj_t)
 				local iteminfo = droppeditem.iteminfo
 				
 				drawItemInteraction(v, player, {
-					x = FixedRound(result.x) + 8*FU;
+					x = FixedRound(result.x) + 12*FU;
 					y = FixedRound(result.y);
 					progress = progress_num;
-					text = iteminfo.name or interaction_text;
+					text = iteminfo.displayname or interaction_text;
 					disable_circle = (xS.interaction_hold == 0);
 				})
 			end

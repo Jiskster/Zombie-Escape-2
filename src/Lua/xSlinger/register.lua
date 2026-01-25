@@ -43,7 +43,12 @@ function xSlinger.new(itemid)
 	end
 	
 	if not xSlinger.registered_items[itemid] then
-		return error("itemid (arg1) doesn't exist. Got: "..tostring(itemid))
+		item = xSlinger.deepcopy(xSlinger.registered_items[-1])
+		setmetatable(item, xSlinger.METATABLES.ITEMINFO)
+		
+		print("Invalid item: "..itemid)
+		return item
+		--return error("itemid (arg1) doesn't exist. Got: "..tostring(itemid))
 	end
 	
 	item = xSlinger.deepcopy(xSlinger.registered_items[itemid])
