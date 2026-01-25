@@ -40,6 +40,15 @@ function xSlinger.SpawnItemDrop(data, item)
 	
 	dropmobj.spriteyoffset = 16*FU
 	
+	dropmobj.friction = 27*FRACUNIT/32
+	
+	if data.angle ~= nil then
+		dropmobj.angle = data.angle
+		P_Thrust(dropmobj, dropmobj.angle, 5*FU)
+	end
+	
+	P_SetObjectMomZ(dropmobj, 4*FU, true)
+	
 	-- Spawn interaction
 	local i_obj = P_SpawnMobj(data.x, data.y, data.z, MT_XS_INTERACTION) -- interaction object
 	i_obj.target = dropmobj -- to make the interaction follow the dropmobj
@@ -62,6 +71,10 @@ addHook("MobjMoveCollide", function(tmthing, thing)
 	
 	if tmthing.droprandomangle then
 		angle = $ + tmthing.droprandomangle
+	end
+	
+	if not P_IsObjectOnGround(tmthing) then
+		push = $ / 3
 	end
 	
 	P_Thrust(tmthing, angle-ANGLE_180, push)
