@@ -7,6 +7,7 @@ mobjinfo[MT_XS_DROPPEDITEM] = {
 	height = 32*FU,
 	spawnstate = S_XS_DROPPEDITEM,
 	deathstate = S_XS_DROPPEDITEM,
+	flags = MF_SPECIAL,
 }
 
 states[S_XS_DROPPEDITEM] = {
@@ -27,6 +28,7 @@ function xSlinger.SpawnItemDrop(data, item)
 	
 	local dropmobj = P_SpawnMobj(data.x, data.y, data.z, MT_XS_DROPPEDITEM)
 	dropmobj.iteminfo = item
+	dropmobj.droprandomangle = P_RandomRange(-5,5)*ANG1
 
 	if item.dropstate then
 		dropmobj.state = item.dropstate
@@ -48,6 +50,23 @@ function xSlinger.SpawnItemDrop(data, item)
 	}
 	i_obj.state = S_INVISIBLE
 end
+
+-- Make dropped items push eachother
+addHook("MobjMoveCollide", function(tmthing, thing)
+	if (tmthing.type ~= thing.type) then
+		return end;
+		
+	local angle = R_PointToAngle2(tmthing.x, tmthing.y, thing.x, thing.y)
+	local push = FRACUNIT/4
+	
+	
+	if tmthing.droprandomangle then
+		angle = $ + tmthing.droprandomangle
+	end
+	
+	P_Thrust(tmthing, angle-ANGLE_180, push)
+	P_Thrust(thing, angle-tmthing.droprandomangle, push)
+end, MT_XS_DROPPEDITEM)
 
 addHook("TouchSpecial", function(special, toucher)
 	return true
