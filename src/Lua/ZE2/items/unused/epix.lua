@@ -1,0 +1,31 @@
+freeslot("sfx_epix33")
+freeslot("S_ZE2_EPIX_DROP", "SPR_EPIXDAWG")
+
+states[S_ZE2_EPIX_DROP] = {
+	sprite = SPR_EPIXDAWG,
+	frame = FF_FULLBRIGHT,
+	tics = -1,
+	nextstate = S_ZE2_EPIX_DROP,
+}
+
+xSlinger.registerItem("epix", {
+	displayname = "epixgamer3333333",
+	
+	icon = "EPIXIND",
+	
+	dropstate = S_ZE2_EPIX_DROP,
+	
+	color = SKINCOLOR_TAN,
+	
+	firerate = TICRATE,
+	
+	sounds = {
+		use = sfx_epix33;
+	},
+
+	count = 50,
+	
+	usefunc = function(self, mobj)
+		mobj:ChangeHealth(10)
+	end,
+})

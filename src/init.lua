@@ -86,6 +86,9 @@ local function I_LoadItems(sp)
 	ze2file "gfz_sphere.lua"
 	ze2file "energy_drink.lua"
 	
+	-- Unused always at the end.
+	ze2file "unused/epix.lua"
+	
 	/*
 	ze2file "item_bounce_ring.lua"
 	
