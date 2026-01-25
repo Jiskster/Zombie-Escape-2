@@ -120,9 +120,10 @@ addHook("PlayerThink", function(player)
 					if type("itemid") == "string" then
 						xS:give_item(itemid, nil, nil, iteminfo)
 					end
+					xS.interaction_delay = 12	
+				else -- default
+					xS.interaction_delay = 4 -- keep this low
 				end
-				
-				xS.interaction_delay = 4 -- keep this low
 			end
 		else
 			if xS.interaction_hold then
