@@ -157,6 +157,16 @@ addHook("HUD", function(v, player)
 					
 				local droppeditem = i_obj.target -- MT_XS_DROPPEDITEM (mobj_t)
 				local iteminfo = droppeditem.iteminfo
+				local bgcolor1 = 22
+				local bgcolor2 = 18
+				local color = iteminfo.color
+				
+				if iteminfo then
+					if color and skincolors[color] then
+						bgcolor1 = skincolors[color].ramp[9]
+						bgcolor2 = skincolors[color].ramp[11]
+					end
+				end
 				
 				drawItemInteraction(v, player, {
 					x = FixedRound(result.x) + 12*FU;
@@ -164,6 +174,8 @@ addHook("HUD", function(v, player)
 					progress = progress_num;
 					text = iteminfo.displayname or interaction_text;
 					disable_circle = (xS.interaction_hold == 0);
+					bgcolor1 = bgcolor1;
+					bgcolor2 = bgcolor2;
 				})
 			end
 		end
