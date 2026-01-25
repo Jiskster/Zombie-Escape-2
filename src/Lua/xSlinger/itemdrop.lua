@@ -30,7 +30,6 @@ states[S_XS_DROPITEMVFX] = {
 
 		v.extravalue1 = $ + 1
 		v.frame = ($ &~FF_FRAMEMASK)|(2 + (v.extravalue1/4))
-
 	end,
 	nextstate = S_XS_DROPITEMVFX
 }
@@ -82,7 +81,7 @@ end
 addHook("MobjMoveCollide", function(tmthing, thing)
 	if (tmthing.type ~= thing.type) then
 		return end;
-		
+	
 	local angle = R_PointToAngle2(tmthing.x, tmthing.y, thing.x, thing.y)
 	local push = FRACUNIT/4
 	
@@ -115,7 +114,7 @@ addHook("MobjThinker", function(drop)
 	local fx = P_ReturnThrustX(nil, fudge_ang, fudge)
 	local fy = P_ReturnThrustY(nil, fudge_ang, fudge)
 
-	local f
+	local f -- flair mobj pointer
 	local flair_roll = FixedAngle(leveltime * FU * 3/2)
 	local flair_color = drop.color -- Can be replaced with rarity colors
 
