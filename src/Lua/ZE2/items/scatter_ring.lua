@@ -70,6 +70,17 @@ states[S_ZE2_THROWNSCATTER7] = {
 	tics = 1,
 }
 
+freeslot("S_XS_SCATTERRING_DROP")
+
+states[S_XS_SCATTERRING_DROP] = {
+	sprite = SPR_RNGS,
+	frame = FF_ANIMATE|FF_FULLBRIGHT,
+	tics = -1,
+	var1 = 34,
+	var2 = 1,
+	nextstate = S_XS_SCATTERRING_DROP,
+}
+
 addHook("MobjFuse", function(mobj)
 	mobj.momx = 0
 	mobj.momy = 0
@@ -80,6 +91,8 @@ xSlinger.registerItem("scatter_ring", {
 	displayname = "Scatter Ring";
 	
 	icon = "XSG_SCAT";
+	
+	dropstate = S_XS_SCATTERRING_DROP;
 	
 	color = SKINCOLOR_PURPLE;
 	

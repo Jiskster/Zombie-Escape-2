@@ -15,6 +15,17 @@ mobjinfo[MT_ZE2_RAILSHOT] = {
 	flags = MF_NOBLOCKMAP|MF_MISSILE|MF_NOGRAVITY,
 }
 
+freeslot("S_XS_RAILRING_DROP")
+
+states[S_XS_RAILRING_DROP] = {
+	sprite = SPR_RNGR,
+	frame = FF_ANIMATE|FF_FULLBRIGHT,
+	tics = -1,
+	var1 = 34,
+	var2 = 1,
+	nextstate = S_XS_RAILRING_DROP,
+}
+
 local ring = function(x,y,z,scale,angle)
 	local th = P_SpawnMobj(x, y, z, MT_THOK)
 	if th and th.valid
@@ -104,6 +115,8 @@ xSlinger.registerItem("rail_ring", {
 	shake = 20;
 	
 	icon = "XSG_RAIL";
+	
+	dropstate = S_XS_RAILRING_DROP;
 	
 	sounds = {
 		use = sfx_rail1;

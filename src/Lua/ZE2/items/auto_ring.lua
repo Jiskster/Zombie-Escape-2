@@ -1,9 +1,22 @@
+freeslot("S_XS_AUTORING_DROP")
+
+states[S_XS_AUTORING_DROP] = {
+	sprite = SPR_RNGA,
+	frame = FF_ANIMATE|FF_FULLBRIGHT,
+	tics = -1,
+	var1 = 34,
+	var2 = 1,
+	nextstate = S_XS_AUTORING_DROP,
+}
+
 xSlinger.registerItem("auto_ring", {
 	displayname = "Automatic Ring";
 	
 	icon = "XSG_AUTO";
 	
 	missile = MT_THROWNAUTOMATIC;
+	
+	dropstate = S_XS_AUTORING_DROP;
 
 	sounds = {
 		use = sfx_wpfir2;
