@@ -298,13 +298,13 @@ function ZE2.setConfigInventory(player)
 			xS:inv_add("survivor", 5)
 		
 			for i,item in ipairs(sc[skin].items) do
-				xS:give_item(item, nil, nil, "survivor") -- being strict with the inventory
+				xS:give_item(item, nil, nil, nil, "survivor") -- being strict with the inventory
 			end
 		elseif team == 2 and zc[ztype] and zc[ztype].items then
 			xS:inv_add("zombie", 3)
 			
 			for i,item in ipairs(zc[ztype].items) do
-				xS:give_item(item, nil, nil, "zombie")
+				xS:give_item(item, nil, nil, nil, "zombie")
 			end
 		end
 	end
