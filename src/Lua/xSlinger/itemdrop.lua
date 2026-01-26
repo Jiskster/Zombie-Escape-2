@@ -55,6 +55,11 @@ function xSlinger.SpawnItemDrop(data, item)
 		dropmobj.color = item.color
 	end
 	
+	if item.dropscale then
+		dropmobj.spritexscale = item.dropscale
+		dropmobj.spriteyscale = item.dropscale
+	end
+	
 	dropmobj.spriteyoffset = 16*FU
 	
 	dropmobj.friction = 27*FRACUNIT/32

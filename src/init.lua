@@ -88,6 +88,7 @@ local function I_LoadItems(sp)
 	
 	-- Unused always at the end.
 	ze2file "unused/epix.lua"
+	ze2file "unused/saxa.lua"
 	
 	/*
 	ze2file "item_bounce_ring.lua"

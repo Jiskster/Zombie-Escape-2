@@ -9,23 +9,24 @@ states[S_ZE2_EPIX_DROP] = {
 }
 
 xSlinger.registerItem("epix", {
-	displayname = "epixgamer3333333",
+	displayname = "epixgamer3333333";
 	
-	icon = "EPIXIND",
+	icon = "EPIXIND";
 	
-	dropstate = S_ZE2_EPIX_DROP,
+	dropstate = S_ZE2_EPIX_DROP;
+	dropscale = FU/2;
 	
-	color = SKINCOLOR_TAN,
+	color = SKINCOLOR_TAN;
 	
-	firerate = TICRATE,
+	firerate = TICRATE;
 	
 	sounds = {
 		use = sfx_epix33;
-	},
+	};
 
-	count = 50,
+	count = 50;
 	
 	usefunc = function(self, mobj)
-		mobj:ChangeHealth(10)
-	end,
+		mobj:ChangeHealth(100)
+	end;
 })
