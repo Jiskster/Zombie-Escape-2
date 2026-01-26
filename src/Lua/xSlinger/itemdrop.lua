@@ -213,6 +213,8 @@ addHook("MobjThinker", function(drop)
 			alpha = FixedDiv(fudge_dist, CORONA_DIST)
 		end
 		f.scale = $ + FixedDiv(fudge_dist - CORONA_DIST/2, CORONA_DIST) / 2
+		f.spritexscale = FU/2
+		f.spriteyscale = FU/2
 		f.alpha = alpha / 2
 	--
 end, MT_XS_DROPPEDITEM)
