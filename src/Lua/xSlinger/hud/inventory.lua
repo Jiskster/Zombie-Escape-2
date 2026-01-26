@@ -29,6 +29,8 @@ addHook("HUD", function(v, player)
 		return
 	end
 	
+	local hand = xS:hand()
+	
 	local slot_count = #xS:inv_get()
 	
 	local selected_slot = {
@@ -118,7 +120,8 @@ addHook("HUD", function(v, player)
 		end
 		
 		-- [Reload Animation] -- 
-		if selection == i and xS.reload > 0 then
+		if selection == i and xS.reload > 0 
+		and iteminfo.id ~= "" then
 			reload_square.scale = FU
 			reload_square.patch = v.cachePatch("XSG_GREENSQUARE")
 			
@@ -139,7 +142,8 @@ addHook("HUD", function(v, player)
 		end
 		
 		-- [Firing Animation] --
-		if item_firerate_left and item_firerate then
+		if item_firerate_left and item_firerate
+		and iteminfo.id ~= "" then
 			firerate_square.scale = FixedDiv(item_firerate_left*FU, item_firerate*FU)
 			firerate_square.patch = v.cachePatch("XSG_GREENSQUARE")
 			
@@ -206,10 +210,8 @@ addHook("HUD", function(v, player)
 	end
 	
 	-- Item info.
-	
-	local item = xS:hand()
-	local item_color = item:getIndex("color", player.mo.skin) or SKINCOLOR_WHITE
-	local item_name = item:getIndex("displayname", player.mo.skin) or "ERROR!!"
+	local item_color = hand:getIndex("color", player.mo.skin) or SKINCOLOR_WHITE
+	local item_name = hand:getIndex("displayname", player.mo.skin) or "ERROR!!"
 	
 	v.drawString(160*FU, invpos_y-20*FU, item_name, V_SNAPTOBOTTOM, "thin-fixed-center")
 

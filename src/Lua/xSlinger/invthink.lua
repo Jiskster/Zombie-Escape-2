@@ -191,6 +191,11 @@ function xSlinger.DoThinker(mobj)
 		end
 	end
 	
+	-- Remove reload when on empty slot.
+	if (hand.id == "") then
+		xS.reload = 0
+	end
+	
 	do -- Weapon Switching System
 		local delta = 0
 		
