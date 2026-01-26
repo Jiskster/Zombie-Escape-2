@@ -206,7 +206,7 @@ local funcs = {
 			local empty_slot_num = xS:find_empty_slot_number(target_inv)
 			while empty_slot_num and remainder > 0 do
 				local slot
-				inv[empty_slot_num] = set_item
+				inv[empty_slot_num] = xSlinger.deepcopy(set_item)
 				
 				slot = inv[empty_slot_num] -- set ref
 				
