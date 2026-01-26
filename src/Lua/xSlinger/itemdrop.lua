@@ -224,7 +224,7 @@ addHook("MapThingSpawn", function(mobj, mapthing)
 	xSlinger.SpawnItemDrop(mobj, mapthing.stringargs[0] or -1, true)
 end, MT_XS_DROPPEDITEM_SPAWN)
 
-COM_AddCommand("drop", function(player, item)
+COM_AddCommand("spawnitemdrop", function(player, item)
 	if not (player.mo and player.mo.valid) then
 		return end;
 		
