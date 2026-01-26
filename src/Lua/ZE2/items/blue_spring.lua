@@ -1,7 +1,18 @@
+freeslot("S_ZE2_BLUESPRING_DROP")
+
+states[S_ZE2_BLUESPRING_DROP] = {
+	sprite = SPR_SPRB,
+	frame = FF_FULLBRIGHT,
+	tics = -1,
+	nextstate = S_ZE2_BLUESPRING_DROP,
+}
+
 xSlinger.registerItem("blue_spring", {
 	displayname = "Blue Spring";
 	
 	icon = "BLUESPRINGIND";
+	
+	dropstate = S_ZE2_BLUESPRING_DROP;
 	
 	firerate = 4*TICRATE;
 

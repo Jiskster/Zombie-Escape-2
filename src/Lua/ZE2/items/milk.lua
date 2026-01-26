@@ -1,10 +1,21 @@
 freeslot("sfx_gulpy")
 
+freeslot("S_ZE2_MILK_DROP", "SPR_ZE2_MILK")
+
+states[S_ZE2_MILK_DROP] = {
+	sprite = SPR_ZE2_MILK, -- uhhh problematic naming???
+	frame = FF_FULLBRIGHT,
+	tics = -1,
+	nextstate = S_ZE2_MILK_DROP,
+}
+
 xSlinger.registerItem("milk", {
 	displayname = "Milk";
 	
 	icon = "MILKIND";
 	iconscale = FU/2;
+	
+	dropstate = S_ZE2_MILK_DROP;
 	
 	firerate = 20;
 	

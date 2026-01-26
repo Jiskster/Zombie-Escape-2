@@ -1,20 +1,33 @@
+freeslot("S_ZE2_APPLE_DROP", "SPR_ZE2_APPLE")
+
+states[S_ZE2_APPLE_DROP] = {
+	sprite = SPR_ZE2_APPLE,
+	frame = FF_FULLBRIGHT,
+	tics = -1,
+	nextstate = S_ZE2_APPLE_DROP,
+}
+
 xSlinger.registerItem("apple", {
-	displayname = "Apple",
+	displayname = "Apple";
 	
-	icon = "APPLEIND",
+	icon = "APPLEIND";
 	
-	color = SKINCOLOR_RED,
+	dropstate = S_ZE2_APPLE_DROP;
+	dropscale = 2*FU;
+	dropyoffset = 8*FU;
 	
-	firerate = 50,
+	color = SKINCOLOR_RED;
+	
+	firerate = 50;
 	
 	sounds = {
 		use = sfx_eatapl;
-	},
+	};
 
-	count = 5,
-	maxcount = 100,
+	count = 5;
+	maxcount = 100;
 	
 	usefunc = function(self, mobj)
 		mobj:ChangeHealth(20)
-	end,
+	end;
 })

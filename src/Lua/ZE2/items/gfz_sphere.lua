@@ -22,6 +22,15 @@ states[S_ZE2_GFZSPHERE] = {
 	var2 = 2,
 }
 
+freeslot("S_ZE2_GFZSPHERE_DROP", "SPR_ZE2_GFZSPHERE")
+
+states[S_ZE2_GFZSPHERE_DROP] = {
+	sprite = SPR_ZE2_GFZSPHERE, -- uhhh problematic naming???
+	frame = FF_FULLBRIGHT,
+	tics = -1,
+	nextstate = S_ZE2_GFZSPHERE_DROP,
+}
+
 xSlinger.registerItem("GFZSPHERE",  {
 	displayname = "GFZSPHERE";
 
@@ -32,6 +41,10 @@ xSlinger.registerItem("GFZSPHERE",  {
 	firerate = 40;
 
 	color = SKINCOLOR_BROWN;
+	
+	dropstate = S_ZE2_GFZSPHERE_DROP;
+	dropscale = 2*FU;
+	dropyoffset = 8*FU;
 
 	knockback = 125*FRACUNIT;
 	damage = 115;

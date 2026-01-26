@@ -75,10 +75,23 @@ states[S_PROP1_BREAK] = {
 	tics = TICRATE
 }
 
+freeslot("S_ZE2_WOODFENCE_DROP", "SPR_ZE2_WOODFENCE")
+
+states[S_ZE2_WOODFENCE_DROP] = {
+	sprite = SPR_ZE2_WOODFENCE, -- uhhh problematic naming???
+	frame = FF_FULLBRIGHT,
+	tics = -1,
+	nextstate = S_ZE2_WOODFENCE_DROP,
+}
+
 xSlinger.registerItem("wood_fence", {
 	displayname = "Wood Fence";
 	
 	icon = "FENCEIND";
+	
+	dropstate = S_ZE2_WOODFENCE_DROP;
+	dropscale = 2*FU;
+	dropyoffset = 8*FU;
 	
 	firerate = TICRATE*5;
 	

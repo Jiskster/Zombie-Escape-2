@@ -36,6 +36,15 @@ states[S_RS_THROWNFLAME3] = {
 	tics = 20
 }
 
+freeslot("S_ZE2_FLAMERING_DROP", "SPR_ZE2_FLAMERING")
+
+states[S_ZE2_FLAMERING_DROP] = {
+	sprite = SPR_ZE2_FLAMERING,
+	frame = FF_FULLBRIGHT,
+	tics = -1,
+	nextstate = S_ZE2_FLAMERING_DROP,
+}
+
 sfxinfo[sfx_rs_fla] = {
 	flags = SF_NOMULTIPLESOUND
 }
@@ -48,6 +57,10 @@ xSlinger.registerItem("flame_ring", {
 	firerate = 2;
 	
 	color = SKINCOLOR_ORANGE;
+	
+	dropstate = S_ZE2_FLAMERING_DROP;
+	dropscale = 2*FU;
+	dropyoffset = 8*FU;
 	
 	autouse = true;
 	

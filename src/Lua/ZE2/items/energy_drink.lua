@@ -1,6 +1,15 @@
 freeslot("sfx_edprdn") -- no, not edp445
 freeslot("sfx_rblxdr")
 
+freeslot("S_ZE2_ENERGYDRINK_DROP", "SPR_ZE2_ENERGYDRINK")
+
+states[S_ZE2_ENERGYDRINK_DROP] = {
+	sprite = SPR_ZE2_ENERGYDRINK,
+	frame = FF_FULLBRIGHT,
+	tics = -1,
+	nextstate = S_ZE2_ENERGYDRINK_DROP,
+}
+
 xSlinger.registerEffect("energy_drink", {
 	tick = function(effect, mobj, time_left)
 		local player = mobj.player
@@ -24,6 +33,10 @@ xSlinger.registerItem("energy_drink", {
 	icon = "ENERGYDRINKIND";
 
 	color = SKINCOLOR_MASTER;
+	
+	dropstate = S_ZE2_ENERGYDRINK_DROP;
+	dropscale = 2*FU;
+	dropyoffset = 8*FU;
 
 	firerate = TICRATE*30;
 
