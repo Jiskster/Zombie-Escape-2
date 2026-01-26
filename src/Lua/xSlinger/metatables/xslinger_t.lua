@@ -155,11 +155,14 @@ local funcs = {
 			end
 		end
 	end;
-	["give_item"] = function(self, item_name, count, slotnum, newiteminfo, target_inv)
+	["give_item"] = function(self, item_name, count, slotnum, newiteminfo, ispickup, target_inv)
 		local obj = getLambdaObject(self)
 		local xS = obj.xSlinger
 		local inv = xS:inv_get(target_inv)
 		local itemref = xSlinger.new(item_name)
+		local hand = xS:hand()
+		local mo = xS.mo
+		
 		local remainder = 0
 		local ranout = false
 
@@ -176,6 +179,8 @@ local funcs = {
 		if itemref.count ~= -1 and not count then
 			count = itemref.count
 		end
+		
+		local set_item = newiteminfo or xSlinger.new(item_name)
 		
 		remainder = count
 		
@@ -201,7 +206,7 @@ local funcs = {
 			local empty_slot_num = xS:find_empty_slot_number(target_inv)
 			while empty_slot_num and remainder > 0 do
 				local slot
-				inv[empty_slot_num] = newiteminfo or xSlinger.new(item_name)
+				inv[empty_slot_num] = set_item
 				
 				slot = inv[empty_slot_num] -- set ref
 				
@@ -221,14 +226,60 @@ local funcs = {
 				empty_slot_num = xS:find_empty_slot_number(target_inv)
 			end
 			
+			if ispickup and hand.id ~= ""
+			and itemref.id ~= hand.id 
+			and not empty_slot_num then -- Swap if theres no space
+				-- Drop hand
+				xSlinger.SpawnItemDrop(mo, hand, false)
+				xS:hand_clear()
+				
+				-- Set new item in held slot
+				inv[xS.slot] = set_item
+			else
+				local remainder2 = remainder
+				local mx = itemref.maxcount
+				
+				while remainder2 > 0 do
+					if remainder2 >= mx then
+						local newitem = xSlinger.new(item_name)
+						
+						newitem:setIndex("count", mx)
+						
+						remainder2 = $ - mx
+						
+						xSlinger.SpawnItemDrop(mo, newitem, false)
+					else
+						local newitem = xSlinger.new(item_name)
+						
+						newitem:setIndex("count", remainder2)
+						
+						remainder2 = 0
+
+						xSlinger.SpawnItemDrop(mo, newitem, false)
+					end
+				end
+			end
+			
 			return newitems, remainder
 		else
 			local empty_slot_num = xS:find_empty_slot_number(target_inv)
+			
 			if empty_slot_num then
-				inv[empty_slot_num] = newiteminfo or xSlinger.new(item_name)
+				inv[empty_slot_num] = set_item
 				
 				return inv[empty_slot_num]
 			else
+				if ispickup and hand.id ~= "" then
+					-- Drop hand
+					xSlinger.SpawnItemDrop(mo, hand, false)
+					xS:hand_clear()
+					
+					-- Set new item in held slot
+					inv[xS.slot] = set_item
+				else
+					xSlinger.SpawnItemDrop(mo, set_item, false)
+				end
+				
 				return false
 			end
 		end

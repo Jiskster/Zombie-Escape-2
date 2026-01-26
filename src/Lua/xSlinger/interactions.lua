@@ -125,7 +125,7 @@ addHook("PlayerThink", function(player)
 					P_RemoveMobj(i_obj)
 					
 					if type(itemid) == "string" then
-						xS:give_item(itemid, itemcount, nil, iteminfo)
+						xS:give_item(itemid, itemcount, nil, iteminfo, true)
 					end
 					
 					xS.interaction_delay = 12	
