@@ -4,6 +4,8 @@ freeslot("S_XS_DROPPEDITEM") -- default state
 freeslot("S_XS_DROPITEMVFX")
 freeslot("SPR_XS_DROPITEMVFX")
 
+freeslot("MT_XS_DROPPEDITEM_SPAWN")
+
 mobjinfo[MT_XS_DROPPEDITEM] = {
 	spawnhealth = 1000,
 	radius = 32*FU,
@@ -34,8 +36,25 @@ states[S_XS_DROPITEMVFX] = {
 	nextstate = S_XS_DROPITEMVFX
 }
 
+-- Mapthing
+mobjinfo[MT_XS_DROPPEDITEM_SPAWN] = {
+	//$Category xSlinger
+	//$Name xSlinger Item Spawn
+	
+	//$StringArg0 Item ID
+
+	doomednum = 50501,
+	
+	spawnhealth = 1000,
+	radius = 32*FU,
+	height = 32*FU,
+	spawnstate = S_INVISIBLE,
+	deathstate = S_INVISIBLE,
+	flags = MF_NOBLOCKMAP,
+}
+
 -- Can put a mobj inside "data".
-function xSlinger.SpawnItemDrop(data, item)
+function xSlinger.SpawnItemDrop(data, item, nothrow)
 	if type(item) == "string" then
 		item = xSlinger.new(item)
 	end
@@ -70,10 +89,15 @@ function xSlinger.SpawnItemDrop(data, item)
 	
 	if data.angle ~= nil then
 		dropmobj.angle = data.angle
-		P_Thrust(dropmobj, dropmobj.angle, 5*FU)
+		
+		if not nothrow then
+			P_Thrust(dropmobj, dropmobj.angle, 5*FU)
+		end
 	end
 	
-	P_SetObjectMomZ(dropmobj, 4*FU, true)
+	if not nothrow then
+		P_SetObjectMomZ(dropmobj, 4*FU, true)
+	end
 	
 	-- Spawn interaction
 	local i_obj = P_SpawnMobj(data.x, data.y, data.z, MT_XS_INTERACTION) -- interaction object
@@ -192,6 +216,13 @@ addHook("MobjThinker", function(drop)
 		f.alpha = alpha / 2
 	--
 end, MT_XS_DROPPEDITEM)
+
+addHook("MapThingSpawn", function(mobj, mapthing)
+	if not (mobj and mobj.valid) then
+		return end;
+	
+	xSlinger.SpawnItemDrop(mobj, mapthing.stringargs[0] or -1, true)
+end, MT_XS_DROPPEDITEM_SPAWN)
 
 COM_AddCommand("drop", function(player, item)
 	if not (player.mo and player.mo.valid) then
