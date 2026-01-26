@@ -23,10 +23,4 @@ xSlinger.registerItem("epix", {
 	sounds = {
 		use = sfx_epix33;
 	};
-
-	count = 50;
-	
-	usefunc = function(self, mobj)
-		mobj:ChangeHealth(100)
-	end;
 })

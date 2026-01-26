@@ -23,10 +23,4 @@ xSlinger.registerItem("saxa", {
 	sounds = {
 		use = {sfx_poyox1, sfx_poyox2, sfx_poyox3};
 	};
-
-	count = 50;
-	
-	usefunc = function(self, mobj)
-		mobj:ChangeHealth(100)
-	end;
 })
