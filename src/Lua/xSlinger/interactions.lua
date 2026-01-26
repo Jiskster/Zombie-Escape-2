@@ -114,6 +114,7 @@ addHook("PlayerThink", function(player)
 				and (i_obj.target and i_obj.target.valid and i_obj.target.iteminfo) then
 					local iteminfo = i_obj.target.iteminfo
 					local itemid = iteminfo:getIndex("id")
+					
 					P_RemoveMobj(i_obj.target)
 					P_RemoveMobj(i_obj)
 					
