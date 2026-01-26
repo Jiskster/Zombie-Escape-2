@@ -233,3 +233,12 @@ COM_AddCommand("spawnitemdrop", function(player, item)
 		
 	xSlinger.SpawnItemDrop(player.mo, item)
 end, COM_ADMIN)
+
+COM_AddCommand("drophand", function(player)
+	local xS = player.xSlinger
+	
+	if not (player.mo and player.mo.valid) then
+		return end;
+		
+	xS:hand_drop()
+end)

@@ -98,7 +98,16 @@ local funcs = {
 		inv[slotnum] = xSlinger.new("")
 	end;
 	["hand_drop"] = function(self)
-	
+		local obj = getLambdaObject(self)
+		local xS = obj.xSlinger
+		local slotnum = xS.slot
+		local inv = xS:inv_get()
+		local mo = xS.mo
+		
+		if inv[slotnum].id ~= "" then
+			xSlinger.SpawnItemDrop(mo, inv[slotnum])
+			xS:slot_clear(slotnum)
+		end
 	end;
 	["slot_clear"] = function(self, slotnum, target_inv)
 		local obj = getLambdaObject(self)
@@ -122,7 +131,15 @@ local funcs = {
 		inv[slotnum] = xSlinger.new(item_name)
 	end;
 	["slot_drop"] = function(self, slotnum, target_inv)
-	
+		local obj = getLambdaObject(self)
+		local xS = obj.xSlinger
+		local inv = xS:inv_get(target_inv)
+		local mo = xS.mo
+		
+		if inv[slotnum].id ~= "" then
+			xSlinger.SpawnItemDrop(mo, inv[slotnum])
+			xS:slot_clear(slotnum, targetinv)
+		end
 	end;
 	
 	-- other

@@ -114,12 +114,18 @@ addHook("PlayerThink", function(player)
 				and (i_obj.target and i_obj.target.valid and i_obj.target.iteminfo) then
 					local iteminfo = i_obj.target.iteminfo
 					local itemid = iteminfo:getIndex("id")
+					local itemcount = iteminfo:getIndex("count")
+					
+					-- If ammo based item, then dont give item count
+					if itemcount == -1 then
+						itemcount = nil
+					end
 					
 					P_RemoveMobj(i_obj.target)
 					P_RemoveMobj(i_obj)
 					
 					if type(itemid) == "string" then
-						xS:give_item(itemid, nil, nil, iteminfo)
+						xS:give_item(itemid, itemcount, nil, iteminfo)
 					end
 					
 					xS.interaction_delay = 12	
