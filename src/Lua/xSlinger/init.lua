@@ -26,6 +26,8 @@ function xSlinger.initPlayerSpawn(player)
 	local xS = player.xSlinger
 	xS.team = 1
 	
+	xS.reload = 0
+	
 	xS:inv_add("main", 5)
 end
 

@@ -48,6 +48,11 @@ function xSlinger.DoThinker(mobj)
 		return false, "Missing inventory"
 	end
 	
+	-- Reset reload on first frame
+	if not leveltime then
+		xS.reload = 0
+	end
+	
 	local item_sound
 	local reload_sound
 	if hand.sounds then -- Set sounds
