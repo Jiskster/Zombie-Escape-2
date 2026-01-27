@@ -72,7 +72,7 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 					ZE2.PlayZombieSound(player, true)
 				end
 				
-				player.ze2.karma = min($ + (ZE2.SurvivorCount()*17), ZE2.MaxKarma)
+				player.ze2.karma = min($ + (ZE2.SurvivorCount()*22), ZE2.MaxKarma)
 				killer.player.ze2.karma = max(1, $ - 22)
 			
 				killer.player.ze2.cash = $ + cash_award
