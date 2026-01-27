@@ -32,13 +32,14 @@ states[S_ZEMO_BUBBLE] = {
 
 ZE2.Emotes = {}
 
-function ZE2:AddEmote(emote_spr, name, desc, sound)
+function ZE2:AddEmote(emote_spr, name, desc, sound, team)
 	local id = #self.Emotes + 1
 	self.Emotes[id] = {
 		["Sprite"] = emote_spr,
 		["Name"] = name,
 		["Description"] = desc,
 		["Sound"] = sound or 100,
+		["Team"] = team or 0,
 	}
 	
 	print("Added ZE2 Emote: " + self.Emotes[#self.Emotes].Name +" ("+#self.Emotes+")" )
@@ -74,8 +75,8 @@ ZE2:AddEmote(SPR_ZT0F, "dumbass", "scoutdumbass", sfx_dumba)
 ZE2:AddEmote(SPR_ZT10, "nerd emoji", "ackktually!", sfx_actu)
 ZE2:AddEmote(SPR_ZT11, "who invited this kid", "oh my god who invited this kid!", sfx_whoinv)
 ZE2:AddEmote(SPR_ZT12, "bruh", "BRUH", sfx_bruh)
-ZE2:AddEmote(SPR_ZT13, "The zombies will be back", "source: trust me", sfx_inf1)
-ZE2:AddEmote(SPR_ZT13, "You have been enslaved by the zombies", "1865", sfx_inf2)
+ZE2:AddEmote(SPR_ZT13, "The zombies will be back", "source: trust me", sfx_inf1, 2)
+ZE2:AddEmote(SPR_ZT13, "You have been enslaved by the zombies", "1865", sfx_inf2, 2)
 ZE2:AddEmote(SPR_ZT14, "Umm what the sigma", "siggmaa", sfx_wtsig2)
 ZE2:AddEmote(SPR_ZT15, "Mister Jisk", "mrjisk", sfx_mrjisk)
 ZE2:AddEmote(SPR_ZT16, "GO GO GO!", "Counter Strike 1.6 radio command", sfx_csgogo)
@@ -91,6 +92,13 @@ COM_AddCommand("z_emote", function(player, emotenum)
 		if not ZE2.Emotes[emotenum_tonum] then
 			CONS_Printf(player, "Invalid Emote: ("+emotenum_tonum+")")
 			return
+		end
+		
+		if ZE2.Emotes[emotenum_tonum].Team then
+			if player.mo.team ~= ZE2.Emotes[emotenum_tonum].Team then
+				CONS_Printf(player, "Emote "..emotenum_tonum.." is locked to Team "..ZE2.Emotes[emotenum_tonum].Team)
+				return
+			end
 		end
 		
 		if not(player.emotebubble) and not player.lastemotepress then
