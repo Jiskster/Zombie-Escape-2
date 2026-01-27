@@ -108,7 +108,7 @@ xSlinger.registered_items[-1] = {
 		drop = sfx_None;
 	};
 	
-	droppable = false;
+	droppable = true;
 	
 	drop_on_death = true;
 }
@@ -125,6 +125,8 @@ xSlinger.registered_items[""] = {
 	sounds = {
 		use = sfx_None;
 	};
+	
+	droppable = false;
 	
 	drop_on_death = false;
 }

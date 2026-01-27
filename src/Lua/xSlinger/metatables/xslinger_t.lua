@@ -97,17 +97,14 @@ local funcs = {
 		
 		inv[slotnum] = xSlinger.new("")
 	end;
-	["hand_drop"] = function(self)
+	["hand_drop"] = function(self, force)
 		local obj = getLambdaObject(self)
 		local xS = obj.xSlinger
 		local slotnum = xS.slot
 		local inv = xS:inv_get()
 		local mo = xS.mo
 		
-		if inv[slotnum].id ~= "" then
-			xSlinger.SpawnItemDrop(mo, inv[slotnum])
-			xS:slot_clear(slotnum)
-		end
+		xS:slot_drop(slotnum, force)
 	end;
 	["slot_clear"] = function(self, slotnum, target_inv)
 		local obj = getLambdaObject(self)
@@ -130,15 +127,24 @@ local funcs = {
 		
 		inv[slotnum] = xSlinger.new(item_name)
 	end;
-	["slot_drop"] = function(self, slotnum, target_inv)
+	["slot_drop"] = function(self, slotnum, force, target_inv) 
 		local obj = getLambdaObject(self)
 		local xS = obj.xSlinger
 		local inv = xS:inv_get(target_inv)
 		local mo = xS.mo
+		local iteminfo = inv[slotnum]
 		
-		if inv[slotnum].id ~= "" then
-			xSlinger.SpawnItemDrop(mo, inv[slotnum])
-			xS:slot_clear(slotnum, targetinv)
+		-- force = 1: If not droppable, then dissapear.
+		-- force = 2: Drop even if not droppable.
+		
+		if iteminfo.id ~= "" then
+			if iteminfo:getIndex("droppable", mo.skin) 
+			or force == 2 then
+				xSlinger.SpawnItemDrop(mo, iteminfo)
+				xS:slot_clear(slotnum, targetinv)
+			elseif force == 1 then
+				xS:slot_clear(slotnum, targetinv)
+			end
 		end
 	end;
 	
@@ -228,7 +234,8 @@ local funcs = {
 			
 			if ispickup and hand.id ~= ""
 			and itemref.id ~= hand.id 
-			and not empty_slot_num then -- Swap if theres no space
+			and not empty_slot_num 
+			and hand:getIndex("droppable", mo.skin) then -- Swap if theres no space
 				-- Drop hand
 				xSlinger.SpawnItemDrop(mo, hand, false)
 				xS:hand_clear()
@@ -269,14 +276,15 @@ local funcs = {
 				
 				return inv[empty_slot_num]
 			else
-				if ispickup and hand.id ~= "" then
+				if ispickup and hand.id ~= "" 
+				and hand:getIndex("droppable", mo.skin) then -- Swap
 					-- Drop hand
 					xSlinger.SpawnItemDrop(mo, hand, false)
 					xS:hand_clear()
 					
 					-- Set new item in held slot
 					inv[xS.slot] = set_item
-				else
+				else -- Spit item back out
 					xSlinger.SpawnItemDrop(mo, set_item, false)
 				end
 				

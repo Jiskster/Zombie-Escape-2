@@ -97,4 +97,6 @@ xSlinger.registerItem("insta_burst", {
 		instaburst.iteminfo = self
 		instaburst.ib_hitlist = {}
 	end;
+	
+	droppable = false;
 })
