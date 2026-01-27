@@ -18,7 +18,7 @@ return function()
 			-- local rejected_maps = {}
 			
 			for i=1,1035 do
-				if mapheaderinfo[i] and (mapheaderinfo[i].typeoflevel & TOL_ZE2) 
+				if mapheaderinfo[i] and (mapheaderinfo[i].typeoflevel & TOL_ESCAPE) 
 				and not mapheaderinfo[i].ze2_hidden and i ~= gamemap and not ZE2.PreviousMaps[i] then
 					table.insert(temp_maplist,i)
 				end
