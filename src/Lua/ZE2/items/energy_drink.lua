@@ -44,8 +44,8 @@ xSlinger.registerItem("energy_drink", {
 		use = sfx_rblxdr;
 	};
 
-	count = 3;
-	maxcount = 15;
+	count = 1;
+	maxcount = 4;
 
 	usefunc = function(self, mobj)
 		mobj:give_effect("energy_drink", {
