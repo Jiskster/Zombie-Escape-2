@@ -81,6 +81,7 @@ function A_RubyDrop(actor, var1)
 		local the_ruby = P_SpawnMobjFromMobj(actor,0,0,10*FU,MT_CRRUBY)
 		the_ruby.scale = FRACUNIT
 		the_ruby.fuse = 16*TICRATE
+		the_ruby.landvolume = min(512/rubyamount, 200)
 		P_SetObjectMomZ(the_ruby, P_RandomRange(7,10)*FU)
 
 		if rubyamount > 1 then
@@ -260,7 +261,8 @@ addHook("MobjThinker", function(mobj)
 		if mobj.momz < FRACUNIT then
 			mobj.momz = 0
 		else
-			S_StartSound(mobj, sfx_tink)
+			S_StartSoundAtVolume(mobj, sfx_tink, mobj.landvolume or 200)
+			mobj.landvolume = min($ + 30, 200)
 		end
 	end
 	mobj.lastmomz = mobj.momz
