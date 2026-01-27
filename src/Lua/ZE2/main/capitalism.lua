@@ -235,11 +235,24 @@ addHook("MobjDeath", function(mobj)
 	mobj.momx = 0
 	mobj.momy = 0
 	mobj.momz = 0
+	mobj.alpha = 0
+	
+	if mobj and mobj.valid then
+		local iv = P_SpawnMobj(mobj.x, mobj.y, mobj.z, MT_IVSP)
+		iv.fuse = 15
+		iv.angle = P_RandomRange(1,360)*ANG1
+		iv.flags = $ & ~(MF_NOGRAVITY)
+		P_SetObjectMomZ(iv, P_RandomRange(2,7)*FU, true)
+		P_Thrust(iv, iv.angle, P_RandomRange(4,25)*FU)
+		
+		iv.color = SKINCOLOR_RUBY
+		iv.colorized = true
+	end
 end, MT_CRRUBY)
 
 addHook("MobjThinker", function(mobj)
 	if mobj.sprite == SPR_SPRK then
-		mobj.color = SKINCOLOR_RED
+		mobj.color = SKINCOLOR_RUBY
 		mobj.colorized = true
 	end
 	
@@ -482,3 +495,10 @@ addHook("MobjThinker",function(door)
 		end
 	end
 end,MT_RUBY_BOX)
+
+addHook("MobjThinker", function(mobj)
+	if mobj.fuse then
+		mobj.alpha = FU - FixedDiv(FU, mobj.fuse*FU)
+		P_SetObjectMomZ(mobj, (-1*FU)/2, true)
+	end
+end, MT_IVSP)
