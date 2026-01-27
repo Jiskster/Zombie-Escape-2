@@ -16,8 +16,8 @@ xSlinger.registerItem("blue_spring", {
 	
 	firerate = 4*TICRATE;
 
-	count = 10;
-	maxcount = 50;
+	count = 1;
+	maxcount = 2;
 	
 	color = SKINCOLOR_BLUE;
 	

@@ -24,8 +24,8 @@ xSlinger.registerItem("apple", {
 		use = sfx_eatapl;
 	};
 
-	count = 5;
-	maxcount = 100;
+	count = 1;
+	maxcount = 16;
 	
 	usefunc = function(self, mobj)
 		mobj:ChangeHealth(20)
