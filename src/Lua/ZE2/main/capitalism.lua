@@ -67,7 +67,7 @@ end
 
 ZE2.currencydelay = CV_RegisterVar({
 	name = "z_currencydelay",
-	defaultvalue = "0",
+	defaultvalue = "1",
 	PossibleValue = {MIN = 0, MAX = 12},
 	flags = CV_NETVAR,
 })
