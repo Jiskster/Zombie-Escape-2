@@ -22,6 +22,9 @@ mobjinfo[MT_ZE2CHECKPOINT] = {
 	//$Arg3Enum {1="Indiscriminate Checkpoints"; 2="Disable Catchup"; 4="Disable Auto Trigger";}
 	//$Arg3Flags {1="Indiscriminate Checkpoints"; 2="Disable Catchup"; 4="Disable Auto Trigger";}
 	
+	//$Arg4 Zombie Catchup Delay (Offset)
+	//$Arg4Default 0
+	
 	doomednum = 5600,
 	spawnstate = S_INVISIBLE,
 	seestate = S_INVISIBLE,
@@ -87,6 +90,7 @@ local function ActivateCheckpoint(mobj, checkpoint)
 		local checkpoint_flags = checkpoint.spawnpoint.args[1]
 		local checkpoint_catchup_delay = checkpoint.spawnpoint.args[2]
 		local checkpoint_extra_flags = checkpoint.spawnpoint.args[3]
+		local checkpoint_zombie_catchup_offset = checkpoint.spawnpoint.args[4]
 		local SURVIVORFLAG, ZOMBIEFLAG = 1<<0, 1<<1
 		
 		-- Indiscriminate Checkpoints (Triggering causes all teams to start the catch up routine)
@@ -157,7 +161,7 @@ local function ActivateCheckpoint(mobj, checkpoint)
 									continue
 								end
 								
-								tplayer.ze2.checkpoint_catchuptics = checkpoint_catchup_delay*TICRATE
+								tplayer.ze2.checkpoint_catchuptics = max(0, checkpoint_catchup_delay*TICRATE + checkpoint_zombie_catchup_offset*TICRATE)
 							end
 						end
 					end
