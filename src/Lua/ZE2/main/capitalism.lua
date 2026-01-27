@@ -209,11 +209,7 @@ end)
 
 addHook("TouchSpecial", function(special, toucher)
 	if toucher and toucher.valid and toucher.player then
-		local team = toucher.player.xSlinger.team 
-		
-		if team == 2 then
-			return true
-		end
+		local team = toucher.player.xSlinger.team
 		
 		if toucher.player.ze2.cash + 1 > toucher.player.ze2.cash_limit then
 			return true
