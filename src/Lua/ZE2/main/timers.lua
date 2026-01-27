@@ -65,6 +65,10 @@ function ZE2:StartWin(team, fromring)
 				local pv = player.ze2
 				
 				if player.xSlinger.team ~= team then
+					if team == 2 then
+						player.ze2.karma = min($ + 200, ZE2.MaxKarma)
+					end
+					
 					P_KillMobj(mobj)
 				end
 				
