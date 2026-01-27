@@ -6,7 +6,7 @@ end
 
 freeslot("sfx_telepo")
 --ohg my ears burn
-sfxinfo[sfx_telepo].flags = SF_TOTALLYSINGLE
+sfxinfo[sfx_telepo].flags = SF_X2AWAYSOUND
 
 mobjinfo[MT_ZE2_TELEGFX] = {
 	doomednum = -1,

@@ -55,7 +55,6 @@ function ZE2.LatestCheckpointTeleport(player, setcheckpoint)
 		
 		P_SetOrigin(player.mo, info.x*FU, info.y*FU, info.z*FU)
 		P_SpawnMobj(player.mo.x, player.mo.y, player.mo.z, MT_ZE2_TELEGFX)
-		S_StartSound(player.mo, sfx_telepo) -- make sure it plays the sound
 		player.mo.angle = FixedAngle(info.angle*FRACUNIT)
 		
 		player.mo.flags2 = $ & ~MF2_TWOD -- get out
