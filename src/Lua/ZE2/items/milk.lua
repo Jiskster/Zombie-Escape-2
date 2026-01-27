@@ -23,8 +23,8 @@ xSlinger.registerItem("milk", {
 		use = sfx_gulpy;
 	};
 	
-	count = 5;
-	maxcount = 25;
+	count = 1;
+	maxcount = 10;
 	
 	color = SKINCOLOR_WHITE;
 	
