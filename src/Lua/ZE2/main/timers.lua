@@ -90,12 +90,37 @@ function ZE2:StartWin(team, fromring)
 		if player.spectator then continue end
 		if player.xSlinger.team ~= team then continue end
 		
+		player.ze2.karma = max(1, $ / 2)
+		
 		ZE2:GivePlayerCash(player, cash_award)
 		S_StartSound(player.mo, sfx_rbyhit)
 		CONS_Printf(player, "\x83 + Awarded "..cash_award.." cash awarded for winning!")
 	end
 	
 	P_StartQuake(24*FRACUNIT, 3*TICRATE)
+end
+
+local function getNewZombie(wtable)
+	local total = 0
+	local found = false
+	
+	for i,tb in ipairs(wtable) do
+		total = $ + tb.weight 
+	end
+	
+	local rng = P_RandomRange(0, total)
+	
+	-- While loop just in case.
+	while not found do
+		for i,tb in ipairs(wtable) do
+			if rng < tb.weight then
+				found = true
+				return tb.player
+			end
+			
+			rng = $ - tb.weight
+		end
+	end
 end
 
 addHook("ThinkFrame", function()
@@ -120,10 +145,10 @@ addHook("ThinkFrame", function()
 		
 		ZE2.round_active = true
 		S_StartSound(nil, sfx_rstart)
-		local choosingnums = {}
 		local playercount = ZE2.PlayerCount()
 		local denominator = FixedDiv(33*FU,10*FU) -- 3.3
 		local amountchoosing = FixedDiv(playercount*FU, denominator) -- lmao
+		local pickingtable = {}
 		
 		amountchoosing = FixedCeil($)/FU
 		
@@ -136,40 +161,37 @@ addHook("ThinkFrame", function()
 				ZE2.switchCharacter(player,selection_name,true) 
 			end
 			
-			-- Check if we have 4 or less players, and if we do, always let them be a zombie.
-			-- We do this so 2 players won't always be paired together.
-			if (not player.ze2.was_zombie) or (playercount <= 4) then
-				table.insert(choosingnums, #player)
-			end
+			-- Put player in zombie picking list.
+			table.insert(pickingtable, {
+				player = player;
+				weight = player.ze2.karma;
+			})
 		end
 
-		-- At this point, every player's playernum is sorted in choosingnums
-		-- except for the players that were zombies last game.
-		if playercount > 1 then
-			for _I_=1,amountchoosing do
-				local playernumindex = P_RandomRange(1,#choosingnums)
-				local playernum = choosingnums[playernumindex]
-				local player = players[playernum]
+		if playercount > 1 and #pickingtable then
+			for i=1,amountchoosing do
+				local player = getNewZombie(pickingtable)
+				
+				for n=1,#pickingtable do
+					if pickingtable[n] 
+					and pickingtable[n].player == player then
+						table.remove(pickingtable, n)
+					end
+				end
 				
 				ZE2.ZombifyPlayer(player)
 				ZE2.PlayZombieSound(player, true)
+				
+				player.ze2.karma = max(1, $ / 2)
 				
 				if ZE2.choosenotice.value then
 					print(string.format("\x83\%s\x83\ has risen from the dead!",player.name))
 				end
 				
 				player.xSlinger.team = 2
-				player.ze2.was_zombie = true
-				table.remove(choosingnums,playernumindex)
 			end
 		end
 
-		for player in players.iterate do
-			if player.ze2.was_zombie and player.xSlinger.team == 1 then
-				player.ze2.was_zombie = false
-			end
-		end
-		
 		if mapheaderinfo[gamemap].ze2_zombiereleasetime then
 			local input = tonumber(mapheaderinfo[gamemap].ze2_zombiereleasetime)
 			
@@ -181,8 +203,6 @@ addHook("ThinkFrame", function()
 		else
 			ZE2.zombie_releasetime = 10*TICRATE
 		end
-		
-		choosingnums = nil -- release memory idk wtf
 	end
 	
 	if ZE2.time_limit and ZE2.game_time >= ZE2.time_limit and not (ZE2.game_ended) then

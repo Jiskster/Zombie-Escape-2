@@ -30,17 +30,20 @@ sfxinfo[sfx_maxhp].caption="Max HP increased"
 
 ZE2.HitMegaHP = function(special, toucher)
 	if toucher and toucher.valid and toucher.player and toucher.player.xSlinger.team then
+		local player = toucher.player
+		
 		toucher.health = toucher.maxhealth
 		
 		if toucher.team == 1 then
 			xSlinger.GiveShieldToMobj(toucher, 1)
 		elseif toucher.team == 2 then
-			local player = toucher.player
 			local xS = player.xSlinger
 			
 			player.ze2.zombie_type = "alpha"
 			ZE2.ResetPlayer(player, 2, true)
 		end
+		
+		player.ze2.karma = max(1, $ / 2)
 		
 		ZE2:GivePlayerCash(toucher.player, cash_given)
 		CONS_Printf(toucher.player,"\x83+ $"..cash_given.." cash bonus!")

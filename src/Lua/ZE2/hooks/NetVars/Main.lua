@@ -35,6 +35,8 @@ return function(net)
 	
 	ZE2.PreviousMaps = net($);
 	
+	ZE2.MaxKarma = net($);
+	
 	KB.list = net($);
 	
 	for i,v in ipairs(ZE2.MapTimers) do

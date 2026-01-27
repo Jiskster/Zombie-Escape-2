@@ -23,6 +23,8 @@ return {
 	injoinqueue_delay = 0,
 	outofgame = false,
 	respawntics = 0,
+	
+	karma = 1,
 
 	was_spectating = false,
 	was_zombie = false,
