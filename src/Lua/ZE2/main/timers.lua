@@ -90,7 +90,9 @@ function ZE2:StartWin(team, fromring)
 		if player.spectator then continue end
 		if player.xSlinger.team ~= team then continue end
 		
-		player.ze2.karma = max(1, $ / 2)
+		if team == 1 then
+			player.ze2.karma = max(1, $ / 2)
+		end
 		
 		ZE2:GivePlayerCash(player, cash_award)
 		S_StartSound(player.mo, sfx_rbyhit)
