@@ -134,7 +134,7 @@ addHook("HUD", function(v, player)
 			v.drawScaled(
 				reload_square.x,
 				reload_square.y,
-				reload_square.scale,
+				max(0, reload_square.scale),
 				reload_square.patch,
 				reload_square.flags|V_50TRANS,
 				v.getColormap(nil, SKINCOLOR_WHITE)
@@ -152,7 +152,7 @@ addHook("HUD", function(v, player)
 			v.drawScaled(
 				firerate_square.x,
 				firerate_square.y,
-				firerate_square.scale,
+				max(0, firerate_square.scale),
 				firerate_square.patch,
 				firerate_square.flags|V_50TRANS,
 				v.getColormap(nil, SKINCOLOR_YELLOW)
