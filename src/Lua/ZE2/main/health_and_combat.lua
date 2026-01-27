@@ -73,6 +73,7 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 				end
 				
 				player.ze2.karma = min($ + (ZE2.SurvivorCount()*17), ZE2.MaxKarma)
+				killer.player.ze2.karma = max(1, $ - 22)
 			
 				killer.player.ze2.cash = $ + cash_award
 				S_StartSound(killer.player.mo, sfx_rbyhit)
@@ -92,6 +93,8 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 				if player_count < 8 then
 					chance = FU/4
 				end
+				
+				killer.player.ze2.karma = max(1, $ - 120)
 				
 				if P_RandomChance(chance) and killer then
 					player.ze2.zombie_next_type = "alpha"
