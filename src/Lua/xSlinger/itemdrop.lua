@@ -105,7 +105,7 @@ function xSlinger.SpawnItemDrop(data, item, nothrow)
 	i_obj.interaction = {
 		text = "Dropped Item";
 		type = "item";
-		holdtime = TICRATE/2;
+		holdtime = TICRATE/4;
 	}
 	i_obj.state = S_INVISIBLE
 end
