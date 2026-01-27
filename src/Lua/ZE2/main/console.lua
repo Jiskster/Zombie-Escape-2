@@ -84,3 +84,9 @@ COM_AddCommand("z_changeztype", function(player, new_ztype)
 		CONS_Printf(player,"Invalid ztype. "..'"'..new_ztype..'"')
 	end
 end, COM_ADMIN)
+
+COM_AddCommand("z_listkarma", function(player)
+	for p in players.iterate do
+		CONS_Printf(player, p.name.." ["..#p.."]: "..p.ze2.karma)
+	end
+end, COM_LOCAL)
