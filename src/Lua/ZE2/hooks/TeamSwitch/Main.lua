@@ -37,6 +37,14 @@ return function(player, team, fromspectators, autobalance, scramble)
 
 	-- NEVER have pregamemenu_active on as spectator
 	if team == 0 then
+		if ZE2.round_active and not ZE2_game_ended then
+			if player.xSlinger.team == 1 then
+				player.ze2.karma = min($ + 70, ZE2.MaxKarma)
+			elseif player.xSlinger.team == 2 then
+				player.ze2.karma = min($ + 120, ZE2.MaxKarma)
+			end
+		end
+		
 		player.ze2.injoinqueue = false
 		player.ze2.pregamemenu_active = false
 	end
