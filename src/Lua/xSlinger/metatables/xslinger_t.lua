@@ -195,6 +195,10 @@ local funcs = {
 			-- fill existing slots
 			for i,slot in ipairs(inv) do
 				if (slot.id == itemref.id) and (slot.id ~= "") then
+					if slot.count == slot.maxcount then
+						continue
+					end
+					
 					local slotcountleft = slot.maxcount - slot.count
 					
 					if remainder <= slotcountleft then
@@ -241,6 +245,7 @@ local funcs = {
 				xS:hand_clear()
 				
 				-- Set new item in held slot
+				set_item.count = remainder
 				inv[xS.slot] = set_item
 			else
 				local remainder2 = remainder
