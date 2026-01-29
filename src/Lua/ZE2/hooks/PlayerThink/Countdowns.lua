@@ -10,11 +10,6 @@ return function(player)
 		player.ze2.special_cooldown = $ - 1
 	end
 
-	-- Make zombies slow after hit
-	if player.ze2.zombie_slowtics then
-		player.ze2.zombie_slowtics = max(0, $ - 1)
-	end
-
 	-- When this hits zero, catch up to your teammates!
 	if player.ze2.checkpoint_catchuptics then
 		player.ze2.checkpoint_catchuptics = $ - 1

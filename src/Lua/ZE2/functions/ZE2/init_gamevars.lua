@@ -97,9 +97,6 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 	for player in players.iterate do
 		if player.ze2 then
 			player.ze2.ghostmode = false
-			player.ze2.pregamemenu_selection = 1
-			player.ze2.vote_selection = 1
-			player.ze2.voted = false
 			player.ze2.checkpoint_number = 0
 			if player.ze2.outofgame or player.ze2.injoinqueue then
 				player.spectator = false

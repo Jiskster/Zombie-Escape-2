@@ -22,7 +22,7 @@ return function(player)
 	end
 
 	-- Hide player when in pregame menu
-	if not ZE2.round_active and pv.pregamemenu_active then
+	if not ZE2.round_active then
 		if player.mo and player.mo.valid then
 			player.mo.flags2 = $|MF2_DONTDRAW
 		end

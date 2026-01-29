@@ -17,7 +17,7 @@ end
 
 return function(player)
 	--source movement?
-	if ZE2.sourcemovement.value and FixedHypot(player.cmd.forwardmove * 1311, player.cmd.sidemove * 1311) and not player.ze2.pregamemenu_active 
+	if ZE2.sourcemovement.value and FixedHypot(player.cmd.forwardmove * 1311, player.cmd.sidemove * 1311) 
 	and CanPlayerMove(player) then
 		local cmd = player.cmd
 		local pmo = player.mo

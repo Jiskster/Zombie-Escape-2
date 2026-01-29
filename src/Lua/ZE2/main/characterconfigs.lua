@@ -217,10 +217,6 @@ function ZE2.applyPlayerConfig(player)
 		else
 			player.thrustfactor = 4
 		end
-		
-		if ze2.zombie_slowtics then
-			player.thrustfactor = 1
-		end
 	end
 
 	if (config.charflags) then 

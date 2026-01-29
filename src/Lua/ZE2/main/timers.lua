@@ -13,14 +13,13 @@ local countdown_sfx = {
 }
 
 local function ForceEndAllCharacterSelection()
+	/*
 	for player in players.iterate do
 		if player.spectator then continue end
 		
-		if player.ze2.pregamemenu_active == true then -- get tf out of character select
-			local selection_name = ZE2.getSkinNames(player, true)[player.ze2.charselect_selection]
-			ZE2.switchCharacter(player,selection_name) 
-		end
+		-- TODO: disable pregame menus here
 	end
+	*/
 end
 
 local function CheckGameForWinRing()
@@ -162,10 +161,7 @@ addHook("ThinkFrame", function()
 		for player in players.iterate do
 			if player.spectator then continue end
 			
-			if player.ze2.pregamemenu_active == true then -- get tf out of character select
-				local selection_name = ZE2.getSkinNames(player, true)[player.ze2.charselect_selection]
-				ZE2.switchCharacter(player,selection_name,true) 
-			end
+			-- TODO: disable pregame menus here
 			
 			-- Put player in zombie picking list.
 			table.insert(pickingtable, {

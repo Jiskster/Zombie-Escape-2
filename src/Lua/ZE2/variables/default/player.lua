@@ -41,8 +41,6 @@ return {
 	special_cooldown = 0,
 	
 	zombie_next_type = nil,
-	
-	zombie_slowtics = 0,
 
 	damage_indicator_table = {},
 	/*	damage_indicator_table
