@@ -21,13 +21,6 @@ return function(player)
 		ZE2.ResetPlayer(player, 1, true) -- Change to survivor and reset inventory
 	end
 
-	-- Hide player when in pregame menu
-	if not ZE2.round_active then
-		if player.mo and player.mo.valid then
-			player.mo.flags2 = $|MF2_DONTDRAW
-		end
-	end
-	
 	if pv.injoinqueue and not player.spectator then
 		pv.injoinqueue = false
 	end
