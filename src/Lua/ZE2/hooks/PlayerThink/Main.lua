@@ -18,7 +18,7 @@ return function(player)
 		player.playerstate = PST_REBORN
 		G_DoReborn(#player)
 
-		ZE2.ResetPlayer(player, 1, true) -- Change to survivor and reset inventory
+		ZE2.ResetPlayer(player, 1, true, true) -- Change to survivor and reset inventory
 	end
 
 	if pv.injoinqueue and not player.spectator then

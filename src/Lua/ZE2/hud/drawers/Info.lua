@@ -519,4 +519,4 @@ local function wrapper(v,p)
 	eventtimers(v,p,me,ze)
 end
 
-return "GameInfo", wrapper
+return "GameInfo", wrapper, 0

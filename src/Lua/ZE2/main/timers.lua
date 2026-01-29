@@ -12,16 +12,6 @@ local countdown_sfx = {
 	[1] = sfx_cone,
 }
 
-local function ForceEndAllCharacterSelection()
-	/*
-	for player in players.iterate do
-		if player.spectator then continue end
-		
-		-- TODO: disable pregame menus here
-	end
-	*/
-end
-
 local function CheckGameForWinRing()
 	local haswinring = false
 	local winring_doomednum = mobjinfo[MT_CRRING].doomednum
@@ -35,7 +25,6 @@ local function CheckGameForWinRing()
 	
 	if not haswinring then
 		print("Mapnum " .. gamemap .. " doesn't have an exit. Forcing zombie win.")
-		ForceEndAllCharacterSelection()
 		ZE2:StartWin(2)
 		return false
 	end
@@ -155,19 +144,25 @@ addHook("ThinkFrame", function()
 		local amountchoosing = FixedDiv(playercount*FU, denominator) -- lmao
 		local pickingtable = {}
 		
-		amountchoosing = FixedCeil($)/FU
+		amountchoosing = FixedCeil($)/FU -- simpler than ze1's rng for sure.
 		
-		-- simpler than ze's rng for sure.
 		for player in players.iterate do
 			if player.spectator then continue end
-			
-			-- TODO: disable pregame menus here
 			
 			-- Put player in zombie picking list.
 			table.insert(pickingtable, {
 				player = player;
 				weight = player.ze2.karma;
 			})
+
+			if not player.ze2.selected_character 
+			and (player.mo and player.mo.valid) then
+				local skin = player.mo.skin
+				if not ZE2.blacklisted_characters[skin] 
+				and ZE2.SurvivorConfig[skin] then
+					player.ze2.selected_character = player.mo.skin
+				end
+			end
 		end
 
 		if playercount > 1 and #pickingtable then

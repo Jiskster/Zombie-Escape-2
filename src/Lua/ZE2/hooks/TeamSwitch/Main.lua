@@ -9,8 +9,6 @@ return function(player, team, fromspectators, autobalance, scramble)
 		player.ze2.was_spectating = true -- Disable special zombie types when unspectating
 
 		if ZE2.round_active and not ZE2_game_ended and player_count > 1 then
-			-- TODO: disable pregame menus here
-			
 			if player.ze2.outofgame then
 				if not player.ze2.injoinqueue_delay then -- using this variable because why not
 					chatprintf(player, "\x82* You are dead! Wait until the game is over!", true)
@@ -46,6 +44,5 @@ return function(player, team, fromspectators, autobalance, scramble)
 		end
 		
 		player.ze2.injoinqueue = false
-		-- TODO: disable pregame menus here(?)
 	end
 end

@@ -1,5 +1,3 @@
-local KB = ZE2.Knockback
-
 return function(net)
 	ZE2.time_limit = net($);
 	ZE2.wait_time = net($);
@@ -37,7 +35,7 @@ return function(net)
 	
 	ZE2.MaxKarma = net($);
 	
-	KB.list = net($);
+	ZE2.CharacterSlots = net($)
 	
 	for i,v in ipairs(ZE2.MapTimers) do
 		v.name = net($);

@@ -52,6 +52,8 @@ local function I_Main(sp)
 	ze2file "console.lua"
 	ze2file "health_and_combat.lua" -- main stuff 
 
+	ze2file "characterselect.lua"
+
 	ze2file "capitalism.lua"
 	ze2file "exiting.lua"
 	ze2file "timers.lua"

@@ -1,4 +1,4 @@
-ZE2.ResetPlayer = function(player, set_team, resetinventory)
+ZE2.ResetPlayer = function(player, set_team, resetinventory, noitems)
 	local ze2 = player.ze2
 	local xS = player.xSlinger
 
@@ -48,6 +48,6 @@ ZE2.ResetPlayer = function(player, set_team, resetinventory)
 	ZE2.resetPlayerHealth(player)
 
 	if resetinventory then
-		ZE2.setConfigInventory(player)
+		ZE2.setConfigInventory(player, noitems)
 	end
 end

@@ -19,6 +19,8 @@ return {
 	cash_limit = 25000,
 	currencydelay = 0,
 
+	selected_character = nil,
+
 	injoinqueue = false,
 	injoinqueue_delay = 0,
 	outofgame = false,

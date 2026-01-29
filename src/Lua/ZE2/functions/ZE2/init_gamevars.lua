@@ -21,6 +21,11 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 	
 	ZE2.NextMapVoted = nil;
 	
+	-- This is local
+	ZE2.charsel_selection = 1
+	ZE2.charsel_prevselection = 1
+	ZE2.pregame_menu = 1
+
 	xSlinger.visible_huds.health = false;
 
 	-- reset everyone
@@ -55,8 +60,6 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 				end
 			end
 			*/
-			
-			chatprint("\x84\* [ROUND " .. ZE2.getCurrentRound() .. "] *")
 		else
 			ZE2.rounds_left = tonumber(mapheaderinfo[map].ze2_rounds) or 3
 			
@@ -67,6 +70,15 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 					ZE2.PreviousMaps[i] = nil
 				end
 			end
+
+			ZE2.CharacterSlots = {}
+
+			for i,v in ipairs(ZE2.registered_skins) do
+				ZE2.CharacterSlots[i] = {
+					name = v;
+					limit = 1;
+				}
+			end
 			
 			ZE2.PreviousMaps[map] = {
 				mapnum = map;
@@ -75,13 +87,14 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 			
 			-- reset everyone
 			for player in players.iterate do
-				ZE2.ResetPlayer(player, 1, true)
+				player.ze2.selected_character = nil
+				ZE2.ResetPlayer(player, 1, true, true)
 			end
-			
-			chatprint("\x84\* [ROUND " .. ZE2.getCurrentRound() .. "] *")
 			
 			ZE2.queuing_round = false
 		end
+
+		chatprint("\x84\* [ROUND " .. ZE2.getCurrentRound() .. "] *")
 		
 		if mapheaderinfo[map].ze2_timelimit then
 			local input = tonumber(mapheaderinfo[map].ze2_timelimit)
@@ -102,7 +115,7 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 				player.spectator = false
 				player.playerstate = PST_REBORN
 				G_DoReborn(#player)
-				ZE2.ResetPlayer(player, 1, true) -- Change to survivor and reset inventory
+				ZE2.ResetPlayer(player, 1, true, true) -- Change to survivor and reset inventory
 			end
 			player.ze2.injoinqueue = false
 			player.ze2.outofgame = false

@@ -28,6 +28,8 @@ end
 
 SetupHud "HudToggle"
 
+SetupHud "CharacterSelect"
+
 SetupHud "PreGame"
 SetupHud "DamageFade"
 SetupHud "Info"
