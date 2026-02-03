@@ -164,13 +164,18 @@ xSlinger.registerItem("scatter_ring", {
 				shot.momz = $ + mo.momz / 3
 			end
 		end
-		if not P_IsObjectOnGround(mo)
+		
+		do -- Player push back
 			local aim = max(-FRACUNIT, min(FRACUNIT, -player.aiming/13000))
-			if P_MobjFlip(mo) * aim > 0
-				aim = ($ * 2)>>3
+			if P_MobjFlip(mo) * aim > 0 then
+				aim = ($ * 8)
 			end
 			mo.momz = $ + FixedMul(mo.scale, aim)
 			P_Thrust(mo, mo.angle, -FRACUNIT*9)
+			
+			if player and player.valid then
+				P_MovePlayer(player)
+			end
 		end
 	end
 })
