@@ -48,6 +48,6 @@ ZE2.ResetPlayer = function(player, set_team, resetinventory, noitems)
 	ZE2.resetPlayerHealth(player)
 
 	if resetinventory then
-		ZE2.setConfigInventory(player, noitems)
+		ZE2.setConfigInventory(player, false, noitems)
 	end
 end

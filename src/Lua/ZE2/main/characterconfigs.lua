@@ -279,7 +279,7 @@ ZE2.SetZCinventory = function(player)
 end
 
 -- WARNING: This clears the inventory.
-function ZE2.setConfigInventory(player, noitems)
+function ZE2.setConfigInventory(player, newskin, noitems)
 	local xS = player.xSlinger
 	local sc = ZE2.SurvivorConfig
 	local zc = ZE2.ZombieConfig
@@ -288,20 +288,20 @@ function ZE2.setConfigInventory(player, noitems)
 	local team = xS.team
 	
 	if mo and mo.valid then
-		local skin = mo.skin
+		local skin = newskin or mo.skin
 		
-		if team == 1 and sc[skin] and sc[skin].items then
+		if team == 1 and sc[skin] then
 			xS:inv_add("survivor", 5)
 		
-			if not noitems then
+			if (not noitems) and (sc[skin].items) then
 				for i,item in ipairs(sc[skin].items) do
 					xS:give_item(item, nil, nil, nil, false, "survivor") -- being strict with the inventory
 				end
 			end
-		elseif team == 2 and zc[ztype] and zc[ztype].items then
+		elseif team == 2 and zc[ztype] then
 			xS:inv_add("zombie", 3)
 			
-			if not noitems then
+			if (not noitems) and (sc[skin].items) then
 				for i,item in ipairs(zc[ztype].items) do
 					xS:give_item(item, nil, nil, nil, false, "zombie")
 				end

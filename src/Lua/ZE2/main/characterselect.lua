@@ -175,8 +175,9 @@ COM_AddCommand("_z_choosecharacter", function(player, skinname)
 			
 		chslot.count = $ + 1 -- take character slot
 		ZE2.switchCharacter(player, skinname)
-		ZE2.setConfigInventory(player)
 		player.ze2.selected_character = skinname
+		ZE2.setConfigInventory(player, skinname)
+		
 		S_StartSound(nil, sfx_s3k63, player)
 	else
 		S_StartSound(nil, sfx_lose, player)
