@@ -64,7 +64,7 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 		end
 		
 		if team == 1 then
-			if killer then
+			if killer and killer.valid then
 				if ZE2.instantinfection.value then
 					killing = false
 					
@@ -94,10 +94,12 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 					chance = FU/4
 				end
 				
-				killer.player.ze2.karma = max(1, $ - 120)
+				if killer and killer.valid then
+					killer.player.ze2.karma = max(1, $ - 120)
 				
-				if P_RandomChance(chance) and killer then
-					player.ze2.zombie_next_type = "alpha"
+					if P_RandomChance(chance) then
+						player.ze2.zombie_next_type = "alpha"
+					end
 				end
 			end
 		end
