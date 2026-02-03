@@ -8,7 +8,7 @@ local hook_names = {
 		"LatestCheckpoint";
 	};
 	TeamSwitch = {"Main"};
-	PreThinkFrame = {"Sprint"};
+	PreThinkFrame = {"Movement"};
 	ThinkFrame = {"WinHandler", "Intermission"};
 	PlayerThink = {
 		"Main";
