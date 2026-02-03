@@ -32,7 +32,7 @@ xSlinger.registerItem("red_ring", {
 	velocity_precision = 8;
 	velocity_multiplier = 8*FRACUNIT;
 	
-	knockback = 7*FRACUNIT; -- fixed_t
+	knockback = 9*FRACUNIT; -- fixed_t
 	knockback_time = TICRATE;
 	
 	autouse = false;
@@ -56,4 +56,10 @@ xSlinger.registerItem("red_ring", {
 		ghost.frame = $|FF_ADD
 		P_SetOrigin(ghost, ghost.x, ghost.y, ghost.z) -- fix interpolation being freaky
 	end;
+	
+	skin_override = {
+		["amy"] = {
+			reload_time = 1*TICRATE;
+		}
+	};
 })
