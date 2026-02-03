@@ -75,8 +75,8 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 
 			for i,v in ipairs(ZE2.registered_skins) do
 				ZE2.CharacterSlots[i] = {
-					name = v;
-					limit = 1;
+					count = 0;
+					max = 1;
 				}
 			end
 			

@@ -97,7 +97,7 @@ return "CharacterSelect", function(v, player)
 		local iconscale = FixedMul((FU*6)/4, realskindata.highresscale)
 		local translation
 
-		if #cslot >= cslot.limit then
+		if cslot.count >= cslot.max then
 			translation = "Grayscale"
 		end
 
@@ -105,7 +105,7 @@ return "CharacterSelect", function(v, player)
 		
 		if xxc > -50*FU and xxc < 400*FU then
 			v.drawScaled(xxc, yyc, iconscale, iconpatch, V_SNAPTOTOP, colormap)
-			v.drawString(xxc + 6*FU, yyc - 20*FU, cslot.limit - #cslot, V_SNAPTOTOP, "fixed")
+			v.drawString(xxc + 6*FU, yyc - 20*FU, cslot.max - cslot.count, V_SNAPTOTOP, "fixed")
 		end
 	end
 	
