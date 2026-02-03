@@ -43,6 +43,6 @@ return "PlayerTags", function(v, player)
 		end
 		
 		v.drawScaled(result.x + offset1, result.y, ppsize, pointpatch)
-		v.drawString(result.x, result.y+offset2, player.name, V_AQUAMAP, fonttype)
+		v.drawString(result.x, result.y+offset2, plr.name, V_AQUAMAP, fonttype)
 	end
 end, "game", 1
