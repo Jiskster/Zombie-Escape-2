@@ -108,7 +108,7 @@ xSlinger.registerItem("scatter_ring", {
 	fuse = TICRATE/4;
 	
 	ammo = 4;
-	reload_time = 5*TICRATE;
+	reload_time = 4*TICRATE;
 	
 	autouse = false;
 
