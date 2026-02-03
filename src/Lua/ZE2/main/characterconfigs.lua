@@ -388,8 +388,17 @@ ZE2.AddSurvivor("amy", {
 	};
 	health_penalty = 40;
 	items = {
+		"red_ring";
 		"apple";
 		"apple";
+		"apple";
+		"apple";
+		"apple";
+		"milk";
+		"milk";
+		"milk";
+		"milk";
+		"milk";
 	};
 })
 
@@ -401,7 +410,7 @@ ZE2.AddSurvivor("fang", {
 		"A character with unique weapon combat.";
 	};
 	items = {
-		"rail_ring";
+		"red_ring";
 		"rail_ring";
 	};
 })
@@ -414,7 +423,7 @@ ZE2.AddSurvivor("metalsonic", {
 		"A good fragging character.";
 	};
 	items = {
-		"explosion_ring";
+		"red_ring";
 		"explosion_ring";
 	};
 })
