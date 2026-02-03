@@ -54,6 +54,10 @@ return function(player)
 			player.ze2.sprintdelay = 0
 		else
 			player.ze2.sprintdelay = $ - 1
+			
+			if not player.ze2.sprintdelay then
+				player.ze2.rundelay = 15
+			end
 		end
 	elseif player.ze2.sprintdelay < 0 then
 		player.ze2.sprintdelay = 0
