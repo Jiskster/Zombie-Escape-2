@@ -301,7 +301,7 @@ function ZE2.setConfigInventory(player, newskin, noitems)
 		elseif team == 2 and zc[ztype] then
 			xS:inv_add("zombie", 3)
 			
-			if (not noitems) and (zc[skin].items) then
+			if (not noitems) and (zc[ztype].items) then
 				for i,item in ipairs(zc[ztype].items) do
 					xS:give_item(item, nil, nil, nil, false, "zombie")
 				end
