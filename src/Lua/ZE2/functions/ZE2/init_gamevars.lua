@@ -114,8 +114,12 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 			if player.ze2.outofgame or player.ze2.injoinqueue then
 				player.spectator = false
 				player.playerstate = PST_REBORN
+
 				G_DoReborn(#player)
-				ZE2.ResetPlayer(player, 1, true, true) -- Change to survivor and reset inventory
+
+				-- If player hasn't selected character before, reset inventory with no items
+				local noitems = (player.ze2.selected_character == nil) 
+				ZE2.ResetPlayer(player, 1, true, noitems) -- Change to survivor and reset inventory
 			end
 			player.ze2.injoinqueue = false
 			player.ze2.outofgame = false
