@@ -154,13 +154,49 @@ addHook("ThinkFrame", function()
 				player = player;
 				weight = player.ze2.karma;
 			})
-
-			if not player.ze2.selected_character 
-			and (player.mo and player.mo.valid) then
-				local skin = player.mo.skin
-				if not ZE2.blacklisted_characters[skin] 
-				and ZE2.SurvivorConfig[skin] then
-					player.ze2.selected_character = player.mo.skin
+			
+			-- Code to assign a character slot to players that have not selected a chracter yet.
+			if (player.mo and player.mo.valid) then
+				if not player.ze2.selected_character then
+					/*
+					local skin = player.mo.skin
+					if not ZE2.blacklisted_characters[skin] 
+					and ZE2.SurvivorConfig[skin] then
+						player.ze2.selected_character = player.mo.skin
+					end
+					*/
+					
+					-- NOTE: Indexing ZE2.CharacterSlots is the same as ZE2.registered_skins[i]
+					
+					local gotslot = false
+					for i,slot in ipairs(ZE2.CharacterSlots) do
+						if slot.count < slot.max then
+							local skinname = ZE2.registered_skins[i]
+							slot.count = $ + 1
+							
+							player.ze2.selected_character = skinname
+							ZE2.switchCharacter(player, skinname)
+							ZE2.setConfigInventory(player)
+							
+							gotslot = true
+							break
+						end
+					end
+					
+					-- If somehow all slots are full, give a random one space.
+					if not gotslot then
+						local charcount = #ZE2.CharacterSlots
+						local rng = P_RandomRange(1, #charcount)
+						local skinname = ZE2.registered_skins[rng]
+						local chosenslot = ZE2.CharacterSlots[rng]
+						chosenslot.max = $ + 1 -- increase limit of the slot just for you :)
+						
+						player.ze2.selected_character = skinname
+						ZE2.switchCharacter(player, skinname)
+						ZE2.setConfigInventory(player)
+						
+						chosenslot.count = $ + 1 -- then increase the count, like if you really got it
+					end
 				end
 			end
 		end

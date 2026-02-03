@@ -14,15 +14,28 @@ function ZE2.lockPlayer(player)
 			R_SetPlayerSkin(player, zskin)
 		end
 	elseif player.xSlinger.team == 1 then
-		local badskin = skins[player.skin].name == "zsonic"
+		local currentskin = skins[player.skin].name
+		local badskin = (currentskin == "zsonic")
+		local selectedskin = player.ze2.selected_character
 		for name,_ in pairs(zc) do
-			if skins[player.skin].name == name then
-				badskin = true
+			if currentskin == name then -- if current skin is a blacklisted skin
+				badskin = true -- es illegal
 				break
 			end
 		end
+		
+		if selectedskin and selectedskin ~= currentskin then
+			badskin = true -- bad skin if selected skin is not being worn
+		end
+		
 		if badskin then
-			R_SetPlayerSkin(player, "sonic")
+			local newskin = "sonic"
+			
+			if selectedskin then
+				newskin = selectedskin
+			end
+			
+			R_SetPlayerSkin(player, newskin)
 			player.mo.color = player.skincolor
 		end
 	end
