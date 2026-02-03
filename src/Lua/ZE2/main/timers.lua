@@ -177,6 +177,7 @@ addHook("ThinkFrame", function()
 							player.ze2.selected_character = skinname
 							ZE2.switchCharacter(player, skinname)
 							ZE2.setConfigInventory(player, skinname)
+							ZE2.resetPlayerHealth(player, skinname)
 							
 							gotslot = true
 							break
@@ -194,6 +195,7 @@ addHook("ThinkFrame", function()
 						player.ze2.selected_character = skinname
 						ZE2.switchCharacter(player, skinname)
 						ZE2.setConfigInventory(player, skinname)
+						ZE2.resetPlayerHealth(player, skinname)
 						
 						chosenslot.count = $ + 1 -- then increase the count, like if you really got it
 					end

@@ -70,7 +70,7 @@ ZE2.MobjTouchingPolyObj = function(mobj)
 	return false
 end
 
-function ZE2.resetPlayerHealth(player)
+function ZE2.resetPlayerHealth(player, newskin)
 	local mo = player.mo
 	local ze2 = player.ze2
 	local xS = player.xSlinger
@@ -83,7 +83,7 @@ function ZE2.resetPlayerHealth(player)
 	if not (mo and mo.valid) then
 		return end;
 		
-	local skin = mo.skin
+	local skin = newskin or mo.skin
 	
 	local config = cc[skin]
 

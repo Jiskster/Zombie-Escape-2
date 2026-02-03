@@ -177,6 +177,7 @@ COM_AddCommand("_z_choosecharacter", function(player, skinname)
 		ZE2.switchCharacter(player, skinname)
 		player.ze2.selected_character = skinname
 		ZE2.setConfigInventory(player, skinname)
+		ZE2.resetPlayerHealth(player, skinname)
 		
 		S_StartSound(nil, sfx_s3k63, player)
 	else
