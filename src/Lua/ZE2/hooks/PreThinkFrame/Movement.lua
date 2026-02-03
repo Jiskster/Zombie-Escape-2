@@ -1,6 +1,7 @@
 return function()
 	for player in players.iterate do 
-		if not (player.mo and player.mo.valid) continue end
+		if not (player.mo and player.mo.valid) 
+			continue end;
 		
 		local cmd = player.cmd
 

@@ -37,9 +37,10 @@ end
 
 local function crouchcondition(player)
 	if not (player.mo and player.mo.valid) then return false end
-	if gametype ~= GT_ZE2 then return false end
-	if ZE2.game_ended then return false end
-	if ZE2.pregame_timeleft return false end
+	if (gametype ~= GT_ZE2) then return false end
+	if (ZE2.game_ended) then return false end
+	if (ZE2.pregame_timeleft) then return false end
+	if (ZE2.zombie_releasetime and player.xSlinger.team == 2) then return false end
 	return true
 end
 

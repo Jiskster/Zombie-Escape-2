@@ -261,6 +261,16 @@ function ZE2.applyPlayerConfig(player)
 			player.actionspd = FixedMul($, effect.actionspd_multiplier)
 		end
 	end
+	
+	-- Remove player movement when game has not started.
+	-- Also remove player movement when player is zombie when zombies has not been released.
+	if (ZE2.zombie_releasetime and team == TEAM_ZOMBIE) 
+	or (ZE2.pregame_timeleft) then
+		player.normalspeed = 0
+		player.thrustfactor = 0
+		player.jumpfactor = 0
+		player.powers[pw_nocontrol] = 1
+	end
 end
 
 ZE2.SetZCinventory = function(player)
