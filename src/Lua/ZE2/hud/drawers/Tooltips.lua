@@ -1,7 +1,12 @@
 local hudtype = "game"
 
+-- TODO: Make an api out of this (Automatic tooltip stacking, per team tooltips)
+
 local function DrawTooltips(v, player)
 	if not (player.mo and player.mo.valid) then
+		return end;
+		
+	if (player.xSlinger.team ~= 1) then
 		return end;
 		
 	if (ZE2.game_ended) then
