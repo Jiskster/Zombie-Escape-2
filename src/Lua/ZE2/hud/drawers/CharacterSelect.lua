@@ -1,3 +1,16 @@
+local min = min
+local max = max
+local FRACUNIT = FRACUNIT
+local FU = FU
+local V_ALPHASHIFT = V_ALPHASHIFT
+local V_SNAPTOLEFT = V_SNAPTOLEFT
+local V_SNAPTOTOP = V_SNAPTOTOP
+local FixedDiv = FixedDiv
+local FixedMul = FixedMul
+
+local select_ease = ease.outquint
+
+
 -- https://github.com/Rapidgame7/srb2utils/blob/main/1_Usable/amperlib/amperlib.lua
 local function valWrap(n, min, max) -- Wrap value if it surpasses either bounds
 	if n == nil then error("#1 nil", 2) end
@@ -85,7 +98,7 @@ return "CharacterSelect", function(v, player)
 		
 		if anim then
 			local div = FU - FixedDiv(anim*FU, setanim*FU)
-			local ese = ease.outquint(div, prevselection*FU, selection*FU)
+			local ese = select_ease(div, prevselection*FU, selection*FU)
 			index = ((i*FU)-(FU)) - (ese-(FU))
 		end
 		
@@ -93,6 +106,10 @@ return "CharacterSelect", function(v, player)
 		local yc = FixedPow(index, 2)*5
 		local xxc = x + xc
 		local yyc = y + yc
+		
+		if not (xxc > -60*FU and xxc < 400*FU) then -- remove offscreen
+			continue end;
+			
 		local iconpatch = v.getSprite2Patch(realskin, SPR2_LIFE, false, A)
 		local iconscale = FixedMul((FU*6)/4, realskindata.highresscale)
 		local translation
@@ -103,10 +120,8 @@ return "CharacterSelect", function(v, player)
 
 		local colormap = v.getColormap(realskin, realskindata.prefcolor, translation)
 		
-		if xxc > -50*FU and xxc < 400*FU then
-			v.drawScaled(xxc, yyc, iconscale, iconpatch, V_SNAPTOTOP, colormap)
-			v.drawString(xxc + 6*FU, yyc - 20*FU, cslot.max - cslot.count, V_SNAPTOTOP, "fixed")
-		end
+		v.drawScaled(xxc, yyc, iconscale, iconpatch, V_SNAPTOTOP, colormap)
+		v.drawString(xxc + 6*FU, yyc - 20*FU, cslot.max - cslot.count, V_SNAPTOTOP, "fixed")
 	end
 	
 	-- Selected character code.
@@ -117,7 +132,7 @@ return "CharacterSelect", function(v, player)
 	
 	if anim then
 		local div = FU - FixedDiv(anim*FU, setanim*FU)
-		CURWEAP_SCALE = ease.outquint(div, 2*FU, $)
+		CURWEAP_SCALE = select_ease(div, 2*FU, $)
 	end
 	
 	CURWEAP_X = $ - FixedMul(CURWEAP.width*FU, CURWEAP_SCALE)/2
