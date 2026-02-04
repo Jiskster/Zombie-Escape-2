@@ -14,6 +14,8 @@ ZE2.VoteTimeLimit = 12*TICRATE -- TODO: Remove
 
 ZE2.MaxKarma = 500
 
+ZE2.CharacterSlots = {}
+
 -- so it looks better by adding idk
 local newroundframe = 15*TICRATE
 local newmapframe = newroundframe + 8*TICRATE

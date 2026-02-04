@@ -347,6 +347,11 @@ function ZE2.AddSurvivor(skinname, input_table)
 	ZE2.SurvivorConfig[skinname] = input_table
 	table.insert(ZE2.registered_skins, skinname)
 	
+	ZE2.CharacterSlots[#ZE2.registered_skins] = {
+		count = 0;
+		max = 1;
+	}
+	
 	print("Added survivor config: ".. skinname)
 end
 
