@@ -15,7 +15,6 @@ local getColormap
 local cachePatch
 local select_ease = ease.outquint
 
-
 -- https://github.com/Rapidgame7/srb2utils/blob/main/1_Usable/amperlib/amperlib.lua
 local function valWrap(n, min, max) -- Wrap value if it surpasses either bounds
 	if n == nil then error("#1 nil", 2) end
@@ -32,12 +31,11 @@ end
 
 -- tatsuru
 local function FixedPow(a, b)
-    
     local res = FU
     for i = 1, b do
         res = FixedMul(res, a)
     end
-    
+
     return res
 end
 
@@ -65,7 +63,7 @@ return "CharacterSelect", function(v, player)
 
 	if not (player.mo and player.mo.valid) then
 		return end;
-    
+
     if (consoleplayer and consoleplayer.valid)
     and (player ~= consoleplayer) then
         return end;
@@ -76,18 +74,16 @@ return "CharacterSelect", function(v, player)
     if (ZE2.round_active) then
         return end;
 
-	
 	drawFill(0, 0, 600, darkbgheight, darkbgcolor+(darkbgshift|V_SNAPTOLEFT|V_SNAPTOTOP))
 	for i=1,4 do
 		local darkbgtrans2 = ((darkbgtrans+i)<<V_ALPHASHIFT)
 		drawFill(0, 60+((i-1)*darkbgheight2), 600, darkbgheight2, (darkbgcolor)+(darkbgtrans2|V_SNAPTOLEFT|V_SNAPTOTOP))
 	end
-	
-	
+
 	drawLevelTitle(10, 25, "Select A Character", V_SNAPTOTOP)
 	local x = 160*FU
 	local y = 100*FU
-	
+
     if skinlist != ZE2.getSkinNums(player) then skinlist = ZE2.getSkinNums(player) end
 
     if not #skinlist then
@@ -102,27 +98,27 @@ return "CharacterSelect", function(v, player)
 
 		if not cslot then
 			continue end;
-		
+
 		-- Copy variables.
 		local x = x;
 		local y = y;
 
 		local index = ((i*FU)-(FU)) - ((selection*FU)-(FU)) -- (i-1)-(selection-1)
-		
+
 		if anim then
 			local div = FU - FixedDiv(anim*FU, setanim*FU)
 			local ese = select_ease(div, prevselection*FU, selection*FU)
 			index = ((i*FU)-(FU)) - (ese-(FU))
 		end
-		
+
 		local xc = FixedMul(index, dist)
 		local yc = FixedPow(index, 2)*5
 		local xxc = x + xc
 		local yyc = y + yc
-		
+
 		if not (xxc > -60*FU and xxc < 400*FU) then -- remove offscreen
 			continue end;
-			
+
 		local iconpatch = getSprite2Patch(realskin, SPR2_LIFE, false, A)
 		local iconscale = FixedMul((FU*6)/4, realskindata.highresscale)
 		local translation
@@ -131,25 +127,24 @@ return "CharacterSelect", function(v, player)
 			translation = "Grayscale"
 		end
 
-		
 		local colormap = getColormap(realskin, realskindata.prefcolor, translation)
 		drawScaled(xxc, yyc, iconscale, iconpatch, V_SNAPTOTOP, colormap)
 		drawString(xxc + 6*FU, yyc - 20*FU, cslot.max - cslot.count, V_SNAPTOTOP, "fixed")
 	end
-	
+
 	-- Selected character code.
 	local CURWEAP = v.cachePatch("CURWEAP")
 	local CURWEAP_SCALE = (FU*7)/4
 	local CURWEAP_X = x
 	local CURWEAP_Y = y
-	
+
 	if anim then
 		local div = FU - FixedDiv(anim*FU, setanim*FU)
 		CURWEAP_SCALE = select_ease(div, 2*FU, $)
 	end
-	
+
 	CURWEAP_X = $ - FixedMul(CURWEAP.width*FU, CURWEAP_SCALE)/2
 	CURWEAP_Y = $ - FixedMul(CURWEAP.height*FU, CURWEAP_SCALE)/2
-	
+
 	drawScaled(CURWEAP_X, CURWEAP_Y - 6*FU, CURWEAP_SCALE, CURWEAP, V_SNAPTOTOP)
 end, "game"
