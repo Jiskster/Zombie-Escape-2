@@ -2,7 +2,7 @@ local KB = xSlinger.Knockback
 
 xSlinger.KillMobj = P_KillMobj
 
-addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)	
+function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 	local deathdamagetype = (damagetype >= DMG_INSTAKILL and damagetype <= DMG_SPECTATOR)
 	
 	local knockback = 0
@@ -249,4 +249,8 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	end
 
 	return false
+end
+
+addHook("ShouldDamage", function(...)	
+	return xSlinger.ShouldDamage(...)
 end)
