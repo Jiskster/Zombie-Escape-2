@@ -89,7 +89,7 @@ return "CharacterSelect", function(v, player)
     if not #skinlist then
         return end;
 
-	for i=-256,256 do
+	for i=(selection-5),(selection+5) do
 		local realnum = convertCharacterSelection(i, player)
 		local realskindata = skins[skinlist[realnum]]
 		local cslot = ZE2.CharacterSlots[realnum]

@@ -71,7 +71,7 @@ addHook("PlayerCmd", function(player, cmd)
                 ZE2.charsel_prevselection = ZE2.charsel_selection
                 
                 ZE2.charsel_selection = $ - 1
-                ZE2.charsel_selection = valWrap($, -256, 256)
+                ZE2.charsel_selection = valWrap($, INT32_MIN, INT32_MAX)
                 
                 ZE2.charsel_anim = ZE2.charsel_setanim
                 S_StartSound(nil, sfx_s3kb7, player)
@@ -79,7 +79,7 @@ addHook("PlayerCmd", function(player, cmd)
                 ZE2.charsel_prevselection = ZE2.charsel_selection
                 
                 ZE2.charsel_selection = $ + 1
-                ZE2.charsel_selection = valWrap($, -256, 256)
+                ZE2.charsel_selection = valWrap($, INT32_MIN, INT32_MAX)
                 
                 ZE2.charsel_anim = ZE2.charsel_setanim
                 S_StartSound(nil, sfx_s3kb7, player)
