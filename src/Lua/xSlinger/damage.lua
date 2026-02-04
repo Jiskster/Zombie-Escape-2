@@ -206,14 +206,20 @@ addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		S_StartSound(mo, hurtsound)
 	end
 	
-	if inflictor_player then
-		for i,effect in ipairs(mo.effects) do
-			if effect.damage_multiplier then
-				dmg = FixedMul($, effect.damage_multiplier)/FU
-			end
+	for i,effect in ipairs(mo.effects) do
+		if effect.protection_multiplier then
+			dmg = FixedMul($*FU, effect.protection_multiplier)/FU
+		end
 
-			if effect.knockback_multiplier then
-				knockback = FixedMul($, effect.knockback_multiplier)
+		if effect.knockback_multiplier then
+			knockback = FixedMul($, effect.knockback_multiplier)
+		end
+	end
+	
+	if attacker and attacker.valid then
+		for i,effect in ipairs(attacker.effects) do
+			if effect.damage_multiplier then
+				dmg = FixedMul($*FU, effect.damage_multiplier)/FU
 			end
 		end
 	end
