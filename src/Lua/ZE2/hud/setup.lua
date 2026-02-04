@@ -30,11 +30,13 @@ SetupHud "HudToggle"
 
 SetupHud "CharacterSelect"
 
-SetupHud "PreGame"
+SetupHud "PlayerTags"
+
 SetupHud "DamageFade"
+
+SetupHud "PreGame"
 SetupHud "Info"
 SetupHud "RespawnTimer"
 SetupHud "Intermission"
 SetupHud "Tabscores"
 SetupHud "Tooltips"
-SetupHud "PlayerTags"
