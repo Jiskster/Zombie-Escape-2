@@ -284,7 +284,7 @@ xSlinger.addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		return false
 	end
 	
-	if attacker.player and attacker.team == 2 and ZE2.zombie_releasetime then
+	if attacker and attacker.player and attacker.team == 2 and ZE2.zombie_releasetime then
 		return false
 	end
 end)
