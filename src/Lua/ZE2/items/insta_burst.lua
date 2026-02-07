@@ -20,7 +20,7 @@ mobjinfo[MT_INSTABURST] = {
 	doomednum = -1,
 	spawnhealth = 1,
 	spawnstate = S_INSTABURST,
-	radius = 128*FRACUNIT,
+	radius = 88*FRACUNIT,
 	height = 96*FRACUNIT,
 	flags = MF_NOGRAVITY|MF_NOBLOCKMAP
 }
@@ -41,7 +41,7 @@ states[S_INSTABURST6B] = {SPR_NULL, 0, 1, A_CapeChase, 0, 0, S_NULL}
 
 addHook("MobjMoveCollide", function(instaburst, mobj)
 	if (mobj.valid and (mobj.flags & MF_SHOOTABLE) or mobj.player) and instaburst.ib_hitlist then
-		local range = 190*FU
+		local range = instaburst.radius
 		local alreadyhit = false
 		
 		if not ZE2.ZCollide(mobj, instaburst) then 
