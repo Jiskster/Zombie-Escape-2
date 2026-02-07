@@ -92,6 +92,8 @@ function ZE2:StartWin(team, fromring)
 	end
 	
 	P_StartQuake(24*FRACUNIT, 3*TICRATE)
+	
+	xSlinger.visible_huds.inventory = false
 end
 
 local function getNewZombie(wtable)

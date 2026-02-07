@@ -20,6 +20,7 @@ xSlinger.init = loadfile("xSlinger/classes/xslinger_t.lua")
 
 xSlinger.visible_huds = {
 	health = true;
+	inventory = true;
 }
 
 xSlinger.skin_properties = {}

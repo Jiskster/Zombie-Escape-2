@@ -27,6 +27,7 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 	ZE2.pregame_menu = 1
 
 	xSlinger.visible_huds.health = false;
+	xSlinger.visible_huds.inventory = true;
 
 	-- reset everyone
 	for player in players.iterate do

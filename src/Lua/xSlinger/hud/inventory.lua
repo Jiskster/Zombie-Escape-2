@@ -23,6 +23,9 @@ addHook("HUD", function(v, player)
 		return 
 	end
 	
+	if not xSlinger.visible_huds.inventory then
+		return end;
+	
 	local xS = player.xSlinger
 	
 	if not xS:inv_get() then
