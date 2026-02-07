@@ -31,7 +31,7 @@ Unlockable 23
 # SkyNum = 11
 # Weather = 1
 # NoZone = True
-# SelectHeading = ZE2 Survival Maps
+# SelectHeading = Escape Maps
 # Lua.ze2_timelimit = 5
 # Lua.ze2_hidden = true
 
@@ -44,7 +44,7 @@ TypeOfLevel = Escape
 NextLevel = J1
 SkyNum = 15
 NoZone = True
-SelectHeading = ZE2 Survival Maps
+SelectHeading = Escape Maps
 Lua.ze2_timelimit = 5
 Lua.ze2_zombiereleasetime = 5 # Short so zombies can attack at door near spawn.
 
@@ -57,7 +57,7 @@ TypeOfLevel = Escape
 NextLevel = 03
 SkyNum = 10
 NoZone = True
-SelectHeading = ZE2 Survival Maps
+SelectHeading = Escape Maps
 Lua.ze2_timelimit = 10
 
 Level 04
@@ -67,7 +67,7 @@ Music = UTWTFL
 Subtitle = Fills you with determination...
 TypeOfLevel = Escape
 SkyNum = 601
-SelectHeading = ZE2 Survival Maps
+SelectHeading = Escape Maps
 NoZone = True
 NextLevel = J1
 Lua.ze2_timelimit = 6
@@ -82,7 +82,7 @@ TypeOfLevel = Escape
 NextLevel = 43
 SkyNum = 21
 NoZone = True
-SelectHeading = ZE2 Survival Maps
+SelectHeading = Escape Maps
 Lua.ze2_zombiereleasetime = 9
 Lua.ze2_timelimit = 6
 
@@ -95,7 +95,7 @@ TypeOfLevel = Escape
 NextLevel = J2
 SkyNum = 14
 NoZone = True
-SelectHeading = ZE2 Survival Maps
+SelectHeading = Escape Maps
 Lua.ze2_timelimit = 7
 Lua.ze2_laddertag = 200
 
@@ -107,7 +107,7 @@ Subtitle = Those Doom monsters did this...?
 TypeOfLevel = Escape
 SkyNum = 11
 Weather = PRECIP_STORM_NORAIN
-SelectHeading = ZE2 Survival Maps
+SelectHeading = Escape Maps
 NoZone = True
 NextLevel = J1
 Lua.ze2_timelimit = 6
@@ -123,7 +123,7 @@ TypeOfLevel = Escape
 NextLevel = J5
 SkyNum = 20
 NoZone = True
-SelectHeading = ZE2 Survival Maps
+SelectHeading = Escape Maps
 Lua.ze2_timelimit = 5
 
 Level 17
@@ -133,7 +133,7 @@ Music = ALGFZ1
 Subtitle = Oddly Nostalgic
 TypeOfLevel = Escape
 SkyNum = 2
-SelectHeading = ZE2 Survival Maps
+SelectHeading = Escape Maps
 NoZone = True
 NextLevel = J1
 Lua.ze2_timelimit = 6
@@ -147,7 +147,7 @@ TypeOfLevel = Escape
 NextLevel = NX
 SkyNum = 99
 NoZone = True
-SelectHeading = ZE2 Survival Maps
+SelectHeading = Escape Maps
 Lua.ze2_timelimit = 7
 
 Level 22
@@ -160,7 +160,7 @@ NextLevel = N0
 SkyNum = 11
 Weather = 1
 NoZone = True
-SelectHeading = ZE2 Survival Maps
+SelectHeading = Escape Maps
 Lua.ze2_timelimit = 7
 Lua.ze2_zombiereleasetime = 12
 Lua.ze2_rounds = 2
@@ -176,14 +176,14 @@ NextLevel = NX
 SkyNum = 1025
 NoZone = True
 Weather = PRECIP_SNOW
-SelectHeading = ZE2 Survival Maps
+SelectHeading = Escape Maps
 Lua.ze2_timelimit = 7
 Lua.ze2_laddertag = 300
 
 Level 25
 Levelname = Lost Sewer
 TypeOfLevel = Escape
-SelectHeading = ZE2 Survival Maps
+SelectHeading = Escape Maps
 Subtitle = This place kinda smells like shi
 Act = 0
 Music = SEWAH
@@ -210,7 +210,7 @@ SkyNum = 8008
 LevelSelect = 1
 SkyboxScale = 64
 NoZone = true
-SelectHeading = ZE2 Survival Maps
+SelectHeading = Escape Maps
 Lua.ze2_timelimit = 6
 Lua.ze2_rounds = 1
 
@@ -221,7 +221,7 @@ Nozone = true
 Music = KIRWAT
 TypeOfLevel = Escape
 SkyNum = 101
-SelectHeading = ZE2 Survival Maps
+SelectHeading = Escape Maps
 Lua.ze2_timelimit = 6
 Lua.ze2_rounds = 1
 
@@ -229,7 +229,7 @@ Level 28
 Levelname = Egg Fortress
 Subtitle = Deep in Eggman's Territory
 TypeOfLevel = Escape
-SelectHeading = ZE2 Survival Maps
+SelectHeading = Escape Maps
 Music = CEZ1
 Skynum = 10
 Weather = 1
@@ -245,6 +245,6 @@ NextLevel = J0
 SkyNum = 11
 Weather = 1
 NoZone = True
-SelectHeading = ZE2 Survival Maps
+SelectHeading = Escape Maps
 Lua.ze2_timelimit = 5
 Lua.ze2_laddertag = 1000
