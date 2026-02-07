@@ -248,6 +248,10 @@ function ZE2:AddDamageIndicator(player, victim_mobj, damage)
 	end
 end
 
+xSlinger.addHook("OnPlayerDamage", function(player, inf, src, dmg, damagetype)
+	
+end)
+
 addHook("SeenPlayer", function(player)
 	if gametype == GT_ZE2 then
 		return false

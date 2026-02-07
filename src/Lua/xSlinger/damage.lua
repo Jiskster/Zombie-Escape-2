@@ -202,6 +202,16 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 				hurtsound = hs
 			end
 		end
+		
+		do
+			local ev, ev_name = xSlinger.findEvent("OnPlayerDamage")
+			
+			if #ev then
+				for i,v in ipairs(ev) do
+					local result = xSlinger.tryRunHook(ev_name, v, player, inf, src, dmg, damagetype)
+				end
+			end
+		end
 
 		S_StartSound(mo, hurtsound)
 	end

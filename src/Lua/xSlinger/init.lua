@@ -4,6 +4,8 @@ dofile "xSlinger/freeslots"
 
 rawset(_G, "xSlinger", {})
 
+dofile "xSlinger/hooks"
+
 xSlinger.Knockback = {}
 
 dofile "xSlinger/knockback" -- Knockback system by Luigi Budd.
