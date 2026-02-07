@@ -249,7 +249,11 @@ function ZE2:AddDamageIndicator(player, victim_mobj, damage)
 end
 
 xSlinger.addHook("OnPlayerDamage", function(player, inf, src, dmg, damagetype)
+	local pV = player.ze2
 	
+	if player.xSlinger.team == 1 then
+		pV:DamageFade(15)
+	end
 end)
 
 addHook("SeenPlayer", function(player)
