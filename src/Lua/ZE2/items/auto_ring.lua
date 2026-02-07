@@ -34,22 +34,23 @@ xSlinger.registerItem("auto_ring", {
 	velocity_multiplier = 2*FRACUNIT;
 	velocity_precision = 2;
 	
-	knockback = 3*FRACUNIT;
+	knockback = 4*FRACUNIT;
 	
 	flags2 = MF2_AUTOMATIC;
 	
 	ammo = 50;
 	
 	reload_time = TICRATE*2;
-	firerate = 3;
+	
+	firerate = 2;
 
 	skin_override = {
 		["knuckles"] = {
 			damage = 20;
 			maxammo = 100;
 			ammo = 100;
-			firerate = 2;
-			knockback = 5*FRACUNIT;
+			
+			knockback = 6*FRACUNIT;
 			reload_time = TICRATE*4;
 		}
 	}
