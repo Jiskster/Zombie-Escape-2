@@ -47,6 +47,19 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 		return false
 	end
 	
+	do
+		local ev, ev_name = xSlinger.findEvent("ShouldDamage")
+		
+		if #ev then
+			for i,v in ipairs(ev) do
+				local result = xSlinger.tryRunHook(ev_name, v, mo, inf, src, dmg, damagetype)
+				if result ~= nil then
+					return result
+				end
+			end
+		end
+	end
+	
 	if inf and inf.valid then
 		local iteminfo = inf.iteminfo 
 

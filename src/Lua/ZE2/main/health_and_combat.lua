@@ -268,6 +268,27 @@ xSlinger.addHook("OnPlayerDamage", function(player, inf, src, dmg, damagetype)
 	end
 end)
 
+-- Prevent early game damage to zombies and from zombies.
+xSlinger.addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
+	local player = mo.player
+	local attacker 
+	
+	if src and src.valid then
+		attacker = src
+	elseif inf and inf.valid then
+		attacker = inf
+	end
+	
+	if player and player.valid 
+	and (ZE2.pregame_timeleft or ((mo.team == 2) and ZE2.zombie_releasetime)) then
+		return false
+	end
+	
+	if attacker.player and attacker.team == 2 and ZE2.zombie_releasetime then
+		return false
+	end
+end)
+
 addHook("SeenPlayer", function(player)
 	if gametype == GT_ZE2 then
 		return false
