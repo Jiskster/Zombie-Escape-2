@@ -32,7 +32,7 @@ xSlinger.registerItem("red_ring", {
 	velocity_precision = 8;
 	velocity_multiplier = 8*FRACUNIT;
 	
-	knockback = 9*FRACUNIT; -- fixed_t
+	knockback = 13*FRACUNIT; -- fixed_t
 	knockback_time = TICRATE;
 	
 	autouse = false;
@@ -60,6 +60,10 @@ xSlinger.registerItem("red_ring", {
 	skin_override = {
 		["amy"] = {
 			reload_time = 1*TICRATE;
-		}
+		};
+		["fang"] = {
+			knockback = 16*FRACUNIT;
+			damage = 35;
+		};
 	};
 })
