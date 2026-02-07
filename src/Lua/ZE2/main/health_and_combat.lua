@@ -252,6 +252,18 @@ xSlinger.addHook("OnPlayerDamage", function(player, inf, src, dmg, damagetype)
 	local pV = player.ze2
 	
 	if player.xSlinger.team == 1 then
+		local attacker
+		
+		if src and src.valid then
+			attacker = src
+		elseif inf and inf.valid then
+			attacker = inf
+		end
+	
+		if attacker and attacker.player and attacker.team == 2 then
+			pV:ChangeStamina(-40*FRACUNIT)
+		end
+		
 		pV:DamageFade(15)
 	end
 end)
