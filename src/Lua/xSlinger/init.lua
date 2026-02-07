@@ -212,6 +212,10 @@ dofile "xSlinger/interactions"
 
 dofile "xSlinger/itemdrop"
 
+addHook("NetVars", function(net)
+	xSlinger.visible_huds = net($)
+end)
+
 -- separate into own file
 mobjinfo[MT_BLUECRAWLA].npc_name = "Blue Crawla"
 mobjinfo[MT_BLUECRAWLA].npc_spawnhealth = {120,230}
