@@ -295,15 +295,14 @@ addHook("SeenPlayer", function(player)
 	end
 end)
 
-COM_AddCommand("spawnitemdrop", function(player, item)
+COM_AddCommand("drophand", function(player)
+	local xS = player.xSlinger
+	
 	if not (player.mo and player.mo.valid) then
-		return end;
-		
-	if not (item) then
 		return end;
 		
 	if (ZE2.pregame_timeleft) then
 		return end;
 		
-	xSlinger.SpawnItemDrop(player.mo, item)
-end, COM_ADMIN)
+	xS:hand_drop()
+end)
