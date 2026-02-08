@@ -118,6 +118,12 @@ xSlinger.registerItem("wood_fence", {
 	};
 })
 
+local function ZCollide(wood,tmo)
+	if (wood.z > tmo.z + tmo.height) then return false; end
+	if (tmo.z > wood.z + wood.height) then return false; end
+	return true
+end
+
 addHook("MobjCollide", function(wood, tmo)
 	if wood.team then
 		if tmo.type == MT_PLAYER and tmo.player and tmo.player.valid then
@@ -131,8 +137,11 @@ addHook("MobjCollide", function(wood, tmo)
 			end
 		end
 	end
-	
-	return true
+	--Mobj collide hooks don't do z checks by itself
+	if ZCollide(wood,tmo) and tmo.type != MT_INSTABURST
+	and wood.health then --make sure if the fence is alive still
+		return true
+	end
 end, MT_PROPWOOD)
 
 addHook("TouchSpecial", function(special, toucher)

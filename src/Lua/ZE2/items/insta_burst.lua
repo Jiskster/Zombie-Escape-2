@@ -62,8 +62,11 @@ addHook("MobjMoveCollide", function(instaburst, mobj)
 				alreadyhit = true
 			end
 		end
-		
-		if R_PointToDist2(mobj.x, mobj.y, instaburst.x, instaburst.y) < range and not alreadyhit then
+
+		local dist = R_PointToDist2(mobj.x, mobj.y, instaburst.x, instaburst.y)
+
+		if ((mobj.type == MT_PROPWOOD and dist <= 200*FU) --only extend the range for fences
+		or dist < range) and not alreadyhit then
 			P_DamageMobj(mobj, instaburst, instaburst.target, instaburst.forcedamage)
 			table.insert(instaburst.ib_hitlist, mobj)
 		end
