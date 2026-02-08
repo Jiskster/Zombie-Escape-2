@@ -52,13 +52,14 @@ function xSlinger.new(itemid)
 	end
 	
 	item = xSlinger.deepcopy(xSlinger.registered_items[itemid])
-	setmetatable(item, xSlinger.METATABLES.ITEMINFO)
 	
 	for i,v in pairs(item) do
 		if type(v) == "function" then
 			item[i] = nil
 		end
 	end
+	
+	setmetatable(item, xSlinger.METATABLES.ITEMINFO)
 	
 	return item
 end
