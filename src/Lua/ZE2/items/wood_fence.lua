@@ -131,6 +131,8 @@ addHook("MobjCollide", function(wood, tmo)
 			end
 		end
 	end
+	
+	return true
 end, MT_PROPWOOD)
 
 addHook("TouchSpecial", function(special, toucher)
