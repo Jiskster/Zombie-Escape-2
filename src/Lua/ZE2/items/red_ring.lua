@@ -40,7 +40,7 @@ xSlinger.registerItem("red_ring", {
 	ammo = 16;
 	
 	reload_time = 2*TICRATE;
-	firerate = 4;
+	firerate = 3;
 	
 	flags2 = 0; -- MF2_...
 	
