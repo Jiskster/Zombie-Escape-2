@@ -55,7 +55,8 @@ xSlinger.METATABLES.add = function(name, metatable)
 		return end;
 		
 	xSlinger.METATABLES[name] = metatable
-	registerMetatable(metatable)
+	
+	return metatable
 end
 
 dofile "xSlinger/metatables/mobj_t"

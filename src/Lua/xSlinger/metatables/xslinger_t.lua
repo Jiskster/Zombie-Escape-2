@@ -299,10 +299,12 @@ local funcs = {
 	end;
 }
 
-xSlinger.METATABLES.add("MAIN", {
+local mt = xSlinger.METATABLES.add("MAIN", {
 	__index = function(a,k)
 		if funcs[k] then
 			return funcs[k]
 		end
 	end
 })
+
+registerMetatable(mt)

@@ -49,7 +49,7 @@ local funcs = {
 	end;
 }
 
-xSlinger.METATABLES.add("ITEMINFO", {
+local mt = xSlinger.METATABLES.add("ITEMINFO", {
 	__index = function(a,k)
 		if funcs[k] then
 			return funcs[k]
@@ -61,3 +61,5 @@ xSlinger.METATABLES.add("ITEMINFO", {
 		end
 	end
 })
+
+registerMetatable(mt)
