@@ -12,18 +12,27 @@ return function()
     end
 
 	local player_count = 0
-    local player_alive_count = 0
+    local playing = 0
+	local playersjoining = 0
 	local zombies = 0
 	local survivors = 0
 
 	for player in players.iterate do
         local counted_player = false
         if (player.ze2.injoinqueue or player.ze2.outofgame) and not counted_player then
+			if player.ze2.injoinqueue then
+				playersjoining = $ + 1
+			end
+			
             player_count = $ + 1
             counted_player = true
         end
 
-		if player.mo and player.mo.valid and not player.spectator then
+		if player.ze2.outofgame or not player.spectator then
+			playing = $ + 1
+		end
+		
+		if player.mo and player.mo.valid and not player.spectator then			
             if not counted_player then
                 player_count = $ + 1
                 counted_player = true
@@ -40,7 +49,11 @@ return function()
 	end
 
 	if player_count > 1 and not ZE2.game_ended then
-		if survivors and not zombies and player_count >= 12 then -- if all zombies are dead
+		if playersjoining and playing == 1 then
+			ZE2:StartWin(1)
+		end
+	
+		if survivors and not zombies then -- if all zombies are dead
 			ZE2:StartWin(1)
 		elseif zombies and not survivors then -- if all survivors are dead
 			ZE2:StartWin(2)
