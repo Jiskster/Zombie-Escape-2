@@ -35,7 +35,7 @@ return "PlayerTags", function(v, player)
 		
 		local dist = R_PointToDist2(player.mo.x, player.mo.y, plr.mo.x, plr.mo.y)
 		
-		if dist > 512*FU then
+		do -- half size
 			ppsize = $/2 -- when no blaze
 			fonttype = "small-thin-fixed-center"
 			offset1 = $/2
