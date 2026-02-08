@@ -379,6 +379,8 @@ ZE2.AddSurvivor("tails", {
 	items = {
 		"flame_ring";
 		"scatter_ring";
+		"wood_fence";
+		"wood_fence";
 	};
 })
 
@@ -428,6 +430,8 @@ ZE2.AddSurvivor("fang", {
 	items = {
 		"red_ring";
 		"rail_ring";
+		"grenade_ring";
+		"grenade_ring";
 	};
 })
 
