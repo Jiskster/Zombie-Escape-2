@@ -190,19 +190,17 @@ addHook("ThinkFrame", function()
 					if not gotslot then
 						local charcount = #ZE2.CharacterSlots
 						
-						if charcount then
-							local rng = P_RandomRange(1, #charcount)
-							local skinname = ZE2.registered_skins[rng]
-							local chosenslot = ZE2.CharacterSlots[rng]
-							chosenslot.max = $ + 1 -- increase limit of the slot just for you :)
-							
-							player.ze2.selected_character = skinname
-							ZE2.switchCharacter(player, skinname)
-							ZE2.setConfigInventory(player, skinname)
-							ZE2.resetPlayerHealth(player, skinname)
-							
-							chosenslot.count = $ + 1 -- then increase the count, like if you really got it
-						end
+						local rng = P_RandomRange(1, charcount)
+						local skinname = ZE2.registered_skins[rng]
+						local chosenslot = ZE2.CharacterSlots[rng]
+						chosenslot.max = $ + 1 -- increase limit of the slot just for you :)
+						
+						player.ze2.selected_character = skinname
+						ZE2.switchCharacter(player, skinname)
+						ZE2.setConfigInventory(player, skinname)
+						ZE2.resetPlayerHealth(player, skinname)
+						
+						chosenslot.count = $ + 1 -- then increase the count, like if you really got it
 					end
 				end
 			end
