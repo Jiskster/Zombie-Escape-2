@@ -142,7 +142,7 @@ addHook("ThinkFrame", function()
 		ZE2.round_active = true
 		S_StartSound(nil, sfx_rstart)
 		local playercount = ZE2.PlayerCount()
-		local denominator = FixedDiv(33*FU,10*FU) -- 3.3
+		local denominator = 2*FU
 		local amountchoosing = FixedDiv(playercount*FU, denominator) -- lmao
 		local pickingtable = {}
 		
