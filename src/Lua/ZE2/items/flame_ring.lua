@@ -88,7 +88,10 @@ xSlinger.registerItem("flame_ring", {
 			iteminfo = self,
 		})
 		
-		S_StartSound(shot, sfx_rs_fla)
+		-- Only play sound if missile is real.
+		if shot and shot.valid then
+			S_StartSound(shot, sfx_rs_fla)
+		end
 		
 		if not P_IsObjectOnGround(mo) then
 			local aim = max(-FRACUNIT, min(FRACUNIT, -player.aiming/13000))
