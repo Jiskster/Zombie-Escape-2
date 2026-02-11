@@ -46,7 +46,7 @@ xSlinger.registerItem("auto_ring", {
 
 	skin_override = {
 		["knuckles"] = {
-			damage = 20;
+			damage = 10;
 			maxammo = 100;
 			ammo = 100;
 			
