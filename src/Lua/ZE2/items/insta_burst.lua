@@ -67,7 +67,7 @@ addHook("MobjMoveCollide", function(instaburst, mobj)
 
 		if ((mobj.type == MT_PROPWOOD and dist <= 200*FU) --only extend the range for fences
 		or dist < range) and not alreadyhit then
-			P_DamageMobj(mobj, instaburst, instaburst.target, instaburst.forcedamage)
+			xSlinger.ShouldDamage(mobj, instaburst, instaburst.target, instaburst.forcedamage)
 			table.insert(instaburst.ib_hitlist, mobj)
 		end
 	end

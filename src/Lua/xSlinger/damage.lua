@@ -3,6 +3,9 @@ local KB = xSlinger.Knockback
 xSlinger.KillMobj = P_KillMobj
 
 function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
+	dmg = $ or 0 -- Making sure we don't error!
+	damagetype = $ or 0
+	
 	local deathdamagetype = (damagetype >= DMG_INSTAKILL and damagetype <= DMG_SPECTATOR)
 	
 	local knockback = 0
