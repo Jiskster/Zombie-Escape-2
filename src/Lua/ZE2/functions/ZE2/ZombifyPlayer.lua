@@ -2,6 +2,7 @@ local zc = ZE2.ZombieConfig
 
 ZE2.ZombifyPlayer = function(player, ztype)
 	local xS = player.xSlinger
+	local zc = ZE2.ZombieConfig
 
 	if not ztype then
 		player.ze2.zombie_type = "normal"

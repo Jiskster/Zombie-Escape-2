@@ -147,6 +147,7 @@ addHook("ThinkFrame", function()
 		local pickingtable = {}
 		
 		amountchoosing = FixedCeil($)/FU -- simpler than ze1's rng for sure.
+		local playercount = 0
 		
 		for player in players.iterate do
 			if player.spectator then continue end
@@ -157,17 +158,11 @@ addHook("ThinkFrame", function()
 				weight = player.ze2.karma;
 			})
 			
+			playercount = $ + 1
+			
 			-- Code to assign a character slot to players that have not selected a chracter yet.
 			if (player.mo and player.mo.valid) then
 				if not player.ze2.selected_character then
-					/*
-					local skin = player.mo.skin
-					if not ZE2.blacklisted_characters[skin] 
-					and ZE2.SurvivorConfig[skin] then
-						player.ze2.selected_character = player.mo.skin
-					end
-					*/
-					
 					-- NOTE: Indexing ZE2.CharacterSlots is the same as ZE2.registered_skins[i]
 					
 					local gotslot = false
@@ -207,7 +202,11 @@ addHook("ThinkFrame", function()
 		end
 
 		if playercount > 1 and #pickingtable then
+			local toolow = FixedDiv(amountchoosing*FU, playercount*FU) <= FU/3 -- if zombie ratio is too low
+			local alphaspawned = false 
+			
 			for i=1,amountchoosing do
+				local newztype
 				local player = getNewZombie(pickingtable)
 				
 				for n=1,#pickingtable do
@@ -217,7 +216,16 @@ addHook("ThinkFrame", function()
 					end
 				end
 				
-				ZE2.ZombifyPlayer(player)
+				if toolow then
+					if not alphaspawned then
+						newztype = "alpha"
+						alphaspawned = true
+					elseif P_RandomChance(FU/4) then
+						newztype = "alpha"
+					end
+				end
+				
+				ZE2.ZombifyPlayer(player, newztype)
 				ZE2.PlayZombieSound(player, true)
 				
 				player.ze2.karma = max(1, $ / 2)
