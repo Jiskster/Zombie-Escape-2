@@ -30,6 +30,7 @@ p_mt.__index = function(player, key) -- Create player_t.ze2
 	if key == "ze2" then
 		if player and player.valid then
 			if ze2_players[#player] then
+				ze2_players[#player].player = player -- Keep reference
 				return ze2_players[#player]
 			else
 				ze2_players[#player] = setmetatable(ZE2:Copy(default_player), ze2_mt)
@@ -53,10 +54,8 @@ addHook("PlayerQuit", function(player)
     end
 end)
 
-
 addHook("PlayerJoin", function(playernum)
 	ze2_players[playernum] = setmetatable(ZE2:Copy(default_player), ze2_mt)
-	ze2_players[playernum].player = player -- Save reference of player as player_t.ze2.player
 end)
 
 addHook("GameQuit", function()

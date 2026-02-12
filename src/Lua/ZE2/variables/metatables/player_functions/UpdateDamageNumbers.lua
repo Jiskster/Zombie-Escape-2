@@ -15,10 +15,6 @@ end
 return function(self, numbers, properties, damage)
 	local player = self.player
 	
-	if not (player and player.valid) then
-		return
-	end
-	
 	damage = tostring($)
 	local str_len = string.len(damage)
 
