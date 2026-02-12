@@ -18,12 +18,20 @@ xSlinger.registerItem("explosion_ring", {
 	
 	icon = "XSG_BOMB";
 	
-	firerate = TICRATE*3;
+	firerate = (TICRATE*3)/2;
+	
+	ammo = 3;
 	
 	color = SKINCOLOR_BLACK;
 	
 	damage = 120;
 	
+	reload_time = 4*TICRATE;
+	
 	knockback = 100*FRACUNIT;
 	knockback_tics = TICRATE;
+	
+	missile_spawn = function(self, mobj, missile)
+		missile.flags = $ & ~(MF_NOGRAVITY)
+	end;
 })
