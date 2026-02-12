@@ -1,8 +1,26 @@
 -- VERSIONLESS BUILD
 
-dofile "xSlinger/freeslots"
-
 rawset(_G, "xSlinger", {})
+
+-- http://lua-users.org/wiki/CopyTable
+function xSlinger.deepcopy(orig)
+	local deepcopy = xSlinger.deepcopy
+	
+    local orig_type = type(orig)
+    local copy
+    if orig_type == 'table' then
+        copy = {}
+        for orig_key, orig_value in next, orig, nil do
+            copy[deepcopy(orig_key)] = deepcopy(orig_value)
+        end
+        setmetatable(copy, deepcopy(getmetatable(orig)))
+    else -- number, string, boolean, etc
+        copy = orig
+    end
+    return copy
+end
+
+dofile "xSlinger/freeslots"
 
 dofile "xSlinger/hooks"
 
@@ -117,9 +135,13 @@ xSlinger.registered_items[-1] = {
 	drop_on_death = true;
 }
 
+dofile "xSlinger/register" -- item registering
+
 -- Empty Slot Item
-xSlinger.registered_items[""] = {
+xSlinger.registerItem("", {
 	displayname = "Empty";
+
+	icon = false;
 
 	id = "";
 	
@@ -133,27 +155,7 @@ xSlinger.registered_items[""] = {
 	droppable = false;
 	
 	drop_on_death = false;
-}
-
--- http://lua-users.org/wiki/CopyTable
-function xSlinger.deepcopy(orig)
-	local deepcopy = xSlinger.deepcopy
-	
-    local orig_type = type(orig)
-    local copy
-    if orig_type == 'table' then
-        copy = {}
-        for orig_key, orig_value in next, orig, nil do
-            copy[deepcopy(orig_key)] = deepcopy(orig_value)
-        end
-        setmetatable(copy, deepcopy(getmetatable(orig)))
-    else -- number, string, boolean, etc
-        copy = orig
-    end
-    return copy
-end
-
-dofile "xSlinger/register" -- item registering
+})
 
 dofile "xSlinger/missile" -- missile handling
 
