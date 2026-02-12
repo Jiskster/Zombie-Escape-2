@@ -39,7 +39,6 @@ ZE2.ZombieConfig = {
 		actionspd = 26*FRACUNIT,
 		scale = 11*FRACUNIT/10,
 		killaward = 30,
-		knockback_multiplier = 7*(FU/10),
 		inventory_limit = 1,
 		items = {
 			"insta_burst";
