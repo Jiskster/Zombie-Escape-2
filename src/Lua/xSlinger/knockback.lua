@@ -42,23 +42,26 @@ addHook("MapLoad", function()
 	KB.list = {}
 end)
 
+local function validKBMobj(mo)
+	return (mo and mo.valid) and (mo.health) and (mo.knockback ~= nil) and (#mo.knockback.list)
+end
+
 addHook("ThinkFrame", function()
 	if gamestate ~= GS_LEVEL then 
 		return end;
 		
 	--clean up
-	for k,mo in ipairs(KB.list) do
-		if not (
-			(mo and mo.valid)
-			and (mo.health)
-			and (mo.knockback ~= nil)
-			and (#mo.knockback.list)
-		) then
-			if (mo and mo.valid and mo.knockback) then
-				mo.knockback = nil
-			end
+	if #KB.list then
+		for k=#KB.list,1 do
+			local mo = KB.list[k]
 			
-			table.remove(KB.list,k)
+			if not validKBMobj(mo) then
+				if (mo and mo.valid and mo.knockback) then
+					mo.knockback = nil
+				end
+				
+				table.remove(KB.list,k)
+			end
 		end
 	end
 	
@@ -66,6 +69,10 @@ addHook("ThinkFrame", function()
 	for k,mo in ipairs(KB.list) do
 		local thrust = {x = 0; y = 0}
 		local knocked = false
+		
+		if not validKBMobj(mo) then -- just in case
+			continue
+		end
 		
 		local grounded = P_IsObjectOnGround(mo)
 		local k = mo.knockback
