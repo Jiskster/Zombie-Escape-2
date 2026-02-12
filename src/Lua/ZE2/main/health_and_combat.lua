@@ -251,15 +251,15 @@ end
 xSlinger.addHook("OnPlayerDamage", function(player, inf, src, dmg, damagetype)
 	local pV = player.ze2
 	
-	if player.xSlinger.team == 1 then
-		local attacker
-		
-		if src and src.valid then
-			attacker = src
-		elseif inf and inf.valid then
-			attacker = inf
-		end
+	local attacker
 	
+	if src and src.valid then
+		attacker = src
+	elseif inf and inf.valid then
+		attacker = inf
+	end
+	
+	if player.xSlinger.team == 1 then
 		if attacker and attacker.player and attacker.team == 2 then	
 			player.ze2.karma = min($ + 3, ZE2.MaxKarma)
 			pV:ChangeStamina(-40*FRACUNIT)
