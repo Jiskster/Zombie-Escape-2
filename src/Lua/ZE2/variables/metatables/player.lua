@@ -27,30 +27,36 @@ addHook("NetVars", function(net)
 end)
 
 p_mt.__index = function(player, key) -- Create player_t.ze2
-    if key == "ze2" then
-        if player and player.valid then
-            if ze2_players[player] then
-                return ze2_players[player]
-            else
-                ze2_players[player] = setmetatable(ZE2:Copy(default_player), ze2_mt)
-				ze2_players[player].player = player -- Save reference of player as player_t.ze2.player
+	if key == "ze2" then
+		if player and player.valid then
+			if ze2_players[#player] then
+				return ze2_players[#player]
+			else
+				ze2_players[#player] = setmetatable(ZE2:Copy(default_player), ze2_mt)
+				ze2_players[#player].player = player -- Save reference of player as player_t.ze2.player
 				
-                return ze2_players[player]
-            end
-        end
-    else
-        return p_mt_oldindex(player, key)
-    end
+				return ze2_players[#player]
+			end
+		end
+	else
+		return p_mt_oldindex(player, key)
+	end
 end
 
 addHook("PlayerQuit", function(player)
-    if ze2_players[player] then
-        ze2_players[player] = nil
+    if ze2_players[#player] then
+        ze2_players[#player] = nil
 		
 		if ZE2.cv_debug.value then
 			print("Removed player_t.ze2 from " + player.name + " [" + #player + "] ")
 		end
     end
+end)
+
+
+addHook("PlayerJoin", function(playernum)
+	ze2_players[playernum] = setmetatable(ZE2:Copy(default_player), ze2_mt)
+	ze2_players[playernum].player = player -- Save reference of player as player_t.ze2.player
 end)
 
 addHook("GameQuit", function()
