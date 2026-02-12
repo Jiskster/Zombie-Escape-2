@@ -200,9 +200,14 @@ addHook("ThinkFrame", function()
 				end
 			end
 		end
+		
+		-- Fisher-Yates shuffle algorithm
+		for i = #pickingtable, 2, -1 do
+			local j = P_RandomRange(1, i)
+			pickingtable[i], pickingtable[j] = pickingtable[j], pickingtable[i]
+		end
 
 		if playercount > 1 and #pickingtable then
-			local toolow = FixedDiv(amountchoosing*FU, playercount*FU) <= FU/3 -- if zombie ratio is too low
 			local alphaspawned = false 
 			
 			for i=1,amountchoosing do
@@ -216,13 +221,11 @@ addHook("ThinkFrame", function()
 					end
 				end
 				
-				if toolow then
-					if not alphaspawned then
-						newztype = "alpha"
-						alphaspawned = true
-					elseif P_RandomChance(FU/4) then
-						newztype = "alpha"
-					end
+				if not alphaspawned then
+					newztype = "alpha"
+					alphaspawned = true
+				elseif P_RandomChance(FU/4) then
+					newztype = "alpha"
 				end
 				
 				ZE2.ZombifyPlayer(player, newztype)
