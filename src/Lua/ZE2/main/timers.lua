@@ -224,7 +224,7 @@ addHook("ThinkFrame", function()
 				if not alphaspawned then
 					newztype = "alpha"
 					alphaspawned = true
-				elseif P_RandomChance(FU/4) then
+				elseif P_RandomChance(FU/8) then
 					newztype = "alpha"
 				end
 				
