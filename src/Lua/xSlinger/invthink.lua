@@ -123,7 +123,7 @@ function xSlinger.DoThinker(mobj)
 
 		local iteminfo = xS:slot_get(xS.slot)
 		local item_sprite = iteminfo:getIndex("icon", player.mo.skin) -- TODO: use hold_object
-		if item_sprite and camera.chase then
+		if item_sprite then
 			local alpha = FRACUNIT
 			if (xS.reload > 0) then
 				alpha = FixedDiv((reload_time - xS.reload) * FRACUNIT, reload_time * FRACUNIT)
@@ -131,11 +131,8 @@ function xSlinger.DoThinker(mobj)
 				alpha = FixedDiv((firerate - firerate_left) * FRACUNIT, firerate * FRACUNIT)
 			end
 			xS.viewmobj.sprite = SPR_THOK --item_sprite
-			xS.viewmobj.flags2 = xS.viewmobj.flags2 & ~(MF2_DONTDRAW)
+			xS.viewmobj.dontdrawforviewmobj = mobj
 			xS.viewmobj.alpha = alpha
-		else
-			xS.viewmobj.sprite = SPR_THOK
-			xS.viewmobj.flags2 = xS.viewmobj.flags2 | MF2_DONTDRAW
 		end
 	end
 	
