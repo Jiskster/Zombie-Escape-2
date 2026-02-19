@@ -45,18 +45,18 @@ xSlinger.registerItem("red_ring", {
 	flags2 = 0; -- MF2_...
 
 	hold_object = {
-        state = S_THOK;
-        pos = {  -- at this pos, the object is at the right of your body
-            x = FU;
-            y = 0;
-            z = 0;
-        };
-        pos_anim = { -- at this pos, the object is in front of your body (eases back to pos)
-            x = 0;
-            y = FU;
-            z = 0;        
-        }; 
-    };
+		state = S_THOK;
+		pos = {  -- at this pos, the object is at the right of your body
+			x = FU;
+			y = 0;
+			z = 0;
+		};
+		pos_anim = { -- at this pos, the object is in front of your body (eases back to pos)
+			x = 0;
+			y = FU;
+			z = 0;        
+		}; 
+	};
     
     hold_icon = "SPR_THOK"; -- Can be a normal graphic instead of a sprite too.
     

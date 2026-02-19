@@ -102,10 +102,10 @@ function xSlinger.DoThinker(mobj)
 		if not xS.viewmobj or not xS.viewmobj.valid then
 			xS.viewmobj = P_SpawnMobjFromMobj(player.mo, 0, 0, 0, MT_THOK)
 			xS.viewmobj.state = S_INVISIBLE
-		else
-			local xorigin = FixedMul(FixedMul(player.realmo.radius * 2, cos(player.mo.angle)), holdobject.hold_x)
-			local yorigin = FixedMul(FixedMul(player.realmo.radius * 2, sin(player.mo.angle)), holdobject.hold_Y)
-			local zorigin = FixedMul(player.realmo.height, holdobject.hold_Z)
+		elseif holdobject then
+			local xorigin = FixedMul(FixedMul(player.realmo.radius * 2, cos(player.mo.angle)), holdobject.pos.x)
+			local yorigin = FixedMul(FixedMul(player.realmo.radius * 2, sin(player.mo.angle)), holdobject.pos.y)
+			local zorigin = FixedMul(player.realmo.height, holdobject.pos.z)
 			P_MoveOrigin(xS.viewmobj, player.mo.x + player.mo.momx + xorigin, player.mo.y + player.mo.momy + yorigin, player.mo.z + player.mo.momz + zorigin)
 		end
 
