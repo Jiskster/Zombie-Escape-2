@@ -9,7 +9,7 @@ mobjinfo[MT_XS_ITEMHOLD] = {
 	deathstate = S_INVISIBLE,
 	radius = 16*FU,
 	height = 16*FU,
-	flags = MF_NOGRAVITY|MF_NOBLOCKMAP,
+	flags = MF_NOGRAVITY|MF_NOBLOCKMAP|MF_NOCLIP|MF_NOCLIPHEIGHT,
 }
 
 local function itemSoundPlay(mobj, item_sound, player)
@@ -133,7 +133,7 @@ function xSlinger.DoThinker(mobj)
 		
 		if holdobject then
 			local radius = mobj.radius
-			local magnitude = (radius*3)/2
+			local magnitude = (radius*5)/3
 			
 			local a = mobj.angle
 			local h = mobj.height/8
