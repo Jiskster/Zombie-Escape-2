@@ -105,14 +105,22 @@ function xSlinger.DoThinker(mobj)
 	
 	if validplayer then
 		local anim = FRACUNIT
-	
-		-- TODO: Remove this from validplayer condition
-		if not xS.viewmobj or not xS.viewmobj.valid then
+		local setorigin = false
+		
+		-- TODO: Remove the entire viewmobj stuff from  the validplayer condition
+		if holdobject and not (xS.viewmobj and xS.viewmobj.valid) then
 			xS.viewmobj = P_SpawnMobjFromMobj(player.mo, 0, 0, 0, MT_THOK)
 			xS.viewmobj.state = S_INVISIBLE
-		elseif holdobject then
+			
+			setorigin = true
+		end 
+		
+		local tpViewMobj = setorigin and P_SetOrigin or P_MoveOrigin
+		
+		if holdobject then
 			local radius = player.realmo.radius
 			local magnitude = (radius*3)/2
+			
 			local a = player.realmo.angle
 			local h = player.realmo.height/8
 			
@@ -147,14 +155,22 @@ function xSlinger.DoThinker(mobj)
 			local xorigin = FixedMul(cos(a), px) - FixedMul(sin(a), py) -- (cos(a) * px) - (sin(a) * py)
 			local yorigin = FixedMul(sin(a), px) + FixedMul(cos(a), py) -- (sin(a) * px) + (cos(a) * py)
 			local zorigin = h + pz
-			P_MoveOrigin(xS.viewmobj, player.mo.x + player.mo.momx + xorigin, player.mo.y + player.mo.momy + yorigin, player.mo.z + player.mo.momz + zorigin)
+			
+			tpViewMobj(xS.viewmobj, 
+						player.mo.x + player.mo.momx + xorigin, 
+						player.mo.y + player.mo.momy + yorigin, 
+						player.mo.z + player.mo.momz + zorigin)
+		elseif (not holdobject) and (xS.viewmobj and xS.viewmobj.valid) then
+			P_RemoveMobj(xS.viewmobj)
 		end
 
-		local iteminfo = xS:slot_get(xS.slot)
-		local item_sprite = iteminfo:getIndex("icon", player.mo.skin) -- TODO: use hold_object
-		if item_sprite then
-			xS.viewmobj.sprite = SPR_THOK --item_sprite
-			xS.viewmobj.dontdrawforviewmobj = mobj
+		if (xS.viewmobj and xS.viewmobj.valid) then
+			local iteminfo = xS:slot_get(xS.slot)
+			local item_sprite = iteminfo:getIndex("icon", player.mo.skin) -- TODO: use hold_object
+			if item_sprite then
+				xS.viewmobj.sprite = SPR_THOK --item_sprite
+				xS.viewmobj.dontdrawforviewmobj = mobj
+			end
 		end
 	end
 	
@@ -292,7 +308,7 @@ function xSlinger.DoThinker(mobj)
 			
 			S_StartSound(mobj, sfx_wepchg, player)
 			
-			xS.viewmobj_animation = 3 -- Swap animation.
+			xS.viewmobj_animation = 0 -- Stop animation.
 		end
 	end
 	
