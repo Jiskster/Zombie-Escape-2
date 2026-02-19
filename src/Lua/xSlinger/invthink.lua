@@ -74,6 +74,7 @@ function xSlinger.DoThinker(mobj)
 	local maxcount = hand:getIndex("maxcount", skin)
 	local itemdelay = hand:getIndex("delay", skin)
 	local holdobject = hand:getIndex("hold_object", skin)
+	local animation_time = hand:getIndex("animation_time", skin)
 	
 	if validplayer then
 		buttons = cmd.buttons
@@ -97,8 +98,14 @@ function xSlinger.DoThinker(mobj)
 	
 	-- To make sure slot is in valid spot:
 	xS.slot = (($-1) % inv.size) + 1
-
+	
+	if xS.viewmobj_animation then
+		xS.viewmobj_animation = max(0, $ - 1)
+	end
+	
 	if validplayer then
+		local anim = FRACUNIT
+	
 		-- TODO: Remove this from validplayer condition
 		if not xS.viewmobj or not xS.viewmobj.valid then
 			xS.viewmobj = P_SpawnMobjFromMobj(player.mo, 0, 0, 0, MT_THOK)
@@ -109,9 +116,31 @@ function xSlinger.DoThinker(mobj)
 			local a = player.realmo.angle
 			local h = player.realmo.height/8
 			
+			local x = holdobject.pos.x
+			local y = holdobject.pos.y
+			local z = holdobject.pos.z
+			
+			-- 0: Start | FRACUNIT: Finish
+			if (xS.reload > 0) then
+				anim = FixedDiv((reload_time - xS.reload) * FRACUNIT, reload_time * FRACUNIT)
+			elseif (xS.viewmobj_animation > 0) and animation_time ~= nil then
+				anim = FixedDiv((animation_time - xS.viewmobj_animation) * FRACUNIT, animation_time * FRACUNIT)
+			end
+			
+			if anim < FRACUNIT and holdobject.pos_anim then
+				local x_a = holdobject.pos_anim.x
+				local y_a = holdobject.pos_anim.y
+				local z_a = holdobject.pos_anim.z
+				
+				-- ANIMATE!
+				x = ease.outexpo(anim, x_a, x)
+				y = ease.outexpo(anim, y_a, y)
+				z = ease.outexpo(anim, z_a, z)
+			end
+			
 			-- rotate x and y 90 degrees (thats why its not px = pos.x and py = pos.y)
-			local px = FixedMul(holdobject.pos.y, magnitude)
-			local py = FixedMul(-holdobject.pos.x, magnitude)
+			local px = FixedMul(y, magnitude)
+			local py = FixedMul(-x, magnitude)
 			local pz = FixedMul(h, z) -- 0 = at half the player's height
 			
 			-- apply rotation matrix
@@ -124,15 +153,8 @@ function xSlinger.DoThinker(mobj)
 		local iteminfo = xS:slot_get(xS.slot)
 		local item_sprite = iteminfo:getIndex("icon", player.mo.skin) -- TODO: use hold_object
 		if item_sprite then
-			local alpha = FRACUNIT
-			if (xS.reload > 0) then
-				alpha = FixedDiv((reload_time - xS.reload) * FRACUNIT, reload_time * FRACUNIT)
-			elseif (firerate_left > 0) then
-				alpha = FixedDiv((firerate - firerate_left) * FRACUNIT, firerate * FRACUNIT)
-			end
 			xS.viewmobj.sprite = SPR_THOK --item_sprite
 			xS.viewmobj.dontdrawforviewmobj = mobj
-			xS.viewmobj.alpha = alpha
 		end
 	end
 	
@@ -211,6 +233,10 @@ function xSlinger.DoThinker(mobj)
 			if firerate ~= nil then
 				hand:setIndex("firerate_left", firerate, skin)
 			end
+			
+			if animation_time ~= nil then
+				xS.viewmobj_animation = animation_time
+			end
 		end
 	end
 	
@@ -265,6 +291,8 @@ function xSlinger.DoThinker(mobj)
 			xS.reload = 0 -- Cancel Reload
 			
 			S_StartSound(mobj, sfx_wepchg, player)
+			
+			xS.viewmobj_animation = 3 -- Swap animation.
 		end
 	end
 	
