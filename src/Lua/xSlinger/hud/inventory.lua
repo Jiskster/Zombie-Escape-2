@@ -18,6 +18,9 @@ end
 
 hud.disable("weaponrings")
 
+local itemx, itemy = 0, 0
+local itemxo, itemyo = 0, 0
+local swingx, swingy = 0, 0
 addHook("HUD", function(v, player)
 	if (player) and not (player.mo) then 
 		return 
@@ -101,6 +104,31 @@ addHook("HUD", function(v, player)
 		PositionSlot(i, slot, slot_count, slot_gap)
 		PositionSlot(i, slot_bg, slot_count, slot_gap)
 		
+		-- Draw "Viewnodel"
+		if (selection == i) and slot.patch and not camera.chase then
+			local vx = (BASEVIDWIDTH - 100) * FRACUNIT
+			local vy = (BASEVIDHEIGHT - 60) * FRACUNIT
+			local rmomx = player.rmomx
+			local rmomy = player.rmomy
+			local bob = min((FixedMul(rmomx, rmomx) + FixedMul(rmomy, rmomy)) >> 2, 8 * FRACUNIT)
+			local angle = ((256 * leveltime) & 8191) << 19
+			local swingx2, swingy2 = 0, 0
+
+			swingx2 = FixedMul(bob, cos(angle))
+			angle = ((256 * leveltime) & 4095) << 19
+			swingy2 = FixedMul(bob, sin(angle))
+
+			swingx = (swingx - swingx2) / 2
+			swingy = (swingy - swingy2) / 2
+			v.drawScaled(
+				vx + swingx,
+				vy + swingy,
+				slot.scale * 5,
+				slot.patch, -- TODO: Use iteminfo_t.hold_icon
+				V_SNAPTOBOTTOM|V_SNAPTORIGHT
+			)
+		end
+
 		-- Draw Item Background
 		v.drawScaled(
 			slot_bg.x,

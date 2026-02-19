@@ -73,6 +73,7 @@ function xSlinger.DoThinker(mobj)
 	local count = hand:getIndex("count", skin)
 	local maxcount = hand:getIndex("maxcount", skin)
 	local itemdelay = hand:getIndex("delay", skin)
+	local holdobject = hand:getIndex("hold_object", skin)
 	
 	if validplayer then
 		buttons = cmd.buttons
@@ -96,6 +97,35 @@ function xSlinger.DoThinker(mobj)
 	
 	-- To make sure slot is in valid spot:
 	xS.slot = (($-1) % inv.size) + 1
+
+	if validplayer then
+		if not xS.viewmobj or not xS.viewmobj.valid then
+			xS.viewmobj = P_SpawnMobjFromMobj(player.mo, 0, 0, 0, MT_THOK)
+			xS.viewmobj.state = S_INVISIBLE
+		else
+			local xorigin = FixedMul(FixedMul(player.realmo.radius * 2, cos(player.mo.angle)), holdobject.hold_x)
+			local yorigin = FixedMul(FixedMul(player.realmo.radius * 2, sin(player.mo.angle)), holdobject.hold_Y)
+			local zorigin = FixedMul(player.realmo.height, holdobject.hold_Z)
+			P_MoveOrigin(xS.viewmobj, player.mo.x + player.mo.momx + xorigin, player.mo.y + player.mo.momy + yorigin, player.mo.z + player.mo.momz + zorigin)
+		end
+
+		local iteminfo = xS:slot_get(xS.slot)
+		local item_sprite = iteminfo:getIndex("icon", player.mo.skin) -- TODO: use hold_object
+		if item_sprite and camera.chase then
+			local alpha = FRACUNIT
+			if (xS.reload > 0) then
+				alpha = FixedDiv((reload_time - xS.reload) * FRACUNIT, reload_time * FRACUNIT)
+			elseif (firerate_left > 0) then
+				alpha = FixedDiv((firerate - firerate_left) * FRACUNIT, firerate * FRACUNIT)
+			end
+			xS.viewmobj.sprite = SPR_THOK --item_sprite
+			xS.viewmobj.flags2 = xS.viewmobj.flags2 & ~(MF2_DONTDRAW)
+			xS.viewmobj.alpha = alpha
+		else
+			xS.viewmobj.sprite = SPR_THOK
+			xS.viewmobj.flags2 = xS.viewmobj.flags2 | MF2_DONTDRAW
+		end
+	end
 	
 	if firing and not xS.delay and not xS.reload 
 	and not itemdelay and not firerate_left and hand.id ~= "" then
