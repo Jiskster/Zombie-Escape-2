@@ -99,13 +99,25 @@ function xSlinger.DoThinker(mobj)
 	xS.slot = (($-1) % inv.size) + 1
 
 	if validplayer then
+		-- TODO: Remove this from validplayer condition
 		if not xS.viewmobj or not xS.viewmobj.valid then
 			xS.viewmobj = P_SpawnMobjFromMobj(player.mo, 0, 0, 0, MT_THOK)
 			xS.viewmobj.state = S_INVISIBLE
 		elseif holdobject then
-			local xorigin = FixedMul(FixedMul(player.realmo.radius * 2, cos(player.mo.angle)), holdobject.pos.x)
-			local yorigin = FixedMul(FixedMul(player.realmo.radius * 2, sin(player.mo.angle)), holdobject.pos.y)
-			local zorigin = FixedMul(player.realmo.height, holdobject.pos.z)
+			local radius = player.realmo.radius
+			local magnitude = (radius*3)/2
+			local a = player.realmo.angle
+			local h = player.realmo.height/8
+			
+			-- rotate x and y 90 degrees (thats why its not px = pos.x and py = pos.y)
+			local px = FixedMul(holdobject.pos.y, magnitude)
+			local py = FixedMul(-holdobject.pos.x, magnitude)
+			local pz = FixedMul(h, z) -- 0 = at half the player's height
+			
+			-- apply rotation matrix
+			local xorigin = FixedMul(cos(a), px) - FixedMul(sin(a), py) -- (cos(a) * px) - (sin(a) * py)
+			local yorigin = FixedMul(sin(a), px) + FixedMul(cos(a), py) -- (sin(a) * px) + (cos(a) * py)
+			local zorigin = h + pz
 			P_MoveOrigin(xS.viewmobj, player.mo.x + player.mo.momx + xorigin, player.mo.y + player.mo.momy + yorigin, player.mo.z + player.mo.momz + zorigin)
 		end
 
