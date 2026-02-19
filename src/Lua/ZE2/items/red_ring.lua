@@ -48,13 +48,13 @@ xSlinger.registerItem("red_ring", {
 		state = S_XS_REDRING_DROP;
 		pos = {  -- at this pos, the object is at the right of your body
 			x = FU;
-			y = 0;
+			y = FU/2;
 			z = 0;
 		};
-		pos_anim = { -- at this pos, the object is in front of your body (eases back to pos)
-			x = 0;
-			y = FU;
-			z = 0;        
+		pos_anim = {
+			x = -FU;
+			y = (FU*3)/2;
+			z = -FU/3;        
 		}; 
 	};
     

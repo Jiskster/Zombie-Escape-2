@@ -136,7 +136,8 @@ function xSlinger.DoThinker(mobj)
 			local magnitude = (radius*5)/3
 			
 			local a = mobj.angle
-			local h = mobj.height/8
+			local h = mobj.height
+			local ih = mobj.height/8
 			
 			local x = holdobject.pos.x
 			local y = holdobject.pos.y
@@ -168,7 +169,7 @@ function xSlinger.DoThinker(mobj)
 			-- apply rotation matrix
 			local xorigin = FixedMul(cos(a), px) - FixedMul(sin(a), py) -- (cos(a) * px) - (sin(a) * py)
 			local yorigin = FixedMul(sin(a), px) + FixedMul(cos(a), py) -- (sin(a) * px) + (cos(a) * py)
-			local zorigin = h + pz
+			local zorigin = ih + pz
 			
 			tpViewMobj(xS.viewmobj, 
 						mobj.x + mobj.momx + xorigin, 
