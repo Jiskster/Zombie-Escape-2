@@ -120,6 +120,12 @@ addHook("HUD", function(v, player)
 
 			swingx = (swingx - swingx2) / 2
 			swingy = (swingy - swingy2) / 2
+			
+			if xS.viewmobj_animation then
+				swingy = $ + (xS.viewmobj_animation*FU)
+				swingx = $ - (xS.viewmobj_animation*FU)
+			end
+			
 			v.drawScaled(
 				vx + swingx,
 				vy + swingy,
