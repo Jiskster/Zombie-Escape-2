@@ -45,7 +45,7 @@ xSlinger.registerItem("red_ring", {
 	flags2 = 0; -- MF2_...
 
 	hold_object = {
-		state = S_THOK;
+		state = S_XS_REDRING_DROP;
 		pos = {  -- at this pos, the object is at the right of your body
 			x = FU;
 			y = 0;

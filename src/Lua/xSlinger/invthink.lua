@@ -1,3 +1,17 @@
+freeslot("MT_XS_ITEMHOLD")
+
+mobjinfo[MT_XS_ITEMHOLD] = {
+	doomednum = -1,
+	
+	spawnhealth = 1000,
+	
+	spawnstate = S_INVISIBLE,
+	deathstate = S_INVISIBLE,
+	radius = 16*FU,
+	height = 16*FU,
+	flags = MF_NOGRAVITY|MF_NOBLOCKMAP,
+}
+
 local function itemSoundPlay(mobj, item_sound, player)
 	if type(item_sound) == "number" then
 		S_StartSound(mobj, item_sound, player)
@@ -109,8 +123,8 @@ function xSlinger.DoThinker(mobj)
 		
 		-- TODO: Remove the entire viewmobj stuff from  the validplayer condition
 		if holdobject and not (xS.viewmobj and xS.viewmobj.valid) then
-			xS.viewmobj = P_SpawnMobjFromMobj(player.mo, 0, 0, 0, MT_THOK)
-			xS.viewmobj.state = S_INVISIBLE
+			xS.viewmobj = P_SpawnMobjFromMobj(player.mo, 0, 0, 0, MT_XS_ITEMHOLD)
+			xS.viewmobj.state = holdobject.state or S_INVISIBLE
 			
 			setorigin = true
 		end 
@@ -168,11 +182,14 @@ function xSlinger.DoThinker(mobj)
 
 		if (xS.viewmobj and xS.viewmobj.valid) then
 			local iteminfo = xS:slot_get(xS.slot)
-			local item_sprite = iteminfo:getIndex("icon", mobj.skin) -- TODO: use hold_object
-			if item_sprite then
-				xS.viewmobj.sprite = SPR_THOK --item_sprite
-				xS.viewmobj.dontdrawforviewmobj = mobj
+			local holdcolor = iteminfo:getIndex("color", skin)
+			
+			if holdcolor ~= nil then
+				xS.viewmobj.color = holdcolor
 			end
+			
+			xS.viewmobj.state = holdobject.state or S_INVISIBLE
+			xS.viewmobj.dontdrawforviewmobj = mobj
 		end
 	end
 	
