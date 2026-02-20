@@ -125,6 +125,7 @@ function xSlinger.DoThinker(mobj)
 		if holdobject and not (xS.viewmobj and xS.viewmobj.valid) then
 			xS.viewmobj = P_SpawnMobjFromMobj(player.mo, 0, 0, 0, MT_XS_ITEMHOLD)
 			xS.viewmobj.state = holdobject.state or S_INVISIBLE
+			xS.viewmobj.angle = mobj.angle
 			
 			setorigin = true
 		end 
@@ -177,6 +178,7 @@ function xSlinger.DoThinker(mobj)
 						mobj.z + mobj.momz + zorigin)
 						
 			xS.viewmobj.fuse = 2
+			xS.viewmobj.angle = mobj.angle
 		elseif (not holdobject) and (xS.viewmobj and xS.viewmobj.valid) then
 			P_RemoveMobj(xS.viewmobj)
 		end
