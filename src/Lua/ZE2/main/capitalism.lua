@@ -80,6 +80,7 @@ function A_RubyDrop(actor, var1)
 	for i=1,rubyamount do
 		local the_ruby = P_SpawnMobjFromMobj(actor,0,0,10*FU,MT_CRRUBY)
 		the_ruby.scale = FRACUNIT
+		the_ruby.shadowscale = FRACUNIT
 		the_ruby.fuse = 16*TICRATE
 		the_ruby.landvolume = min(512/rubyamount, 200)
 		P_SetObjectMomZ(the_ruby, P_RandomRange(7,10)*FU)
