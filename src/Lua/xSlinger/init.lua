@@ -34,8 +34,6 @@ xSlinger.settings = {}
 
 xSlinger.BulletList = {}
 
-xSlinger.init = loadfile("xSlinger/classes/xslinger_t.lua")
-
 xSlinger.visible_huds = {
 	health = true;
 	inventory = true;
@@ -81,6 +79,8 @@ dofile "xSlinger/metatables/mobj_t"
 dofile "xSlinger/metatables/player_t"
 dofile "xSlinger/metatables/xSlinger_t"
 dofile "xSlinger/metatables/iteminfo_t"
+
+xSlinger.init = loadfile("xSlinger/classes/xslinger_t.lua")
 
 xSlinger.default_item_background = "XSG_BACKGROUND"
 xSlinger.default_item_background_color = SKINCOLOR_SILVER
