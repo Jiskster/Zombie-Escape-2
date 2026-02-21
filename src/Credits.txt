@@ -6,13 +6,15 @@ Creator:
 
 Coders:
 "Jisk"
-"Luigi Budd"
+"Luigi Budd" - Retired
+"GLide KS"
 "LeonardoTheMutant"
+"Lugent"
 
 Spriters:
 "Luigi Budd"
 "W"
-"GLide KS" - Updated Zombie Sprite
+"GLide KS" - Updated Zombie Sprite and fence
 "Scarf" - Original Zombie Sprite
 
 Modelers:
@@ -41,6 +43,7 @@ Testers:
 "GLide KS"
 "Neonius|Next"
 "greenbulb"
+"Lugent"
 "Lemerksdagaming"
 
 This mod is not open assets, it is encouraged to patch the mod via external addons.
