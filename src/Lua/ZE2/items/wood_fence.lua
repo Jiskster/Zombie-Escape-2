@@ -25,8 +25,8 @@ states[S_PROP1] = {
 	nextstate = S_PROP1,
 	action = function(mo)
 		--Crush the fence if its getting crushed (duh)
-		if (mo.ceilingz - mo.floorz < mo.height)
-			P_KillMobj(mo, nil,nil, DMG_CRUSHED)
+		if (mo.ceilingz - mo.floorz < mo.height) then
+			P_KillMobj(mo, nil, nil, DMG_CRUSHED)
 		end
 	end
 }
@@ -47,7 +47,7 @@ states[S_PROP1_BREAK] = {
 		--Cool !
 		local real_rad = FixedDiv(mo.radius,mo.scale) >> FRACBITS
 		local fa = mo.angle
-		for i = 0,16
+		for i = 0, 16 do
 			local sign = (i & 1) and 1 or -1
 			local plank = P_SpawnMobjFromMobj(mo,
 				P_ReturnThrustX(nil, fa, P_RandomRange(-real_rad, real_rad)*FU),
@@ -86,30 +86,31 @@ states[S_ZE2_WOODFENCE_DROP] = {
 
 xSlinger.registerItem("wood_fence", {
 	displayname = "Wood Fence";
-	
+
 	icon = "FENCEIND";
-	
+
 	dropstate = S_ZE2_WOODFENCE_DROP;
 	dropscale = 2*FU;
 	dropyoffset = 8*FU;
-	
+
 	firerate = TICRATE*5;
-	
+
 	count = 2;
 	maxcount = 100;
-	
+
 	color = SKINCOLOR_BROWN;
 	--TODO: it would be nice if we could get like a sort of indicator
 	--		where the fence would be placed in first person
 	usefunc = function(self, mo)
 		local wood = P_SpawnMobj(mo.x+FixedMul(128*FRACUNIT, cos(mo.angle)),
-					             mo.y+FixedMul(128*FRACUNIT, sin(mo.angle)), 
+					             mo.y+FixedMul(128*FRACUNIT, sin(mo.angle)),
 								 mo.z, MT_PROPWOOD)
 		wood.angle = mo.angle+ANGLE_90
 		S_StartSound(mo, sfx_jshard)
 		wood.renderflags = $|RF_PAPERSPRITE
 		wood.team = mo.team
 		wood.target = mo
+		wood.shadowscale = FRACUNIT
 	end;
 	skin_override = {
 		["tails"] = {
@@ -118,32 +119,31 @@ xSlinger.registerItem("wood_fence", {
 	};
 })
 
-local function ZCollide(wood,tmo)
-	if (wood.z > tmo.z + tmo.height) then return false; end
-	if (tmo.z > wood.z + wood.height) then return false; end
+local function HeightCheck(wood, tmo)
+	if ((wood.z > tmo.z) + tmo.height) or (tmo.z > (wood.z + wood.height)) then return false end
+	return true
+end
+
+local function TeamCheck(wood, tmo)
+	if tmo.player and tmo.player.valid then
+		if (wood.team == tmo.player.xSlinger.team) then
+			return false
+		end
+		return true
+	end
+
+	if (wood.team == tmo.team) then
+		return false
+	end
 	return true
 end
 
 addHook("MobjCollide", function(wood, tmo)
-	if wood.team then
-		if tmo.type == MT_PLAYER and tmo.player and tmo.player.valid then
-			local player = tmo.player
-			if wood.team == player.xSlinger.team then
-				return false
-			end
-		else
-			if wood.team == tmo.team then
-				return false
-			end
-		end
-	end
-	--Mobj collide hooks don't do z checks by itself
-	if ZCollide(wood,tmo) and tmo.type != MT_INSTABURST
-	and wood.health then --make sure if the fence is alive still
-		return true
-	end
-end, MT_PROPWOOD)
-
-addHook("TouchSpecial", function(special, toucher)
+	if not wood.health then return false end -- Skip earlier if we dont have health so don't do any unneeded checks
+	if (tmo.type == MT_INSTABURST) then return false end -- Don't collide from zombie attacks
+	if wood.team and TeamCheck(wood, tmo) then return false end -- Don't collide if it's on the same team
+	if not HeightCheck(wood, tmo) then return false end -- MobjCollide hooks don't do height (Z) checks by itself
 	return true
 end, MT_PROPWOOD)
+
+addHook("TouchSpecial", function(_, _) return true end, MT_PROPWOOD)
