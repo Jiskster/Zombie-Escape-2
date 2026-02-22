@@ -209,8 +209,9 @@ addHook("ThinkFrame", function()
 			continue
 		end
 	end
-	
-	for k, todo in ipairs(removedelayed)
+
+	for i = #removedelayed - 1, 0, -1 do
+		local todo = removedelayed[i]
 		table.remove(xSlinger.BulletList, todo.key)
 	end
 end)
