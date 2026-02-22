@@ -110,7 +110,6 @@ xSlinger.registerItem("wood_fence", {
 		wood.renderflags = $|RF_PAPERSPRITE
 		wood.team = mo.team
 		wood.target = mo
-		wood.shadowscale = FRACUNIT
 	end;
 	skin_override = {
 		["tails"] = {
@@ -120,7 +119,7 @@ xSlinger.registerItem("wood_fence", {
 })
 
 local function HeightCheck(wood, tmo)
-	if ((wood.z > tmo.z) + tmo.height) or (tmo.z > (wood.z + wood.height)) then return false end
+	if (wood.z > (tmo.z + tmo.height)) or (tmo.z > (wood.z + wood.height)) then return false end
 	return true
 end
 
