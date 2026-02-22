@@ -124,25 +124,21 @@ local function HeightCheck(wood, tmo)
 end
 
 local function TeamCheck(wood, tmo)
-	if tmo.player and tmo.player.valid then
-		if (wood.team == tmo.player.xSlinger.team) then
-			return false
-		end
-		return true
-	end
-
-	if (wood.team == tmo.team) then
+	if tmo.player and tmo.player.valid
+	and (wood.team == tmo.player.xSlinger.team) then
 		return false
 	end
+
+	if (wood.team == tmo.team) then return false end
+	
 	return true
 end
 
 addHook("MobjCollide", function(wood, tmo)
 	if not wood.health then return false end -- Skip earlier if we dont have health so don't do any unneeded checks
-	if (tmo.type == MT_INSTABURST) then return false end -- Don't collide from zombie attacks
+	if not HeightCheck(wood, tmo) then return end -- Do not run the hook anymore if tmo is not between the fence's height
 	if wood.team and not TeamCheck(wood, tmo) then return false end -- Don't collide if it's on the same team
-	if not HeightCheck(wood, tmo) then return false end -- MobjCollide hooks don't do height (Z) checks by itself
-	return true
+	if tmo.player then return true end --Block players only
 end, MT_PROPWOOD)
 
 addHook("TouchSpecial", function(_, _) return true end, MT_PROPWOOD)
