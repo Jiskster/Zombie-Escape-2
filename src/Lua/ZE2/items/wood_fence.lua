@@ -140,7 +140,7 @@ end
 addHook("MobjCollide", function(wood, tmo)
 	if not wood.health then return false end -- Skip earlier if we dont have health so don't do any unneeded checks
 	if (tmo.type == MT_INSTABURST) then return false end -- Don't collide from zombie attacks
-	if wood.team and TeamCheck(wood, tmo) then return false end -- Don't collide if it's on the same team
+	if wood.team and not TeamCheck(wood, tmo) then return false end -- Don't collide if it's on the same team
 	if not HeightCheck(wood, tmo) then return false end -- MobjCollide hooks don't do height (Z) checks by itself
 	return true
 end, MT_PROPWOOD)
