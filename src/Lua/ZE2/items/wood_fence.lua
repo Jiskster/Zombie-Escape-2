@@ -126,18 +126,18 @@ end
 local function TeamCheck(wood, tmo)
 	if tmo.player and tmo.player.valid
 	and (wood.team == tmo.player.xSlinger.team) then
-		return false
+		return true
 	end
 
-	if (wood.team == tmo.team) then return false end
+	if (wood.team == tmo.team) then return true end
 	
-	return true
+	return false
 end
 
 addHook("MobjCollide", function(wood, tmo)
 	if not wood.health then return false end -- Skip earlier if we dont have health so don't do any unneeded checks
 	if not HeightCheck(wood, tmo) then return end -- Do not run the hook anymore if tmo is not between the fence's height
-	if wood.team and not TeamCheck(wood, tmo) then return false end -- Don't collide if it's on the same team
+	if wood.team and TeamCheck(wood, tmo) then return false end -- Don't collide if it's on the same team
 	if tmo.player then return true end --Block players only
 end, MT_PROPWOOD)
 
