@@ -212,7 +212,7 @@ SkyboxScale = 64
 NoZone = true
 SelectHeading = Escape Maps
 Lua.ze2_timelimit = 6
-Lua.ze2_rounds = 1
+Lua.ze2_rounds = 2
 
 Level 27
 Levelname = Azure Sanctuary
@@ -223,7 +223,7 @@ TypeOfLevel = Escape
 SkyNum = 101
 SelectHeading = Escape Maps
 Lua.ze2_timelimit = 6
-Lua.ze2_rounds = 1
+Lua.ze2_rounds = 2
 
 Level 28
 Levelname = Egg Fortress
