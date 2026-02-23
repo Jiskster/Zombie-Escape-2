@@ -200,7 +200,7 @@ addHook("ThinkFrame", function()
 				table.insert(removedelayed, {key = i})
 			else
 				if mobj.iteminfo and mobj.iteminfo.missile_subtick and mobj.target then
-					mobj.iteminfo:missile_subtick(mobj.target, mobj)
+					mobj.iteminfo:missile_subtick(mobj.target, mobj, ii)
 				end
 			end
 		end

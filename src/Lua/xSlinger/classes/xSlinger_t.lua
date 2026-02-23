@@ -11,6 +11,8 @@ local xSlinger_t = setmetatable({
 	interaction_hold = 0; -- holding interaction button
 	interaction_delay = 0; -- time until you can interact again
 	current_inventory = "main";
+	viewmobj = nil;
+	viewmobj_animation = 0;
 	-- player = player_t;
 	-- mobj = mobj_t;
 }, xs_mt)
