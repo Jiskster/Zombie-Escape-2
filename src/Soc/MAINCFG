@@ -112,7 +112,7 @@ NoZone = True
 NextLevel = J1
 Lua.ze2_timelimit = 6
 Lua.ze2_laddertag = 300
-Lua.ze2_zombiereleasetime = 11
+Lua.ze2_zombiereleasetime = 8
 
 Level 16
 Levelname = Spooky Flower
