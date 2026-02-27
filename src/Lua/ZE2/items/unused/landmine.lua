@@ -1,4 +1,6 @@
 freeslot("sfx_lndplc")
+sfxinfo[sfx_lndplc].caption = "Landmine placed"
+
 freeslot("MT_ZE2_LANDMINE","S_ZE2_LANDMINE","S_ZE2_LANDMINE2", "SPR_MMVC")
 
 mobjinfo[MT_ZE2_LANDMINE] = {

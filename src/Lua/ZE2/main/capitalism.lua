@@ -1,4 +1,5 @@
 freeslot("MT_CRRUBY","S_CRRUBY","SPR_RBY1", "sfx_rbyhit") -- idk what CR means but i just slap it there
+sfxinfo[sfx_rbyhit].caption = "Ruby"
 														  --stands for Cool Rock you fool
 freeslot("MT_RUBY_BOX", "S_RUBY_BOX", "S_RUBY_BOX_BREAK",
 		"SPR_RBYM")

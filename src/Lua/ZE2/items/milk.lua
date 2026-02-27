@@ -1,4 +1,5 @@
 freeslot("sfx_gulpy")
+sfxinfo[sfx_gulpy].caption = "Drinking"
 
 freeslot("S_ZE2_MILK_DROP", "SPR_ZE2_MILK")
 

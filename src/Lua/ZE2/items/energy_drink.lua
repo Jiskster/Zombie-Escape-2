@@ -1,5 +1,7 @@
 freeslot("sfx_edprdn") -- no, not edp445
 freeslot("sfx_rblxdr")
+sfxinfo[sfx_edprdn].caption = "Effect out"
+sfxinfo[sfx_rblxdr].caption = "Drinking"
 
 freeslot("S_ZE2_ENERGYDRINK_DROP", "SPR_ZE2_ENERGYDRINK")
 

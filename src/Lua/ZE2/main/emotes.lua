@@ -11,6 +11,29 @@ freeslot("sfx_actu", "sfx_memore", "sfx_dumba", "sfx_demoem", "sfx_whoinv")
 freeslot("sfx_bruh", "sfx_haha1", "sfx_orchit", "sfx_wtsig2", "sfx_mrjisk")
 freeslot("sfx_csgogo", "sfx_csflbk")
 freeslot("sfx_ddblud")
+sfxinfo[sfx_huhem].caption = "\"Huh?\""
+sfxinfo[sfx_vboom].caption = "Vine Boom"
+sfxinfo[sfx_thwop].caption = "Bwoop"
+sfxinfo[sfx_heheha].caption = "He-he-he-haw!"
+sfxinfo[sfx_4ayo].caption = "\"Ayo?!\""
+sfxinfo[sfx_syeah].caption = "\"Yeah!\""
+sfxinfo[sfx_kohno].caption = "\"Oh no!\""
+sfxinfo[sfx_yccom].caption = "\"You Can Count On Me!\""
+sfxinfo[sfx_noiscr].caption = "Noise screaming"
+sfxinfo[sfx_pepscr].caption = "Pepino screaming"
+sfxinfo[sfx_actu].caption = "\"Errm... Actually\""
+sfxinfo[sfx_memore].caption = "\"No Space In Memory Card\""
+sfxinfo[sfx_dumba].caption = "\"Dumbass!\""
+sfxinfo[sfx_demoem].caption = "\"Did You Get Those Chaos Emeralds?\""
+sfxinfo[sfx_whoinv].caption = "\"Oh My God Bro...\""
+sfxinfo[sfx_bruh].caption = "\"BRUH!\""
+sfxinfo[sfx_haha1].caption = "\"Ha ha, ha!\""
+sfxinfo[sfx_orchit].caption = "Orchesta Hit"
+sfxinfo[sfx_wtsig2].caption = "\"What The Sigma?\""
+sfxinfo[sfx_mrjisk].caption = "\"Mr. Jisk\""
+sfxinfo[sfx_csgogo].caption = "\"Go, Go, Go!\""
+sfxinfo[sfx_csflbk].caption = "\"Team Fallback!\""
+sfxinfo[sfx_ddblud].caption = "\"What Is Doing On The Calculator?\""
 
 mobjinfo[MT_ZEMO_BUBBLE] = {		
 	doomednum = -1,

@@ -1,6 +1,7 @@
 local cash_given = 200
 
 freeslot("MT_MEGAHP", "S_MEGAHP", "SPR_MGAO", "sfx_maxhp")
+sfxinfo[sfx_maxhp].caption = "Health picked up"
 
 mobjinfo[MT_MEGAHP] = {
 	//$Category Zombie Escape 2

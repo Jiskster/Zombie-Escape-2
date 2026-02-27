@@ -13,7 +13,7 @@ freeslot(
 
 freeslot("sfx_shgn")
 
-sfxinfo[sfx_shgn].caption = "Shotgun"
+sfxinfo[sfx_shgn].caption = "Shotgun fires"
 
 -- totally not from ringslinger neo
 mobjinfo[MT_ZE2_THROWNSCATTER] = { 

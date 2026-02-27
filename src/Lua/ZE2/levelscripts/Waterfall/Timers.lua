@@ -1,4 +1,5 @@
 freeslot("sfx_UTMMRY")
+sfxinfo[sfx_UTMMRY].caption = "" -- Not found
 
 ZE2:AddTimer("WATERFALL_1", {
 	text = "Defend Rock",

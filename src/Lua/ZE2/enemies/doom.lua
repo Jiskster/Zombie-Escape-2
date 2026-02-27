@@ -26,6 +26,12 @@ freeslot("MT_ZOMBIEMAN", "S_ZOMBIEMAN_STND", "S_ZOMBIEMAN_WALKSOUND1",
 		 "S_ZOMBIEMAN_DEATH4", "S_ZOMBIEMAN_DEATH5", "SPR_DEN1", "sfx_zmwlk1",
 		 "sfx_zmwlk2", "sfx_zmtnt1", "sfx_zmdeth", "sfx_shotgn")
 
+sfxinfo[sfx_zmwlk1].caption = "Walking"
+sfxinfo[sfx_zmwlk2].caption = "Walking"
+sfxinfo[sfx_zmtnt1].caption = "Zombieman detects"
+sfxinfo[sfx_zmdeth].caption = "Zombieman dies"
+sfxinfo[sfx_shotgn].caption = "Shotgun fires"
+
 --Zombie Man ZE2 Support
 
 mobjinfo[MT_ZOMBIEMAN].npc_name = "Zombie Man"
@@ -91,6 +97,11 @@ freeslot("MT_DEMONPINK", "S_DEMONPINK_STND", "S_DEMONPINK_WALKSOUND1",
 		 "S_DEMONPINK_DEATH6", "SPR_DPNK", "sfx_dpwlk1", "sfx_dpwlk2",
 		 "sfx_dptnt1", "sfx_dpdeth", "sfx_dphurt")
 	
+sfxinfo[sfx_dpwlk1].caption = "Walking"
+sfxinfo[sfx_dpwlk2].caption = "Walking"
+sfxinfo[sfx_dptnt1].caption = "Pinkie detects"
+sfxinfo[sfx_dpdeth].caption = "Pinkie dies"
+sfxinfo[sfx_dphurt].caption = "Pinkie hurt"
 
 mobjinfo[MT_DEMONPINK].npc_name = "Demon Pink"
 mobjinfo[MT_DEMONPINK].npc_spawnhealth = {50,70}

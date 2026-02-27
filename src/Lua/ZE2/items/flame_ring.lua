@@ -8,6 +8,7 @@ freeslot(
 	"SPR_RNGF",
 	"sfx_rs_fla"
 )
+sfxinfo[sfx_rs_fla].caption = "Flamethrower"
 
 mobjinfo[MT_RS_THROWNFLAME] = {
 	spawnstate = S_RS_THROWNFLAME1,

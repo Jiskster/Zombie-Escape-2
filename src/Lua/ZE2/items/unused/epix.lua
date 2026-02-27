@@ -1,4 +1,6 @@
 freeslot("sfx_epix33")
+sfxinfo[sfx_epix33].caption = "Dog barks"
+
 freeslot("S_ZE2_EPIX_DROP", "SPR_EPIXDAWG")
 
 states[S_ZE2_EPIX_DROP] = {

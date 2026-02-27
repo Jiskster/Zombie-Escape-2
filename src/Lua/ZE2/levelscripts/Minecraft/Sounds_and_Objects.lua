@@ -3,6 +3,12 @@ freeslot(
 	"sfx_mcwatr", "SPR_MCSN", "S_MINECRAFTSUN",	"MT_MINECRAFTSUN",
 	"MT_MCTORCH","S_MCTORCH","SPR_MCTR", "MT_CREEPER","S_CREEPER","SPR_CRPR"
 )
+sfxinfo[sfx_dropen].caption = "Iron Door opens"
+sfxinfo[sfx_prtal].caption = "Portal ambience"
+sfxinfo[sfx_ston].caption = "Block placed"
+sfxinfo[sfx_trvel].caption = "Portal travels"
+sfxinfo[sfx_mclava].caption = "Lava drips"
+sfxinfo[sfx_mcwatr].caption = "Water flows"
 
 states[S_MINECRAFTSUN] = {SPR_MCSN, A, -1, nil, 0, 0, S_MINECRAFTSUN}
 
