@@ -22,7 +22,7 @@ mobjinfo[MT_INSTABURST] = {
 	spawnstate = S_INSTABURST,
 	radius = 88*FRACUNIT,
 	height = 96*FRACUNIT,
-	flags = MF_NOGRAVITY|MF_NOBLOCKMAP
+	flags = MF_NOGRAVITY
 }
 
 states[S_INSTABURST] = {SPR_NULL, 0, 1, A_CapeChase, 0, 0, S_INSTABURST1A}
