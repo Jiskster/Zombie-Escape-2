@@ -118,11 +118,6 @@ xSlinger.registerItem("wood_fence", {
 	};
 })
 
-local function HeightCheck(wood, tmo)
-	if (wood.z > (tmo.z + tmo.height)) or (tmo.z > (wood.z + wood.height)) then return false end
-	return true
-end
-
 local function TeamCheck(wood, tmo)
 	if tmo.player and tmo.player.valid
 	and (wood.team == tmo.player.xSlinger.team) then
@@ -136,7 +131,7 @@ end
 
 addHook("MobjCollide", function(wood, tmo)
 	if not wood.health then return false end -- Skip earlier if we dont have health so don't do any unneeded checks
-	if not HeightCheck(wood, tmo) then return end -- Do not run the hook anymore if tmo is not between the fence's height
+	if not ZE2.ZCollide(wood, tmo) then return end -- Do not run the hook anymore if tmo is not between the fence's height
 	if wood.team and TeamCheck(wood, tmo) then return false end -- Don't collide if it's on the same team
 	if tmo.player then return true end --Block players only
 end, MT_PROPWOOD)
