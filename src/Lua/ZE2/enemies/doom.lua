@@ -50,9 +50,9 @@ states[S_ZOMBIEMAN_LOOK] = {SPR_DEN1, A, 2, A_Chase, 0, 0, S_ZOMBIEMAN_LOOK}
 
 states[S_ZOMBIEMAN_STND] = {SPR_DEN1, A, 2, A_Look, 0, 0, S_ZOMBIEMAN_STND}
 states[S_ZOMBIEMAN_WALK1] = {SPR_DEN1, C, 6, A_DualAction, S_ZOMBIEMAN_WALKSOUND1, S_ZOMBIEMAN_LOOK, S_ZOMBIEMAN_WALK2}
-states[S_ZOMBIEMAN_WALK2] = {SPR_DEN1, D, 10, A_Thrust, 5, 0, S_ZOMBIEMAN_WALK3}
+states[S_ZOMBIEMAN_WALK2] = {SPR_DEN1, D, 10, A_Chase, 5, 0, S_ZOMBIEMAN_WALK3}
 states[S_ZOMBIEMAN_WALK3] = {SPR_DEN1, A, 6, A_DualAction, S_ZOMBIEMAN_WALKSOUND2, S_ZOMBIEMAN_LOOK, S_ZOMBIEMAN_WALK4}
-states[S_ZOMBIEMAN_WALK4] = {SPR_DEN1, B, 10, A_Thrust, 5, 0, S_ZOMBIEMAN_WALK1}
+states[S_ZOMBIEMAN_WALK4] = {SPR_DEN1, B, 10, A_Chase, 5, 0, S_ZOMBIEMAN_WALK1}
 states[S_ZOMBIEMAN_HURT] = {SPR_DEN1, G, 15, A_Pain, 0, 0, S_ZOMBIEMAN_WALK1}
 states[S_ZOMBIEMAN_DEATH1] = {SPR_DEN1, H, 4, A_Scream, 0, 0, S_ZOMBIEMAN_DEATH2}
 states[S_ZOMBIEMAN_DEATH2] = {SPR_DEN1, I, 4, nil, 0, 0, S_ZOMBIEMAN_DEATH3}
@@ -76,7 +76,7 @@ mobjinfo[MT_ZOMBIEMAN] = {
         deathstate = S_ZOMBIEMAN_DEATH1,
         xdeathstate = S_NULL,
         deathsound = sfx_zmdeth,
-        speed = 0,
+        speed = 8,
         radius = 16*FRACUNIT,
         height = 70*FRACUNIT,
         dispoffset = 0,
@@ -114,7 +114,7 @@ mobjinfo[MT_DEMONPINK].forceknockback = 25*FRACUNIT
 
 states[S_DEMONPINK_WALKSOUND1] = {SPR_DEN1, A, 2, A_PlaySound, sfx_dpwlk1, 1, S_DEMONPINK_WALKSOUND1}
 states[S_DEMONPINK_WALKSOUND2] = {SPR_DEN1, A, 2, A_PlaySound, sfx_dpwlk2, 1, S_DEMONPINK_WALKSOUND1}
-states[S_DEMONPINK_LOOK] = {SPR_DEN1, A, 2, A_FaceTarget, 0, 0, S_DEMONPINK_LOOK}
+states[S_DEMONPINK_LOOK] = {SPR_DEN1, A, 2, A_Chase, 0, 0, S_DEMONPINK_LOOK}
 
 states[S_DEMONPINK_STND] = {SPR_DPNK, A, 2, A_Look, 0, 0, S_DEMONPINK_STND}
 states[S_DEMONPINK_WALK1] = {SPR_DPNK, C, 4, A_DualAction, S_DEMONPINK_WALKSOUND1, S_DEMONPINK_LOOK, S_DEMONPINK_WALK2}
