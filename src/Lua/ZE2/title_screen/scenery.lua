@@ -4,54 +4,41 @@ states[S_SCENERYPLAY_STND] = {SPR_PLAY, A, 1, nil, 0, 0, S_SCENERYPLAY_WALK}
 states[S_SCENERYPLAY_WALK] = {states[S_PLAY_WALK].sprite, states[S_PLAY_WALK].frame, 2*TICRATE, nil, 0, 0, S_SCENERYPLAY_WALK}
 
 mobjinfo[MT_SCENERYPLAYER] = {
-		--$Title Scenery Player
-		--$Category Doomed Corp
-		--$Color 1
-        doomednum = 1735,
-        spawnstate = S_SCENERYPLAY_STND,
-        speed = 0,
-        radius = 16*FRACUNIT,
-        height = 56*FRACUNIT,
-        mass = 1
+	--$Title Scenery Player
+	--$Category Doomed Corp
+	--$Color 1
+	doomednum = 1735,
+	spawnstate = S_SCENERYPLAY_STND,
+	speed = 0,
+	radius = 16*FRACUNIT,
+	height = 56*FRACUNIT,
+	mass = 1
 }
 
 mobjinfo[MT_SCENERYZOMBIE] = {
-		--$Title Scenery Zombie
-		--$Category Doomed Corp
-		--$Color 1
-        doomednum = 1736,
-        spawnstate = S_SCENERYPLAY_STND,
-        speed = 0,
-        radius = 16*FRACUNIT,
-        height = 56*FRACUNIT,
-        mass = 1
+	--$Title Scenery Zombie
+	--$Category Doomed Corp
+	--$Color 1
+	doomednum = 1736,
+	spawnstate = S_SCENERYPLAY_STND,
+	speed = 0,
+	radius = 16*FRACUNIT,
+	height = 56*FRACUNIT,
+	mass = 1
 }
 
-addHook("MobjThinker", function(mo)
-	if mo and mo.valid then
-		if not mo.stuffdone then
-			mo.skin = skins[P_RandomRange(0, #skins - 1)]
-			mo.color = skincolors[P_RandomRange(1, #skincolors - 1)]
-			mo.stuffdone = 1
-		end
-	else
-		mo.stuffdone = 0
-	end
+--Set scenery player skin and color
+addHook("MobjSpawn", function(mo)
+	mo.skin = ZE2.registered_skins[P_RandomRange(1, #ZE2.registered_skins)]
+	mo.color = R_GetColorByName(skincolors[P_RandomRange(1, #skincolors - 1)].name)
 end, MT_SCENERYPLAYER)
 
-addHook("MobjThinker", function(mo)
-	if mo and mo.valid then
-		if not mo.stuffdone then
-			mo.skin = "zsonic"
-			if P_RandomChance(FU / 8) then
-				mo.color = SKINCOLOR_ALPHAZOMBIE
-				mo.scale = (mo.scale * 3) / 2
-			else
-				mo.color = SKINCOLOR_ZOMBIE
-			end
-			mo.stuffdone = 1
-		end
-	else
-		mo.stuffdone = 0
-	end
+--Set scenery zombie
+addHook("MobjSpawn", function(mo)
+	local alphachance = P_RandomChance(FU / 8)
+	local alphascale = (mo.scale * 3) / 2
+
+	mo.skin = "zsonic"
+	mo.color = (alphachance and SKINCOLOR_ALPHAZOMBIE) or SKINCOLOR_ZOMBIE
+	mo.scale = (alphachance and alphascale) or $
 end, MT_SCENERYZOMBIE)
