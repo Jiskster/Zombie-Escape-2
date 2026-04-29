@@ -40,7 +40,7 @@ UpdateSkinColors(); addHook("AddonLoaded", UpdateSkinColors) --Update when ZE2 i
 
 addHook("MobjSpawn", function(mo)
 	mo.skin = ZE2.registered_skins[P_RandomRange(1, #ZE2.registered_skins)]
-	mo.color = R_GetColorByName(accessible_skincolors[P_RandomRange(1, #accessible_skincolors - 1)])
+	mo.color = R_GetColorByName(accessible_skincolors[P_RandomRange(1, #accessible_skincolors)])
 end, MT_SCENERYPLAYER)
 
 --Set scenery zombie
