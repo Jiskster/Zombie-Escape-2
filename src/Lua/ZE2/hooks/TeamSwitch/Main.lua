@@ -11,24 +11,23 @@ return function(player, team, fromspectators, autobalance, scramble)
 		if ZE2.round_active and not ZE2_game_ended and player_count > 1 then
 			if player.ze2.outofgame then
 				if not player.ze2.injoinqueue_delay then -- using this variable because why not
-					chatprintf(player, "\x82* You are dead! Wait until the game is over!", true)
+					chatprintf(player, "\x82" .. "* You are dead! Wait until the game is over!", true)
 					player.ze2.injoinqueue_delay = 1*TICRATE
 				end
 			else
 				if not player.ze2.injoinqueue_delay then
-					
+
 					player.ze2.injoinqueue = not $
 
 					if player.ze2.injoinqueue then
-						chatprintf(player, "\x82* Game is currently ongoing. \x83Added to join queue.", true)
+						chatprintf(player, "\x82" .. "* Game is currently ongoing. " .. "\x83" .. "Added to join queue.", true)
 					else
-						chatprintf(player, "\x82* Game is currently ongoing. \x85Removed from join queue.", true) 
+						chatprintf(player, "\x82" .. "* Game is currently ongoing. " .. "\x85" .. "Removed from join queue.", true)
 					end
 
 					player.ze2.injoinqueue_delay = 5*TICRATE
 				end
 			end
-			
 			return false
 		end
 	end
@@ -42,7 +41,6 @@ return function(player, team, fromspectators, autobalance, scramble)
 				player.ze2.karma = min($ + 120, ZE2.MaxKarma)
 			end
 		end
-		
 		player.ze2.injoinqueue = false
 	end
 end

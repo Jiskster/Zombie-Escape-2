@@ -204,13 +204,13 @@ COM_AddCommand("xslinger_giveshield", function(player, shieldtype)
 	if (shieldtype == nil or tonumber(shieldtype) == nil) then return end
 
 	if tonumber(shieldtype) <= 0 then
-		CONS_Printf(player, "\x82Cleared shield!")
+		CONS_Printf(player, "\x82" .. "Cleared shield!")
 		xSlinger.RemoveShieldFromMobj(player.mo)
 		return
 	end
 
 	if not xSlinger.GiveShieldToMobj(player.mo, tonumber(shieldtype)) then
-		CONS_Printf(player, "\x85Invalid shieldtype!")
+		CONS_Printf(player, "\x85" .. "Invalid shieldtype!")
 		return
 	end
 end, COM_ADMIN)
