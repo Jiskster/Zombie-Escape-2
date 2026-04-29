@@ -299,12 +299,14 @@ local funcs = {
 	end;
 }
 
-local mt = xSlinger.METATABLES.add("MAIN", {
+local mt = {
 	__index = function(a,k)
 		if funcs[k] then
 			return funcs[k]
 		end
 	end
-})
+}
 
 registerMetatable(mt)
+
+xSlinger.METATABLES.MAIN = mt

@@ -49,7 +49,7 @@ local funcs = {
 	end;
 }
 
-local mt = xSlinger.METATABLES.add("ITEMINFO", {
+local mt = {
 	__index = function(a,k)
 		if funcs[k] then
 			return funcs[k]
@@ -60,6 +60,9 @@ local mt = xSlinger.METATABLES.add("ITEMINFO", {
 			return xSlinger.registered_items[a.id][k]
 		end
 	end
-})
+}
 
 registerMetatable(mt)
+
+xSlinger.METATABLES.ITEMINFO = mt
+

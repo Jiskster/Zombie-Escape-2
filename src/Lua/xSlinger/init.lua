@@ -64,16 +64,6 @@ function xSlinger.getLambdaObject(self)
 end
 
 xSlinger.METATABLES = {}
-xSlinger.METATABLES.add = function(name, metatable)
-	name = $:upper()
-	
-	if xSlinger.METATABLES[name] then
-		return end;
-		
-	xSlinger.METATABLES[name] = metatable
-	
-	return metatable
-end
 
 dofile "xSlinger/metatables/mobj_t"
 dofile "xSlinger/metatables/player_t"
