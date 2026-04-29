@@ -113,14 +113,6 @@ local function search_effect(self, name)
 end
 
 mobj_mt.__index = function(mobj,key)
-	if key == "effects" then
-		local effects = old_index(mobj, key)
-		
-		if not effects then
-			mobj.effects = {}
-		end
-	end
-	
 	if key == "give_effect" then
 		return give_effect
 	end
@@ -135,6 +127,10 @@ mobj_mt.__index = function(mobj,key)
 	
 	return old_index(mobj,key)
 end
+
+addHook("MobjSpawn", function(mobj)
+	mobj.effects = {}
+end)
 
 addHook("NetVars", function(net)
 	globaleffects = net($)
