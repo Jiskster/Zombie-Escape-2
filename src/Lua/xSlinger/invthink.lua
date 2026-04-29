@@ -79,6 +79,23 @@ function xSlinger.DoThinker(mobj)
 		end
 	end
 	
+	if not getmetatable(hand) then
+		if ZE2.cv_debug.value then
+			print(">> TOP")
+			print("No getindex for: "..i)
+			print("ID: "..hand.id)
+			print("Had metatable? (Try 1): "..tostring(getmetatable(hand)))
+		end
+		
+		setmetatable(hand, xSlinger.METATABLES.ITEMINFO)
+		
+		if ZE2.cv_debug.value then
+			print("Had metatable? (Try 2): "..tostring(getmetatable(hand)))
+			print("Set missing metatable (Thoughts and prayers)")
+			print(">>")
+		end
+	end
+	
 	local reload_time = hand:getIndex("reload_time", skin) or 1
 	local firerate = hand:getIndex("firerate", skin)
 	local firerate_left = hand:getIndex("firerate_left", skin)
@@ -341,6 +358,23 @@ function xSlinger.DoThinker(mobj)
 		if iteminfo == nil then
 			inv[i] = xSlinger.new("")
 			iteminfo = inv[i]
+		end
+		
+		if not getmetatable(iteminfo) then
+			if ZE2.cv_debug.value then
+				print(">> BOTTOM")
+				print("No getindex for: "..i)
+				print("ID: "..iteminfo.id)
+				print("Had metatable? (Try 1): "..tostring(getmetatable(iteminfo)))
+			end
+			
+			setmetatable(iteminfo, xSlinger.METATABLES.ITEMINFO)
+			
+			if ZE2.cv_debug.value then
+				print("Had metatable? (Try 2): "..tostring(getmetatable(iteminfo)))
+				print("Set missing metatable (Thoughts and prayers)")
+				print(">> ")
+			end
 		end
 		
 		local firerate_left = iteminfo:getIndex("firerate_left", skin)
