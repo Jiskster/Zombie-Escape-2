@@ -70,7 +70,7 @@ xSlinger.registerEffect("burning", {
 			local rad = FixedDiv(mobj.radius, mobj.scale)/FU
 			local hei = FixedDiv(mobj.height, mobj.scale)/FU
 			if (time_left % 3) == 0 then
-				for i = 0,1
+				for i = 0,1 do
 					-- P_SpawnMobjFromMobj already scales offsets.
 					local flm = P_SpawnMobjFromMobj(mobj, 
 									P_RandomRange(-rad,rad)*FU, 
@@ -179,7 +179,7 @@ addHook("LinedefExecute", function(line, mo)
 		effect_attribs[index_to_attrib[i]] = args[i] * index_mul[i]
 	end
 
-	if xSlinger.Effects[effect_name] == nil
+	if xSlinger.Effects[effect_name] == nil then
 		print('\x82WARNING\x80: Effect name "'..effect_name..'" is not valid. (line #'..(#line)..')')
 		return
 	end

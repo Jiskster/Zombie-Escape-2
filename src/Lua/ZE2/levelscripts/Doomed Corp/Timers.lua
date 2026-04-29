@@ -36,7 +36,7 @@ ZE2:AddTimer("DOOMEDCORP_RARE", {
 })
 
 addHook("LinedefExecute", function()
-	if P_RandomChance(FU/3)
+	if P_RandomChance(FU/3) then
 		P_LinedefExecute(76)
 		S_StartSound(nil, sfx_buzz3, nil)
 		ZE2:StartTimer("DOOMEDCORP_RARE")

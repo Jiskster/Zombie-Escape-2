@@ -11,7 +11,7 @@ local function drawSkewFill(v, x,y, w,h, flags, c, skincolor)
 		w = FixedDiv($, clr_len*FU)
 	end
 	if not table_clr then clr_len = $ - 1; end
-	
+
 	x = $ - (FixedDiv(h, 2*FU) - FU)
 	while h >= 0 do
 		if (not skincolor) then
@@ -29,7 +29,7 @@ local function drawSkewFill(v, x,y, w,h, flags, c, skincolor)
 				new_x = $ + w
 			end
 		end
-		
+
 		--v.drawFixedFill(x,y, w,2*FU, c)
 		h = $ - 2*FU
 		y = $ + 2*FU
@@ -116,25 +116,25 @@ local function health(v,p,me,ze)
 	local maxhealth = me.maxhealth
 	local zc = ZE2.ZombieConfig[p.ze2.zombie_type or ""]
 	local team = p.xSlinger.team
-	
+
 	if (health == nil) or (maxhealth == nil) then ResetInfos(); return end
 	--if ZE2.pregame_timeleft then ResetInfos(); return end
 	maxhealth = $*FU
 	AlreadyReset = false
-	
+
 	if old_disp == nil then
 		old_disp = p
 	elseif old_disp ~= p then
 		old_info.health = me.health*FU
 		fake_info.health = me.health*FU
-		
+
 		old_info.stamina = ze.sprintmeter
 		fake_info.stamina = ze.sprintmeter
-		
+
 		old_info.shield = me.shield_health
 		fake_info.shield = me.shield_health
 	end
-	
+
 	if old_info.health == -1 then
 		old_info.health = me.health*FU
 		fake_info.health = me.health*FU
@@ -156,19 +156,19 @@ local function health(v,p,me,ze)
 
 	health = flerp(FU/5, fake_info.health, health*FU)
 	fake_info.health = health
-	
+
 	local max_width = 65*FU
 	local height = 8*FU
-	
+
 	local pad = 6*FU
 	local shadow = 2*FU
 	local textspace = shadow*2
 	local fade_sin = abs(sin(leveltime * 4 * ANG2))
-	
+
 	local x = 12*FU - (ze.lower_hud_offset or 0)
 	local y = BASEVIDHEIGHT*FU - (height*2) - shadow + FU
 	local flags = V_SNAPTOLEFT|V_SNAPTOBOTTOM
-	
+
 	--health
 	do
 		local real_x,real_y = x,y
@@ -176,7 +176,7 @@ local function health(v,p,me,ze)
 		local y = y
 		local drawRed = false
 		local redWidth = 0
-		
+
 		health_shake = flerp(FU/8, $, 0)
 		do
 			local shake = (health_shake)
@@ -186,14 +186,14 @@ local function health(v,p,me,ze)
 			y = $ + shake
 			x = $ - shake/2
 		end
-		
+
 		local width = FixedMul(max_width, FixedDiv(health,maxhealth))
 		drawSkewFill(v, x+shadow,y+shadow, max_width,height, flags|V_REVERSESUBTRACT, SHADOWCOLOR) -- 31
 		if (old_info.health > me.health*FU) then
 			health_shake = $ + abs(old_info.health - health)
 		end
 		if old_info.health > health then --we lost health!
-			if store_info.health == -1
+			if store_info.health == -1 then
 				store_info.health = old_info.health
 			end
 			redWidth = FixedMul(max_width, FixedDiv(store_info.health,maxhealth))
@@ -203,7 +203,7 @@ local function health(v,p,me,ze)
 			and (abs(me.health*FU - health) <= FU)
 			and (health_shake <= FU/10) then
 				local diff = max(abs(store_info.health - health)/15, 1)
-				if store_info.health < health
+				if store_info.health < health then
 					store_info.health = $ + diff
 				else
 					store_info.health = $ - diff
@@ -223,8 +223,8 @@ local function health(v,p,me,ze)
 		drawSkewFill(v, x,y, width,height, flags, SKINCOLOR__96) -- 96
 		if me.health*FU <= maxhealth/2 then
 			local fade = FixedMul(11*FU, fade_sin)/FU
-			
-			if fade < 10
+
+			if fade < 10 then
 				drawSkewFill(v, x,y, width,height, flags|(fade << V_ALPHASHIFT), SKINCOLOR__35) -- 35
 			end
 		end
@@ -255,10 +255,10 @@ local function health(v,p,me,ze)
 	and ze.sprintmeter ~= nil then
 		--sprint is fixed here, Yay!!
 		local sprint = ze.sprintmeter
-		
+
 		sprint = flerp(FU/5, fake_info.stamina, $)
 		fake_info.stamina = sprint
-		
+
 		local maxsprint = 100*FU
 		local x = x
 		local y = y - (height + pad)
@@ -267,26 +267,26 @@ local function health(v,p,me,ze)
 		drawSkewFill(v, x,y, width,height, flags, SKINCOLOR__149)
 		if sprint <= maxsprint/2 then
 			local fade = FixedMul(11*FU, fade_sin)/FU
-			
-			if fade < 10
+
+			if fade < 10 then
 				drawSkewFill(v, x,y, width,height, flags|(fade << V_ALPHASHIFT), SKINCOLOR__35) -- 35
 			end
 		end
 		local sprint_text = string.format("%.0f%%", FixedDiv(sprint, maxsprint)*100)
-		
+
 		if ze.sprintdelay then
 			sprint_text = "EXHAUSTED!"
 			local ticker = (leveltime % 4)
-			
+
 			if (ticker & 1) then
 				x = $ - FU
 			end
-			
+
 			if ticker <= 1 then
 				sprint_text = "\x85"..$
 			end
 		end
-		
+
 		v.drawString(x + textspace, y + shadow,
 			sprint_text,
 			flags, "thin-fixed"
@@ -298,7 +298,7 @@ local function health(v,p,me,ze)
 		local rage = ze.special_cooldown --rage variable
 		rage = intlerp(2, fake_info.rage, $)
 		fake_info.rage = rage
-		
+
 		local maxsprint = spec.cooldown
 		local adjust = 17*FU
 		local button_pad = 3*FU
@@ -307,7 +307,7 @@ local function health(v,p,me,ze)
 		local y = y - (height + pad)
 		local width = FixedMul(max_width, FU - FixedDiv(rage,maxsprint))
 		drawSkewFill(v, x+shadow,y+shadow, max_width,height, flags|V_REVERSESUBTRACT, SHADOWCOLOR) --31
-		
+
 		local color = SKINCOLOR_ALPHAZOMBIE
 		local usecolor = true
 		if ze.special_cooldown then
@@ -315,7 +315,7 @@ local function health(v,p,me,ze)
 			usecolor = false
 		end
 		drawSkewFill(v, x,y, width,height, flags, color, usecolor and color or nil)
-		
+
 		local pname = "Z_TT_"..(button_to_tooltip[spec.button])
 		if (v.patchExists(pname)) then
 			v.drawScaled(x - adjust - button_pad, y - button_pad, FU,
@@ -333,19 +333,19 @@ local function health(v,p,me,ze)
 			flags, "thin-fixed"
 		)
 	end
-	
+
 	--shield
 	local shields = me.shield_health or (store_info.shield == -1 and -1 or 0)
 	shields = intlerp(2, fake_info.shield, $)
 	fake_info.shield = shields
-	
+
 	local drawshields = false
 	if shields ~= -1 then
 		drawshields = (me.shield_def or (fake_info.shielddef ~= -1))
 	elseif store_info.shield ~= -1 then
 		drawshields = true
 	end
-	
+
 	if drawshields then
 		if me.shield_def then
 			if fake_info.shielddef ~= me.shield_def then
@@ -355,17 +355,17 @@ local function health(v,p,me,ze)
 		end
 		local def = fake_info.shielddef
 		local color = (def.color or SKINCOLOR_WHITE)
-		
+
 		local maxshields = def.health
 		local percentage = FixedDiv(shields, maxshields)
-		
+
 		local x = x + max_width + 20*FU
 		local y = y
 		local shield_icon = v.cachePatch("Z_SHIELDSICO")
-		
+
 		local crop_height = shield_icon.height*FU - FixedMul(shield_icon.height*FU, percentage)
 		crop_height = max($, 0)
-		
+
 		--BG
 		if percentage ~= FU then
 			v.drawCropped(x,y,
@@ -378,7 +378,7 @@ local function health(v,p,me,ze)
 				crop_height
 			)
 		end
-		
+
 		v.drawCropped(x,
 			y + crop_height, --move down by what we cropped
 			FU,FU,
@@ -389,7 +389,7 @@ local function health(v,p,me,ze)
 			shield_icon.width*FU,
 			shield_icon.height*FU
 		)
-		
+
 		v.drawString(x,y - (FU * 7/2),
 			string.format("%.0f%%", percentage*100),
 			flags,
@@ -399,11 +399,11 @@ local function health(v,p,me,ze)
 		fake_info.shielddef = -1
 		store_info.shield = -1
 	end
-	
+
 	--fire effect
 	if #hud_fires then
 		for k,fire in ipairs(hud_fires) do
-			if fire.tics <= 0
+			if fire.tics <= 0 then
 				table.remove(hud_fires,k)
 			end
 		end
@@ -422,7 +422,7 @@ local function health(v,p,me,ze)
 			fire.lifetime = $ + 1
 		end
 	end
-	
+
 	old_info.health = me.health*FU
 	old_info.stamina = ze.sprintmeter
 	old_info.shield = me.shield_health
@@ -452,14 +452,14 @@ local function roundinfo(v,p,me,ze)
 	local timestring = getTimeString()
 	local zombie_count = ZE2.ZombieCount()
 	local survivor_count = ZE2.SurvivorCount()
-	
+
 	local spread = 40
-	
+
 	v.draw(160-(topwidth/2), 0, top, V_SNAPTOTOP|V_20TRANS)
 	v.draw(160-(topredwidth/2) -spread, 0, topred , V_SNAPTOTOP|V_20TRANS)
 	v.draw(160-(topbluewidth/2) +spread, 0, topblue, V_SNAPTOTOP|V_20TRANS)
 	v.drawString(160, 2, timestring, V_SNAPTOTOP, "center")
-	
+
 	v.drawString(160-spread, 2, zombie_count, V_REDMAP|V_SNAPTOTOP, "center")
 	v.drawString(160+spread, 2, survivor_count, V_BLUEMAP|V_SNAPTOTOP, "center")
 end
@@ -469,7 +469,7 @@ local function cashinfo(v,p,me,ze)
 	local greenwidth = green.width
 	if ze.cash ~= nil then
 		local left_offset = 2
-		
+
 		v.draw(320-greenwidth, 0, green, V_SNAPTOTOP|V_SNAPTORIGHT|V_20TRANS)
 		v.drawString(320-left_offset, 2, "$"..ze.cash, V_GREENMAP|V_SNAPTOTOP|V_SNAPTORIGHT, "thin-right")
 	end
@@ -479,29 +479,29 @@ local function eventtimers(v,p,me,ze)
 	local x = 5
 	local y = 12
 	local flags = V_SNAPTOLEFT|V_SNAPTOTOP
-	
-	if ze.checkpoint_catchuptics
+
+	if ze.checkpoint_catchuptics then
 		local catchup_tics = ze.checkpoint_catchuptics
-		
-		customhud.CustomFontString(v, 160, 142, "Catching up in:", "TNYFC", 
+
+		customhud.CustomFontString(v, 160, 142, "Catching up in:", "TNYFC",
 		(V_SNAPTOBOTTOM|V_50TRANS), "center", nil, SKINCOLOR_CHERRY)
-		
-		customhud.CustomFontString(v, 160, 150, tostring(catchup_tics/TICRATE), "TNYFC", 
-		(V_SNAPTOBOTTOM|V_50TRANS), "center" , nil, SKINCOLOR_CHERRY)		
+
+		customhud.CustomFontString(v, 160, 150, tostring(catchup_tics/TICRATE), "TNYFC",
+		(V_SNAPTOBOTTOM|V_50TRANS), "center" , nil, SKINCOLOR_CHERRY)
 	end
-	
+
 	for i,timer in pairs(ZE2:GetActiveTimers()) do
 		local name = "* "..(timer.text or "Event "..i)
 		local time = "  ("..G_TicsToMTIME(timer.time)..")"
 		local color = timer.textcolor or SKINCOLOR_TEAL
 
-		customhud.CustomFontString(v, x, y, name, "STCFC", 
+		customhud.CustomFontString(v, x, y, name, "STCFC",
 			flags, "left" , nil, color
 		)
-		customhud.CustomFontString(v, x, y + 8, time, "STCFC", 
+		customhud.CustomFontString(v, x, y + 8, time, "STCFC",
 			flags, "left" , nil, color
 		)
-		
+
 		y = $ + 16
 	end
 end
@@ -509,10 +509,10 @@ end
 local function wrapper(v,p)
 	if ZE2.game_ended then return end
 	if not p.realmo then return end
-	
+
 	local me = p.realmo
 	local ze = p.ze2
-	
+
 	health(v,p,me,ze)
 	roundinfo(v,p,me,ze)
 	cashinfo(v,p,me,ze)

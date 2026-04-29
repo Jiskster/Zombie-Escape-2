@@ -2,7 +2,7 @@ local DoomedCorp = {
     pathunlock_timer = 0
 }
 addHook("NetVars", function(net)
-    if gamemap != 14 then return end
+    if gamemap ~= 14 then return end
     DoomedCorp = net($)
 end)
 local function ResetValues()
@@ -15,7 +15,7 @@ local drawScaled
 local drawString
 
 local function OpenAltPath(v, p)
-    if gamemap != 14 then return end
+    if gamemap ~= 14 then return end
     if not (p.mo and p.mo.skin) then return end
 
     if drawScaled == nil then drawScaled = v.drawScaled end

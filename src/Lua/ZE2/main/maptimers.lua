@@ -18,19 +18,19 @@ function ZE2:AddTimer(_id, _table)
 	elseif type(_id) ~= "string" then
 		error("Timer: Arg1 must be string (Arg1 _id)")
 	end
-	
+
 	if _table == nil then
 		error("Timer: Table is required (Arg2 _table)")
 	elseif type(_table) ~= "table" then
 		error("Timer: Arg2 must be table (Arg2 _table)")
 	end
-	
+
 	if ZE2.MapTimers[_id] then
 		local errortext = string.format('Timer: TimerID "%s" has already been defined.', _id)
-		
+
 		error(errortext)
 	end
-	
+
 	-- Macro to save mapper's time.
 	if _table.lua_linedef_exec then
 		local exec_name = _table.lua_linedef_exec
@@ -38,25 +38,25 @@ function ZE2:AddTimer(_id, _table)
 			ZE2:StartTimer(_id)
 		end, exec_name)
 	end
-	
+
 	local _table_recieve = _table
-	
+
 	_table_recieve.id = _id
 	_table_recieve.active = false
 	_table_recieve.time = $ or 15*TICRATE
 	_table_recieve.original_time = _table_recieve.time
-	
+
 	ZE2.MapTimers[_id] = _table_recieve
-	
+
 	return ZE2.MapTimers[_id]
 end
 
 function ZE2:OverrideTimer(_id, _new)
 	local _timer
-	
+
 	if not ZE2.MapTimers[_id] then
 		local errortext = string.format('Timer: TimerID "%s" does not exist.', _id)
-		
+
 		error(errortext)
 	end
 
@@ -66,15 +66,15 @@ function ZE2:OverrideTimer(_id, _new)
 		["id"] = true,
 		["active"] = true,
 	}
-	
+
 	for i,v in pairs(_new) do
 		if banned_attributes[i] then -- ILLLEGALLLLLLL
 			continue
 		end
-		
+
 		_timer[i] = v -- replace
 		_timer.active = false
-		
+
 		if i == "time" then
 			_timer.original_time = v
 		end
@@ -98,11 +98,11 @@ function ZE2:GetActiveTimers()
 			table.insert(activetimers, timer)
 		end
 	end
-	
+
 	table.sort(activetimers, function(a, b)
 		return a.time > b.time
 	end)
-	
+
 	return activetimers
 end
 
@@ -112,9 +112,9 @@ addHook("MapLoad", function()
 	end
 end)
 
-addHook("ThinkFrame",do
+addHook("ThinkFrame", function()
 	if ZE2.game_ended then return end
-	
+
 	for i,timer in pairs(ZE2.MapTimers) do
 		if (timer.active) then
 			if (ZE2.maptimerdebug.value) then
@@ -130,7 +130,7 @@ addHook("ThinkFrame",do
 						end
 					end
 				end
-				
+
 				/*
 					extrainfo::
 					{
@@ -143,18 +143,18 @@ addHook("ThinkFrame",do
 						}
 					}
 				*/
-				
+
 			end
-			
-			if timer.time <= 0 then 
+
+			if timer.time <= 0 then
 				if (timer.on_end) then
 					timer.on_end(i, timer.name)
 				end
-				
+
 				if (timer.on_end_tag) then
 					P_LinedefExecute(timer.on_end_tag)
 				end
-				
+
 				timer.active = false
 			end
 		end

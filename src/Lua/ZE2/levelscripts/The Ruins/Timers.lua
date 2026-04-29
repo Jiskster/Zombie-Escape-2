@@ -12,14 +12,14 @@ ZE2:AddTimer("THERUINSUT_2", {
 	extrainfo = {
 		[1] = {
 			event_time = 10*TICRATE,
-			event_func = do 
+			event_func = function()
 				S_StartSound(nil, sfx_utdgr)
-				chatprint("\x82\* Zombie battle in\x85 10 \x82seconds!")
+				chatprint("\x82* Zombie battle in\x85 10 \x82seconds!")
 			end
 		},
 		[2] = {
-			event_time = 1*TICRATE,
-			event_func = do
+			event_time = TICRATE,
+			event_func = function()
 				S_StartSound(nil, sfx_utbtl)
 			end
 		}
@@ -27,9 +27,9 @@ ZE2:AddTimer("THERUINSUT_2", {
 	on_end = function()
 		S_ChangeMusic("UTBTL2", true)
 		mapmusname = "UTBTL2"
-		
+
 		ZE2:StartTimer("THERUINSUT_3")
-		
+
 		for player in players.iterate do
 			if player.mo and player.mo.valid and (player.xSlinger.team == 1) then
 				P_LinedefExecute(113, player.mo)
@@ -46,7 +46,7 @@ ZE2:AddTimer("THERUINSUT_3", {
 	textcolor = SKINCOLOR_RED,
 	on_end = function()
 		ZE2:StartTimer("THERUINSUT_4")
-	
+
 		for player in players.iterate do
 			if player.mo and player.mo.valid and (player.xSlinger.team == 2) then
 				P_LinedefExecute(113, player.mo)
@@ -60,11 +60,11 @@ ZE2:AddTimer("THERUINSUT_4", {
 	text = "Survive the zombies!",
 	time = 50*TICRATE,
 	textcolor = SKINCOLOR_GREEN,
-	on_end = function()	
+	on_end = function()
 		S_StartSound(nil, sfx_utesc)
 		S_ChangeMusic("UNGRN", true)
 		mapmusname = "UNGRN"
-		
+
 		for player in players.iterate do
 			if player.mo and player.mo.valid and (player.xSlinger.team == 1) then
 				P_LinedefExecute(114, player.mo) -- 114 is the teleport after the zombie attack
@@ -81,28 +81,28 @@ ZE2:AddTimer("THERUINSUT_5", {
 		-- Presidential Speech
 		[1] = {
 			event_time = 19*TICRATE,
-			event_func = do
-				chatprint("\x89\<Toriel>\x80 You want to leave so badly? Hmph...")
+			event_func = function ()
+				chatprint("\x89<Toriel>\x80 You want to leave so badly? Hmph...")
 				S_StartSound(nil, sfx_trtlk)
 			end
 		},
 		[2] = {
 			event_time = 15*TICRATE,
-			event_func = do
-				chatprint("\x89\<Toriel>\x80 You are just like the others. There is only one solution to this")
+			event_func = function ()
+				chatprint("\x89<Toriel>\x80 You are just like the others. There is only one solution to this")
 				S_StartSound(nil, sfx_trtlk)
 			end
 		},
 		[3] = {
 			event_time = 5*TICRATE,
-			event_func = do
-				chatprint("\x89\<Toriel>\x80 Prove yourself... Prove to me you are strong enough to survive.")
+			event_func = function()
+				chatprint("\x89<Toriel>\x80 Prove yourself... Prove to me you are strong enough to survive.")
 				S_StartSound(nil, sfx_trtlk)
 			end
 		},
 		[4] = {
 			event_time = 1*TICRATE,
-			event_func = do
+			event_func = function()
 				S_StartSound(nil, sfx_utbtl)
 			end
 		}
@@ -110,7 +110,7 @@ ZE2:AddTimer("THERUINSUT_5", {
 	on_end = function()
 		S_ChangeMusic("UTBTLT", true)
 		mapmusname = "UTBTLT"
-		
+
 		for player in players.iterate do
 			if player.mo and player.mo.valid then
 				if (player.xSlinger.team == 1) then
@@ -118,10 +118,10 @@ ZE2:AddTimer("THERUINSUT_5", {
 				elseif (player.xSlinger.team == 2) then
 					P_LinedefExecute(116, player.mo)
 				end
-				
+
 				player.mo.health = 1
 				player.mo.maxhealth = 1
-				
+
 				-- umm
 				if player.mo.shield_health then
 					player.mo.shield_health = 2
@@ -130,5 +130,5 @@ ZE2:AddTimer("THERUINSUT_5", {
 		end
 	end,
 	textcolor = SKINCOLOR_WHITE,
-	lua_linedef_exec = "THERUINSUT5",
+	lua_linedef_exec = "THERUINSUT5"
 })

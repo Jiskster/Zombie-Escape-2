@@ -35,7 +35,7 @@ sfxinfo[sfx_csgogo].caption = "\"Go, Go, Go!\""
 sfxinfo[sfx_csflbk].caption = "\"Team Fallback!\""
 sfxinfo[sfx_ddblud].caption = "\"What Is Doing On The Calculator?\""
 
-mobjinfo[MT_ZEMO_BUBBLE] = {		
+mobjinfo[MT_ZEMO_BUBBLE] = {
 	doomednum = -1,
 	spawnstate = S_ZEMO_BUBBLE,
 	spawnhealth = 2000,
@@ -64,7 +64,7 @@ function ZE2:AddEmote(emote_spr, name, desc, sound, team)
 		["Sound"] = sound or 100,
 		["Team"] = team or 0,
 	}
-	
+
 	print("Added ZE2 Emote: " + self.Emotes[#self.Emotes].Name +" ("+#self.Emotes+")" )
 end
 
@@ -107,30 +107,30 @@ ZE2:AddEmote(SPR_ZT17, "TEAM FALL BACK!", "Counter Strike 1.6 radio command", sf
 ZE2:AddEmote(SPR_ZT18, "einstein", "what is this diddy blud doing on the calculator", sfx_ddblud)
 
 COM_AddCommand("z_emote", function(player, emotenum)
-	if player.mo and player.mo.valid 
+	if player.mo and player.mo.valid
 	and player.playerstate ~= PST_DEAD and
 	netgame and multiplayer then
 		local emotenum_tonum = tonumber(emotenum)
-		
+
 		if not ZE2.Emotes[emotenum_tonum] then
 			CONS_Printf(player, "Invalid Emote: ("+emotenum_tonum+")")
 			return
 		end
-		
+
 		if ZE2.Emotes[emotenum_tonum].Team then
 			if player.mo.team ~= ZE2.Emotes[emotenum_tonum].Team then
 				CONS_Printf(player, "Emote "..emotenum_tonum.." is locked to Team "..ZE2.Emotes[emotenum_tonum].Team)
 				return
 			end
 		end
-		
+
 		if not(player.emotebubble) and not player.lastemotepress then
 			player.lastemotepress = (TICRATE*3 + 25)
 			player.mo.emotebubble = P_SpawnMobj(player.mo.x,player.mo.y,player.mo.z+player.mo.height,MT_ZEMO_BUBBLE)
 			local ebub = player.mo.emotebubble
 			ebub.target = player.mo
 			ebub.isemotebubble = true
-			
+
 			ebub.sprite = ZE2.Emotes[emotenum_tonum].Sprite
 			P_SetScale(ebub, ebub.scale/4)
 			S_StartSound(player.mo,ZE2.Emotes[emotenum_tonum].Sound)
@@ -141,16 +141,16 @@ end)
 COM_AddCommand("z_emotelist", function(player, page)
 	local foundemote = false
 	page = max(tonumber($) or 1, 1)
-	
-	CONS_Printf(player,"\x8A\#PAGE \$page\# (z_emotelist <page>)")
+
+	CONS_Printf(player,"\x8A" .. "PAGE " .. page .. " (z_emotelist <page>)")
 	for i=((page-1)*10)+1,(page)*10 do
 		if ZE2.Emotes[i] then
 			local name = ZE2.Emotes[i].Name
 			local description = ZE2.Emotes[i].Description
-			
+
 			if name and description then
-				CONS_Printf(player,"\x82\+ (\$i\): \$name\")
-				CONS_Printf(player,"\x80\| Description: \$description\")
+				CONS_Printf(player,"\x82" .. i .. ": " .. name)
+				CONS_Printf(player,"\x80" .. "Description: " .. description)
 			end
 		end
 	end
@@ -165,10 +165,10 @@ COM_AddCommand("z_setemote", function(player, slot, emote)
 		CONS_Printf(player,"Slot must be a valid number. And between 1 - 3")
 		return
 	end
-	
+
 	if ZE2.Emotes[tonumber(emote)] then
 		player.emoteslots[tonumber(slot)] = tonumber(emote)
-		CONS_Printf(player,"Slot \$tonumber(slot)\ replaced \$ZE2.Emotes[tonumber(emote)].Name\")
+		CONS_Printf(player,"Slot " .. tonumber(slot) " replaced " .. ZE2.Emotes[tonumber(emote)].Name)
 		return
 	else
 		CONS_Printf(player,"Invalid Emote.")
@@ -183,13 +183,13 @@ addHook("PlayerThink", function(player)
 end)
 
 addHook("MobjThinker", function(mobj)
-	if mobj.isemotebubble ~= true then 
-		return 
+	if mobj.isemotebubble ~= true then
+		return
 	end
-	
+
 	mobj.em_inc = $ or 0
 	mobj.em_inc = $ + 1
-	
+
 	if mobj.target and mobj.target.valid and mobj.target.player then
 		P_MoveOrigin(mobj, mobj.target.x, mobj.target.y, mobj.target.z+mobj.target.height)
 	else
@@ -197,7 +197,7 @@ addHook("MobjThinker", function(mobj)
 			P_RemoveMobj(mobj)
 		end
 	end
-	
+
 	if mobj.target and mobj.target.player.emotetime then
 		if mobj.em_inc > (mobj.target.player.emotetime + 10) then
 			mobj.target.emotebubble = nil
@@ -211,8 +211,8 @@ addHook("MobjThinker", function(mobj)
 			return
 		end
 	end
-	
-	if mobj.target and mobj.target.player.emotetime
+
+	if mobj.target and mobj.target.player.emotetime then
 		if mobj.em_inc > mobj.target.player.emotetime then
 			mobj.scale = $/2
 		end

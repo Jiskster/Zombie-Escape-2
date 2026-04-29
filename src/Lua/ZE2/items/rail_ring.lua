@@ -28,7 +28,7 @@ states[S_XS_RAILRING_DROP] = {
 
 local ring = function(x,y,z,scale,angle)
 	local th = P_SpawnMobj(x, y, z, MT_THOK)
-	if th and th.valid
+	if th and th.valid then
 		th.angle = angle + ANGLE_90
 		th.spriteyoffset = -20*FRACUNIT
 		th.sprite = SPR_STAB
@@ -42,33 +42,33 @@ local ring = function(x,y,z,scale,angle)
 		th.tics = 6
 	end
 end
-	
+
 local function trigger_func(self, mo)
 	mo.momx = $ / 3
 	mo.momy = $ / 3
 	P_SetObjectMomZ(mo, 2*FRACUNIT, false)
 	mo.state = S_PLAY_SPRING
-	
+
 	if mo.player and mo.player.valid then
 		mo.player.pflags = $ & ~(PF_JUMPED | PF_SPINNING)
 	end
 
 	local rail = xSlinger.SpawnMissile({
-		source = mo, 
+		source = mo,
 		type = MT_ZE2_RAILSHOT,
 		angle = mo.angle,
 		allow_aim = true,
 		iteminfo = self,
 		flags2 = MF2_DONTDRAW,
 	})
-	
+
 	if rail and rail.valid then
 		local range = 16
-		
+
 		for i = 0, range do
 			if i % 2 == 0 then
 				local spark = P_SpawnMobj(rail.x, rail.y, rail.z, MT_SPARK)
-				
+
 				if spark and spark.valid then
 					if i % 3 == 0 then
 						spark.color = mo.color
@@ -76,27 +76,27 @@ local function trigger_func(self, mo)
 					else
 						spark.scale = $ * 3/4
 					end
-				
+
 					if (i - 2) % 10 == 0 then
 						ring(rail.x,rail.y,rail.z,rail.scale/2,rail.angle)
 					end
 				end
 			end
-			
+
 			if rail.momx or rail.momy then
 				P_XYMovement(rail)
 				if not rail.valid then
 					break
 				end
 			end
-			
+
 			if rail.momz then
 				P_ZMovement(rail)
 				if not rail.valid then
 					break
 				end
 			end
-			
+
 			if (not rail.valid) or (xx == rail.x and y == rail.y and z == rail.z) then
 				break
 			end
@@ -111,34 +111,34 @@ end
 
 xSlinger.registerItem("rail_ring", {
 	displayname = "Rail Ring";
-	
+
 	shake = 20;
-	
+
 	icon = "XSG_RAIL";
-	
+
 	dropstate = S_XS_RAILRING_DROP;
-	
+
 	sounds = {
 		use = sfx_rail1;
 		reload = {sfx_xsrel1, sfx_xsrel2};
 		pickup = sfx_None;
 		drop = sfx_None;
 	};
-	
+
 	firerate = 5;
-	
+
 	knockback = 350*FRACUNIT;
-	
+
 	damage = 950;
-	
+
 	ammo = 1;
-	
+
 	color = SKINCOLOR_AZURE;
-	
+
 	reload_time = 7*TICRATE;
-	
+
 	usefunc = trigger_func;
-	
+
 	skin_override = {
 		["fang"] = {
 			reload_time = 3*TICRATE,

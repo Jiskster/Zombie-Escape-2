@@ -18,7 +18,7 @@ return function(player)
 				player.ze2:UpdateDamageNumbers(t.damagenumbers, t.real_position, t.number)
 			end
 			
-			if t.tics_left & 1
+			if t.tics_left & 1 then
 				t.animation = $ + 1
 			end
 			

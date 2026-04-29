@@ -1,7 +1,7 @@
 local lastgt = GT_COOP
 
 return "ToggleHud", function(v, player)
-	if gametype == GT_ZE2 and lastgt ~= GT_ZE2 and netgame
+	if gametype == GT_ZE2 and lastgt ~= GT_ZE2 and netgame then
 		hud.disable("rankings")
 		hud.disable("score")
 		hud.disable("time")
@@ -10,7 +10,7 @@ return "ToggleHud", function(v, player)
 		hud.disable("rings")
 		hud.disable("stagetitle")
 		hud.disable("textspectator")
-	elseif gametype ~= GT_ZE2 and lastgt == GT_ZE2 
+	elseif gametype ~= GT_ZE2 and lastgt == GT_ZE2 then
 		hud.enable("rankings")
 		hud.enable("score")
 		hud.enable("time")

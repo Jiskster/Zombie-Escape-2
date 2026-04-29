@@ -52,51 +52,51 @@ sfxinfo[sfx_rs_fla] = {
 
 xSlinger.registerItem("flame_ring", {
 	displayname = "Flame Ring";
-	
+
 	icon = "FLAMIND";
-	
+
 	firerate = 2;
-	
+
 	color = SKINCOLOR_ORANGE;
-	
+
 	dropstate = S_ZE2_FLAMERING_DROP;
 	dropscale = 2*FU;
 	dropyoffset = 8*FU;
-	
+
 	autouse = true;
-	
+
 	damage = 3;
-	
+
 	knockback = 1*FRACUNIT;
-	
+
 	flags2 = MF2_AUTOMATIC;
-	
+
 	ammo = 50;
-	
+
 	reload_time = TICRATE*4;
 
 	usefunc = function(self, mo)
 		local player = mo.player
 		local pmo = player.mo
-		
+
 		local mt = MT_RS_THROWNFLAME
 		local wave = sin(leveltime*ANG10) * 600
 		local shot = xSlinger.SpawnMissile({
-			source = mo, 
+			source = mo,
 			type = mt,
 			angle = mo.angle + wave,
 			allow_aim = true,
 			iteminfo = self,
 		})
-		
+
 		-- Only play sound if missile is real.
 		if shot and shot.valid then
 			S_StartSound(shot, sfx_rs_fla)
 		end
-		
+
 		if not P_IsObjectOnGround(mo) then
 			local aim = max(-FRACUNIT, min(FRACUNIT, -player.aiming/13000))
-			if P_MobjFlip(mo) * aim > 0
+			if P_MobjFlip(mo) * aim > 0 then
 				aim = $ * 2/8
 			end
 			mo.momz = $ + FixedMul(mo.scale, aim)
@@ -109,13 +109,13 @@ xSlinger.registerItem("flame_ring", {
 			actionspd_multiplier = 3*FU/2,
 			damage_multiplier = FU/2,
 		}, 9, true)
-		
+
 		mo.flameringtarget = src
 	end;
 })
 
 addHook("MobjThinker", function(mo)
-	if not (mo and mo.valid) return end
+	if not (mo and mo.valid) then return end
 	mo.momx = $ * 85/100
 	mo.momy = $ * 85/100
 	mo.momz = $ * 85/100

@@ -82,7 +82,7 @@ local deprecated = {
 }
 
 --check for new events...
-for event_name, event_t in pairs(events)
+for event_name, event_t in pairs(events) do
 	if (xSlinger.events[event_name] == nil) then
 		xSlinger.events[event_name] = event_t
 		print("\x83"..xSlinger.internal_name..":\x80 Adding new hookevent... (\""..event_name..'")')

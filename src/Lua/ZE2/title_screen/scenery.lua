@@ -27,27 +27,11 @@ mobjinfo[MT_SCENERYZOMBIE] = {
         mass = 1
 }
 
-local function RandomSkin(num)
-	if num == 0
-		return "sonic"
-	elseif num == 1
-		return "tails"
-	elseif num == 2
-		return "knuckles"
-	elseif num == 3
-		return "amy"
-	elseif num == 4
-		return "fang"
-	elseif num == 5
-		return "metalsonic"
-	end
-end
-
 addHook("MobjThinker", function(mo)
-	if mo and mo.valid
-		if not mo.stuffdone
-			mo.skin = RandomSkin(P_RandomRange(0,5))
-			mo.color = P_RandomRange(1,158)
+	if mo and mo.valid then
+		if not mo.stuffdone then
+			mo.skin = skins[P_RandomRange(0, #skins - 1)]
+			mo.color = skincolors[P_RandomRange(1, #skincolors - 1)]
 			mo.stuffdone = 1
 		end
 	else
@@ -56,13 +40,12 @@ addHook("MobjThinker", function(mo)
 end, MT_SCENERYPLAYER)
 
 addHook("MobjThinker", function(mo)
-	if mo and mo.valid
-		if not mo.stuffdone
+	if mo and mo.valid then
+		if not mo.stuffdone then
 			mo.skin = "zsonic"
-			local alphachance = P_RandomChance(FU/8)
-			if alphachance == true
+			if P_RandomChance(FU / 8) then
 				mo.color = SKINCOLOR_ALPHAZOMBIE
-				mo.scale = mo.scale*3/2
+				mo.scale = (mo.scale * 3) / 2
 			else
 				mo.color = SKINCOLOR_ZOMBIE
 			end

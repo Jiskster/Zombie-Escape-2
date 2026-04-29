@@ -26,7 +26,7 @@ skincolors[SKINCOLOR_CHROMA] = {
 	accessible = false
 }
 
-addHook("ThinkFrame", do
+addHook("ThinkFrame", function()
     local realhue = (leveltime*anim_speed % 256)
 
     for i,v in ipairs(original_ramp) do

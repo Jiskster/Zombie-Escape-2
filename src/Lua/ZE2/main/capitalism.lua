@@ -11,7 +11,7 @@ function ZE2:GivePlayerCash(player, amount)
 	else
 		player.ze2.cash = $ + amount
 	end
-	
+
 	return true
 end
 
@@ -23,23 +23,23 @@ function ZE2:DeleteCrate3D(door)
 			end
 		end
 	end
-	
+
 	door.made3d = false
 	door.flags2 = $ &~MF2_DONTDRAW
 end
 
 function ZE2:GetCameraMobj()
 	local cam = camera
-	if (displayplayer and displayplayer.valid)
-		
-		if not CV_FindVar("chasecam").value
-			
+	if (displayplayer and displayplayer.valid) then
+
+		if not CV_FindVar("chasecam").value then
+
 			local pmo = displayplayer.realmo
-			if not (pmo and pmo.valid)
+			if not (pmo and pmo.valid) then
 				pmo = displayplayer.mo
 			end
-			
-			if (pmo and pmo.valid)
+
+			if (pmo and pmo.valid) then
 				local th = P_SpawnMobj(
 					pmo.x,
 					pmo.y,
@@ -53,13 +53,13 @@ function ZE2:GetCameraMobj()
 		else
 			cam = camera
 		end
-		
+
 		if displayplayer.awayviewtics
-		and (displayplayer.awayviewmobj and displayplayer.awayviewmobj.valid)
+		and (displayplayer.awayviewmobj and displayplayer.awayviewmobj.valid) then
 			cam = displayplayer.awayviewmobj
 		end
-		
-		if not (cam and cam.valid)
+
+		if not (cam and cam.valid) then
 			cam = camera
 		end
 	end
@@ -119,7 +119,7 @@ mobjinfo[MT_RUBY_BOX] = {
 	//$Category Zombie Escape 2
 	//$Name Ruby Crate
 	//$Sprite RBYMARAL
-	
+
 	doomednum = 863,
 	spawnstate = S_RUBY_BOX,
 	deathstate = S_RUBY_BOX_BREAK,
@@ -145,16 +145,16 @@ states[S_RUBY_BOX_BREAK] = {
 	action = function(mo)
 		mo.flags2 = $|MF2_DONTDRAW
 		ZE2:DeleteCrate3D(mo)
-		
+
 		local sfx = P_SpawnGhostMobj(mo)
 		sfx.flags2 = $|MF2_DONTDRAW
 		sfx.fuse = TICRATE
 		S_StartSound(sfx,mo.info.deathsound)
-		
+
 		A_RubyDrop(mo, 5)
 
 		--Cool !
-		for i = 0,8
+		for i = 0,8 do
 			local fa = FixedAngle(45*FU*i)
 			local plank = P_SpawnMobjFromMobj(mo,
 				P_ReturnThrustX(nil, fa, FixedDiv(mo.radius,mo.scale)),
@@ -184,15 +184,15 @@ addHook("PlayerThink", function(player)
 	if player.ze2.cash > player.ze2.cash_limit then
 		player.ze2.cash = player.ze2.cash_limit
 	end
-	
+
 	if player.ze2.currencydelay then
 		player.ze2.currencydelay = $ - 1
 	end
 end)
 
 addHook("MobjDeath", function(mobj)
-	if gametype ~= GT_ZE2 return end
-	
+	if gametype ~= GT_ZE2 then return end
+
 	if mobj.cashholding then
 		A_RubyDrop(mobj,mobj.cashholding)
 		mobj.cashholding = 0
@@ -201,8 +201,8 @@ end)
 
 addHook("MobjSpawn", function(mobj)
 	if gametype ~= GT_ZE2 then return end
-	
-	if mobjinfo[mobj.type].rubydrop and type(mobjinfo[mobj.type].rubydrop) == "table" 
+
+	if mobjinfo[mobj.type].rubydrop and type(mobjinfo[mobj.type].rubydrop) == "table"
 	and #mobjinfo[mobj.type].rubydrop == 2 then
 		local ruby_count = P_RandomRange(mobjinfo[mobj.type].rubydrop[1],mobjinfo[mobj.type].rubydrop[2])
 		mobj.cashholding = ruby_count
@@ -213,7 +213,7 @@ end)
 addHook("TouchSpecial", function(special, toucher)
 	if toucher and toucher.valid and toucher.player then
 		local team = toucher.player.xSlinger.team
-		
+
 		if toucher.player.ze2.cash + 1 > toucher.player.ze2.cash_limit then
 			return true
 		elseif toucher.player.ze2.currencydelay then
@@ -235,7 +235,7 @@ addHook("MobjDeath", function(mobj)
 	mobj.momy = 0
 	mobj.momz = 0
 	mobj.alpha = 0
-	
+
 	if mobj and mobj.valid then
 		local iv = P_SpawnMobj(mobj.x, mobj.y, mobj.z, MT_IVSP)
 		iv.fuse = 15
@@ -243,7 +243,7 @@ addHook("MobjDeath", function(mobj)
 		iv.flags = $ & ~(MF_NOGRAVITY)
 		P_SetObjectMomZ(iv, P_RandomRange(2,7)*FU, true)
 		P_Thrust(iv, iv.angle, P_RandomRange(4,25)*FU)
-		
+
 		iv.color = SKINCOLOR_RUBY
 		iv.colorized = true
 	end
@@ -254,9 +254,9 @@ addHook("MobjThinker", function(mobj)
 		mobj.color = SKINCOLOR_RUBY
 		mobj.colorized = true
 	end
-	
-	if not mobj.health then return end 
-	
+
+	if not mobj.health then return end
+
 	--P_RingZMovement(mobj)
 	if mobj.eflags & MFE_JUSTHITFLOOR then
 		P_SetObjectMomZ(mobj, abs(FixedDiv(mobj.lastmomz, P_RandomRange(2,3)*FRACUNIT)))
@@ -268,19 +268,19 @@ addHook("MobjThinker", function(mobj)
 		end
 	end
 	mobj.lastmomz = mobj.momz
-	
+
 	if mobj.fuse < 3*TICRATE then
-		mobj.flags2 = $^^MF2_DONTDRAW
+		mobj.flags2 = $ ^^ MF2_DONTDRAW
 	end
 	local findrange = 1024*mobj.scale
 	local pmofound
-	
-	for p in players.iterate
+
+	for p in players.iterate do
 		if p.spectator then continue end
 		if not (p.mo and p.mo.valid) then continue end
 		if p.xSlinger.team ~= 1 then continue end
 		if p.ze2.cash >= p.ze2.cash_limit then continue end
-		
+
 		local mo = p.mo
 		local dist = FixedHypot(FixedHypot(mobj.x - mo.x, mobj.y - mo.y), mobj.z - mo.z)
 
@@ -291,7 +291,7 @@ addHook("MobjThinker", function(mobj)
 			else
 				local newpmodist = R_PointToDist2(mobj.x, mobj.y, mo.x, mo.y)
 				local oldpmodist = R_PointToDist2(mobj.x, mobj.y, pmofound.x, pmofound.y)
-				
+
 				if newpmodist < oldpmodist then
 					pmofound = mo
 				end
@@ -307,8 +307,8 @@ addHook("MobjThinker", function(mobj)
 		mobj.spritexscale,
 		mobj.spriteyscale = $1+mom,$2-mom
 	end
-	
-	if P_RandomChance(FU/8)
+
+	if P_RandomChance(FU/8) then
 		local wind = P_SpawnMobj(
 			mobj.x + P_RandomRange(-18,18)*mobj.scale,
 			mobj.y + P_RandomRange(-18,18)*mobj.scale,
@@ -320,7 +320,7 @@ addHook("MobjThinker", function(mobj)
 		wind.color = P_RandomChance(FU/2) and SKINCOLOR_RED or SKINCOLOR_CRIMSON
 		wind.colorized = true
 		wind.alpha = FU/2
-		
+
 		P_SetObjectMomZ(wind,P_RandomRange(1,3)*FU)
 	end
 
@@ -336,71 +336,71 @@ end, MT_CRRUBY)
 --TODO: this code kinda sucks ngl
 addHook("MobjThinker",function(door)
 	if not (door and door.valid) then return end
-	
+
 	/*
 	--You should really be using `mobjscale` in the Custom tab.
 	door.radius = FixedMul(mobjinfo[MT_RUBY_BOX].radius, door.spritexscale)
 	door.height = FixedMul(mobjinfo[MT_RUBY_BOX].height, door.spriteyscale)
 	*/
-	
+
 	door.takis_flingme = false
 	door.takis_monitorgibs = true
 	door.takis_gibsprite = SPR_RBYM
 	door.takis_gibframes = {P,Q,R,S}
 	door.takis_gibframeflags = FF_PAPERSPRITE
-	
+
 	local dist = 0
 	local cullout = true
 	local doculling = true
-	if doculling
+	if doculling then
 		local cam = ZE2:GetCameraMobj()
-		
+
 		dist = R_PointToDist2(cam.x,cam.y, door.x,door.y)
-		
+
 		local thok = P_SpawnMobj(cam.x, cam.y, cam.z, MT_RAY)
 		thok.angle = cam.angle
 		thok.flags2 = $|MF2_DONTDRAW
 		if dist <= 5000*FU
-		and P_CheckSight(thok,door)
+		and P_CheckSight(thok,door) then
 			cullout = false
 		end
-		
-		if not cullout
+
+		if not cullout then
 			local back = FixedAngle(AngleFixed(thok.angle)+180*FU)
 			local diff = FixedAngle(AngleFixed(R_PointToAngle2(thok.x, thok.y, door.x, door.y))-AngleFixed(back))
-			if AngleFixed(diff) > 180*FU
+			if AngleFixed(diff) > 180*FU then
 				diff = InvAngle(diff)
 			end
-			
+
 			--in the cameras view
-			if AngleFixed(diff) > 90*FU
+			if AngleFixed(diff) > 90*FU then
 				cullout = false
 			else
 				cullout = true
 			end
 		end
-		
-		if not door.health
+
+		if not door.health then
 			cullout = true
 		end
 		P_RemoveMobj(thok)
 	end
-	
-	if cullout
+
+	if cullout then
 		ZE2:DeleteCrate3D(door)
 		return
 	end
-	
-	if not cullout
-		if not door.made3d
+
+	if not cullout then
+		if not door.made3d then
 			local list
 			local flip = P_MobjFlip(door)
 			door.flags2 = $|MF2_DONTDRAW
-			
+
 			door.sides = {}
 			list = door.sides
-			
-			for i = 1,4
+
+			for i = 1,4 do
 				local angle = door.angle+(FixedAngle(90*FU*(i-1)))
 				list[0+i] = P_SpawnMobjFromMobj(door,
 					--dont scale up door.spritexscale, since the func already does
@@ -435,7 +435,7 @@ addHook("MobjThinker",function(door)
 			list[5].spritexscale = door.spritexscale
 			list[5].spriteyscale = door.spritexscale
 			P_SetOrigin(list[5],list[5].x,list[5].y,GetActorZ(door,list[5],2))
-			
+
 			list[6] = P_SpawnMobjFromMobj(door,0,0,0,MT_THOK)
 			list[6].frame = C
 			list[6].sprite = SPR_RBYM
@@ -447,14 +447,14 @@ addHook("MobjThinker",function(door)
 			list[6].spritexscale = door.spritexscale
 			list[6].spriteyscale = door.spritexscale
 			P_SetOrigin(list[6],list[6].x,list[6].y,GetActorZ(door,list[6],1))
-			
+
 			door.made3d = true
-		
+
 		--update positions
 		else
 			local list = door.sides
-			
-			for i = 1,4
+
+			for i = 1,4 do
 				local angle = door.angle+(FixedAngle(90*FU*(i-1)))
 				list[0+i].angle = angle+ANGLE_90
 				list[0+i].height = 32*FU
@@ -491,7 +491,7 @@ addHook("MobjThinker",function(door)
 				door.y + door.momy,
 				(P_MobjFlip(door) == 1 and door.z or door.z + door.height) + door.momz
 			)
-			
+
 		end
 	end
 end,MT_RUBY_BOX)

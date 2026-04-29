@@ -5,10 +5,10 @@ local function DrawTeammate(v,p, x,y, props)
 	local scale = props.scale or FU
 	local drawcash = props.drawcash
 	local longnames = props.longnames
-	
+
 	local flags = V_SNAPTOTOP
 	if (p.quittime and (leveltime/TICRATE % 2)) then flags = $|V_50TRANS end
-	
+
 	local skin = p.skin
 	local color = v.getColormap(skin,p.realmo.color)
 	local name = string.sub(p.name,1, (longnames and 24 or 15))
@@ -17,17 +17,17 @@ local function DrawTeammate(v,p, x,y, props)
 		-- wait, that's not a real icon
 		skinpatch = v.cachePatch("CHARICO")
 	end
-	
+
 	local icon_adjust = FixedMul(32*FU, FixedMul(FU/3, scale))
 	local maxhealth = p.mo.maxhealth or "???"
-	
+
 	v.drawScaled(x, y,
-		FixedMul(FU/3, scale),     
+		FixedMul(FU/3, scale),
 		skinpatch,
 		flags,
 		color
 	)
-	
+
 	----name
 	customhud.CustomFontString(v,
 		x + icon_adjust, y,
@@ -39,7 +39,7 @@ local function DrawTeammate(v,p, x,y, props)
 		(p == consoleplayer) and SKINCOLOR_YELLOW or teamcolor
 	)
 	----
-	
+
 	----health
 	customhud.CustomFontString(v,
 		x + icon_adjust,
@@ -54,7 +54,7 @@ local function DrawTeammate(v,p, x,y, props)
 	if p.mo.shield_health and p.mo.shield_def then
 		local healthstring_width = customhud.CustomFontStringWidth(v,  " +"..p.mo.health.."/"..maxhealth, "TNYFC", FixedMul(FU/2, scale))
 		local shield_color = p.mo.shield_def.color or SKINCOLOR_WHITE
-		
+
 		local shield_health = tostring(p.mo.shield_health)
 		customhud.CustomFontString(v,
 			x + icon_adjust + healthstring_width,
@@ -68,12 +68,12 @@ local function DrawTeammate(v,p, x,y, props)
 		)
 	end
 	----
-	
+
 	----cash
 	--yes i know its "ruby" not "rubie"
 	local rubiestring = ''
 	local rubiecolor
-	if drawcash
+	if drawcash then
 		rubiestring = "$ "..p.ze2.cash
 		rubiecolor = SKINCOLOR_FOREST
 	else
@@ -90,14 +90,14 @@ local function DrawTeammate(v,p, x,y, props)
 		FixedMul(FU/2, scale),
 		rubiecolor
 	)
-	
+
 	local rubielength = customhud.CustomFontStringWidth(v,
 		rubiestring.." ",
 		"TNYFC",
 		FixedMul(FU/2, scale)
 	)
 	----
-	
+
 	--haha
 	local pingas = (p.quittime) and "QUIT" or (p.ping.."ms")
 	--triple tenary
@@ -116,8 +116,8 @@ end
 
 return "Tabscores", function(v)
  	local timeemb = v.cachePatch("NGRTIMER")
-	local the_time 
-	
+	local the_time
+
 	if ZE2.round_active then
 		if ZE2.time_limit then
 			the_time = G_TicsToMTIME(ZE2.time_limit - ZE2.game_time)
@@ -130,14 +130,14 @@ return "Tabscores", function(v)
 
     if the_time ~= nil then
         -- Time
-        customhud.CustomFontString(v, 150, 1, the_time, "STCFC", 
+        customhud.CustomFontString(v, 150, 1, the_time, "STCFC",
         (V_SNAPTOTOP), nil , nil, SKINCOLOR_BEIGE)
-        
+
         -- Clock Icon
         v.drawScaled(138*FRACUNIT, 0, FRACUNIT,
         timeemb, (V_SNAPTOTOP))
     end
-    
+
     v.drawFill(160,25,1,158,0|V_SNAPTOTOP)
 
     customhud.CustomFontString(v,
@@ -153,25 +153,25 @@ return "Tabscores", function(v)
     v.drawStretched(
         (80-8)*FU,
         15*FU,
-		
+
         16*FU,
         6*FU,
-		
-        v.cachePatch("Z_BG_BLUE"), 
+
+        v.cachePatch("Z_BG_BLUE"),
         V_SNAPTOTOP
     )
     customhud.CustomFontString(v,
         79,
         14,
         tostring(ZE2.SurvivorCount()),
-        "STCFC", 
+        "STCFC",
         (V_SNAPTOTOP),
         "center",
         nil,
         SKINCOLOR_BLUE
     )
 
-	
+
     customhud.CustomFontString(v,
         240*FU,
         5*FU,
@@ -185,41 +185,41 @@ return "Tabscores", function(v)
     v.drawStretched(
         (240-8)*FU,
         15*FU,
-		
+
         16*FU,
         6*FU,
-		
-        v.cachePatch("Z_BG_RED"), 
+
+        v.cachePatch("Z_BG_RED"),
         V_SNAPTOTOP
     )
     customhud.CustomFontString(v,
         239,
         14,
         tostring(ZE2.ZombieCount()),
-        "STCFC", 
+        "STCFC",
         (V_SNAPTOTOP),
         "center",
         nil,
         SKINCOLOR_RED
     )
-	
+
 	local team_maxrows = 15
 	local team_hugerows = 10
 	local team_hugesize = FU*3/2
-	
+
 	local SurvivorList = ZE2.SurvivorList()
-	local team_scale = #SurvivorList <= team_hugerows and team_hugesize or FU 
-    for i,p in ipairs(SurvivorList)
+	local team_scale = #SurvivorList <= team_hugerows and team_hugesize or FU
+    for i,p in ipairs(SurvivorList) do
         i = $-1
         local x,y = 20*FU, 24*FU + ((32*team_scale/3) * i)
         --1 guy gets cut off lololol
-        if i > 29
+        if i > 29 then
             continue
-        elseif i >= team_maxrows
+        elseif i >= team_maxrows then
             x = $+(75*FU)
             y = $-(32*team_scale/3 * team_maxrows)
         end
-		
+
 		DrawTeammate(v,p, x,y, {
 			teamcolor = SKINCOLOR_BLUE,
 			drawcash = true,
@@ -229,18 +229,18 @@ return "Tabscores", function(v)
     end
 
 	local ZombieList = ZE2.ZombieList()
-	team_scale = #ZombieList <= team_hugerows and team_hugesize or FU 
-    for i,p in ipairs(ZombieList)
+	team_scale = #ZombieList <= team_hugerows and team_hugesize or FU
+    for i,p in ipairs(ZombieList) do
         i = $-1
         local x,y = 180*FU, 24*FU + ((32*team_scale/3) * i)
         --1 guy gets cut off lololol
-        if i > 29
+        if i > 29 then
             continue
-        elseif i >= team_maxrows
+        elseif i >= team_maxrows then
             x = $+(75*FU)
             y = $-(32*team_scale/3 * team_maxrows)
         end
-		
+
 		DrawTeammate(v,p, x,y, {
 			teamcolor = SKINCOLOR_RED,
 			scale = team_scale,
@@ -253,11 +253,11 @@ return "Tabscores", function(v)
 	local max_rounds = ZE2.getMaxRoundsFromMap()
 	local roundcount_text = current_round .. " / " .. max_rounds
 	local rc_yoffset = 0
-	
+
 	if CV_FindVar("showfps").value then
 		rc_yoffset = $ - 8
-	end	
-	
+	end
+
 	v.drawString(320, 200 - 16 + rc_yoffset, "\x82".."ROUNDS", V_SNAPTOBOTTOM|V_SNAPTORIGHT, "right")
 	v.drawString(320, 200 - 8  + rc_yoffset, roundcount_text , V_SNAPTOBOTTOM|V_SNAPTORIGHT, "right")
 
@@ -267,7 +267,7 @@ return "Tabscores", function(v)
     local totallength,totalheight = 0,0
     local offset = 0
 
-    for p in players.iterate
+    for p in players.iterate do
         if not (p.spectator) then continue end
         totallength = $+(customhud.CustomFontStringWidth(v,
             p.name,
@@ -280,20 +280,20 @@ return "Tabscores", function(v)
     length = $-(leveltime % (totallength+320))
     length = $+320
 
-    for p in players.iterate
+    for p in players.iterate do
         if not (p.spectator) then continue end
-		
+
         customhud.CustomFontString(v,
             length+offset,
             185,
             p.name,
-            "STCFC", 
+            "STCFC",
             (V_TRANSLUCENT|V_SNAPTOTOP),
             "left",
             nil,
             SKINCOLOR_SILVER
         )
-		
+
         offset = $+(
         customhud.CustomFontStringWidth(v,
             p.name,

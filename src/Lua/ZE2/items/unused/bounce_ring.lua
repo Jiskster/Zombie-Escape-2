@@ -26,7 +26,7 @@ addHook("MobjMoveCollide", function(tm, t)
 	if not (t.player and t.player.valid) then return end
 
 	if (t == tm.tracer)
-	or (t.player.xSlinger.team == tm.mobjteam)
+	or (t.player.xSlinger.team == tm.mobjteam) then
 		return false
 	end
 

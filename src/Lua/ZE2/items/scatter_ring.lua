@@ -16,7 +16,7 @@ freeslot("sfx_shgn")
 sfxinfo[sfx_shgn].caption = "Shotgun fires"
 
 -- totally not from ringslinger neo
-mobjinfo[MT_ZE2_THROWNSCATTER] = { 
+mobjinfo[MT_ZE2_THROWNSCATTER] = {
 	spawnstate = S_ZE2_THROWNSCATTER1,
 	--activesound = sfx_shgn,
 	deathstate = S_SPRK1,
@@ -89,40 +89,40 @@ end, MT_ZE2_THROWNSCATTER)
 
 xSlinger.registerItem("scatter_ring", {
 	displayname = "Scatter Ring";
-	
+
 	icon = "XSG_SCAT";
-	
+
 	dropstate = S_XS_SCATTERRING_DROP;
-	
+
 	color = SKINCOLOR_PURPLE;
-	
+
 	damage = 27;
-	
+
 	velocity_multiplier = 2*FRACUNIT;
-	
+
 	spread = 4;
-	
+
 	knockback = 21*FRACUNIT;
 	knockback_tics = 33;
-	
+
 	fuse = TICRATE/4;
-	
+
 	ammo = 4;
 	reload_time = 4*TICRATE;
-	
+
 	autouse = false;
 
 	firerate = TICRATE;
-	
+
 	flags2 = 0; -- MF2_...
-	
+
 	sounds = {
 		use = sfx_shgn;
 		reload = {sfx_xsrel1, sfx_xsrel2};
 		pickup = sfx_None;
 		drop = sfx_None;
 	};
-	
+
 	usefunc = function(self, mo)
 		local mt = MT_ZE2_THROWNSCATTER
 		local spread = self.spread
@@ -131,40 +131,40 @@ xSlinger.registerItem("scatter_ring", {
 		-- Horizontal
 		for i = -1, 1 do
 			local shot = xSlinger.SpawnMissile({
-				source = mo, 
+				source = mo,
 				type = mt,
 				angle = mo.angle + i * ANG1*spread,
 				allow_aim = true,
 				iteminfo = self,
 			})
-			
-			if shot and shot.valid
+
+			if shot and shot.valid then
 				shot.momx = $ + mo.momx / 3
 				shot.momy = $ + mo.momy / 3
 				shot.momz = $ + mo.momz / 3
 			end
 		end
-		
+
 		-- Vertical
 		for i = -1, 1, 2 do
-			local prevaim = player.aiming 
-			
+			local prevaim = player.aiming
+
 			player.aiming = $ + i * ANG1*spread
 			local shot = xSlinger.SpawnMissile({
-				source = mo, 
+				source = mo,
 				type = mt,
 				angle = mo.angle,
 				allow_aim = true,
 				iteminfo = self,
 			})
 			player.aiming = prevaim
-			if shot and shot.valid
+			if shot and shot.valid then
 				shot.momx = $ + mo.momx / 3
 				shot.momy = $ + mo.momy / 3
 				shot.momz = $ + mo.momz / 3
 			end
 		end
-		
+
 		do -- Player push back
 			local aim = max(-FRACUNIT, min(FRACUNIT, -player.aiming/13000))
 			if P_MobjFlip(mo) * aim > 0 then
@@ -172,7 +172,7 @@ xSlinger.registerItem("scatter_ring", {
 			end
 			mo.momz = $ + FixedMul(mo.scale, aim)
 			P_Thrust(mo, mo.angle, -FRACUNIT*9)
-			
+
 			if player and player.valid then
 				P_MovePlayer(player)
 			end

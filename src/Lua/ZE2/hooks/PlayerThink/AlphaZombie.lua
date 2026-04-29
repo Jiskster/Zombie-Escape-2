@@ -12,14 +12,14 @@ return function(player)
 		action = function()
 			if not player.ze2.special_cooldown then
 				player.ze2.special_cooldown = special.cooldown
-				
-				if special.sound ~= nil
+
+				if special.sound ~= nil then
 					S_StartSound(player.mo, special.sound)
 				end
-				
-				if special.effect ~= nil
+
+				if special.effect ~= nil then
 					local effect_table = {}
-					if special.effect_table ~= nil
+					if special.effect_table ~= nil then
 						effect_table = special.effect_table
 					end
 

@@ -5,12 +5,12 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 	ZE2.game_time = 0;
 	ZE2.time_limit = 0;
 	ZE2.team_won = 0;
-	
+
 	ZE2.mapladdertag = nil;
-	
-	ZE2.pregame_timeleft = ZE2.wait_time; 
+
+	ZE2.pregame_timeleft = ZE2.wait_time;
 	ZE2.zombie_releasetime = 0;
-	
+
 	ZE2.MapVoteList = {};
 	ZE2.MapVotes = {0,0,0};
 	ZE2.MapsOnVote = {
@@ -18,9 +18,9 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 		{votes = 0, mapnum = 1},
 		{votes = 0, mapnum = 1}
 	}; -- votes, mapnumber
-	
+
 	ZE2.NextMapVoted = nil;
-	
+
 	-- This is local
 	ZE2.charsel_selection = 1
 	ZE2.charsel_prevselection = 1
@@ -35,12 +35,12 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 		ZE2.lockPlayer(player) -- To make sure the player is the right skin for the team!
 		ZE2.resetPlayerHealth(player)
 	end
-	
+
 	if map then
 		if ZE2.queuing_round then
 			ZE2.rounds_left = $ - 1
 			ZE2.queuing_round = false
-			
+
 			/*
 			-- force reload everyone's weapon
 			for player in players.iterate do
@@ -63,10 +63,10 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 			*/
 		else
 			ZE2.rounds_left = tonumber(mapheaderinfo[map].ze2_rounds) or 3
-			
+
 			for i,v in pairs(ZE2.PreviousMaps) do
 				v.matches_ago = $ + 1
-				
+
 				if v.matches_ago >= 8 then
 					ZE2.PreviousMaps[i] = nil
 				end
@@ -80,34 +80,34 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 					max = 1;
 				}
 			end
-			
+
 			ZE2.PreviousMaps[map] = {
 				mapnum = map;
 				matches_ago = 0;
 			}
-			
+
 			-- reset everyone
 			for player in players.iterate do
 				player.ze2.selected_character = nil
 				ZE2.ResetPlayer(player, 1, true, true)
 			end
-			
+
 			ZE2.queuing_round = false
 		end
 
-		chatprint("\x84\* [ROUND " .. ZE2.getCurrentRound() .. "] *")
-		
+		chatprint("\x84* [ROUND " .. ZE2.getCurrentRound() .. "] *")
+
 		if mapheaderinfo[map].ze2_timelimit then
 			local input = tonumber(mapheaderinfo[map].ze2_timelimit)
 			ZE2.time_limit = input*60*TICRATE
 		end
-		
+
 		if mapheaderinfo[map].ze2_laddertag then
 			local input = tonumber(mapheaderinfo[map].ze2_laddertag)
 			ZE2.mapladdertag = input
 		end
 	end
-	
+
 	for player in players.iterate do
 		if player.ze2 then
 			player.ze2.ghostmode = false
@@ -119,7 +119,7 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 				G_DoReborn(#player)
 
 				-- If player hasn't selected character before, reset inventory with no items
-				local noitems = (player.ze2.selected_character == nil) 
+				local noitems = (player.ze2.selected_character == nil)
 				ZE2.ResetPlayer(player, 1, true, noitems) -- Change to survivor and reset inventory
 			end
 			player.ze2.injoinqueue = false

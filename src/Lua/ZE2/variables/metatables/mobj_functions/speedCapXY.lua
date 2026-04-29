@@ -5,12 +5,12 @@ end
 
 return function(self, limit, factor)
 	local spd = R_PointToDist2(0,0,self.momx,self.momy)
-	
-	if spd > limit
-		if factor == nil
+
+	if spd > limit then
+		if factor == nil then
 			factor = FixedDiv(limit, spd)
 		end
-		
+
 		doBrakesXY(self, factor)
 		return factor
 	end

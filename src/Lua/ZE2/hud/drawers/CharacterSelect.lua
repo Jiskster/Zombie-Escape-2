@@ -84,7 +84,7 @@ return "CharacterSelect", function(v, player)
 	local x = 160*FU
 	local y = 100*FU
 
-    if skinlist != ZE2.getSkinNums(player) then skinlist = ZE2.getSkinNums(player) end
+    if skinlist ~= ZE2.getSkinNums(player) then skinlist = ZE2.getSkinNums(player) end
 
     if not #skinlist then
         return end;

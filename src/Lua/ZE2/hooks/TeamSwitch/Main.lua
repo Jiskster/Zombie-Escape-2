@@ -20,9 +20,9 @@ return function(player, team, fromspectators, autobalance, scramble)
 					player.ze2.injoinqueue = not $
 
 					if player.ze2.injoinqueue then
-						chatprintf(player, "\x82* Game is currently ongoing. \x83\Added to join queue.", true)
+						chatprintf(player, "\x82* Game is currently ongoing. \x83Added to join queue.", true)
 					else
-						chatprintf(player, "\x82* Game is currently ongoing. \x85\Removed from join queue.", true) 
+						chatprintf(player, "\x82* Game is currently ongoing. \x85Removed from join queue.", true) 
 					end
 
 					player.ze2.injoinqueue_delay = 5*TICRATE

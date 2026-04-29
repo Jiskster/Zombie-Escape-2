@@ -23,7 +23,7 @@ KB.addKnockback = function(mo, tics, angle, thrust)
 	
 	local wasinlist = false
 	for id,othermo in ipairs(KB.list) do
-		if othermo == mo
+		if othermo == mo then
 			wasinlist = true
 			break
 		end

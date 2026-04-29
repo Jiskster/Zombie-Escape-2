@@ -1,4 +1,4 @@
-if pcall(do return _G["MT_CORONA"] end)
+if pcall(function() return _G["MT_CORONA"] end) then
     print("\131NOTICE:\128 Corona objects already loaded.")
     return
 end
