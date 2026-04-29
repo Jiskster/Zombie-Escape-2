@@ -125,6 +125,8 @@ xSlinger.registered_items[-1] = {
 	drop_on_death = true;
 }
 
+setmetatable(xSlinger.registered_items[-1], xSlinger.METATABLES.ITEMINFO) -- Just in case of an error.
+
 dofile "xSlinger/register" -- item registering
 
 -- Empty Slot Item
