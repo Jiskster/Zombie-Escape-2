@@ -28,9 +28,19 @@ mobjinfo[MT_SCENERYZOMBIE] = {
 }
 
 --Set scenery player skin and color
+local accessible_skincolors = {}
+local function UpdateSkinColors() --If new accessible skincolors are found
+	for i = 1, #skincolors - 1 do
+		if accessible_skincolors[i] then continue end --Is already on the list? skip
+		if not skincolors[i].accessible then continue end --Is not accessible? skip
+		table.insert(accessible_skincolors, skincolors[i].name)
+	end
+end
+UpdateSkinColors(); addHook("AddonLoaded", UpdateSkinColors) --Update when ZE2 is loaded and when other addons loads
+
 addHook("MobjSpawn", function(mo)
 	mo.skin = ZE2.registered_skins[P_RandomRange(1, #ZE2.registered_skins)]
-	mo.color = R_GetColorByName(skincolors[P_RandomRange(1, #skincolors - 1)].name)
+	mo.color = R_GetColorByName(accessible_skincolors[P_RandomRange(1, #accessible_skincolors - 1)])
 end, MT_SCENERYPLAYER)
 
 --Set scenery zombie
