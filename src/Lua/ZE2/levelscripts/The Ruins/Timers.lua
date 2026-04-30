@@ -119,12 +119,10 @@ ZE2:AddTimer("THERUINSUT_5", {
 					P_LinedefExecute(116, player.mo)
 				end
 
-				player.mo.health = 1
-				player.mo.maxhealth = 1
-
-				-- umm
+				player.mo.health = 20
+				player.mo.maxhealth = 20
 				if player.mo.shield_health then
-					player.mo.shield_health = 2
+					player.mo.shield_health = 10
 				end
 			end
 		end
