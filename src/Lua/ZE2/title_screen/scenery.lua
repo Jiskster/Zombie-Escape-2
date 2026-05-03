@@ -1,6 +1,5 @@
-freeslot("MT_SCENERYPLAYER", "MT_SCENERYZOMBIE", "S_SCENERYPLAY_STND", "S_SCENERYPLAY_WALK")
+freeslot("MT_SCENERYPLAYER", "MT_SCENERYZOMBIE", "S_SCENERYPLAY_WALK")
 
-states[S_SCENERYPLAY_STND] = {SPR_PLAY, A, 1, nil, 0, 0, S_SCENERYPLAY_WALK}
 states[S_SCENERYPLAY_WALK] = {states[S_PLAY_WALK].sprite, states[S_PLAY_WALK].frame, 2*TICRATE, nil, 0, 0, S_SCENERYPLAY_WALK}
 
 mobjinfo[MT_SCENERYPLAYER] = {
@@ -8,11 +7,12 @@ mobjinfo[MT_SCENERYPLAYER] = {
 	--$Category Doomed Corp
 	--$Color 1
 	doomednum = 1735,
-	spawnstate = S_SCENERYPLAY_STND,
+	spawnstate = S_SCENERYPLAY_WALK,
 	speed = 0,
 	radius = 16*FRACUNIT,
 	height = 56*FRACUNIT,
-	mass = 1
+	mass = 1,
+	flags = MF_SCENERY
 }
 
 mobjinfo[MT_SCENERYZOMBIE] = {
@@ -20,11 +20,12 @@ mobjinfo[MT_SCENERYZOMBIE] = {
 	--$Category Doomed Corp
 	--$Color 1
 	doomednum = 1736,
-	spawnstate = S_SCENERYPLAY_STND,
+	spawnstate = S_SCENERYPLAY_WALK,
 	speed = 0,
 	radius = 16*FRACUNIT,
 	height = 56*FRACUNIT,
-	mass = 1
+	mass = 1,
+	flags = MF_SCENERY
 }
 
 addHook("MobjSpawn", function(mo)
