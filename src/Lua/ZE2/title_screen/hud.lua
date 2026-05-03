@@ -1,36 +1,49 @@
-local title_tics = 0
+// Title Screen by GLide KS
 
-addHook("HUD", function(v)
-	title_tics = $+1
+--Logo information
+local ZE2_LOGO = "ZE2_TTL"
+local x = 25*FU
+local y = 15*FU
 
-	local ze2logo1 = v.cachePatch("ZE2_TTL00")
-	local title_xoffset = 25*FU
-	local title_yoffset = 15*FU
-	local title_timetoappear = 1*TICRATE
+--For title screen functionality
+local appear_time = 3*TICRATE
+local titletics = 0
+local alpha = 0
 
-	local drawtics_frame1 = 2
-	local drawtics_frame2 = 4
-	local drawtics_frame3 = 6
-	local drawtics_frame4 = 8
+--localize v. functions
+local getColormap
+local cachePatch
+local drawScaled
 
-	if title_tics >= title_timetoappear and title_tics <= (title_timetoappear+drawtics_frame1) then
-		local ze2logo1 = v.cachePatch("ZE2_TTL00")
-		v.drawScaled(title_xoffset, title_yoffset, FU/4, ze2logo1)
-	elseif title_tics >= (title_timetoappear+drawtics_frame1) and title_tics <= (title_timetoappear+drawtics_frame2) then
-		local ze2logo2 = v.cachePatch("ZE2_TTL01")
-		v.drawScaled(title_xoffset, title_yoffset, FU/4, ze2logo2)
-	elseif title_tics >= (title_timetoappear+drawtics_frame2) and title_tics <= (title_timetoappear+drawtics_frame3) then
-		local ze2logo3 = v.cachePatch("ZE2_TTL02")
-		v.drawScaled(title_xoffset, title_yoffset, FU/4, ze2logo3)
-	elseif title_tics >= (title_timetoappear+drawtics_frame3) and title_tics <= (title_timetoappear+drawtics_frame4) then
-		local ze2logo4 = v.cachePatch("ZE2_TTL03")
-		v.drawScaled(title_xoffset, title_yoffset, FU/4, ze2logo4)
-	elseif title_tics >= (title_timetoappear+drawtics_frame4) then
-		local ze2logo5 = v.cachePatch("ZE2_TTL04")
-		v.drawScaled(title_xoffset, title_yoffset, FU/4, ze2logo5)
+--Function to make a white fade. Instead of using separated patches.
+local function DoWhiteFade(v, patch, time)
+	if alpha == 9 then return end --V_TRANS90 maximum, at this point don't draw the white mask
+	if (titletics % time) == 0 then	alpha = min($+1, 9)	end
+	drawScaled(x, y, FU/4, patch, alpha<<V_ALPHASHIFT, getColormap(TC_ALLWHITE))
+end
+
+--Main title screen thinker
+local MainTitle = function(v)
+	titletics = min($+1, 10*TICRATE) --start title screen timer. shouldn't keep counting after at least 10 seconds...
+	if getColormap == nil then getColormap = v.getColormap end
+	if cachePatch == nil then cachePatch = v.cachePatch end
+	if drawScaled == nil then drawScaled = v.drawScaled end
+
+	local logo = cachePatch(ZE2_LOGO)
+
+	--Make the logo appear
+	if titletics >= appear_time then
+		drawScaled(x, y, FU/4, logo)
+		DoWhiteFade(v, logo, 1) --White mask fade
 	end
-end, "title")
+end
 
-addHook("HUD", function(v)
-	title_tics = 0 --reset timer when not on title screen
-end, "game")
+--Reset title screen functionality when not on title screen
+local Reset = function(v)
+	if not titletics then return end
+	titletics = 0
+	alpha = 0
+end
+
+addHook("HUD", MainTitle, "title")
+addHook("HUD", Reset)
