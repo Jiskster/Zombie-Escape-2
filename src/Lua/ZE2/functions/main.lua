@@ -14,6 +14,7 @@ local queue = {
 	"ZombifyPlayer";
 	"switchCharacter";
 	"lockPlayer";
+	"getAccessibleSkincolor";
 }
 
 print("<ZE2>: Loading ZE2 Functions")
