@@ -5,21 +5,21 @@ local hudtype = "game"
 local function DrawTooltips(v, player)
 	if not (player.mo and player.mo.valid) then
 		return end;
-		
+
 	if (player.xSlinger.team ~= 1) then
 		return end;
-		
+
 	if (ZE2.game_ended) then
 		return end;
 
 	local textflags = V_SNAPTOBOTTOM|V_SNAPTORIGHT|V_ALLOWLOWERCASE
 	local x = 316
 	local y = 189
-	
+
 	if CV_FindVar("showfps").value then
 		y = $ - 8
 	end
-	
+
 	local scalex = 11
 	local scaley = 11
 	local yoffset = -2

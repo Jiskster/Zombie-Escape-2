@@ -7,7 +7,7 @@ return function(player)
 		and player.ze2.crouching then
 			return true
 		end
-		
+
 		if not (player.pflags & PF_JUMPDOWN) then
 			if player.xSlinger.team == 1 then
 				player.ze2:ChangeStamina(-ZE2.JumpSprintFatigue)

@@ -1,6 +1,6 @@
 return function(self, amount)
 	local player = self.player
-	
+
 	if player.xSlinger.team ~= 1 then return end -- no zombi!!!
 
 	if not player.ze2.sprintdelay then
@@ -13,7 +13,7 @@ return function(self, amount)
 			if player.mo and player.mo.valid then
 				local cc = ZE2.SurvivorConfig
 				local newsprintexhaust
-				
+
 				if cc[player.mo.skin] and cc[player.mo.skin].sprintexhaust then
 					newsprintexhaust = cc[player.mo.skin].sprintexhaust
 				end
@@ -24,7 +24,7 @@ return function(self, amount)
 					player.ze2.sprintdelay = TICRATE*2 -- do default
 				end
 			end
-			
+
 			player.ze2.sprintmeter = 0
 		end
 	else

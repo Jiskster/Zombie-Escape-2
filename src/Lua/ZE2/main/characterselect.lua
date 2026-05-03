@@ -64,23 +64,23 @@ addHook("PlayerCmd", function(player, cmd)
 	if ZE2.charsel_anim then
 		ZE2.charsel_anim = $ - 1
 	end
-	
+
     if (ZE2.pregame_menu == 1) then
         if (not lastsidemove) and (cmd.sidemove) then
             if (cmd.sidemove < 0) then
                 ZE2.charsel_prevselection = ZE2.charsel_selection
-                
+
                 ZE2.charsel_selection = $ - 1
                 ZE2.charsel_selection = valWrap($, INT32_MIN, INT32_MAX)
-                
+
                 ZE2.charsel_anim = ZE2.charsel_setanim
                 S_StartSound(nil, sfx_s3kb7, player)
             elseif (cmd.sidemove > 0) then
                 ZE2.charsel_prevselection = ZE2.charsel_selection
-                
+
                 ZE2.charsel_selection = $ + 1
                 ZE2.charsel_selection = valWrap($, INT32_MIN, INT32_MAX)
-                
+
                 ZE2.charsel_anim = ZE2.charsel_setanim
                 S_StartSound(nil, sfx_s3kb7, player)
             end
@@ -132,7 +132,7 @@ end)
 local function unselectCharacter(player)
 	if not (player and player.valid) then
 		return false end;
-		
+
 	local selchar = player.ze2.selected_character
 	local selnum = skinToNum(player, selchar)
 	local selcharslot = ZE2.CharacterSlots[selnum]
@@ -140,7 +140,7 @@ local function unselectCharacter(player)
 	if selchar and selcharslot then
 		selcharslot.count = $ - 1 -- give back character slot before getting another
 	end
-	
+
 	return true
 end
 
@@ -167,18 +167,18 @@ COM_AddCommand("_z_choosecharacter", function(player, skinname)
 
     local skinnum = skinToNum(player, skinname)
     local chslot = ZE2.CharacterSlots[skinnum]
-	
+
 	if chslot.count < chslot.max then
 		if not unselectCharacter(player) then
 			return
 		end
-			
+
 		chslot.count = $ + 1 -- take character slot
 		ZE2.switchCharacter(player, skinname)
 		player.ze2.selected_character = skinname
 		ZE2.setConfigInventory(player, skinname)
 		ZE2.resetPlayerHealth(player, skinname)
-		
+
 		S_StartSound(nil, sfx_s3k63, player)
 	else
 		S_StartSound(nil, sfx_lose, player)

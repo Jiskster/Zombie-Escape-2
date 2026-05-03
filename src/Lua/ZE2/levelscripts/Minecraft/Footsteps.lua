@@ -1,5 +1,5 @@
 /*
-Credits for MotdSpork and his Modern Sonic mod that inspired me to make this script. 
+Credits for MotdSpork and his Modern Sonic mod that inspired me to make this script.
 I based this script on their code and reused the sound resources.
 */
 

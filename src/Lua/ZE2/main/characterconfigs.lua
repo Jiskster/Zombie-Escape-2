@@ -76,21 +76,21 @@ function ZE2.resetPlayerHealth(player, newskin)
 	local xS = player.xSlinger
 	local team = xS.team
 	local ztype = ze2.zombie_type
-	
+
 	local cc = ZE2.SurvivorConfig
 	local zc = ZE2.ZombieConfig
-	
+
 	if not (mo and mo.valid) then
 		return end;
-		
+
 	local skin = newskin or mo.skin
-	
+
 	local config = cc[skin]
 
 	if (team == 2) then
 		config = zc[ztype]
 	end
-	
+
 	if config and config.health then
 		mo.health = config.health
 		mo.maxhealth = config.health
@@ -160,7 +160,7 @@ end
 
 function ZE2.applyPlayerConfig(player)
 	local mo = player.mo
-	
+
 	if not (mo and mo.valid) then
 		return end;
 
@@ -174,19 +174,19 @@ function ZE2.applyPlayerConfig(player)
 	local skin = mo.skin
 	local TEAM_SURVIVOR = 1
 	local TEAM_ZOMBIE = 2
-	
+
 	local config = (team == TEAM_SURVIVOR) and cc[skin] or zc[ztype]
 
 	-- Set zombie type to "normal" if the zombie type doesn't exist.
-	if team == TEAM_ZOMBIE 
+	if team == TEAM_ZOMBIE
 	and not zc[ztype] then
 		ze2.zombie_type = "normal"
 		config = zc["normal"]
 	end
-	
+
 	if config.normalspeed then
 		player.normalspeed = config.normalspeed
-		
+
 		if (player.speed/FU) > 12 and player.ze2.isRunning then
 			player.normalspeed = ($*5)/4
 		elseif ze2.crouching and P_IsObjectOnGround(mo) then
@@ -197,7 +197,7 @@ function ZE2.applyPlayerConfig(player)
 	player.jumpfactor = config.jumpfactor or ZE2.StandardJumpFactor
 
 	if config.actionspd then
-		player.actionspd = config.actionspd 
+		player.actionspd = config.actionspd
 	end
 
 	player.accelstart = config.accelstart or 128 -- survivors and zombies should have the same accelstart
@@ -211,7 +211,7 @@ function ZE2.applyPlayerConfig(player)
 		player.thrustfactor = 0
 	else
 		if P_IsObjectOnGround(mo) or
-		(not P_IsObjectOnGround(mo) and cmd.forwardmove < 0 and P_GetPlayerControlDirection(player) == 2) 
+		(not P_IsObjectOnGround(mo) and cmd.forwardmove < 0 and P_GetPlayerControlDirection(player) == 2)
 		or ze2.isSprung then
 			player.thrustfactor = 8
 		else
@@ -219,21 +219,21 @@ function ZE2.applyPlayerConfig(player)
 		end
 	end
 
-	if (config.charflags) then 
+	if (config.charflags) then
 		player.charflags = $|(config.charflags)
 	end
 
 	if mo.shield_def and mo.shield_def.jumpfactor_multiplier then
 		local multi = mo.shield_def.jumpfactor_multiplier
-		
+
 		player.jumpfactor = FixedMul($, multi)
 	end
 
 	if ze2.sprintdelay then
-		if ZE2.sourcemovement.value then 
-			player.jumpfactor = 3*$/4 
-		else 
-			player.jumpfactor = $ / 2 
+		if ZE2.sourcemovement.value then
+			player.jumpfactor = 3*$/4
+		else
+			player.jumpfactor = $ / 2
 		end
 
 		player.actionspd = $ / 2
@@ -261,10 +261,10 @@ function ZE2.applyPlayerConfig(player)
 			player.actionspd = FixedMul($, effect.actionspd_multiplier)
 		end
 	end
-	
+
 	-- Remove player movement when game has not started.
 	-- Also remove player movement when player is zombie when zombies has not been released.
-	if (ZE2.zombie_releasetime and team == TEAM_ZOMBIE) 
+	if (ZE2.zombie_releasetime and team == TEAM_ZOMBIE)
 	or (ZE2.pregame_timeleft) then
 		player.normalspeed = 0
 		player.thrustfactor = 0
@@ -277,7 +277,7 @@ ZE2.SetZCinventory = function(player)
 	local pmo = player.mo
 	local zc = ZE2.ZombieConfig
 	local ztype = player.ze2.zombie_type
-	
+
 	/*
 	if pmo and pmo.valid then
 		if ztype and zc[ztype] and player.ze2 then
@@ -296,13 +296,13 @@ function ZE2.setConfigInventory(player, newskin, noitems)
 	local ztype = player.ze2.zombie_type
 	local mo = player.mo
 	local team = xS.team
-	
+
 	if mo and mo.valid then
 		local skin = newskin or mo.skin
-		
+
 		if team == 1 and sc[skin] then
 			xS:inv_add("survivor", 5)
-		
+
 			if (not noitems) and (sc[skin].items) then
 				for i,item in ipairs(sc[skin].items) do
 					xS:give_item(item, nil, nil, nil, false, "survivor") -- being strict with the inventory
@@ -310,7 +310,7 @@ function ZE2.setConfigInventory(player, newskin, noitems)
 			end
 		elseif team == 2 and zc[ztype] then
 			xS:inv_add("zombie", 3)
-			
+
 			if (not noitems) and (zc[ztype].items) then
 				for i,item in ipairs(zc[ztype].items) do
 					xS:give_item(item, nil, nil, nil, false, "zombie")
@@ -322,11 +322,11 @@ end
 
 function ZE2.AddSurvivor(skinname, input_table)
 	local weight = input_table.weight
-	
+
 	if ZE2.SurvivorConfig[skinname] then
 		print("Failed to add character: "..skinname.." (Character already registered)")
-		return 
-	end	
+		return
+	end
 
 	if type(weight) ~= "number" then
 		print("Failed to add character: "..skinname.." (weight is "..type(weight)..")")
@@ -339,19 +339,19 @@ function ZE2.AddSurvivor(skinname, input_table)
 	input_table.charability = CA_NONE
 	input_table.charability2 = CA2_NONE
 	input_table.jumpfactor = ZE2.StandardJumpFactor
-	
+
 	if input_table.health_penalty then
 		input_table.health = max(1, $ - abs(input_table.health_penalty))
 	end
 
 	ZE2.SurvivorConfig[skinname] = input_table
 	table.insert(ZE2.registered_skins, skinname)
-	
+
 	ZE2.CharacterSlots[#ZE2.registered_skins] = {
 		count = 0;
 		max = 1;
 	}
-	
+
 	print("Added survivor config: ".. skinname)
 end
 
@@ -453,13 +453,13 @@ function xSlinger.initPlayerSpawn(player)
 	if not xS:inv_get("survivor") then
 		xS:inv_add("survivor", 5)
 	end
-	
+
 	if not xS:inv_get("zombie") then
 		xS:inv_add("zombie", 3)
 	end
-	
+
 	xS:inv_set("survivor")
-	
+
 	player.ze2.lower_hud_offset = 0
 	player.ze2.special_cooldown = 0
 	player.ze2.damage_indicator_table = {}

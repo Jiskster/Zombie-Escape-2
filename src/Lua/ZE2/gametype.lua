@@ -1,4 +1,4 @@
-/* Was meant for the ringslinger-esk system. Might use this name for separating 
+/* Was meant for the ringslinger-esk system. Might use this name for separating
 what ZE2 has.
 
 rawset(_G, "XSLINGER", {});
@@ -61,26 +61,26 @@ xSlinger.registerEffect("burning", {
 				if (mobj.team == 1) then
 					damage = 2
 				end
-				
+
 				P_DamageMobj(mobj, nil, mobj.flameringtarget, damage)
 				S_StartSoundAtVolume(nil, sfx_s248, 127, mobj.player)
 				S_StartSoundAtVolume(nil, sfx_s3kc2s, 127, mobj.player)
 			end
-			
+
 			local rad = FixedDiv(mobj.radius, mobj.scale)/FU
 			local hei = FixedDiv(mobj.height, mobj.scale)/FU
 			if (time_left % 3) == 0 then
 				for i = 0,1 do
 					-- P_SpawnMobjFromMobj already scales offsets.
-					local flm = P_SpawnMobjFromMobj(mobj, 
-									P_RandomRange(-rad,rad)*FU, 
-									P_RandomRange(-rad,rad)*FU, 
+					local flm = P_SpawnMobjFromMobj(mobj,
+									P_RandomRange(-rad,rad)*FU,
+									P_RandomRange(-rad,rad)*FU,
 									P_RandomRange(0, hei)*FU,
 								i and MT_FLAMEPARTICLE or MT_RS_THROWNFLAME)
-					
+
 					-- Make intangible.
 					flm.flags = $|MF_NOCLIPTHING &~(MF_MISSILE)
-					
+
 					-- Make it look cool!
 					flm.color = flame_colors[P_RandomRange(1, #flame_colors)]
 					flm.frame = $ &~FF_TRANSMASK
@@ -240,12 +240,12 @@ xSlinger.skin_properties["zsonic"] = {
 ZE2.paletteToColor = {}
 for i=0,255 do
 	local color = freeslot("SKINCOLOR__"..i)
-	
+
 	local new_ramp = {}
 	for ii=1,16 do
 		new_ramp[ii] = i
 	end
-	
+
 	skincolors[color] = {
 		name = "_"..tostring(i);
 		ramp = new_ramp;

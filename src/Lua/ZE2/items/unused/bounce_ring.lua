@@ -32,7 +32,7 @@ addHook("MobjMoveCollide", function(tm, t)
 
 	tm.fuse = max(0, $ - 10)
 	P_DamageMobj(t, tm, tm.target, tm.iteminfo.damage, 0)
-	
+
 	return true
 end, MT_THROWNBOUNCE)
 

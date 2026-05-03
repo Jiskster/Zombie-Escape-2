@@ -69,14 +69,14 @@ COM_AddCommand("z_changeztype", function(player, new_ztype)
 		CONS_Printf(player,"You must be a zombie to run this command.")
 		return
 	end
-	
+
 	if not new_ztype then
 		CONS_Printf(player,"z_changeztype <ztype>: changes your zombie type.")
 		return
 	end
-	
+
 	local zc = ZE2.ZombieConfig
-	
+
 	if zc[new_ztype] then
 		player.ze2.zombie_type = new_ztype
 		ZE2.ResetPlayer(player, 2, true)

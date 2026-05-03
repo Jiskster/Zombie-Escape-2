@@ -14,23 +14,23 @@ ZE2.getSkinNames = function(player, getunlockables)
 
 	for i=0,#skins do -- for each skin slot
 		local foundskin = false -- if the game finds the skin in ZE2.registered_skins
-	
+
 		if not skins[i] then
 			continue
 		end
-		
+
 		for _,v in ipairs(ZE2.registered_skins) do
 			if v == skins[i].name then
 				foundskin = true
 				break
 			end
 		end
-		
+
 		-- you failure.
-		if not foundskin then 
+		if not foundskin then
 			continue
 		end
-		
+
 		local isblacklisted = false
 		for _,v in ipairs(ZE2.blacklisted_characters) do
 			if v == skins[i].name then
@@ -38,14 +38,14 @@ ZE2.getSkinNames = function(player, getunlockables)
 				break
 			end
 		end
-		
+
 		if isblacklisted then
 			continue
 		end
-		
+
 		if getunlockables then
 			table.insert(list, skins[i].name)
-		else -- Default 
+		else -- Default
 			if R_SkinUsable(player, skins[i].name) then
 				table.insert(list, skins[i].name)
 			end
@@ -60,42 +60,42 @@ ZE2.getSkinNums = function(player, getunlockables)
 
 	for i=0,#skins do
 		local foundskin = false -- if the game finds the skin in ZE2.registered_skins
-		
+
 		if not skins[i] then
 			continue
 		end
-		
+
 		for _,v in ipairs(ZE2.registered_skins) do
 			if v == skins[i].name then
 				foundskin = true
 				break
 			end
 		end
-		
+
 		-- you failure.
-		if not foundskin then 
+		if not foundskin then
 			continue
 		end
-		
+
 		local isblacklisted = false
 		for _,v in ipairs(ZE2.blacklisted_characters) do
 			if v == skins[i].name then
 				isblacklisted = true
 			end
 		end
-		
+
 		if isblacklisted then
 			continue
 		end
-		
+
 		if getunlockables then
 			table.insert(list, i)
-		else -- Default 
+		else -- Default
 			if R_SkinUsable(player, skins[i].name) then
 				table.insert(list, i)
 			end
 		end
 	end
-	
+
     return list
 end

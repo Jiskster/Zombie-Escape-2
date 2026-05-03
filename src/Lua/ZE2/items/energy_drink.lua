@@ -15,7 +15,7 @@ states[S_ZE2_ENERGYDRINK_DROP] = {
 xSlinger.registerEffect("energy_drink", {
 	tick = function(effect, mobj, time_left)
 		local player = mobj.player
-		
+
 		if player and player.valid then
 			player.ze2.sprintmeter = 100*FRACUNIT
 		end
@@ -35,7 +35,7 @@ xSlinger.registerItem("energy_drink", {
 	icon = "ENERGYDRINKIND";
 
 	color = SKINCOLOR_MASTER;
-	
+
 	dropstate = S_ZE2_ENERGYDRINK_DROP;
 	dropscale = 2*FU;
 	dropyoffset = 8*FU;

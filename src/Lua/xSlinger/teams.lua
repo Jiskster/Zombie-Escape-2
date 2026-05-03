@@ -19,7 +19,7 @@ end)
 
 addHook("MapLoad", function()
 	xSlinger.teams = {}
-	
+
 	local gtinfo = xSlinger.registeredGametypes[gametype]
 	if gtinfo and gtinfo.teams then
 		xSlinger.teams = xSlinger.deepcopy(gtinfo.teams)

@@ -35,7 +35,7 @@ p_mt.__index = function(player, key) -- Create player_t.ze2
 			else
 				ze2_players[#player] = setmetatable(ZE2:Copy(default_player), ze2_mt)
 				ze2_players[#player].player = player -- Save reference of player as player_t.ze2.player
-				
+
 				return ze2_players[#player]
 			end
 		end
@@ -47,7 +47,7 @@ end
 addHook("PlayerQuit", function(player)
     if ze2_players[#player] then
         ze2_players[#player] = nil
-		
+
 		if ZE2.cv_debug.value then
 			print("Removed player_t.ze2 from " + player.name + " [" + #player + "] ")
 		end
@@ -60,7 +60,7 @@ end)
 
 addHook("GameQuit", function()
     ze2_players = {}
-	
+
 	if ZE2.cv_debug.value then
 		print("Removed all player_t.ze2")
 	end

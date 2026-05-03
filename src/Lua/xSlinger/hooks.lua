@@ -57,18 +57,18 @@ local events = {}
 -- EXAMPLE HOOK! You can remove this!
 /*
 events["MyHook"] = {
-    handler = handler_snapany; 
+    handler = handler_snapany;
     --typefor = typefor_mobj   ;
 }
 */
 
 events["OnPlayerDamage"] = {
-    handler = handler_snapany; 
+    handler = handler_snapany;
     --typefor = typefor_mobj   ;
 }
 
 events["ShouldDamage"] = {
-    handler = handler_snapany; 
+    handler = handler_snapany;
     --typefor = typefor_mobj   ;
 }
 
@@ -98,7 +98,7 @@ xSlinger.addHook = function(hooktype, func, typefor)
 		hook_okay = deprecated[hooktype] ~= nil
 		dep_t = deprecated[hooktype]
 	end
-	
+
 	if hook_okay then
 		if dep_t ~= nil then
 			if not dep_t.seen then
@@ -106,7 +106,7 @@ xSlinger.addHook = function(hooktype, func, typefor)
 			end
 			hooktype = dep_t.correct
 		end
-		
+
 		table.insert(xSlinger.events[hooktype], {
 			func = func,
 			typedef = typefor,
@@ -125,7 +125,7 @@ xSlinger.tryRunHook = function(hooktype, v, ...)
 	local results = {pcall(v.func, ...)}
 	local status = results[1] or nil
 	table.remove(results,1)
-	
+
 	if status then
 		override = {handler.func(
 			override,
@@ -137,7 +137,7 @@ xSlinger.tryRunHook = function(hooktype, v, ...)
         xSlinger.berror("Hook " .. hooktype .. " handler #" .. i .. " error:", sfx_lose)
 		print(unpack(results))
 	end
-	
+
 	if override == nil then return nil; end
 	if type(override) == "table" then return unpack(override)
 	else return override; end
@@ -147,19 +147,19 @@ local notvalid = {}
 xSlinger.findEvent = function(hooktype)
 	local name = hooktype
 	local events = xSlinger.events[name]
-	
+
 	if events == nil
 	and deprecated[hooktype] ~= nil then
 		name = deprecated[hooktype].correct
 		events = xSlinger[name]
 	end
-	
+
 	if events == nil
 	and not (notvalid[name]) then
 	notvalid[name] = true
         xSlinger.bwarn("could not find hookevent \""..hooktype.."\"")
 	end
-	
+
 	--can still return nil!
 	return events, name
 end
@@ -168,7 +168,7 @@ xSlinger.bwarn = function(text, sound)
     if sound and sound > 0 then
         S_StartSound(nil, sound)
     end
-    
+
     print("\x83"..xSlinger.internal_name..":\x82 WARNING:\x80 "..text)
 end
 
@@ -178,7 +178,7 @@ xSlinger.berror = function(text, sound)
     elseif sound ~= nil then
         S_StartSound(nil, sfx_skid)
     end
-    
+
     error("\x83"..xSlinger.internal_name..":\x85 ERROR:\x80 "..text, 2)
 end
 

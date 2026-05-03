@@ -96,7 +96,7 @@ freeslot("MT_DEMONPINK", "S_DEMONPINK_STND", "S_DEMONPINK_WALKSOUND1",
 		 "S_DEMONPINK_DEATH3", "S_DEMONPINK_DEATH4", "S_DEMONPINK_DEATH5",
 		 "S_DEMONPINK_DEATH6", "SPR_DPNK", "sfx_dpwlk1", "sfx_dpwlk2",
 		 "sfx_dptnt1", "sfx_dpdeth", "sfx_dphurt")
-	
+
 sfxinfo[sfx_dpwlk1].caption = "Walking"
 sfxinfo[sfx_dpwlk2].caption = "Walking"
 sfxinfo[sfx_dptnt1].caption = "Pinkie detects"
@@ -169,7 +169,7 @@ freeslot("MT_SPECTRE", "S_SPECTRE_STND", "S_SPECTRE_WALKSOUND1",
 		 "S_SPECTRE_HURT", "S_SPECTRE_DEATH1", "S_SPECTRE_DEATH2",
 		 "S_SPECTRE_DEATH3", "S_SPECTRE_DEATH4", "S_SPECTRE_DEATH5",
 		 "S_SPECTRE_DEATH6", "SPR_SPCT")
-	
+
 
 mobjinfo[MT_SPECTRE].npc_name = "Spectre"
 mobjinfo[MT_SPECTRE].npc_spawnhealth = {70,80}

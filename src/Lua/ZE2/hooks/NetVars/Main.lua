@@ -10,33 +10,33 @@ return function(net)
 	ZE2.zombie_releasetime = net($);
 	ZE2.queuing_round = net($);
 	ZE2.rounds_left = net($);
-	
+
 	ZE2.VoteTimeLimit = net($);
 	ZE2.MapsOnVote = net($);
 	ZE2.NextMapVoted = net($);
-	
+
 	ZE2.Checkpoints = net($);
 	ZE2.LatestSurvivorCheckpoint = net($);
 	ZE2.LatestZombieCheckpoint = net($);
-	
+
 	ZE2.Survivor_ShopList = net($);
-	
+
 	ZE2.CachedShieldMobjs = net($);
-	
+
 	ZE2.TWRITE_COUNT = net($);
 	ZE2.TWRITE_MAPNAME_COUNT = net($);
-	
+
 	ZE2.mapladdertag = net($);
 	ZE2.BulletList = net($);
 
 	ZE2.QueueSpectate = net($);
-	
+
 	ZE2.PreviousMaps = net($);
-	
+
 	ZE2.MaxKarma = net($);
-	
+
 	ZE2.CharacterSlots = net($)
-	
+
 	for i,v in ipairs(ZE2.MapTimers) do
 		v.name = net($);
 		v.time = net($);

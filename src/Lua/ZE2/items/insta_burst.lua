@@ -43,11 +43,11 @@ addHook("MobjMoveCollide", function(instaburst, mobj)
 	if (mobj.valid and (mobj.flags & MF_SHOOTABLE) or mobj.player) and instaburst.ib_hitlist then
 		local range = instaburst.radius
 		local alreadyhit = false
-		
-		if not ZE2.ZCollide(mobj, instaburst) then 
+
+		if not ZE2.ZCollide(mobj, instaburst) then
 			return
 		end
-		
+
 		if instaburst.target == mobj then
 			return
 		end
@@ -75,23 +75,23 @@ end, MT_INSTABURST)
 
 xSlinger.registerItem("insta_burst", {
 	displayname = "Insta Burst";
-	
+
 	icon = "ZMISHIND";
-	
+
 	firerate = 34;
-	
+
 	sounds = {
 		use = {sfx_zish1, sfx_zish2, sfx_zish3};
 		hurt = {sfx_zbatk1, sfx_zbatk2, sfx_zbatk3};
 	};
-	
+
 	damage = 40;
-	
+
 	color = SKINCOLOR_RED;
-	
+
 	usefunc = function(self, mo)
 		local instaburst = P_SpawnMobjFromMobj(mo, 0, 0, 0, MT_INSTABURST)
-		
+
 		instaburst.target = mo
 		instaburst.spritexscale = $*2
 		instaburst.spriteyscale = $*2
@@ -100,6 +100,6 @@ xSlinger.registerItem("insta_burst", {
 		instaburst.iteminfo = self
 		instaburst.ib_hitlist = {}
 	end;
-	
+
 	droppable = false;
 })

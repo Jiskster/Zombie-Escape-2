@@ -1,7 +1,7 @@
 return function()
     if gamestate ~= GS_LEVEL then --stop the trolling
-        return 
-    end 
+        return
+    end
 
     if not ZE2.round_active then
         return
@@ -23,7 +23,7 @@ return function()
 			if player.ze2.injoinqueue then
 				playersjoining = $ + 1
 			end
-			
+
             player_count = $ + 1
             counted_player = true
         end
@@ -31,13 +31,13 @@ return function()
 		if player.ze2.outofgame or not player.spectator then
 			playing = $ + 1
 		end
-		
-		if player.mo and player.mo.valid and not player.spectator then			
+
+		if player.mo and player.mo.valid and not player.spectator then
             if not counted_player then
                 player_count = $ + 1
                 counted_player = true
             end
-            
+
             if player.mo.health then
                 if player.xSlinger.team == 1 then
                     survivors = $ + 1
@@ -52,7 +52,7 @@ return function()
 		if playersjoining and playing == 1 then
 			ZE2:StartWin(1)
 		end
-	
+
 		if survivors and not zombies then -- if all zombies are dead
 			ZE2:StartWin(1)
 		elseif zombies and not survivors then -- if all survivors are dead

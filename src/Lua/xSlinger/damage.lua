@@ -5,9 +5,9 @@ xSlinger.KillMobj = P_KillMobj
 function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 	dmg = $ or 0 -- Making sure we don't error!
 	damagetype = $ or 0
-	
+
 	local deathdamagetype = (damagetype >= DMG_INSTAKILL and damagetype <= DMG_SPECTATOR)
-	
+
 	local knockback = 0
 	local knockback_tics = 12
 	local verticalknockback = 0
@@ -18,26 +18,26 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 
 	local hurtsound = sfx_shldls
 	local ignoreskinhurtsound = false
-	
+
 	if inf and inf.valid and (inf.flags & MF_MISSILE) then
 		P_ExplodeMissile(inf)
 	end
-	
+
 	if (mo.flags & MF_MONITOR) then
 		return
 	end
-	
+
 	-- Don't damage objects that are the same team.
 	if (inf and inf.valid) and (mo and mo.valid) then
 		if mo.team == inf.team then
 			return false
 		end
 	end
-	
+
 	if mo.player and mo.player.valid then
 		player = mo.player
 	end
-	
+
 	if inf and inf.valid and inf.player and inf.player.valid then
 		inflictor_player = inf.player
 		attacker = inf
@@ -45,14 +45,14 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 		inflictor_player = src.player
 		attacker = src
 	end
-	
+
 	if player and player.powers[pw_flashing] > 0 then
 		return false
 	end
-	
+
 	do
 		local ev, ev_name = xSlinger.findEvent("ShouldDamage")
-		
+
 		if #ev then
 			for i,v in ipairs(ev) do
 				local result = xSlinger.tryRunHook(ev_name, v, mo, inf, src, dmg, damagetype)
@@ -62,13 +62,13 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 			end
 		end
 	end
-	
+
 	if inf and inf.valid then
-		local iteminfo = inf.iteminfo 
+		local iteminfo = inf.iteminfo
 
 		if iteminfo then
 			local src_skin
-			
+
 			if src and src.valid and src.player then
 				src_skin = src.skin
 			end
@@ -77,15 +77,15 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 			local item_knockback = iteminfo:getIndex("knockback", src_skin)
 			local item_knockback_tics = iteminfo:getIndex("knockback_tics", src_skin)
 			local item_sounds = iteminfo:getIndex("sounds", src_skin)
-			
+
 			if item_damage then
 				dmg = item_damage
 			end
-			
+
 			if item_knockback then
 				knockback = item_knockback
 			end
-			
+
 			if item_knockback_tics ~= nil then
 				knockback_tics = item_knockback_tics
 			end
@@ -104,32 +104,32 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 				ignoreskinhurtsound = true
 			end
 		end
-		
+
 		if inf.info.forcedamage then
 			dmg = inf.info.forcedamage
 		end
-		
+
 		if inf.info.forceknockback then
 			knockback = inf.info.forceknockback
 		end
-		
+
 		-- Knocks back angle between two objects instead of pushing backwards of attacker object
 		if inf.info.relativeknockback then
 			relativeknockback = true
 		end
-		
+
 		if inf.info.forceverticalknockback then
 			verticalknockback = inf.info.forceverticalknockback
 		end
-		
+
 		if inf.forcedamage ~= nil then
 			dmg = inf.forcedamage
 		end
-		
+
 		if inf.forceknockback ~= nil then
 			knockback = inf.forceknockback
 		end
-		
+
 		if iteminfo and iteminfo.hitfunc then
 			if inf.target then
 				iteminfo:hitfunc(inf.target, mo, inf)
@@ -148,30 +148,30 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 			end
 		end
 	end
-	
-	if (inf and inf.valid and inf.player) then 
+
+	if (inf and inf.valid and inf.player) then
 		P_AddPlayerScore(inf.player, dmg)
-	elseif (src and src.player) then 
-		P_AddPlayerScore(src.player, dmg) 
+	elseif (src and src.player) then
+		P_AddPlayerScore(src.player, dmg)
 	end
-	
+
 	-- DIE NOW
 	if not mo.shield_health then
-		if mo.health - dmg <= 0 or deathdamagetype then		
+		if mo.health - dmg <= 0 or deathdamagetype then
 			xSlinger.KillMobj(mo, inf, src, damagetype)
 			return false
 		end
 	else
-		if deathdamagetype then	
+		if deathdamagetype then
 			xSlinger.KillMobj(mo, inf, src, damagetype)
 			return false
 		end
 	end
-	
+
 	if mo.info.antiknockback then
 		knockback = 0
 	end
-	
+
 	if mobjinfo[mo.type].npc_name then
 		if (not mo.target) and (inf or src.player) then --enemies wake up if you hit them from behind
 			mo.target = src
@@ -182,32 +182,32 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 			S_StartSound(mo,mobjinfo[mo.type].painsound)
 		end
 	end
-	
-	-- BOOM! Knockback! 
+
+	-- BOOM! Knockback!
 	if inf and inf.valid then
 		if not relativeknockback then
 			KB.addKnockback(mo, knockback_tics, inf.angle, knockback)
 		else
 			local r_angle = R_PointToAngle2(mo.x, mo.y, inf.x, inf.y)
-			
+
 			KB.addKnockback(mo, knockback_tics, r_angle - ANGLE_180, knockback)
 		end
-		
+
 		if verticalknockback then
 			P_SetObjectMomZ(mo, verticalknockback, true)
 		end
 	end
-	
+
 	if player then
 		if xSlinger.teams[mo.team] and xSlinger.teams[mo.team].iframes ~= nil then
 			player.powers[pw_flashing] = xSlinger.teams[mo.team].iframes
 		else -- default iframes
 			player.powers[pw_flashing] = 4
 		end
-		
+
 		local prop_skin = xSlinger.skin_properties[mo.skin]
-		
-		if prop_skin and prop_skin.hurtsound 
+
+		if prop_skin and prop_skin.hurtsound
 		and not ignoreskinhurtsound then
 			local hs = prop_skin.hurtsound
 			if type(hs) == "table" then
@@ -218,10 +218,10 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 				hurtsound = hs
 			end
 		end
-		
+
 		do
 			local ev, ev_name = xSlinger.findEvent("OnPlayerDamage")
-			
+
 			if #ev then
 				for i,v in ipairs(ev) do
 					local result = xSlinger.tryRunHook(ev_name, v, player, inf, src, dmg, damagetype)
@@ -231,7 +231,7 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 
 		S_StartSound(mo, hurtsound)
 	end
-	
+
 	for i,effect in ipairs(mo.effects) do
 		if effect.protection_multiplier then
 			dmg = FixedMul($*FU, effect.protection_multiplier)/FU
@@ -241,7 +241,7 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 			knockback = FixedMul($, effect.knockback_multiplier)
 		end
 	end
-	
+
 	if attacker and attacker.valid then
 		for i,effect in ipairs(attacker.effects) do
 			if effect.damage_multiplier then
@@ -249,27 +249,27 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 			end
 		end
 	end
-	
+
 	if mo.shield_health then
 		--not enough shield to take the hit (TODO: play ring loss sound and damage fade when this happens)
 		if mo.shield_health - dmg <= 0 then
 			dmg = $ - abs(mo.shield_health)
-			
+
 			mo.shield_health = 0
-			
+
 		else --shield negates damage
 			mo.shield_health = $ - dmg
 		end
-		
+
 		if mo.shield_health <= 0 then
 			mo.shield_health = 0
 		end
 	end
-	
+
 	if not mo.shield_health then
 		mo.health = $ - dmg -- negate health ourselves, dont use damage function
 	end
-	
+
 	if mo.health <= 0 then
 		xSlinger.KillMobj(mo, inf, src, damagetype)
 	end
@@ -277,6 +277,6 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 	return false
 end
 
-addHook("ShouldDamage", function(...)	
+addHook("ShouldDamage", function(...)
 	return xSlinger.ShouldDamage(...)
 end)

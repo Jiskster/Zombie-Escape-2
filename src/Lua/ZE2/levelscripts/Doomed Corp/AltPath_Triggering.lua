@@ -30,14 +30,14 @@ local function OpenAltPath(v, p)
         local zomb = v.getSprite2Patch(p.mo.skin, SPR2_WALK, false, C, 3)
         local zomb_color = v.getColormap(p.skin, p.mo.color or SKINCOLOR_GREEN, p.mo.translation)
         local flags = V_SNAPTOTOP|V_PERPLAYER
-        
+
         local posx = 140
         local posy = 57
         drawString(posx+22, (posy-40), "Path unlocked!", flags|V_YELLOWMAP, "center")
         drawScaled(posx*FU, posy*FU, FU/2, zomb, flags|V_FLIP, zomb_color)
         drawScaled((posx+15)*FU, (posy-30)*FU, FU/2, openingpath, flags, zomb_color)
     end
-	
+
 	if DoomedCorp.pathunlock_timer then DoomedCorp.pathunlock_timer = $-1 end
 end
 addHook("HUD", OpenAltPath)

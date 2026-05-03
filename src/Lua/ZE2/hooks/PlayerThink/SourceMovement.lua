@@ -17,7 +17,7 @@ end
 
 return function(player)
 	--source movement?
-	if ZE2.sourcemovement.value and FixedHypot(player.cmd.forwardmove * 1311, player.cmd.sidemove * 1311) 
+	if ZE2.sourcemovement.value and FixedHypot(player.cmd.forwardmove * 1311, player.cmd.sidemove * 1311)
 	and CanPlayerMove(player) then
 		local cmd = player.cmd
 		local pmo = player.mo
@@ -43,7 +43,7 @@ return function(player)
 		local curspeed
 		angdiff = abs(movedir - wishang)
 		curspeed = FixedMul(movespd, cos(angdiff))
-		
+
 		local acl
 		if P_IsObjectOnGround(pmo) then
 			wishspd = player.normalspeed
@@ -52,7 +52,7 @@ return function(player)
 			wishspd = 2*FRACUNIT
 			acl = FixedMul(FixedMul(player.acceleration * 80, movespd) + player.accelstart * 160, analog)
 		end
-		if pmo.eflags & MFE_UNDERWATER then 
+		if pmo.eflags & MFE_UNDERWATER then
 			if P_IsObjectOnGround(pmo) then wishspd = $/2 end
 			acl = 3*$/4
 		end

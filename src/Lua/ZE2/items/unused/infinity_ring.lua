@@ -16,10 +16,10 @@ local infinity_ring = ZE2:CreateItem("infinity_ring",	{
 	end,
 	onspawn = function(pmo, mo)
 		mo.framethati_usedinfinity = leveltime
-		
+
 		pmo.momx = $ / 2
 		pmo.momy = $ / 2
-		--pmo.momz = $ / 2	
+		--pmo.momz = $ / 2
 	end
 })
 

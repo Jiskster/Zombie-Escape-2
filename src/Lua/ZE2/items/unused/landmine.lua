@@ -45,7 +45,7 @@ local landmine = ZE2:CreateItem("landmine",  {
 	price = 500,
 	ontrigger = function(player)
 		local landmine = P_SpawnMobjFromMobj(player.mo, 0, 0, 0, MT_ZE2_LANDMINE)
-		
+
 		landmine.target = player.mo
 		landmine.spritexscale = $*2
 		landmine.spriteyscale = $*2
@@ -68,7 +68,7 @@ addHook("TouchSpecial", function(special, toucher)
 	if not (toucher.health) then return SO(special); end
 
 	if (special.mobjteam == nil or special.forcedamage == nil) then return SO(special); end
-	
+
 	local p = toucher.player
 	if not (p and p.valid) then return SO(special); end
 	if (p.xSlinger.team == special.mobjteam) then return SO(special); end

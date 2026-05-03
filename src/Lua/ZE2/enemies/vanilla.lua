@@ -1,7 +1,7 @@
 
 // Gold Crawla Freeslot
-freeslot( 
-"MT_GOLDCRAWLA", 
+freeslot(
+"MT_GOLDCRAWLA",
 "S_GOSS_STND",
 "S_GOSS_RUN1",
 "S_GOSS_RUN2",

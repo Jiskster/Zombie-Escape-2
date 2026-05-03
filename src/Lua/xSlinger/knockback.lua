@@ -11,16 +11,16 @@ end
 
 KB.addKnockback = function(mo, tics, angle, thrust)
 	if not mo.knockback then
-		KB.initKnockback(mo) 
+		KB.initKnockback(mo)
 	end
-	
+
 	table.insert(mo.knockback.list, {
 		tics = tics,
 		angle = angle,
 		thrust = thrust,
 		frac = (FU / tics),
 	})
-	
+
 	local wasinlist = false
 	for id,othermo in ipairs(KB.list) do
 		if othermo == mo then
@@ -28,7 +28,7 @@ KB.addKnockback = function(mo, tics, angle, thrust)
 			break
 		end
 	end
-	
+
 	if not wasinlist then
 		table.insert(KB.list, mo)
 	end
@@ -47,41 +47,41 @@ local function validKBMobj(mo)
 end
 
 addHook("ThinkFrame", function()
-	if gamestate ~= GS_LEVEL then 
+	if gamestate ~= GS_LEVEL then
 		return end;
-		
+
 	--clean up
 	if #KB.list then
 		for k=#KB.list,1 do
 			local mo = KB.list[k]
-			
+
 			if not validKBMobj(mo) then
 				if (mo and mo.valid and mo.knockback) then
 					mo.knockback = nil
 				end
-				
+
 				table.remove(KB.list,k)
 			end
 		end
 	end
-	
+
 	--iterate
 	for k,mo in ipairs(KB.list) do
 		local thrust = {x = 0; y = 0}
 		local knocked = false
-		
+
 		if not validKBMobj(mo) then -- just in case
 			continue
 		end
-		
+
 		local grounded = P_IsObjectOnGround(mo)
 		local k = mo.knockback
-		
+
 		-- Clean up inactive knockback tables.
 		for id,t in ipairs(k.list) do
 			if not t.tics then table.remove(k.list, id); end
 		end
-		
+
 		for id,t in ipairs(k.list) do
 			local force = ease.outcubic(FU - (t.frac * t.tics), t.thrust, 0)
 			if grounded then
@@ -97,7 +97,7 @@ addHook("ThinkFrame", function()
 			end
 			knocked = true
 		end
-		
+
 		local accspeed = FixedDiv(abs(FixedHypot(mo.momx,mo.momy)), mo.scale)
 		if knocked then
 			P_TryMove(mo,

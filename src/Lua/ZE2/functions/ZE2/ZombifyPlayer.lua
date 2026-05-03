@@ -12,6 +12,6 @@ ZE2.ZombifyPlayer = function(player, ztype)
 		print("Attempted to switch to invalid ztype: "..ztype)
 		player.ze2.zombie_type = "normal"
 	end
-	
+
 	ZE2.ResetPlayer(player, 2, true)
 end

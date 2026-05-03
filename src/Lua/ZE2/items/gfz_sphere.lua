@@ -2,7 +2,7 @@
 
 freeslot("MT_ZE2_GFZSPHERE", "S_ZE2_GFZSPHERE", "SPR_GFZS")
 
-mobjinfo[MT_ZE2_GFZSPHERE] = { 
+mobjinfo[MT_ZE2_GFZSPHERE] = {
 	spawnstate = S_ZE2_GFZSPHERE,
 	--activesound = sfx_shgn,
 	deathstate = S_SPRK1,
@@ -41,7 +41,7 @@ xSlinger.registerItem("GFZSPHERE",  {
 	firerate = 40;
 
 	color = SKINCOLOR_BROWN;
-	
+
 	dropstate = S_ZE2_GFZSPHERE_DROP;
 	dropscale = 2*FU;
 	dropyoffset = 8*FU;

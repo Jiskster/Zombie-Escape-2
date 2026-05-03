@@ -20,7 +20,7 @@ local queue = {
 print("<ZE2>: Loading ZE2 Functions")
 for i,path in ipairs(queue) do
 	local full_path = ("ZE2/functions/ZE2/"..path)
-	
+
 	dofile(full_path)
 end
 print("<ZE2>: Finished ZE2 Functions")

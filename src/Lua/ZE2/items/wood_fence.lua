@@ -125,7 +125,7 @@ local function TeamCheck(wood, tmo)
 	end
 
 	if (wood.team == tmo.team) then return true end
-	
+
 	return false
 end
 

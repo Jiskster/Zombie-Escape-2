@@ -5,7 +5,7 @@ rawset(_G, "xSlinger", {})
 -- http://lua-users.org/wiki/CopyTable
 function xSlinger.deepcopy(orig)
 	local deepcopy = xSlinger.deepcopy
-	
+
     local orig_type = type(orig)
     local copy
     if orig_type == 'table' then
@@ -44,9 +44,9 @@ xSlinger.skin_properties = {}
 function xSlinger.initPlayerSpawn(player)
 	local xS = player.xSlinger
 	xS.team = 1
-	
+
 	xS.reload = 0
-	
+
 	xS:inv_add("main", 5)
 end
 
@@ -81,47 +81,47 @@ xSlinger.registered_items_ordered = {}
 -- Fallback
 xSlinger.registered_items[-1] = {
 	id = -1;
-	
+
 	displayname = "Unknown";
-	
+
 	icon = "M_FNOPE";
 	icon_autoscale = true;
-	
+
 	background = xSlinger.default_item_background;
 	background_color = xSlinger.default_item_background_color;
-	
+
 	missile = MT_NULL;
-	
+
 	damage = 1;
 	knockback = 0; -- fixed_t
-	
+
 	autouse = false;
-	
+
 	count = -1;
 	maxcount = -1;
-	
+
 	ammo = -1;
 	maxammo = -1;
-	
+
 	reload_time = 2*TICRATE;
 	firerate = 0;
 	firerate_left = 0;
-	
+
 	delay = 0; -- cooldown, dont use at all for setting items.
-	
+
 	flags2 = 0; -- MF2_...
-	
+
 	autopickup = false;
 
 	sounds = {
 		use = sfx_None; -- "use"/"fire" entry supports tables for randomized sounds.
-		reload = {sfx_xsrel1, sfx_xsrel2}; -- [1]: Reload Start | [2] Reload Finish 
+		reload = {sfx_xsrel1, sfx_xsrel2}; -- [1]: Reload Start | [2] Reload Finish
 		pickup = sfx_None;
 		drop = sfx_None;
 	};
-	
+
 	droppable = true;
-	
+
 	drop_on_death = true;
 }
 
@@ -136,16 +136,16 @@ xSlinger.registerItem("", {
 	icon = false;
 
 	id = "";
-	
+
 	background = xSlinger.default_item_background;
 	background_color = xSlinger.default_item_background_color;
-	
+
 	sounds = {
 		use = sfx_None;
 	};
-	
+
 	droppable = false;
-	
+
 	drop_on_death = false;
 })
 
@@ -169,31 +169,31 @@ dofile "xSlinger/hud/health"
 
 addHook("PlayerSpawn", function(player)
 	xSlinger.initPlayerSpawn(player)
-	
+
 	--xS:slot_set(1, "red_ring")
 end)
 
 addHook("PlayerThink", function(player)
 	if not (player.mo and player.mo.valid and player.mo.health) then
 		return end;
-	
+
 	if player.mo.maxhealth == nil then
 		xSlinger.initPlayerHealth(player)
 	end
-		
+
 	xSlinger.DoThinker(player.mo)
 end)
 
 COM_AddCommand("giveitem", function(player, item, count)
 	if not item then
 		return end;
-		
+
 	if not xSlinger.registered_items[item] then
 		return end;
-		
+
 	local xS = player.xSlinger
 	local item = xS:give_item(item, tonumber(count))
-	
+
 	if not item then
 		CONS_Printf(player, "inventory full bruh: "..tostring(item))
 	end

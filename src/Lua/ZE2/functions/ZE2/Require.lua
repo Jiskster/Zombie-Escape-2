@@ -5,7 +5,7 @@ function ZE2.Require(path)
 		return saved[path]
 	else
 		saved[path] = dofile(path)
-		
+
 		return saved[path]
 	end
 end

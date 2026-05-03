@@ -46,7 +46,7 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 			for player in players.iterate do
 				for i,v in pairs(player.ze2.survivor_inventory) do
 					v.ammo = v.max_ammo
-					
+
 					if v.skin_overwrite then
 						for a,b in pairs(v.skin_overwrite) do
 							if b.ammo ~= nil then

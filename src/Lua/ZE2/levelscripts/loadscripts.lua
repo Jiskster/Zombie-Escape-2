@@ -25,7 +25,7 @@ dofolder("Global_Sounds");
 
 folder = "Frozen Chaos"; dofolder("Timers");
 
-folder = "Lost Sewer"; 
+folder = "Lost Sewer";
 
 dofolder("Timers");
 dofolder("Enemies");
@@ -40,13 +40,13 @@ folder = "Azure Sanctuary"; dofolder("Timers");
 
 folder = "Ancient Catacombs"; dofolder("Timers");
 
-folder = "Minecraft"; 
+folder = "Minecraft";
 
 dofolder("Timers");
 dofolder("Footsteps");
 dofolder("Sounds_and_Objects");
 
-folder = "The Ruins"; 
+folder = "The Ruins";
 
 dofolder("Sounds")
 dofolder("Objects")

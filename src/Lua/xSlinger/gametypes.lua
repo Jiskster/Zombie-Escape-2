@@ -5,12 +5,12 @@ function xSlinger.registerGametype(gt, data)
 		error("Arg 2 must be a table. Got: "..type(gt))
 		return
 	end
-		
+
 	if (type(data) ~= "table") then
 		error("Arg 2 must be a table. Got: "..type(data))
 		return
 	end
-	
+
 	local registered = xSlinger.registeredGametypes
 	registered[gt] = data
 end

@@ -59,8 +59,8 @@ addHook("ThinkFrame", function()
         ag = ease.linear(percent, g, ag)
         ab = ease.linear(percent, b, ab)
 
-        alpha_index = color.rgbToPalette(max(0,min(ar,255)), 
-                                        max(0,min(ag,255)), 
+        alpha_index = color.rgbToPalette(max(0,min(ar,255)),
+                                        max(0,min(ag,255)),
                                         max(0,min(ab,255)))
         skincolors[SKINCOLOR_ALPHAZOMBIE].ramp[i-1] = alpha_index
     end

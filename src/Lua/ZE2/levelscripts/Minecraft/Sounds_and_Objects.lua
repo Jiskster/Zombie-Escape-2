@@ -1,5 +1,5 @@
 freeslot(
-	"sfx_dropen", "sfx_prtal", "sfx_ston", "sfx_trvel", "sfx_mclava", 
+	"sfx_dropen", "sfx_prtal", "sfx_ston", "sfx_trvel", "sfx_mclava",
 	"sfx_mcwatr", "SPR_MCSN", "S_MINECRAFTSUN",	"MT_MINECRAFTSUN",
 	"MT_MCTORCH","S_MCTORCH","SPR_MCTR", "MT_CREEPER","S_CREEPER","SPR_CRPR"
 )

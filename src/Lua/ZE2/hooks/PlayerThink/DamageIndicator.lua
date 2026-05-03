@@ -13,15 +13,15 @@ return function(player)
 					animation = t.animation,
 				}
 			end
-			
+
 			if (t.damagenumbers) then
 				player.ze2:UpdateDamageNumbers(t.damagenumbers, t.real_position, t.number)
 			end
-			
+
 			if t.tics_left & 1 then
 				t.animation = $ + 1
 			end
-			
+
 			t.tics_left = $ - 1
 			if t.tics_left <= 0 then
 				player.ze2.damage_indicator_table[dmo] = nil

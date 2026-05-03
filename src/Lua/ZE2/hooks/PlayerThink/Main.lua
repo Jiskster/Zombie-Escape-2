@@ -31,9 +31,9 @@ return function(player)
 
 	if pmo and pmo.valid then
 		local spd = FixedHypot(pmo.momx, pmo.momy)
-		
+
 		ZE2.LimitMobjHealth(pmo)
-		
+
 		if (player.pflags & PF_JUMPED) then
 			pv.isJumping = true
 		end
@@ -46,24 +46,24 @@ return function(player)
 			if pv.isJumping then
 				pv.isJumping = false
 			end
-			
+
 			pv.isSprung = false
 		end
-		
+
 		--lastJumped is shitty ik but i cant think of a good way to do this
 		--WITHOUT having to make a new variable in the ze2 table
 		if ZE2.landingfatigue.value and (pv.lastJumped) then
 			local bhopped = false
-			
+
 			if (player.cmd.buttons & BT_JUMP) and not (player.lastbuttons & BT_JUMP) then
 				bhopped = true
 			end
-			
+
 			if (pmo.eflags & MFE_JUSTHITFLOOR) and not bhopped then
 				pmo:speedCapXY(5*FU)
 			end
 		end
-		
+
 		if player.playerstate == PST_DEAD then
 			if ZE2.round_active and not ZE2_game_ended and not player.ze2.respawntics then
 				if player.xSlinger.team == 1 then
@@ -77,7 +77,7 @@ return function(player)
 	end
 
 	ZE2.applyPlayerConfig(player)
-	
+
 	if mapheaderinfo[gamemap].ze2_noabilities then
 		player.pflags = $ & ~PF_GLIDING
 		player.pflags = $ & ~PF_BOUNCING
@@ -87,4 +87,4 @@ return function(player)
 end
 
 
-	
+

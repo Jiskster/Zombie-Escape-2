@@ -13,12 +13,12 @@ return function(player)
 	-- When this hits zero, catch up to your teammates!
 	if player.ze2.checkpoint_catchuptics then
 		player.ze2.checkpoint_catchuptics = $ - 1
-		
+
 		if not player.ze2.checkpoint_catchuptics then
 			ZE2.LatestCheckpointTeleport(player, true)
 		end
 	end
-	
+
 	if player.ze2.respawntics then
 		if player.spectator then
 			player.ze2.respawntics = 0
@@ -26,10 +26,10 @@ return function(player)
 			if player.playerstate == PST_REBORN then
 				player.playerstate = PST_DEAD
 			end
-		
+
 			if not ZE2.game_ended then
 				player.ze2.respawntics = max(0, $ - 1)
-				
+
 				if not player.ze2.respawntics then
 					if player.xSlinger.team == 1 then
 						player.ze2.outofgame = true
@@ -54,7 +54,7 @@ return function(player)
 			player.ze2.sprintdelay = 0
 		else
 			player.ze2.sprintdelay = $ - 1
-			
+
 			if not player.ze2.sprintdelay then
 				player.ze2.rundelay = 15
 			end

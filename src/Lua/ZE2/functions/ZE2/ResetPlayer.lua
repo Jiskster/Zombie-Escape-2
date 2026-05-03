@@ -12,7 +12,7 @@ ZE2.ResetPlayer = function(player, set_team, resetinventory, noitems)
 
 	if not (mo and mo.valid) then
 		return end;
-	
+
 	if set_team ~= nil then
 		xS.team = set_team
 	end

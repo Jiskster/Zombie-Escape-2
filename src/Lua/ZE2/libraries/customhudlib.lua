@@ -745,7 +745,7 @@ function customhud.GetMeta()
 end
 
 function customhud.ValidateRawsFunc(hook, path, archive, funcname, line, funcsource)
-	if not debug then 
+	if not debug then
 		warn("Vanilla debug library is missing. Please update to 2.2.16 to use this functionality.");
 		return true;
 	end
@@ -936,7 +936,7 @@ end
 
 COM_AddCommand("customhud_rawlist", function(_, hook)
 	local count = 0
-	
+
 	if type(hook) ~= "string" then
 		local datatype = type(hook);
 		warn("Expected: string; Got: "..datatype.." in customhud.ToggleRaws's hook parameter");
@@ -946,7 +946,7 @@ COM_AddCommand("customhud_rawlist", function(_, hook)
 	if not customhud.rawAdditions[hook] then
 		warn("Hook type \""..hook.."\" is invalid in customhud.ToggleRaws");
 		return true;
-	end	
+	end
 
 	for _,item in ipairs(customhud.rawAdditions[hook]) do
 		count = $ + 1
@@ -965,7 +965,7 @@ COM_AddCommand("customhud_rawlist", function(_, hook)
 end, COM_LOCAL);
 
 if hud.cachePatch then
-	---* In case of hud.cachePatch existing, just caches patches right away, when not queues strings for patching at first oppurnity.	
+	---* In case of hud.cachePatch existing, just caches patches right away, when not queues strings for patching at first oppurnity.
 	---* This is more so cross version solution, as cachePatch was made standalone from hook's own videolib
 	---@param container table<string>
 	---@return table<patch_t>
@@ -989,7 +989,7 @@ if hud.cachePatch then
 else
 	customhud.cachingQueue = {}
 
-	function customhud.PreCache(container)	
+	function customhud.PreCache(container)
 		table.insert(customhud.cachingQueue, container)
 		return container ---@cast container patch_t
 	end
@@ -1193,12 +1193,12 @@ end
 local function newhud_add(func, hook, ...)
 	local _hook = hook or "game"
 
-	if type(func) ~= "function" then 
+	if type(func) ~= "function" then
 		warn("While adding HUD hook non-drawer-function was provided.");
 		return
 	end
 
-	if type(_hook) ~= "string" then 
+	if type(_hook) ~= "string" then
 		warn("Invalid hook type provided \""..type(hook).."\"");
 		return
 	end
@@ -1229,7 +1229,7 @@ local function newhud_add(func, hook, ...)
 				line = info.linedefined or "unknown"
 			}
 		end
-		
+
 		table.insert(customhud.rawAdditions[_hook], {func, true, debuginfo})
 	else
 		hudadd(func, hook, ...)

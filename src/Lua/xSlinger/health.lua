@@ -8,10 +8,10 @@ addHook("MobjSpawn", function(mobj)
 			mobj.maxhealth = mobj.health
 		end
 	end
-	
+
 	if mobjinfo[mobj.type].disablehealthhud then
 		mobj.dontshowhealth = true
 	end
-	
+
 	mobj.shield_health = 0
 end)

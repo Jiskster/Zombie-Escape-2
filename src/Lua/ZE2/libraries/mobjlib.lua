@@ -12,7 +12,7 @@ rawset(_G, "P_FlyTo", function(mo, fx, fy, fz, sped, addques) --A very useful co
             flyto = 1
         end
         --local anglesucc = R_PointToAngle2(mo.x, mo.y, fx, fy)
-        
+
         if addques then
             mo.momx = $ + FixedMul(FixedDiv(fx - mo.x, flyto), sped)
             mo.momy = $ + FixedMul(FixedDiv(fy - mo.y, flyto), sped)
@@ -21,8 +21,8 @@ rawset(_G, "P_FlyTo", function(mo, fx, fy, fz, sped, addques) --A very useful co
             mo.momx = FixedMul(FixedDiv(fx - mo.x, flyto), sped)
             mo.momy = FixedMul(FixedDiv(fy - mo.y, flyto), sped)
             mo.momz = FixedMul(FixedDiv(fz - mo.z, flyto), sped)
-        end    
-    end    
+        end
+    end
 end)
 
 rawset(_G,"L_DoBrakes", function(mo,factor)
@@ -86,9 +86,9 @@ rawset(_G,"GetActorZ",function(actor,targ,type)
 	if type == nil then type = 1 end
 	if not (actor and actor.valid) then return 0 end
 	if not (targ and targ.valid) then return 0 end
-	
+
 	local flip = P_MobjFlip(actor)
-	
+
 	--get z
 	if type == 1 then
 		if flip == 1 then

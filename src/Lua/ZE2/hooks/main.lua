@@ -4,7 +4,7 @@ local hook_names = {
 	MapLoad = {"InitRound"};
 	PlayerSpawn = {
 		"InitPlayer";
-		"ZombieSpawn"; 
+		"ZombieSpawn";
 		"LatestCheckpoint";
 	};
 	TeamSwitch = {"Main"};
@@ -32,16 +32,16 @@ for hookname,hooktable in pairs(hook_names) do
 		local full_path = "ZE2/hooks/"..hookname.."/"..filename
 
 		local func = dofile(full_path..".lua")
-	
+
 		if hookname and not base_hooks[hookname] then
 			base_hooks[hookname] = {}
 		end
-	
+
 		table.insert(base_hooks[hookname], func)
-	
+
 		addHook(hookname, function(...)
 			if gametype ~= GT_ZE2 then return end
-			
+
 			return func(...)
 		end)
 	end

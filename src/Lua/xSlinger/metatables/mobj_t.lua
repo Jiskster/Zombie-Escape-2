@@ -5,18 +5,18 @@ mt.__index = function(mobj, key)
 	if key == "team" then
 		local team = old_index(mobj, key)
 		local player = mobj.player
-		
+
 		if player and player.valid then
 			return player.xSlinger.team
 		end
-		
+
 		if team == nil then
 			mobj.team = 0
-			
+
 			return 0
 		end
 	end
-	
+
 	return old_index(mobj, key)
 end
 

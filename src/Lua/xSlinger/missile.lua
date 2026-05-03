@@ -155,7 +155,7 @@ addHook("ThinkFrame", function()
 			end
 		end
 		```
-		
+
 		Or, insert everything we need to remove while iterating, and clean up after the
 		generic for loop.
 	*/
@@ -218,7 +218,7 @@ addHook("ThinkFrame", function()
 	end
 end)
 
--- dont let teammates and teamate's weapons collide with your weapon 
+-- dont let teammates and teamate's weapons collide with your weapon
 addHook("MobjCollide", function(thing, tmthing)
 	if tmthing and tmthing.valid and thing and thing.valid then
 		if (tmthing.target and tmthing.flags & MF_MISSILE and thing.team == tmthing.team) then
