@@ -6,7 +6,7 @@ local x = 25*FU
 local y = 15*FU
 
 --For title screen functionality
-local appear_time = 3*TICRATE
+local appear_time = 1*TICRATE
 local titletics = 0
 local alpha = 0
 
