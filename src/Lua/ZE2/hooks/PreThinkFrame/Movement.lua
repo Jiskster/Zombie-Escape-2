@@ -1,115 +1,106 @@
-return function()
-	for player in players.iterate do
-		if not (player.mo and player.mo.valid) then
-			continue end;
+local INCREMENT = FRACUNIT / 2
+local DECREMENT = FRACUNIT / 2
 
-		local cmd = player.cmd
+local BOOST_DECREMENT = 25 * FRACUNIT
 
-		local pmo = player.mo
-		local cc = ZE2.SurvivorConfig
-		local grounded = P_IsObjectOnGround(pmo)
+---@param player player_t
+local function HandleSprinting(player)
+	if (player.xSlinger.team ~= 1) then return end
+	if player.climbing then return end
 
-		local ze2 = player.ze2
+	local cmd = player.cmd
+	local mobj = player.mo
+	local ze2 = player.ze2
+	if not mobj or not mobj.valid then return end
 
-		local increment = FRACUNIT/2
-		local decrement = FRACUNIT/2
-		local boostdecrement = 25*FU
+	local ground = P_IsObjectOnGround(mobj)
+	local speed = FixedInt(abs(R_PointToDist2(0, 0, player.rmomx, player.rmomy)))
+	if (speed >= 18) then
+		local run = false
+		if ground and ze2.isRunning and not ze2.crouching then
+			player.runspeed = 1
+			run = true
 
-		if player.xSlinger.team ~= 1 then continue end
-		if player.climbing then continue end
+			ze2:ChangeStamina(-DECREMENT)
+			P_SpawnSkidDust(player, 20 * FRACUNIT)
+		end
 
-		if (player.speed/FU) > 17 then -- running
-			local run = false
-			if grounded and not ze2.crouching and ze2.isRunning then
-				ze2:ChangeStamina(-decrement)
-				P_SpawnSkidDust(player, 20*FRACUNIT)
-				player.runspeed = 1
-				run = true
-			end
-
-			if not (player.pflags & PF_SPINNING) then
-				if not run then
-					ze2:ChangeStamina(increment/2)
-					player.runspeed = 32000*FRACUNIT
-				end
-			else
-				ze2:ChangeStamina(-decrement)
-				P_SpawnSkidDust(player, 20*FRACUNIT)
+		if not (player.pflags & PF_SPINNING) then
+			if not run then
+				ze2:ChangeStamina(INCREMENT / 2)
+				player.runspeed = 32000 * FRACUNIT
 			end
 		else
-			if ze2.isRunning then
-				player.pflags = $ & ~PF_SPINNING
-
-				if not ze2.runstart then
-					ze2.rundelay = 6
-					ze2.isRunning = false
-				end
-			end
-
-			if (player.speed/FU == 0) and grounded then -- not moving
-				ze2:ChangeStamina(increment*3)
-			else -- moving but slower than running speed
-				ze2:ChangeStamina(increment)
-			end
-
-			player.runspeed = 32000*FRACUNIT
+			ze2:ChangeStamina(-DECREMENT)
+			P_SpawnSkidDust(player, 20*FRACUNIT)
 		end
-
-		-- Stop running if you meet these requirements:
-		if (not cmd.forwardmove) or (not ze2.sprintmeter)
-		or (ze2.sprintdelay) or (cmd.sidemove) then
-			if ze2.isRunning then
-				player.pflags = $ & ~PF_SPINNING
-			end
-
-			ze2.runstart = 0
-			ze2.isRunning = false
-		end
-
-		-- "Acceleration" boost when starting to run.
-		if ze2.runstart then
-			P_Thrust(pmo, pmo.angle, 2*FU)
-
-			if grounded then
-				ze2.runstart = max(0, $ - 1)
-			else
-				ze2.runstart = max(0, $ - 2)
-			end
-		end
-
-		if not grounded then
-			continue
-		end
-
-		if ze2.crouching and ze2.isRunning then-- Rollin Time
-			if (player.speed/FU) > 12 then
-				player.pflags = $|PF_SPINNING
-			else
-				player.pflags = $ & ~(PF_SPINNING)
-			end
-		end
-
-		-- Initial Running code
-		if ze2.rundelay then
-			ze2.rundelay = max(0, $ - 1)
-		elseif ze2.sprintmeter then
-			if (cmd.forwardmove > 0 and (cmd.buttons & BT_CUSTOM1) and not ze2.runstart)
-			and not (cmd.sidemove) and (player.speed/FU) > 8 then
-				if (not ze2.isRunning) and (not ze2.crouching) then -- Start sprint
-					ze2:ChangeStamina(-boostdecrement)
-					S_StartSound(pmo, sfx_s3ka2)
-					ze2.runstart = 9
-				end
-
-				player.drawangle = pmo.angle
-				ze2.isRunning = true
-			elseif not (cmd.buttons & BT_CUSTOM1) then
-				if ze2.isRunning then
-					ze2.rundelay = 6 -- delay when letting go
-				end
-
+	else
+		if ze2.isRunning then
+			player.pflags = player.pflags & ~(PF_SPINNING)
+			if not ze2.runstart then
+				ze2.rundelay = 6
 				ze2.isRunning = false
 			end
 		end
+
+		if ground and (speed == 0) then -- not moving
+			ze2:ChangeStamina(INCREMENT * 3)
+		else -- moving but slower than running speed
+			ze2:ChangeStamina(INCREMENT)
+		end
+		player.runspeed = 32000 * FRACUNIT
+	end
+
+	if not cmd.forwardmove or not ze2.sprintmeter or ze2.sprintdelay or cmd.sidemove then -- Stop running if you meet these requirements:
+		if ze2.isRunning then
+			player.pflags = player.pflags & ~(PF_SPINNING)
+		end
+		ze2.runstart = 0
+		ze2.isRunning = false
+	end
+
+	if ze2.runstart then -- "Acceleration" boost when starting to run.
+		P_Thrust(mobj, mobj.angle, 2 * FU)
+		if ground then
+			ze2.runstart = max(0, ze2.runstart - 1)
+		else
+			ze2.runstart = max(0, ze2.runstart - 2)
+		end
+	end
+
+	if not ground then return end
+
+	if ze2.crouching and ze2.isRunning then -- Rollin Time
+		if (speed >= 12) then
+			player.pflags = player.pflags | PF_SPINNING
+		else
+			player.pflags = player.pflags & ~(PF_SPINNING)
+		end
+	end
+
+	-- Initial Running code
+	if ze2.rundelay then
+		ze2.rundelay = max(0, ze2.rundelay - 1)
+	elseif ze2.sprintmeter then
+		if (speed >= 8) and (cmd.forwardmove > 0) and (cmd.buttons & BT_CUSTOM1) and not ze2.runstart and not cmd.sidemove then
+			if not ze2.isRunning and not ze2.crouching then -- Start sprint
+				ze2:ChangeStamina(-BOOST_DECREMENT)
+				S_StartSound(mobj, sfx_s3ka2)
+				ze2.runstart = 9
+			end
+			player.drawangle = mobj.angle
+			ze2.isRunning = true
+		elseif not (cmd.buttons & BT_CUSTOM1) then
+			if ze2.isRunning then
+				ze2.rundelay = 6 -- delay when letting go
+			end
+			ze2.isRunning = false
+		end
+	end
+end
+
+return function()
+	for player in players.iterate do
+		HandleSprinting(player)
 	end
 end
