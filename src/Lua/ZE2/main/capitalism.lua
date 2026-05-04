@@ -298,8 +298,8 @@ end
 addHook("MobjThinker", function(mobj)
 	if not mobj or not mobj.valid then return end
 
-	mobj.radius = FixedMul(mobjinfo[mobj.type].radius, mobj.spritexscale)
-	mobj.height = FixedMul(mobjinfo[mobj.type].height, mobj.spriteyscale)
+	mobj.radius = FixedMul(FixedMul(mobjinfo[mobj.type].radius, mobj.spritexscale), mobj.scale)
+	mobj.height = FixedMul(FixedMul(mobjinfo[mobj.type].height, mobj.spriteyscale), mobj.scale)
 	mobj.flags2 = mobj.flags2 | MF2_DONTDRAW
 	SpawnPaperSprites(mobj)
 	SpawnSplats(mobj)
