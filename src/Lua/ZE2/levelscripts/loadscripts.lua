@@ -32,7 +32,10 @@ dofolder("Enemies");
 
 folder = "Spooky Flower"; dofolder("Timers");
 
-folder = "Westopolis"; dofolder("Timers");
+folder = "Westopolis";
+
+dofolder("Emerald");
+dofolder("Timers");
 
 folder = "Egg Fortress"; dofolder("Timers");
 
