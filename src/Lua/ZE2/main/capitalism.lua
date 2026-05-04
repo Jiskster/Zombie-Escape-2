@@ -86,11 +86,27 @@ states[S_RUBY_BOX_BREAK] = {
     sprite = SPR_RBYM,
     frame = A,
 	action = function(mobj)
+		mobj.flags2 = mobj.flags2 | (MF2_DONTDRAW|MF2_DONTRESPAWN)
+		mobj.papersprites = mobj.papersprites or {}
+		for index = 1, 4, 1 do
+			local wall = mobj.papersprites[index]
+			if not wall or not wall.valid then continue end
+
+			P_RemoveMobj(wall)
+		end
+
+		mobj.splats = mobj.splats or {}
+		for index = 1, 2, 1 do
+			local splat = mobj.splats[index]
+			if not splat or not splat.valid then continue end
+
+			P_RemoveMobj(splat)
+		end
+
 		local sound = P_SpawnMobjFromMobj(mobj, 0, 0, 0, MT_ZVISUAL)
 		sound.fuse = TICRATE
 		S_StartSound(sound, mobj.info.deathsound)
 
-		mobj.flags2 = mobj.flags2 | MF2_DONTDRAW
 		A_RubyDrop(mobj, 5)
 		for index = 0, 8, 1 do
 			local angle = ANGLE_45 * index
@@ -256,10 +272,16 @@ end, MT_CRRUBY)
 
 local Sides = {0, ANGLE_90, ANGLE_180, ANGLE_270}
 local function SpawnPaperSprites(mobj)
+	mobj.papersprites = mobj.papersprites or {}
 	for index = 1, 4, 1 do
 		local offsetx = P_ReturnThrustX(mobj, mobj.angle + (Sides[index] + ANGLE_90), mobj.radius)
 		local offsety = P_ReturnThrustY(mobj, mobj.angle + (Sides[index] + ANGLE_90), mobj.radius)
-		local wall = P_SpawnMobj(mobj.x + offsetx, mobj.y + offsety, mobj.z, MT_ZVISUAL)
+
+		local wall = mobj.papersprites[index]
+		if not wall or not wall.valid then
+			wall = P_SpawnMobj(mobj.x + offsetx, mobj.y + offsety, mobj.z, MT_ZVISUAL)
+			mobj.papersprites[index] = wall
+		end
 		P_SetOrigin(wall, mobj.x + offsetx, mobj.y + offsety, mobj.z)
 		wall.sprite = SPR_RBYM
 		wall.frame = 0
@@ -268,12 +290,17 @@ local function SpawnPaperSprites(mobj)
 		wall.scale = mobj.scale
 		wall.spritexscale = mobj.spritexscale
 		wall.spriteyscale = mobj.spriteyscale
-		wall.fuse = 2
 	end
 end
 
 local function SpawnSplats(mobj) -- no need for a for loop
-	local splat = P_SpawnMobj(mobj.x, mobj.y, mobj.z, MT_ZVISUAL)
+	mobj.splats = mobj.splats or {}
+
+	local splat = mobj.splats[1]
+	if not splat or not splat.valid then
+		splat = P_SpawnMobj(mobj.x, mobj.y, mobj.z, MT_ZVISUAL)
+		mobj.splats[1] = splat
+	end
 	P_SetOrigin(splat, mobj.x, mobj.y, mobj.z)
 	splat.sprite = SPR_RBYM
 	splat.frame = 2
@@ -282,9 +309,12 @@ local function SpawnSplats(mobj) -- no need for a for loop
 	splat.scale = mobj.scale
 	splat.spritexscale = mobj.spritexscale
 	splat.spriteyscale = mobj.spritexscale
-	splat.fuse = 2
 
-	local splat = P_SpawnMobj(mobj.x, mobj.y, mobj.z + mobj.height, MT_ZVISUAL)
+	local splat = mobj.splats[2]
+	if not splat or not splat.valid then
+		splat = P_SpawnMobj(mobj.x, mobj.y, mobj.z + mobj.height, MT_ZVISUAL)
+		mobj.splats[2] = splat
+	end
 	P_SetOrigin(splat, mobj.x, mobj.y, mobj.z + mobj.height)
 	splat.sprite = SPR_RBYM
 	splat.frame = 1
@@ -293,10 +323,10 @@ local function SpawnSplats(mobj) -- no need for a for loop
 	splat.scale = mobj.scale
 	splat.spritexscale = mobj.spritexscale
 	splat.spriteyscale = mobj.spritexscale
-	splat.fuse = 2
 end
 addHook("MobjThinker", function(mobj)
 	if not mobj or not mobj.valid then return end
+	if (mobj.flags2 & MF2_DONTRESPAWN) then return end
 
 	mobj.scale = mobj.scale
 	mobj.radius = FixedMul(FixedMul(mobjinfo[mobj.type].radius, mobj.spritexscale), mobj.scale)
