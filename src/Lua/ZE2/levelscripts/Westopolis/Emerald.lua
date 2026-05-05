@@ -21,9 +21,9 @@ mobjinfo[MT_WESTOEMERALD] = {
     spawnstate = mobjinfo[MT_EMERALD1].spawnstate,
     deathstate = S_SPRK1,
     deathsound = sfx_ncitem,
-    radius = 9*FU,
-    height = 25*FU,
-    flags = MF_NOGRAVITY|MF_SPECIAL
+    radius = mobjinfo[MT_EMERALD1].radius,
+    height = mobjinfo[MT_EMERALD1].height,
+    flags = mobjinfo[MT_EMERALD1].flags
 }
 
 --color: for the sparkles
@@ -38,18 +38,20 @@ local Emerald = {
     [6] = {color = SKINCOLOR_BLUEBELL, frame = G}
 }
 
---Replica of A_GoldMonitorSparkle but colorized
-function A_GoldMonitorSparkleColor(actor, var1)
+--Replica of A_GoldMonitorSparkle but colorized and for advanced usage
+--var1 = color
+--var2 = radius
+function A_GoldMonitorSparkleColor(actor, var1, var2)
     if not (actor and actor.valid) then return end
 
     local ngangle = FixedAngle(((leveltime * 21) % 360) * FRACUNIT)
-    local xofs = P_ReturnThrustX(actor, ngangle, actor.radius)
-    local yofs = P_ReturnThrustY(actor, ngangle, actor.radius)
+    local xofs = P_ReturnThrustX(actor, ngangle, var2 or actor.radius)
+    local yofs = P_ReturnThrustY(actor, ngangle, var2 or actor.radius)
 
     for i = FRACUNIT, 2*FRACUNIT, FRACUNIT/2 do
         local sparkle = P_SpawnMobjFromMobj(actor, xofs, yofs, 0, MT_BOXSPARKLE)
         sparkle.colorized = true
-        sparkle.color = var1
+        sparkle.color = var1 or SKINCOLOR_GREEN
         sparkle.renderflags = $|RF_FULLBRIGHT
         P_SetObjectMomZ(sparkle, i, false)
     end
@@ -75,7 +77,7 @@ local function EmeraldSparkles(mo)
     if not (leveltime % 10 == 0) then return end --run this thinker each 10 tics
     if not (mo.valid and mo.health and mo.emmy_sparklecolor) then return end
 
-    A_GoldMonitorSparkleColor(mo, mo.emmy_sparklecolor)
+    A_GoldMonitorSparkleColor(mo, mo.emmy_sparklecolor, mo.radius/3)
 end
 
 --Execute a linedef tag on death
