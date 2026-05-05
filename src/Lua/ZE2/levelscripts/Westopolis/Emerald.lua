@@ -18,13 +18,13 @@ mobjinfo[MT_WESTOEMERALD] = {
     --$Arg2ToolTip "Tag to execute when touching the emerald"
 	--$Color 7
     doomednum = 4200,
-    spawnstate = mobjinfo[MT_EMERALD1].spawnstate,
+    spawnstate = S_CEMG1,
     deathstate = S_SPRK1,
     deathsound = sfx_ncitem,
-    radius = mobjinfo[MT_EMERALD1].radius,
-    height = mobjinfo[MT_EMERALD1].height,
-    flags = mobjinfo[MT_EMERALD1].flags
-}
+    radius = 16*FRACUNIT,
+    height = 24*FRACUNIT,
+    flags = MF_NOGRAVITY|MF_SPECIAL
+} -- UZB moment
 
 --color: for the sparkles
 --frame: to change the CEMG frame
