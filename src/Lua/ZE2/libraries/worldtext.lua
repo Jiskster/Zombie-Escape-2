@@ -3,109 +3,29 @@ mobjinfo[MT_ZTEXT] = {doomednum = -1, spawnstate = S_INVISIBLE, speed = 0, radiu
 
 freeslot("SPR_LOWERCASE_CHARACTERS", "SPR_NUMBER_CHARACTERS", "SPR_SYMBOLS_CHARACTERS", "SPR_UPPERCASE_CHARACTERS")
 
-local CHARACTER_TABLE = {
-	-- Capital letters
-	["A"] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = 0},
-	["B"] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = 1},
-	["C"] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = 2},
-	["D"] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = 3},
-	["E"] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = 4},
-	["F"] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = 5},
-	["G"] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = 6},
-	["H"] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = 7},
-	["I"] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = 8},
-	["J"] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = 9},
-	["K"] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = 10},
-	["L"] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = 11},
-	["M"] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = 12},
-	["N"] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = 13},
-	["O"] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = 14},
-	["P"] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = 15},
-	["Q"] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = 16},
-	["R"] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = 17},
-	["S"] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = 18},
-	["T"] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = 19},
-	["U"] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = 20},
-	["V"] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = 21},
-	["W"] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = 22},
-	["X"] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = 23},
-	["Y"] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = 24},
-	["Z"] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = 25},
+local CHARACTER_TABLE = {}
+local Characters = {
+	--Letters (keys 1 - 26)
+	"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
+	"O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
 
-	-- Lower letters
-	["a"] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = 0},
-	["b"] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = 1},
-	["c"] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = 2},
-	["d"] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = 3},
-	["e"] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = 4},
-	["f"] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = 5},
-	["g"] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = 6},
-	["h"] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = 7},
-	["i"] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = 8},
-	["j"] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = 9},
-	["k"] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = 10},
-	["l"] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = 11},
-	["m"] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = 12},
-	["n"] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = 13},
-	["o"] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = 14},
-	["p"] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = 15},
-	["q"] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = 16},
-	["r"] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = 17},
-	["s"] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = 18},
-	["t"] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = 19},
-	["u"] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = 20},
-	["v"] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = 21},
-	["w"] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = 22},
-	["x"] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = 23},
-	["y"] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = 24},
-	["z"] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = 25},
+	--Digits (keys 27 - 36)
+	"0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
 
-	-- Digits
-	["0"] = {sprite = SPR_NUMBER_CHARACTERS, frame = 0},
-	["1"] = {sprite = SPR_NUMBER_CHARACTERS, frame = 1},
-	["2"] = {sprite = SPR_NUMBER_CHARACTERS, frame = 2},
-	["3"] = {sprite = SPR_NUMBER_CHARACTERS, frame = 3},
-	["4"] = {sprite = SPR_NUMBER_CHARACTERS, frame = 4},
-	["5"] = {sprite = SPR_NUMBER_CHARACTERS, frame = 5},
-	["6"] = {sprite = SPR_NUMBER_CHARACTERS, frame = 6},
-	["7"] = {sprite = SPR_NUMBER_CHARACTERS, frame = 7},
-	["8"] = {sprite = SPR_NUMBER_CHARACTERS, frame = 8},
-	["9"] = {sprite = SPR_NUMBER_CHARACTERS, frame = 9},
-
-	-- Symbols
-	["!"] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 0},
-	["#"] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 2},
-	["$"] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 3},
-	["%"] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 4},
-	["&"] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 5},
-	["'"] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 6},
-	["("] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 7},
-	[")"] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 8},
-	["*"] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 9},
-	["+"] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 10},
-	[","] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 11},
-	["-"] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 12},
-	["."] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 13},
-	["/"] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 14},
-	[":"] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 15},
-	[";"] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 16},
-	["<"] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 17},
-	["="] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 18},
-	[">"] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 19},
-	["?"] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 20},
-	["@"] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 21},
-	["["] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 22},
-	["\\"] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 23},
-	["]"] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 24},
-	["^"] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 25},
-	["_"] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 26},
-	["`"] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 27},
-	["{"] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 28},
-	["|"] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 29},
-	["}"] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 30},
-	["~"] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 31},
-	[" "] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = 32}
+	--Symbols (keys 37 - 68)
+	"!", "#", "$", "%", "&", "'", "(", ")", "*", "+", ", ", "-", ".", "/",
+	":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{",
+	"|", "}", "~", " "
 }
+-- Capital and Lower letters
+for i = 1, 26  do
+	CHARACTER_TABLE[Characters[i]] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = i-1}
+	CHARACTER_TABLE[string.lower(Characters[i])] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = i-1}
+end
+-- Digits
+for i = 27, 36 do CHARACTER_TABLE[Characters[i]] = {sprite = SPR_NUMBER_CHARACTERS, frame = i-27} end
+-- Symbols
+for i = 37, 68 do CHARACTER_TABLE[Characters[i]] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = i-37} end
 
 local COLOR_TABLE = {
 	["\x80"] = SKINCOLOR_WHITE,
