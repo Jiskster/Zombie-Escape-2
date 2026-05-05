@@ -234,7 +234,7 @@ local function Lugent_SpawnWorldText(x, y, z, text, align, duration, moveable)
 	if (duration == nil) or (tonumber(duration) == nil) then duration = 0 end
 	if (moveable == nil) or (type(moveable) ~= "boolean") then moveable = false end
 
-	local mobj = P_SpawnMobj(player.mo.x, player.mo.y, player.mo.z + (64 * FU), MT_ZTEXT)
+	local mobj = P_SpawnMobj(x, y, z, MT_ZTEXT)
 	mobj.text = text
 	mobj.textalign = align
 	mobj.moveabletext = moveable
