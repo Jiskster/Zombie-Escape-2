@@ -32,7 +32,7 @@ local function HandleSprinting(player)
 			end
 		else
 			ze2:ChangeStamina(-DECREMENT)
-			P_SpawnSkidDust(player, 20*FRACUNIT)
+			if ground then P_SpawnSkidDust(player, 20*FRACUNIT) end
 		end
 	else
 		if ze2.isRunning then
