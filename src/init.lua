@@ -1,7 +1,7 @@
 local dofile = dofile;
 
 freeslot("MT_ZVISUAL") -- just put it here, is gonna be a general propuse mobj visual
-mobjinfo[MT_ZVISUAL] = {doomednum = -1, spawnstate = S_INVISIBLE, speed = 0, radius = 0, height = 0, flags = MF_NOBLOCKMAP|MF_NOGRAVITY|MF_NOCLIPHEIGHT}
+mobjinfo[MT_ZVISUAL] = {doomednum = -1, spawnstate = S_INVISIBLE, speed = 0, radius = 0, height = 0, flags = MF_NOBLOCKMAP|MF_NOGRAVITY|MF_NOCLIPHEIGHT|MF_NOCLIPTHING|MF_NOCLIP}
 
 dofile "xSlinger/init" -- Load xSlinger
 
@@ -35,6 +35,7 @@ local function I_LoadLibs(sp)
 	ze2file "customhudlib.lua"
 	ze2file "countingplayers.lua"
 	ze2file "mtimeconv.lua"
+	ze2file "worldtext.lua"
 	
 	set_subpath "";
 	
