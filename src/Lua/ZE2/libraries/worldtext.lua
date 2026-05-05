@@ -1,6 +1,28 @@
+--Object definition
 freeslot("MT_ZTEXT")
 mobjinfo[MT_ZTEXT] = {
-	doomednum = -1,
+	--$Title World Text
+	--$Sprite LETRAR
+	--$Category Lugent Utilities
+	--$Angled true
+	--$WallSprite  true
+	--$StringArg0 "Text"
+	--$StringArg0ToolTip "The text to display"
+	--$Arg0 "Alignment"
+	--$Arg0Type 11
+	--$Arg0Default 0
+	--$Arg0Tooltip "The type of text alignment"
+	--$Arg0Enum { 0 = "Left"; 1 = "Center"; 2 = "Right"; }
+	--$Arg1 "Duration"
+	--$Arg1Type 0
+	--$Arg1Default 0
+	--$Arg1Tooltip "Duration in tics before expiring\n 0 = infinite"
+	--$Arg2 "Moveable"
+	--$Arg2Type 11
+	--$Arg2Default 0
+	--$Arg2Tooltip "Allow the text to be manipulated by scripts?\n Both position and rotation\n (Changing text not supported)"
+	--$Arg2Enum { 0 = "No"; 1 = "Yes"; }
+	doomednum = 9999,
 	spawnstate = S_INVISIBLE,
 	speed = 0,
 	radius = 0,
@@ -19,8 +41,8 @@ local Characters = {
 	--Digits (keys 27 - 36)
 	"0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
 
-	--Symbols (keys 37 - 68)
-	"!", "#", "$", "%", "&", "'", "(", ")", "*", "+", ", ", "-", ".", "/",
+	--Symbols (keys 37 - 69)
+	"!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ", ", "-", ".", "/",
 	":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{",
 	"|", "}", "~", " "
 }
@@ -32,7 +54,7 @@ end
 -- Digits
 for i = 27, 36 do CHARACTER_TABLE[Characters[i]] = {sprite = SPR_NUMBER_CHARACTERS, frame = i-27} end
 -- Symbols
-for i = 37, 68 do CHARACTER_TABLE[Characters[i]] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = i-37} end
+for i = 36, 69 do CHARACTER_TABLE[Characters[i]] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = i-37} end
 
 local COLOR_TABLE = {
 	["\x80"] = SKINCOLOR_WHITE,
@@ -112,6 +134,21 @@ local function HandleText(mobj)
 		P_SetOrigin(character, x, y, mobj.z)
 	end
 end
+
+addHook("MapThingSpawn", function (mobj, thing)
+	if not mobj or not mobj.valid then return end
+
+	local text = thing.stringargs[0]
+	local align = thing.args[0]
+	local duration = thing.args[1]
+	local moveable = thing.args[2]
+	mobj.text = text
+	mobj.textalign = align
+	mobj.moveabletext = moveable
+	if (duration > 0) then
+		mobj.fuse = duration
+	end
+end, MT_ZTEXT)
 
 addHook("MobjThinker", function(mobj)
 	if not mobj or not mobj.valid then return end
