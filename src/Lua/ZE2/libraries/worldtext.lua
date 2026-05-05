@@ -55,11 +55,12 @@ local function ParseText(mobj)
 
 	mobj.characters = {}
 
-	local offset = 0
-	if (mobj.textalign == 1) then
-		offset = (8 * (string.len(ClearText(mobj.text)) / 2)) * FU
-	elseif (mobj.textalign == 2) then
-		offset = (8 * (string.len(ClearText(mobj.text)) - 1)) * FU
+    local length = (8 * string.len(ClearText(mobj.text))) * FU
+	local offset = 0 -- left, by default
+	if (mobj.textalign == 1) then -- center
+		offset = FixedMul(length, FU / 2)
+	elseif (mobj.textalign == 2) then -- right
+		offset = length - (8 * FU)
 	end
 	mobj.textoffset = offset
 
