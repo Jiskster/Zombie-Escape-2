@@ -7,8 +7,8 @@ local Tools_HUD = function(v, p)
 	local spacing=5
 	local bx, by, bflags = 320, 15, V_SNAPTORIGHT|V_SNAPTOTOP|V_ADD|V_ALLOWLOWERCASE|V_PERPLAYER
 
-	-- Draw ZE2 Tools information
-	drawString(bx, by, "\130ZE2 Tools Enabled", bflags, "thin-right")
+	-- Draw debug enabled
+	drawString(bx, by, "\130Debug Enabled", bflags, "thin-right")
 
 	-- Teleport commands
 	local tp_x = 6
