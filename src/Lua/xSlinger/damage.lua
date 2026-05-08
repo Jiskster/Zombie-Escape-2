@@ -158,11 +158,27 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 	-- DIE NOW
 	if not mo.shield_health then
 		if mo.health - dmg <= 0 or deathdamagetype then
+			do
+				local ev, ev_name = xSlinger.findEvent("MobjDamage")
+				if #ev then
+					for i,v in ipairs(ev) do
+						local result = xSlinger.tryRunHook(ev_name, v, mo, inf, src, dmg, damagetype)
+					end
+				end
+			end
 			xSlinger.KillMobj(mo, inf, src, damagetype)
 			return false
 		end
 	else
 		if deathdamagetype then
+			do
+				local ev, ev_name = xSlinger.findEvent("MobjDamage")
+				if #ev then
+					for i,v in ipairs(ev) do
+						local result = xSlinger.tryRunHook(ev_name, v, mo, inf, src, dmg, damagetype)
+					end
+				end
+			end
 			xSlinger.KillMobj(mo, inf, src, damagetype)
 			return false
 		end
@@ -268,6 +284,15 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 
 	if not mo.shield_health then
 		mo.health = $ - dmg -- negate health ourselves, dont use damage function
+	end
+
+	do
+		local ev, ev_name = xSlinger.findEvent("MobjDamage")
+		if #ev then
+			for i,v in ipairs(ev) do
+				local result = xSlinger.tryRunHook(ev_name, v, mo, inf, src, dmg, damagetype)
+			end
+		end
 	end
 
 	if mo.health <= 0 then

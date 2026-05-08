@@ -79,6 +79,7 @@ local function ClearText(text)
 	return text:gsub("\x80", ""):gsub("\x81", ""):gsub("\x82", ""):gsub("\x83", ""):gsub("\x84", ""):gsub("\x85", ""):gsub("\x86", ""):gsub("\x87", ""):gsub("\x88", ""):gsub("\x89", ""):gsub("\x8A", ""):gsub("\x8B", ""):gsub("\x8C", ""):gsub("\x8D", ""):gsub("\x8E", ""):gsub("\x8F", "")
 end
 
+---@param mobj mobj_t
 local function ParseText(mobj)
 	if mobj.parsed then return end
 
@@ -119,6 +120,7 @@ local function ParseText(mobj)
 	mobj.parsed = true
 end
 
+---@param mobj mobj_t
 local function HandleText(mobj)
 	if not mobj.moveabletext then return end -- needed in case is a static text
 
@@ -128,10 +130,18 @@ local function HandleText(mobj)
 
 		local offsetx = P_ReturnThrustX(mobj, mobj.angle, mobj.textoffset)
 		local offsety = P_ReturnThrustY(mobj, mobj.angle, mobj.textoffset)
-		local x = mobj.x - offsetx + P_ReturnThrustX(mobj, mobj.angle, (8 * (index - 1)) * FU)
-		local y = mobj.y - offsety + P_ReturnThrustY(mobj, mobj.angle, (8 * (index - 1)) * FU)
+		local position = FixedMul((8 * (index - 1)) * FU, mobj.scale)
+		local x = mobj.x - offsetx + P_ReturnThrustX(mobj, mobj.angle, position)
+		local y = mobj.y - offsety + P_ReturnThrustY(mobj, mobj.angle, position)
 		character.angle = mobj.angle
-		P_SetOrigin(character, x, y, mobj.z)
+		character.momx = mobj.momx
+		character.momy = mobj.momy
+		character.momz = mobj.momz
+		character.scale = mobj.scale
+		character.drawonlyforplayer = mobj.drawonlyforplayer
+		character.dontdrawforviewmobj = mobj.dontdrawforviewmobj
+		character.alpha = mobj.alpha
+		P_MoveOrigin(character, x, y, mobj.z)
 	end
 end
 

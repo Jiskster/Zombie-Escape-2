@@ -115,137 +115,32 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 	end
 end
 
-local width = 14
-local cv_fov
-local function GetFOV()
-	if isdedicatedserver then
-		return 1
+---@param player player_t
+---@param source mobj_t
+---@param damage integer
+function ZE2:AddDamageText(player, source, damage)
+	player.ze2.damage_text = player.ze2.damage_text or {}
+	for index, indicator in ipairs(player.ze2.damage_text) do
+		if (indicator.source ~= source) then continue end
+		if indicator.text and indicator.text.valid then
+			P_RemoveMobj(indicator.text)
+		end
+		table.remove(player.ze2.damage_text, index)
 	end
 
-	if not cv_fov then
-		cv_fov = CV_FindVar("fov")
-	end
-
-	return FixedDiv(cv_fov.value, 90*FU)
-end
-
---these are updated in baseplayer.lua
-local function SpawnDamageNumbers(player, victim_mobj, damage)
-	local numbers = {}
-
-	--TODO: test to make sure this doesnt spawn too much mobjs, check for desynchs
-	do
-		damage = tostring($)
-		local str_len = string.len(damage)
-
-		local scale = FixedDiv(R_PointToDist(victim_mobj.x,victim_mobj.y), victim_mobj.radius * 10)
-		scale = max($, victim_mobj.scale * 2)
-		scale = FixedMul($, GetFOV())
-		scale = $/2
-		--print(string.format("s: %f r: %f rt: %f", scale, random, randomthr))
-
-		local offset = FixedMul((str_len*width)*FU, scale) / 2
-
-		local work = offset
-		local angle = R_PointToAngle(victim_mobj.x,victim_mobj.y) - ANGLE_90
-
-		for i = 1,str_len do
-			local n = string.sub(damage,i,i)
-			local frame = tonumber(n)
-
-			local num = P_SpawnMobjFromMobj(victim_mobj,
-				P_ReturnThrustX(nil, angle, work),
-				P_ReturnThrustY(nil, angle, work),
-				FixedDiv(victim_mobj.height, victim_mobj.scale),
-				MT_THOK
-			)
-			num.sprite = SPR_ZE2_DAMAGENUMBER
-			num.frame = (frame)|FF_FULLBRIGHT
-			num.scale = scale
-			num.color = victim_mobj.color or SKINCOLOR_RED
-
-			num.tics = 2*TICRATE
-			num.fuse = num.tics
-
-			--num.flags = $ &~MF_NOGRAVITY
-
-			num.renderflags = $|RF_NOCOLORMAPS
-			num.drawonlyforplayer = player
-			num.dispoffset = 100
-
-			num.nu_momz = 3 * FU
-			num.nu_thrust = 2 * FU * (leveltime % 2 and 1 or -1)
-			num.nu_width = width
-			if num.nu_offset == nil then
-				num.nu_offset = 0
-			end
-			if i == 1 then
-				num.z = $ + 6*scale
-				num.nu_offset = 6*FU
-			end
-			num.nu_anim = nil
-			table.insert(numbers, num)
-
-			work = $ + width*scale
-		end
-	end
-	return numbers
-end
-
-function ZE2:AddDamageIndicator(player, victim_mobj, damage)
-	if not player.ze2.damage_indicator_table[victim_mobj] then
-		player.ze2.damage_indicator_table[victim_mobj] = {
-			tics_left = TICRATE*2,
-			animation = 1,
-			number = min(damage, victim_mobj.health),
-			draw_x = victim_mobj.x,
-			draw_y = victim_mobj.y,
-			draw_z = victim_mobj.z + (victim_mobj.height*2),
-
-			real_position = {
-				x = victim_mobj.x,
-				y = victim_mobj.y,
-				z = victim_mobj.z,
-				scale = victim_mobj.scale,
-				height = victim_mobj.height,
-				radius = victim_mobj.radius
-			}
-		}
-
-		player.ze2.damage_indicator_table[victim_mobj].damagenumbers = SpawnDamageNumbers(player, victim_mobj, min(damage, victim_mobj.health))
-	else
-		if player.ze2.damage_indicator_table[victim_mobj].tics_left then
-			player.ze2.damage_indicator_table[victim_mobj].tics_left = TICRATE*2
-			player.ze2.damage_indicator_table[victim_mobj].animation = 1
-		end
-
-		if player.ze2.damage_indicator_table[victim_mobj].number then
-			player.ze2.damage_indicator_table[victim_mobj].number = min($ + damage, victim_mobj.maxhealth or 0)
-		end
-
-		player.ze2.damage_indicator_table[victim_mobj].draw_x = victim_mobj.x
-		player.ze2.damage_indicator_table[victim_mobj].draw_y = victim_mobj.y
-		player.ze2.damage_indicator_table[victim_mobj].draw_z = victim_mobj.z + (victim_mobj.height*2)
-
-		player.ze2.damage_indicator_table[victim_mobj].real_position = {
-			x = victim_mobj.x,
-			y = victim_mobj.y,
-			z = victim_mobj.z,
-			scale = victim_mobj.scale,
-			height = victim_mobj.height,
-			radius = victim_mobj.radius
-		}
-
-		if player.ze2.damage_indicator_table[victim_mobj].damagenumbers then
-			for k, mo in ipairs(player.ze2.damage_indicator_table[victim_mobj].damagenumbers) do
-				--game already did it for us, cool
-				if not (mo and mo.valid) then continue end
-				P_RemoveMobj(mo)
-			end
-		end
-
-		player.ze2.damage_indicator_table[victim_mobj].damagenumbers = SpawnDamageNumbers(player, victim_mobj, player.ze2.damage_indicator_table[victim_mobj].number)
-	end
+	local direction = R_PointToAngle(source.x, source.y)
+	local x = P_ReturnThrustX(source, direction, 64 * FU)
+	local y = P_ReturnThrustY(source, direction, 64 * FU)
+	local z = source.height * 2
+	local text = Lugent_SpawnWorldText(source.x + x, source.y + y, source.z + z, tostring(damage), 1, TICRATE * 5, true)
+	text.angle = direction - ANGLE_90
+	text.momx = source.momx
+	text.momy = source.momy
+	text.momz = source.momz
+	text.oradius = source.radius
+	text.oscale = source.scale
+	text.drawonlyforplayer = player
+	table.insert(player.ze2.damage_text, {text = text, source = source})
 end
 
 xSlinger.addHook("OnPlayerDamage", function(player, inf, src, dmg, damagetype)
@@ -267,6 +162,19 @@ xSlinger.addHook("OnPlayerDamage", function(player, inf, src, dmg, damagetype)
 
 		pV:DamageFade(15)
 	end
+end)
+
+xSlinger.addHook("MobjDamage", function(mobj, inf, src, dmg, damagetype)
+	local player
+	if src and src.valid and src.player and src.player.valid then
+		player = src.player
+	elseif inf and inf.valid and inf.player and inf.player.valid then
+		player = inf.player
+	end
+
+	if not player then return end
+
+	ZE2:AddDamageText(player, mobj, dmg)
 end)
 
 -- Prevent early game damage to zombies and from zombies.

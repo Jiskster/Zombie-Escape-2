@@ -44,18 +44,5 @@ return {
 
 	zombie_next_type = nil,
 
-	damage_indicator_table = {},
-	/*	damage_indicator_table
-		[mobj_t] = {
-			draw_x = (x),
-			draw_y = (y),
-			draw_z = (z),
-			number = 100,
-			tics_left = 35,
-			damagenumbers = {list of mobjs},
-			real_position = {x,y,z, scale, height, radius},
-		}
-	*/
-
 	teamchat_enabled = false,
 }

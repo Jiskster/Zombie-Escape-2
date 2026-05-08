@@ -72,6 +72,11 @@ events["ShouldDamage"] = {
     --typefor = typefor_mobj   ;
 }
 
+events["MobjDamage"] = {
+    handler = handler_snapany;
+    --typefor = typefor_mobj   ;
+}
+
 local deprecated = {
     /* EXAMPLE
     ["MyHook"] = {
