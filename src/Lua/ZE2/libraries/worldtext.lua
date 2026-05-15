@@ -185,6 +185,18 @@ addHook("MobjRemoved", function(mobj)
 	end
 end, MT_ZTEXT)
 
+--- Spawns a 3D text via mobjs using a master mobj which controls the text, enabling moveable allows it to be dynamic instead of static
+---@param x fixed_t
+---@param y fixed_t
+---@param z fixed_t
+---@param text string
+---@param align
+---| 0 Left
+---| 1 Center
+---| 2 Right
+---@param duration tic_t?
+---@param moveable boolean?
+---@return mobj_t?
 local function Lugent_SpawnWorldText(x, y, z, text, align, duration, moveable)
 	if (x == nil) or (y == nil) or (z == nil) then
 		error("Attempted to spawn a world text without an valid position", 2)
@@ -219,3 +231,50 @@ local function Lugent_SpawnWorldText(x, y, z, text, align, duration, moveable)
 	return mobj
 end
 rawset(_G, "Lugent_SpawnWorldText", Lugent_SpawnWorldText)
+
+---@param mobj mobj_t
+---@param text string
+---@param align
+---| 0 Left
+---| 1 Center
+---| 2 Right
+---@param duration tic_t?
+---@param moveable boolean?
+local function Lugent_ChangeWorldText(mobj, text, align, duration, moveable)
+	if not mobj or not mobj.valid then return end
+
+	if not text or (string.len(text) <= 0) then
+		error("Attempted to spawn a world text without any text", 2)
+		return false
+	end
+
+	if (align == nil) or (tonumber(align) == nil) then
+		error("Attempted to spawn a world text without any alignment", 2)
+		return false
+	end
+
+	if (align < 0) or (align > 2) then
+		error("Attempted to spawn a world text with an invalid alignment (0 = left, 1 = center, 2 = right)", 2)
+		return false
+	end
+
+	if (duration == nil) or (tonumber(duration) == nil) then duration = 0 end
+	if (moveable == nil) or (type(moveable) ~= "boolean") then moveable = false end
+
+	mobj.characters = mobj.characters or {}
+	for _, other in ipairs(mobj.characters) do
+		if not other or not other.valid then continue end
+
+		P_RemoveMobj(other)
+	end
+
+	mobj.parsed = false
+	mobj.text = text
+	mobj.textalign = align
+	mobj.moveabletext = moveable
+	if (duration > 0) then
+		mobj.fuse = duration
+	end
+	return true
+end
+rawset(_G, "Lugent_ChangeWorldText", Lugent_ChangeWorldText)

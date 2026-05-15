@@ -122,10 +122,10 @@ function ZE2:AddDamageText(player, source, damage)
 	player.ze2.damage_text = player.ze2.damage_text or {}
 	for index, indicator in ipairs(player.ze2.damage_text) do
 		if (indicator.source ~= source) then continue end
-		if indicator.text and indicator.text.valid then
-			P_RemoveMobj(indicator.text)
-		end
-		table.remove(player.ze2.damage_text, index)
+		if not indicator.text or not indicator.text.valid then continue end
+		indicator.text.cusval = indicator.text.cusval + damage
+		Lugent_ChangeWorldText(indicator.text, tostring(indicator.text.cusval), 1, TICRATE * 5, true)
+		return
 	end
 
 	local direction = R_PointToAngle(source.x, source.y)
@@ -140,6 +140,7 @@ function ZE2:AddDamageText(player, source, damage)
 	text.oradius = source.radius
 	text.oscale = source.scale
 	text.drawonlyforplayer = player
+	text.cusval = damage
 	table.insert(player.ze2.damage_text, {text = text, source = source})
 end
 
