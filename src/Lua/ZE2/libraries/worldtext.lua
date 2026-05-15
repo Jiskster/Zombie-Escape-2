@@ -20,7 +20,7 @@ mobjinfo[MT_ZTEXT] = {
 	--$Arg2 "Moveable"
 	--$Arg2Type 11
 	--$Arg2Default 0
-	--$Arg2Tooltip "Allow the text to be manipulated by scripts?\n Both position and rotation\n (Changing text not supported)"
+	--$Arg2Tooltip "Allow the text to be manipulated by scripts?\n Both position, rotation and text via Lugent_ChangeWorldText"
 	--$Arg2Enum { 0 = "No"; 1 = "Yes"; }
 	doomednum = 9999,
 	spawnstate = S_INVISIBLE,
