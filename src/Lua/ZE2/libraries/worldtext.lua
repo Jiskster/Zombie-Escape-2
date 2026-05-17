@@ -114,6 +114,7 @@ local function ParseText(mobj)
 		character.angle = mobj.angle
 		character.sprite, character.frame = CHARACTER_TABLE[text].sprite, CHARACTER_TABLE[text].frame
 		character.color = color
+		character.flags = mobj.flags
 		count = count + 1
 		table.insert(mobj.characters, character)
 	end
