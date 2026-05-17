@@ -205,6 +205,8 @@ dofile "xSlinger/shields"
 
 dofile "xSlinger/interactions"
 
+dofile "xSlinger/breakable"
+
 dofile "xSlinger/itemdrop"
 
 addHook("NetVars", function(net)

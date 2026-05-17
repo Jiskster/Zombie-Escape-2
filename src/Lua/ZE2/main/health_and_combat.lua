@@ -119,6 +119,8 @@ end
 ---@param source mobj_t
 ---@param damage integer
 function ZE2:AddDamageText(player, source, damage)
+	if source.info and source.info.nodamagetext then return end
+
 	player.ze2.damage_text = player.ze2.damage_text or {}
 	for index, indicator in ipairs(player.ze2.damage_text) do
 		if (indicator.source ~= source) then continue end
