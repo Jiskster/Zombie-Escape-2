@@ -6,7 +6,7 @@ mobjinfo[MT_XS_BREAKABLE] = {
 
     --$Arg0 Health
     --$Arg0Default 100
-	--$Arg0Type 15
+	--$Arg0Type 0
 	--$Arg0Tooltip The amount of health this breakable will initially have.
 
     --$Arg1 Trigger Tag
@@ -25,13 +25,19 @@ mobjinfo[MT_XS_BREAKABLE] = {
 	--$Arg3Type 0
 	--$Arg3Tooltip The amount of wait in tics before this breakable respawn (if enabled).
 
-    --$Arg4 Radius
-    --$Arg4Default 64
-	--$Arg4Type 23
+    --$Arg4 Team Restrict
+	--$Arg4Default 0
+	--$Arg4Type 12
+	--$Arg4Enum {1 = "Team 1"; 2 = "Team 2"; 4 = "Team 3"; 8 = "Team 4";}
+	--$Arg4Tooltip Which teams can see this interaction?
 
-    --$Arg5 Height
+    --$Arg5 Radius
     --$Arg5Default 64
-	--$Arg5Type 24
+	--$Arg5Type 23
+
+    --$Arg6 Height
+    --$Arg6Default 64
+	--$Arg6Type 24
 
     --$NotAngled
 
@@ -56,10 +62,21 @@ addHook("MapThingSpawn", function(mobj, thing)
         health = mobj.health,
         triggertag = thing.args[1],
         respawneable = (thing.args[2] == 1) and true or false,
-        respawndelay = thing.args[3]
+        respawndelay = thing.args[3],
+        team_restrict = {enabled = false}
     }
-    mobj.radius = thing.args[4] * FU
-    mobj.height = thing.args[5] * FU
+
+    for index = 0,3 do
+		if (thing.args[4] & (1 << index)) then
+			mobj.breakable.team_restrict[index + 1] = true
+			if not mobj.breakable.team_restrict.enabled then
+				mobj.breakable.team_restrict.enabled = true
+			end
+		end
+	end
+
+    mobj.radius = thing.args[5] * FU
+    mobj.height = thing.args[6] * FU
 end, MT_XS_BREAKABLE)
 
 addHook("MobjFuse", function (mobj)
@@ -70,6 +87,46 @@ addHook("MobjFuse", function (mobj)
     return true
 end, MT_XS_BREAKABLE)
 
+-- Team checking too.
+---@param mobj mobj_t
+---@param team integer
+---@return boolean
+local function CheckBreakable(mobj, team)
+    if not mobj or not mobj.valid then return false end
+
+    local breakable = mobj.breakable
+    if breakable.team_restrict and breakable.team_restrict.enabled and not breakable.team_restrict[team] then
+        return false
+    end
+    return true
+end
+
+--- No return value at the end since apparently returning true just kills the object instantly??
+---@param mobj mobj_t
+---@param inflictor mobj_t?
+---@param source mobj_t?
+---@param damage integer
+---@param damagetype integer
+---@return boolean?
+xSlinger.addHook("ShouldDamage", function(mobj, inflictor, source, damage, damagetype)
+    if not mobj or not mobj.valid then return end
+    if (mobj.type ~= MT_XS_BREAKABLE) then return end
+
+	local attacker
+	if source and source.valid then
+		attacker = source
+	elseif inflictor and inflictor.valid then
+		attacker = inflictor
+    end
+    if not attacker or not attacker.valid then return false end
+
+    local player = attacker.player
+    if not player or not player.valid then return false end
+
+    local xS = player.xSlinger
+    if not CheckBreakable(mobj, xS.team) then return false end
+end)
+
 addHook("MobjDeath", function(mobj, inflictor, source, damagetype)
     if not mobj or not mobj.valid then return end
 
@@ -79,7 +136,6 @@ addHook("MobjDeath", function(mobj, inflictor, source, damagetype)
     elseif source.player then
         player = source
     end
-
     if not player or not player.valid then return end
 
     P_LinedefExecute(mobj.breakable.triggertag, player)
@@ -90,6 +146,5 @@ addHook("MobjDeath", function(mobj, inflictor, source, damagetype)
         mobj.health = 1
         mobj.fuse = mobj.breakable.respawndelay
     end
-
     return true
 end, MT_XS_BREAKABLE)
