@@ -23,6 +23,8 @@ return function(self, amount)
 				else
 					player.ze2.sprintdelay = TICRATE*2 -- do default
 				end
+				
+				player.pflags = player.pflags & ~(PF_SPINNING)
 			end
 
 			player.ze2.sprintmeter = 0
