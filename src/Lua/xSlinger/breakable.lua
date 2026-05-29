@@ -54,6 +54,15 @@ mobjinfo[MT_XS_BREAKABLE] = {
 mobjinfo[MT_XS_BREAKABLE].antiknockback = true
 mobjinfo[MT_XS_BREAKABLE].nodamagetext = true
 
+xSlinger.breakables = {}
+addHook("MapChange", function()
+    xSlinger.breakables = {}
+end)
+
+addHook("NetVars", function(netcode)
+    xSlinger.breakables = netcode(xSlinger.breakables)
+end)
+
 addHook("MapThingSpawn", function(mobj, thing)
     if not mobj or not mobj.valid then return end
 
@@ -77,9 +86,13 @@ addHook("MapThingSpawn", function(mobj, thing)
 
     mobj.radius = thing.args[5] * FU
     mobj.height = thing.args[6] * FU
+
+    -- add to a linked table
+    xSlinger.breakables[mobj.breakable.triggertag] = xSlinger.breakables[mobj.breakable.triggertag] or {}
+    table.insert(xSlinger.breakables[mobj.breakable.triggertag], mobj)
 end, MT_XS_BREAKABLE)
 
-addHook("MobjFuse", function (mobj)
+addHook("MobjFuse", function (mobj) -- respawn
     mobj.health = mobj.breakable.health
     mobj.flags = mobj.flags & ~(MF_NOCLIPTHING)
     mobj.flags = mobj.flags | MF_SHOOTABLE
@@ -101,7 +114,7 @@ local function CheckBreakable(mobj, team)
     return true
 end
 
---- No return value at the end since apparently returning true just kills the object instantly??
+--- Either returning false to disallow damage or returning nil to allow damage (not returning true as it despawns the object xd)
 ---@param mobj mobj_t
 ---@param inflictor mobj_t?
 ---@param source mobj_t?
@@ -127,6 +140,25 @@ xSlinger.addHook("ShouldDamage", function(mobj, inflictor, source, damage, damag
     if not CheckBreakable(mobj, xS.team) then return false end
 end)
 
+local function HandleLinkedBreakables(mobj) -- so like doors or windows or whatever can be a breakable with having several mobjs pointing to the same linedef
+    local breakables = xSlinger.breakables[mobj.breakable.triggertag]
+    for index = #breakables, 1, -1 do
+        local other = breakables[index]
+        if (other == mobj) then continue end
+        if (other.breakable == nil) then continue end
+
+        other.flags = other.flags & ~(MF_SHOOTABLE)
+        other.flags = other.flags | MF_NOCLIPTHING
+        if other.breakable.respawneable then
+            other.health = 1
+            other.fuse = other.breakable.respawndelay
+            continue
+        end
+        table.remove(breakables, index)
+        P_RemoveMobj(other)
+    end
+end
+
 addHook("MobjDeath", function(mobj, inflictor, source, damagetype)
     if not mobj or not mobj.valid then return end
 
@@ -145,6 +177,17 @@ addHook("MobjDeath", function(mobj, inflictor, source, damagetype)
     if mobj.breakable.respawneable then
         mobj.health = 1
         mobj.fuse = mobj.breakable.respawndelay
+        HandleLinkedBreakables(mobj)
+        return true
     end
+
+    local breakables = xSlinger.breakables[mobj.breakable.triggertag]
+    for index, other in ipairs(breakables) do
+        if (other ~= mobj) then continue end
+        table.remove(breakables, index)
+        break
+    end
+    HandleLinkedBreakables(mobj)
+    P_RemoveMobj(mobj)
     return true
 end, MT_XS_BREAKABLE)
