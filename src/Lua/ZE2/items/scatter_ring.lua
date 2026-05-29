@@ -165,17 +165,22 @@ xSlinger.registerItem("scatter_ring", {
 			end
 		end
 
-		do -- Player push back
-			local aim = max(-FRACUNIT, min(FRACUNIT, -player.aiming/13000))
-			if P_MobjFlip(mo) * aim > 0 then
-				aim = ($ * 8)
-			end
-			mo.momz = $ + FixedMul(mo.scale, aim)
-			P_Thrust(mo, mo.angle, -FRACUNIT*9)
+		local knockback_horizontal = 9 * FRACUNIT
+		local knockback_vertical = max(-FRACUNIT, min(FRACUNIT, -player.aiming / 13000))
+		if ((P_MobjFlip(mo) * knockback_vertical) > 0) then
+			knockback_vertical = (knockback_vertical * 8)
+		end
 
-			if player and player.valid then
-				P_MovePlayer(player)
-			end
+		if (mo.eflags & MFE_UNDERWATER) then -- underwater knockback penalty
+			knockback_horizontal = knockback_horizontal / 3
+			knockback_vertical = knockback_vertical / 3
+		end
+
+		mo.momz = mo.momz + FixedMul(mo.scale, knockback_vertical)
+		P_Thrust(mo, mo.angle, -knockback_horizontal)
+
+		if player and player.valid then
+			P_MovePlayer(player)
 		end
 	end
 })
