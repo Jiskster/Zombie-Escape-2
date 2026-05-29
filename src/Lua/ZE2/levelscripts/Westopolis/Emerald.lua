@@ -68,16 +68,16 @@ local function EmeraldSpawnBehavior(mo, thing)
     mo.renderflags = $|RF_FULLBRIGHT
 
     if thing.args[1] == 0 then --0 is "yes" in the argument
-        mo.emmy_sparklecolor = Emerald[emerald_argcolor].color --set emerald color
+        mo.color = Emerald[emerald_argcolor].color --set emerald color
     end
 end
 
 --Spawn Emerald Sparkles if desired
 local function EmeraldSparkles(mo)
     if not (leveltime % 10 == 0) then return end --run this thinker each 10 tics
-    if not (mo.valid and mo.health and mo.emmy_sparklecolor) then return end
+    if not (mo.valid and mo.health and mo.color) then return end
 
-    A_GoldMonitorSparkleColor(mo, mo.emmy_sparklecolor, mo.radius/3)
+    A_GoldMonitorSparkleColor(mo, mo.color, mo.radius/3)
 end
 
 --Execute a linedef tag on death
