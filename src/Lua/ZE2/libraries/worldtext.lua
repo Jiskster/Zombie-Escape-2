@@ -54,7 +54,7 @@ end
 -- Digits
 for i = 27, 36 do CHARACTER_TABLE[Characters[i]] = {sprite = SPR_NUMBER_CHARACTERS, frame = i-27} end
 -- Symbols
-for i = 36, 69 do CHARACTER_TABLE[Characters[i]] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = i-37} end
+for i = 37, 69 do CHARACTER_TABLE[Characters[i]] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = i-37} end
 
 local COLOR_TABLE = {
 	["\x80"] = SKINCOLOR_WHITE,
