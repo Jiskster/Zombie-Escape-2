@@ -29,9 +29,9 @@ local function RenderPlayer(v, ypos, player, teamcolor, spectator) -- standard
 		DrawString(BASEVIDWIDTH - (2 + 84), ypos + textspos, healthtext, V_ALLOWLOWERCASE|textcolor, "small-right")
 
 		if (player.xSlinger.team == 2) then
-			local zombietype = "Normal"
-			if (player.ze2.zombie_type == "alpha") then
-				zombietype = "Alpha"
+			local zombietype = "???"
+			if ZE2.ZombieConfig[player.ze2.zombie_type] and ZE2.ZombieConfig[player.ze2.zombie_type].name then
+				zombietype = ZE2.ZombieConfig[player.ze2.zombie_type].name
 			end
 			DrawString(BASEVIDWIDTH - (2 + 48), ypos + textspos, zombietype, V_ALLOWLOWERCASE|textcolor, "small-right")
 		else
@@ -66,9 +66,9 @@ local function RenderPlayerSmall(v, ypos, player, teamcolor, spectator) -- compa
 		DrawString(BASEVIDWIDTH - (2 + 84), ypos + textspos, healthtext, V_ALLOWLOWERCASE|textcolor, "small-right")
 
 		if (player.xSlinger.team == 2) then
-			local zombietype = "Normal"
-			if (player.ze2.zombie_type == "alpha") then
-				zombietype = "Alpha"
+			local zombietype = "???"
+			if ZE2.ZombieConfig[player.ze2.zombie_type] and ZE2.ZombieConfig[player.ze2.zombie_type].name then
+				zombietype = ZE2.ZombieConfig[player.ze2.zombie_type].name
 			end
 			DrawString(BASEVIDWIDTH - (2 + 48), ypos + textspos, zombietype, V_ALLOWLOWERCASE|textcolor, "small-right")
 		else
@@ -106,9 +106,9 @@ local function RenderPlayerSmaller(v, ypos, player, teamcolor, spectator) -- sup
 		DrawString(BASEVIDWIDTH - (2 + 84), ypos + textspos, healthtext, V_ALLOWLOWERCASE|textcolor, "small-right")
 
 		if (player.xSlinger.team == 2) then
-			local zombietype = "Normal"
-			if (player.ze2.zombie_type == "alpha") then
-				zombietype = "Alpha"
+			local zombietype = "???"
+			if ZE2.ZombieConfig[player.ze2.zombie_type] and ZE2.ZombieConfig[player.ze2.zombie_type].name then
+				zombietype = ZE2.ZombieConfig[player.ze2.zombie_type].name
 			end
 			DrawString(BASEVIDWIDTH - (2 + 48), ypos + textspos, zombietype, V_ALLOWLOWERCASE|textcolor, "small-right")
 		else
