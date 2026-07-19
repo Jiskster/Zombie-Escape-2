@@ -78,6 +78,9 @@ xSlinger.default_item_background_color = SKINCOLOR_SILVER
 xSlinger.registered_items = {}
 xSlinger.registered_items_ordered = {}
 
+xSlinger.registered_missiles = {}
+xSlinger.registered_missiles_ordered = {}
+
 -- Fallback
 xSlinger.registered_items[-1] = {
 	id = -1;

@@ -1,73 +1,16 @@
--- RS NEO port.
-
-freeslot(
-"MT_ZE2_THROWNSCATTER",
-"S_ZE2_THROWNSCATTER1",
-"S_ZE2_THROWNSCATTER2",
-"S_ZE2_THROWNSCATTER3",
-"S_ZE2_THROWNSCATTER4",
-"S_ZE2_THROWNSCATTER5",
-"S_ZE2_THROWNSCATTER6",
-"S_ZE2_THROWNSCATTER7"
-)
+freeslot("S_XS_SCATTERRING")
 
 freeslot("sfx_shgn")
 
 sfxinfo[sfx_shgn].caption = "Shotgun fires"
 
--- totally not from ringslinger neo
-mobjinfo[MT_ZE2_THROWNSCATTER] = {
-	spawnstate = S_ZE2_THROWNSCATTER1,
-	--activesound = sfx_shgn,
-	deathstate = S_SPRK1,
-	xdeathstate = S_SPRK1,
-	speed = 72*FRACUNIT,
-	radius = 16*FRACUNIT,
-	height = 32*FRACUNIT,
-	flags = MF_NOBLOCKMAP|MF_MISSILE|MF_NOGRAVITY
-}
-
-states[S_ZE2_THROWNSCATTER1] = {
-	nextstate = S_ZE2_THROWNSCATTER2,
-	sprite = SPR_TSCR,
-	frame = FF_FULLBRIGHT,
-	tics = 1,
-}
-states[S_ZE2_THROWNSCATTER2] = {
-	nextstate = S_ZE2_THROWNSCATTER3,
-	sprite = SPR_TSCR,
-	frame = FF_FULLBRIGHT,
-	tics = 1,
-}
-states[S_ZE2_THROWNSCATTER3] = {
-	nextstate = S_ZE2_THROWNSCATTER4,
-	sprite = SPR_TSCR,
-	frame = FF_FULLBRIGHT,
-	tics = 1,
-}
-states[S_ZE2_THROWNSCATTER4] = {
-	nextstate = S_ZE2_THROWNSCATTER5,
-	sprite = SPR_TSCR,
-	frame = FF_FULLBRIGHT,
-	tics = 1,
-}
-states[S_ZE2_THROWNSCATTER5] = {
-	nextstate = S_ZE2_THROWNSCATTER6,
-	sprite = SPR_TSCR,
-	frame = FF_FULLBRIGHT,
-	tics = 1,
-}
-states[S_ZE2_THROWNSCATTER6] = {
-	nextstate = S_ZE2_THROWNSCATTER7,
-	sprite = SPR_TSCR,
-	frame = FF_FULLBRIGHT,
-	tics = 1,
-}
-states[S_ZE2_THROWNSCATTER7] = {
-	nextstate = S_ZE2_THROWNSCATTER1,
-	sprite = SPR_TSCR,
-	frame = FF_FULLBRIGHT,
-	tics = 1,
+states[S_XS_SCATTERRING] = {
+	sprite = SPR_RNGS,
+	frame = FF_ANIMATE|FF_FULLBRIGHT,
+	tics = -1,
+	var1 = 34,
+	var2 = 1,
+	nextstate = S_XS_SCATTERRING,
 }
 
 freeslot("S_XS_SCATTERRING_DROP")
@@ -81,11 +24,14 @@ states[S_XS_SCATTERRING_DROP] = {
 	nextstate = S_XS_SCATTERRING_DROP,
 }
 
-addHook("MobjFuse", function(mobj)
-	mobj.momx = 0
-	mobj.momy = 0
-	mobj.momz = 0
-end, MT_ZE2_THROWNSCATTER)
+local missile_scatter_ring = xSlinger.registerMissile("SCATTER_RING", {
+	speed = 72*FRACUNIT,
+	displayname = "Scatter Ring",
+	state = S_XS_SCATTERRING,
+	deathstate = S_SPRK1,
+	deathsound = sfx_itemup,
+	fusefade = true,
+}) -- height 32
 
 xSlinger.registerItem("scatter_ring", {
 	displayname = "Scatter Ring";
@@ -124,7 +70,7 @@ xSlinger.registerItem("scatter_ring", {
 	};
 
 	usefunc = function(self, mo)
-		local mt = MT_ZE2_THROWNSCATTER
+		local mt = "SCATTER_RING"
 		local spread = self.spread
 		local player = mo.player
 

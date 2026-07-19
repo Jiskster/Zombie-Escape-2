@@ -1,7 +1,22 @@
+freeslot("MT_XS_MISSILE")
+
+mobjinfo[MT_XS_MISSILE] = {
+	radius = 16*FRACUNIT,
+	height = 24*FRACUNIT,
+	flags = MF_NOBLOCKMAP|MF_NOGRAVITY
+}
+
+function xSlinger.registerMissile(missile_id, r_table)
+	xSlinger.registered_missiles[missile_id] = r_table
+	table.insert(xSlinger.registered_missiles_ordered, r_table)
+	
+	return r_table
+end
+
 -- A P_SPMAngle clone to fit the needs of xSlinger
 function xSlinger.SpawnMissile(m_table)
 	local source = m_table.source
-	local mobj_type = m_table.type
+	local missile_id = m_table.type
 	local angle = m_table.angle
 	local allow_aim = m_table.allow_aim
 	local flags2 = m_table.flags2
@@ -15,25 +30,48 @@ function xSlinger.SpawnMissile(m_table)
 	local speed
 
 	local missile_velocity_precision
+	
+	if not missile_id then
+		return
+	end
+	
+	local missile_def = xSlinger.registered_missiles[missile_id]
 
 	if allow_aim then
 		slope = sin(source.player.aiming)
 	end
 
 	if source.eflags & MFE_VERTICALFLIP then
-		z = source.z + 2*source.height/3 - FixedMul(mobjinfo[mobj_type].height, source.scale)
+		z = source.z + 2*source.height/3 - FixedMul(mobjinfo[MT_XS_MISSILE].height, source.scale)
 	else
 		z = source.z + source.height/3
 	end
 
-	th = P_SpawnMobj(x, y, z, mobj_type)
+	th = P_SpawnMobj(x, y, z, MT_XS_MISSILE)
 	if not (th and th.valid) then
 		return
 	end
-
+	
+	th.isMissile = true
+	
+	th.state = missile_def.state
+	
 	table.insert(xSlinger.BulletList, th)
 
-	speed = th.info.speed
+	speed = missile_def.speed
+
+	if missile_def then
+		local temp_missile_def = xSlinger.deepcopy(missile_def)
+		
+		-- destroy functions
+		for i,v in pairs(temp_missile_def) do
+			if type(v) == "function" then
+				temp_missile_def[i] = nil
+			end
+		end
+		
+		th.missileinfo = temp_missile_def
+	end
 
 	if iteminfo then
 		local skin = source.skin
@@ -137,11 +175,31 @@ function xSlinger.CheckMissileSpawn(th)
 
 	if not P_TryMove(th, th.x, th.y, true) then
 		if (th and th.valid) then
-			P_ExplodeMissile(th)
+			P_KillMobj(th)
 		end
 		return false
 	end
 	return true
+end
+
+function xSlinger.KillMissile(mobj)
+	local info = mobj.missileinfo
+	
+	if info then
+		if info.deathsound then
+			S_StartSound(mobj, info.deathsound)
+		end
+		
+		if info.deathstate then
+			mobj.state = info.deathstate
+		else
+			mobj.state = S_NULL
+		end
+	end
+	
+	mobj.momx = 0
+	mobj.momy = 0
+	mobj.momz = 0
 end
 
 addHook("ThinkFrame", function()
@@ -166,7 +224,13 @@ addHook("ThinkFrame", function()
 			table.insert(removedelayed, {key = i})
 			continue
 		end
-
+		
+		if mobj.missileinfo and mobj.missileinfo.fusefade then
+			if mobj.fuse >= 1 and mobj.fuse <= 10 then
+				mobj.alpha = FU - FixedDiv(FU, mobj.fuse*FU)
+			end
+		end
+		
 		if mobj.iteminfo and mobj.iteminfo.missile_tick and mobj.target then
 			mobj.iteminfo:missile_tick(mobj.target, mobj)
 		end
@@ -176,6 +240,15 @@ addHook("ThinkFrame", function()
 
 		for ii=1,mobj.velprec-1 do
 			if not (mobj and mobj.valid) then
+				table.insert(removedelayed, {key = i})
+				break
+			end
+
+			if (mobj.z == mobj.floorz or mobj.z + mobj.height == mobj.ceilingz) then
+				if (mobj and mobj.valid) then
+					xSlinger.KillMissile(mobj)
+				end
+				
 				table.insert(removedelayed, {key = i})
 				break
 			end
@@ -195,8 +268,9 @@ addHook("ThinkFrame", function()
 
 			if not P_TryMove(mobj, mobj.x, mobj.y, true) then
 				if (mobj and mobj.valid) then
-					P_ExplodeMissile(mobj)
+					xSlinger.KillMissile(mobj)
 				end
+				
 				table.insert(removedelayed, {key = i})
 			else
 				if mobj.iteminfo and mobj.iteminfo.missile_subtick and mobj.target then
@@ -204,6 +278,7 @@ addHook("ThinkFrame", function()
 				end
 			end
 		end
+		
 		if not (mobj and mobj.valid) then
 			table.insert(removedelayed, {key = i})
 			continue
@@ -221,11 +296,37 @@ end)
 -- dont let teammates and teamate's weapons collide with your weapon
 addHook("MobjCollide", function(thing, tmthing)
 	if tmthing and tmthing.valid and thing and thing.valid then
-		if (tmthing.target and tmthing.flags & MF_MISSILE and thing.team == tmthing.team) then
+		if (tmthing.target and tmthing.isMissile and thing.team == tmthing.team) then
 			return false
 		end
 	end
 end, MT_PLAYER)
+
+addHook("MobjMoveBlocked", function(mov, mobj, line)
+	if (mov and mov.valid) then
+		xSlinger.KillMissile(mov)
+	end
+end, MT_XS_MISSILE)
+
+addHook("MobjFuse", function(mobj)
+	if (mobj and mobj.valid) then
+		mobj.fuse = -1
+		
+		xSlinger.KillMissile(mobj)
+	end
+	
+	return true
+end, MT_XS_MISSILE)
+
+addHook("MobjDeath", function(mobj)
+	if not mobj.missiledying then
+		mobj.missiledying = true
+		
+		xSlinger.KillMissile(mobj)
+		
+		return true
+	end
+end, MT_XS_MISSILE)
 
 addHook("NetVars", function(net)
 	xSlinger.BulletList = net($)

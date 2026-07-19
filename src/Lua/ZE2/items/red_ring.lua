@@ -1,22 +1,30 @@
-freeslot("S_XS_REDRING_DROP")
+freeslot("S_XS_REDRING")
 
-states[S_XS_REDRING_DROP] = {
+states[S_XS_REDRING] = {
 	sprite = SPR_RRNG,
 	frame = FF_ANIMATE|FF_FULLBRIGHT,
 	tics = -1,
 	var1 = 6,
 	var2 = 2,
-	nextstate = S_XS_REDRING_DROP,
+	nextstate = S_XS_REDRING,
 }
+
+local missile_red_ring = xSlinger.registerMissile("RED_RING", {
+	speed = 60*FRACUNIT,
+	displayname = "Red Ring",
+	state = S_XS_REDRING,
+	deathstate = S_SPRK1,
+	deathsound = sfx_itemup,
+})
 
 xSlinger.registerItem("red_ring", {
 	displayname = "Red Ring";
 
 	icon = "XSG_RING";
 
-	missile = MT_REDRING;
+	missile = "RED_RING";
 
-	dropstate = S_XS_REDRING_DROP;
+	dropstate = missile_red_ring.state;
 
 	sounds = {
 		use = sfx_wpfire;
@@ -45,7 +53,7 @@ xSlinger.registerItem("red_ring", {
 	flags2 = 0; -- MF2_...
 
 	hold_object = {
-		state = S_XS_REDRING_DROP;
+		state = missile_red_ring.state;
 		pos = {  -- at this pos, the object is at the right of your body
 			x = FU;
 			y = FU/2;
