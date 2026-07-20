@@ -53,6 +53,41 @@ xSlinger.registerEffect("alphazombie.rage", {
 	end
 })
 
+freeslot(
+	"MT_ZE2_FLAME",
+	"S_ZE2_FLAME1",
+	"S_ZE2_FLAME2",
+	"S_ZE2_FLAME3",
+	"SPR_RNGF"
+)
+
+mobjinfo[MT_ZE2_FLAME] = {
+	spawnstate = S_ZE2_FLAME1,
+	deathstate = S_SPRK1,
+	deathsound = sfx_s3k7e,
+	speed = 100*FRACUNIT,
+	radius = 24*FRACUNIT,
+	height = 48*FRACUNIT,
+	flags = MF_NOBLOCKMAP|MF_MISSILE|MF_NOGRAVITY|MF_SLIDEME
+}
+
+states[S_ZE2_FLAME1] = {
+	nextstate = S_ZE2_FLAME2,
+	sprite = SPR_RNGF,
+	frame = FF_FULLBRIGHT|FF_TRANS50|1,
+	tics = 10
+}
+states[S_ZE2_FLAME2] = {
+	nextstate = S_ZE2_FLAME3,
+	sprite = SPR_RNGF,
+	frame = FF_FULLBRIGHT|FF_TRANS40|2,
+	tics = 10
+}
+states[S_ZE2_FLAME3] = {
+	frame = FF_FULLBRIGHT|FF_TRANS30|3,
+	tics = 20
+}
+
 xSlinger.registerEffect("burning", {
 	tick = function(effect, mobj, time_left)
 		if mobj and mobj.valid then
@@ -76,7 +111,7 @@ xSlinger.registerEffect("burning", {
 									P_RandomRange(-rad,rad)*FU,
 									P_RandomRange(-rad,rad)*FU,
 									P_RandomRange(0, hei)*FU,
-								i and MT_FLAMEPARTICLE or MT_RS_THROWNFLAME)
+								i and MT_FLAMEPARTICLE or MT_ZE2_FLAME)
 
 					-- Make intangible.
 					flm.flags = $|MF_NOCLIPTHING &~(MF_MISSILE)

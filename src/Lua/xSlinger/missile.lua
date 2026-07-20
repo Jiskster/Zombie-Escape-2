@@ -8,6 +8,8 @@ mobjinfo[MT_XS_MISSILE] = {
 
 function xSlinger.registerMissile(missile_id, r_table)
 	xSlinger.registered_missiles[missile_id] = r_table
+	r_table.id = missile_id
+	
 	table.insert(xSlinger.registered_missiles_ordered, r_table)
 	
 	return r_table
@@ -76,7 +78,15 @@ function xSlinger.SpawnMissile(m_table)
 			th.height = missile_def.height
 		end
 		
-		th.missileinfo = temp_missile_def
+		if missile_def.addflags then
+			th.flags = $ | missile_def.addflags
+		end
+		
+		if missile_def.delflags then
+			th.flags = $ & (~missile_def.addflags)
+		end
+		
+		th.missileinfo = temp_missile_def -- give missileinfo
 	end
 
 	if iteminfo then
@@ -254,7 +264,22 @@ addHook("ThinkFrame", function()
 		if mobj.iteminfo and mobj.iteminfo.missile_tick and mobj.target then
 			mobj.iteminfo:missile_tick(mobj.target, mobj)
 		end
+		
+		-- TODO: give mobj.missileinfo a metatable
+		local missile_def 
+		
+		if mobj.missileinfo then
+			local missile_id = mobj.missileinfo.id
+			
+			if missile_id then
+				missile_def = xSlinger.registered_missiles[missile_id]
+			end
+		end
 
+		if missile_def and missile_def.tick and mobj.target then
+			missile_def.tick(mobj.target, mobj)
+		end
+		
 		-- No reason to "raycast" this missile.
 		if not (mobj.velprec) then
 			checkMissile(mobj)
@@ -295,6 +320,10 @@ addHook("ThinkFrame", function()
 				if mobj.iteminfo and mobj.iteminfo.missile_subtick and mobj.target then
 					mobj.iteminfo:missile_subtick(mobj.target, mobj, ii)
 				end
+				
+				if missile_def and missile_def.subtick and mobj.target then
+					missile_def.subtick(mobj.target, mobj)
+				end
 			end
 		end
 		
@@ -322,6 +351,10 @@ addHook("MobjCollide", function(thing, tmthing)
 end, MT_PLAYER)
 
 addHook("MobjMoveBlocked", function(mov, mobj, line)
+	if (mov.missileinfo and mov.missileinfo.ignorewallhit) or (mov.flags & MF_SLIDEME) then
+		return false
+	end
+
 	if (mov and mov.valid) then
 		xSlinger.KillMissile(mov)
 	end

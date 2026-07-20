@@ -1,38 +1,28 @@
 -- RS NEO port.
 
 freeslot(
-	"MT_RS_THROWNFLAME",
-	"S_RS_THROWNFLAME1",
-	"S_RS_THROWNFLAME2",
-	"S_RS_THROWNFLAME3",
-	"SPR_RNGF",
+	"MT_ZE2_THROWNFLAME",
+	"S_ZE2_THROWNFLAME1",
+	"S_ZE2_THROWNFLAME2",
+	"S_ZE2_THROWNFLAME3",
 	"sfx_rs_fla"
+	-- SPR_RNGF already freeslotted
 )
 sfxinfo[sfx_rs_fla].caption = "Flamethrower"
 
-mobjinfo[MT_RS_THROWNFLAME] = {
-	spawnstate = S_RS_THROWNFLAME1,
-	deathstate = S_SPRK1,
-	deathsound = sfx_s3k7e,
-	speed = 100*FRACUNIT,
-	radius = 24*FRACUNIT,
-	height = 48*FRACUNIT,
-	flags = MF_NOBLOCKMAP|MF_MISSILE|MF_NOGRAVITY|MF_SLIDEME
-}
-
-states[S_RS_THROWNFLAME1] = {
-	nextstate = S_RS_THROWNFLAME2,
+states[S_ZE2_THROWNFLAME1] = {
+	nextstate = S_ZE2_THROWNFLAME2,
 	sprite = SPR_RNGF,
 	frame = FF_FULLBRIGHT|FF_TRANS50|1,
 	tics = 10
 }
-states[S_RS_THROWNFLAME2] = {
-	nextstate = S_RS_THROWNFLAME3,
+states[S_ZE2_THROWNFLAME2] = {
+	nextstate = S_ZE2_THROWNFLAME3,
 	sprite = SPR_RNGF,
 	frame = FF_FULLBRIGHT|FF_TRANS40|2,
 	tics = 10
 }
-states[S_RS_THROWNFLAME3] = {
+states[S_ZE2_THROWNFLAME3] = {
 	frame = FF_FULLBRIGHT|FF_TRANS30|3,
 	tics = 20
 }
@@ -49,6 +39,24 @@ states[S_ZE2_FLAMERING_DROP] = {
 sfxinfo[sfx_rs_fla] = {
 	flags = SF_NOMULTIPLESOUND
 }
+
+local missile_flame_ring =
+xSlinger.registerMissile("FLAME_RING", {
+	speed = 100*FRACUNIT,
+	displayname = "Flame Ring",
+	state = S_ZE2_THROWNFLAME1,
+	deathstate = S_SPRK1,
+	deathsound = sfx_s3k7e,
+	addflags = MF_SLIDEME,
+	radius = 24*FRACUNIT,
+	height = 48*FRACUNIT,
+	tick = function(pmo, mobj)
+		mobj.momx = $ * 85/100
+		mobj.momy = $ * 85/100
+		mobj.momz = $ * 85/100
+		P_SetObjectMomZ(mobj, FRACUNIT/5, true)
+	end
+})
 
 xSlinger.registerItem("flame_ring", {
 	displayname = "Flame Ring";
@@ -79,7 +87,7 @@ xSlinger.registerItem("flame_ring", {
 		local player = mo.player
 		local pmo = player.mo
 
-		local mt = MT_RS_THROWNFLAME
+		local mt = "FLAME_RING"
 		local wave = sin(leveltime*ANG10) * 600
 		local shot = xSlinger.SpawnMissile({
 			source = mo,
@@ -113,11 +121,3 @@ xSlinger.registerItem("flame_ring", {
 		mo.flameringtarget = src
 	end;
 })
-
-addHook("MobjThinker", function(mo)
-	if not (mo and mo.valid) then return end
-	mo.momx = $ * 85/100
-	mo.momy = $ * 85/100
-	mo.momz = $ * 85/100
-	P_SetObjectMomZ(mo, FRACUNIT/5, true)
-end, MT_RS_THROWNFLAME)
