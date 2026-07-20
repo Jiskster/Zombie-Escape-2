@@ -394,7 +394,7 @@ ZE2.AddSurvivor("knuckles", {
 	};
 	items = {
 		"auto_ring";
-		"GFZSPHERE";
+		"red_ring";
 	};
 })
 

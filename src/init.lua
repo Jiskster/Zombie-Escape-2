@@ -89,7 +89,6 @@ local function I_LoadItems(sp)
 	ze2file "grenade.lua"
 	ze2file "insta_burst.lua"
 	ze2file "flame_ring.lua"
-	ze2file "gfz_sphere.lua"
 	ze2file "energy_drink.lua"
 	
 	-- Unused always at the end.
