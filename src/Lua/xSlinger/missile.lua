@@ -52,8 +52,6 @@ function xSlinger.SpawnMissile(m_table)
 		return
 	end
 	
-	th.isMissile = true
-	
 	th.state = missile_def.state
 	
 	table.insert(xSlinger.BulletList, th)
@@ -68,6 +66,14 @@ function xSlinger.SpawnMissile(m_table)
 			if type(v) == "function" then
 				temp_missile_def[i] = nil
 			end
+		end
+		
+		if missile_def.radius then
+			th.radius = missile_def.radius
+		end
+		
+		if missile_def.height then
+			th.height = missile_def.height
 		end
 		
 		th.missileinfo = temp_missile_def
@@ -118,7 +124,9 @@ function xSlinger.SpawnMissile(m_table)
 		th.flags2 = $ | MF2_OBJECTFLIP
 	end
 
-	P_SetScale(th, source.scale)
+	P_SetScale(th, source.scale, true)
+	
+	th.isMissile = true -- placed after scale change so height/radius changes can be fine
 
 	if flags2 then
 		th.flags2 = $ | flags2
@@ -175,7 +183,7 @@ function xSlinger.CheckMissileSpawn(th)
 
 	if not P_TryMove(th, th.x, th.y, true) then
 		if (th and th.valid) then
-			P_KillMobj(th)
+			xSlinger.KillMissile(th)
 		end
 		return false
 	end
@@ -185,13 +193,18 @@ end
 function xSlinger.KillMissile(mobj)
 	local info = mobj.missileinfo
 	
-	if info then
+	if info and mobj.health then
+		mobj.alpha = FRACUNIT
+		mobj.fuse = -1
+		
 		if info.deathsound then
 			S_StartSound(mobj, info.deathsound)
 		end
 		
 		if info.deathstate then
-			mobj.state = info.deathstate
+			if mobj.state ~= info.deathstate then
+				mobj.state = info.deathstate
+			end
 		else
 			mobj.state = S_NULL
 		end
@@ -200,6 +213,19 @@ function xSlinger.KillMissile(mobj)
 	mobj.momx = 0
 	mobj.momy = 0
 	mobj.momz = 0
+	mobj.health = 0
+end
+
+local function checkMissile(mobj)
+	if (mobj.z == mobj.floorz or mobj.z + mobj.height == mobj.ceilingz) then
+		if (mobj and mobj.valid) then
+			xSlinger.KillMissile(mobj)
+		end
+		
+		return false
+	end
+	
+	return true
 end
 
 addHook("ThinkFrame", function()
@@ -225,30 +251,23 @@ addHook("ThinkFrame", function()
 			continue
 		end
 		
-		if mobj.missileinfo and mobj.missileinfo.fusefade then
-			if mobj.fuse >= 1 and mobj.fuse <= 10 then
-				mobj.alpha = FU - FixedDiv(FU, mobj.fuse*FU)
-			end
-		end
-		
 		if mobj.iteminfo and mobj.iteminfo.missile_tick and mobj.target then
 			mobj.iteminfo:missile_tick(mobj.target, mobj)
 		end
 
 		-- No reason to "raycast" this missile.
-		if not (mobj.velprec) then continue; end
+		if not (mobj.velprec) then
+			checkMissile(mobj)
+			continue
+		end
 
 		for ii=1,mobj.velprec-1 do
 			if not (mobj and mobj.valid) then
 				table.insert(removedelayed, {key = i})
 				break
 			end
-
-			if (mobj.z == mobj.floorz or mobj.z + mobj.height == mobj.ceilingz) then
-				if (mobj and mobj.valid) then
-					xSlinger.KillMissile(mobj)
-				end
-				
+			
+			if not checkMissile(mobj) then
 				table.insert(removedelayed, {key = i})
 				break
 			end

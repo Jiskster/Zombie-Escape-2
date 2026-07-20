@@ -73,14 +73,12 @@ xSlinger.registerItem("red_ring", {
 	missile_tick = function(self, mo, missile)
 		local ghost = P_SpawnGhostMobj(missile)
 		ghost.tics = 1
-		P_SetOrigin(ghost, ghost.x, ghost.y, ghost.z) -- fix interpolation being freaky
 	end;
 
 	missile_subtick = function(self, mo, missile)
 		local ghost = P_SpawnGhostMobj(missile)
 		ghost.tics = 1
 		ghost.frame = $|FF_ADD
-		P_SetOrigin(ghost, ghost.x, ghost.y, ghost.z) -- fix interpolation being freaky
 	end;
 
 	skin_override = {
