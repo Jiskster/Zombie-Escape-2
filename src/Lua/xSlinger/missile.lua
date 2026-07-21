@@ -257,7 +257,7 @@ addHook("ThinkFrame", function()
 
 	for i,mobj in ipairs(xSlinger.BulletList) do
 		if not (mobj and mobj.valid) then
-			table.insert(removedelayed, {key = i})
+			removedelayed[#removedelayed + 1] = {key = i}
 			continue
 		end
 		
@@ -288,12 +288,12 @@ addHook("ThinkFrame", function()
 
 		for ii=1,mobj.velprec-1 do
 			if not (mobj and mobj.valid) then
-				table.insert(removedelayed, {key = i})
+				removedelayed[#removedelayed + 1] = {key = i}
 				break
 			end
 			
 			if not checkMissile(mobj) then
-				table.insert(removedelayed, {key = i})
+				removedelayed[#removedelayed + 1] = {key = i}
 				break
 			end
 
@@ -301,12 +301,12 @@ addHook("ThinkFrame", function()
 			P_XYMovement(mobj)
 			--...except for when it does...
 			if not (mobj and mobj.valid) then
-				table.insert(removedelayed, {key = i})
+				removedelayed[#removedelayed + 1] = {key = i}
 				break
 			end
 
 			if not P_ZMovement(mobj) then
-				table.insert(removedelayed, {key = i})
+				removedelayed[#removedelayed + 1] = {key = i}
 				break
 			end
 
@@ -315,7 +315,7 @@ addHook("ThinkFrame", function()
 					xSlinger.KillMissile(mobj)
 				end
 				
-				table.insert(removedelayed, {key = i})
+				removedelayed[#removedelayed + 1] = {key = i}
 			else
 				if mobj.iteminfo and mobj.iteminfo.missile_subtick and mobj.target then
 					mobj.iteminfo:missile_subtick(mobj.target, mobj, ii)
@@ -328,7 +328,7 @@ addHook("ThinkFrame", function()
 		end
 		
 		if not (mobj and mobj.valid) then
-			table.insert(removedelayed, {key = i})
+			removedelayed[#removedelayed + 1] = {key = i}
 			continue
 		end
 	end
