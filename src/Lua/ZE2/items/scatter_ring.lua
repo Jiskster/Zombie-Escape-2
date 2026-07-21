@@ -30,7 +30,7 @@ local missile_scatter_ring = xSlinger.registerMissile("SCATTER_RING", {
 	state = S_XS_SCATTERRING,
 	deathstate = S_SPRK1,
 	deathsound = sfx_itemup,
-	height = 32,
+	height = 32*FRACUNIT,
 }) -- height 32
 
 xSlinger.registerItem("scatter_ring", {
