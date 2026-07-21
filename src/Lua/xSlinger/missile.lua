@@ -360,7 +360,7 @@ addHook("MobjCollide", function(thing, tmthing)
 end, MT_PLAYER)
 
 addHook("MobjMoveBlocked", function(mov, mobj, line)
-	if (mov.missileinfo and mov.missileinfo.ignorewallhit) or (mov.flags & MF_SLIDEME) then
+	if (mov.missileinfo and mov.missileinfo.safewall) or (mov.flags & MF_SLIDEME) then
 		return false
 	end
 
