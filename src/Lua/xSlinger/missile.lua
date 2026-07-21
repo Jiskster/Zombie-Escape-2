@@ -245,6 +245,16 @@ local function checkMissile(mobj, missileinfo)
 	return true
 end
 
+local function getMissileDef(mobj)
+	if mobj.missileinfo then
+		local missile_id = mobj.missileinfo.id
+		
+		if missile_id then
+			return xSlinger.registered_missiles[missile_id]
+		end
+	end
+end
+
 addHook("ThinkFrame", function()
 	/*
 		This can be done 2 ways, use a numeric for loop and validate every entry there;
@@ -276,15 +286,7 @@ addHook("ThinkFrame", function()
 		end
 		
 		-- TODO: give mobj.missileinfo a metatable
-		local missile_def 
-		
-		if mobj.missileinfo then
-			local missile_id = mobj.missileinfo.id
-			
-			if missile_id then
-				missile_def = xSlinger.registered_missiles[missile_id]
-			end
-		end
+		local missile_def = getMissileDef(mobj)
 
 		if missile_def and missile_def.tick and mobj.target then
 			missile_def.tick(mobj.target, mobj)
@@ -361,10 +363,24 @@ addHook("MobjCollide", function(thing, tmthing)
 end, MT_PLAYER)
 
 addHook("MobjMoveBlocked", function(mov, mobj, line)
-	if (mov.missileinfo and mov.missileinfo.safewall) or (mov.flags & MF_SLIDEME) then
-		return false
+	local missile_def = getMissileDef(mov)
+	
+	local override
+	
+	if missile_def then
+		if missile_def.blocked then
+			override = missile_def.blocked(mov.target, mov, line)
+		end
 	end
-
+	
+	if line and (mov.missileinfo and mov.missileinfo.safewall) or (mov.flags & MF_SLIDEME) then
+		return
+	end
+	
+	if override ~= nil then
+		return override
+	end
+	
 	if (mov and mov.valid) then
 		xSlinger.KillMissile(mov)
 	end
