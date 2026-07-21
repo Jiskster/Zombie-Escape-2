@@ -3,18 +3,6 @@
 local raildmg = 950
 local railkb = 350*FRACUNIT
 
-freeslot("MT_ZE2_RAILSHOT")
-
-mobjinfo[MT_ZE2_RAILSHOT] = {
-	spawnstate = S_RRNG1,
-	deathstate = S_SPRK1,
-	deathsound = sfx_rs_die,
-	speed = 128*FRACUNIT,
-	radius = 16*FRACUNIT,
-	height = 32*FRACUNIT,
-	flags = MF_NOBLOCKMAP|MF_MISSILE|MF_NOGRAVITY,
-}
-
 freeslot("S_XS_RAILRING_DROP")
 
 states[S_XS_RAILRING_DROP] = {
@@ -43,6 +31,16 @@ local ring = function(x,y,z,scale,angle)
 	end
 end
 
+local missile_rail_ring = xSlinger.registerMissile("RAIL_RING", {
+	speed = 128*FRACUNIT,
+	displayname = "Rail Ring",
+	state = S_INVISIBLE,
+	deathstate = S_SPRK1,
+	deathsound = sfx_rs_die,
+	radius = 16*FRACUNIT,
+	height = 32*FRACUNIT,
+})
+
 local function trigger_func(self, mo)
 	mo.momx = $ / 3
 	mo.momy = $ / 3
@@ -55,7 +53,7 @@ local function trigger_func(self, mo)
 
 	local rail = xSlinger.SpawnMissile({
 		source = mo,
-		type = MT_ZE2_RAILSHOT,
+		type = "RAIL_RING",
 		angle = mo.angle,
 		allow_aim = true,
 		iteminfo = self,
@@ -93,6 +91,11 @@ local function trigger_func(self, mo)
 			if rail.momz then
 				P_ZMovement(rail)
 				if not rail.valid then
+					break
+				end
+				
+				if (rail.z == rail.floorz or rail.z + rail.height == rail.ceilingz) then
+					P_KillMobj(rail)
 					break
 				end
 			end
