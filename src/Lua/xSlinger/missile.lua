@@ -362,6 +362,15 @@ addHook("MobjCollide", function(thing, tmthing)
 	end
 end, MT_PLAYER)
 
+addHook("MobjMoveCollide", function(mov, mobj)
+	local alivemissile = (mov.health > 0)
+
+	if (mobj.flags & MF_SHOOTABLE) and alivemissile and (mov.target and mov.target ~= mobj) then
+		P_DamageMobj(mobj, mov, mov.target)
+		xSlinger.KillMissile(mov)
+	end
+end, MT_XS_MISSILE)
+
 addHook("MobjMoveBlocked", function(mov, mobj, line)
 	local missile_def = getMissileDef(mov)
 	
