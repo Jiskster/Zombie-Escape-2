@@ -1,3 +1,9 @@
+local P_XYMovement = P_XYMovement
+local P_ZMovement = P_ZMovement
+local P_TryMove = P_TryMove
+local FixedMul = FixedMul
+local FixedDiv = FixedDiv
+
 freeslot("MT_XS_MISSILE")
 
 mobjinfo[MT_XS_MISSILE] = {
@@ -253,9 +259,12 @@ addHook("ThinkFrame", function()
 		Or, insert everything we need to remove while iterating, and clean up after the
 		generic for loop.
 	*/
+	
 	local removedelayed = {}
 
-	for i,mobj in ipairs(xSlinger.BulletList) do
+	for i = 1, #xSlinger.BulletList do
+		local mobj = xSlinger.BulletList[i]
+		
 		if not (mobj and mobj.valid) then
 			removedelayed[#removedelayed + 1] = {key = i}
 			continue
