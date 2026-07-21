@@ -363,6 +363,9 @@ addHook("MobjCollide", function(thing, tmthing)
 end, MT_PLAYER)
 
 addHook("MobjMoveCollide", function(mov, mobj)
+	if mov.z > mobj.height + mobj.z then return end
+	if mobj.z > mov.height + mov.z then return end
+
 	local alivemissile = (mov.health > 0)
 
 	if (mobj.flags & MF_SHOOTABLE) and alivemissile and (mov.target and mov.target ~= mobj) then
