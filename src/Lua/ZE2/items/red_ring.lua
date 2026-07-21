@@ -10,7 +10,7 @@ states[S_XS_REDRING] = {
 }
 
 local missile_red_ring = xSlinger.registerMissile("RED_RING", {
-	speed = 60*FRACUNIT,
+	speed = 600*FRACUNIT,
 	displayname = "Red Ring",
 	state = S_XS_REDRING,
 	deathstate = S_SPRK1,
@@ -37,8 +37,7 @@ xSlinger.registerItem("red_ring", {
 
 	damage = 25;
 
-	velocity_precision = 8;
-	velocity_multiplier = 8*FRACUNIT;
+	velocity_precision = 5;
 
 	knockback = 13*FRACUNIT; -- fixed_t
 	knockback_time = TICRATE;
