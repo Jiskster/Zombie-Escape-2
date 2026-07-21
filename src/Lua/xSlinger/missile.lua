@@ -89,7 +89,7 @@ function xSlinger.SpawnMissile(m_table)
 		end
 		
 		if missile_def.delflags then
-			th.flags = $ & (~missile_def.addflags)
+			th.flags = $ & (~missile_def.delflags)
 		end
 		
 		th.missileinfo = temp_missile_def -- give missileinfo
