@@ -9,7 +9,8 @@ freeslot("MT_XS_MISSILE")
 mobjinfo[MT_XS_MISSILE] = {
 	radius = 16*FRACUNIT,
 	height = 24*FRACUNIT,
-	flags = MF_NOBLOCKMAP|MF_NOGRAVITY
+	flags = MF_NOBLOCKMAP|MF_NOGRAVITY,
+	health = 1000,
 }
 
 function xSlinger.registerMissile(missile_id, r_table)
@@ -265,7 +266,7 @@ addHook("ThinkFrame", function()
 	for i = 1, #xSlinger.BulletList do
 		local mobj = xSlinger.BulletList[i]
 		
-		if not (mobj and mobj.valid) then
+		if not (mobj and mobj.valid and mobj.health) then
 			removedelayed[#removedelayed + 1] = {key = i}
 			continue
 		end
@@ -296,7 +297,7 @@ addHook("ThinkFrame", function()
 		end
 
 		for ii=1,mobj.velprec-1 do
-			if not (mobj and mobj.valid) then
+			if not (mobj and mobj.valid and mobj.health) then
 				removedelayed[#removedelayed + 1] = {key = i}
 				break
 			end
@@ -309,7 +310,7 @@ addHook("ThinkFrame", function()
 			--XY Movement should never remove a mobj...
 			P_XYMovement(mobj)
 			--...except for when it does...
-			if not (mobj and mobj.valid) then
+			if not (mobj and mobj.valid and mobj.health) then
 				removedelayed[#removedelayed + 1] = {key = i}
 				break
 			end
@@ -320,7 +321,7 @@ addHook("ThinkFrame", function()
 			end
 
 			if not P_TryMove(mobj, mobj.x, mobj.y, true) then
-				if (mobj and mobj.valid) then
+				if (mobj and mobj.valid and mobj.health) then
 					xSlinger.KillMissile(mobj)
 				end
 				
@@ -336,7 +337,7 @@ addHook("ThinkFrame", function()
 			end
 		end
 		
-		if not (mobj and mobj.valid) then
+		if not (mobj and mobj.valid and mobj.health) then
 			removedelayed[#removedelayed + 1] = {key = i}
 			continue
 		end
@@ -370,13 +371,12 @@ addHook("MobjMoveBlocked", function(mov, mobj, line)
 end, MT_XS_MISSILE)
 
 addHook("MobjFuse", function(mobj)
-	if (mobj and mobj.valid) then
+	if (mobj and mobj.valid and mobj.health) then
 		mobj.fuse = -1
 		
 		xSlinger.KillMissile(mobj)
+		return true
 	end
-	
-	return true
 end, MT_XS_MISSILE)
 
 addHook("MobjDeath", function(mobj)
