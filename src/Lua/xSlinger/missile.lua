@@ -232,9 +232,9 @@ function xSlinger.KillMissile(mobj)
 	mobj.health = 0
 end
 
-local function checkMissile(mobj)
+local function checkMissile(mobj, missileinfo)
 	if (mobj.z == mobj.floorz or mobj.z + mobj.height == mobj.ceilingz) then
-		if (mobj and mobj.valid) then
+		if (mobj and mobj.valid) and (missileinfo and not missileinfo.safeground) then
 			xSlinger.KillMissile(mobj)
 		end
 		
@@ -291,7 +291,7 @@ addHook("ThinkFrame", function()
 		
 		-- No reason to "raycast" this missile.
 		if not (mobj.velprec) then
-			checkMissile(mobj)
+			checkMissile(mobj, mobj.missileinfo)
 			continue
 		end
 
@@ -301,7 +301,7 @@ addHook("ThinkFrame", function()
 				break
 			end
 			
-			if not checkMissile(mobj) then
+			if not checkMissile(mobj, mobj.missileinfo) then
 				removedelayed[#removedelayed + 1] = {key = i}
 				break
 			end
