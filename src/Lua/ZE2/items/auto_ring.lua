@@ -1,4 +1,14 @@
+freeslot("S_XS_AUTORING")
 freeslot("S_XS_AUTORING_DROP")
+
+states[S_XS_AUTORING] = {
+	sprite = SPR_TAUT,
+	frame = FF_ANIMATE|FF_FULLBRIGHT,
+	tics = -1,
+	var1 = 6,
+	var2 = 1,
+	nextstate = S_XS_AUTORING,
+}
 
 states[S_XS_AUTORING_DROP] = {
 	sprite = SPR_RNGA,
@@ -9,12 +19,20 @@ states[S_XS_AUTORING_DROP] = {
 	nextstate = S_XS_AUTORING_DROP,
 }
 
+local missile_auto_ring = xSlinger.registerMissile("AUTO_RING", {
+	speed = 120*FRACUNIT,
+	displayname = "Auto Ring",
+	state = S_XS_AUTORING,
+	deathstate = S_SPRK1,
+	deathsound = sfx_itemup,
+})
+
 xSlinger.registerItem("auto_ring", {
 	displayname = "Automatic Ring";
 
 	icon = "XSG_AUTO";
 
-	missile = MT_THROWNAUTOMATIC;
+	missile = "AUTO_RING";
 
 	dropstate = S_XS_AUTORING_DROP;
 
@@ -30,8 +48,7 @@ xSlinger.registerItem("auto_ring", {
 	autouse = true;
 
 	damage = 7;
-
-	velocity_multiplier = 2*FRACUNIT;
+	
 	velocity_precision = 2;
 
 	knockback = 4*FRACUNIT;
@@ -53,5 +70,7 @@ xSlinger.registerItem("auto_ring", {
 			knockback = 6*FRACUNIT;
 			reload_time = TICRATE*4;
 		}
-	}
+	},
+	
+	flags2 = MF2_AUTOMATIC,
 })
