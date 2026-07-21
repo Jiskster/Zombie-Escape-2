@@ -24,10 +24,10 @@ xSlinger.registerItem("grenade_ring",  {
 
 	knockback = 75*FRACUNIT;
 
-	damage = 150;
+	damage = 99;
 
-	count = 15;
-	maxcount = 255;
+	count = 5;
+	maxcount = 10;
 
 	fuse = 2*TICRATE;
 
