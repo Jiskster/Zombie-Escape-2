@@ -31,7 +31,8 @@ local ring = function(x,y,z,scale,angle)
 	end
 end
 
-local missile_rail_ring = xSlinger.registerMissile("RAIL_RING", {
+local missile_rail_ring = 
+xSlinger.registerMissile("RAIL_RING", {
 	speed = 128*FRACUNIT,
 	displayname = "Rail Ring",
 	state = S_INVISIBLE,

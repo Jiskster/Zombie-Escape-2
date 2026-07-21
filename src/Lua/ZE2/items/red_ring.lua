@@ -9,7 +9,8 @@ states[S_XS_REDRING] = {
 	nextstate = S_XS_REDRING,
 }
 
-local missile_red_ring = xSlinger.registerMissile("RED_RING", {
+local missile_red_ring = 
+xSlinger.registerMissile("RED_RING", {
 	speed = 600*FRACUNIT,
 	displayname = "Red Ring",
 	state = S_XS_REDRING,

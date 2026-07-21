@@ -19,7 +19,8 @@ states[S_XS_AUTORING_DROP] = {
 	nextstate = S_XS_AUTORING_DROP,
 }
 
-local missile_auto_ring = xSlinger.registerMissile("AUTO_RING", {
+local missile_auto_ring = 
+xSlinger.registerMissile("AUTO_RING", {
 	speed = 120*FRACUNIT,
 	displayname = "Auto Ring",
 	state = S_XS_AUTORING,

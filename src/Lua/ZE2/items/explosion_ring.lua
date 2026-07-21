@@ -9,7 +9,8 @@ states[S_XS_EXPLOSIONRING] = { -- for drop only
 	nextstate = S_XS_EXPLOSIONRING,
 }
 
-local missile_explosion_ring = xSlinger.registerMissile("EXPLOSION_RING", {
+local missile_explosion_ring = 
+xSlinger.registerMissile("EXPLOSION_RING", {
 	speed = 60*FRACUNIT,
 	displayname = "Explosion Ring",
 	state = S_THROWNEXPLOSION1,

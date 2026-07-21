@@ -24,7 +24,8 @@ states[S_XS_SCATTERRING_DROP] = {
 	nextstate = S_XS_SCATTERRING_DROP,
 }
 
-local missile_scatter_ring = xSlinger.registerMissile("SCATTER_RING", {
+local missile_scatter_ring = 
+xSlinger.registerMissile("SCATTER_RING", {
 	speed = 72*FRACUNIT,
 	displayname = "Scatter Ring",
 	state = S_XS_SCATTERRING,
