@@ -257,17 +257,7 @@ end
 
 addHook("ThinkFrame", function()
 	/*
-		This can be done 2 ways, use a numeric for loop and validate every entry there;
-		```
-		for k = 1, #feed
-			local mo = feed[k]
-			if not (mo and info.valid)
-				table.remove(feed, k)
-			end
-		end
-		```
-
-		Or, insert everything we need to remove while iterating, and clean up after the
+		Insert everything we need to remove while iterating, and clean up after the
 		generic for loop.
 	*/
 	
