@@ -67,6 +67,23 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 		local iteminfo = inf.iteminfo
 
 		if iteminfo then
+			if not getmetatable(iteminfo) then
+				if ZE2.cv_debug.value then
+					print(">> TOP")
+					print("No getindex for: "..i)
+					print("ID: "..iteminfo.id)
+					print("Had metatable? (Try 1): "..tostring(getmetatable(iteminfo)))
+				end
+
+				setmetatable(iteminfo, xSlinger.METATABLES.ITEMINFO)
+
+				if ZE2.cv_debug.value then
+					print("Had metatable? (Try 2): "..tostring(getmetatable(iteminfo)))
+					print("Set missing metatable (Thoughts and prayers)")
+					print(">>")
+				end
+			end
+			
 			local src_skin
 
 			if src and src.valid and src.player then
