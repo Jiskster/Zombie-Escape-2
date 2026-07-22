@@ -131,7 +131,7 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 		end
 
 		-- Knocks back angle between two objects instead of pushing backwards of attacker object
-		if inf.info.relativeknockback then
+		if inf.info.relativeknockback or inf.relativeknockback then
 			relativeknockback = true
 		end
 
