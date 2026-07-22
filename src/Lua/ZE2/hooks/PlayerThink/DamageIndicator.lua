@@ -16,12 +16,12 @@ return function(player)
 			continue
 		end
 
-		if not target or not target.valid then
+		if not target or not target.valid or (target.health <= 0) then
 			local direction = R_PointToAngle(text.x, text.y)
 			text.angle = direction - ANGLE_90
 			text.momx = 0
 			text.momy = 0
-			if (text.fuse < TICRATE) then
+			if (text.fuse <= TICRATE) then
 				text.momz = text.momz - (FU / 2)
 				text.alpha = FixedDiv(text.fuse * FU, TICRATE * FU)
 			else
@@ -43,12 +43,9 @@ return function(player)
 		text.angle = direction - ANGLE_90
 		text.momx = target.momx
 		text.momy = target.momy
-		if (text.fuse > TICRATE) then
-			text.momz = target.momz
-		elseif (text.fuse == TICRATE) then
-			text.momz = 0
-		else
-			text.alpha = FU - FixedDiv(text.fuse * FU, TICRATE * FU)
+		text.momz = target.momz
+		if (text.fuse <= TICRATE) then
+			text.alpha = FixedDiv(text.fuse * FU, TICRATE * FU)
 		end
 
 		local scale = FixedDiv(R_PointToDist(target.x, target.y), target.radius * 10)
