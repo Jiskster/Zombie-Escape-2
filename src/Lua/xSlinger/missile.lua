@@ -385,6 +385,10 @@ addHook("MobjMoveBlocked", function(mov, mobj, line)
 		end
 	end
 	
+	if not (mov and mov.valid and mov.health) then -- just in case missile dies in blocked callback
+		return 
+	end 
+	
 	if line and (mov.missileinfo and mov.missileinfo.safewall) or (mov.flags & MF_SLIDEME) then
 		return
 	end
