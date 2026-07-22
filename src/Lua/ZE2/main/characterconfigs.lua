@@ -433,6 +433,8 @@ ZE2.AddSurvivor("fang", {
 		"rail_ring";
 		"grenade_ring";
 		"grenade_ring";
+		"blue_spring";
+		"blue_spring";
 	};
 })
 
