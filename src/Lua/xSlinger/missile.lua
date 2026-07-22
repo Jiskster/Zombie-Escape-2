@@ -234,8 +234,8 @@ function xSlinger.KillMissile(mobj)
 end
 
 local function checkMissile(mobj, missileinfo)
-	if (mobj.z == mobj.floorz or mobj.z + mobj.height == mobj.ceilingz) then
-		if (mobj and mobj.valid) and (missileinfo and not missileinfo.safeground) then
+	if (mobj.eflags & MFE_JUSTHITFLOOR or mobj.z + mobj.height >= mobj.ceilingz) then
+		if (missileinfo and not missileinfo.safeground) then
 			xSlinger.KillMissile(mobj)
 		end
 		
@@ -299,35 +299,28 @@ addHook("ThinkFrame", function()
 		end
 
 		for ii=1,mobj.velprec-1 do
-			if not (mobj and mobj.valid and mobj.health) then
+			if not (mobj and mobj.valid) or not checkMissile(mobj, mobj.missileinfo) then
 				removedelayed[#removedelayed + 1] = {key = i}
 				break
 			end
 			
-			if not checkMissile(mobj, mobj.missileinfo) then
-				removedelayed[#removedelayed + 1] = {key = i}
-				break
-			end
-
 			--XY Movement should never remove a mobj...
 			P_XYMovement(mobj)
 			--...except for when it does...
-			if not (mobj and mobj.valid and mobj.health) then
-				removedelayed[#removedelayed + 1] = {key = i}
-				break
-			end
-
-			if not P_ZMovement(mobj) then
+			if not (mobj and mobj.valid) 
+			or not P_ZMovement(mobj) 
+			or not checkMissile(mobj, mobj.missileinfo) then
 				removedelayed[#removedelayed + 1] = {key = i}
 				break
 			end
 
 			if not P_TryMove(mobj, mobj.x, mobj.y, true) then
-				if (mobj and mobj.valid and mobj.health) then
+				if (mobj and mobj.valid) then
 					xSlinger.KillMissile(mobj)
 				end
 				
 				removedelayed[#removedelayed + 1] = {key = i}
+				break
 			else
 				if mobj.iteminfo and mobj.iteminfo.missile_subtick and mobj.target then
 					mobj.iteminfo:missile_subtick(mobj.target, mobj, ii)
@@ -339,7 +332,7 @@ addHook("ThinkFrame", function()
 			end
 		end
 		
-		if not (mobj and mobj.valid and mobj.health) then
+		if not (mobj and mobj.valid) then
 			removedelayed[#removedelayed + 1] = {key = i}
 			continue
 		end
@@ -408,12 +401,9 @@ addHook("MobjFuse", function(mobj)
 end, MT_XS_MISSILE)
 
 addHook("MobjDeath", function(mobj)
-	if not mobj.missiledying then
-		mobj.missiledying = true
-		
+	if mobj.health then
 		xSlinger.KillMissile(mobj)
-		
-		return true
+		return
 	end
 end, MT_XS_MISSILE)
 
