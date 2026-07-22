@@ -81,6 +81,7 @@ local function I_LoadItems(sp)
 	ze2file "red_ring.lua"
 	ze2file "scatter_ring.lua"
 	ze2file "auto_ring.lua"
+	ze2file "bounce_ring.lua"
 	ze2file "blue_spring.lua"
 	ze2file "explosion_ring.lua"
 	ze2file "wood_fence.lua" 
