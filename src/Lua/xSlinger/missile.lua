@@ -348,6 +348,7 @@ end, MT_PLAYER)
 addHook("MobjMoveCollide", function(mov, mobj)
 	if mov.z > mobj.height + mobj.z then return end
 	if mobj.z > mov.height + mov.z then return end
+	if not mov.isMissile then return end -- To make sure you've already rescaled.
 
 	local alivemissile = (mov.health > 0)
 
