@@ -359,6 +359,8 @@ addHook("MobjMoveCollide", function(mov, mobj)
 end, MT_XS_MISSILE)
 
 addHook("MobjMoveBlocked", function(mov, mobj, line)
+	if not mov.isMissile then return end
+	
 	local missile_def = getMissileDef(mov)
 	
 	local override
