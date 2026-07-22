@@ -166,7 +166,8 @@ end
 local function GetListSize(teams)
 	local totalplayers = 0
 	for _, team in ipairs(teams) do
-		totalplayers = totalplayers + #team.playerlist
+		if (#team.playerlist <= 0) then continue end
+		totalplayers = totalplayers + #team.playerlist + 1
 	end
 
 	if (totalplayers >= 18) then
