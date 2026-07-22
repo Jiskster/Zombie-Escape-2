@@ -113,7 +113,9 @@ xSlinger.registerItem("wood_fence", {
 	end;
 	skin_override = {
 		["tails"] = {
-			firerate = TICRATE*3,
+			firerate = TICRATE*25,
+			count = -1,
+			maxcount = -1,
 		}
 	};
 })
