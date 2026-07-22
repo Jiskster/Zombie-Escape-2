@@ -22,3 +22,5 @@
 *.autosave10
 *.bak
 .vscode/
+test.sh
+test_*.sh
