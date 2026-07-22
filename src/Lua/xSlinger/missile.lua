@@ -273,6 +273,11 @@ addHook("ThinkFrame", function()
 		
 		if mobj.iteminfo and mobj.iteminfo.missile_tick and mobj.target then
 			mobj.iteminfo:missile_tick(mobj.target, mobj)
+			
+			if not (mobj and mobj.valid and mobj.health) then
+				removedelayed[#removedelayed + 1] = {key = i}
+				continue
+			end
 		end
 		
 		-- TODO: give mobj.missileinfo a metatable
@@ -280,6 +285,11 @@ addHook("ThinkFrame", function()
 
 		if missile_def and missile_def.tick and mobj.target then
 			missile_def.tick(mobj.target, mobj)
+			
+			if not (mobj and mobj.valid and mobj.health) then
+				removedelayed[#removedelayed + 1] = {key = i}
+				continue
+			end
 		end
 		
 		-- No reason to "raycast" this missile.
