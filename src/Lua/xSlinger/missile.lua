@@ -225,6 +225,10 @@ function xSlinger.KillMissile(mobj)
 		else
 			mobj.state = S_NULL
 		end
+		
+		if info.nogravitydeath then
+			mobj.flags = $ | MF_NOGRAVITY
+		end
 	end
 	
 	mobj.momx = 0
