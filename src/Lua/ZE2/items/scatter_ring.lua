@@ -63,6 +63,24 @@ xSlinger.registerItem("scatter_ring", {
 
 	flags2 = 0; -- MF2_...
 
+	hold_object = {
+		state = S_XS_SCATTERRING;
+		pos = {  -- at this pos, the object is at the right of your body
+			x = FU;
+			y = FU/2;
+			z = 0;
+		};
+		pos_anim = {
+			x = -FU;
+			y = (FU*3)/2;
+			z = -FU/3;
+		};
+	};
+
+	hold_icon = "SPR_THOK"; -- Can be a normal graphic instead of a sprite too.
+
+    animation_time = TICRATE;
+
 	sounds = {
 		use = sfx_shgn;
 		reload = {sfx_xsrel1, sfx_xsrel2};

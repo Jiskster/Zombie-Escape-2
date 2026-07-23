@@ -148,4 +148,22 @@ xSlinger.registerItem("rail_ring", {
 			reload_time = 3*TICRATE,
 		}
 	};
+
+	hold_object = {
+		state = S_XS_RAILRING_DROP;
+		pos = {  -- at this pos, the object is at the right of your body
+			x = FU;
+			y = FU/2;
+			z = 0;
+		};
+		pos_anim = {
+			x = -FU;
+			y = (FU*3)/2;
+			z = -FU/3;
+		};
+	};
+
+	hold_icon = "SPR_THOK"; -- Can be a normal graphic instead of a sprite too.
+
+    animation_time = TICRATE;
 })
