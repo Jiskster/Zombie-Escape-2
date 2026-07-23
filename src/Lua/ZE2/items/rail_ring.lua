@@ -133,7 +133,7 @@ xSlinger.registerItem("rail_ring", {
 
 	knockback = 350*FRACUNIT;
 
-	damage = 950;
+	damage = 750;
 
 	ammo = 1;
 
