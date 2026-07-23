@@ -33,7 +33,18 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 	for player in players.iterate do
 		player.xSlinger.team = 1
 		ZE2.lockPlayer(player) -- To make sure the player is the right skin for the team!
-		ZE2.resetPlayerHealth(player)
+		
+		ZE2.CharacterSlots = {}
+
+		for i,v in ipairs(ZE2.registered_skins) do
+			ZE2.CharacterSlots[i] = {
+				count = 0;
+				max = 1;
+			}
+		end
+		
+		player.ze2.selected_character = nil
+		ZE2.ResetPlayer(player, 1, true, true)
 	end
 
 	if map then
@@ -72,25 +83,10 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 				end
 			end
 
-			ZE2.CharacterSlots = {}
-
-			for i,v in ipairs(ZE2.registered_skins) do
-				ZE2.CharacterSlots[i] = {
-					count = 0;
-					max = 1;
-				}
-			end
-
 			ZE2.PreviousMaps[map] = {
 				mapnum = map;
 				matches_ago = 0;
 			}
-
-			-- reset everyone
-			for player in players.iterate do
-				player.ze2.selected_character = nil
-				ZE2.ResetPlayer(player, 1, true, true)
-			end
 
 			ZE2.queuing_round = false
 		end
@@ -117,10 +113,6 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 				player.playerstate = PST_REBORN
 
 				G_DoReborn(#player)
-
-				-- If player hasn't selected character before, reset inventory with no items
-				local noitems = (player.ze2.selected_character == nil)
-				ZE2.ResetPlayer(player, 1, true, noitems) -- Change to survivor and reset inventory
 			end
 			player.ze2.injoinqueue = false
 			player.ze2.outofgame = false
