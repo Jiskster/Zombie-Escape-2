@@ -273,6 +273,10 @@ function xSlinger.DoThinker(mobj)
 					if item_sound then
 						itemSoundPlay(mobj, item_sound)
 					end
+					
+					if animation_time ~= nil then
+						xS.viewmobj_animation = animation_time
+					end
 				end
 			end
 		end
@@ -287,10 +291,6 @@ function xSlinger.DoThinker(mobj)
 
 			if firerate ~= nil then
 				hand:setIndex("firerate_left", firerate, skin)
-			end
-
-			if animation_time ~= nil then
-				xS.viewmobj_animation = animation_time
 			end
 		end
 	end
