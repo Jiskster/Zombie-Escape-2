@@ -29,6 +29,29 @@ mobjinfo[MT_REDCRAWLA].forcedamage = 20
 mobjinfo[MT_REDCRAWLA].relativeknockback = true
 mobjinfo[MT_REDCRAWLA].forceknockback = 22*FRACUNIT
 
+local function CrawlaDropItems(mobj, red)
+	if not mobj or not mobj.valid then return end
+	if P_RandomChance(FRACUNIT / 10) then
+		xSlinger.SpawnItemDrop(mobj, "milk", false)
+	elseif P_RandomChance(FRACUNIT / 20) then
+		xSlinger.SpawnItemDrop(mobj, "apple", false)
+	elseif red and P_RandomChance(FRACUNIT / 100) then
+		xSlinger.SpawnItemDrop(mobj, "energy_drink", false)
+	end
+end
+
+addHook("MobjDeath", function(mobj, inflictor, source, damagetype)
+	if not inflictor and not source then return end
+	if (inflictor and not inflictor.player) and (source and not source.player) then return end
+	CrawlaDropItems(mobj, false)
+end, MT_BLUECRAWLA)
+
+addHook("MobjDeath", function(mobj, inflictor, source, damagetype)
+	if not inflictor and not source then return end
+	if (inflictor and not inflictor.player) and (source and not source.player) then return end
+	CrawlaDropItems(mobj, true)
+end, MT_REDCRAWLA)
+
 mobjinfo[MT_GOLDCRAWLA] = {
 	doomednum = -1,
 	spawnstate = S_GOSS_STND,
