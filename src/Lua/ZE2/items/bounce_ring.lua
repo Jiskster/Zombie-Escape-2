@@ -11,15 +11,15 @@ states[S_XS_BOUNCERING] = {
 
 local bounce_tick = function(pmo, mo)
 	local prevmomz = mo.bouncering_prevmomz or 0
-	local floorhit = (mo.eflags & MFE_JUSTHITFLOOR) > 0
-	local ceilinghit = (mo.z + mo.height == P_CeilingzAtPos(mo.x, mo.y, mo.z, mo.height))
+	local floorhit = (mo.z <= mo.floorz)
+	local ceilinghit = (mo.z + mo.height == mo.ceilingz)
 	
 	if floorhit or ceilinghit then
 		local flip = P_MobjFlip(mo)
 		
 		if ceilinghit then flip = -$ end
 		
-		local newprevmomz = FixedDiv(abs(prevmomz), 5*FU/4)
+		local newprevmomz = FixedDiv(abs(max(6*FU,prevmomz)), 5*FU/4)
 		
 		S_StartSound(mo, sfx_bnce1)
 		P_SetObjectMomZ(mo, newprevmomz*flip, true)
@@ -30,7 +30,7 @@ local bounce_tick = function(pmo, mo)
 		mo.flags = $ & (~MF_NOGRAVITY)
 		mo.relativeknockback = true
 		
-		if abs(mo.momz) < FRACUNIT then
+		if abs(mo.momz) < 3*FRACUNIT and mo.fuse < 3*TICRATE then
 			P_KillMobj(mo)
 			return -- nuh uh
 		end
