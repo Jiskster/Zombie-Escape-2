@@ -48,8 +48,8 @@ xSlinger.registerMissile("BOUNCE_RING", {
 	deathsound = sfx_itemup,
 	nogravitydeath = true,
 	safeground = true,
-	width = 32*FRACUNIT,
-	height = 32*FRACUNIT,
+	radius = 48*FRACUNIT,
+	height = 48*FRACUNIT,
 	tick = bounce_tick,
 	subtick = bounce_tick,
 	blocked = function(pmo, mo, line)
