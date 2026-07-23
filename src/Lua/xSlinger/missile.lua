@@ -238,7 +238,7 @@ function xSlinger.KillMissile(mobj)
 end
 
 local function checkMissile(mobj, missileinfo)
-	if (mobj.eflags & MFE_JUSTHITFLOOR or mobj.z + mobj.height >= mobj.ceilingz) then
+	if (mobj.z == mobj.floorz or mobj.z + mobj.height >= mobj.ceilingz) then
 		if (missileinfo and not missileinfo.safeground) then
 			xSlinger.KillMissile(mobj)
 		end
