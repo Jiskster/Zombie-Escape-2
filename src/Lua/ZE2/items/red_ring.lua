@@ -41,7 +41,7 @@ xSlinger.registerItem("red_ring", {
 	velocity_precision = 5;
 
 	knockback = 15*FRACUNIT; -- fixed_t
-	knockback_time = 20;
+	knockback_time = 2*TICRATE;
 
 	autouse = false;
 
