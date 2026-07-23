@@ -61,7 +61,7 @@ xSlinger.registerMissile("BOUNCE_RING", {
 					  + (ANGLE_90 * (side and 1 or -1))
 		local speed = FixedHypot(mo.momx, mo.momy)
 		
-		P_InstaThrust(mo, angle, speed + 5*FU) -- giiit faster
+		P_InstaThrust(mo, angle, speed)
 		S_StartSound(mo, sfx_bnce1)
 		
 		mo.fuse = max(0, $ - 5)
