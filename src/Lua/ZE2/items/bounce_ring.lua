@@ -101,7 +101,7 @@ xSlinger.registerItem("bounce_ring", {
 	damage = 15;
 
 	knockback = 25*FRACUNIT; -- fixed_t
-	knockback_time = 3*TICRATE;
+	knockback_time = 2*TICRATE;
 
 	autouse = true;
 
