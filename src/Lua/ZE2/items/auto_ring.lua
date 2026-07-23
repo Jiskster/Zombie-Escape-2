@@ -68,7 +68,7 @@ xSlinger.registerItem("auto_ring", {
 			maxammo = 100;
 			ammo = 100;
 
-			knockback = 6*FRACUNIT;
+			knockback = 7*FRACUNIT;
 			reload_time = TICRATE*4;
 		}
 	},
