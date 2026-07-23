@@ -96,15 +96,6 @@ local function I_LoadItems(sp)
 	ze2file "unused/epix.lua"
 	ze2file "unused/saxa.lua"
 	
-	/*
-	ze2file "item_bounce_ring.lua"
-	
-	ze2file "item_infinity_ring.lua"
-	
-	ze2file "item_landmine.lua"
-	
-	*/
-	
 	set_subpath "";
 	
 	print("I_LoadItems();")
