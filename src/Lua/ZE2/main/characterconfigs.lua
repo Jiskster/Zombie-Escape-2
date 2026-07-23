@@ -130,16 +130,16 @@ local speed_lookup = {
 }
 
 local acceleration_lookup = {
-	[1] = 36;
-	[2] = 34;
-	[3] = 32;
+	[1] = 30;
+	[2] = 28;
+	[3] = 26;
 	[4] = 22;
 	[5] = 21;
 	[6] = 20;
-	[7] = 19;
-	[8] = 15;
+	[7] = 18;
+	[8] = 14;
 	[9] = 12;
-	[10] = 10;
+	[10] = 11;
 }
 
 local function weightToHealth(weight)
