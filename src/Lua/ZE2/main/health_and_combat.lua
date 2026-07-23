@@ -222,5 +222,10 @@ COM_AddCommand("drophand", function(player)
 	if (ZE2.pregame_timeleft) then
 		return end;
 
-	xS:hand_drop()
+	local droppeditem = xS:hand_drop()
+	if droppeditem and droppeditem.valid then
+		droppeditem.team = xS.team
+		droppeditem.interaction.team_restrict = {enabled = true}
+		droppeditem.interaction.team_restrict[xS.team] = true
+	end
 end)

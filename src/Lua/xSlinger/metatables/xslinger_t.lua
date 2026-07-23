@@ -104,7 +104,7 @@ local funcs = {
 		local inv = xS:inv_get()
 		local mo = xS.mo
 
-		xS:slot_drop(slotnum, force)
+		return xS:slot_drop(slotnum, force)
 	end;
 	["slot_clear"] = function(self, slotnum, target_inv)
 		local obj = getLambdaObject(self)
@@ -140,8 +140,9 @@ local funcs = {
 		if iteminfo.id ~= "" then
 			if iteminfo:getIndex("droppable", mo.skin)
 			or force == 2 then
-				xSlinger.SpawnItemDrop(mo, iteminfo)
+				local mobj = xSlinger.SpawnItemDrop(mo, iteminfo)
 				xS:slot_clear(slotnum, targetinv)
+				return mobj
 			elseif force == 1 then
 				xS:slot_clear(slotnum, targetinv)
 			end

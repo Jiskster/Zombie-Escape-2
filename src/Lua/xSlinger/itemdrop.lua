@@ -99,11 +99,6 @@ function xSlinger.SpawnItemDrop(data, item, nothrow)
 		P_SetObjectMomZ(dropmobj, 4*FU, true)
 	end
 
-	local teampickup = 0
-	if data.player and data.player.valid then
-		teampickup = data.player.xSlinger.team
-	end
-
 	-- Spawn interaction
 	local i_obj = P_SpawnMobj(data.x, data.y, data.z, MT_XS_INTERACTION) -- interaction object
 	i_obj.target = dropmobj -- to make the interaction follow the dropmobj
@@ -111,16 +106,9 @@ function xSlinger.SpawnItemDrop(data, item, nothrow)
 		text = "Dropped Item";
 		type = "item";
 		holdtime = TICRATE/4;
-		team_restrict = {enabled = false};
 	}
-
-	if (teampickup > 0) then
-		i_obj.interaction.team_restrict[teampickup] = true
-		if not i_obj.interaction.team_restrict.enabled then
-			i_obj.interaction.team_restrict.enabled = true
-		end
-	end
 	i_obj.state = S_INVISIBLE
+	return i_obj
 end
 
 -- Make dropped items push eachother
