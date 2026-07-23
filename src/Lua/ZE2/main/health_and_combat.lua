@@ -164,6 +164,12 @@ xSlinger.addHook("OnPlayerDamage", function(player, inf, src, dmg, damagetype)
 		end
 
 		pV:DamageFade(15)
+	elseif player.xSlinger.team == 2 then
+		if attacker and attacker.player and attacker.team == 1 then
+			if player.ze2.zombie_type == "alpha" then
+				player.mo:give_effect("alphazombie.rage_regen", {}, TICRATE, true)
+			end
+		end
 	end
 end)
 
