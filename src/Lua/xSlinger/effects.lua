@@ -13,14 +13,15 @@ end
 -- isolated function
 local function set_effect(mobj, name, data, tics, additive, call_startfunc)
 	local effectinfo = xSlinger.Effects[name]
+	if effectinfo and (effectinfo.max_duration ~= nil) and (tics > effectinfo.max_duration) then
+		tics = effectinfo.max_duration
+	end
 
 	local effects = mobj.effects
-
 	local index = #effects + 1
 	effects[index] = data
 
 	local neweffect = effects[index]
-
 	neweffect.name = name
 	neweffect.fuse = tics
 	neweffect.mobj = mobj
@@ -29,7 +30,6 @@ local function set_effect(mobj, name, data, tics, additive, call_startfunc)
 
 	local global_index = #globaleffects + 1
 	globaleffects[global_index] = neweffect
-
 	if effectinfo and call_startfunc then
 		if effectinfo.startfunc and mobj and mobj.valid then
 			effectinfo.startfunc(neweffect, mobj)
@@ -39,8 +39,7 @@ end
 
 -- mobj_t method
 local function give_effect(self, name, data, tics, additive, recall_startfunc)
-	-- redo sanity checks by using type()
-	if not (self and self.valid) then
+	if not self or not self.valid then -- redo sanity checks by using type()
 		return false, "mobj not valid"
 	end
 
@@ -52,48 +51,44 @@ local function give_effect(self, name, data, tics, additive, recall_startfunc)
 		return false, "no tics"
 	end
 
+	local effectinfo = xSlinger.Effects[name]
 	local found = self:search_effect(name)
-
-	if #found == 0 then
+	if (#found == 0) then
 		set_effect(self, name, data, tics, additive, true)
 	else
 		local found_effect = found[1]
-
 		if (additive == false) then
 			self:remove_effect(found_effect) -- delete previous effect
-
 			set_effect(self, name, data, tics, additive, recall_startfunc)
 		elseif (additive == true) then
-			-- keep most effect data, change those that are different
-			for i,v in pairs(data) do
-				if found_effect[i] ~= v then
-					found_effect[i] = v
+			for index, value in pairs(data) do -- keep most effect data, change those that are different
+				if (found_effect[index] ~= value) then
+					found_effect[index] = value
 				end
 			end
 
-			found_effect.fuse = $ + tics
+			found_effect.fuse = found_effect.fuse + tics
+			if effectinfo and (effectinfo.max_duration ~= nil) and (found_effect.fuse > effectinfo.max_duration) then
+				found_effect.fuse = effectinfo.max_duration
+			end
 		end
 	end
-
 	return neweffect
 end
 
 -- mobj_t method
 local function remove_effect(self, effect, ignore_global_index_update)
 	local mobj_effects = self.effects
-
 	table.remove(mobj_effects, effect.index)
 
-	-- update indexes
-	for i,effect in ipairs(mobj_effects) do
-		effect.index = i
+	for index, effect in ipairs(mobj_effects) do -- update indexes
+		effect.index = index
 	end
-
 	table.remove(globaleffects, effect.global_index)
 
 	if not ignore_global_index_update then
-		for i,effect in ipairs(globaleffects) do
-			effect.global_index = i
+		for index, effect in ipairs(globaleffects) do
+			effect.global_index = index
 		end
 	end
 end
@@ -102,30 +97,25 @@ end
 local function search_effect(self, name)
 	local mobj_effects = self.effects
 	local found = {}
-
-	for i,effect in ipairs(mobj_effects) do
-		if effect.name == name then
+	for index, effect in ipairs(mobj_effects) do
+		if (effect.name == name) then
 			found[#found + 1] = effect
 		end
 	end
-
 	return found
 end
 
-mobj_mt.__index = function(mobj,key)
-	if key == "give_effect" then
+mobj_mt.__index = function(mobj, key)
+	if (key == "give_effect") then
 		return give_effect
 	end
-
-	if key == "remove_effect" then
+	if (key == "remove_effect") then
 		return remove_effect
 	end
-
-	if key == "search_effect" then
+	if (key == "search_effect") then
 		return search_effect
 	end
-
-	return old_index(mobj,key)
+	return old_index(mobj, key)
 end
 
 addHook("MobjSpawn", function(mobj)
@@ -133,54 +123,46 @@ addHook("MobjSpawn", function(mobj)
 end)
 
 addHook("NetVars", function(net)
-	globaleffects = net($)
+	globaleffects = net(globaleffects)
 end)
 
 addHook("ThinkFrame", function()
-	for i,effect in ipairs(globaleffects) do
+	for index, effect in ipairs(globaleffects) do
 		local mobj = effect.mobj
 		local name = effect.name
-
 		if not (type(name) == "string") then
-			table.remove(globaleffects, i)
+			table.remove(globaleffects, index)
 			continue
 		end
 
 		local effectinfo = xSlinger.Effects[name]
-
 		if not (type(effectinfo) == "table") then
-			table.remove(globaleffects, i)
+			table.remove(globaleffects, index)
 			continue
 		end
+		effect.global_index = index -- update index
 
-		effect.global_index = i -- update index
-
-		if not (mobj and mobj.valid) then
-			table.remove(globaleffects, i)
+		if not mobj or not mobj.valid then
+			table.remove(globaleffects, index)
 			continue
 		end
 
 		local mobj_effects = mobj.effects
-
-		if effect.fuse > 0 then
-			effect.fuse = $ - 1
-
+		if (effect.fuse > 0) then
+			effect.fuse = effect.fuse - 1
 			if effectinfo.tick and mobj and mobj.valid then
 				effectinfo.tick(effect, mobj, effect.fuse)
 			end
-
 			if not effect.fuse then
 				if effectinfo.endfunc and mobj and mobj.valid then
 					effectinfo.endfunc(effect, mobj)
 				end
-
 				mobj:remove_effect(effect, true)
 			end
 		else
 			mobj:remove_effect(effect, true)
 			continue
 		end
-
-		effect.global_index = i -- update index again
+		effect.global_index = index -- update index again
 	end
 end)

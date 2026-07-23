@@ -89,6 +89,7 @@ states[S_ZE2_FLAME3] = {
 }
 
 xSlinger.registerEffect("burning", {
+	max_duration = 8 * TICRATE,
 	tick = function(effect, mobj, time_left)
 		if mobj and mobj.valid then
 			if (time_left % 20) == 0 then
