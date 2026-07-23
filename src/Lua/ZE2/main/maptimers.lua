@@ -6,7 +6,26 @@ ZE2.maptimerdebug = CV_RegisterVar({
 	PossibleValue = CV_OnOff,
 })
 
-ZE2.MapTimers = {}
+ZE2.MapTimers = {} -- has functions; dont sync
+ZE2.ActiveMapTimers = {} -- sync this instead
+
+-- we hate functions
+local function stripTable(tb)
+    local output = {}
+    
+    for key, value in pairs(tb) do
+        local t = type(value)
+        
+        -- no funcs
+        if t == "table" then
+            output[key] = stripTable(value)
+        elseif t ~= "function" then
+            output[key] = value
+        end
+    end
+    
+    return output
+end
 
 function ZE2.AddMapTimer()
 	print("ZE2.AddMapTimer is deprecated, try ZE2:AddTimer instead")
@@ -47,10 +66,12 @@ function ZE2:AddTimer(_id, _table)
 	_table_recieve.original_time = _table_recieve.time
 
 	ZE2.MapTimers[_id] = _table_recieve
+	ZE2.ActiveMapTimers[_id] = stripTable(_table_recieve)
 
 	return ZE2.MapTimers[_id]
 end
 
+-- This fully resets the timer so dont use this midgame, only on init
 function ZE2:OverrideTimer(_id, _new)
 	local _timer
 
@@ -79,6 +100,8 @@ function ZE2:OverrideTimer(_id, _new)
 			_timer.original_time = v
 		end
 	end
+	
+	ZE2.ActiveMapTimers[_id] = stripTable(_timer)
 end
 
 function ZE2:ResetTimer(_timer)
@@ -87,13 +110,13 @@ function ZE2:ResetTimer(_timer)
 end
 
 function ZE2:StartTimer(timer_id)
-	ZE2:ResetTimer(ZE2.MapTimers[timer_id])
-	ZE2.MapTimers[timer_id].active = true
+	ZE2:ResetTimer(ZE2.ActiveMapTimers[timer_id])
+	ZE2.ActiveMapTimers[timer_id].active = true
 end
 
 function ZE2:GetActiveTimers()
 	local activetimers = {}
-	for i,timer in pairs(ZE2.MapTimers) do
+	for i,timer in pairs(ZE2.ActiveMapTimers) do
 		if timer.active then
 			table.insert(activetimers, timer)
 		end
@@ -106,8 +129,8 @@ function ZE2:GetActiveTimers()
 	return activetimers
 end
 
-addHook("MapLoad", function()
-	for i,timer in pairs(ZE2.MapTimers) do
+addHook("MapChange", function()
+	for i,timer in pairs(ZE2.ActiveMapTimers) do
 		ZE2:ResetTimer(timer)
 	end
 end)
@@ -115,15 +138,17 @@ end)
 addHook("ThinkFrame", function()
 	if ZE2.game_ended then return end
 
-	for i,timer in pairs(ZE2.MapTimers) do
+	for i,timer in pairs(ZE2.ActiveMapTimers) do
+		local realtimer = ZE2.MapTimers[i] -- 'timer' has no functions, so we use this
+		
 		if (timer.active) then
 			if (ZE2.maptimerdebug.value) then
 				print(timer.name..": "..(timer.time/35)) end
 
 			timer.time = $ - 1
 
-			if timer.extrainfo then
-				for _,info in ipairs(timer.extrainfo) do
+			if realtimer.extrainfo then
+				for _,info in ipairs(realtimer.extrainfo) do
 					if (info.event_time) and (info.event_func) then
 						if (timer.time == info.event_time) then
 							info.event_func(i, timer.name)
@@ -147,8 +172,8 @@ addHook("ThinkFrame", function()
 			end
 
 			if timer.time <= 0 then
-				if (timer.on_end) then
-					timer.on_end(i, timer.name)
+				if (realtimer.on_end) then
+					realtimer.on_end(i, timer.name)
 				end
 
 				if (timer.on_end_tag) then
@@ -159,4 +184,8 @@ addHook("ThinkFrame", function()
 			end
 		end
 	end
+end)
+
+addHook("NetVars", function(net)
+	ZE2.ActiveMapTimers = net($)
 end)

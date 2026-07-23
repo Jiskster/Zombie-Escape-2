@@ -37,10 +37,4 @@ return function(net)
 	ZE2.MaxKarma = net($);
 
 	ZE2.CharacterSlots = net($)
-
-	for i,v in ipairs(ZE2.MapTimers) do
-		v.name = net($);
-		v.time = net($);
-		v.active = net($);
-	end
 end
