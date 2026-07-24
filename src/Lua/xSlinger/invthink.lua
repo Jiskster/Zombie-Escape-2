@@ -360,22 +360,7 @@ function xSlinger.DoThinker(mobj)
 			iteminfo = inv[i]
 		end
 
-		if not getmetatable(iteminfo) then
-			if ZE2.cv_debug.value then
-				print(">> BOTTOM")
-				print("No getindex for: "..i)
-				print("ID: "..iteminfo.id)
-				print("Had metatable? (Try 1): "..tostring(getmetatable(iteminfo)))
-			end
-
-			setmetatable(iteminfo, xSlinger.METATABLES.ITEMINFO)
-
-			if ZE2.cv_debug.value then
-				print("Had metatable? (Try 2): "..tostring(getmetatable(iteminfo)))
-				print("Set missing metatable (Thoughts and prayers)")
-				print(">> ")
-			end
-		end
+		setmetatable(iteminfo, xSlinger.METATABLES.ITEMINFO)
 
 		local firerate_left = iteminfo:getIndex("firerate_left", skin)
 
