@@ -88,6 +88,13 @@ xSlinger.registerItem("scatter_ring", {
 		drop = sfx_None;
 	};
 
+	skin_override = {
+		["sonic"] = {
+			reload_time = 3*TICRATE;
+			firerate = 28;
+		}
+	};
+	
 	usefunc = function(self, mo)
 		local mt = "SCATTER_RING"
 		local spread = self.spread
