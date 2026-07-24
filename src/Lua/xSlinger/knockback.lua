@@ -38,7 +38,7 @@ addHook("NetVars", function(net)
 	KB.list = net($)
 end)
 
-addHook("MapLoad", function()
+addHook("MapChange", function()
 	KB.list = {}
 end)
 
