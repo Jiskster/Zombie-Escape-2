@@ -12,6 +12,10 @@ end
 
 -- isolated function
 local function set_effect(mobj, name, data, tics, additive, call_startfunc)
+	if (mobj.type == MT_XS_MISSILE) or (mobj.flags & MF_MISSILE) then
+		return 
+	end
+
 	local effectinfo = xSlinger.Effects[name]
 	if effectinfo and (effectinfo.max_duration ~= nil) and (tics > effectinfo.max_duration) then
 		tics = effectinfo.max_duration
@@ -41,6 +45,10 @@ end
 local function give_effect(self, name, data, tics, additive, recall_startfunc)
 	if not self or not self.valid then -- redo sanity checks by using type()
 		return false, "mobj not valid"
+	end
+
+	if (self.type == MT_XS_MISSILE) or (self.flags & MF_MISSILE) then
+		return false, "mobj is a missile"
 	end
 
 	if (name == nil) then
@@ -78,6 +86,10 @@ end
 
 -- mobj_t method
 local function remove_effect(self, effect, ignore_global_index_update)
+	if (self.type == MT_XS_MISSILE) or (self.flags & MF_MISSILE) then
+		return
+	end
+	
 	local mobj_effects = self.effects
 	table.remove(mobj_effects, effect.index)
 
