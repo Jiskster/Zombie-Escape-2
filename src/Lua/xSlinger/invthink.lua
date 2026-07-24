@@ -79,22 +79,7 @@ function xSlinger.DoThinker(mobj)
 		end
 	end
 
-	if not getmetatable(hand) then
-		if ZE2.cv_debug.value then
-			print(">> TOP")
-			print("No getindex for: "..i)
-			print("ID: "..hand.id)
-			print("Had metatable? (Try 1): "..tostring(getmetatable(hand)))
-		end
-
-		setmetatable(hand, xSlinger.METATABLES.ITEMINFO)
-
-		if ZE2.cv_debug.value then
-			print("Had metatable? (Try 2): "..tostring(getmetatable(hand)))
-			print("Set missing metatable (Thoughts and prayers)")
-			print(">>")
-		end
-	end
+	setmetatable(hand, xSlinger.METATABLES.ITEMINFO)
 
 	local reload_time = hand:getIndex("reload_time", skin) or 1
 	local firerate = hand:getIndex("firerate", skin)
