@@ -26,7 +26,7 @@ local function RenderPlayer(v, ypos, player, teamcolor, spectator) -- standard
 
 		local healthtext = player.mo.health
 		if player.mo.shield_health then
-			healthtext = healthtext .. " + " .. player.mo.shield_health
+			healthtext = healthtext .. "+" .. player.mo.shield_health
 		end
 		DrawString(BASEVIDWIDTH - (2 + 90), ypos + textspos, healthtext, V_ALLOWLOWERCASE|textcolor, "small-right")
 
@@ -65,7 +65,7 @@ local function RenderPlayerSmall(v, ypos, player, teamcolor, spectator) -- compa
 
 		local healthtext = player.mo.health
 		if player.mo.shield_health then
-			healthtext = healthtext .. " + " .. player.mo.shield_health
+			healthtext = healthtext .. "+" .. player.mo.shield_health
 		end
 		DrawString(BASEVIDWIDTH - (2 + 90), ypos + textspos, healthtext, V_ALLOWLOWERCASE|textcolor, "small-right")
 
@@ -107,7 +107,7 @@ local function RenderPlayerSmaller(v, ypos, player, teamcolor, spectator) -- sup
 
 		local healthtext = player.mo.health
 		if player.mo.shield_health then
-			healthtext = healthtext .. " + " .. player.mo.shield_health
+			healthtext = healthtext .. "+" .. player.mo.shield_health
 		end
 		DrawString(BASEVIDWIDTH - (2 + 90), ypos + textspos, healthtext, V_ALLOWLOWERCASE|textcolor, "small-right")
 
