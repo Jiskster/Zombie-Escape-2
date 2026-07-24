@@ -119,6 +119,10 @@ mobj_mt.__index = function(mobj, key)
 end
 
 addHook("MobjSpawn", function(mobj)
+	if (mobj.type == MT_XS_MISSILE) or (mobj.flags & MF_MISSILE) then
+		return
+	end
+	
 	mobj.effects = {}
 end)
 
