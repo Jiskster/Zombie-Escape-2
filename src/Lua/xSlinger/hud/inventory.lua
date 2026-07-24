@@ -49,7 +49,7 @@ addHook("HUD", function(v, player)
 	}
 
 	for i=1, slot_count do
-		local iteminfo = xS:slot_get(i) --ZE2:FetchInventorySlot(player, i)
+		local iteminfo = xS:slot_get(i)
 		local selection = xS.slot
 
 		local item_background = iteminfo:getIndex("background", player.mo.skin)
