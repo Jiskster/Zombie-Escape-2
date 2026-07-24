@@ -131,23 +131,25 @@ addHook("NetVars", function(net)
 end)
 
 addHook("ThinkFrame", function()
+	local removedelayed = {}
+	
 	for index, effect in ipairs(globaleffects) do
 		local mobj = effect.mobj
 		local name = effect.name
 		if not (type(name) == "string") then
-			table.remove(globaleffects, index)
+			removedelayed[#removedelayed + 1] = {key = index}
 			continue
 		end
 
 		local effectinfo = xSlinger.Effects[name]
 		if not (type(effectinfo) == "table") then
-			table.remove(globaleffects, index)
+			removedelayed[#removedelayed + 1] = {key = index}
 			continue
 		end
 		effect.global_index = index -- update index
 
 		if not mobj or not mobj.valid then
-			table.remove(globaleffects, index)
+			removedelayed[#removedelayed + 1] = {key = index}
 			continue
 		end
 
@@ -168,5 +170,13 @@ addHook("ThinkFrame", function()
 			continue
 		end
 		effect.global_index = index -- update index again
+	end
+	
+	if #removedelayed then
+		for i = #removedelayed, 1, -1 do
+			local todo = removedelayed[i]
+			
+			table.remove(globaleffects, todo.key)
+		end
 	end
 end)
