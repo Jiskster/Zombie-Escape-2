@@ -1,12 +1,5 @@
 -- super specialized cvars wont show here.
 
-ZE2.survinvtics = CV_RegisterVar({
-	name = "z_survinvtics",
-	defaultvalue = "30",
-	PossibleValue = {MIN = 0, MAX = 350},
-	flags = CV_NETVAR,
-})
-
 ZE2.instantinfection = CV_RegisterVar({
 	name = "z_instantinfection",
 	defaultvalue = "On",
