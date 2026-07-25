@@ -7,7 +7,7 @@ local hook_names = {
 		"ZombieSpawn";
 		"LatestCheckpoint";
 	};
-	TeamSwitch = {"Main"};
+	TeamSwitch = {"MidgameJoin"};
 	PreThinkFrame = {"Movement"};
 	ThinkFrame = {"WinHandler", "Intermission"};
 	PlayerThink = {
@@ -22,6 +22,7 @@ local hook_names = {
 	};
 	JumpSpecial = {"JumpFatigue"};
 	ViewpointSwitch = {"Main"};
+	PlayerCmd = {"MidgameJoin"};
 	NetVars = {"Main"};
 }
 
