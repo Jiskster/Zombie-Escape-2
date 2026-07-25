@@ -46,6 +46,9 @@ Testers:
 "Lugent"
 "Lemerksdagaming"
 
+Special Thanks:
+Ringslinger Neo for their sprites and weapons. https://mb.srb2.org/addons/ringslinger-neo.3864/
+
 This mod is not open assets, it is encouraged to patch the mod via external addons.
 You will be credited for your contributions.
 Github: https://github.com/Jiskster/SRBZ
