@@ -139,7 +139,7 @@ xSlinger.tryRunHook = function(hooktype, v, ...)
 	elseif (not v.errored) then
 		v.errored = true
 
-        xSlinger.berror("Hook " .. hooktype .. " handler #" .. i .. " error:", sfx_lose)
+        xSlinger.berror("Hook " .. hooktype .. " handler #" .. v.id .. " error:", sfx_lose)
 		print(unpack(results))
 	end
 
