@@ -188,3 +188,14 @@ end)
 addHook("PlayerQuit", function(player)
 	unselectCharacter(player)
 end)
+
+-- NOW add the players
+
+ZE2.CharacterSlots = {}
+
+for i,v in ipairs(ZE2.registered_skins) do
+	ZE2.CharacterSlots[i] = {
+		count = 0;
+		max = 1;
+	}
+end

@@ -34,17 +34,17 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 		player.xSlinger.team = 1
 		ZE2.lockPlayer(player) -- To make sure the player is the right skin for the team!
 		
-		ZE2.CharacterSlots = {}
-
-		for i,v in ipairs(ZE2.registered_skins) do
-			ZE2.CharacterSlots[i] = {
-				count = 0;
-				max = 1;
-			}
-		end
-		
 		player.ze2.selected_character = nil
 		ZE2.ResetPlayer(player, 1, true, true)
+	end
+	
+	ZE2.CharacterSlots = {}
+
+	for i,v in ipairs(ZE2.registered_skins) do
+		ZE2.CharacterSlots[i] = {
+			count = 0;
+			max = 1;
+		}
 	end
 
 	if map then
