@@ -62,6 +62,8 @@ xSlinger.registerItem("scatter_ring", {
 	firerate = TICRATE;
 
 	flags2 = 0; -- MF2_...
+	
+	push_multi = FU; -- scatter ring exclusive
 
 	hold_object = {
 		state = S_XS_SCATTERRING;
@@ -90,8 +92,9 @@ xSlinger.registerItem("scatter_ring", {
 
 	skin_override = {
 		["sonic"] = {
-			reload_time = 3*TICRATE;
-			firerate = 28;
+			reload_time = 6*TICRATE;
+			firerate = 18;
+			push_multi = (FU*3/4);
 		}
 	};
 	
@@ -99,6 +102,7 @@ xSlinger.registerItem("scatter_ring", {
 		local mt = "SCATTER_RING"
 		local spread = self.spread
 		local player = mo.player
+		local push_multi = self:getIndex("push_multi", mo.skin)
 
 		-- Horizontal
 		for i = -1, 1 do
@@ -146,6 +150,11 @@ xSlinger.registerItem("scatter_ring", {
 		if (mo.eflags & MFE_UNDERWATER) then -- underwater knockback penalty
 			knockback_horizontal = knockback_horizontal / 3
 			knockback_vertical = knockback_vertical / 3
+		end
+		
+		if push_multi then
+			knockback_horizontal = FixedMul($, push_multi)
+			knockback_vertical = FixedMul($, push_multi)
 		end
 
 		mo.momz = mo.momz + FixedMul(mo.scale, knockback_vertical)
