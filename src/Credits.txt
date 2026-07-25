@@ -45,6 +45,7 @@ Testers:
 "greenbulb"
 "Lugent"
 "Lemerksdagaming"
+"LexTheGamer95"
 
 Special Thanks:
 Ringslinger Neo for their sprites and weapons. https://mb.srb2.org/addons/ringslinger-neo.3864/
