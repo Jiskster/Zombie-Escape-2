@@ -19,6 +19,7 @@ local hook_names = {
 		"SourceMovement";
 		"Skin&ColorLock";
 		"AlphaZombie";
+		"NoclipSpectators";
 	};
 	JumpSpecial = {"JumpFatigue"};
 	ViewpointSwitch = {"Main"};
