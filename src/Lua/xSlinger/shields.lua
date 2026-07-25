@@ -9,6 +9,7 @@ xSlinger.ShieldDefinitions = {
 	[1] = {
 		name = "Pity",
 		health = 50,
+		efficiency = FU / 4,
 		state = S_PITY1,
 		color = SKINCOLOR_MOSS,
 	},
@@ -102,6 +103,7 @@ function xSlinger.GiveShieldToMobj(mobj, shieldid)
 	if mobj.shield_def.health then
 		mobj.shield_health = mobj.shield_def.health
 	end
+	mobj.shield_efficiency = mobj.shield_def.efficiency or 0
 
 	mobj.shield_orb = P_SpawnMobj(mobj.x, mobj.y, mobj.z, MT_XSLINGER_SHIELD)
 

@@ -393,7 +393,7 @@ local function health(v,p,me,ze)
 		)
 
 		v.drawString(x,y - (FU * 7/2),
-			string.format("%.0f%%", percentage*100),
+			me.shield_health,
 			flags,
 			"thin-fixed-center"
 		)
