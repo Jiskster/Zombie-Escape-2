@@ -116,6 +116,7 @@ xSlinger.registerItem("wood_fence", {
 			firerate = TICRATE*25,
 			count = -1,
 			maxcount = -1,
+			background_color = SKINCOLOR_ORANGE,
 		}
 	};
 
