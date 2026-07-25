@@ -118,6 +118,8 @@ local function health(v,p,me,ze)
 	local team = p.xSlinger.team
 
 	if (health == nil) or (maxhealth == nil) then ResetInfos(); return end
+	if p.spectator then return end
+	
 	--if ZE2.pregame_timeleft then ResetInfos(); return end
 	maxhealth = $*FU
 	AlreadyReset = false
