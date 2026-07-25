@@ -28,7 +28,7 @@ xSlinger.ShieldDefinitions = {
 	},
 	[4] = {
 		name = "Pink",
-		health = 50,
+		health = 25,
 		state = S_PITY1,
 		color = SKINCOLOR_PINK,
 		colorized = true,
