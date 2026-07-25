@@ -269,24 +269,25 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 	end
 
 	if mo.shield_health then
-		--not enough shield to take the hit (TODO: play ring loss sound and damage fade when this happens)
-		if mo.shield_health - dmg <= 0 then
-			dmg = $ - abs(mo.shield_health)
-
-			mo.shield_health = 0
-
-		else --shield negates damage
-			mo.shield_health = $ - dmg
-		end
-
-		if mo.shield_health <= 0 then
-			mo.shield_health = 0
+		if (mo.shield_efficiency > 0) then -- armor as percentage
+			local absorbed_damage = FixedMul(dmg, mo.shield_efficiency) -- efficiency in fracunits -- FU = 100%, FU/2 = 50%, and so on
+			if (mo.shield_health <= absorbed_damage) then -- (TODO: play ring loss sound and damage fade when this happens)
+				absorbed_damage = mo.shield_health
+				mo.shield_efficiency = 0
+			end
+			mo.shield_health = mo.shield_health - absorbed_damage
+			dmg = max(dmg - absorbed_damage, 0)
+		else
+			mo.shield_health = mo.shield_health - dmg
+			if (mo.shield_health <= 0) then -- (TODO: ditto)
+				dmg = abs(mo.shield_health)
+				mo.shield_health = 0
+			else
+				dmg = max(dmg - dmg, 0)
+			end
 		end
 	end
-
-	if not mo.shield_health then
-		mo.health = $ - dmg -- negate health ourselves, dont use damage function
-	end
+	mo.health = mo.health - dmg -- negate health ourselves, dont use damage function
 
 	do
 		local ev, ev_name = xSlinger.findEvent("MobjDamage")

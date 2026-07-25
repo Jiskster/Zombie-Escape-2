@@ -14,4 +14,5 @@ addHook("MobjSpawn", function(mobj)
 	end
 
 	mobj.shield_health = 0
+	mobj.shield_efficiency = 0
 end)
