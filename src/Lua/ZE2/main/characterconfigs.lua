@@ -407,7 +407,7 @@ ZE2.AddSurvivor("amy", {
 	};
 	health_penalty = 40;
 	items = {
-		"red_ring";
+		"accel_ring";
 		"amys_heart";
 	};
 })

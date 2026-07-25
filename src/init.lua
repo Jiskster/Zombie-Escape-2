@@ -92,6 +92,7 @@ local function I_LoadItems(sp)
 	ze2file "flame_ring.lua"
 	ze2file "energy_drink.lua"
 	ze2file "amys_heart.lua"
+	ze2file "accel_ring.lua"
 	
 	-- Unused always at the end.
 	ze2file "unused/epix.lua"

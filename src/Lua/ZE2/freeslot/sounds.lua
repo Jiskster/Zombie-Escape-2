@@ -82,3 +82,8 @@ sfxinfo[sfx_mnu1a].caption = "Selecting"
 -- Multiple maps use this.
 freeslot("sfx_type")
 sfxinfo[sfx_type].caption = "Button Press"
+
+-- Credits to Ringslinger Neo for these sounds:
+freeslot("sfx_rs_die", "sfx_rs_di2")
+sfxinfo[sfx_rs_die].caption = "Bullet Death"
+sfxinfo[sfx_rs_di2].caption = "Bullet Death..."
