@@ -54,8 +54,6 @@ xSlinger.registerItem("auto_ring", {
 
 	knockback = 4*FRACUNIT;
 
-	flags2 = MF2_AUTOMATIC;
-
 	ammo = 50;
 
 	reload_time = TICRATE*2;
