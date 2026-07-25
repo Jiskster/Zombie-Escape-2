@@ -89,7 +89,7 @@ xSlinger.registerItem("red_ring", {
 			reload_time = 1*TICRATE;
 		};
 		["fang"] = {
-			knockback = 16*FRACUNIT;
+			knockback = 32*FRACUNIT;
 			damage = 35;
 		};
 	};
