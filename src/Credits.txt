@@ -12,7 +12,7 @@ Coders:
 "Lugent"
 
 Spriters:
-"Luigi Budd"
+"Luigi Budd/Epix"
 "W"
 "GLide KS" - Updated Zombie Sprite and fence
 "Scarf" - Original Zombie Sprite
