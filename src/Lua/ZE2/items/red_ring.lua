@@ -15,7 +15,7 @@ xSlinger.registerMissile("RED_RING", {
 	displayname = "Red Ring",
 	state = S_XS_REDRING,
 	deathstate = S_SPRK1,
-	deathsound = sfx_itemup,
+	deathsound = sfx_rs_die,
 })
 
 xSlinger.registerItem("red_ring", {

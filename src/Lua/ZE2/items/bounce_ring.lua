@@ -45,7 +45,7 @@ xSlinger.registerMissile("BOUNCE_RING", {
 	displayname = "Bounce Ring",
 	state = S_THROWNBOUNCE1,
 	deathstate = S_SPRK1,
-	deathsound = sfx_itemup,
+	deathsound = sfx_rs_die,
 	nogravitydeath = true,
 	safeground = true,
 	radius = 32*FRACUNIT,

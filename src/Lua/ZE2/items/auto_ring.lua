@@ -25,7 +25,7 @@ xSlinger.registerMissile("AUTO_RING", {
 	displayname = "Auto Ring",
 	state = S_XS_AUTORING,
 	deathstate = S_SPRK1,
-	deathsound = sfx_itemup,
+	deathsound = sfx_rs_die,
 })
 
 xSlinger.registerItem("auto_ring", {
