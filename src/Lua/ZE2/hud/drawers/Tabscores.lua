@@ -21,9 +21,8 @@ local function RenderPlayer(v, ypos, player, teamcolor, spectator) -- standard
 
 	local textspos = 6
 	DrawString(4 + 20, ypos + textspos, player.name, V_ALLOWLOWERCASE|textcolor, "small")
+	DrawString(BASEVIDWIDTH - (2 + 120), ypos + textspos, player.ze2.karma, V_ALLOWLOWERCASE|textcolor, "small-right")
 	if not spectator then
-		DrawString(BASEVIDWIDTH - (2 + 120), ypos + textspos, player.ze2.karma, V_ALLOWLOWERCASE|textcolor, "small-right")
-
 		local healthtext = player.mo.health
 		if player.mo.shield_health then
 			healthtext = healthtext .. "+" .. player.mo.shield_health
@@ -60,9 +59,8 @@ local function RenderPlayerSmall(v, ypos, player, teamcolor, spectator) -- compa
 
 	local textspos = 2
 	DrawString(4 + 10, ypos + textspos, player.name, V_ALLOWLOWERCASE|textcolor, "small")
+	DrawString(BASEVIDWIDTH - (2 + 120), ypos + textspos, player.ze2.karma, V_ALLOWLOWERCASE|textcolor, "small-right")
 	if not spectator then
-		DrawString(BASEVIDWIDTH - (2 + 120), ypos + textspos, player.ze2.karma, V_ALLOWLOWERCASE|textcolor, "small-right")
-
 		local healthtext = player.mo.health
 		if player.mo.shield_health then
 			healthtext = healthtext .. "+" .. player.mo.shield_health
@@ -102,9 +100,8 @@ local function RenderPlayerSmaller(v, ypos, player, teamcolor, spectator) -- sup
 
 	local textspos = 0
 	DrawString(4 + 5, ypos + textspos, player.name, V_ALLOWLOWERCASE|textcolor, "small")
+	DrawString(BASEVIDWIDTH - (2 + 120), ypos + textspos, player.ze2.karma, V_ALLOWLOWERCASE|textcolor, "small-right")
 	if not spectator then
-		DrawString(BASEVIDWIDTH - (2 + 120), ypos + textspos, player.ze2.karma, V_ALLOWLOWERCASE|textcolor, "small-right")
-
 		local healthtext = player.mo.health
 		if player.mo.shield_health then
 			healthtext = healthtext .. "+" .. player.mo.shield_health
@@ -135,8 +132,8 @@ local function RenderTeam(v, ypos, teamname, teamcolor, playerlist, spectator, s
 	local textcolor = skincolors[teamcolor].chatcolor
 	local playersdisplay = (#playerlist == 1) and "player" or "players"
 	DrawString(4, ypos, teamname .. " - " .. #playerlist .. " " .. playersdisplay, V_ALLOWLOWERCASE|textcolor, "small") -- team name
+	DrawString(BASEVIDWIDTH - (2 + 120), ypos, "Karma", V_ALLOWLOWERCASE, "small-right")
 	if not spectator then
-		DrawString(BASEVIDWIDTH - (2 + 120), ypos, "Karma", V_ALLOWLOWERCASE, "small-right")
 		DrawString(BASEVIDWIDTH - (2 + 90), ypos, "HP", V_ALLOWLOWERCASE, "small-right")
 		if (teamname == "Zombies") then
 			DrawString(BASEVIDWIDTH - (2 + 52), ypos, "Type", V_ALLOWLOWERCASE, "small-right")
