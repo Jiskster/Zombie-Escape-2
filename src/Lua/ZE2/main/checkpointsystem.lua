@@ -14,7 +14,7 @@ mobjinfo[MT_ZE2CHECKPOINT] = {
 	//$Arg1Flags {1="Survivor"; 2="Zombie";}
 
 	//$Arg2 Catchup Delay (Seconds)
-	//$Arg2Default 25
+	//$Arg2Default 15
 
 	//$Arg3 Extra Flags
 	//$Arg3ToolTip Indiscriminate Checkpoints: \nAllow any team to influence other team's catchup teleports.\n\nDisable Catchup: \nDisables the checkpoint catchup routine.\n\nDisable Auto Trigger: \nDisables the function where it auto triggers the checkpoint if you're in the same sector as it
