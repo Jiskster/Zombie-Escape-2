@@ -6,7 +6,7 @@ Creator:
 
 Coders:
 "Jisk"
-"Luigi Budd" - Retired
+"Luigi Budd/Epix" - Retired
 "GLide KS"
 "LeonardoTheMutant"
 "Lugent"
@@ -35,7 +35,7 @@ Mappers:
 Testers:
 "bullymaguire1991" - Chao's step father
 "Knockles" 
-"Luigi Budd"
+"Luigi Budd/Epix"
 "W"
 "bypigs2"
 "Tempestissimo"
