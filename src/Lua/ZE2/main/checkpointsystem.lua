@@ -23,7 +23,7 @@ mobjinfo[MT_ZE2CHECKPOINT] = {
 	//$Arg3Flags {1="Indiscriminate Checkpoints"; 2="Disable Catchup"; 4="Disable Auto Trigger";}
 
 	//$Arg4 Zombie Catchup Delay (Offset)
-	//$Arg4Default 0
+	//$Arg4Default 2
 
 	doomednum = 5600,
 	spawnstate = S_INVISIBLE,
