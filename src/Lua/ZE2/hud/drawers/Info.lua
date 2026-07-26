@@ -397,6 +397,14 @@ local function health(v,p,me,ze)
 			flags,
 			"thin-fixed-center"
 		)
+
+		if (me.shield_efficiency > 0) then
+			v.drawString(x + (12 * FU), y - (12 * FU),
+				FixedInt(FixedDiv(me.shield_efficiency, FU) * 100) .. "%",
+				flags,
+				"small-fixed-center"
+			)
+		end
 	else
 		fake_info.shielddef = -1
 		store_info.shield = -1
