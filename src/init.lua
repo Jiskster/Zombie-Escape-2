@@ -14,7 +14,7 @@ rawset(_G, "ZE2", {
 
 local function ze2file(path)
 	print("ZE2/"..subpath..path)
-	
+
 	return dofile("ZE2/"..subpath..path)
 end
 
@@ -26,7 +26,7 @@ local function set_subpath(var)
 	end
 end
 
-local function I_LoadLibs(sp)	
+local function I_LoadLibs(sp)
 	set_subpath (sp);
 
 	ze2file "fixedfromstring.lua"
@@ -36,17 +36,17 @@ local function I_LoadLibs(sp)
 	ze2file "countingplayers.lua"
 	ze2file "mtimeconv.lua"
 	ze2file "worldtext.lua"
-	
+
 	set_subpath "";
-	
+
 	print("I_LoadLibs();")
-end; 
+end;
 
 local function I_Main(sp)
 	set_subpath (sp);
-	
+
 	ze2file "zombie/zombie_colors.lua"
-	
+
 	ze2file "skincolors.lua"
 
 	ze2file "crouch.lua"
@@ -65,18 +65,18 @@ local function I_Main(sp)
 
 	ze2file "maptimers.lua"
 	ze2file "checkpointsystem.lua"
-	
+
 	ze2file "ladder.lua"
 	ze2file "teamchat.lua"
-	
+
 	set_subpath "";
-	
+
 	print("I_Main();")
 end;
 
 local function I_LoadItems(sp)
 	set_subpath (sp);
-	
+
 	ze2file "apple.lua"
 	ze2file "red_ring.lua"
 	ze2file "scatter_ring.lua"
@@ -84,7 +84,7 @@ local function I_LoadItems(sp)
 	ze2file "bounce_ring.lua"
 	ze2file "blue_spring.lua"
 	ze2file "explosion_ring.lua"
-	ze2file "wood_fence.lua" 
+	ze2file "wood_fence.lua"
 	ze2file "rail_ring.lua" -- new and after
 	ze2file "milk.lua"
 	ze2file "grenade.lua"
@@ -93,13 +93,13 @@ local function I_LoadItems(sp)
 	ze2file "energy_drink.lua"
 	ze2file "amys_heart.lua"
 	ze2file "accel_ring.lua"
-	
+
 	-- Unused always at the end.
 	ze2file "unused/epix.lua"
 	ze2file "unused/saxa.lua"
-	
+
 	set_subpath "";
-	
+
 	print("I_LoadItems();")
 end
 
@@ -120,30 +120,23 @@ function A_RingExplode2(actor, var1, var2)
     vfx._override_tnt_explode = true
     vfx.state = S_TNTBARREL_EXPL1
     vfx.fuse = TICRATE
-    
     actor.state = S_INVISIBLE
-    
+
     S_StartSound(actor, sfx_prloop)
-    
-	P_StartQuake(64*FU, 10, {x = vfx.x, y = vfx.y, z = vfx.z})
-	
-    local real_range = 256*FU
-    local bm_range = real_range*4
+	P_StartQuake(64 * FU, 10, {x = vfx.x, y = vfx.y, z = vfx.z})
+
+    local real_range = 256 * FU
+    local bm_range = real_range * 4
     searchBlockmap("objects", function(refmobj, foundmobj)
-        local dist = P_AproxDistance(P_AproxDistance(foundmobj.x - actor.x, foundmobj.y - actor.y), foundmobj.z - actor.z) 
-        if dist > FixedMul(real_range, actor.scale) then
-            return
-        end
-		
-		if (foundmobj.team == actor.team) then
-			return
-		end
-        
-        if (foundmobj.flags & MF_SHOOTABLE) then
-            actor.flags2 = $ | MF2_DEBRIS
-            P_DamageMobj(foundmobj, actor, actor.target, 1, 0)
-        end
-    end, actor, actor.x-bm_range, actor.x+bm_range, actor.y-bm_range, actor.y+bm_range)
+		if not (foundmobj.flags & MF_SHOOTABLE) then return end
+		if (foundmobj.team == actor.team) then return end
+
+        local dist = R_PointToDist2(0, 0, R_PointToDist2(foundmobj.x, foundmobj.y, actor.x, actor.y), foundmobj.z - actor.z)
+        if (dist > FixedMul(real_range, actor.scale)) then return end
+
+        actor.flags2 = actor.flags2 | MF2_DEBRIS
+        P_DamageMobj(foundmobj, actor, actor.target, 1, 0)
+    end, actor, actor.x - bm_range, actor.x + bm_range, actor.y - bm_range, actor.y + bm_range)
 end
 
 function A_TNTExplode(actor, var1, var2)
