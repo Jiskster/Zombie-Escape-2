@@ -84,6 +84,69 @@ states[S_ZE2_WOODFENCE_DROP] = {
 	nextstate = S_ZE2_WOODFENCE_DROP,
 }
 
+freeslot("MT_PROPCHECK")
+
+addHook("MobjMoveCollide", function(check, mobj)
+	if not check or not check.valid then return end
+	if not (mobj.flags & MF_SOLID) then return false end
+	if not ZE2.ZCollide(check, mobj) then return false end
+	if mobj.player and mobj.player.valid then
+		if (mobj.player.xSlinger.team == check.target.player.xSlinger.team) then return false end
+	end
+	return true
+end, MT_PROPCHECK)
+
+---@param mobj mobj_t
+local function FenceCheck(mobj)
+	if not P_IsObjectOnGround(mobj) then return false end
+
+	local distance = 128 * FU
+	local x = mobj.x + FixedMul(distance, cos(mobj.angle))
+	local y = mobj.y + FixedMul(distance, sin(mobj.angle))
+	local z = mobj.z
+	local check = P_SpawnMobj(x, y, z, MT_PROPCHECK)
+	check.target = mobj
+	check.flags = 0
+	check.height = mobjinfo[MT_PROPWOOD].height
+	check.radius = mobjinfo[MT_PROPWOOD].radius
+	check.scale = FU
+	check.flags2 = MF2_DONTDRAW
+	check.alpha = 0
+	check.fuse = 2
+
+	if not P_CheckPosition(check, x, y) then return false end
+	if (check.floorz < (mobj.z - check.height)) then return false end
+	if (check.floorz > (mobj.z + mobj.height)) then return false end
+	if (check.ceilingz < (check.z + check.height)) then return false end
+	return true
+end
+
+---@param self any
+---@param mobj mobj_t
+local function FenceVisual(self, mobj)
+	local distance = 128 * FU
+	local x = mobj.x + FixedMul(distance, cos(mobj.angle))
+	local y = mobj.y + FixedMul(distance, sin(mobj.angle))
+	local z = mobj.z
+	local visual = P_SpawnMobj(x, y, z, MT_ZVISUAL)
+	local valid = FenceCheck(mobj)
+	visual.flags = valid and MF_NOCLIPTHING|MF_NOBLOCKMAP or visual.flags
+	visual.height = mobjinfo[MT_PROPWOOD].height
+	visual.radius = mobjinfo[MT_PROPWOOD].radius
+	visual.momx = mobj.momx
+	visual.momy = mobj.momy
+	visual.momz = mobj.momz
+	visual.sprite = SPR_WPRP
+	visual.frame = 0|FF_ADD
+	visual.angle = mobj.angle + ANGLE_90
+
+	local color = valid and SKINCOLOR_TURQUOISE or SKINCOLOR_RED
+	visual.color = color
+	visual.colorized = true
+	visual.drawonlyforplayer = mobj.player
+	visual.fuse = 2
+end
+
 xSlinger.registerItem("wood_fence", {
 	displayname = "Wood Fence";
 
@@ -99,9 +162,13 @@ xSlinger.registerItem("wood_fence", {
 	maxcount = 100;
 
 	color = SKINCOLOR_BROWN;
+	holdfunc = FenceVisual;
+
 	--TODO: it would be nice if we could get like a sort of indicator
 	--		where the fence would be placed in first person
 	usefunc = function(self, mo)
+		if not FenceCheck(mo) then return true end
+
 		local wood = P_SpawnMobj(mo.x+FixedMul(128*FRACUNIT, cos(mo.angle)),
 					             mo.y+FixedMul(128*FRACUNIT, sin(mo.angle)),
 								 mo.z, MT_PROPWOOD)

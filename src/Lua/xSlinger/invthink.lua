@@ -135,6 +135,10 @@ function xSlinger.DoThinker(mobj)
 		local tpViewMobj = setorigin and P_SetOrigin or P_MoveOrigin
 
 		if holdobject then
+			if hand.holdfunc then
+				hand:holdfunc(mobj)
+			end
+
 			local radius = mobj.radius
 			local magnitude = (radius*5)/3
 
