@@ -25,7 +25,7 @@ states[S_PROP1] = {
 	nextstate = S_PROP1,
 	action = function(mo)
 		--Crush the fence if its getting crushed (duh)
-		if (mo.ceilingz - mo.floorz < mo.height) then
+		if ((mo.ceilingz - mo.floorz) < mo.height) then
 			P_KillMobj(mo, nil, nil, DMG_CRUSHED)
 		end
 	end
@@ -86,6 +86,10 @@ states[S_ZE2_WOODFENCE_DROP] = {
 
 freeslot("MT_PROPCHECK")
 
+addHook("MobjLineCollide", function(check, line)
+	return false
+end, MT_PROPCHECK)
+
 addHook("MobjMoveCollide", function(check, mobj)
 	if not check or not check.valid then return end
 	if not (mobj.flags & MF_SOLID) then return false end
@@ -106,7 +110,6 @@ local function FenceCheck(mobj)
 	local z = mobj.z
 	local check = P_SpawnMobj(x, y, z, MT_PROPCHECK)
 	check.target = mobj
-	check.flags = 0
 	check.height = mobjinfo[MT_PROPWOOD].height
 	check.radius = mobjinfo[MT_PROPWOOD].radius
 	check.scale = FU
@@ -130,7 +133,7 @@ local function FenceVisual(self, mobj)
 	local z = mobj.z
 	local visual = P_SpawnMobj(x, y, z, MT_ZVISUAL)
 	local valid = FenceCheck(mobj)
-	visual.flags = valid and MF_NOCLIPTHING|MF_NOBLOCKMAP or visual.flags
+	--visual.flags = valid and MF_NOCLIPTHING|MF_NOBLOCKMAP or visual.flags
 	visual.height = mobjinfo[MT_PROPWOOD].height
 	visual.radius = mobjinfo[MT_PROPWOOD].radius
 	visual.momx = mobj.momx
