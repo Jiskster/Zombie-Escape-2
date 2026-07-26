@@ -131,9 +131,14 @@ local function FenceVisual(self, mobj)
 	local x = mobj.x + FixedMul(distance, cos(mobj.angle))
 	local y = mobj.y + FixedMul(distance, sin(mobj.angle))
 	local z = mobj.z
-	local visual = P_SpawnMobj(x, y, z, MT_ZVISUAL)
+
+	local visual = mobj.visual_fence
+	if not visual or not visual.valid then
+		visual = P_SpawnMobj(x, y, z, MT_ZVISUAL)
+		mobj.visual_fence = visual
+	end
+
 	local valid = FenceCheck(mobj)
-	--visual.flags = valid and MF_NOCLIPTHING|MF_NOBLOCKMAP or visual.flags
 	visual.height = mobjinfo[MT_PROPWOOD].height
 	visual.radius = mobjinfo[MT_PROPWOOD].radius
 	visual.momx = mobj.momx
@@ -142,12 +147,14 @@ local function FenceVisual(self, mobj)
 	visual.sprite = SPR_WPRP
 	visual.frame = 0|FF_ADD
 	visual.angle = mobj.angle + ANGLE_90
+	P_MoveOrigin(visual, x, y, z)
 
 	local color = valid and SKINCOLOR_TURQUOISE or SKINCOLOR_RED
 	visual.color = color
 	visual.colorized = true
 	visual.drawonlyforplayer = mobj.player
-	visual.fuse = 2
+	visual.alpha = FU / 2
+	visual.fuse = 3
 end
 
 xSlinger.registerItem("wood_fence", {
