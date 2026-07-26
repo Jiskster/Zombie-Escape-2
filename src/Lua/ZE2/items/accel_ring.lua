@@ -51,7 +51,7 @@ xSlinger.registerItem("accel_ring", {
 	
 	icon = "CROSIND";
 	
-	firerate = 12;
+	firerate = 9;
 	
 	damage = 30;
 	
@@ -64,7 +64,7 @@ xSlinger.registerItem("accel_ring", {
 	
 	dropstate = S_ZE2_THROWNACCEL2;
 	
-	ammo = 5;
+	ammo = 8;
 	
 	sounds = {
 		use = sfx_rs_cro;
