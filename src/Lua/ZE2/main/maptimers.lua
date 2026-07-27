@@ -120,7 +120,7 @@ function ZE2:OverrideTimer(_id, _new)
 		end
 	end
 	
-	ZE2.ActiveMapTimers[_id] = stripTable(_timer)
+	ZE2.MapTimers[_id].active_timer = stripTable(_timer)
 end
 
 function ZE2:ResetTimer(_timer)
