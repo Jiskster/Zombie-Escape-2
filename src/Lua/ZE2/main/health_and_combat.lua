@@ -1,5 +1,4 @@
 local KB = ZE2.Knockback
-ZE2.BulletList = {} -- For thinkers and basic caching.
 
 freeslot("SPR_ZE2_DAMAGENUMBER")
 
