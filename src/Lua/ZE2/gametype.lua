@@ -241,6 +241,38 @@ addHook("LinedefExecute", function(line, mo)
 	mo:give_effect(effect_name, effect_attribs, effect_duration)
 end, "ZE2_GIVEPLREFFECT")
 
+-- ze2_info only
+function ZE2:TryBooleanAction(player, _table, strict)
+	if not _table then
+		if strict == true then
+			error("Table expected")
+		end
+		return false
+	end
+
+	if _table.var == nil then
+		if strict == true then
+			error("Var expected")
+		end
+
+		return false
+	end
+
+	if (_table.condition) then
+		if not player.ze2[_table.var] then
+			if _table.action then
+				_table.action()
+			end
+		end
+
+		player.ze2[_table.var] = true
+	else
+		player.ze2[_table.var] = false
+	end
+
+	return true
+end
+
 G_AddGametype({
 	name = "Escape Mode",
 	identifier = "ze2",
