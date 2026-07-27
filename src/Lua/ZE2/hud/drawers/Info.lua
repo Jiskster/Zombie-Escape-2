@@ -505,10 +505,10 @@ local function eventtimers(v,p,me,ze)
 		local time = "  ("..G_TicsToMTIME(timer.time)..")"
 		local color = timer.textcolor or SKINCOLOR_TEAL
 
-		customhud.CustomFontString(v, x, y, name, "STCFC",
+		customhud.CustomFontString(v, x, y, name, "TNYFC",
 			flags, "left" , nil, color
 		)
-		customhud.CustomFontString(v, x, y + 8, time, "STCFC",
+		customhud.CustomFontString(v, x, y + 8, time, "TNYFC",
 			flags, "left" , nil, color
 		)
 
