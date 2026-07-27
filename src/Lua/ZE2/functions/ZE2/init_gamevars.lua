@@ -11,16 +11,6 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 	ZE2.pregame_timeleft = ZE2.wait_time;
 	ZE2.zombie_releasetime = 0;
 
-	ZE2.MapVoteList = {};
-	ZE2.MapVotes = {0,0,0};
-	ZE2.MapsOnVote = {
-		{votes = 0, mapnum = 1},
-		{votes = 0, mapnum = 1},
-		{votes = 0, mapnum = 1}
-	}; -- votes, mapnumber
-
-	ZE2.NextMapVoted = nil;
-
 	-- This is local
 	ZE2.charsel_selection = 1
 	ZE2.charsel_prevselection = 1

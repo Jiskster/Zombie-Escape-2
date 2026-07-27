@@ -12,24 +12,11 @@ return function(net)
 	ZE2.rounds_left = net($);
 	ZE2.tools = net($) --ZE2 Tools
 
-	ZE2.VoteTimeLimit = net($);
-	ZE2.MapsOnVote = net($);
-	ZE2.NextMapVoted = net($);
-
 	ZE2.Checkpoints = net($);
 	ZE2.LatestSurvivorCheckpoint = net($);
 	ZE2.LatestZombieCheckpoint = net($);
 
-	ZE2.Survivor_ShopList = net($);
-
-	ZE2.CachedShieldMobjs = net($);
-
-	ZE2.TWRITE_COUNT = net($);
-	ZE2.TWRITE_MAPNAME_COUNT = net($);
-
 	ZE2.mapladdertag = net($);
-
-	ZE2.QueueSpectate = net($);
 
 	ZE2.PreviousMaps = net($);
 

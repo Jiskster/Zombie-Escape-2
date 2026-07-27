@@ -9,8 +9,6 @@ rawset(_G, "ze2_modname", "ze2"); -- For customhud.
 freeslot("TOL_ESCAPE", "TOL_SWARM", "TOL_PLAGUE");
 
 ZE2.wait_time = 15*TICRATE;
-ZE2.MapVoteStartFrame = 10*TICRATE -- TODO: Remove
-ZE2.VoteTimeLimit = 12*TICRATE -- TODO: Remove
 
 ZE2.MaxKarma = 500
 
