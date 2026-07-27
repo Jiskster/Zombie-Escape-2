@@ -1,5 +1,18 @@
 local base_hooks = {}
 
+local hook_order = {
+	"MapLoad",
+	"PlayerSpawn",
+	"TeamSwitch",
+	"PreThinkFrame",
+	"ThinkFrame",
+	"PlayerThink",
+	"JumpSpecial",
+	"ViewpointSwitch",
+	"PlayerCmd",
+	"NetVars",
+}
+
 local hook_names = {
 	MapLoad = {"InitRound"};
 	PlayerSpawn = {
@@ -28,9 +41,11 @@ local hook_names = {
 }
 
 -- Register Hooks.
--- TODO: Merge all functions in one hook each, instead of creating a new hook for each file.
-for hookname,hooktable in pairs(hook_names) do
-	for i,filename in ipairs(hooktable) do
+for i=1,#hook_order do
+	local hookname = hook_order[i]
+	local hook_table = hook_names[hookname]
+	for ii=1, #hook_table do
+		local filename = hook_table[ii]
 		local full_path = "ZE2/hooks/"..hookname.."/"..filename
 
 		local func = dofile(full_path..".lua")
