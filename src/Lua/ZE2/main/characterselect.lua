@@ -202,6 +202,3 @@ addHook("MapLoad", function()
 		}
 	end
 end)
-
-
-
