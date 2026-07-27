@@ -8,6 +8,31 @@ addHook("MapChange", function()
 	roundresetting = false
 end)
 
+local function showOutOfGameText(player)
+	if not player.ze2.injoinqueue_delay then -- using this variable because why not
+		chatprintf(player, "\x82" .. "* You are dead! Wait until the game is over!", true)
+		player.ze2.injoinqueue_delay = 1*TICRATE
+	end
+end
+
+local function toggleQueue(player)
+	if player.ze2.outofgame then
+		showOutOfGameText(player)
+	else
+		if not player.ze2.injoinqueue_delay then
+			player.ze2.injoinqueue = not $
+
+			if player.ze2.injoinqueue then
+				chatprintf(player, "\x82" .. "* Game is currently ongoing. " .. "\x83" .. "Added to join queue.", true)
+			else
+				chatprintf(player, "\x82" .. "* Game is currently ongoing. " .. "\x85" .. "Removed from join queue.", true)
+			end
+
+			player.ze2.injoinqueue_delay = 1*TICRATE
+		end
+	end
+end
+
 return function(player, team, fromspectators, autobalance, scramble)
 	if fromspectators then
 		local player_count = 0
@@ -20,29 +45,21 @@ return function(player, team, fromspectators, autobalance, scramble)
 
 		player.ze2.was_spectating = true -- Disable special zombie types when unspectating
 
-		if ZE2.round_active and not ZE2_game_ended then
+		if ZE2.round_active then
 			if player_count == 1 then
-				return true
-			elseif player_count > 0 then
-				if player.ze2.outofgame then
-					if not player.ze2.injoinqueue_delay then -- using this variable because why not
-						chatprintf(player, "\x82" .. "* You are dead! Wait until the game is over!", true)
-						player.ze2.injoinqueue_delay = 1*TICRATE
+				if not ZE2_game_ended then
+					if player.ze2.outofgame then
+						showOutOfGameText(player)
+						return false
 					end
+					
+					return true
 				else
-					if not player.ze2.injoinqueue_delay then
-
-						player.ze2.injoinqueue = not $
-
-						if player.ze2.injoinqueue then
-							chatprintf(player, "\x82" .. "* Game is currently ongoing. " .. "\x83" .. "Added to join queue.", true)
-						else
-							chatprintf(player, "\x82" .. "* Game is currently ongoing. " .. "\x85" .. "Removed from join queue.", true)
-						end
-
-						player.ze2.injoinqueue_delay = 1*TICRATE
-					end
+					toggleQueue(player)
+					return false
 				end
+			elseif player_count > 0 then
+				toggleQueue(player)
 				
 				return false
 			elseif not roundresetting then -- reset whole match
@@ -52,7 +69,6 @@ return function(player, team, fromspectators, autobalance, scramble)
 				return false
 			end
 		end
-
 	end
 
 	-- NEVER have pregamemenu_active on as spectator
@@ -64,6 +80,7 @@ return function(player, team, fromspectators, autobalance, scramble)
 				player.ze2.karma = min($ + 120, ZE2.MaxKarma)
 			end
 		end
+		
 		player.ze2.injoinqueue = false
 	end
 end
