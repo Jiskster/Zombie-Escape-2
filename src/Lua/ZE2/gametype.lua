@@ -279,7 +279,7 @@ function ZE2:TryBooleanAction(player, _table, strict)
 end
 
 G_AddGametype({
-	name = "Escape Mode",
+	name = "Escape (ZE2)",
 	identifier = "ze2",
 	typeoflevel = TOL_ESCAPE,
 	rules = GTR_TIMELIMIT|GTR_ALLOWEXIT|GTR_SPAWNENEMIES|GTR_CUTSCENES|GTR_SPECTATORS|GTR_DEATHMATCHSTARTS,
@@ -290,7 +290,7 @@ G_AddGametype({
 })
 
 G_AddGametype({
-	name = "Swarm Mode",
+	name = "Swarm (ZE2)",
 	identifier = "swarm",
 	typeoflevel = TOL_SWARM,
 	rules = GTR_TIMELIMIT|GTR_ALLOWEXIT|GTR_SPAWNENEMIES|GTR_CUTSCENES|GTR_SPECTATORS|GTR_DEATHMATCHSTARTS,
@@ -301,7 +301,7 @@ G_AddGametype({
 })
 
 G_AddGametype({
-	name = "Plague Mode",
+	name = "Plague (ZE2)",
 	identifier = "plague",
 	typeoflevel = TOL_PLAGUE,
 	rules = GTR_TIMELIMIT|GTR_ALLOWEXIT|GTR_SPAWNENEMIES|GTR_CUTSCENES|GTR_SPECTATORS|GTR_DEATHMATCHSTARTS,
