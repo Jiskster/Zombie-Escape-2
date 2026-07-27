@@ -31,6 +31,8 @@ function xSlinger.registerItem(itemid, itemtable)
 
 	xSlinger.registered_items[itemid] = itemtable
 	table.insert(xSlinger.registered_items_ordered, itemtable)
+	
+	setmetatable(itemtable, xSlinger.METATABLES.ITEMINFO)
 
 	return itemid, itemtable
 end
