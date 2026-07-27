@@ -113,10 +113,6 @@ function xSlinger.SpawnMissile(m_table)
 		end
 
 		th.iteminfo = temp_iteminfo
-		
-		if not (getmetatable(th.iteminfo)) then
-			print("Jisk you were right! Theres not metatable found!!!")
-		end
 
 		th.velprec = missile_velocity_precision
 
@@ -137,8 +133,6 @@ function xSlinger.SpawnMissile(m_table)
 		if sounds.use ~= nil then
 			firesound = sounds.use
 		end
-	else
-		print("huh??")
 	end
 
 	th.team = source.team
