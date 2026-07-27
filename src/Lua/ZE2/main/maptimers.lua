@@ -73,19 +73,11 @@ function ZE2:AddTimer(_id, _table)
 	_table_recieve.active = false
 	_table_recieve.time = $ or 15*TICRATE
 	_table_recieve.original_time = _table_recieve.time
+	_table_recieve.id_num = #ZE2.ActiveMapTimers + 1
 
 	ZE2.MapTimers[_id] = _table_recieve
-
+	
 	ZE2.ActiveMapTimers[#ZE2.ActiveMapTimers + 1] = stripTable(_table_recieve)
-	
-	local active_timer = ZE2.ActiveMapTimers[#ZE2.ActiveMapTimers]
-
-	-- Give ordered id
-	active_timer.id_num = #ZE2.ActiveMapTimers
-	ZE2.MapTimers[_id].id_num = #ZE2.ActiveMapTimers
-	
-	-- Reference to the version that can sync
-	ZE2.MapTimers[_id].active_timer = active_timer
 
 	return ZE2.MapTimers[_id]
 end
@@ -120,7 +112,8 @@ function ZE2:OverrideTimer(_id, _new)
 		end
 	end
 	
-	ZE2.MapTimers[_id].active_timer = stripTable(_timer)
+	local active_id = ZE2.MapTimers[_id].id_num
+	ZE2.ActiveMapTimers[active_id] = stripTable(_timer)
 end
 
 function ZE2:ResetTimer(_timer)
@@ -129,7 +122,9 @@ function ZE2:ResetTimer(_timer)
 end
 
 function ZE2:StartTimer(timer_id)
-	local activetimer = ZE2.MapTimers[timer_id].active_timer
+	local active_id = ZE2.MapTimers[timer_id].id_num
+	local activetimer = ZE2.ActiveMapTimers[active_id]
+	
 	ZE2:ResetTimer(activetimer)
 	activetimer.active = true
 end
@@ -181,7 +176,7 @@ addHook("ThinkFrame", function()
 				for _,info in ipairs(rtimer.extrainfo) do
 					if (info.event_time) and (info.event_func) then
 						if (timer.time == info.event_time) then
-							info.event_func(timer.id, timer.name)
+							info.event_func(timer.id)
 						end
 					end
 				end
