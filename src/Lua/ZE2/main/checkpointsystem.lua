@@ -250,11 +250,24 @@ addHook("ThinkFrame", function()
 	if gametype ~= GT_ZE2 then return end
 	if not #ZE2.Checkpoints then return end
 
+	local highest_checkpoint = 0
+	for checkpoint_num,checkpoint in pairs(ZE2.Checkpoints) do
+		if checkpoint_num > highest_checkpoint then
+			highest_checkpoint = checkpoint_num
+		end
+	end
+	
 	for player in players.iterate do
 		local pmo = player.mo
 
 		if pmo and pmo.valid then
-			for checkpoint_num,checkpoint in pairs(ZE2.Checkpoints) do
+			for checkpoint_num=1, highest_checkpoint do
+				local checkpoint = ZE2.Checkpoints[checkpoint_num]
+				
+				if not ZE2.Checkpoints[checkpoint_num] then
+					continue
+				end
+				
 				if checkpoint.subsector and checkpoint.subsector.valid
 				and checkpoint.subsector.sector and checkpoint.subsector.sector.valid
 				and checkpoint.mobj and checkpoint.mobj.valid then
