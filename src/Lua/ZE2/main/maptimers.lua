@@ -27,10 +27,6 @@ local function stripTable(tb)
     return output
 end
 
-function ZE2.AddMapTimer()
-	print("ZE2.AddMapTimer is deprecated, try ZE2:AddTimer instead")
-end
-
 function ZE2:AddTimer(_id, _table)
 	if _id == nil then
 		error("Timer: Arg1 is required (Arg1 _id)")
