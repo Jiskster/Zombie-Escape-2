@@ -1,4 +1,4 @@
-return function(player)
+return function(player) ---@param player player_t
 	local pv = player.ze2
 	local pmo = player.mo
 
@@ -72,6 +72,14 @@ return function(player)
 				elseif player.xSlinger.team == 2 then
 					player.ze2.respawntics = 25*TICRATE
 				end
+			end
+		end
+
+		-- remove burning effect when underwater
+		if (pmo.eflags & MFE_TOUCHWATER) or (pmo.eflags & MFE_UNDERWATER) then
+			local found = pmo:search_effect("burning")
+			if (#found ~= 0) then
+				pmo:remove_effect("burning")
 			end
 		end
 	end
