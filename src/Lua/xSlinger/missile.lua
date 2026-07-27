@@ -434,8 +434,13 @@ addHook("NetVars", function(net)
 			continue
 		end
 		
-		if mobj.iteminfo then
-			setmetatable(mobj.iteminfo, xSlinger.METATABLES.ITEMINFO)
+		if not mobj.iteminfo then
+			print("no iteminfo")
+		else
+			print("has iteminfo")
+			if not getmetatable(mobj.iteminfo) then
+				print("no metatable for iteminfo")
+			end
 		end
 	end
 end)
