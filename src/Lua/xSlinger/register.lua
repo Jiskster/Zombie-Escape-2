@@ -8,7 +8,7 @@ function xSlinger.registerItem(itemid, itemtable)
 	end
 
 	if xSlinger.registered_items[itemid] then
-		return error("itemid (arg2) alredy exists. Got: "..itemid)
+		return error("itemid (arg1) alredy exists. Got: "..itemid)
 	end
 
 	-- Automatically set max variables
