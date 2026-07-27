@@ -88,7 +88,7 @@ function ZE2:StartWin(team, fromring)
 
 		ZE2:GivePlayerCash(player, cash_award)
 		S_StartSound(player.mo, sfx_rbyhit)
-		CONS_Printf(player, "\x83 + Awarded "..cash_award.." cash awarded for winning!")
+		CONS_Printf(player, "\x83 + $"..cash_award.." cash gained for winning!")
 	end
 
 	P_StartQuake(24*FRACUNIT, 3*TICRATE)
