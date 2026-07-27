@@ -195,6 +195,7 @@ addHook("MobjThinker", function(mobj)
 	else
 		if mobj and mobj.valid then
 			P_RemoveMobj(mobj)
+			return
 		end
 	end
 
