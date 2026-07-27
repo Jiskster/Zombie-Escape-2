@@ -126,5 +126,5 @@ COM_AddCommand(cmd_prefix.."skiptimers", function()
     if not ZE2.cv_debug.value then return end
     if not ZE2.ActiveMapTimers then return end
 
-    for i,timer in pairs(ZE2.ActiveMapTimers) do if timer.time then timer.time = 0 end end
+    for i,timer in ipairs(ZE2.ActiveMapTimers) do if timer.time then timer.time = 0 end end
 end, COM_ADMIN)

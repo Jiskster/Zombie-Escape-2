@@ -500,7 +500,7 @@ local function eventtimers(v,p,me,ze)
 		(V_SNAPTOBOTTOM|V_50TRANS), "center" , nil, SKINCOLOR_CHERRY)
 	end
 
-	for i,timer in pairs(ZE2:GetActiveTimers()) do
+	for i,timer in ipairs(ZE2:GetActiveTimers()) do
 		local name = "* "..(timer.text or "Event "..i)
 		local time = "  ("..G_TicsToMTIME(timer.time)..")"
 		local color = timer.textcolor or SKINCOLOR_TEAL

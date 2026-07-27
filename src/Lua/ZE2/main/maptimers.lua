@@ -1,13 +1,26 @@
 -- Custom timers for maps
 
+/* Extra Info Documentation
+	extrainfo::
+	{
+		[1] = {
+			event_time = 5*TICRATE, -- This event activates when theres exactly 5 seconds left on a timer.
+			event_func = function(i, timer.name) -- Same parameters as onend
+				chatprint("\x86\Stone Platform \x80will leave in\x85 5 \x80seconds")
+				-- Prints "Stone Platform will leave in 5 seconds"
+			end
+		}
+	}
+*/
+
 ZE2.maptimerdebug = CV_RegisterVar({
 	name = "z_maptimerdebug",
 	defaultvalue = "Off",
 	PossibleValue = CV_OnOff,
 })
 
-ZE2.MapTimers = {} -- has functions; dont sync
-ZE2.ActiveMapTimers = {} -- sync this instead
+ZE2.MapTimers = {} -- has functions; dont sync (UNORDERED)
+ZE2.ActiveMapTimers = {} -- sync this instead (ORDERED)
 
 -- we hate functions
 local function stripTable(tb)
@@ -62,7 +75,17 @@ function ZE2:AddTimer(_id, _table)
 	_table_recieve.original_time = _table_recieve.time
 
 	ZE2.MapTimers[_id] = _table_recieve
-	ZE2.ActiveMapTimers[_id] = stripTable(_table_recieve)
+
+	ZE2.ActiveMapTimers[#ZE2.ActiveMapTimers + 1] = stripTable(_table_recieve)
+	
+	local active_timer = ZE2.ActiveMapTimers[#ZE2.ActiveMapTimers]
+
+	-- Give ordered id
+	active_timer.id_num = #ZE2.ActiveMapTimers
+	ZE2.MapTimers[_id].id_num = #ZE2.ActiveMapTimers
+	
+	-- Reference to the version that can sync
+	ZE2.MapTimers[_id].active_timer = active_timer
 
 	return ZE2.MapTimers[_id]
 end
@@ -106,27 +129,33 @@ function ZE2:ResetTimer(_timer)
 end
 
 function ZE2:StartTimer(timer_id)
-	ZE2:ResetTimer(ZE2.ActiveMapTimers[timer_id])
-	ZE2.ActiveMapTimers[timer_id].active = true
+	local activetimer = ZE2.MapTimers[timer_id].active_timer
+	ZE2:ResetTimer(activetimer)
+	activetimer.active = true
 end
 
 function ZE2:GetActiveTimers()
 	local activetimers = {}
-	for i,timer in pairs(ZE2.ActiveMapTimers) do
+	
+	for i,timer in ipairs(ZE2.ActiveMapTimers) do
 		if timer.active then
 			table.insert(activetimers, timer)
 		end
 	end
 
 	table.sort(activetimers, function(a, b)
-		return a.time > b.time
+		if a.time ~= b.time then
+			return a.time > b.time
+		else
+			return a.id_num > b.id_num
+		end
 	end)
 
 	return activetimers
 end
 
 addHook("MapChange", function()
-	for i,timer in pairs(ZE2.ActiveMapTimers) do
+	for i,timer in ipairs(ZE2.ActiveMapTimers) do
 		ZE2:ResetTimer(timer)
 	end
 end)
@@ -134,42 +163,33 @@ end)
 addHook("ThinkFrame", function()
 	if ZE2.game_ended then return end
 
-	for i,timer in pairs(ZE2.ActiveMapTimers) do
-		local realtimer = ZE2.MapTimers[i] -- 'timer' has no functions, so we use this
-		
+	for i=1, #ZE2.ActiveMapTimers do
+		local timer = ZE2.ActiveMapTimers[i]
+		local rtimer = ZE2.MapTimers[timer.id] -- 'timer' has no functions, so we use this
+
+		if not timer then
+			continue
+		end
+
 		if (timer.active) then
 			if (ZE2.maptimerdebug.value) then
-				print(timer.name..": "..(timer.time/35)) end
+				print(timer.id..": "..(timer.time/35)) end
 
 			timer.time = $ - 1
 
-			if realtimer.extrainfo then
-				for _,info in ipairs(realtimer.extrainfo) do
+			if rtimer.extrainfo then
+				for _,info in ipairs(rtimer.extrainfo) do
 					if (info.event_time) and (info.event_func) then
 						if (timer.time == info.event_time) then
-							info.event_func(i, timer.name)
+							info.event_func(timer.id, timer.name)
 						end
 					end
 				end
-
-				/*
-					extrainfo::
-					{
-						[1] = {
-							event_time = 5*TICRATE, -- This event activates when theres exactly 5 seconds left on a timer.
-							event_func = function(i, timer.name) -- Same parameters as onend
-								chatprint("\x86\Stone Platform \x80will leave in\x85 5 \x80seconds")
-								-- Prints "Stone Platform will leave in 5 seconds"
-							end
-						}
-					}
-				*/
-
 			end
 
 			if timer.time <= 0 then
-				if (realtimer.on_end) then
-					realtimer.on_end(i, timer.name)
+				if (rtimer.on_end) then
+					rtimer.on_end(timer.id, timer.name)
 				end
 
 				if (timer.on_end_tag) then
