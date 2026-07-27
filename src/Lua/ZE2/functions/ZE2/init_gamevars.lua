@@ -37,17 +37,6 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 		player.ze2.selected_character = nil
 		ZE2.ResetPlayer(player, 1, true, true)
 	end
-	
-	ZE2.CharacterSlots = {}
-
-	if #ZE2.registered_skins then
-		for i,v in ipairs(ZE2.registered_skins) do
-			ZE2.CharacterSlots[i] = {
-				count = 0;
-				max = 1;
-			}
-		end
-	end
 
 	if map then
 		if ZE2.queuing_round then
