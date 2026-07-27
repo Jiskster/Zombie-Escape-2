@@ -426,4 +426,16 @@ end, MT_XS_MISSILE)
 
 addHook("NetVars", function(net)
 	xSlinger.BulletList = net($)
+	
+	for i = 1, #xSlinger.BulletList do
+		local mobj = xSlinger.BulletList[i]
+		
+		if not (mobj and mobj.valid and mobj.health) then
+			continue
+		end
+		
+		if mobj.iteminfo then
+			setmetatable(mobj.iteminfo, xSlinger.METATABLES.ITEMINFO)
+		end
+	end
 end)
