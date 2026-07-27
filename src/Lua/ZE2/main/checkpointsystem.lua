@@ -43,6 +43,12 @@ ZE2.LatestSurvivorCheckpoint = 0
 ZE2.LatestZombieCheckpoint = 0
 ZE2.Checkpoints = {}
 
+addHook("NetVars", function(net)
+	ZE2.Checkpoints = net($)
+	ZE2.LatestSurvivorCheckpoint = net($)
+	ZE2.LatestZombieCheckpoint = net($)
+end)
+
 function ZE2.GetLatestCheckpoint(player)
 	if player.xSlinger.team == 1 then
 		return ZE2.LatestSurvivorCheckpoint

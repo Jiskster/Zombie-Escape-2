@@ -11,3 +11,7 @@ addHook("MobjMoveBlocked", function(mobj, thing, line)
 		end
     end
 end, MT_PLAYER)
+
+addHook("NetVars", function(net)
+	ZE2.mapladdertag = net($)
+end)

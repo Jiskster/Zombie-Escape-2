@@ -189,9 +189,6 @@ addHook("PlayerQuit", function(player)
 	unselectCharacter(player)
 end)
 
--- NOW add the players
-
-
 addHook("MapLoad", function()
 	ZE2.CharacterSlots = {}
 
@@ -201,4 +198,9 @@ addHook("MapLoad", function()
 			max = 1;
 		}
 	end
+end)
+
+addHook("NetVars", function(net)
+	ZE2.mapladdertag = net($)
+    ZE2.CharacterSlots = net($)
 end)

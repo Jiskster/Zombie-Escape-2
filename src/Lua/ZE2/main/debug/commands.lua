@@ -21,6 +21,10 @@ ZE2.tools = { --Default values
     checkpoints_show = false
 }
 
+addHook("NetVars", function(net)
+	ZE2.tools = net($)
+end)
+
 --Pregame countdown to zero
 COM_AddCommand(cmd_prefix.."nocd", function(p, arg)
     if not ZE2.cv_debug.value then return end
