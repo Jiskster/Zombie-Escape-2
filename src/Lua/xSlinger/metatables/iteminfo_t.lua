@@ -56,8 +56,8 @@ local mt = {
 		end
 
 		-- Can get functions that were deleted on xSlinger.new.
-		if xSlinger.registered_items[a.id] then
-			return xSlinger.registered_items[a.id][k]
+		if rawget(xSlinger.registered_items[a.id], k) then
+			return rawget(xSlinger.registered_items[a.id], k)
 		end
 	end
 }
