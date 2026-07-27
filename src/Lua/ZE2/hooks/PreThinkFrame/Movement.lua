@@ -60,7 +60,7 @@ local function HandleSprinting(player)
 	end
 
 	if ze2.runstart then -- "Acceleration" boost when starting to run.
-		P_Thrust(mobj, mobj.angle, 2 * FU)
+		P_Thrust(mobj, mobj.angle, 1 * FU)
 		if ground then
 			ze2.runstart = max(0, ze2.runstart - 1)
 		else
