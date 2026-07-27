@@ -47,9 +47,6 @@ local function validKBMobj(mo)
 end
 
 addHook("ThinkFrame", function()
-	if gamestate ~= GS_LEVEL then
-		return end;
-
 	--clean up
 	if #KB.list then
 		for k=#KB.list,1 do
