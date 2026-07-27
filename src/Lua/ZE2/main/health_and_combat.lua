@@ -51,7 +51,6 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 		elseif team == 2 then
 			if ztype and ZE2.ZombieConfig[ztype] and ZE2.ZombieConfig[ztype].killaward then
 				local killaward = ZE2.ZombieConfig[ztype].killaward
-				A_RubyDrop(mo, killaward)
 
 				local player_count = ZE2.PlayerCount()
 
@@ -62,6 +61,8 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 				end
 
 				if killer and killer.valid then
+					A_RubyDrop(mo, killaward)
+				
 					killer.player.ze2.karma = max(1, $ - 120)
 
 					if P_RandomChance(chance) then
