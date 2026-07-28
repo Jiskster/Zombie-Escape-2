@@ -59,11 +59,9 @@ local function I_Main(sp)
 	ze2file "characterselect.lua" -- this goes after characterconfigs
 
 	ze2file "capitalism.lua"
-	ze2file "exiting.lua"
 	ze2file "timers.lua"
 	ze2file "emotes.lua"
-
-	ze2file "maptimers.lua"
+	
 	ze2file "checkpointsystem.lua"
 
 	ze2file "ladder.lua"
@@ -159,10 +157,12 @@ I_LoadItems("items/")
 ze2file "objects/megahp.lua"
 ze2file "objects/teleporter_gfx.lua"
 ze2file "objects/corona.lua"
+ze2file "objects/exitring.lua"
 
 ze2file "hud/setup"
 
 -- [ Level Scripts ] -- 
+ze2file "levelscripts/maptimers.lua"
 ze2file "levelscripts/loadscripts.lua"
 
 ze2file "main/debug/commands.lua"
