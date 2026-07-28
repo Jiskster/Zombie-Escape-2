@@ -46,6 +46,7 @@ local function I_Main(sp)
 	set_subpath (sp);
 
 	ze2file "zombie/zombie_colors.lua"
+	ze2file "zombie/blood_droplets.lua"
 
 	ze2file "skincolors.lua"
 
