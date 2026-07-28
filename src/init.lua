@@ -66,6 +66,8 @@ local function I_Main(sp)
 
 	ze2file "ladder.lua"
 	ze2file "teamchat.lua"
+	
+	ze2file "burning.lua"
 
 	set_subpath "";
 
