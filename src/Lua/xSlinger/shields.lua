@@ -9,7 +9,7 @@ xSlinger.ShieldDefinitions = {
 	[1] = {
 		name = "Pity",
 		health = 50,
-		efficiency = FU / 4,
+		efficiency = (FU * 3) / 4,
 		state = S_PITY1,
 		color = SKINCOLOR_MOSS,
 	},
