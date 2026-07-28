@@ -54,7 +54,7 @@ local function I_Main(sp)
 	ze2file "characterconfigs.lua"
 
 	ze2file "console.lua"
-	ze2file "health_and_combat.lua" -- main stuff 
+	ze2file "hurt.lua" -- main stuff 
 
 	ze2file "characterselect.lua" -- this goes after characterconfigs
 
