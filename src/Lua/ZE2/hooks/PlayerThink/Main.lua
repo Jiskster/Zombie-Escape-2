@@ -70,7 +70,7 @@ return function(player) ---@param player player_t
 					player.ze2.respawntics = 10*TICRATE
 					player.ze2.outofgame = true
 				elseif player.xSlinger.team == 2 then
-					player.ze2.respawntics = 25*TICRATE
+					player.ze2.respawntics = 15*TICRATE
 				end
 			end
 		end
