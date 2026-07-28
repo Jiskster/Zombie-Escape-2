@@ -98,7 +98,7 @@ xSlinger.registerItem("bounce_ring", {
 
 	color = SKINCOLOR_YELLOW;
 
-	damage = 15;
+	damage = 13;
 
 	knockback = 25*FRACUNIT; -- fixed_t
 	knockback_time = 2*TICRATE;

@@ -53,7 +53,7 @@ xSlinger.registerItem("accel_ring", {
 	
 	firerate = 9;
 	
-	damage = 30;
+	damage = 16;
 	
 	knockback = 18*FRACUNIT;
 	knockback_time = 2*TICRATE;

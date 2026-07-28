@@ -36,7 +36,7 @@ xSlinger.registerItem("red_ring", {
 
 	color = SKINCOLOR_RED;
 
-	damage = 25;
+	damage = 20;
 
 	velocity_precision = 5;
 
@@ -90,7 +90,7 @@ xSlinger.registerItem("red_ring", {
 		};
 		["fang"] = {
 			knockback = 32*FRACUNIT;
-			damage = 35;
+			damage = 28;
 		};
 	};
 })

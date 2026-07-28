@@ -73,7 +73,7 @@ xSlinger.registerItem("flame_ring", {
 
 	autouse = true;
 
-	damage = 3;
+	damage = 2;
 
 	knockback = 1*FRACUNIT;
 

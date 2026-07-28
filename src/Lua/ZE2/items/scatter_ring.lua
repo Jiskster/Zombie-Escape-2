@@ -43,7 +43,7 @@ xSlinger.registerItem("scatter_ring", {
 
 	color = SKINCOLOR_PURPLE;
 
-	damage = 27;
+	damage = 20;
 
 	velocity_multiplier = 2*FRACUNIT;
 
