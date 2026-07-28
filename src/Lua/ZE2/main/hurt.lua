@@ -32,6 +32,8 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 				player.ze2.karma = min($ + (ZE2.SurvivorCount()*22), ZE2.MaxKarma)
 				killer.player.ze2.karma = max(1, $ - 22)
 
+				xSlinger.RemoveShieldFromMobj(mo)
+
 				killer.player.ze2.cash = $ + cash_award
 				S_StartSound(killer.player.mo, sfx_rbyhit)
 				print(string.format("%s%s%s has been infected by %s%s", "\x84", player.name, "\x83", "\x85", killer.player.name))
