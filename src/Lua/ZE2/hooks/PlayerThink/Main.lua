@@ -32,8 +32,6 @@ return function(player) ---@param player player_t
 	if pmo and pmo.valid then
 		local spd = FixedHypot(pmo.momx, pmo.momy)
 
-		ZE2.LimitMobjHealth(pmo)
-
 		if (player.pflags & PF_JUMPED) then
 			pv.isJumping = true
 		end

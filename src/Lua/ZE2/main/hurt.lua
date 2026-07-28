@@ -2,16 +2,6 @@ local KB = ZE2.Knockback
 
 freeslot("SPR_ZE2_DAMAGENUMBER")
 
-function ZE2.LimitMobjHealth(mobj)
-	if mobj and mobj.valid then
-		if mobj.health and mobj.maxhealth then
-			if mobj.health > mobj.maxhealth then
-				mobj.health = mobj.maxhealth
-			end
-		end
-	end
-end
-
 -- Overwrite xSlinger function
 function xSlinger.KillMobj(mo, inf, src, damagetype)
 	local killing = true
