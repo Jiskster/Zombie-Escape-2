@@ -85,12 +85,7 @@ return function(player) ---@param player player_t
 	end
 
 	ZE2.applyPlayerConfig(player)
-
-	if mapheaderinfo[gamemap].ze2_noabilities then
-		player.pflags = $ & ~PF_GLIDING
-		player.pflags = $ & ~PF_BOUNCING
-		player.powers[pw_tailsfly] = 0
-	end
+		
 	pv.lastJumped = (player.pflags & PF_JUMPED == PF_JUMPED)
 end
 
