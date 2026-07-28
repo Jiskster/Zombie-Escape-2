@@ -18,26 +18,13 @@ return function()
 	local survivors = 0
 
 	for player in players.iterate do
-        local counted_player = false
-        if (player.ze2.injoinqueue or player.ze2.outofgame) and not counted_player then
-			if player.ze2.injoinqueue then
-				playersjoining = $ + 1
-			end
-
-            player_count = $ + 1
-            counted_player = true
-        end
-
 		if player.ze2.outofgame or not player.spectator then
 			playing = $ + 1
 		end
 
 		if player.mo and player.mo.valid and not player.spectator then
-            if not counted_player then
-                player_count = $ + 1
-                counted_player = true
-            end
-
+			player_count = $ + 1
+			
             if player.mo.health then
                 if player.xSlinger.team == 1 then
                     survivors = $ + 1
@@ -49,9 +36,7 @@ return function()
 	end
 
 	if player_count > 1 and not ZE2.game_ended then
-		if survivors and not zombies then -- if all zombies are dead
-			ZE2:StartWin(1)
-		elseif zombies and not survivors then -- if all survivors are dead
+		if zombies and not survivors then -- if all survivors are dead
 			ZE2:StartWin(2)
 		end
 	end
