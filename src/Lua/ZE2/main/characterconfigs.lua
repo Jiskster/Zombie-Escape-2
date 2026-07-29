@@ -190,7 +190,7 @@ function ZE2.applyPlayerConfig(player)
 		player.normalspeed = config.normalspeed
 
 		if (player.speed/FU) > 12 and player.ze2.isRunning then
-			player.normalspeed = ($*5)/4
+			player.normalspeed = ($*4)/3
 		elseif ze2.crouching and P_IsObjectOnGround(mo) then
 			player.normalspeed = $ / 2
 		end
