@@ -67,3 +67,9 @@ xSlinger.addHook("OnPlayerDamage", function(p, inf, src, dmg, damagetype)
 
     Z_DoDroplet(p, blood_count)
 end)
+
+addHook("MobjDeath", function(mo) -- Drop blood also on death duh
+    if not (mo and mo.valid and mo.team == 2) then return end
+
+    Z_DoDroplet(mo.player, 20)
+end, MT_PLAYER)
