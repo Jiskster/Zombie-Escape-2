@@ -86,7 +86,6 @@ local function I_LoadItems(sp)
 	ze2file "explosion_ring.lua"
 	ze2file "wood_fence.lua"
 	ze2file "rail_ring.lua" -- new and after
-	ze2file "milk.lua"
 	ze2file "grenade.lua"
 	ze2file "insta_burst.lua"
 	ze2file "flame_ring.lua"
