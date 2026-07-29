@@ -459,6 +459,7 @@ local function roundinfo(v,p,me,ze)
 	local topredwidth = topred.width
 	local topblue = v.cachePatch("Z_TOP_BLUE")
 	local topbluewidth = topblue.width
+	local topzomb = v.cachePatch("Z_TOP_ZOMB")
 	local timestring = getTimeString()
 	local zombie_count = ZE2.ZombieCount()
 	local survivor_count = ZE2.SurvivorCount()
@@ -469,6 +470,11 @@ local function roundinfo(v,p,me,ze)
 	v.draw(160-(topredwidth/2) -spread, 0, topred , V_SNAPTOTOP|V_20TRANS)
 	v.draw(160-(topbluewidth/2) +spread, 0, topblue, V_SNAPTOTOP|V_20TRANS)
 	v.drawString(160, 2, timestring, V_SNAPTOTOP, "center")
+	
+	if ZE2.zombie_releasetime then
+		v.draw(160-(topwidth/2), 12, topzomb, V_SNAPTOTOP)
+		v.drawString(160, 15, ZE2.zombie_releasetime/TICRATE, V_ORANGEMAP|V_SNAPTOTOP, "thin-center")
+	end
 
 	v.drawString(160-spread, 2, zombie_count, V_REDMAP|V_SNAPTOTOP, "center")
 	v.drawString(160+spread, 2, survivor_count, V_BLUEMAP|V_SNAPTOTOP, "center")

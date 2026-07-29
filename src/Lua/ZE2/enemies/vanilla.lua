@@ -31,9 +31,8 @@ mobjinfo[MT_REDCRAWLA].forceknockback = 22*FRACUNIT
 
 local function CrawlaDropItems(mobj, red)
 	if not mobj or not mobj.valid then return end
-	if P_RandomChance(FRACUNIT / 10) then
-		xSlinger.SpawnItemDrop(mobj, "milk", false)
-	elseif P_RandomChance(FRACUNIT / 20) then
+	
+	if P_RandomChance(FRACUNIT / 20) then
 		xSlinger.SpawnItemDrop(mobj, "apple", false)
 	elseif red and P_RandomChance(FRACUNIT / 100) then
 		xSlinger.SpawnItemDrop(mobj, "energy_drink", false)

@@ -56,20 +56,20 @@ local function I_Main(sp)
 	ze2file "characterconfigs.lua"
 
 	ze2file "console.lua"
-	ze2file "health_and_combat.lua" -- main stuff 
+	ze2file "hurt.lua" -- main stuff 
 
 	ze2file "characterselect.lua" -- this goes after characterconfigs
 
 	ze2file "capitalism.lua"
-	ze2file "exiting.lua"
 	ze2file "timers.lua"
 	ze2file "emotes.lua"
-
-	ze2file "maptimers.lua"
+	
 	ze2file "checkpointsystem.lua"
 
 	ze2file "ladder.lua"
 	ze2file "teamchat.lua"
+	
+	ze2file "burning.lua"
 
 	set_subpath "";
 
@@ -88,7 +88,6 @@ local function I_LoadItems(sp)
 	ze2file "explosion_ring.lua"
 	ze2file "wood_fence.lua"
 	ze2file "rail_ring.lua" -- new and after
-	ze2file "milk.lua"
 	ze2file "grenade.lua"
 	ze2file "insta_burst.lua"
 	ze2file "flame_ring.lua"
@@ -161,10 +160,12 @@ I_LoadItems("items/")
 ze2file "objects/megahp.lua"
 ze2file "objects/teleporter_gfx.lua"
 ze2file "objects/corona.lua"
+ze2file "objects/exitring.lua"
 
 ze2file "hud/setup"
 
 -- [ Level Scripts ] -- 
+ze2file "levelscripts/maptimers.lua"
 ze2file "levelscripts/loadscripts.lua"
 
 ze2file "main/debug/commands.lua"

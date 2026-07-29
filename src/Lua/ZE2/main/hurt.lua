@@ -2,16 +2,6 @@ local KB = ZE2.Knockback
 
 freeslot("SPR_ZE2_DAMAGENUMBER")
 
-function ZE2.LimitMobjHealth(mobj)
-	if mobj and mobj.valid then
-		if mobj.health and mobj.maxhealth then
-			if mobj.health > mobj.maxhealth then
-				mobj.health = mobj.maxhealth
-			end
-		end
-	end
-end
-
 -- Overwrite xSlinger function
 function xSlinger.KillMobj(mo, inf, src, damagetype)
 	local killing = true
@@ -41,6 +31,8 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 
 				player.ze2.karma = min($ + (ZE2.SurvivorCount()*22), ZE2.MaxKarma)
 				killer.player.ze2.karma = max(1, $ - 22)
+
+				xSlinger.RemoveShieldFromMobj(mo)
 
 				killer.player.ze2.cash = $ + cash_award
 				S_StartSound(killer.player.mo, sfx_rbyhit)

@@ -32,8 +32,6 @@ return function(player) ---@param player player_t
 	if pmo and pmo.valid then
 		local spd = FixedHypot(pmo.momx, pmo.momy)
 
-		ZE2.LimitMobjHealth(pmo)
-
 		if (player.pflags & PF_JUMPED) then
 			pv.isJumping = true
 		end
@@ -70,7 +68,7 @@ return function(player) ---@param player player_t
 					player.ze2.respawntics = 10*TICRATE
 					player.ze2.outofgame = true
 				elseif player.xSlinger.team == 2 then
-					player.ze2.respawntics = 25*TICRATE
+					player.ze2.respawntics = 15*TICRATE
 				end
 			end
 		end
@@ -85,12 +83,7 @@ return function(player) ---@param player player_t
 	end
 
 	ZE2.applyPlayerConfig(player)
-
-	if mapheaderinfo[gamemap].ze2_noabilities then
-		player.pflags = $ & ~PF_GLIDING
-		player.pflags = $ & ~PF_BOUNCING
-		player.powers[pw_tailsfly] = 0
-	end
+		
 	pv.lastJumped = (player.pflags & PF_JUMPED == PF_JUMPED)
 end
 

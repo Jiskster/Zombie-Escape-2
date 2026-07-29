@@ -142,7 +142,7 @@ Level 18
 Levelname = Database Z
 Subtitle = Testing Escape
 Act = 0
-Music = NOXY
+Music = DATAZ
 TypeOfLevel = Escape
 NextLevel = NX
 SkyNum = 99
