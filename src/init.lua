@@ -48,6 +48,7 @@ local function I_Main(sp)
 	ze2file "zombie/zombie_colors.lua"
 	ze2file "zombie/blood_droplets.lua"
 	ze2file "zombie/alpha_overlay.lua"
+	ze2file "zombie/infection_fx.lua"
 
 	ze2file "skincolors.lua"
 

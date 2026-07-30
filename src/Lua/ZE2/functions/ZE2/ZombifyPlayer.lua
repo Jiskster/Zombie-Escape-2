@@ -13,5 +13,6 @@ ZE2.ZombifyPlayer = function(player, ztype)
 		player.ze2.zombie_type = "normal"
 	end
 
+	player.mo.infectionfx = TICRATE / 2 -- infection_fx.lua
 	ZE2.ResetPlayer(player, 2, true)
 end
