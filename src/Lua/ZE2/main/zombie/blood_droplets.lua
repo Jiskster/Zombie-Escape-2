@@ -13,8 +13,8 @@ mobjinfo[MT_ZOMB_DROPLET] = {
     doomednum = -1,
     spawnstate = S_ZDROPLET,
     deathstate = S_ZDROPLET_DEATH,
-    radius = mobjinfo[MT_GOOP].radius,
-    height = mobjinfo[MT_GOOP].height,
+    radius = 4*FRACUNIT,
+    height = 4*FRACUNIT,
     flags = MF_SLIDEME|MF_SCENERY|MF_RUNSPAWNFUNC|MF_NOBLOCKMAP
 }
 
