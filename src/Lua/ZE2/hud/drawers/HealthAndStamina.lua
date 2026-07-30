@@ -50,10 +50,19 @@ local function DrawHealthAndStamina(v, player, x, y, flags)
     end
     v.drawFill(FixedInt(x) - 2, FixedInt(y) - 2, 64, bg_height, 31|flags|V_TRANSLUCENT)
 
-    local patch = v.cachePatch("Z_HP_ICON")
-    v.drawScaled(x, y, FU / 2, patch, flags, nil)
+    local health_icon = v.cachePatch("Z_HP_ICON")
+    v.drawScaled(x, y, FU / 2, health_icon, flags, v.getColormap(nil, SKINCOLOR_JADE, nil))
+    if (mo.health <= (mo.maxhealth / 2)) then
+        local amount = FU - cos(leveltime * ANG10)
+        local transparency = FadeAmount(amount)
+        v.drawScaled(x, y, FU / 2, health_icon, flags|transparency, v.getColormap(nil, SKINCOLOR_RED, nil))
+    end
 
-    v.drawString(x + (10 * FU), y, mo.health, flags, "fixed")
+    local health_text = 0
+    if (mo.health <= (mo.maxhealth / 2)) then
+        health_text = V_YELLOWMAP
+    end
+    v.drawString(x + (10 * FU), y, mo.health, flags|health_text, "fixed")
 
     local fillx = FixedInt(x) + 11
     local filly = FixedInt(y) + 11
@@ -82,8 +91,10 @@ local function DrawHealthAndStamina(v, player, x, y, flags)
             elseif (stamina < (30 * FU)) then
                 color = 73
             end
-            v.drawFill(fillx + (2 * index) + 1, filly, 1, 2, color|flags|transparency)
-            v.drawFill(fillx + (2 * index), filly + 2, 1, 2, (color + 1)|flags|transparency)
+            v.drawFill(fillx + (2 * index) + 1, filly, 1, 1, color|flags|transparency)
+            v.drawFill(fillx + (2 * index) + 1, filly + 1, 1, 1, (color + 1)|flags|transparency)
+            v.drawFill(fillx + (2 * index), filly + 2, 1, 1, (color + 2)|flags|transparency)
+            v.drawFill(fillx + (2 * index), filly + 3, 1, 1, (color + 3)|flags|transparency)
         end
     end
 
