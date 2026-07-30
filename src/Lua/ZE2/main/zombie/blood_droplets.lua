@@ -60,7 +60,7 @@ end
 
 xSlinger.addHook("OnPlayerDamage", function(p, inf, src, dmg, damagetype)
     if not (p.mo and p.mo.valid and p.mo.team == 2) then return end
-    if damagetype == DMG_FIRE then return end -- Yeah no I'll not let you spam it on torches lol
+    if dmg <= 4 then return end -- Yeah no I'll not let you spam it lol
 
     local dmg_strenght = (dmg * 10) / 100
     local blood_count = max(2, min(dmg_strenght, 30))
