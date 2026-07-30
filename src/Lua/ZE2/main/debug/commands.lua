@@ -16,6 +16,13 @@ end, 1)
 
 ///////// ZE2 Tools by GLide KS /////////
 
+local function AddDebug_CMD(cmdname, func)
+    COM_AddCommand(cmd_prefix..cmdname, function(...)
+        if not ZE2.cv_debug.value then return end
+        func(...)
+    end, COM_ADMIN)
+end
+
 ZE2.tools = { --Default values
     nocd = false,
     checkpoints_show = false
@@ -26,9 +33,7 @@ addHook("NetVars", function(net)
 end)
 
 --Pregame countdown to zero
-COM_AddCommand(cmd_prefix.."nocd", function(p, arg)
-    if not ZE2.cv_debug.value then return end
-
+AddDebug_CMD("nocd", function(p, arg)
     local yes = (arg == "true" or arg == "yes" or arg == "1" or arg == "on")
     local no = (arg == "false" or arg == "no" or arg == "0" or arg == "off")
 
@@ -42,10 +47,9 @@ COM_AddCommand(cmd_prefix.."nocd", function(p, arg)
 	elseif ZE2.pregame_timeleft then --if no argument, skips the current pregame countdown
 		ZE2.pregame_timeleft = 0
 	end
-end, COM_ADMIN)
+end)
 
 addHook("MapLoad", function() --directly skip pregame countdown on map load if zd_nocd is true
-	if not ZE2.cv_debug.value then return end
 	if ZE2.tools.nocd and ZE2.pregame_timeleft then ZE2.pregame_timeleft = 0 end
 end)
 
@@ -72,13 +76,13 @@ local function CheckpointTeleport(p, nextprev)
     CONS_Printf(p, "\130Teleported to checkpoint number \128"..p.mo.checkpoint_number)
 end
 
-COM_AddCommand(cmd_prefix.."nextcheckpoint", function(p)
-	if (ZE2.cv_debug.value and p.mo) then CheckpointTeleport(p, 1) end
-end, COM_ADMIN)
+AddDebug_CMD("nextcheckpoint", function(p)
+	if (p.mo and p.mo.valid) then CheckpointTeleport(p, 1) end
+end)
 
-COM_AddCommand(cmd_prefix.."prevcheckpoint", function(p)
-	if (ZE2.cv_debug.value and p.mo) then CheckpointTeleport(p, -1) end
-end, COM_ADMIN)
+AddDebug_CMD("prevcheckpoint", function(p)
+	if (p.mo and p.mo.valid) then CheckpointTeleport(p, -1) end
+end)
 
 --Show/Hide Checkpoints
 addHook("MobjSpawn", function(mo)
@@ -86,9 +90,7 @@ addHook("MobjSpawn", function(mo)
 	if mo.sprite ~= show then mo.sprite = show end
 end, MT_ZE2CHECKPOINT)
 
-COM_AddCommand(cmd_prefix.."showcheckpoints", function(p)
-	if not (ZE2.cv_debug.value) then return end
-
+AddDebug_CMD("showcheckpoints", function(p)
     if ZE2.tools.checkpoints_show then ZE2.tools.checkpoints_show = false
     else ZE2.tools.checkpoints_show = true end
 
@@ -101,11 +103,11 @@ COM_AddCommand(cmd_prefix.."showcheckpoints", function(p)
     end
 
 	print(status_color.."Checkpoints visibility has been "..status_text)
-end, COM_ADMIN)
+end)
 
 --Noclip command
-COM_AddCommand(cmd_prefix.."noclip", function(p)
-	if not (ZE2.cv_debug.value and p.mo) then return end
+AddDebug_CMD("noclip", function(p)
+	if not (p.mo and p.mo.valid) then return end
 
     if p.mo.noclip then p.mo.noclip = false else p.mo.noclip = true end
 
@@ -119,21 +121,19 @@ COM_AddCommand(cmd_prefix.."noclip", function(p)
     S_StartSound(p.mo, (noclip and sfx_s3k92) or sfx_s1a2) --play a sound because why not
 
     CONS_Printf(p, status_color.."Noclip "..status_text)
-end, COM_ADMIN)
+end)
 
 --Skip map timers
-COM_AddCommand(cmd_prefix.."skiptimers", function()
-    if not ZE2.cv_debug.value then return end
+AddDebug_CMD("skiptimers", function()
     if not ZE2.ActiveMapTimers then return end
 
     for i,timer in ipairs(ZE2.ActiveMapTimers) do if timer.time then timer.time = 0 end end
-end, COM_ADMIN)
+end)
 
 -- Become a Zombie!
-COM_AddCommand(cmd_prefix.."zombifyme", function(p, zombietype)
-    if not ZE2.cv_debug.value then return end
+AddDebug_CMD("zombifyme", function(p, zombietype)
     if not (p.mo and p.mo.valid and p.mo.health) then return end
     if not p.mo.team == 2 then return end
 
     ZE2.ZombifyPlayer(p, zombietype or nil)
-end, COM_ADMIN)
+end)
