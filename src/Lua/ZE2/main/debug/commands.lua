@@ -128,3 +128,12 @@ COM_AddCommand(cmd_prefix.."skiptimers", function()
 
     for i,timer in ipairs(ZE2.ActiveMapTimers) do if timer.time then timer.time = 0 end end
 end, COM_ADMIN)
+
+-- Become a Zombie!
+COM_AddCommand(cmd_prefix.."zombifyme", function(p, zombietype)
+    if not ZE2.cv_debug.value then return end
+    if not (p.mo and p.mo.valid and p.mo.health) then return end
+    if not p.mo.team == 2 then return end
+
+    ZE2.ZombifyPlayer(p, zombietype or nil)
+end, COM_ADMIN)
