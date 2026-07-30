@@ -63,6 +63,7 @@ addHook("MobjThinker", function(mobj)
 
 				uhh.momx = $ * 3
 				uhh.momy = $ * 3
+				uhh.forcedamage = 6
 			end
 
 			boss.nextstate = "ready"
@@ -111,6 +112,7 @@ addHook("MobjThinker", function(mobj)
 			bullet.color = SKINCOLOR_WHITE
 			bullet.momx = $ * 2
 			bullet.momy = $ * 2
+			bullet.forcedamage = 6
 		end
 	end
 end, MT_TORIEL)
