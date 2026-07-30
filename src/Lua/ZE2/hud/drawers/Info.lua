@@ -529,7 +529,7 @@ local function wrapper(v,p)
 	local me = p.realmo
 	local ze = p.ze2
 
-	health(v,p,me,ze)
+	--health(v,p,me,ze)
 	roundinfo(v,p,me,ze)
 	cashinfo(v,p,me,ze)
 	eventtimers(v,p,me,ze)
