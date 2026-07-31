@@ -17,6 +17,7 @@ local MT_PLAYER = MT_PLAYER
 -- Droplet properties
 local droplt_scale = FU * 4 / 9
 local translation = "goop_to_blood"
+local sprite_flags = FF_TRANS30|FF_SEMIBRIGHT
 
 mobjinfo[MT_ZOMB_DROPLET] = {
     doomednum = -1,
@@ -27,14 +28,14 @@ mobjinfo[MT_ZOMB_DROPLET] = {
     flags = MF_SLIDEME|MF_SCENERY|MF_RUNSPAWNFUNC|MF_NOBLOCKMAP
 }
 
-states[S_ZDROPLET] = {SPR_GOOP, A|FF_TRANS30, -1, function(mo) -- A good oportunity to set up the blood droplet here
+states[S_ZDROPLET] = {SPR_GOOP, A|sprite_flags, -1, function(mo) -- A good oportunity to set up the blood droplet here
     mo.spritexscale = droplt_scale
     mo.spriteyscale = droplt_scale
     mo.translation = translation
     P_SetObjectMomZ(mo, FU * 3)
 end, nil, nil, S_ZDROPLET}
 
-states[S_ZDROPLET_DEATH] = {SPR_GOOP, C|FF_TRANS30, 2 * TICRATE, function(mo)
+states[S_ZDROPLET_DEATH] = {SPR_GOOP, C|sprite_flags, 2 * TICRATE, function(mo)
     mo.spritexscale = $ * 8 / 6 -- Scale it a bit more when it touches the ground.
     mo.spriteyscale = $ * 8 / 6
     mo.momx = 0
