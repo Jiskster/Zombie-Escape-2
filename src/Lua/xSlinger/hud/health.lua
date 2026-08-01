@@ -1,6 +1,10 @@
 hud.disable("rings")
 
 addHook("HUD", function(v, player)
+	if not player["xSlinger[]"] then
+		return
+	end
+	
 	if not xSlinger.visible_huds.health then
 		return end;
 

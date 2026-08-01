@@ -28,7 +28,11 @@ addHook("HUD", function(v, player)
 
 	if not xSlinger.visible_huds.inventory then
 		return end;
-
+		
+	if not player["xSlinger[]"] then
+		return
+	end
+	
 	local xS = player.xSlinger
 
 	if not xS:inv_get() then

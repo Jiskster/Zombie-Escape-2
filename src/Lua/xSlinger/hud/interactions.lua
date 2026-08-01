@@ -123,6 +123,10 @@ local function drawItemInteraction(v, player, data)
 end
 
 addHook("HUD", function(v, player)
+	if not player["xSlinger[]"] then
+		return
+	end
+	
 	local xS = player.xSlinger
 	local i_obj = xS.selected_interaction
 

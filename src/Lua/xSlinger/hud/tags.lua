@@ -1,4 +1,8 @@
 xSlinger.HUD_TAGS = function(v, player)
+	if not player["xSlinger[]"] then
+		return
+	end
+	
 	local pmo = player.mo
 	if not (pmo and pmo.valid) then
 		return end;

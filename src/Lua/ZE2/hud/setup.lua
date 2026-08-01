@@ -13,6 +13,10 @@ local function SetupHud(filename)
 	local new_drawfunc = function(v, player)
 		if gametype ~= GT_ZE2 then return end
 
+		if not player["xSlinger[]"] then
+			return
+		end
+		
 		drawfunc(v, player)
 	end
 
