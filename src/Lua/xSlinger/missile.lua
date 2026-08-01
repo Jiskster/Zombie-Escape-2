@@ -372,6 +372,14 @@ addHook("MobjMoveCollide", function(mov, mobj)
 	end
 end, MT_XS_MISSILE)
 
+addHook("MobjLineCollide", function(mov, line)
+	if line then
+		if (line.flags & ML_IMPASSIBLE) and (line.flags & ML_TWOSIDED) then
+			return false
+		end
+	end
+end, MT_XS_MISSILE)
+
 addHook("MobjMoveBlocked", function(mov, mobj, line)
 	if not mov.isMissile then return end
 	
@@ -389,8 +397,10 @@ addHook("MobjMoveBlocked", function(mov, mobj, line)
 		return 
 	end 
 	
-	if line and (mov.missileinfo and mov.missileinfo.safewall) or (mov.flags & MF_SLIDEME) then
-		return
+	if line then
+		if (mov.missileinfo and mov.missileinfo.safewall) or (mov.flags & MF_SLIDEME) then
+			return
+		end
 	end
 	
 	if override ~= nil then
