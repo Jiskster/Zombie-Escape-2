@@ -123,6 +123,7 @@ ZE2:AddTimer("THERUINSUT_5", {
 				player.mo.maxhealth = 20
 				if player.mo.shield_health then
 					player.mo.shield_health = 10
+					player.mo.shield_efficiency = 0
 				end
 			end
 		end

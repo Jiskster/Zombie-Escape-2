@@ -48,7 +48,7 @@ addHook("MobjThinker", function(mobj)
 			if mobj.health < mobj.maxhealth/4 then
 				boss.tics = 1*TICRATE
 			else
-				boss.tics = 5*TICRATE
+				boss.tics = 2*TICRATE
 			end
 		elseif boss.state == "attack1" then
 
@@ -88,7 +88,7 @@ addHook("MobjThinker", function(mobj)
 
 			P_SpawnGhostMobj(mobj)
 
-			boss.tics = 15
+			boss.tics = 10
 		end
 
 		boss.start_tics = boss.tics
@@ -106,13 +106,13 @@ addHook("MobjThinker", function(mobj)
 		thok.dispoffset = 2
 
 		if ((leveltime) % 5) == 0 then
-			local bullet = P_SPMAngle(mobj, MT_FIREBALL, anim)
+			local bullet = P_SPMAngle(mobj, MT_TORIELFIREBALL, anim)
 			P_SetOrigin(bullet, thok.x, thok.y, thok.z)
-			bullet.colorized = true
-			bullet.color = SKINCOLOR_WHITE
+			--bullet.colorized = true
+			--bullet.color = SKINCOLOR_WHITE
 			bullet.momx = $ * 2
 			bullet.momy = $ * 2
-			bullet.forcedamage = 6
+			bullet.forcedamage = 10
 		end
 	end
 end, MT_TORIEL)
