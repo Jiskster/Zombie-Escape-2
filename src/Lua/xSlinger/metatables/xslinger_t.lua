@@ -156,7 +156,7 @@ local funcs = {
 		local xS = obj.xSlinger
 		local inv = xS:inv_get(target_inv)
 
-		for i=1,inv.size do
+		for i = 1, inv.size do
 			if inv[i].id == "" then
 				return i
 			end
@@ -234,20 +234,26 @@ local funcs = {
 					break
 				end
 
-				empty_slot_num = xS:find_empty_slot_number(target_inv)
+				if slot.count then
+					empty_slot_num = xS:find_empty_slot_number(target_inv)
+				else
+					inv[empty_slot_num] = xSlinger.deepcopy("")
+				end
 			end
 
 			if ispickup and hand.id ~= ""
 			and itemref.id ~= hand.id
 			and not empty_slot_num
 			and hand:getIndex("droppable", mo.skin) then -- Swap if theres no space
-				-- Drop hand
-				xSlinger.SpawnItemDrop(mo, hand, false)
-				xS:hand_clear()
+				if remainder then
+					-- Drop hand
+					xSlinger.SpawnItemDrop(mo, hand, false)
+					xS:hand_clear()
 
-				-- Set new item in held slot
-				set_item.count = remainder
-				inv[xS.slot] = set_item
+					-- Set new item in held slot
+					set_item.count = remainder
+					inv[xS.slot] = set_item
+				end
 			else
 				local remainder2 = remainder
 				local mx = itemref.maxcount
