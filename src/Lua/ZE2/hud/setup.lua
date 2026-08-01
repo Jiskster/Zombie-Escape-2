@@ -34,7 +34,6 @@ SetupHud "PlayerTags"
 
 SetupHud "DamageFade"
 
-SetupHud "PreGame"
 SetupHud "Info"
 SetupHud "RespawnTimer"
 SetupHud "Intermission"
