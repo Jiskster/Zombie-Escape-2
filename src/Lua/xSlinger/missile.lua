@@ -360,12 +360,13 @@ addHook("MobjCollide", function(thing, tmthing)
 end, MT_PLAYER)
 
 addHook("MobjMoveCollide", function(mov, mobj)
+	if not mov or not mov.valid then return end
+	if not mobj or not mobj.valid then return end
 	if mov.z > mobj.height + mobj.z then return end
 	if mobj.z > mov.height + mov.z then return end
 	if not mov.isMissile then return end -- To make sure you've already rescaled.
 
 	local alivemissile = (mov.health > 0)
-
 	if (mobj.flags & MF_SHOOTABLE) and alivemissile and (mov.target and mov.target ~= mobj) then
 		P_DamageMobj(mobj, mov, mov.target)
 		xSlinger.KillMissile(mov)
@@ -381,6 +382,7 @@ addHook("MobjLineCollide", function(mov, line)
 end, MT_XS_MISSILE)
 
 addHook("MobjMoveBlocked", function(mov, mobj, line)
+	if not mov or not mov.valid then return end
 	if not mov.isMissile then return end
 	
 	local missile_def = getMissileDef(mov)
@@ -413,19 +415,17 @@ addHook("MobjMoveBlocked", function(mov, mobj, line)
 end, MT_XS_MISSILE)
 
 addHook("MobjFuse", function(mobj)
-	if (mobj and mobj.valid and mobj.health) then
-		mobj.fuse = -1
-		
-		xSlinger.KillMissile(mobj)
-		return true
-	end
+	if not mobj or not mobj.valid or (mobj.health <= 0) then return end
+
+	mobj.fuse = -1
+	xSlinger.KillMissile(mobj)
+	return true
 end, MT_XS_MISSILE)
 
 addHook("MobjDeath", function(mobj)
-	if mobj.health then
-		xSlinger.KillMissile(mobj)
-		return
-	end
+	if (mobj.health <= 0) then return end
+
+	xSlinger.KillMissile(mobj)
 end, MT_XS_MISSILE)
 
 addHook("NetVars", function(net)
