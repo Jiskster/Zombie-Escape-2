@@ -1,5 +1,5 @@
-ZE2.init_gamevars = function(map) -- Variables vary per game.
-	ZE2.round_active = false;
+return function(map)
+    ZE2.round_active = false;
 	ZE2.game_ended = false;
 	ZE2.win_tics = 0; -- How many tics after a win screen. Resets on mapload.
 	ZE2.game_time = 0;
@@ -79,4 +79,4 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 			player.ze2.respawntics = 0
 		end
 	end
-end; ZE2.init_gamevars();
+end

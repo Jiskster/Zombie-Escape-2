@@ -1,7 +1,7 @@
 local base_hooks = {}
 
 local hook_order = {
-	"MapLoad",
+	"MapChange",
 	"PlayerSpawn",
 	"TeamSwitch",
 	"PreThinkFrame",
@@ -14,7 +14,7 @@ local hook_order = {
 }
 
 local hook_names = {
-	MapLoad = {"InitRound"};
+	MapChange = {"InitRound"};
 	PlayerSpawn = {
 		"InitPlayer";
 		"ZombieSpawn";
