@@ -39,52 +39,56 @@ local Emerald = {
 }
 
 --Replica of A_GoldMonitorSparkle but colorized and for advanced usage
+--
 --var1 = color
 --var2 = radius
+---@param actor mobj_t
+---@param var1 skincolornum_t
+---@param var2 fixed_t
 function A_GoldMonitorSparkleColor(actor, var1, var2)
-    if not (actor and actor.valid) then return end
+    if not actor or not actor.valid then return end
 
-    local ngangle = FixedAngle(((leveltime * 21) % 360) * FRACUNIT)
-    local xofs = P_ReturnThrustX(actor, ngangle, var2 or actor.radius)
-    local yofs = P_ReturnThrustY(actor, ngangle, var2 or actor.radius)
-
-    for i = FRACUNIT, 2*FRACUNIT, FRACUNIT/2 do
-        local sparkle = P_SpawnMobjFromMobj(actor, xofs, yofs, 0, MT_BOXSPARKLE)
+    local angle = FixedAngle(((leveltime * 21) % 360) * FRACUNIT)
+    local offsetx = P_ReturnThrustX(actor, angle, var2 or actor.radius)
+    local offsety = P_ReturnThrustY(actor, angle, var2 or actor.radius)
+    for index = FRACUNIT, FRACUNIT * 2, FRACUNIT / 2 do
+        local sparkle = P_SpawnMobjFromMobj(actor, offsetx, offsety, 0, MT_BOXSPARKLE)
         sparkle.colorized = true
         sparkle.color = var1 or SKINCOLOR_GREEN
-        sparkle.renderflags = $|RF_FULLBRIGHT
-        P_SetObjectMomZ(sparkle, i, false)
+        sparkle.renderflags = sparkle.renderflags | RF_FULLBRIGHT
+        P_SetObjectMomZ(sparkle, index, false)
     end
 end
 
---Set the emerald frame and sparkles color from desired thing arguments
-local function EmeraldSpawnBehavior(mo, thing)
+-- Set the emerald frame and sparkles color from desired thing arguments
+addHook("MapThingSpawn", function(mobj, thing)
     local emerald_argcolor
-
-    --if arg0 is 7 ("Random"), randomize through the emerald table.
-    if thing.args[0] == 7 then emerald_argcolor = P_RandomRange(0, #Emerald) else emerald_argcolor = thing.args[0] end
-
-    mo.frame = Emerald[emerald_argcolor].frame --set emerald sprite
-    mo.renderflags = $|RF_FULLBRIGHT
-
-    if thing.args[1] == 0 then --0 is "yes" in the argument
-        mo.color = Emerald[emerald_argcolor].color --set emerald color
+    if (thing.args[0] == 7) then -- if argument 0 is 7 ("Random"), randomize through the emerald table
+        emerald_argcolor = P_RandomRange(0, #Emerald)
+    else
+        emerald_argcolor = thing.args[0]
     end
-end
 
---Spawn Emerald Sparkles if desired
-local function EmeraldSparkles(mo)
-    if not (leveltime % 10 == 0) then return end --run this thinker each 10 tics
-    if not (mo.valid and mo.health and mo.color) then return end
+    mobj.frame = Emerald[emerald_argcolor].frame -- set the emerald sprite
+    mobj.renderflags = mobj.renderflags | RF_FULLBRIGHT
 
-    A_GoldMonitorSparkleColor(mo, mo.color, mo.radius/3)
-end
+    if (thing.args[1] == 0) then -- 0 means "yes" in argument 1, set the emerald color
+        mobj.color = Emerald[emerald_argcolor].color
+    end
+end, MT_WESTOEMERALD)
+
+-- Spawn Emerald Sparkles if desired
+addHook("MobjThinker", function(mobj)
+    if ((leveltime % 10) ~= 0) then return end --run this thinker each 10 tics
+    if not mobj or not mobj.valid or (mobj.health <= 0) and (mobj.color == nil) then return end
+
+    A_GoldMonitorSparkleColor(mobj, mobj.color, mobj.radius/3)
+end, MT_WESTOEMERALD)
 
 --Execute a linedef tag on death
-local function EmeraldTrigger(mo)
-    A_LinedefExecuteFromArg(mo, 2) --execute from argument 2 ("Linedef Execute Tag")
-end
+addHook("MobjDeath", function(mobj)
+    if not mobj or not mobj.valid then return end
+    if (mobj.spawnpoint == nil) then return end
 
-addHook("MapThingSpawn", EmeraldSpawnBehavior, MT_WESTOEMERALD)
-addHook("MobjThinker", EmeraldSparkles, MT_WESTOEMERALD)
-addHook("MobjDeath", EmeraldTrigger, MT_WESTOEMERALD)
+    P_LinedefExecute(mobj.spawnpoint.args[2], mobj, (mobj.subsector ~= nil) and mobj.subsector.sector or nil) --execute from argument 2 ("Linedef Execute Tag")
+end, MT_WESTOEMERALD)
