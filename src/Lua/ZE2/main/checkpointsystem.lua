@@ -295,8 +295,6 @@ end
 
 -- Main checkpoint thinker.
 addHook("PlayerThink", function(player)
-	local first = getTimeMicros()
-	
 	if gametype ~= GT_ZE2 then return end
 	if not #ZE2.Checkpoints then return end
 	
@@ -316,11 +314,6 @@ addHook("PlayerThink", function(player)
 			end
 		end
 	end
-	
-	local second = getTimeMicros()
-	
-	
-	print(second - first)
 end)
 
 addHook("LinedefExecute", function(line, mobj, sector)
