@@ -1,5 +1,5 @@
-return function(map)
-    ZE2.round_active = false;
+local function InitRound(map)
+	ZE2.round_active = false;
 	ZE2.game_ended = false;
 	ZE2.win_tics = 0; -- How many tics after a win screen. Resets on mapload.
 	ZE2.game_time = 0;
@@ -80,3 +80,7 @@ return function(map)
 		end
 	end
 end
+
+InitRound()
+
+return InitRound
