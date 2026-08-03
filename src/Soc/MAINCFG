@@ -21,19 +21,18 @@ Unlockable 23
 
 ## SURVIVAL MAP START
 
-# Level 01
-# Levelname = Stonewood
-# Subtitle = A very dark town.
-# Act = 0
-# Music = SWZEM
-# TypeOfLevel = Escape
-# NextLevel = J0
-# SkyNum = 11
-# Weather = 1
-# NoZone = True
-# SelectHeading = Escape Maps
-# Lua.ze2_timelimit = 5
-# Lua.ze2_hidden = true
+Level 01
+Levelname = Stonewood
+Subtitle = A very dark town.
+Act = 0
+Music = SWZEM
+TypeOfLevel = Escape
+NextLevel = 01
+SkyNum = 34 # 11
+Weather = 1
+NoZone = True
+SelectHeading = Escape Maps
+Lua.ze2_timelimit = 5
 
 Level 02
 Levelname = Egypt
