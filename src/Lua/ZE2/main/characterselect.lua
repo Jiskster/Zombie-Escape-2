@@ -189,7 +189,7 @@ addHook("PlayerQuit", function(player)
 	unselectCharacter(player)
 end)
 
-addHook("MapLoad", function()
+addHook("MapChange", function()
 	ZE2.CharacterSlots = {}
 
 	for i,v in ipairs(ZE2.registered_skins) do
