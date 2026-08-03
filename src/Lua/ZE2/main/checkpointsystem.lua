@@ -42,11 +42,13 @@ mobjinfo[MT_ZE2CHECKPOINT] = {
 ZE2.LatestSurvivorCheckpoint = 0
 ZE2.LatestZombieCheckpoint = 0
 ZE2.Checkpoints = {}
+ZE2.highest_checkpoint = 0
 
 addHook("NetVars", function(net)
 	ZE2.Checkpoints = net($)
 	ZE2.LatestSurvivorCheckpoint = net($)
 	ZE2.LatestZombieCheckpoint = net($)
+	ZE2.highest_checkpoint = net($)
 end)
 
 function ZE2.GetLatestCheckpoint(player)
@@ -191,6 +193,7 @@ addHook("MapLoad", function()
 	ZE2.Checkpoints = {}
 	ZE2.LatestSurvivorCheckpoint = 0
 	ZE2.LatestZombieCheckpoint = 0
+	ZE2.highest_checkpoint = 0
 
 	if gametype ~= GT_ZE2 then return end
 
@@ -224,6 +227,12 @@ addHook("MapLoad", function()
 			}
 		end
 	end
+	
+	for checkpoint_num, checkpoint in pairs(ZE2.Checkpoints) do
+		if checkpoint_num > ZE2.highest_checkpoint then
+			ZE2.highest_checkpoint = checkpoint_num
+		end
+	end
 end)
 
 local function getMobjZSectorRange(mobj, sector)
@@ -245,63 +254,73 @@ local function getMobjZSectorRange(mobj, sector)
 	return output
 end
 
--- Main checkpoint thinker.
-addHook("ThinkFrame", function()
-	if gametype ~= GT_ZE2 then return end
-	if not #ZE2.Checkpoints then return end
-
-	local highest_checkpoint = 0
-	for checkpoint_num,checkpoint in pairs(ZE2.Checkpoints) do
-		if checkpoint_num > highest_checkpoint then
-			highest_checkpoint = checkpoint_num
-		end
-	end
+local function checkpointCheck(pmo)
+	local checkpoints = ZE2.Checkpoints
 	
-	for player in players.iterate do
-		local pmo = player.mo
+	for checkpoint_num=1, ZE2.highest_checkpoint do
+		local checkpoint = checkpoints[checkpoint_num]
+		
+		if not checkpoints[checkpoint_num] then
+			continue
+		end
+		
+		if checkpoint.mobj and checkpoint.mobj.valid then -- is checkpoint valid
+			if pmo.subsector.sector == checkpoint.subsector.sector -- if checkpoint sector is player sector
+			and not checkpoint.disable_autotrigger then
+				local sector = checkpoint.subsector.sector
+				local cmo = checkpoint.mobj
 
-		if pmo and pmo.valid then
-			for checkpoint_num=1, highest_checkpoint do
-				local checkpoint = ZE2.Checkpoints[checkpoint_num]
-				
-				if not ZE2.Checkpoints[checkpoint_num] then
-					continue
+				local zrange = getMobjZSectorRange(cmo, sector)
+
+				-- use our floor and height caps
+				if pmo.z < zrange.ceiling and pmo.z + pmo.height > zrange.floor then
+					ActivateCheckpoint(pmo, checkpoint.mobj)
 				end
-				
-				if checkpoint.subsector and checkpoint.subsector.valid
-				and checkpoint.subsector.sector and checkpoint.subsector.sector.valid
-				and checkpoint.mobj and checkpoint.mobj.valid then
-					if pmo.subsector.sector == checkpoint.subsector.sector
-					and not checkpoint.disable_autotrigger then
-						local sector = checkpoint.subsector.sector
-						local cmo = checkpoint.mobj
+			end
 
-						local zrange = getMobjZSectorRange(cmo, sector)
+			if checkpoint.tag then
+				for sector in sectors.tagged(checkpoint.tag) do
+					if pmo.subsector.sector == sector then
+						local zrange = getMobjZSectorRange(pmo, sector)
 
-						-- use our floor and height caps
 						if pmo.z < zrange.ceiling and pmo.z + pmo.height > zrange.floor then
 							ActivateCheckpoint(pmo, checkpoint.mobj)
-						end
-					end
-
-					if checkpoint.tag then
-						for sector in sectors.tagged(checkpoint.tag) do
-							if sector and sector.valid
-							and pmo.subsector and pmo.subsector.valid
-							and pmo.subsector.sector and pmo.subsector.sector.valid
-							and pmo.subsector.sector == sector then
-								local zrange = getMobjZSectorRange(pmo, sector)
-
-								if pmo.z < zrange.ceiling and pmo.z + pmo.height > zrange.floor then
-									ActivateCheckpoint(pmo, checkpoint.mobj)
-								end
-							end
 						end
 					end
 				end
 			end
 		end
 	end
+end
+
+-- Main checkpoint thinker.
+addHook("PlayerThink", function(player)
+	local first = getTimeMicros()
+	
+	if gametype ~= GT_ZE2 then return end
+	if not #ZE2.Checkpoints then return end
+	
+	local highest_checkpoint = ZE2.highest_checkpoint
+	
+	local pmo = player.mo
+
+	-- this code checks if the player sector has been changed
+	-- if it changed then check if the theres a valid checkpoint in the new sector
+	-- i rewrote this so it wouldnt be laggy like last time (checked sector every frame lol)
+	if (pmo and pmo.valid) then
+		if not pmo.c_lastsector then
+			pmo.c_lastsector = pmo.subsector.sector
+		elseif pmo.momx and pmo.momy then
+			if (pmo.subsector.sector ~= pmo.c_lastsector) then -- if is new sector
+				checkpointCheck(pmo)
+			end
+		end
+	end
+	
+	local second = getTimeMicros()
+	
+	
+	print(second - first)
 end)
 
 addHook("LinedefExecute", function(line, mobj, sector)
