@@ -16,9 +16,9 @@ mobjinfo[MT_XS_MISSILE] = {
 function xSlinger.registerMissile(missile_id, r_table)
 	xSlinger.registered_missiles[missile_id] = r_table
 	r_table.id = missile_id
-	
+
 	table.insert(xSlinger.registered_missiles_ordered, r_table)
-	
+
 	return r_table
 end
 
@@ -39,11 +39,11 @@ function xSlinger.SpawnMissile(m_table)
 	local speed
 
 	local missile_velocity_precision
-	
+
 	if not missile_id then
 		return
 	end
-	
+
 	local missile_def = xSlinger.registered_missiles[missile_id]
 
 	if allow_aim then
@@ -60,39 +60,39 @@ function xSlinger.SpawnMissile(m_table)
 	if not (th and th.valid) then
 		return
 	end
-	
+
 	th.state = missile_def.state
-	
+
 	table.insert(xSlinger.BulletList, th)
 
 	speed = missile_def.speed
 
 	if missile_def then
 		local temp_missile_def = xSlinger.deepcopy(missile_def)
-		
+
 		-- destroy functions
 		for i,v in pairs(temp_missile_def) do
 			if type(v) == "function" then
 				temp_missile_def[i] = nil
 			end
 		end
-		
+
 		if missile_def.radius then
 			th.radius = missile_def.radius
 		end
-		
+
 		if missile_def.height then
 			th.height = missile_def.height
 		end
-		
+
 		if missile_def.addflags then
 			th.flags = $ | missile_def.addflags
 		end
-		
+
 		if missile_def.delflags then
 			th.flags = $ & (~missile_def.delflags)
 		end
-		
+
 		th.missileinfo = temp_missile_def -- give missileinfo
 	end
 
@@ -142,7 +142,7 @@ function xSlinger.SpawnMissile(m_table)
 	end
 
 	P_SetScale(th, source.scale, true)
-	
+
 	th.isMissile = true -- placed after scale change so height/radius changes can be fine
 
 	if flags2 then
@@ -209,15 +209,15 @@ end
 
 function xSlinger.KillMissile(mobj)
 	local info = mobj.missileinfo
-	
+
 	if info and mobj.health then
 		mobj.alpha = FRACUNIT
 		mobj.fuse = -1
-		
+
 		if info.deathsound then
 			S_StartSound(mobj, info.deathsound)
 		end
-		
+
 		if info.deathstate then
 			if mobj.state ~= info.deathstate then
 				mobj.state = info.deathstate
@@ -225,12 +225,12 @@ function xSlinger.KillMissile(mobj)
 		else
 			mobj.state = S_NULL
 		end
-		
+
 		if info.nogravitydeath then
 			mobj.flags = $ | MF_NOGRAVITY
 		end
 	end
-	
+
 	mobj.momx = 0
 	mobj.momy = 0
 	mobj.momz = 0
@@ -242,113 +242,70 @@ local function checkMissile(mobj, missileinfo)
 		if (missileinfo and not missileinfo.safeground) then
 			xSlinger.KillMissile(mobj)
 		end
-		
+
 		return false
 	end
-	
+
 	return true
 end
 
 local function getMissileDef(mobj)
 	if mobj.missileinfo then
 		local missile_id = mobj.missileinfo.id
-		
+
 		if missile_id then
 			return xSlinger.registered_missiles[missile_id]
 		end
 	end
 end
 
-addHook("ThinkFrame", function()
-	/*
-		Insert everything we need to remove while iterating, and clean up after the
-		generic for loop.
-	*/
-	
-	local removedelayed = {}
+addHook("MobjThinker", function(mobj)
+	if not mobj or not mobj.valid then return end
 
-	for i = 1, #xSlinger.BulletList do
-		local mobj = xSlinger.BulletList[i]
-		
-		if not (mobj and mobj.valid and mobj.health) then
-			removedelayed[#removedelayed + 1] = {key = i}
-			continue
-		end
-		
-		if mobj.iteminfo and mobj.iteminfo.missile_tick and mobj.target then
-			mobj.iteminfo:missile_tick(mobj.target, mobj)
-			
-			if not (mobj and mobj.valid and mobj.health) then
-				removedelayed[#removedelayed + 1] = {key = i}
-				continue
-			end
-		end
-		
-		-- TODO: give mobj.missileinfo a metatable
-		local missile_def = getMissileDef(mobj)
-
-		if missile_def and missile_def.tick and mobj.target then
-			missile_def.tick(mobj.target, mobj)
-			
-			if not (mobj and mobj.valid and mobj.health) then
-				removedelayed[#removedelayed + 1] = {key = i}
-				continue
-			end
-		end
-		
-		-- No reason to "raycast" this missile.
-		if not (mobj.velprec) then
-			checkMissile(mobj, mobj.missileinfo)
-			continue
-		end
-
-		for ii=1,mobj.velprec-1 do
-			if not (mobj and mobj.valid) or not checkMissile(mobj, mobj.missileinfo) then
-				removedelayed[#removedelayed + 1] = {key = i}
-				break
-			end
-			
-			--XY Movement should never remove a mobj...
-			P_XYMovement(mobj)
-			--...except for when it does...
-			if not (mobj and mobj.valid) 
-			or not P_ZMovement(mobj) 
-			or not checkMissile(mobj, mobj.missileinfo) then
-				removedelayed[#removedelayed + 1] = {key = i}
-				break
-			end
-
-			if not P_TryMove(mobj, mobj.x, mobj.y, true) then
-				if (mobj and mobj.valid) then
-					xSlinger.KillMissile(mobj)
-				end
-				
-				removedelayed[#removedelayed + 1] = {key = i}
-				break
-			else
-				if mobj.iteminfo and mobj.iteminfo.missile_subtick and mobj.target then
-					mobj.iteminfo:missile_subtick(mobj.target, mobj, ii)
-				end
-				
-				if missile_def and missile_def.subtick and mobj.target then
-					missile_def.subtick(mobj.target, mobj)
-				end
-			end
-		end
-		
-		if not (mobj and mobj.valid) then
-			removedelayed[#removedelayed + 1] = {key = i}
-			continue
-		end
+	if mobj.iteminfo and mobj.iteminfo.missile_tick and mobj.target then
+		mobj.iteminfo:missile_tick(mobj.target, mobj)
+		if not mobj or not mobj.valid or (mobj.health <= 0) then return end
 	end
 
-	if #removedelayed then
-		for i = #removedelayed, 1, -1 do
-			local todo = removedelayed[i]
-			table.remove(xSlinger.BulletList, todo.key)
+	-- TODO: give mobj.missileinfo a metatable
+	local missile_def = getMissileDef(mobj)
+	if missile_def and missile_def.tick and mobj.target then
+		missile_def.tick(mobj.target, mobj)
+		if not mobj or not mobj.valid or (mobj.health <= 0) then return end
+	end
+
+	-- No reason to "raycast" this missile.
+	if not mobj.velprec then
+		checkMissile(mobj, mobj.missileinfo)
+		return
+	end
+
+	for step = 1, mobj.velprec - 1, 1 do
+		if not (mobj and mobj.valid) or not checkMissile(mobj, mobj.missileinfo) then break end
+
+		--XY Movement should never remove a mobj...... except for when it does...
+		P_XYMovement(mobj)
+		if not mobj or not mobj.valid or not P_ZMovement(mobj) or not checkMissile(mobj, mobj.missileinfo) then
+			break
+		end
+
+		if not P_TryMove(mobj, mobj.x, mobj.y, true) then
+			if (mobj and mobj.valid) then
+				xSlinger.KillMissile(mobj)
+			end
+			break
+		else
+			if mobj.iteminfo and mobj.iteminfo.missile_subtick and mobj.target then
+				mobj.iteminfo:missile_subtick(mobj.target, mobj, step)
+			end
+
+			if missile_def and missile_def.subtick and mobj.target then
+				missile_def.subtick(mobj.target, mobj)
+			end
 		end
 	end
-end)
+	if not mobj or not mobj.valid or (mobj.health <= 0) then return end
+end, MT_XS_MISSILE)
 
 -- dont let teammates and teamate's weapons collide with your weapon
 addHook("MobjCollide", function(thing, tmthing)
@@ -384,31 +341,31 @@ end, MT_XS_MISSILE)
 addHook("MobjMoveBlocked", function(mov, mobj, line)
 	if not mov or not mov.valid then return end
 	if not mov.isMissile then return end
-	
+
 	local missile_def = getMissileDef(mov)
-	
+
 	local override
-	
+
 	if missile_def then
 		if missile_def.blocked then
 			override = missile_def.blocked(mov.target, mov, line)
 		end
 	end
-	
+
 	if not (mov and mov.valid and mov.health) then -- just in case missile dies in blocked callback
-		return 
-	end 
-	
+		return
+	end
+
 	if line then
 		if (mov.missileinfo and mov.missileinfo.safewall) or (mov.flags & MF_SLIDEME) then
 			return
 		end
 	end
-	
+
 	if override ~= nil then
 		return override
 	end
-	
+
 	if (mov and mov.valid) then
 		xSlinger.KillMissile(mov)
 	end

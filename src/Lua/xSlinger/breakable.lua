@@ -205,16 +205,19 @@ end
 addHook("MobjDeath", function(mobj, inflictor, source, damagetype)
     if not mobj or not mobj.valid then return end
 
-    local player
-    if  inflictor.player then
-        player = inflictor
-    elseif source.player then
-        player = source
+    local attacker
+	if source and source.valid then
+		attacker = source
+	elseif inflictor and inflictor.valid then
+		attacker = inflictor
     end
-    if not player or not player.valid then return end
+    if not attacker or not attacker.valid then return false end
+
+    local player = attacker.player
+    if not player or not player.valid then return false end
 
     if (mobj.breakable.triggertag > 0) then
-        P_LinedefExecute(mobj.breakable.triggertag, player, (mobj.subsector ~= nil) and mobj.subsector.sector or nil)
+        P_LinedefExecute(mobj.breakable.triggertag, attacker, (mobj.subsector ~= nil) and mobj.subsector.sector or nil)
     end
 
     mobj.flags = mobj.flags & ~(MF_SHOOTABLE)
