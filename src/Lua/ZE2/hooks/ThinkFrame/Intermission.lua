@@ -9,7 +9,8 @@ return function()
 	if ZE2.getCurrentRound() < ZE2.getMaxRoundsFromMap() then -- new round
 		if ZE2.win_tics >= newroundframe and not ZE2.queuing_round then
 			ZE2.queuing_round = true
-			COM_BufInsertText(server, "map "..gamemap)
+			G_SetCustomExitVars(gamemap, 2)
+			G_ExitLevel()
 		end
 	else -- new map
 		if ZE2.win_tics == newroundframe + slideout_anim then -- after slideout anim is done, generate a map
@@ -33,7 +34,8 @@ return function()
 		end
 
 		if ZE2.win_tics == newmapframe and ZE2.NextMapVoted then
-			COM_BufInsertText(server, "map "..ZE2.NextMapVoted)
+			G_SetCustomExitVars(ZE2.NextMapVoted, 2)
+			G_ExitLevel()
 		end
 	end
 end
