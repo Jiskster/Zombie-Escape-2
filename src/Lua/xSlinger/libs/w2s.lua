@@ -1,6 +1,9 @@
 local cv_fov
 local cv_glshearing
 
+local l_angle = 0
+local l_aiming = 0
+
 /*
 	Code updated in Lua by GenericHeroGuy for libSG
 	Ported to C by NepDisk and acutally made to work and fixed by Indev!(Thanks so much!)
@@ -66,10 +69,14 @@ rawset(_G, "K_GetScreenCoords",function(vid,p,cam, point, props)
 		elseif (SUBVERSION < 16) then --assuming camera fix was merged into 2.2.16, and we're on 2.2.15
 			local m = p.realmo
 			camPos = {x = m.x, y = m.y, z = p.viewz}
-			--sglib uses p.realmo.angle, so...
-			camAngle = m.angle
-			camAiming = p.aiming
-		--if we ARE on 2.2.16 then do nothing, everythings already correct
+			
+			if (p == consoleplayer or p == secondarydisplayplayer) then
+				camAngle = l_angle
+				camAiming = l_aiming
+			else -- use server angles
+				camAngle = m.angle
+				camAiming = p.aiming
+			end
 		end
 	end
 	if (p.awayviewmobj and p.awayviewmobj.valid and p.awayviewtics > 0) then
@@ -228,4 +235,9 @@ rawset(_G, "K_GetScreenCoords",function(vid,p,cam, point, props)
 		camAiming = camAiming,
 		camPos = camPos,
 	}
+end)
+
+addHook("PlayerCmd", function(player, cmd)
+	l_angle = cmd.angleturn*FU
+	l_aiming = cmd.aiming*FU
 end)
