@@ -97,8 +97,6 @@ local function I_LoadItems(sp)
 	ze2file "accel_ring.lua"
 
 	-- Unused always at the end.
-	ze2file "unused/epix.lua"
-	ze2file "unused/saxa.lua"
 
 	set_subpath "";
 
