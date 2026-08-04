@@ -45,13 +45,9 @@ rawset(_G, "K_GetScreenCoords",function(vid,p,cam, point, props)
 		return {x=0,y=0,onscreen=onscreen}
 	end
 
-	if (takis_custombuild and interpmobj) then
-		targx,targy,targz = vid.interpolateMobj(point)
-	else
-		targx = point.x
-		targy = point.y
-		targz = point.z
-	end
+	targx = point.x
+	targy = point.y
+	targz = point.z
 
 	local isMobj = type(point) == "userdata" and userdataType(point) == "mobj_t"
 	if isMobj and centered then
