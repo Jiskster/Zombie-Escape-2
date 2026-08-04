@@ -166,20 +166,3 @@ xSlinger.addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		return false
 	end
 end)
-
-COM_AddCommand("drophand", function(player)
-	local xS = player.xSlinger
-
-	if not (player.mo and player.mo.valid) then
-		return end;
-
-	if (ZE2.pregame_timeleft) then
-		return end;
-
-	local droppeditem = xS:hand_drop()
-	if droppeditem and droppeditem.valid then
-		droppeditem.team = xS.team
-		droppeditem.interaction.team_restrict = {enabled = true}
-		droppeditem.interaction.team_restrict[xS.team] = true
-	end
-end)
