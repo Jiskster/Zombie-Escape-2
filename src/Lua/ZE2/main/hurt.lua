@@ -1,5 +1,3 @@
-local KB = ZE2.Knockback
-
 freeslot("SPR_ZE2_DAMAGENUMBER")
 
 -- Overwrite xSlinger function
