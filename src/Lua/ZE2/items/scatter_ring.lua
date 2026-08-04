@@ -92,7 +92,6 @@ xSlinger.registerItem("scatter_ring", {
 
 	skin_override = {
 		["sonic"] = {
-			reload_time = 7*TICRATE;
 			firerate = 18;
 			push_multi = (FU*3/4);
 		}
