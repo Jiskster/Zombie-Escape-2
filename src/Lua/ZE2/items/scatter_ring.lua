@@ -140,10 +140,10 @@ xSlinger.registerItem("scatter_ring", {
 			end
 		end
 
-		local knockback_horizontal = 9 * FRACUNIT
+		local knockback_horizontal = 4 * FRACUNIT
 		local knockback_vertical = max(-FRACUNIT, min(FRACUNIT, -player.aiming / 13000))
 		if ((P_MobjFlip(mo) * knockback_vertical) > 0) then
-			knockback_vertical = (knockback_vertical * 8)
+			knockback_vertical = (knockback_vertical * 3)
 		end
 
 		if (mo.eflags & MFE_UNDERWATER) then -- underwater knockback penalty
