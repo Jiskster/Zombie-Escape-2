@@ -1,5 +1,5 @@
-local cv_fov
-local cv_glshearing
+local cv_fov = CV_FindVar("fov")
+local cv_glshearing = CV_FindVar("gr_shearing")
 
 local l_angle = 0
 local l_aiming = 0
@@ -9,7 +9,7 @@ local l_aiming = 0
 	Ported to C by NepDisk and acutally made to work and fixed by Indev!(Thanks so much!)
 	Badly uncapped in C by GenericHeroGuy
 	original code by Lat'
-	Code from SRB2Kart Saturn, retranslated to Lua with some edits by luigi budd
+	Code from SRB2Kart Saturn, retranslated to Lua with some edits by luigi budd/epix, jisk and lugent
 */
 rawset(_G, "K_GetScreenCoords",function(vid,p,cam, point, props)
 	props = $ or {}
@@ -20,13 +20,6 @@ rawset(_G, "K_GetScreenCoords",function(vid,p,cam, point, props)
 	local anglecliponly = props.anglecliponly or false -- Only clips the result if angle checks fail. Does not clip to screen dimensions.
 	local centered = props.centered or false -- Centers to the object's middle (mo.z + mo.height/2)
 	local viewoverride = props.viewoverride
-
-	if not cv_glshearing then
-		cv_glshearing = CV_FindVar("gr_shearing")
-	end
-	if not cv_fov then
-		cv_fov = CV_FindVar("fov")
-	end
 	local my_fov = (cv_fov.value) + (p.fovadd)
 
 	local x,y,scale
