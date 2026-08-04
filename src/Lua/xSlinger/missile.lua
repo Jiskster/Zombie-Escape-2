@@ -63,8 +63,6 @@ function xSlinger.SpawnMissile(m_table)
 
 	th.state = missile_def.state
 
-	table.insert(xSlinger.BulletList, th)
-
 	speed = missile_def.speed
 
 	if missile_def then
@@ -384,7 +382,3 @@ addHook("MobjDeath", function(mobj)
 
 	xSlinger.KillMissile(mobj)
 end, MT_XS_MISSILE)
-
-addHook("NetVars", function(net)
-	xSlinger.BulletList = net($)
-end)
