@@ -11,6 +11,7 @@ local hook_order = {
 	"ViewpointSwitch",
 	"PlayerCmd",
 	"NetVars",
+	"SeenPlayer",
 }
 
 local hook_names = {
@@ -38,6 +39,7 @@ local hook_names = {
 	ViewpointSwitch = {"Main"};
 	PlayerCmd = {"MidgameJoin"};
 	NetVars = {"Main"};
+	SeenPlayer = {"Main"};
 }
 
 -- Register Hooks.

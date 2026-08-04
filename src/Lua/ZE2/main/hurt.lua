@@ -167,12 +167,6 @@ xSlinger.addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	end
 end)
 
-addHook("SeenPlayer", function(player)
-	if gametype == GT_ZE2 then
-		return false
-	end
-end)
-
 COM_AddCommand("drophand", function(player)
 	local xS = player.xSlinger
 
