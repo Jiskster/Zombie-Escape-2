@@ -3,6 +3,7 @@ freeslot("MT_XS_BREAKABLE")
 mobjinfo[MT_XS_BREAKABLE] = {
     --$Category xSlinger
 	--$Name xSlinger Breakable
+    --$Sprite TVTUC0
 
     --$Arg0 Health
     --$Arg0Default 100
@@ -39,6 +40,15 @@ mobjinfo[MT_XS_BREAKABLE] = {
     --$Arg6Default 64
 	--$Arg6Type 24
 
+    --$Arg7 Visible Health?
+    --$Arg7Default 0
+    --$Arg7Type 11
+    --$Arg7Tooltip If this breakable should display it's health on HUD.
+    --$Arg7Enum { 0 = "No"; 1 = "Yes"; }
+
+    --$StringArg0 Display Text
+    --$StringArg0Tooltip If set, it will show it on HUD. Only visible when Visible Health is enabled.
+
     --$NotAngled
 
     doomednum = 50600,
@@ -72,10 +82,11 @@ addHook("MapThingSpawn", function(mobj, thing)
         triggertag = thing.args[1],
         respawneable = (thing.args[2] == 1) and true or false,
         respawndelay = thing.args[3],
+        visiblehealth = (thing.args[7] == 1) and true or false,
         team_restrict = {enabled = false}
     }
 
-    for index = 0,3 do
+    for index = 0, 3, 1 do
 		if (thing.args[4] & (1 << index)) then
 			mobj.breakable.team_restrict[index + 1] = true
 			if not mobj.breakable.team_restrict.enabled then
@@ -87,6 +98,11 @@ addHook("MapThingSpawn", function(mobj, thing)
     mobj.radius = thing.args[5] * FU
     mobj.height = thing.args[6] * FU
 
+    mobj.npc_visiblehealth = mobj.breakable.visiblehealth
+    if thing.stringargs[0] then
+        mobj.npc_displayname = thing.stringargs[0]
+    end
+
     -- add to a linked table
     xSlinger.breakables[mobj.breakable.triggertag] = xSlinger.breakables[mobj.breakable.triggertag] or {}
     table.insert(xSlinger.breakables[mobj.breakable.triggertag], mobj)
@@ -94,6 +110,7 @@ end, MT_XS_BREAKABLE)
 
 addHook("MobjFuse", function (mobj) -- respawn
     mobj.health = mobj.breakable.health
+    mobj.npc_visiblehealth = mobj.breakable.visiblehealth
     mobj.flags = mobj.flags & ~(MF_NOCLIPTHING)
     mobj.flags = mobj.flags | MF_SHOOTABLE
     mobj.fuse = 0
@@ -138,8 +155,33 @@ xSlinger.addHook("ShouldDamage", function(mobj, inflictor, source, damage, damag
 
     local xS = player.xSlinger
     if not CheckBreakable(mobj, xS.team) then return false end
+end, MT_XS_BREAKABLE)
+
+---@param mobj mobj_t
+local function HandleLinkedBreakables(mobj) -- link the hp from other breakables with the same tag
+    local breakables = xSlinger.breakables[mobj.breakable.triggertag]
+    for index = #breakables, 1, -1 do
+        local other = breakables[index]
+        if (other == mobj) then continue end
+        if (other.breakable == nil) then continue end
+
+        other.health = mobj.health
+    end
+end
+
+---@param mobj mobj_t
+---@param inflictor mobj_t?
+---@param source mobj_t?
+---@param damage integer
+---@param damagetype integer
+xSlinger.addHook("MobjDamage", function(mobj, inflictor, source, damage, damagetype)
+    if not mobj or not mobj.valid then return end
+    if (mobj.type ~= MT_XS_BREAKABLE) then return end
+
+    HandleLinkedBreakables(mobj)
 end)
 
+---@param mobj mobj_t
 local function HandleLinkedBreakables(mobj) -- so like doors or windows or whatever can be a breakable with having several mobjs pointing to the same linedef
     local breakables = xSlinger.breakables[mobj.breakable.triggertag]
     for index = #breakables, 1, -1 do
@@ -151,6 +193,7 @@ local function HandleLinkedBreakables(mobj) -- so like doors or windows or whate
         other.flags = other.flags | MF_NOCLIPTHING
         if other.breakable.respawneable then
             other.health = 1
+            other.npc_visiblehealth = false
             other.fuse = other.breakable.respawndelay
             continue
         end
@@ -170,12 +213,15 @@ addHook("MobjDeath", function(mobj, inflictor, source, damagetype)
     end
     if not player or not player.valid then return end
 
-    P_LinedefExecute(mobj.breakable.triggertag, player)
+    if (mobj.breakable.triggertag > 0) then
+        P_LinedefExecute(mobj.breakable.triggertag, player, (mobj.subsector ~= nil) and mobj.subsector.sector or nil)
+    end
 
     mobj.flags = mobj.flags & ~(MF_SHOOTABLE)
     mobj.flags = mobj.flags | MF_NOCLIPTHING
     if mobj.breakable.respawneable then
         mobj.health = 1
+        mobj.npc_visiblehealth = false
         mobj.fuse = mobj.breakable.respawndelay
         HandleLinkedBreakables(mobj)
         return true
