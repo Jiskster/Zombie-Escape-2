@@ -125,6 +125,7 @@ NoZone = True
 SelectHeading = Escape Maps
 Lua.ze2_timelimit = 5
 Lua.ze2_rounds = 2
+Lua.ze2_laddertag = 200
 
 Level 16
 Levelname = Spooky Flower
