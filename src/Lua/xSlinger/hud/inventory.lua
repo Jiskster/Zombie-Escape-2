@@ -254,10 +254,10 @@ addHook("HUD", function(v, player)
 	local item_color = hand:getIndex("color", player.mo.skin) or SKINCOLOR_WHITE
 	local item_name = hand:getIndex("displayname", player.mo.skin) or "ERROR!!"
 
-	v.drawString(160*FU, invpos_y-20*FU, item_name, V_SNAPTOBOTTOM, "thin-fixed-center")
-
-	/*
-	customhud.CustomFontString(v, 160*FU, invpos_y-20*FU, item_name, "TNYFC",
-	(V_SNAPTOBOTTOM), "center" , FRACUNIT, item_color)
-	*/
+	xSlinger.DRAW_held_itemname(v, 160*FU, invpos_y-20*FU, item_name, item_color)
 end)
+
+-- You can override this
+xSlinger.DRAW_held_itemname = function(v, x, y, text, color)
+	v.drawString(x, y, text, V_SNAPTOBOTTOM, "thin-fixed-center")
+end
