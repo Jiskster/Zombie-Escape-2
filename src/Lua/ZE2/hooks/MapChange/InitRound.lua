@@ -33,7 +33,7 @@ local function InitRound(map)
 			ZE2.rounds_left = $ - 1
 			ZE2.queuing_round = false
 		else
-			ZE2.rounds_left = tonumber(mapheaderinfo[map].ze2_rounds) or 3
+			ZE2.rounds_left = tonumber(mapheaderinfo[map].ze2_rounds) or ZE2.DEFAULT_ROUNDS
 
 			for i,v in pairs(ZE2.PreviousMaps) do
 				v.matches_ago = $ + 1

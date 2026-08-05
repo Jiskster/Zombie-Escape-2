@@ -24,8 +24,9 @@ ZE2.IntermissionVars = {
 	slideout_anim = 3*TICRATE/2;
 }
 
+ZE2.DEFAULT_ROUNDS = 2
 ZE2.queuing_round = false
-ZE2.rounds_left = 3
+ZE2.rounds_left = ZE2.DEFAULT_ROUNDS
 
 ZE2.PreviousMaps = {}
 

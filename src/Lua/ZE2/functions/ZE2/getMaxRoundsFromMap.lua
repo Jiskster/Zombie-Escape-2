@@ -1,5 +1,5 @@
 function ZE2.getMaxRoundsFromMap(map)
-	local output = 3
+	local output = ZE2.DEFAULT_ROUNDS
 
 	if mapheaderinfo[map or gamemap].ze2_rounds then
 		output = tonumber(mapheaderinfo[map or gamemap].ze2_rounds)

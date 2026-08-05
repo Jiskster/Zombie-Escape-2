@@ -124,7 +124,6 @@ SkyNum = 11
 NoZone = True
 SelectHeading = Escape Maps
 Lua.ze2_timelimit = 5
-Lua.ze2_rounds = 2
 Lua.ze2_laddertag = 200
 
 Level 16
@@ -177,7 +176,6 @@ NoZone = True
 SelectHeading = Escape Maps
 Lua.ze2_timelimit = 7
 Lua.ze2_zombiereleasetime = 12
-Lua.ze2_rounds = 2
 Lua.ze2_laddertag = 200
 
 Level 23
@@ -211,7 +209,6 @@ SkyboxScale = 64
 NoVisitNeeded = true
 Lua.ze2_timelimit = 6
 Lua.ze2_laddertag = 209
-Lua.ze2_rounds = 2
 
 Level 26
 Levelname = Westopolis
@@ -226,7 +223,6 @@ SkyboxScale = 64
 NoZone = true
 SelectHeading = Escape Maps
 Lua.ze2_timelimit = 6
-Lua.ze2_rounds = 2
 
 Level 27
 Levelname = Azure Sanctuary
@@ -237,7 +233,6 @@ TypeOfLevel = Escape
 SkyNum = 101
 SelectHeading = Escape Maps
 Lua.ze2_timelimit = 6
-Lua.ze2_rounds = 2
 
 Level 28
 Levelname = Egg Fortress
