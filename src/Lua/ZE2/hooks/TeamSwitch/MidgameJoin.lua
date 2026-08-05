@@ -65,7 +65,8 @@ return function(player, team, fromspectators, autobalance, scramble)
 			elseif not roundresetting then -- reset whole match
 				roundresetting = true
 				player.ze2.injoinqueue = true
-				COM_BufInsertText(server, "map "..gamemap)
+				G_SetCustomExitVars(gamemap, 2)
+				G_ExitLevel()
 				return false
 			end
 		end
