@@ -16,8 +16,6 @@ return function(player) ---@param player player_t
 	if not ZE2.round_active and player.spectator and player.jointime <= TICRATE then
 		player.spectator = false
 		player.playerstate = PST_REBORN
-		G_DoReborn(#player)
-
 		ZE2.ResetPlayer(player, 1, true, true) -- Change to survivor and reset inventory
 	end
 

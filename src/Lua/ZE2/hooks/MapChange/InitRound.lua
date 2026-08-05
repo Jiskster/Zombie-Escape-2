@@ -71,10 +71,6 @@ local function InitRound(map)
 			if player.ze2.outofgame or player.ze2.injoinqueue then
 				player.spectator = false
 				player.playerstate = PST_REBORN
-
-				if (gamestate == GS_LEVEL) then
-					G_DoReborn(#player)
-				end
 			end
 			player.ze2.injoinqueue = false
 			player.ze2.outofgame = false
