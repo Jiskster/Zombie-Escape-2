@@ -271,6 +271,10 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 	if mo.shield_health then
 		if (mo.shield_efficiency > 0) then -- armor as percentage
 			local absorbed_damage = FixedMul(dmg, mo.shield_efficiency) -- efficiency in fracunits -- FU = 100%, FU/2 = 50%, and so on
+			if (absorbed_damage <= 0) then -- if the damage is too low, it can protect nothing, avoid that and absorb 1 point at minimum
+				absorbed_damage = 1
+			end
+
 			if (mo.shield_health <= absorbed_damage) then -- (TODO: play ring loss sound and damage fade when this happens)
 				absorbed_damage = mo.shield_health
 				mo.shield_efficiency = 0

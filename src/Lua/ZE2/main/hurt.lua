@@ -1,5 +1,3 @@
-local KB = ZE2.Knockback
-
 freeslot("SPR_ZE2_DAMAGENUMBER")
 
 -- Overwrite xSlinger function
@@ -164,28 +162,5 @@ xSlinger.addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 
 	if attacker and attacker.player and attacker.team == 2 and ZE2.zombie_releasetime then
 		return false
-	end
-end)
-
-addHook("SeenPlayer", function(player)
-	if gametype == GT_ZE2 then
-		return false
-	end
-end)
-
-COM_AddCommand("drophand", function(player)
-	local xS = player.xSlinger
-
-	if not (player.mo and player.mo.valid) then
-		return end;
-
-	if (ZE2.pregame_timeleft) then
-		return end;
-
-	local droppeditem = xS:hand_drop()
-	if droppeditem and droppeditem.valid then
-		droppeditem.team = xS.team
-		droppeditem.interaction.team_restrict = {enabled = true}
-		droppeditem.interaction.team_restrict[xS.team] = true
 	end
 end)

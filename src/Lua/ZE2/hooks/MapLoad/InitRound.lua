@@ -1,1 +1,0 @@
-return ZE2.init_gamevars

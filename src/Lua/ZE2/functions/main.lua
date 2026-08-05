@@ -4,7 +4,6 @@
 local queue = {
 	"Require"; -- Remember, initiate this first!!!
 	"Copy"; -- Always second.
-	"init_gamevars";
 	"getMaxRoundsFromMap";
 	"getCurrentRound";
 	"ZCollide";

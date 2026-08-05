@@ -23,12 +23,6 @@ local function CheckGameForWinRing()
 		end
 	end
 
-	if not haswinring then
-		print("Mapnum " .. gamemap .. " doesn't have an exit. Forcing zombie win.")
-		ZE2:StartWin(2)
-		return false
-	end
-
 	return true
 end
 
@@ -255,7 +249,7 @@ addHook("ThinkFrame", function()
 	end
 
 	if ZE2.time_limit and ZE2.game_time >= ZE2.time_limit and not (ZE2.game_ended) then
-		ZE2:StartWin(1)
+		ZE2:StartWin(2)
 	end
 
 	-- Countdown Voice

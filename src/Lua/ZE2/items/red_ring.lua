@@ -72,13 +72,15 @@ xSlinger.registerItem("red_ring", {
 
 	missile_tick = function(self, mo, missile)
 		local ghost = P_SpawnGhostMobj(missile)
-		ghost.tics = 1
+		ghost.tics = 2
+		P_SetOrigin(ghost, missile.x, missile.y, missile.z)
 	end;
 
 	missile_subtick = function(self, mo, missile)
 		local ghost = P_SpawnGhostMobj(missile)
-		ghost.tics = 1
+		ghost.tics = 2
 		ghost.frame = $|FF_ADD
+		P_SetOrigin(ghost, missile.x, missile.y, missile.z)
 	end;
 
 	skin_override = {

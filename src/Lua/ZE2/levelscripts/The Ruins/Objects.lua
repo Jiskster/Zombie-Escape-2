@@ -2,6 +2,7 @@ freeslot("MT_FLOWEY1", "S_FLOWEY1", "SPR_FLWE")
 freeslot("MT_DTREE", "S_DTREE", "SPR_DTRE")
 freeslot("MT_TORIEL", "S_TORI_STND", "S_TORI_DIE1")
 freeslot("MT_TORIEL2", "SPR_TORI", "S_TORI_FRIENDLY")
+freeslot("MT_TORIELFIREBALL", "MT_TORIELFIREBALLTRAIL", "S_TORIELFIREBALL", "S_TORIELFIREBALLTRAIL1", "S_TORIELFIREBALLTRAIL2")
 freeslot("S_TORI_DIE1", "S_TORI_DIE2")
 freeslot("S_TORI_PAW")
 
@@ -110,7 +111,7 @@ mobjinfo[MT_TORIEL].npc_name = "Toriel"
 mobjinfo[MT_TORIEL].npc_name_color = SKINCOLOR_WHITE
 mobjinfo[MT_TORIEL].npc_spawnhealth = {10000,20000}
 --mobjinfo[MT_TORIEL].rubydrop = {30,60}
-mobjinfo[MT_TORIEL].forcedamage = 1000
+mobjinfo[MT_TORIEL].forcedamage = 10
 mobjinfo[MT_TORIEL].antiknockback = true
 
 states[S_TORI_STND] = {
@@ -141,3 +142,93 @@ states[S_TORI_PAW] = {
 	tics = -1,
 	nextstate = S_TORI_PAW
 }
+
+-- cuz MT_FIREBALL is bad
+
+states[S_TORIELFIREBALL] = {
+	sprite = SPR_FBLL,
+	frame = FF_FULLBRIGHT,
+	tics = 1,
+	action = A_SpawnObjectRelative,
+	var1 = 0,
+	var2 = MT_TORIELFIREBALLTRAIL,
+	nextstate = S_TORIELFIREBALL,
+	sprite2 = 0
+}
+
+states[S_TORIELFIREBALLTRAIL1] = {
+	sprite = SPR_FBLL,
+	frame = 1|FF_FULLBRIGHT|FF_TRANS50,
+	tics = 1,
+	action = A_SetScale,
+	var1 = FRACUNIT*3/4,
+	var2 = 0,
+	nextstate = S_TORIELFIREBALLTRAIL2,
+	sprite2 = 0
+}
+
+states[S_TORIELFIREBALLTRAIL2] = {
+	sprite = SPR_FBLL,
+	frame = 1|FF_FULLBRIGHT|FF_TRANS50,
+	tics = 8,
+	action = A_SetScale,
+	var1 = FRACUNIT/6,
+	var2 = 1,
+	nextstate = S_NULL,
+	sprite2 = 0
+}
+
+mobjinfo[MT_TORIELFIREBALLTRAIL] = {
+	spawnstate = S_TORIELFIREBALLTRAIL1,
+	spawnhealth = 1000,
+	reactiontime = 8,
+	radius = 16 * FRACUNIT,
+	height = 16 * FRACUNIT,
+	damage = 6,
+	flags = MF_NOBLOCKMAP|MF_NOGRAVITY|MF_NOCLIP|MF_RUNSPAWNFUNC
+}
+
+mobjinfo[MT_TORIELFIREBALL] = {
+	spawnstate = S_TORIELFIREBALL,
+	spawnhealth = 1000,
+	reactiontime = 8,
+	speed = 40 * FRACUNIT,
+	radius = 4 * FRACUNIT,
+	height = 8 * FRACUNIT,
+	mass = DMG_FIRE,
+	damage = 6,
+	flags = MF_FIRE|MF_BOUNCE
+}
+
+addHook("MobjMoveCollide", function (mobj, target)
+	if not mobj or not mobj.valid then return false end
+	if not target or not target.valid then return false end
+
+	if (target.health <= 0) then return false end 
+	if mobj.target and (mobj.target == target) then return false end
+
+	local mobjheight, targetheight = FixedMul(mobj.height, mobj.scale), FixedMul(target.height, target.scale)
+	if (target.z > (mobj.z + mobjheight)) then return false end
+	if ((target.z + targetheight) < mobj.z) then return false end
+
+	if not (target.flags & MF_SHOOTABLE) then
+		return ((target.flags & MF_SOLID) ~= 0)
+	end
+
+	P_DamageMobj(target, mobj, mobj.target, mobj.info and mobj.info.damage or 1, DMG_FIRE)
+	P_KillMobj(mobj, nil, nil, 0)
+	return true
+end, MT_TORIELFIREBALL)
+
+addHook("MobjThinker", function (mobj)
+	if not mobj or not mobj.valid then return end
+
+	if (R_PointToDist2(0, 0, mobj.momx, mobj.momy) <= (16 * FRACUNIT))then
+		P_KillMobj(mobj, nil, nil, 0)
+		return
+	end
+
+	if (mobj.eflags & MFE_JUSTHITFLOOR) then
+		mobj.momz = P_MobjFlip(mobj) * FixedMul(5 * FRACUNIT, mobj.scale);
+	end
+end, MT_TORIELFIREBALL)

@@ -1,12 +1,15 @@
-local cv_fov
-local cv_glshearing
+local cv_fov = CV_FindVar("fov")
+local cv_glshearing = CV_FindVar("gr_shearing")
+
+local l_angle = 0
+local l_aiming = 0
 
 /*
 	Code updated in Lua by GenericHeroGuy for libSG
 	Ported to C by NepDisk and acutally made to work and fixed by Indev!(Thanks so much!)
 	Badly uncapped in C by GenericHeroGuy
 	original code by Lat'
-	Code from SRB2Kart Saturn, retranslated to Lua with some edits by luigi budd
+	Code from SRB2Kart Saturn, retranslated to Lua with some edits by luigi budd/epix, jisk and lugent
 */
 rawset(_G, "K_GetScreenCoords",function(vid,p,cam, point, props)
 	props = $ or {}
@@ -17,13 +20,6 @@ rawset(_G, "K_GetScreenCoords",function(vid,p,cam, point, props)
 	local anglecliponly = props.anglecliponly or false -- Only clips the result if angle checks fail. Does not clip to screen dimensions.
 	local centered = props.centered or false -- Centers to the object's middle (mo.z + mo.height/2)
 	local viewoverride = props.viewoverride
-
-	if not cv_glshearing then
-		cv_glshearing = CV_FindVar("gr_shearing")
-	end
-	if not cv_fov then
-		cv_fov = CV_FindVar("fov")
-	end
 	local my_fov = (cv_fov.value) + (p.fovadd)
 
 	local x,y,scale
@@ -42,13 +38,9 @@ rawset(_G, "K_GetScreenCoords",function(vid,p,cam, point, props)
 		return {x=0,y=0,onscreen=onscreen}
 	end
 
-	if (takis_custombuild and interpmobj) then
-		targx,targy,targz = vid.interpolateMobj(point)
-	else
-		targx = point.x
-		targy = point.y
-		targz = point.z
-	end
+	targx = point.x
+	targy = point.y
+	targz = point.z
 
 	local isMobj = type(point) == "userdata" and userdataType(point) == "mobj_t"
 	if isMobj and centered then
@@ -66,10 +58,14 @@ rawset(_G, "K_GetScreenCoords",function(vid,p,cam, point, props)
 		elseif (SUBVERSION < 16) then --assuming camera fix was merged into 2.2.16, and we're on 2.2.15
 			local m = p.realmo
 			camPos = {x = m.x, y = m.y, z = p.viewz}
-			--sglib uses p.realmo.angle, so...
-			camAngle = m.angle
-			camAiming = p.aiming
-		--if we ARE on 2.2.16 then do nothing, everythings already correct
+			
+			if (p == consoleplayer or p == secondarydisplayplayer) then
+				camAngle = l_angle
+				camAiming = l_aiming
+			else -- use server angles
+				camAngle = m.angle
+				camAiming = p.aiming
+			end
 		end
 	end
 	if (p.awayviewmobj and p.awayviewmobj.valid and p.awayviewtics > 0) then
@@ -228,4 +224,9 @@ rawset(_G, "K_GetScreenCoords",function(vid,p,cam, point, props)
 		camAiming = camAiming,
 		camPos = camPos,
 	}
+end)
+
+addHook("PlayerCmd", function(player, cmd)
+	l_angle = cmd.angleturn*FU
+	l_aiming = cmd.aiming*FU
 end)

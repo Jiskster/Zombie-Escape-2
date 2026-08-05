@@ -173,7 +173,9 @@ addHook("ThinkFrame", function()
 			timer.time = $ - 1
 
 			if rtimer.extrainfo then
-				for _,info in ipairs(rtimer.extrainfo) do
+				for ii=1,#rtimer.extrainfo do
+					local info = rtimer.extrainfo[ii]
+					
 					if (info.event_time) and (info.event_func) then
 						if (timer.time == info.event_time) then
 							info.event_func(timer.id)

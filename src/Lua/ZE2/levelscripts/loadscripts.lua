@@ -59,3 +59,5 @@ dofolder("TorielBoss")
 dofolder("FloweyStuff")
 
 folder = "Secret Lab"; dofolder("Timers");
+
+folder = "Fatal Desert"; dofolder("Timers");

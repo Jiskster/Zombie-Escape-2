@@ -170,10 +170,18 @@ addHook("ThinkFrame", function()
 			effect.fuse = effect.fuse - 1
 			if effectinfo.tick and mobj and mobj.valid then
 				effectinfo.tick(effect, mobj, effect.fuse)
+				if not mobj or not mobj.valid then
+					removedelayed[#removedelayed + 1] = {key = index}
+					continue
+				end
 			end
 			if not effect.fuse then
 				if effectinfo.endfunc and mobj and mobj.valid then
 					effectinfo.endfunc(effect, mobj)
+					if not mobj or not mobj.valid then
+						removedelayed[#removedelayed + 1] = {key = index}
+						continue
+					end
 				end
 				mobj:remove_effect(effect, true)
 			end

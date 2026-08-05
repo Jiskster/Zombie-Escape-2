@@ -1,7 +1,7 @@
 local base_hooks = {}
 
 local hook_order = {
-	"MapLoad",
+	"MapChange",
 	"PlayerSpawn",
 	"TeamSwitch",
 	"PreThinkFrame",
@@ -11,10 +11,11 @@ local hook_order = {
 	"ViewpointSwitch",
 	"PlayerCmd",
 	"NetVars",
+	"SeenPlayer",
 }
 
 local hook_names = {
-	MapLoad = {"InitRound"};
+	MapChange = {"InitRound"};
 	PlayerSpawn = {
 		"InitPlayer";
 		"ZombieSpawn";
@@ -38,6 +39,7 @@ local hook_names = {
 	ViewpointSwitch = {"Main"};
 	PlayerCmd = {"MidgameJoin"};
 	NetVars = {"Main"};
+	SeenPlayer = {"Main"};
 }
 
 -- Register Hooks.

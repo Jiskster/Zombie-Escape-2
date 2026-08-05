@@ -83,3 +83,20 @@ COM_AddCommand("z_listkarma", function(player)
 		CONS_Printf(player, p.name.." ["..#p.."]: "..p.ze2.karma)
 	end
 end, COM_LOCAL)
+
+COM_AddCommand("drophand", function(player)
+	local xS = player.xSlinger
+
+	if not (player.mo and player.mo.valid) then
+		return end;
+
+	if (ZE2.pregame_timeleft) then
+		return end;
+
+	local droppeditem = xS:hand_drop()
+	if droppeditem and droppeditem.valid then
+		droppeditem.team = xS.team
+		droppeditem.interaction.team_restrict = {enabled = true}
+		droppeditem.interaction.team_restrict[xS.team] = true
+	end
+end)

@@ -1,4 +1,4 @@
-ZE2.init_gamevars = function(map) -- Variables vary per game.
+local function InitRound(map)
 	ZE2.round_active = false;
 	ZE2.game_ended = false;
 	ZE2.win_tics = 0; -- How many tics after a win screen. Resets on mapload.
@@ -33,7 +33,7 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 			ZE2.rounds_left = $ - 1
 			ZE2.queuing_round = false
 		else
-			ZE2.rounds_left = tonumber(mapheaderinfo[map].ze2_rounds) or 3
+			ZE2.rounds_left = tonumber(mapheaderinfo[map].ze2_rounds) or ZE2.DEFAULT_ROUNDS
 
 			for i,v in pairs(ZE2.PreviousMaps) do
 				v.matches_ago = $ + 1
@@ -72,11 +72,17 @@ ZE2.init_gamevars = function(map) -- Variables vary per game.
 				player.spectator = false
 				player.playerstate = PST_REBORN
 
-				G_DoReborn(#player)
+				if (gamestate == GS_LEVEL) then
+					G_DoReborn(#player)
+				end
 			end
 			player.ze2.injoinqueue = false
 			player.ze2.outofgame = false
 			player.ze2.respawntics = 0
 		end
 	end
-end; ZE2.init_gamevars();
+end
+
+InitRound()
+
+return InitRound

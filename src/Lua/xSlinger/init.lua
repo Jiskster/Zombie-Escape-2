@@ -32,8 +32,6 @@ dofile "xSlinger/libs/w2s" -- credits in file
 
 xSlinger.settings = {}
 
-xSlinger.BulletList = {}
-
 xSlinger.visible_huds = {
 	health = true;
 	inventory = true;
