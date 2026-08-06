@@ -201,6 +201,5 @@ addHook("MapChange", function()
 end)
 
 addHook("NetVars", function(net)
-	ZE2.mapladdertag = net($)
     ZE2.CharacterSlots = net($)
 end)
