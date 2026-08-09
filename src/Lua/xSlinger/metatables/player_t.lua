@@ -9,23 +9,15 @@ mt.__index = function(player, key)
 
 		if not internal_table then
 			player[itername] = xSlinger.init()
-
-			player[itername].player = player
-
-			if player.mo then
-				player[itername].mo = player.mo
-			end
-
-			return player[itername]
-		else
-			player[itername].player = player
-
-			if player.mo then
-				player[itername].mo = player.mo
-			end
-
-			return player[itername]
 		end
+		
+		player[itername].player = player
+
+		if player.mo then
+			player[itername].mo = player.mo
+		end
+
+		return player[itername]
 	else
 		return old_index(player, key)
 	end

@@ -36,10 +36,8 @@ return function(player)
 						player.ze2.injoinqueue = false
 						player.spectator = true
 						player.playerstate = PST_REBORN
-						G_DoReborn(#player)
 					elseif player.xSlinger.team == 2 then
 						player.playerstate = PST_REBORN
-						G_DoReborn(#player)
 						ZE2.ResetPlayer(player, 2, true) -- Mainly to reset inventory
 					end
 				end

@@ -258,7 +258,9 @@ local function getMissileDef(mobj)
 end
 
 addHook("MobjThinker", function(mobj)
-	if not mobj or not mobj.valid then return end
+	if not (mobj and mobj.valid and mobj.health) then 
+		return 
+	end
 
 	if mobj.iteminfo and mobj.iteminfo.missile_tick and mobj.target then
 		mobj.iteminfo:missile_tick(mobj.target, mobj)
@@ -372,10 +374,9 @@ end, MT_XS_MISSILE)
 addHook("MobjFuse", function(mobj)
 	if not mobj or not mobj.valid or (mobj.health <= 0) then return end
 
-	mobj.fuse = -1
 	xSlinger.KillMissile(mobj)
-	return true
 end, MT_XS_MISSILE)
+
 
 addHook("MobjDeath", function(mobj)
 	if (mobj.health <= 0) then return end
