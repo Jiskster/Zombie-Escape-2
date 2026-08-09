@@ -38,9 +38,13 @@ local function RenderPlayer(v, ypos, player, teamcolor, spectator) -- standard
 		else
 			DrawString(BASEVIDWIDTH - (2 + 52), ypos + textspos, "$" .. player.ze2.cash, V_ALLOWLOWERCASE|textcolor, "small-right")
 		end
+	else
+		if player.ze2.injoinqueue then
+			DrawString(BASEVIDWIDTH - (2 + 52), ypos + textspos, "Queued", V_ALLOWLOWERCASE|textcolor, "small-right")
+		end
 	end
 
-	local latencytext = player.ping .. "ms (" .. player.cmd.latency .. ")"
+	local latencytext = player.ping .. "ms"
 	if (player == server) then
 		latencytext = "Host"
 	end
@@ -76,9 +80,13 @@ local function RenderPlayerSmall(v, ypos, player, teamcolor, spectator) -- compa
 		else
 			DrawString(BASEVIDWIDTH - (2 + 52), ypos + textspos, "$" .. player.ze2.cash, V_ALLOWLOWERCASE|textcolor, "small-right")
 		end
+	else
+		if player.ze2.injoinqueue then
+			DrawString(BASEVIDWIDTH - (2 + 52), ypos + textspos, "Queued", V_ALLOWLOWERCASE|textcolor, "small-right")
+		end
 	end
 
-	local latencytext = player.ping .. "ms (" .. player.cmd.latency .. ")"
+	local latencytext = player.ping .. "ms"
 	if (player == server) then
 		latencytext = "Host"
 	end
@@ -117,9 +125,13 @@ local function RenderPlayerSmaller(v, ypos, player, teamcolor, spectator) -- sup
 		else
 			DrawString(BASEVIDWIDTH - (2 + 52), ypos + textspos, "$" .. player.ze2.cash, V_ALLOWLOWERCASE|textcolor, "small-right")
 		end
+	else
+		if player.ze2.injoinqueue then
+			DrawString(BASEVIDWIDTH - (2 + 52), ypos + textspos, "Queued", V_ALLOWLOWERCASE|textcolor, "small-right")
+		end
 	end
 
-	local latencytext = player.ping .. "ms (" .. player.cmd.latency .. ")"
+	local latencytext = player.ping .. "ms"
 	if (player == server) then
 		latencytext = "Host"
 	end
