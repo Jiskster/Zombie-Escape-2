@@ -3,8 +3,6 @@ freeslot("MT_CRRUBY","S_CRRUBY","SPR_RBY1", "sfx_rbyhit")
 sfxinfo[sfx_rbyhit].caption = "Ruby"
 
 function ZE2:GivePlayerCash(player, amount)
-	if (player.ze2 == nil) then return false end
-
 	if ((player.ze2.cash + amount) > player.ze2.cash_limit) then
 		player.ze2.cash = player.ze2.cash_limit
 		return false

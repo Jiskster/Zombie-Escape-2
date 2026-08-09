@@ -147,7 +147,6 @@ addHook("PostThinkFrame", function()
 		if gametype ~= GT_ZE2 then continue end
 		if ZE2.game_ended then continue end
 		if ZE2.pregame_timeleft then continue end
-		if not player.ze2 then continue end
 
 		if player.ze2.crouching and switchablestates[player.mo.state] then
 			if not (player.mo.state == S_PLAY_CROUCH_ZE2) then
