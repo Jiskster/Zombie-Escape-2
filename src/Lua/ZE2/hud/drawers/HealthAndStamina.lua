@@ -20,6 +20,27 @@ local function FadeAmount(amount)
 end
 
 ---@param v videolib
+---@param x integer
+---@param y integer
+---@param width integer
+---@param height integer
+---@param offset integer
+---@param amount fixed_t
+---@param total fixed_t
+---@param color integer
+---@param flags integer
+---@param alpha fixed_t
+local function DrawHorizontalBar(v, x, y, width, height, offset, amount, total, color, flags, alpha)
+    for index = 0, width, 1 do
+        if ((index * FU) >= amount) then break end
+
+        local fade = min(FixedMul(alpha, max(amount - (index * FU), 0)), alpha)
+        local transparency = FadeAmount(fade)
+        v.drawFill(x + ((offset + 1) * index), y, 1, height, color|flags|transparency)
+    end
+end
+
+---@param v videolib
 ---@param player player_t
 ---@param x fixed_t
 ---@param y fixed_t
@@ -43,8 +64,13 @@ local function DrawHealthAndStamina(v, player, x, y, flags)
         stamina = ease.inquart(FU / 2, stamina, ze2.sprintmeter)
     end
 
+    local bar_visible = false
+    if (team == 1) or (special and special.button) then
+        bar_visible = true
+    end
+
     local bg_height = 20
-    if (team == 2) and (not special or not special.button) then
+    if not bar_visible then
         bg_height = 12
         y = y + (8 * FU)
     end
@@ -64,37 +90,47 @@ local function DrawHealthAndStamina(v, player, x, y, flags)
     end
     v.drawString(x + (10 * FU), y, mo.health, flags|health_text, "fixed")
 
-    local fillx = FixedInt(x) + 11
-    local filly = FixedInt(y) + 11
-    local filltotal = 20
-    local filltotalfrac = filltotal * FU
-    local fillamount = FixedMul(FixedDiv(stamina, staminamax), filltotalfrac)
-    if (team == 1) then
-        fillx = FixedInt(x) + 1
-        if ze2.sprintdelay then
-            fillamount = ((leveltime / 4) & 1) and filltotalfrac or 0
+    if bar_visible then
+        local fillx = FixedInt(x) + 11
+        local filly = FixedInt(y) + 11
+        local filltotal = 40
+        local filltotalfrac = filltotal * FU
+        local fillamount = FixedMul(FixedDiv(stamina, staminamax), filltotalfrac)
+        if (team == 1) then
+            fillx = FixedInt(x) + 1
         end
-    end
 
-    if (team == 1) or ((team == 2) and special and special.button) then
-        v.drawFill(fillx - 1, filly - 1, (filltotal + 1) * 2, 6, 31|flags|V_TRANSLUCENT)
-        for index = 0, filltotal, 1 do
-            if ((index * FU) >= fillamount) then break end
-
-            local amount = min(FixedMul(FU, max(fillamount - (index * FU), 0)), FU)
-            local transparency = FadeAmount(amount)
-            local color = 132
-            if (team == 2) then
-                color = 53
-            elseif ze2.sprintdelay then
-                color = 35
-            elseif (stamina < (30 * FU)) then
-                color = 73
+        v.drawFill(fillx - 1, filly - 1, filltotal + 2, 6, 31|flags|V_TRANSLUCENT)
+        if (team == 2) then
+            DrawHorizontalBar(v, fillx, filly, filltotal, 1, 0, fillamount, filltotalfrac, 54, flags, FU)
+            DrawHorizontalBar(v, fillx, filly + 1, filltotal, 1, 0, fillamount, filltotalfrac, 48, flags, FU)
+            DrawHorizontalBar(v, fillx, filly + 2, filltotal, 1, 0, fillamount, filltotalfrac, 48, flags, FU)
+            DrawHorizontalBar(v, fillx, filly + 3, filltotal, 1, 0, fillamount, filltotalfrac, 54, flags, FU)
+        elseif ze2.sprintdelay then
+            local alpha = FU - sin((leveltime * 2) * ANG10)
+            DrawHorizontalBar(v, fillx, filly, filltotal, 1, 0, filltotalfrac, filltotalfrac, 35, flags, alpha)
+            DrawHorizontalBar(v, fillx, filly + 1, filltotal, 1, 0, filltotalfrac, filltotalfrac, 32, flags, alpha)
+            DrawHorizontalBar(v, fillx, filly + 2, filltotal, 1, 0, filltotalfrac, filltotalfrac, 32, flags, alpha)
+            DrawHorizontalBar(v, fillx, filly + 3, filltotal, 1, 0, filltotalfrac, filltotalfrac, 35, flags, alpha)
+        else
+            DrawHorizontalBar(v, fillx, filly, filltotal, 1, 0, fillamount, filltotalfrac, 132, flags, FU)
+            DrawHorizontalBar(v, fillx, filly + 1, filltotal, 1, 0, fillamount, filltotalfrac, 128, flags, FU)
+            DrawHorizontalBar(v, fillx, filly + 2, filltotal, 1, 0, fillamount, filltotalfrac, 128, flags, FU)
+            DrawHorizontalBar(v, fillx, filly + 3, filltotal, 1, 0, fillamount, filltotalfrac, 132, flags, FU)
+            if (stamina < (30 * FU)) then
+                local alpha = FU - sin(leveltime * (ANG10 / 2))
+                DrawHorizontalBar(v, fillx, filly, filltotal, 1, 0, fillamount, filltotalfrac, 73, flags, alpha)
+                DrawHorizontalBar(v, fillx, filly + 1, filltotal, 1, 0, fillamount, filltotalfrac, 80, flags, alpha)
+                DrawHorizontalBar(v, fillx, filly + 2, filltotal, 1, 0, fillamount, filltotalfrac, 80, flags, alpha)
+                DrawHorizontalBar(v, fillx, filly + 3, filltotal, 1, 0, fillamount, filltotalfrac, 73, flags, alpha)
             end
-            v.drawFill(fillx + (2 * index) + 1, filly, 1, 1, color|flags|transparency)
-            v.drawFill(fillx + (2 * index) + 1, filly + 1, 1, 1, (color + 1)|flags|transparency)
-            v.drawFill(fillx + (2 * index), filly + 2, 1, 1, (color + 2)|flags|transparency)
-            v.drawFill(fillx + (2 * index), filly + 3, 1, 1, (color + 3)|flags|transparency)
+        end
+
+        if ze2.sprintdelay then
+            v.drawString((fillx * FU) + (filltotalfrac / 2), filly * FU, "Exhausted", flags|V_YELLOWMAP|V_20TRANS|V_ALLOWLOWERCASE, "small-fixed-center")
+        else
+            local percent = FixedInt(FixedCeil(FixedDiv(fillamount, filltotalfrac) * 100))
+            v.drawString(((fillx * FU) + filltotalfrac) - FU, filly * FU, percent .. "%", flags|V_20TRANS, "small-fixed-right")
         end
     end
 
@@ -128,9 +164,9 @@ local function DrawHealthAndStamina(v, player, x, y, flags)
 
             v.drawCropped(shield_x, shield_y + (crop_height / 2), FU / 2, FU / 2, shield_icon, flags|V_ADD|V_30TRANS, v.getColormap(nil, shield_color, nil), 0, crop_height, shield_icon.width * FU, shield_icon.height * FU)
 
-            v.drawString(x + (52 * FU), shield_y_text, mo.shield_health, flags, "thin-fixed-center")
+            v.drawString(x + (52 * FU), shield_y_text, mo.shield_health, flags|V_10TRANS, "thin-fixed-center")
             if (mo.shield_efficiency > 0) then
-                v.drawString(x + (52 * FU), y + (11 * FU), FixedInt(FixedDiv(mo.shield_efficiency, FU) * 100) .. "%", flags, "small-fixed-center")
+                v.drawString(x + (52 * FU), y + (11 * FU), FixedInt(FixedDiv(mo.shield_efficiency, FU) * 100) .. "%", flags|V_10TRANS, "small-fixed-center")
             end
         else
             v.drawScaled(shield_x, shield_y, FU - (FU / 4), shield_icon, flags|V_REVERSESUBTRACT, v.getColormap(nil, SKINCOLOR_CARBON, "Grayscale"))
