@@ -1,7 +1,7 @@
 local INCREMENT = FRACUNIT / 2
-local DECREMENT = FRACUNIT / 2
+local DECREMENT = FixedDiv(35*FU, 100*FU) 
 
-local BOOST_DECREMENT = 25 * FRACUNIT
+local BOOST_DECREMENT = 10 * FRACUNIT
 
 local SIDEMOVE_THRESHOLD = 28 -- So that players dont sideways sprint.
 
