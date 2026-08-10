@@ -69,36 +69,40 @@ local function HandleSprinting(player)
 			ze2.runstart = max(0, ze2.runstart - 2)
 		end
 	end
+	
+	if ground then
+		if ze2.crouching and ze2.isRunning then -- Rollin Time
+			if (speed >= 12) then
+				player.pflags = player.pflags | PF_SPINNING
+			else
+				player.pflags = player.pflags & ~(PF_SPINNING)
+			end
+		end
 
-	if not ground then return end
-
-	if ze2.crouching and ze2.isRunning then -- Rollin Time
-		if (speed >= 12) then
-			player.pflags = player.pflags | PF_SPINNING
-		else
-			player.pflags = player.pflags & ~(PF_SPINNING)
+		-- Initial Running code
+		if ze2.rundelay then
+			ze2.rundelay = max(0, ze2.rundelay - 1)
+		elseif ze2.sprintmeter then
+			if (speed >= 8) and (cmd.forwardmove > 0) and (cmd.buttons & BT_CUSTOM1) 
+			and not ze2.runstart and (abs(cmd.sidemove) <= SIDEMOVE_THRESHOLD) then
+				if not ze2.isRunning and not ze2.crouching then -- Start sprint
+					ze2:ChangeStamina(-BOOST_DECREMENT)
+					S_StartSound(mobj, sfx_s3ka2)
+					ze2.runstart = 9
+				end
+				player.drawangle = mobj.angle
+				ze2.isRunning = true
+			elseif not (cmd.buttons & BT_CUSTOM1) then
+				if ze2.isRunning then
+					ze2.rundelay = 6 -- delay when letting go
+				end
+				ze2.isRunning = false
+			end
 		end
 	end
-
-	-- Initial Running code
-	if ze2.rundelay then
-		ze2.rundelay = max(0, ze2.rundelay - 1)
-	elseif ze2.sprintmeter then
-		if (speed >= 8) and (cmd.forwardmove > 0) and (cmd.buttons & BT_CUSTOM1) 
-		and not ze2.runstart and (abs(cmd.sidemove) <= SIDEMOVE_THRESHOLD) then
-			if not ze2.isRunning and not ze2.crouching then -- Start sprint
-				ze2:ChangeStamina(-BOOST_DECREMENT)
-				S_StartSound(mobj, sfx_s3ka2)
-				ze2.runstart = 9
-			end
-			player.drawangle = mobj.angle
-			ze2.isRunning = true
-		elseif not (cmd.buttons & BT_CUSTOM1) then
-			if ze2.isRunning then
-				ze2.rundelay = 6 -- delay when letting go
-			end
-			ze2.isRunning = false
-		end
+	
+	if (mobj.eflags & MFE_TOUCHWATER) or (mobj.eflags & MFE_UNDERWATER) then
+		player.pflags = player.pflags & ~(PF_SPINNING)
 	end
 end
 
