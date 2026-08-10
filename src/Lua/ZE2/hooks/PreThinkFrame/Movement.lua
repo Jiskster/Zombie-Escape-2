@@ -3,6 +3,8 @@ local DECREMENT = FRACUNIT / 2
 
 local BOOST_DECREMENT = 25 * FRACUNIT
 
+local SIDEMOVE_THRESHOLD = 28 -- So that players dont sideways sprint.
+
 ---@param player player_t
 local function HandleSprinting(player)
 	if (player.xSlinger.team ~= 1) then return end
@@ -51,7 +53,7 @@ local function HandleSprinting(player)
 		player.runspeed = 32000 * FRACUNIT
 	end
 
-	if not cmd.forwardmove or not ze2.sprintmeter or ze2.sprintdelay or cmd.sidemove then -- Stop running if you meet these requirements:
+	if not cmd.forwardmove or not ze2.sprintmeter or ze2.sprintdelay or (abs(cmd.sidemove) > SIDEMOVE_THRESHOLD) then -- Stop running if you meet these requirements:
 		if ze2.isRunning then
 			player.pflags = player.pflags & ~(PF_SPINNING)
 		end
@@ -82,7 +84,8 @@ local function HandleSprinting(player)
 	if ze2.rundelay then
 		ze2.rundelay = max(0, ze2.rundelay - 1)
 	elseif ze2.sprintmeter then
-		if (speed >= 8) and (cmd.forwardmove > 0) and (cmd.buttons & BT_CUSTOM1) and not ze2.runstart and not cmd.sidemove then
+		if (speed >= 8) and (cmd.forwardmove > 0) and (cmd.buttons & BT_CUSTOM1) 
+		and not ze2.runstart and (abs(cmd.sidemove) <= SIDEMOVE_THRESHOLD) then
 			if not ze2.isRunning and not ze2.crouching then -- Start sprint
 				ze2:ChangeStamina(-BOOST_DECREMENT)
 				S_StartSound(mobj, sfx_s3ka2)
