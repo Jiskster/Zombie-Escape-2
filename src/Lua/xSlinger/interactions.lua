@@ -243,6 +243,11 @@ addHook("MobjMoveCollide", function(tmthing, thing)
 	end
 
 	local player = tmthing.target.player
+	if not player then
+		P_RemoveMobj(tmthing) -- ditty
+		return false
+	end
+
 	local pmo = tmthing.target
 	local xS = player.xSlinger
 
