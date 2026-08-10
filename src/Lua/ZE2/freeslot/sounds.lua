@@ -16,10 +16,6 @@ freeslot("sfx_wpfire", "sfx_wpfir2")
 sfxinfo[sfx_wpfire].caption = "Shooting"
 sfxinfo[sfx_wpfir2].caption = "Shooting"
 
-freeslot("sfx_z_rel1", "sfx_z_rel2")
-sfxinfo[sfx_z_rel1].caption = "Reloading..."
-sfxinfo[sfx_z_rel2].caption = "Reload done"
-
 freeslot("sfx_z20s", "sfx_cone", "sfx_ctwo", "sfx_cthr", "sfx_cfou", "sfx_cfiv", "sfx_csix", "sfx_csev", "sfx_ceig", "sfx_cnin", "sfx_cten")
 sfxinfo[sfx_z20s].caption = "20 Seconds remaining"
 sfxinfo[sfx_cten].caption = "Ten"
