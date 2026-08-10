@@ -2,7 +2,6 @@ local DoomedCorp = {
     pathunlock_timer = 0
 }
 addHook("NetVars", function(net)
-    if gamemap ~= 14 then return end
     DoomedCorp = net($)
 end)
 local function ResetValues()
