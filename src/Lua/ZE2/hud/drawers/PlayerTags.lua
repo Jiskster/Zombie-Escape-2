@@ -32,6 +32,7 @@ return "PlayerTags", function(v, player)
 		local fonttype = "thin-fixed-center"
 		local offset1 = -ppwidth/2
 		local offset2 = -(ppheight*2)
+		local healthmap = V_GREENMAP
 
 		local dist = R_PointToDist2(player.mo.x, player.mo.y, plr.mo.x, plr.mo.y)
 
@@ -41,8 +42,13 @@ return "PlayerTags", function(v, player)
 			offset1 = $/2
 			offset2 = $/2
 		end
+		
+		if plr.mo.health <= (plr.mo.maxhealth/2) then
+			healthmap = V_REDMAP
+		end
 
 		v.drawScaled(result.x + offset1, result.y, ppsize, pointpatch)
 		v.drawString(result.x, result.y+offset2, plr.name, V_AQUAMAP, fonttype)
+		v.drawString(result.x, result.y+(offset2*2), "+"..(plr.mo.health + plr.mo.shield_health), healthmap, fonttype)
 	end
 end, "game", 1
