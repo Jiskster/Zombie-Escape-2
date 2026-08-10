@@ -84,6 +84,8 @@ function xSlinger.DoThinker(mobj)
 	local reload_time = hand:getIndex("reload_time", skin) or 1
 	local firerate = hand:getIndex("firerate", skin)
 	local firerate_left = hand:getIndex("firerate_left", skin)
+	local semifirerate = hand:getIndex("semifirerate", skin)
+	local semi_firerate_left = hand:getIndex("semi_firerate_left", skin)
 	local ammo = hand:getIndex("ammo", skin)
 	local maxammo = hand:getIndex("maxammo", skin)
 	local count = hand:getIndex("count", skin)
@@ -91,6 +93,8 @@ function xSlinger.DoThinker(mobj)
 	local itemdelay = hand:getIndex("delay", skin)
 	local holdobject = hand:getIndex("hold_object", skin)
 	local animation_time = hand:getIndex("animation_time", skin)
+	local autouse = hand:getIndex("autouse", skin)
+	local semiautouse = hand:getIndex("semiautouse", skin)
 
 	if validplayer then
 		buttons = cmd.buttons
@@ -101,8 +105,8 @@ function xSlinger.DoThinker(mobj)
 		wepnum = (buttons & BT_WEAPONMASK)
 		reloadpressed = (buttons & BT_FIRENORMAL) and not (lastbuttons & BT_FIRENORMAL)
 
-		if hand.autouse then
-			firing = (buttons & BT_ATTACK)
+		if autouse or (semiautouse and not semi_firerate_left) then
+			firing = (buttons & BT_ATTACK) > 0
 		end
 
 		player.weapondelay = 1
@@ -281,6 +285,10 @@ function xSlinger.DoThinker(mobj)
 			if firerate ~= nil then
 				hand:setIndex("firerate_left", firerate, skin)
 			end
+			
+			if semifirerate ~= nil then
+				hand:setIndex("semi_firerate_left", semifirerate, skin)
+			end
 		end
 	end
 
@@ -352,9 +360,14 @@ function xSlinger.DoThinker(mobj)
 		setmetatable(iteminfo, xSlinger.METATABLES.ITEMINFO)
 
 		local firerate_left = iteminfo:getIndex("firerate_left", skin)
+		local semi_firerate_left = iteminfo:getIndex("semi_firerate_left", skin)
 
 		if firerate_left then
 			firerate_left = iteminfo:changeIndex("firerate_left", -1, skin)
+		end
+		
+		if semi_firerate_left then
+			semi_firerate_left = iteminfo:changeIndex("semi_firerate_left", -1, skin)
 		end
 	end
 
