@@ -44,11 +44,14 @@ xSlinger.registerItem("red_ring", {
 	knockback_time = 4;
 
 	autouse = false;
+	semiautouse = true;
 
 	ammo = 16;
 
 	reload_time = 2*TICRATE;
+	
 	firerate = 3;
+	semifirerate = 5;
 
 	flags2 = 0; -- MF2_...
 
