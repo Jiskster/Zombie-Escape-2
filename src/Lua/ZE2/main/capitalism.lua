@@ -141,8 +141,6 @@ addHook("PlayerThink", function(player)
 end)
 
 addHook("MobjDeath", function(mobj)
-	if (gametype ~= GT_ZE2) then return end
-
 	if mobj.cashholding then
 		A_RubyDrop(mobj,mobj.cashholding)
 		mobj.cashholding = 0
@@ -150,8 +148,6 @@ addHook("MobjDeath", function(mobj)
 end)
 
 addHook("MobjSpawn", function(mobj)
-	if (gametype ~= GT_ZE2) then return end
-
 	if mobjinfo[mobj.type].rubydrop and (type(mobjinfo[mobj.type].rubydrop) == "table") and (#mobjinfo[mobj.type].rubydrop == 2) then
 		local count = P_RandomRange(mobjinfo[mobj.type].rubydrop[1], mobjinfo[mobj.type].rubydrop[2])
 		mobj.cashholding = count

@@ -14,8 +14,6 @@ local function SetupHud(filename)
 	-- Make a new function from the current function.
 	-- Currently makes it so huds don't draw if it's not Zombie Escape.
 	local new_drawfunc = function(v, player)
-		if (gametype ~= GT_ZE2) then return end
-
 		if player and player.valid and not player["xSlinger[]"] then
 			return
 		end

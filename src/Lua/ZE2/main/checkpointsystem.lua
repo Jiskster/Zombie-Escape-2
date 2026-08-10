@@ -190,12 +190,12 @@ local function ActivateCheckpoint(mobj, checkpoint)
 end
 
 addHook("MapLoad", function()
+	if gametype ~= GT_ZE2 then return end
+	
 	ZE2.Checkpoints = {}
 	ZE2.LatestSurvivorCheckpoint = 0
 	ZE2.LatestZombieCheckpoint = 0
 	ZE2.highest_checkpoint = 0
-
-	if gametype ~= GT_ZE2 then return end
 
 	local checkpoint_doomednum = mobjinfo[MT_ZE2CHECKPOINT].doomednum
 

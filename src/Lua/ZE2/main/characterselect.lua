@@ -116,7 +116,7 @@ addHook("PlayerCmd", function(player, cmd)
 end)
 
 addHook("ThinkFrame", function()
-    if gametype ~= GT_ZE2 then
+    if not multiplayer then
         return end;
 
     local playercount = ZE2.PlayerCount()

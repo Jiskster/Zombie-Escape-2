@@ -13,8 +13,6 @@ states[S_PLAY_CROUCH_ZE2] = {
 }
 
 local function CrouchHeightHook(player)
-	if gametype ~= GT_ZE2 then return end
-
     return (player.ze2.crouching or (player.mo.ceilingz-player.mo.floorz < player.height + heightoffset))
 	and (player.spinheight)
 	or player.height + heightoffset
@@ -37,10 +35,13 @@ end
 
 local function crouchcondition(player)
 	if not (player.mo and player.mo.valid) then return false end
-	if (gametype ~= GT_ZE2) then return false end
-	if (ZE2.game_ended) then return false end
-	if (ZE2.pregame_timeleft) then return false end
-	if (ZE2.zombie_releasetime and player.xSlinger.team == 2) then return false end
+	
+	if multiplayer then
+		if (ZE2.game_ended) then return false end
+		if (ZE2.pregame_timeleft) then return false end
+		if (ZE2.zombie_releasetime and player.xSlinger.team == 2) then return false end
+	end
+	
 	return true
 end
 
@@ -144,7 +145,6 @@ local crouchlerp = 0
 addHook("PostThinkFrame", function()
 	for player in players.iterate do
 		if not (player.mo and player.mo.valid) then continue end
-		if gametype ~= GT_ZE2 then continue end
 		if ZE2.game_ended then continue end
 		if ZE2.pregame_timeleft then continue end
 
