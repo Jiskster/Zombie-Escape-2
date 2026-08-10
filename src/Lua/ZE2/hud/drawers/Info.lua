@@ -508,14 +508,14 @@ local function eventtimers(v,p,me,ze)
 
 	for i,timer in ipairs(ZE2:GetActiveTimers()) do
 		local name = "* "..(timer.text or "Event "..i)
-		local time = "  ("..G_TicsToMTIME(timer.time)..")"
+		local time = "  "..G_TicsToMTIME(timer.time)..""
 		local color = timer.textcolor or SKINCOLOR_TEAL
 
 		customhud.CustomFontString(v, x, y, name, "TNYFC",
 			flags, "left" , nil, color
 		)
 		customhud.CustomFontString(v, x, y + 8, time, "TNYFC",
-			flags, "left" , nil, color
+			flags, "left" , nil, SKINCOLOR_WHITE
 		)
 
 		y = $ + 16
