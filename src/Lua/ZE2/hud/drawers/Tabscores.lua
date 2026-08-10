@@ -39,8 +39,9 @@ local function RenderPlayer(v, ypos, player, teamcolor, spectator) -- standard
 			DrawString(BASEVIDWIDTH - (2 + 52), ypos + textspos, "$" .. player.ze2.cash, V_ALLOWLOWERCASE|textcolor, "small-right")
 		end
 	else
-		if player.ze2.injoinqueue then
-			DrawString(BASEVIDWIDTH - (2 + 52), ypos + textspos, "Queued", V_ALLOWLOWERCASE|textcolor, "small-right")
+		if player.ze2.injoinqueue or player.ze2.outofgame then
+			local statustext = player.ze2.outofgame and "Out" or "Queued"
+			DrawString(BASEVIDWIDTH - (2 + 52), ypos + textspos, statustext, V_ALLOWLOWERCASE|textcolor, "small-right")
 		end
 	end
 
@@ -81,8 +82,9 @@ local function RenderPlayerSmall(v, ypos, player, teamcolor, spectator) -- compa
 			DrawString(BASEVIDWIDTH - (2 + 52), ypos + textspos, "$" .. player.ze2.cash, V_ALLOWLOWERCASE|textcolor, "small-right")
 		end
 	else
-		if player.ze2.injoinqueue then
-			DrawString(BASEVIDWIDTH - (2 + 52), ypos + textspos, "Queued", V_ALLOWLOWERCASE|textcolor, "small-right")
+		if player.ze2.injoinqueue or player.ze2.outofgame then
+			local statustext = player.ze2.outofgame and "Out" or "Queued"
+			DrawString(BASEVIDWIDTH - (2 + 52), ypos + textspos, statustext, V_ALLOWLOWERCASE|textcolor, "small-right")
 		end
 	end
 
@@ -126,8 +128,9 @@ local function RenderPlayerSmaller(v, ypos, player, teamcolor, spectator) -- sup
 			DrawString(BASEVIDWIDTH - (2 + 52), ypos + textspos, "$" .. player.ze2.cash, V_ALLOWLOWERCASE|textcolor, "small-right")
 		end
 	else
-		if player.ze2.injoinqueue then
-			DrawString(BASEVIDWIDTH - (2 + 52), ypos + textspos, "Queued", V_ALLOWLOWERCASE|textcolor, "small-right")
+		if player.ze2.injoinqueue or player.ze2.outofgame then
+			local statustext = player.ze2.outofgame and "Out" or "Queued"
+			DrawString(BASEVIDWIDTH - (2 + 52), ypos + textspos, statustext, V_ALLOWLOWERCASE|textcolor, "small-right")
 		end
 	end
 
