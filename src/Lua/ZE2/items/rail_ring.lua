@@ -69,10 +69,7 @@ local function trigger_func(self, mo)
 				local spark = P_SpawnMobj(rail.x, rail.y, rail.z, MT_SPARK)
 
 				if spark and spark.valid then
-					if i % 3 == 0 then
-						spark.color = mo.color
-						spark.colorized = true
-					else
+					if not (i % 3 == 0) then
 						spark.scale = $ * 3/4
 					end
 
