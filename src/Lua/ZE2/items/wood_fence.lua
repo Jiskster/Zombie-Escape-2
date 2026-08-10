@@ -92,6 +92,7 @@ end, MT_PROPCHECK)
 
 addHook("MobjMoveCollide", function(check, mobj)
 	if not check or not check.valid then return end
+	if (mobj.type == MT_ZE2CHECKPOINT) then return true end
 	if not (mobj.flags & MF_SOLID) then return false end
 	if not ZE2.ZCollide(check, mobj) then return false end
 	if mobj.player and mobj.player.valid then
