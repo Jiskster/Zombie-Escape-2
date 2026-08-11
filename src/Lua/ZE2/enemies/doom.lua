@@ -1,6 +1,6 @@
 --Zombie Man's shotgun missile
 
-freeslot("MT_ZOMBIEMAN_MISSILE", "S_ZOMBIEMAN_MISSILE", "SPR_ZMMS", "SFX_SHOTGN","SFX_BLTDTH")
+freeslot("MT_ZOMBIEMAN_MISSILE", "S_ZOMBIEMAN_MISSILE", "SPR_ZMMS", "sfx_shotgn","sfx_bltdth")
 states[S_ZOMBIEMAN_MISSILE] = {SPR_ZMMS, FF_FULLBRIGHT|A, 1, nil, 0, 0, S_ZOMBIEMAN_MISSILE}
 
 mobjinfo[MT_ZOMBIEMAN_MISSILE] = {
@@ -8,7 +8,7 @@ mobjinfo[MT_ZOMBIEMAN_MISSILE] = {
         spawnstate = S_ZOMBIEMAN_MISSILE,
 		seesound = sfx_shotgn,
         spawnhealth = 1000,
-        deathsound = SFX_BLTDTH,
+        deathsound = sfx_bltdth,
         speed = 150*FRACUNIT,
         radius = 8*FRACUNIT,
         height = 8*FRACUNIT,
@@ -24,7 +24,7 @@ freeslot("MT_ZOMBIEMAN", "S_ZOMBIEMAN_STND", "S_ZOMBIEMAN_WALKSOUND1",
 		 "S_ZOMBIEMAN_SHOOT1", "S_ZOMBIEMAN_SHOOT2", "S_ZOMBIEMAN_HURT",
 		 "S_ZOMBIEMAN_DEATH1", "S_ZOMBIEMAN_DEATH2", "S_ZOMBIEMAN_DEATH3",
 		 "S_ZOMBIEMAN_DEATH4", "S_ZOMBIEMAN_DEATH5", "SPR_DEN1", "sfx_zmwlk1",
-		 "sfx_zmwlk2", "sfx_zmtnt1", "sfx_zmdeth", "sfx_shotgn")
+		 "sfx_zmwlk2", "sfx_zmtnt1", "sfx_zmdeth")
 
 sfxinfo[sfx_zmwlk1].caption = "Walking"
 sfxinfo[sfx_zmwlk2].caption = "Walking"
@@ -133,7 +133,7 @@ states[S_DEMONPINK_DEATH5] = {SPR_DPNK, M, 4, nil, 0, 0, S_DEMONPINK_DEATH6}
 states[S_DEMONPINK_DEATH6] = {SPR_DPNK, N, -1, nil, 0, 0, S_DEMONPINK_DEATH6}
 
 mobjinfo[MT_DEMONPINK] = {
-		--$Title Demon (Pink)
+		--$Title Pinkie
 		--$Sprite DPNKA1
 		--$Category Doomed Corp
 		--$Color 1
@@ -157,8 +157,6 @@ mobjinfo[MT_DEMONPINK] = {
         activesound = sfx_None,
         flags = MF_ENEMY|MF_SHOOTABLE|MF_SPECIAL,
 }
-
---------------------------ARCH-VILE (SCRAPPED)
 
 -------------------SPECTRE---------------
 
@@ -225,5 +223,3 @@ mobjinfo[MT_SPECTRE] = {
         activesound = sfx_None,
         flags = MF_ENEMY|MF_SHOOTABLE|MF_SPECIAL
 }
-
----------------Lost Soul (SCRAPPED)
