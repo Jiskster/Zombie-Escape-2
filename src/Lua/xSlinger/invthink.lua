@@ -132,6 +132,7 @@ function xSlinger.DoThinker(mobj)
 			xS.viewmobj = P_SpawnMobjFromMobj(player.mo, 0, 0, 0, MT_XS_ITEMHOLD)
 			xS.viewmobj.state = holdobject.state or S_INVISIBLE
 			xS.viewmobj.angle = mobj.angle
+			xS.viewmobj.color = 0
 
 			setorigin = true
 		end
