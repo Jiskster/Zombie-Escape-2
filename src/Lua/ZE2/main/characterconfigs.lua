@@ -445,6 +445,8 @@ ZE2.AddSurvivor("metalsonic", {
 })
 
 function xSlinger.initPlayerSpawn(player)
+	xSlinger.initPlayer(player)
+	
 	local xS = player.xSlinger
 
 	if not xS:inv_get("survivor") then
