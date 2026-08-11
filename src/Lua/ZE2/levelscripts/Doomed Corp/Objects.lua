@@ -88,4 +88,6 @@ local function RandomColor(mo)
 	mo.color = ZE2.GetRandomSkinColor()
 end
 
-for i in pairs(Corpses) do addHook("MobjSpawn", RandomColor, Corpses[i]) end
+for i in ipairs(Corpses) do 
+	addHook("MobjSpawn", RandomColor, Corpses[i]) 
+end
