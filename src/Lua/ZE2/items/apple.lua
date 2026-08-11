@@ -13,8 +13,6 @@ xSlinger.registerItem("apple", {
 	icon = "APPLEIND";
 
 	dropstate = S_ZE2_APPLE_DROP;
-	dropscale = 2*FU;
-	dropyoffset = 8*FU;
 	dropignorecolor = true;
 
 	color = SKINCOLOR_RED;
