@@ -37,8 +37,6 @@ xSlinger.registerItem("energy_drink", {
 	color = SKINCOLOR_MASTER;
 
 	dropstate = S_ZE2_ENERGYDRINK_DROP;
-	dropscale = 2*FU;
-	dropyoffset = 8*FU;
 
 	firerate = TICRATE*30;
 
