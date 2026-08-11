@@ -132,7 +132,6 @@ function xSlinger.DoThinker(mobj)
 			xS.viewmobj = P_SpawnMobjFromMobj(player.mo, 0, 0, 0, MT_XS_ITEMHOLD)
 			xS.viewmobj.state = holdobject.state or S_INVISIBLE
 			xS.viewmobj.angle = mobj.angle
-			xS.viewmobj.color = 0
 
 			setorigin = true
 		end
@@ -196,9 +195,10 @@ function xSlinger.DoThinker(mobj)
 
 		if (xS.viewmobj and xS.viewmobj.valid) then
 			local iteminfo = xS:slot_get(xS.slot)
+			
 			local holdcolor = iteminfo:getIndex("color", skin)
 
-			if holdcolor ~= nil then
+			if holdcolor ~= nil and not holdobject.ignorecolor then
 				xS.viewmobj.color = holdcolor
 			end
 

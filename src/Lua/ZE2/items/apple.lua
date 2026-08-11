@@ -43,6 +43,7 @@ xSlinger.registerItem("apple", {
 			y = (FU*3)/2;
 			z = -FU/3;
 		};
+		ignorecolor = true;
 	};
 
 	hold_icon = "SPR_THOK"; -- Can be a normal graphic instead of a sprite too.
