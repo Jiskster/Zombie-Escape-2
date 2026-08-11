@@ -200,6 +200,8 @@ function xSlinger.DoThinker(mobj)
 
 			if holdcolor ~= nil and not holdobject.ignorecolor then
 				xS.viewmobj.color = holdcolor
+			elseif holdobject.ignorecolor then
+				xS.viewmobj.color = 0
 			end
 
 			xS.viewmobj.state = holdobject.state or S_INVISIBLE
