@@ -189,6 +189,19 @@ function xSlinger.DoThinker(mobj)
 
 			xS.viewmobj.fuse = 2
 			xS.viewmobj.angle = mobj.angle
+			xS.viewmobj.spritexscale = FU
+			xS.viewmobj.spriteyscale = FU
+				
+			local spritescale = holdobject.spritescale
+			if spritescale then
+				if spritescale.x ~= nil then
+					xS.viewmobj.spritexscale = spritescale.x
+				end
+				
+				if spritescale.y ~= nil then
+					xS.viewmobj.spriteyscale = spritescale.y
+				end
+			end
 		elseif (not holdobject) and (xS.viewmobj and xS.viewmobj.valid) then
 			P_RemoveMobj(xS.viewmobj)
 		end
