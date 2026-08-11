@@ -36,8 +36,6 @@ local function OpenAltPath(v, p)
         drawScaled(posx*FU, posy*FU, FU/2, zomb, flags|V_FLIP, zomb_color)
         drawScaled((posx+15)*FU, (posy-30)*FU, FU/2, openingpath, flags, zomb_color)
     end
-
-	
 end
 addHook("HUD", OpenAltPath)
 
