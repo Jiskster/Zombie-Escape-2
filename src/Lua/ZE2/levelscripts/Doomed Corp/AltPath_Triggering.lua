@@ -37,9 +37,15 @@ local function OpenAltPath(v, p)
         drawScaled((posx+15)*FU, (posy-30)*FU, FU/2, openingpath, flags, zomb_color)
     end
 
-	if DoomedCorp.pathunlock_timer then DoomedCorp.pathunlock_timer = $-1 end
+	
 end
 addHook("HUD", OpenAltPath)
+
+addHook("ThinkFrame", function()
+	if DoomedCorp.pathunlock_timer then 
+		DoomedCorp.pathunlock_timer = $-1
+	end
+end)
 
 addHook("LinedefExecute", function()
     DoomedCorp.pathunlock_timer = TICRATE*3
