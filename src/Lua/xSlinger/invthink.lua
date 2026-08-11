@@ -127,6 +127,13 @@ function xSlinger.DoThinker(mobj)
 		local anim = FRACUNIT
 		local setorigin = false
 
+		if xS.viewmobj and xS.viewmobj.valid then
+			if xS.viewmobj.queuekillvm then
+				xS.viewmobj.queuekillvm = false -- just in case
+				P_RemoveMobj(xS.viewmobj)
+			end
+		end
+		
 		-- TODO: Remove the entire viewmobj stuff from  the validplayer condition
 		if holdobject and not (xS.viewmobj and xS.viewmobj.valid) then
 			xS.viewmobj = P_SpawnMobjFromMobj(player.mo, 0, 0, 0, MT_XS_ITEMHOLD)
@@ -361,6 +368,11 @@ function xSlinger.DoThinker(mobj)
 			S_StartSound(mobj, sfx_wepchg, player)
 
 			xS.viewmobj_animation = 0 -- Stop animation.
+			
+			-- Respawn the viewmobj immediately after removing it.
+			if xS.viewmobj and xS.viewmobj.valid then
+				xS.viewmobj.queuekillvm = true
+			end
 		end
 	end
 
