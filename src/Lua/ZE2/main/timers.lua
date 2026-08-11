@@ -114,6 +114,9 @@ local function getNewZombie(wtable)
 end
 
 addHook("ThinkFrame", function()
+	if gamestate ~= GS_LEVEL then
+		return end;
+		
 	if multiplayer then 
 		if ZE2.pregame_timeleft then
 			ZE2.pregame_timeleft = $ - 1
