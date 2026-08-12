@@ -156,26 +156,6 @@ COM_AddCommand("z_emotelist", function(player, page)
 	end
 end)
 
-COM_AddCommand("z_setemote", function(player, slot, emote)
-	if slot == nil and emote == nil then
-		CONS_Printf(player,"z_setemote <slot> <emotenumber>: Sets your slot to an emote.")
-		return
-	end
-	if not(slot) or not tonumber(slot) or not tonumber(emote) or tonumber(slot) > 3 or tonumber(slot) < 1 then
-		CONS_Printf(player,"Slot must be a valid number. And between 1 - 3")
-		return
-	end
-
-	if ZE2.Emotes[tonumber(emote)] then
-		player.emoteslots[tonumber(slot)] = tonumber(emote)
-		CONS_Printf(player,"Slot " .. tonumber(slot) " replaced " .. ZE2.Emotes[tonumber(emote)].Name)
-		return
-	else
-		CONS_Printf(player,"Invalid Emote.")
-		return
-	end
-end)
-
 addHook("PlayerThink", function(player)
 	if player.lastemotepress then
 		player.lastemotepress = $ - 1
