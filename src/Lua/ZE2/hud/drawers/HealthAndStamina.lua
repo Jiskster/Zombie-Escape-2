@@ -46,6 +46,9 @@ end
 ---@param y fixed_t
 ---@param flags integer
 local function DrawHealthAndStamina(v, player, x, y, flags)
+	if (ZE2.game_ended) then
+		return end;
+
     local mo = player.mo --[[@as mobj_t]]
 
     local xs = player.xSlinger
