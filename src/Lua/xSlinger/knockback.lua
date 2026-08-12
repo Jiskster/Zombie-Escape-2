@@ -100,11 +100,19 @@ addHook("ThinkFrame", function()
 
 		local accspeed = FixedDiv(abs(FixedHypot(mo.momx,mo.momy)), mo.scale)
 		if knocked then
-			P_TryMove(mo,
+			local moved = P_TryMove(mo,
 				mo.x + thrust.x,
 				mo.y + thrust.y,
 				true
 			)
+
+			-- Don't get stuck on a wall!
+			if not moved then
+				mo.momx = thrust.x/2
+				mo.momy = thrust.y/2
+				P_SlideMove(mo)
+			end
+
 			local cap = 25*FU
 			if accspeed > cap then
 				local newspeed = accspeed - FixedDiv(accspeed - cap, 8*FU)
