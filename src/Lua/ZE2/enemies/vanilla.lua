@@ -128,6 +128,8 @@ mobjinfo[MT_EGGGUARD].rubydrop = {5,7}
 mobjinfo[MT_EGGGUARD].painsound = sfx_dmpain
 mobjinfo[MT_EGGGUARD].forcedamage = 10
 
+mobjinfo[MT_EGGSHIELD].flags = MF_SPECIAL|MF_NOGRAVITY|MF_SHOOTABLE
+
 mobjinfo[MT_FACESTABBER].npc_name = "Lance-a-bot"
 mobjinfo[MT_FACESTABBER].npc_spawnhealth = {80,150}
 mobjinfo[MT_FACESTABBER].npc_name_color = SKINCOLOR_RED
