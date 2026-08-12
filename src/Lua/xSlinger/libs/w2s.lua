@@ -50,21 +50,18 @@ rawset(_G, "xS_GetScreenCoords",function(vid,p,cam, point, props)
 	local camAngle = cam.angle
 	local camAiming = cam.aiming
 	local camPos = {x = cam.x, y = cam.y, z = cam.z}
-	if (not cam.chase) then-- in first-person
-		if (P_GetLocalAngle ~= nil) --localaiming functions exist?
-		and (p == consoleplayer or p == secondarydisplayplayer) then
-			camAngle = P_GetLocalAngle(p)
-			camAiming = P_GetLocalAiming(p)
-		elseif (SUBVERSION < 16) then --assuming camera fix was merged into 2.2.16, and we're on 2.2.15
+	if (not cam.chase) then -- in first-person
+		if (SUBVERSION < 16) then --assuming camera fix was merged into 2.2.16, and we're on 2.2.15
 			local m = p.realmo
 			camPos = {x = m.x, y = m.y, z = p.viewz}
 			
-			if (p == consoleplayer or p == secondarydisplayplayer) and multiplayer then
-				camAngle = l_angle
-				camAiming = l_aiming
-			else -- use server angles
+			if not P_IsLocalPlayer(p) 
+			or (splitscreen or not multiplayer) then
 				camAngle = m.angle
 				camAiming = p.aiming
+			else
+				camAngle = l_angle
+				camAiming = l_aiming
 			end
 		end
 	end
