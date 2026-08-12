@@ -1,6 +1,5 @@
 local p_mt = userdataMetatable("player_t")
 local p_mt_oldindex = p_mt.__index -- save old __index
-local ze2_players = {} -- the grand table!!
 local default_player = ZE2.Require "ZE2/variables/default/player"
 local showed_deprecated_warning = false
 
@@ -22,46 +21,36 @@ local ze2_mt = { -- Metatable for the player_t.ze2 table.
 
 registerMetatable(ze2_mt) -- Dont lose metatable when synching.
 
-addHook("NetVars", function(net)
-    ze2_players = net($);
-end)
-
-p_mt.__index = function(player, key) -- Create player_t.ze2
-	if key == "ze2" then
-		if player and player.valid then
-			if ze2_players[#player] then
-				ze2_players[#player].player = player -- Keep reference
-				return ze2_players[#player]
-			else
-				ze2_players[#player] = setmetatable(ZE2:Copy(default_player), ze2_mt)
-				ze2_players[#player].player = player -- Save reference of player as player_t.ze2.player
-
-				return ze2_players[#player]
-			end
-		end
-	else
-		return p_mt_oldindex(player, key)
+function ZE2.initPlayer(player)
+	if (player == nil) then
+		return end;
+		
+	if not player.ze2 then
+		player.ze2 = setmetatable(ZE2:Copy(default_player), ze2_mt)
 	end
+	
+	player.ze2.player = player
 end
 
-addHook("PlayerQuit", function(player)
-    if ze2_players[#player] then
-        ze2_players[#player] = nil
-
-		if ZE2.cv_debug.value then
-			print("Removed player_t.ze2 from " + player.name + " [" + #player + "] ")
-		end
-    end
-end)
-
-addHook("PlayerJoin", function(playernum)
-	ze2_players[playernum] = setmetatable(ZE2:Copy(default_player), ze2_mt)
-end)
-
-addHook("GameQuit", function()
-    ze2_players = {}
-
-	if ZE2.cv_debug.value then
-		print("Removed all player_t.ze2")
+addHook("PreThinkFrame", function(player)
+	for player in players.iterate do
+		ZE2.initPlayer(player)
 	end
 end)
+
+addHook("PlayerSpawn", function(player)
+	ZE2.initPlayer(player)
+end)
+
+addHook("MobjSpawn", function(mobj)
+	if mobj and mobj.valid and mobj.player and mobj.player.valid then
+		ZE2.initPlayer(player)
+	end
+end, MT_PLAYER)
+
+local oldspawn = xSlinger.initPlayerSpawn
+
+function xSlinger.initPlayerSpawn(player)
+	ZE2.initPlayer(player)
+	oldspawn(player)
+end

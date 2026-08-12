@@ -444,6 +444,7 @@ ZE2.AddSurvivor("metalsonic", {
 	};
 })
 
+-- do not access player.ze2 here or it will error
 function xSlinger.initPlayerSpawn(player)
 	xSlinger.initPlayer(player)
 	
@@ -458,9 +459,6 @@ function xSlinger.initPlayerSpawn(player)
 	end
 
 	xS:inv_set("survivor")
-
-	player.ze2.lower_hud_offset = 0
-	player.ze2.special_cooldown = 0
 end
 
 -- Health Fallback

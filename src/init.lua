@@ -111,8 +111,6 @@ ze2file "functions/main"
 
 I_LoadLibs("libraries/")
 
-ze2file "variables/main"
-
 -- Optimized version of actions.
 -- TODO: Remake items that use this and remove this action override.
 function A_RingExplode2(actor, var1, var2)
@@ -146,6 +144,8 @@ function A_TNTExplode(actor, var1, var2)
 end
 
 states[S_RINGEXPLODE] = {SPR_NULL, A, 1, A_RingExplode2, 0, 0, S_XPLD1, 0}
+
+ze2file "variables/main"
 
 ze2file "enemies/vanilla.lua"
 ze2file "enemies/doom.lua"
