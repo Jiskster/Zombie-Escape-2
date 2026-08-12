@@ -1,5 +1,6 @@
 function ZE2.lockPlayer(player)
     if not player.mo then return end
+	if player.spectator then return end
 
 	local ztype = player.ze2.zombie_type
 	local zc = ZE2.ZombieConfig
