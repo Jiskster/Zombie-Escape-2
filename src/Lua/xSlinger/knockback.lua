@@ -108,8 +108,8 @@ addHook("ThinkFrame", function()
 
 			-- Don't get stuck on a wall!
 			if not moved then
-				mo.momx = thrust.x/2
-				mo.momy = thrust.y/2
+				mo.momx = thrust.x/3
+				mo.momy = thrust.y/3
 				P_SlideMove(mo)
 			end
 
