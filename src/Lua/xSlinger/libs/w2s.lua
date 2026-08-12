@@ -59,7 +59,7 @@ rawset(_G, "K_GetScreenCoords",function(vid,p,cam, point, props)
 			local m = p.realmo
 			camPos = {x = m.x, y = m.y, z = p.viewz}
 			
-			if (p == consoleplayer or p == secondarydisplayplayer) then
+			if (p == consoleplayer or p == secondarydisplayplayer) and multiplayer then
 				camAngle = l_angle
 				camAiming = l_aiming
 			else -- use server angles

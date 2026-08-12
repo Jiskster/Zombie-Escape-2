@@ -92,6 +92,7 @@ end, MT_PROPCHECK)
 
 addHook("MobjMoveCollide", function(check, mobj)
 	if not check or not check.valid then return end
+	if (mobj.type == MT_ZE2CHECKPOINT) then return true end
 	if not (mobj.flags & MF_SOLID) then return false end
 	if not ZE2.ZCollide(check, mobj) then return false end
 	if mobj.player and mobj.player.valid then
@@ -209,6 +210,10 @@ xSlinger.registerItem("wood_fence", {
 			y = (FU*3)/2;
 			z = -FU/3;
 		};
+		spritescale = {
+			x = 2*FU;
+			y = 2*FU;
+		}
 	};
 
 	hold_icon = "SPR_THOK"; -- Can be a normal graphic instead of a sprite too.

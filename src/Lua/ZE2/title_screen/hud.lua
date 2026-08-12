@@ -2,13 +2,15 @@
 
 --Logo information
 local ZE2_LOGO = "ZE2_TTL"
-local x = 25*FU
-local y = 15*FU
+local x = 20*FU
+local y = 10*FU
 
 --For title screen functionality
 local appear_time = 1*TICRATE
 local titletics = 0
 local alpha = 0
+
+local zombie_color = SKINCOLOR_ZOMBIE
 
 --localize v. functions
 local getColormap
@@ -30,17 +32,24 @@ local MainTitle = function(v)
 	if drawScaled == nil then drawScaled = v.drawScaled end
 
 	local logo = cachePatch(ZE2_LOGO)
+	local zombie = cachePatch("TITLEZOMB")
+	local survivor = cachePatch("TITLESURV")
 
 	--Make the logo appear
 	if titletics >= appear_time then
 		drawScaled(x, y, FU/4, logo)
 		DoWhiteFade(v, logo, 1) --White mask fade
 	end
+
+	drawScaled(-10*FU, 70*FU, FU/4, zombie, V_SNAPTOLEFT|V_SNAPTOBOTTOM, getColormap(nil, zombie_color))
+	drawScaled(230*FU, 80*FU, FU/4, survivor, V_SNAPTORIGHT|V_SNAPTOBOTTOM, getColormap(nil, CV_FindVar("color").value))
 end
 
 --Reset title screen functionality when not on title screen
 local Reset = function(v)
 	if not titletics then return end
+	local alphachance = v.RandomChance(FU / 3)
+	zombie_color = (alphachance and SKINCOLOR_ALPHAZOMBIE) or SKINCOLOR_ZOMBIE
 	titletics = 0
 	alpha = 0
 end

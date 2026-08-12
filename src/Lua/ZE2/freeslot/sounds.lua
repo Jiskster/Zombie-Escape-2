@@ -4,8 +4,8 @@ freeslot("sfx_zjump")
 sfxinfo[sfx_zjump].caption = "Jump"
 
 freeslot("sfx_bstdn", "sfx_bstup")
-sfxinfo[sfx_bstdn].caption = "Zombie rage ends"
-sfxinfo[sfx_bstup].caption = "Zombie rages"
+sfxinfo[sfx_bstdn].caption = "Zombie rage off"
+sfxinfo[sfx_bstup].caption = "Zombie enrages"
 
 freeslot("sfx_zbatk1", "sfx_zbatk2", "sfx_zbatk3")
 sfxinfo[sfx_zbatk1].caption = "Slash impact"
@@ -15,10 +15,6 @@ sfxinfo[sfx_zbatk3].caption = "Slash impact"
 freeslot("sfx_wpfire", "sfx_wpfir2")
 sfxinfo[sfx_wpfire].caption = "Shooting"
 sfxinfo[sfx_wpfir2].caption = "Shooting"
-
-freeslot("sfx_z_rel1", "sfx_z_rel2")
-sfxinfo[sfx_z_rel1].caption = "Reloading..."
-sfxinfo[sfx_z_rel2].caption = "Reload done"
 
 freeslot("sfx_z20s", "sfx_cone", "sfx_ctwo", "sfx_cthr", "sfx_cfou", "sfx_cfiv", "sfx_csix", "sfx_csev", "sfx_ceig", "sfx_cnin", "sfx_cten")
 sfxinfo[sfx_z20s].caption = "20 Seconds remaining"
@@ -51,9 +47,9 @@ sfxinfo[sfx_inf1].caption="\"The zombies will be back\""
 sfxinfo[sfx_inf2] = zombiesfxinfo
 sfxinfo[sfx_inf2].caption="\"We've been enslaved\""
 sfxinfo[sfx_inf3] = zombiesfxinfo
-sfxinfo[sfx_inf2].caption = "" -- Not found
+sfxinfo[sfx_inf2].caption = "Infection"
 sfxinfo[sfx_inf4] = zombiesfxinfo
-sfxinfo[sfx_inf4].caption = "" -- Not found
+sfxinfo[sfx_inf4].caption = "Infection"
 sfxinfo[sfx_pipe].caption = "Metal pipe"
 
 freeslot("sfx_zdi1","sfx_zdi2")
@@ -72,7 +68,7 @@ sfxinfo[sfx_zish3].caption = "Swoop"
 freeslot("sfx_rstart", "sfx_secret", "sfx_cleva1")
 sfxinfo[sfx_rstart].caption = "Zombies escaped..."
 sfxinfo[sfx_secret].caption =" Secret revealed!"
-sfxinfo[sfx_cleva1].caption = "\"Calling for transport!\""
+sfxinfo[sfx_cleva1].caption = "\"Calling for evac. transport!\""
 
 freeslot("sfx_eatapl", "sfx_oyahx", "sfx_mnu1a")
 sfxinfo[sfx_eatapl].caption = "Num num num!"

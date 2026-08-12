@@ -48,7 +48,7 @@ local function zombie_droplet_hitground(mo) -- MobjHitFloor my beloved where are
     if not mo.valid then return end
     if not P_IsObjectOnGround(mo) then return end
 
-    if mo.state != S_ZDROPLET_DEATH then
+    if (mo.state ~= S_ZDROPLET_DEATH) then
         mo.state = S_ZDROPLET_DEATH
     end
 end
@@ -69,7 +69,7 @@ end
 
 local function zombie_dropblood(p, inf, src, dmg, damagetype)
     if not (p.mo and p.mo.valid) then return end
-    if p.mo.team != 2 then return end
+    if (p.mo.team ~= 2) then return end
     if dmg <= 4 then return end -- Yeah no I'll not let you spam it lol
     local pmo = p.mo
 
@@ -80,7 +80,7 @@ local function zombie_dropblood(p, inf, src, dmg, damagetype)
 end
 
 local function zombie_death(mo) -- Drop blood also on death duh
-    if mo.team != 2 then return end
+    if (mo.team ~= 2) then return end
     Z_DoDroplet(mo, 20)
 end
 

@@ -4,7 +4,7 @@ ZE2.StandardJumpFactor = FixedDiv(90*FU, 100*FU)
 --			so we can be sure there are no "holes" in them? Maybe `newentry.__index = ZE2.SurvivorConfig["default"]`
 ZE2.ZombieConfig = {
 	["normal"] = {
-		name = "Normal",
+		name = "Beta",
 		skin = "zsonic",
 		skincolor = SKINCOLOR_ZOMBIE,
 		normalspeed = 19 * FRACUNIT,
@@ -264,14 +264,16 @@ function ZE2.applyPlayerConfig(player)
 		end
 	end
 
-	-- Remove player movement when game has not started.
-	-- Also remove player movement when player is zombie when zombies has not been released.
-	if (ZE2.zombie_releasetime and team == TEAM_ZOMBIE)
-	or (ZE2.pregame_timeleft) then
-		player.normalspeed = 0
-		player.thrustfactor = 0
-		player.jumpfactor = 0
-		player.powers[pw_nocontrol] = 1
+	if multiplayer then
+		-- Remove player movement when game has not started.
+		-- Also remove player movement when player is zombie when zombies has not been released.
+		if (ZE2.zombie_releasetime and team == TEAM_ZOMBIE)
+		or (ZE2.pregame_timeleft) then
+			player.normalspeed = 0
+			player.thrustfactor = 0
+			player.jumpfactor = 0
+			player.powers[pw_nocontrol] = 1
+		end
 	end
 end
 
@@ -443,6 +445,8 @@ ZE2.AddSurvivor("metalsonic", {
 })
 
 function xSlinger.initPlayerSpawn(player)
+	xSlinger.initPlayer(player)
+	
 	local xS = player.xSlinger
 
 	if not xS:inv_get("survivor") then

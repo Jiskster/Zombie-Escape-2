@@ -2,7 +2,6 @@ local DoomedCorp = {
     pathunlock_timer = 0
 }
 addHook("NetVars", function(net)
-    if gamemap ~= 14 then return end
     DoomedCorp = net($)
 end)
 local function ResetValues()
@@ -37,10 +36,14 @@ local function OpenAltPath(v, p)
         drawScaled(posx*FU, posy*FU, FU/2, zomb, flags|V_FLIP, zomb_color)
         drawScaled((posx+15)*FU, (posy-30)*FU, FU/2, openingpath, flags, zomb_color)
     end
-
-	if DoomedCorp.pathunlock_timer then DoomedCorp.pathunlock_timer = $-1 end
 end
 addHook("HUD", OpenAltPath)
+
+addHook("ThinkFrame", function()
+	if DoomedCorp.pathunlock_timer then 
+		DoomedCorp.pathunlock_timer = $-1
+	end
+end)
 
 addHook("LinedefExecute", function()
     DoomedCorp.pathunlock_timer = TICRATE*3

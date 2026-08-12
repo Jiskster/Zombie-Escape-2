@@ -98,6 +98,21 @@ SelectHeading = Escape Maps
 Lua.ze2_timelimit = 7
 Lua.ze2_laddertag = 200
 
+# Zombio Bros
+# Some textures from Mario Mode + from Team Springs
+Level 12
+Levelname = Super Zombio Bros
+Act = 0
+Subtitle = Mamma mia.
+TypeOfLevel = Escape
+Music = MARIO1
+Skynum = 31
+SelectHeading = Escape Maps
+NoZone = True
+NextLevel = J1
+Lua.ze2_timelimit = 6
+Lua.ze2_laddertag = 300
+
 Level 14
 Levelname = Doomed Corp
 Act = 0

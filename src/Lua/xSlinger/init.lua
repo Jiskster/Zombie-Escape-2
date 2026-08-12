@@ -39,7 +39,11 @@ xSlinger.visible_huds = {
 
 xSlinger.skin_properties = {}
 
+dofile "xSlinger/initPlayer"
+
 function xSlinger.initPlayerSpawn(player)
+	xSlinger.initPlayer(player)
+	
 	local xS = player.xSlinger
 	xS.team = 1
 
@@ -64,7 +68,6 @@ end
 xSlinger.METATABLES = {}
 
 dofile "xSlinger/metatables/mobj_t"
-dofile "xSlinger/metatables/player_t"
 dofile "xSlinger/metatables/xSlinger_t"
 dofile "xSlinger/metatables/iteminfo_t"
 

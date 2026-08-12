@@ -114,10 +114,13 @@ local function getNewZombie(wtable)
 end
 
 addHook("ThinkFrame", function()
-	if gametype ~= GT_ZE2 or gamestate ~= GS_LEVEL then return end --stop the trolling
-
-	if ZE2.pregame_timeleft then
-		ZE2.pregame_timeleft = $ - 1
+	if gamestate ~= GS_LEVEL then
+		return end;
+		
+	if multiplayer then 
+		if ZE2.pregame_timeleft then
+			ZE2.pregame_timeleft = $ - 1
+		end
 	end
 
 	if ZE2.zombie_releasetime then

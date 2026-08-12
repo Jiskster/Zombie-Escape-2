@@ -13,8 +13,7 @@ xSlinger.registerItem("apple", {
 	icon = "APPLEIND";
 
 	dropstate = S_ZE2_APPLE_DROP;
-	dropscale = 2*FU;
-	dropyoffset = 8*FU;
+	dropignorecolor = true;
 
 	color = SKINCOLOR_RED;
 
@@ -43,6 +42,7 @@ xSlinger.registerItem("apple", {
 			y = (FU*3)/2;
 			z = -FU/3;
 		};
+		ignorecolor = true;
 	};
 
 	hold_icon = "SPR_THOK"; -- Can be a normal graphic instead of a sprite too.

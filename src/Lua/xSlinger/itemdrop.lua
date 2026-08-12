@@ -70,8 +70,10 @@ function xSlinger.SpawnItemDrop(data, item, nothrow)
 		dropmobj.state = item.dropstate
 	end
 
-	if item.color then
+	if item.color and not item.dropignorecolor then
 		dropmobj.color = item.color
+	elseif item.dropignorecolor then
+		dropmobj.dropbgcolor = item.color
 	end
 
 	if item.dropscale then
@@ -150,7 +152,7 @@ addHook("MobjThinker", function(drop)
 
 	local f -- flair mobj pointer
 	local flair_roll = FixedAngle(leveltime * FU * 3/2)
-	local flair_color = drop.color -- Can be replaced with rarity colors
+	local flair_color = drop.color or drop.dropbgcolor 
 
 	---- LINE VFX
 		if (leveltime % 4 == 0) then

@@ -59,8 +59,6 @@ for i=1,#hook_order do
 		table.insert(base_hooks[hookname], func)
 
 		addHook(hookname, function(...)
-			if gametype ~= GT_ZE2 then return end
-
 			return func(...)
 		end)
 	end

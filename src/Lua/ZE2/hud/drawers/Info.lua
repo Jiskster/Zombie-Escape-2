@@ -441,6 +441,10 @@ local function health(v,p,me,ze)
 end
 
 local function getTimeString()
+	if not multiplayer then
+		return "DEMO!"
+	end
+	
 	if ZE2.round_active then
 		if ZE2.time_limit then
 			return G_TicsToMTIME(ZE2.time_limit - ZE2.game_time)
@@ -467,8 +471,6 @@ local function roundinfo(v,p,me,ze)
 	local spread = 40
 
 	v.draw(160-(topwidth/2), 0, top, V_SNAPTOTOP|V_20TRANS)
-	v.draw(160-(topredwidth/2) -spread, 0, topred , V_SNAPTOTOP|V_20TRANS)
-	v.draw(160-(topbluewidth/2) +spread, 0, topblue, V_SNAPTOTOP|V_20TRANS)
 	v.drawString(160, 2, timestring, V_SNAPTOTOP, "center")
 	
 	if ZE2.zombie_releasetime then
@@ -476,8 +478,13 @@ local function roundinfo(v,p,me,ze)
 		v.drawString(160, 15, ZE2.zombie_releasetime/TICRATE, V_ORANGEMAP|V_SNAPTOTOP, "thin-center")
 	end
 
-	v.drawString(160-spread, 2, zombie_count, V_REDMAP|V_SNAPTOTOP, "center")
-	v.drawString(160+spread, 2, survivor_count, V_BLUEMAP|V_SNAPTOTOP, "center")
+	if multiplayer then
+		v.draw(160-(topredwidth/2) -spread, 0, topred , V_SNAPTOTOP|V_20TRANS) -- Zombie BG
+		v.draw(160-(topbluewidth/2) +spread, 0, topblue, V_SNAPTOTOP|V_20TRANS) -- Survivor BG
+		
+		v.drawString(160-spread, 2, zombie_count, V_REDMAP|V_SNAPTOTOP, "center") -- Zombies Alive
+		v.drawString(160+spread, 2, survivor_count, V_BLUEMAP|V_SNAPTOTOP, "center") -- Survivors Alive
+	end
 end
 
 local function cashinfo(v,p,me,ze)
@@ -508,14 +515,14 @@ local function eventtimers(v,p,me,ze)
 
 	for i,timer in ipairs(ZE2:GetActiveTimers()) do
 		local name = "* "..(timer.text or "Event "..i)
-		local time = "  ("..G_TicsToMTIME(timer.time)..")"
+		local time = "  "..G_TicsToMTIME(timer.time)..""
 		local color = timer.textcolor or SKINCOLOR_TEAL
 
 		customhud.CustomFontString(v, x, y, name, "TNYFC",
 			flags, "left" , nil, color
 		)
 		customhud.CustomFontString(v, x, y + 8, time, "TNYFC",
-			flags, "left" , nil, color
+			flags, "left" , nil, SKINCOLOR_WHITE
 		)
 
 		y = $ + 16

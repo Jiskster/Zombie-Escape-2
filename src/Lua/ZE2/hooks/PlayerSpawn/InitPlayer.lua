@@ -1,5 +1,13 @@
 return function(player)
-	if gametype ~= GT_ZE2 then return end
+	if gametype ~= GT_ZE2 then 
+		if not multiplayer then
+			player.xSlinger.team = 1
+			player.lives = 3 -- mainly for singleplayer
+		end
+		
+		return 
+	end
+	
 	if not leveltime then return end
 
 	local pmo = player.mo

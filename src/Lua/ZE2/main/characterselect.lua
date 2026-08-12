@@ -50,7 +50,20 @@ local function skinToNum(player, skin)
     end
 end
 
+local function nullCmd(cmd)
+	lastsidemove = cmd.sidemove
+	lastbuttons = cmd.buttons
+
+	cmd.sidemove = 0
+	cmd.forwardmove = 0
+	cmd.buttons = 0
+end
+
 addHook("PlayerCmd", function(player, cmd)
+	if not multiplayer then
+		return
+	end
+	
 	if (player.spectator) then
 		return end;
 
@@ -59,11 +72,14 @@ addHook("PlayerCmd", function(player, cmd)
 
     if (displayplayer and displayplayer.valid)
     and (player ~= displayplayer) then -- Don't activate when spectating someone else.
-        return end;
+		nullCmd(cmd)
+		return
+	end
 
 	if ZE2.charsel_anim then
 		ZE2.charsel_anim = $ - 1
 	end
+	
 
     if (ZE2.pregame_menu == 1) then
         if (not lastsidemove) and (cmd.sidemove) then
@@ -96,16 +112,11 @@ addHook("PlayerCmd", function(player, cmd)
         end
     end
 
-	lastsidemove = cmd.sidemove
-	lastbuttons = cmd.buttons
-
-	cmd.sidemove = 0
-	cmd.forwardmove = 0
-	cmd.buttons = 0
+	nullCmd(cmd)
 end)
 
 addHook("ThinkFrame", function()
-    if gametype ~= GT_ZE2 then
+    if not multiplayer then
         return end;
 
     local playercount = ZE2.PlayerCount()

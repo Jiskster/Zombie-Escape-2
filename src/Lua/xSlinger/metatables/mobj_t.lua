@@ -11,8 +11,6 @@ mt.__index = function(mobj, key)
 		end
 
 		if team == nil then
-			mobj.team = 0
-
 			return 0
 		end
 	end

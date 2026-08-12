@@ -84,6 +84,8 @@ function xSlinger.DoThinker(mobj)
 	local reload_time = hand:getIndex("reload_time", skin) or 1
 	local firerate = hand:getIndex("firerate", skin)
 	local firerate_left = hand:getIndex("firerate_left", skin)
+	local semifirerate = hand:getIndex("semifirerate", skin)
+	local semi_firerate_left = hand:getIndex("semi_firerate_left", skin)
 	local ammo = hand:getIndex("ammo", skin)
 	local maxammo = hand:getIndex("maxammo", skin)
 	local count = hand:getIndex("count", skin)
@@ -91,6 +93,8 @@ function xSlinger.DoThinker(mobj)
 	local itemdelay = hand:getIndex("delay", skin)
 	local holdobject = hand:getIndex("hold_object", skin)
 	local animation_time = hand:getIndex("animation_time", skin)
+	local autouse = hand:getIndex("autouse", skin)
+	local semiautouse = hand:getIndex("semiautouse", skin)
 
 	if validplayer then
 		buttons = cmd.buttons
@@ -101,8 +105,8 @@ function xSlinger.DoThinker(mobj)
 		wepnum = (buttons & BT_WEAPONMASK)
 		reloadpressed = (buttons & BT_FIRENORMAL) and not (lastbuttons & BT_FIRENORMAL)
 
-		if hand.autouse then
-			firing = (buttons & BT_ATTACK)
+		if autouse or (semiautouse and not semi_firerate_left) then
+			firing = (buttons & BT_ATTACK) > 0
 		end
 
 		player.weapondelay = 1
@@ -123,6 +127,13 @@ function xSlinger.DoThinker(mobj)
 		local anim = FRACUNIT
 		local setorigin = false
 
+		if xS.viewmobj and xS.viewmobj.valid then
+			if xS.viewmobj.queuekillvm then
+				xS.viewmobj.queuekillvm = false -- just in case
+				P_RemoveMobj(xS.viewmobj)
+			end
+		end
+		
 		-- TODO: Remove the entire viewmobj stuff from  the validplayer condition
 		if holdobject and not (xS.viewmobj and xS.viewmobj.valid) then
 			xS.viewmobj = P_SpawnMobjFromMobj(player.mo, 0, 0, 0, MT_XS_ITEMHOLD)
@@ -185,16 +196,32 @@ function xSlinger.DoThinker(mobj)
 
 			xS.viewmobj.fuse = 2
 			xS.viewmobj.angle = mobj.angle
+			xS.viewmobj.spritexscale = FU
+			xS.viewmobj.spriteyscale = FU
+				
+			local spritescale = holdobject.spritescale
+			if spritescale then
+				if spritescale.x ~= nil then
+					xS.viewmobj.spritexscale = spritescale.x
+				end
+				
+				if spritescale.y ~= nil then
+					xS.viewmobj.spriteyscale = spritescale.y
+				end
+			end
 		elseif (not holdobject) and (xS.viewmobj and xS.viewmobj.valid) then
 			P_RemoveMobj(xS.viewmobj)
 		end
 
 		if (xS.viewmobj and xS.viewmobj.valid) then
 			local iteminfo = xS:slot_get(xS.slot)
+			
 			local holdcolor = iteminfo:getIndex("color", skin)
 
-			if holdcolor ~= nil then
+			if holdcolor ~= nil and not holdobject.ignorecolor then
 				xS.viewmobj.color = holdcolor
+			elseif holdobject.ignorecolor then
+				xS.viewmobj.color = 0
 			end
 
 			xS.viewmobj.state = holdobject.state or S_INVISIBLE
@@ -281,6 +308,10 @@ function xSlinger.DoThinker(mobj)
 			if firerate ~= nil then
 				hand:setIndex("firerate_left", firerate, skin)
 			end
+			
+			if semifirerate ~= nil then
+				hand:setIndex("semi_firerate_left", semifirerate, skin)
+			end
 		end
 	end
 
@@ -337,6 +368,11 @@ function xSlinger.DoThinker(mobj)
 			S_StartSound(mobj, sfx_wepchg, player)
 
 			xS.viewmobj_animation = 0 -- Stop animation.
+			
+			-- Respawn the viewmobj immediately after removing it.
+			if xS.viewmobj and xS.viewmobj.valid then
+				xS.viewmobj.queuekillvm = true
+			end
 		end
 	end
 
@@ -352,9 +388,14 @@ function xSlinger.DoThinker(mobj)
 		setmetatable(iteminfo, xSlinger.METATABLES.ITEMINFO)
 
 		local firerate_left = iteminfo:getIndex("firerate_left", skin)
+		local semi_firerate_left = iteminfo:getIndex("semi_firerate_left", skin)
 
 		if firerate_left then
 			firerate_left = iteminfo:changeIndex("firerate_left", -1, skin)
+		end
+		
+		if semi_firerate_left then
+			semi_firerate_left = iteminfo:changeIndex("semi_firerate_left", -1, skin)
 		end
 	end
 

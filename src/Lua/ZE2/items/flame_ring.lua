@@ -91,6 +91,10 @@ xSlinger.registerItem("flame_ring", {
 			y = (FU*3)/2;
 			z = -FU/3;
 		};
+		spritescale = {
+			x = 2*FU;
+			y = 2*FU;
+		}
 	};
 
 	hold_icon = "SPR_THOK"; -- Can be a normal graphic instead of a sprite too.

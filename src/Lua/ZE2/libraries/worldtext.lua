@@ -75,6 +75,25 @@ local COLOR_TABLE = {
 	["\x8F"] = SKINCOLOR_BLACK
 }
 
+local NUMBER_TO_COLOR = {
+	["0"] = "\x80",
+	["1"] = "\x81",
+	["2"] = "\x82",
+	["3"] = "\x83",
+	["4"] = "\x84",
+	["5"] = "\x85",
+	["6"] = "\x86",
+	["7"] = "\x87",
+	["8"] = "\x88",
+	["9"] = "\x89",
+	["A"] = "\x8A",
+	["B"] = "\x8B",
+	["C"] = "\x8C",
+	["D"] = "\x8D",
+	["E"] = "\x8E",
+	["F"] = "\x8F"
+}
+
 local function ClearText(text)
 	return text:gsub("\x80", ""):gsub("\x81", ""):gsub("\x82", ""):gsub("\x83", ""):gsub("\x84", ""):gsub("\x85", ""):gsub("\x86", ""):gsub("\x87", ""):gsub("\x88", ""):gsub("\x89", ""):gsub("\x8A", ""):gsub("\x8B", ""):gsub("\x8C", ""):gsub("\x8D", ""):gsub("\x8E", ""):gsub("\x8F", "")
 end
@@ -92,7 +111,7 @@ local function ParseText(mobj)
 	elseif (mobj.textalign == 2) then -- right
 		offset = length - (8 * FU)
 	end
-	mobj.textoffset = offset
+	mobj.textoffset = FixedMul(offset, mobj.scale)
 
 	local count = 0
 	local color = SKINCOLOR_WHITE
@@ -107,14 +126,19 @@ local function ParseText(mobj)
 
 		local offsetx = P_ReturnThrustX(mobj, mobj.angle, mobj.textoffset)
 		local offsety = P_ReturnThrustY(mobj, mobj.angle, mobj.textoffset)
-		local x = mobj.x - offsetx + P_ReturnThrustX(mobj, mobj.angle, (8 * count) * FU)
-		local y = mobj.y - offsety + P_ReturnThrustY(mobj, mobj.angle, (8 * count) * FU)
+		local position = FixedMul((8 * count) * FU, mobj.scale)
+		local x = (mobj.x - offsetx) + P_ReturnThrustX(mobj, mobj.angle, position)
+		local y = (mobj.y - offsety) + P_ReturnThrustY(mobj, mobj.angle, position)
 		local character = P_SpawnMobj(x, y, mobj.z, MT_ZVISUAL)
-		character.renderflags = RF_NOCOLORMAPS|RF_FULLBRIGHT|RF_PAPERSPRITE
-		character.angle = mobj.angle
 		character.sprite, character.frame = CHARACTER_TABLE[text].sprite, CHARACTER_TABLE[text].frame
 		character.color = color
+		character.renderflags = RF_NOCOLORMAPS|RF_FULLBRIGHT|RF_PAPERSPRITE
 		character.flags = mobj.flags
+		character.angle = mobj.angle
+		character.scale = mobj.scale
+		character.drawonlyforplayer = mobj.drawonlyforplayer
+		character.dontdrawforviewmobj = mobj.dontdrawforviewmobj
+		character.alpha = mobj.alpha
 		count = count + 1
 		table.insert(mobj.characters, character)
 	end
@@ -132,8 +156,8 @@ local function HandleText(mobj)
 		local offsetx = P_ReturnThrustX(mobj, mobj.angle, mobj.textoffset)
 		local offsety = P_ReturnThrustY(mobj, mobj.angle, mobj.textoffset)
 		local position = FixedMul((8 * (index - 1)) * FU, mobj.scale)
-		local x = mobj.x - offsetx + P_ReturnThrustX(mobj, mobj.angle, position)
-		local y = mobj.y - offsety + P_ReturnThrustY(mobj, mobj.angle, position)
+		local x = (mobj.x - offsetx) + P_ReturnThrustX(mobj, mobj.angle, position)
+		local y = (mobj.y - offsety) + P_ReturnThrustY(mobj, mobj.angle, position)
 		character.angle = mobj.angle
 		character.momx = mobj.momx
 		character.momy = mobj.momy
@@ -153,7 +177,30 @@ addHook("MapThingSpawn", function (mobj, thing)
 	local align = thing.args[0]
 	local duration = thing.args[1]
 	local moveable = thing.args[2]
-	mobj.text = text
+
+	local nexttoskip
+	local actualtext = ""
+	for index = 1, string.len(text), 1 do
+		local character = string.sub(text, index, index)
+		if (nexttoskip ~= nil) and (character:upper() == nexttoskip:upper()) then
+			nexttoskip = nil
+			continue
+		elseif (character == "^") then
+			local next = string.sub(text, index + 1, index + 1)
+			if (next == "^") then
+				actualtext = actualtext .. character .. next
+				nexttoskip = next
+				continue
+			elseif NUMBER_TO_COLOR[next:upper()] then
+				actualtext = actualtext .. NUMBER_TO_COLOR[next:upper()]
+				nexttoskip = next
+				continue
+			end
+		end
+		actualtext = actualtext .. character
+	end
+
+	mobj.text = actualtext
 	mobj.textalign = align
 	mobj.moveabletext = moveable
 	if (duration > 0) then

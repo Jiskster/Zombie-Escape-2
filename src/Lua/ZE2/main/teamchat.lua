@@ -1,5 +1,4 @@
 function ZE2.DoTeamChat(player, text, team)
-	if gametype ~= GT_ZE2 then return end
 	if not text then return end
 	if not team then return end
 	if team < 1 or team > 2 then return end
@@ -32,8 +31,6 @@ function ZE2.DoTeamChat(player, text, team)
 end
 
 addHook("PlayerMsg", function(source, msgtype, target, msg)
-	if gametype ~= GT_ZE2 then return end
-
 	if (msg:sub(1,3) == "/tc") and (msg:len() == 3) then
 		source.ze2.teamchat_enabled = not $
 

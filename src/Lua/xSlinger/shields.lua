@@ -143,6 +143,9 @@ function xSlinger.RemoveShieldFromMobj(mobj)
 end
 
 addHook("ThinkFrame", function()
+	if gamestate ~= GS_LEVEL then
+		return end;
+		
 	for i,shield in ipairs(xSlinger.CachedShieldMobjs) do
 		if not (shield and shield.valid) then
 			table.remove(xSlinger.CachedShieldMobjs, i)

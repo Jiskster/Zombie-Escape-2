@@ -61,3 +61,9 @@ dofolder("FloweyStuff")
 folder = "Secret Lab"; dofolder("Timers");
 
 folder = "Fatal Desert"; dofolder("Timers");
+
+folder = "Zombio Bros";
+
+dofolder("Timers");
+dofolder("Map Mechs");
+dofolder("Objects");

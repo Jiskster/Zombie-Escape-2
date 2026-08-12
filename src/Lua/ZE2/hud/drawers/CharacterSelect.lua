@@ -48,6 +48,9 @@ local darkbgshift = (darkbgtrans<<V_ALPHASHIFT)
 local skinlist
 
 return "CharacterSelect", function(v, player)
+	if not multiplayer then
+		return end;
+
 	local selection = ZE2.charsel_selection
 	local prevselection = ZE2.charsel_prevselection
 	local anim = ZE2.charsel_anim

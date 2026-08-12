@@ -51,7 +51,9 @@ local function InitRound(map)
 			ZE2.queuing_round = false
 		end
 
-		chatprint("\x84* [ROUND " .. ZE2.getCurrentRound() .. "] *")
+		if not titlemapinaction then
+			chatprint("\x84* [ROUND " .. ZE2.getCurrentRound() .. "] *")
+		end
 
 		if mapheaderinfo[map].ze2_timelimit then
 			local input = tonumber(mapheaderinfo[map].ze2_timelimit)

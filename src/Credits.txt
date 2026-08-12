@@ -16,6 +16,7 @@ Spriters:
 "W"
 "GLide KS" - Updated Zombie Sprite and fence
 "Scarf" - Original Zombie Sprite
+"Anvil (discord: anvil2401)" - Made sans sprite 
 
 Modelers:
 "Marilyn / Speccy"

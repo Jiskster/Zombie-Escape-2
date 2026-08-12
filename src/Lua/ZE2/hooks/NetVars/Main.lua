@@ -14,4 +14,5 @@ return function(net)
 	ZE2.rounds_left = net($);
 	ZE2.PreviousMaps = net($);
 	ZE2.MaxKarma = net($);
+	ZE2.NextMapVoted = net($);
 end
