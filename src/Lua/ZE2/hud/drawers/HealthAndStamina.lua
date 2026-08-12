@@ -76,8 +76,13 @@ local function DrawHealthAndStamina(v, player, x, y, flags)
     end
     v.drawFill(FixedInt(x) - 2, FixedInt(y) - 2, 64, bg_height, 31|flags|V_TRANSLUCENT)
 
-    local health_icon = v.cachePatch("Z_HP_ICON")
-    v.drawScaled(x, y, FU / 2, health_icon, flags, v.getColormap(nil, SKINCOLOR_JADE, nil))
+    local health_icon = v.cachePatch("Z_HP_ICON2")
+    local health_color = SKINCOLOR_GREEN
+    if player.mo and player.mo.valid then
+        health_color = player.mo.color
+    end
+
+    v.drawScaled(x, y, FU / 2, health_icon, flags, v.getColormap(nil, health_color, nil))
     if (mo.health <= (mo.maxhealth / 2)) then
         local amount = FU - cos(leveltime * ANG10)
         local transparency = FadeAmount(amount)
@@ -102,27 +107,19 @@ local function DrawHealthAndStamina(v, player, x, y, flags)
 
         v.drawFill(fillx - 1, filly - 1, filltotal + 2, 6, 31|flags|V_TRANSLUCENT)
         if (team == 2) then
-            DrawHorizontalBar(v, fillx, filly, filltotal, 1, 0, fillamount, filltotalfrac, 54, flags, FU)
-            DrawHorizontalBar(v, fillx, filly + 1, filltotal, 1, 0, fillamount, filltotalfrac, 48, flags, FU)
-            DrawHorizontalBar(v, fillx, filly + 2, filltotal, 1, 0, fillamount, filltotalfrac, 48, flags, FU)
-            DrawHorizontalBar(v, fillx, filly + 3, filltotal, 1, 0, fillamount, filltotalfrac, 54, flags, FU)
+            DrawHorizontalBar(v, fillx, filly, filltotal, 3, 0, fillamount, filltotalfrac, 54, flags, FU)
+            DrawHorizontalBar(v, fillx, filly + 3, filltotal, 1, 0, fillamount, filltotalfrac, 56, flags, FU)
         elseif ze2.sprintdelay then
             local alpha = FU - sin((leveltime * 2) * ANG10)
-            DrawHorizontalBar(v, fillx, filly, filltotal, 1, 0, filltotalfrac, filltotalfrac, 35, flags, alpha)
-            DrawHorizontalBar(v, fillx, filly + 1, filltotal, 1, 0, filltotalfrac, filltotalfrac, 32, flags, alpha)
-            DrawHorizontalBar(v, fillx, filly + 2, filltotal, 1, 0, filltotalfrac, filltotalfrac, 32, flags, alpha)
-            DrawHorizontalBar(v, fillx, filly + 3, filltotal, 1, 0, filltotalfrac, filltotalfrac, 35, flags, alpha)
+            DrawHorizontalBar(v, fillx, filly, filltotal, 3, 0, filltotalfrac, filltotalfrac, 35, flags, alpha)
+            DrawHorizontalBar(v, fillx, filly + 3, filltotal, 1, 0, filltotalfrac, filltotalfrac, 37, flags, alpha)
         else
-            DrawHorizontalBar(v, fillx, filly, filltotal, 1, 0, fillamount, filltotalfrac, 132, flags, FU)
-            DrawHorizontalBar(v, fillx, filly + 1, filltotal, 1, 0, fillamount, filltotalfrac, 128, flags, FU)
-            DrawHorizontalBar(v, fillx, filly + 2, filltotal, 1, 0, fillamount, filltotalfrac, 128, flags, FU)
-            DrawHorizontalBar(v, fillx, filly + 3, filltotal, 1, 0, fillamount, filltotalfrac, 132, flags, FU)
+            DrawHorizontalBar(v, fillx, filly, filltotal, 3, 0, fillamount, filltotalfrac, 128, flags, FU)
+            DrawHorizontalBar(v, fillx, filly + 3, filltotal, 1, 0, fillamount, filltotalfrac, 130, flags, FU)
             if (stamina < (30 * FU)) then
                 local alpha = FU - sin(leveltime * (ANG10 / 2))
-                DrawHorizontalBar(v, fillx, filly, filltotal, 1, 0, fillamount, filltotalfrac, 73, flags, alpha)
-                DrawHorizontalBar(v, fillx, filly + 1, filltotal, 1, 0, fillamount, filltotalfrac, 80, flags, alpha)
-                DrawHorizontalBar(v, fillx, filly + 2, filltotal, 1, 0, fillamount, filltotalfrac, 80, flags, alpha)
-                DrawHorizontalBar(v, fillx, filly + 3, filltotal, 1, 0, fillamount, filltotalfrac, 73, flags, alpha)
+                DrawHorizontalBar(v, fillx, filly, filltotal, 3, 0, fillamount, filltotalfrac, 73, flags, alpha)
+                DrawHorizontalBar(v, fillx, filly + 3, filltotal, 1, 0, fillamount, filltotalfrac, 71, flags, alpha)
             end
         end
 
@@ -137,7 +134,11 @@ local function DrawHealthAndStamina(v, player, x, y, flags)
     if special and special.button then
         local buttonpatch = "Z_TT_" .. (button_to_tooltip[special.button])
         if v.patchExists(buttonpatch) then
-            v.drawScaled(x, y + (9 * FU), FU / 2, v.cachePatch(buttonpatch), flags, nil)
+            local transparency = 0
+            if (ze2.special_cooldown > 0) then
+                transparency = V_TRANSLUCENT
+            end
+            v.drawScaled(x, y + (9 * FU), FU / 2, v.cachePatch(buttonpatch), flags|transparency, nil)
         end
     end
 
