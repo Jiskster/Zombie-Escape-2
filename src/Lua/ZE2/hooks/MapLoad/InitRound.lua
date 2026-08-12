@@ -19,16 +19,16 @@ local function InitRound(map)
 	xSlinger.visible_huds.health = false;
 	xSlinger.visible_huds.inventory = true;
 
-	-- reset everyone
-	for player in players.iterate do
-		player.xSlinger.team = 1
-		ZE2.lockPlayer(player) -- To make sure the player is the right skin for the team!
-		
-		player.ze2.selected_character = nil
-		ZE2.ResetPlayer(player, 1, true, true)
-	end
-
 	if map then
+		-- reset everyone
+		for player in players.iterate do
+			player.xSlinger.team = 1
+			ZE2.lockPlayer(player) -- To make sure the player is the right skin for the team!
+			
+			player.ze2.selected_character = nil
+			ZE2.ResetPlayer(player, 1, true, true)
+		end
+
 		if ZE2.queuing_round then
 			ZE2.rounds_left = $ - 1
 			ZE2.queuing_round = false
