@@ -37,7 +37,7 @@ return "PlayerTags", function(v, player)
 		if (plr.mo.team ~= player.mo.team) then
 			continue end;
 
-		local result = K_GetScreenCoords(v,player,camera, {
+		local result = xS_GetScreenCoords(v,player,camera, {
 			x = plr.mo.x;
 			y = plr.mo.y;
 			z = plr.mo.z + plr.mo.height;

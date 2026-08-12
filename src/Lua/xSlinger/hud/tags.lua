@@ -19,7 +19,7 @@ xSlinger.HUD_TAGS = function(v, player)
 
 	for i = 1 ,#found , 1 do
 		local mobj = found[i]
-		local result = K_GetScreenCoords(v,player,camera, mobj)
+		local result = xS_GetScreenCoords(v,player,camera, mobj)
 		if not result or not result.onscreen then continue end
 
 		local visible = false

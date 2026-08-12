@@ -11,7 +11,7 @@ local l_aiming = 0
 	original code by Lat'
 	Code from SRB2Kart Saturn, retranslated to Lua with some edits by luigi budd/epix, jisk and lugent
 */
-rawset(_G, "K_GetScreenCoords",function(vid,p,cam, point, props)
+rawset(_G, "xS_GetScreenCoords",function(vid,p,cam, point, props)
 	props = $ or {}
 	local hofs = props.hofs or 0
 	local dontclip = props.dontclip or false -- Dont make `result.offscreen = false` when the result goes off screen dimensions

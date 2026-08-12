@@ -131,7 +131,7 @@ addHook("HUD", function(v, player)
 	local i_obj = xS.selected_interaction
 
 	if i_obj and i_obj.valid and i_obj.interaction then
-		local result = K_GetScreenCoords(v,player,camera,{
+		local result = xS_GetScreenCoords(v,player,camera,{
 			x = i_obj.x;
 			y = i_obj.y;
 			z = i_obj.z + (i_obj.height*3)/4;
