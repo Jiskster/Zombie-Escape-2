@@ -5,6 +5,29 @@ local function dofolder(file)
 	dofile("ZE2/"..path.."/"..folder.."/"..file)
 end
 
+-- You can only set it if the time left is lower than the previous
+-- TODO: Flicker the game time red for a second when this gets called.
+addHook("LinedefExecute", function(line, mo)
+	if not udmf then return end
+	if not (mo.player and mo.player.valid) then return end
+	if not (mo.health) then return end
+
+	local args = line.args
+	local player = mo.player
+
+	if (args[0] == -1) then return end
+	
+	local seconds = args[0]
+	
+	if ZE2.time_limit then
+		local newtime = ZE2.time_limit - seconds*TICRATE
+
+		if newtime >= ZE2.game_time then
+			ZE2.game_time = newtime -- TODO: bro i don't like how ZE2.game_time is handled in general, it should count down.
+		end
+	end
+end, "ZE2_SETSECONDS")
+
 folder = "Waterfall";
 
 dofolder("Timers");
