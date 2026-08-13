@@ -275,7 +275,7 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 				absorbed_damage = 1
 			end
 
-			if (mo.shield_health <= absorbed_damage) then -- (TODO: play ring loss sound and damage fade when this happens)
+			if (mo.shield_health <= absorbed_damage) then
 				absorbed_damage = mo.shield_health
 				mo.shield_efficiency = 0
 			end
@@ -283,7 +283,7 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 			dmg = max(dmg - absorbed_damage, 0)
 		else
 			mo.shield_health = mo.shield_health - dmg
-			if (mo.shield_health <= 0) then -- (TODO: ditto)
+			if (mo.shield_health <= 0) then
 				dmg = abs(mo.shield_health)
 				mo.shield_health = 0
 			else
