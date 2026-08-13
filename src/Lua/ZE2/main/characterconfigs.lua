@@ -305,7 +305,7 @@ function ZE2.setConfigInventory(player, newskin, noitems)
 		local skin = newskin or mo.skin
 
 		if team == 1 and sc[skin] then
-			xS:inv_add("survivor", 5)
+			xS:inv_add("survivor", 5) -- TODO: Don't magic number the slot count
 
 			if (not noitems) and (sc[skin].items) then
 				for i,item in ipairs(sc[skin].items) do
@@ -313,7 +313,7 @@ function ZE2.setConfigInventory(player, newskin, noitems)
 				end
 			end
 		elseif team == 2 and zc[ztype] then
-			xS:inv_add("zombie", 3)
+			xS:inv_add("zombie", 2) -- TODO: Don't magic number the slot count
 
 			if (not noitems) and (zc[ztype].items) then
 				for i,item in ipairs(zc[ztype].items) do
@@ -451,11 +451,11 @@ function xSlinger.initPlayerSpawn(player)
 	local xS = player.xSlinger
 
 	if not xS:inv_get("survivor") then
-		xS:inv_add("survivor", 5)
+		xS:inv_add("survivor", 5) -- TODO: Don't magic number the slot count
 	end
 
 	if not xS:inv_get("zombie") then
-		xS:inv_add("zombie", 3)
+		xS:inv_add("zombie", 2) -- TODO: Don't magic number the slot count
 	end
 
 	xS:inv_set("survivor")
