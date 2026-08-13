@@ -1,3 +1,8 @@
+local STAMINA_RAMP = {135, 134, 133, 132, 131, 130, 129, 128}
+local STAMINA_LOW_RAMP = {79, 78, 77, 76, 75, 74, 73, 72, 83, 82, 81, 80}
+local STAMINA_OUT_RAMP = {39, 38, 37, 36, 35, 34, 33, 32}
+
+local stamina = 0
 local button_to_tooltip = {
     [BT_CUSTOM1] = "C1",
     [BT_CUSTOM2] = "C2",
@@ -9,7 +14,18 @@ local button_to_tooltip = {
     [BT_TOSSFLAG] = "TF",
 }
 
-local stamina = 0
+local function TableReverse(target)
+	local start, length = 1, #target
+    if (type(target) == "userdata") then
+        start, length = 0, 15
+    end
+
+	local result = {}
+	for index = length, start, -1 do
+		result[length - index + 1] = target[index]
+	end
+	return result
+end
 
 local function FadeAmount(amount)
     local value = ease.linear(amount, 10, 0)
@@ -27,16 +43,42 @@ end
 ---@param offset integer
 ---@param amount fixed_t
 ---@param total fixed_t
----@param color integer
+---@param color integer|skincolor_t|table
 ---@param flags integer
 ---@param alpha fixed_t
 local function DrawHorizontalBar(v, x, y, width, height, offset, amount, total, color, flags, alpha)
-    for index = 0, width, 1 do
-        if ((index * FU) >= amount) then break end
+    local colortable
+    local colortable_index, colortable_length = 1, 1
+    if (type(color) == "userdata") then
+        colortable = color
+        colortable_index, colortable_length = 0, 15
+    elseif (type(color) == "table") then
+        colortable = color
+        colortable_index, colortable_length = 1, #colortable
+    end
 
-        local fade = min(FixedMul(alpha, max(amount - (index * FU), 0)), alpha)
+    if (flags & V_FLIP) then
+        if (colortable ~= nil) then
+            colortable = TableReverse(colortable)
+            colortable_index, colortable_length = 1, #colortable
+        end
+        flags = flags & ~(V_FLIP)
+    end
+
+    local fraction = min(FixedDiv(amount, total) * width, width * FU)
+    for index = 0, width, 1 do
+        if ((index * FU) >= fraction) then break end
+
+        local fade = min(FixedMul(alpha, max(fraction - (index * FU), 0)), alpha)
         local transparency = FadeAmount(fade)
-        v.drawFill(x + ((offset + 1) * index), y, 1, height, color|flags|transparency)
+        local truecolor
+        if (colortable ~= nil) then
+            local colorfraction = max(min(FixedInt(FixedRound(FixedDiv(index * FU, width * FU) * colortable_length)), colortable_length), colortable_index)
+            truecolor = colortable[colorfraction]
+        else
+            truecolor = color
+        end
+        v.drawFill(x + ((offset + 1) * index), y, 1, height, truecolor|flags|transparency)
     end
 end
 
@@ -110,19 +152,19 @@ local function DrawHealthAndStamina(v, player, x, y, flags)
 
         v.drawFill(fillx - 1, filly - 1, filltotal + 2, 6, 31|flags|V_TRANSLUCENT)
         if (team == 2) then
-            DrawHorizontalBar(v, fillx, filly, filltotal, 3, 0, fillamount, filltotalfrac, 54, flags, FU)
-            DrawHorizontalBar(v, fillx, filly + 3, filltotal, 1, 0, fillamount, filltotalfrac, 56, flags, FU)
+            local color = skincolors[SKINCOLOR_ALPHAZOMBIE].ramp
+            if (ze2.special_cooldown > 0) then
+                color = 71
+            end
+            DrawHorizontalBar(v, fillx, filly, filltotal, 4, 0, fillamount, filltotalfrac, color, flags|V_FLIP, FU)
         elseif ze2.sprintdelay then
             local alpha = FU - sin((leveltime * 2) * ANG10)
-            DrawHorizontalBar(v, fillx, filly, filltotal, 3, 0, filltotalfrac, filltotalfrac, 35, flags, alpha)
-            DrawHorizontalBar(v, fillx, filly + 3, filltotal, 1, 0, filltotalfrac, filltotalfrac, 37, flags, alpha)
+            DrawHorizontalBar(v, fillx, filly, filltotal, 4, 0, filltotalfrac, filltotalfrac, STAMINA_OUT_RAMP, flags, alpha)
         else
-            DrawHorizontalBar(v, fillx, filly, filltotal, 3, 0, fillamount, filltotalfrac, 128, flags, FU)
-            DrawHorizontalBar(v, fillx, filly + 3, filltotal, 1, 0, fillamount, filltotalfrac, 130, flags, FU)
+            DrawHorizontalBar(v, fillx, filly, filltotal, 4, 0, fillamount, filltotalfrac, STAMINA_RAMP, flags, FU)
             if (stamina < (30 * FU)) then
                 local alpha = FU - sin(leveltime * (ANG10 / 2))
-                DrawHorizontalBar(v, fillx, filly, filltotal, 3, 0, fillamount, filltotalfrac, 73, flags, alpha)
-                DrawHorizontalBar(v, fillx, filly + 3, filltotal, 1, 0, fillamount, filltotalfrac, 71, flags, alpha)
+                DrawHorizontalBar(v, fillx, filly, filltotal, 4, 0, fillamount, filltotalfrac, STAMINA_LOW_RAMP, flags, alpha)
             end
         end
 
