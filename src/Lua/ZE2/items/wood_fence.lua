@@ -175,8 +175,6 @@ xSlinger.registerItem("wood_fence", {
 	color = SKINCOLOR_BROWN;
 	holdfunc = FenceVisual;
 
-	--TODO: it would be nice if we could get like a sort of indicator
-	--		where the fence would be placed in first person
 	usefunc = function(self, mo)
 		if not FenceCheck(mo) then return true end
 
