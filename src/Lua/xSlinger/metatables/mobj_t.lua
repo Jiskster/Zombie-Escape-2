@@ -9,13 +9,11 @@ mt.__index = function(mobj, key)
 		if player and player.valid then
 			return player.xSlinger.team
 		end
-
-		if team == nil then
-			return 0
-		end
 	end
 
 	return old_index(mobj, key)
 end
 
-
+addHook("MobjSpawn", function(mobj)
+	mobj.team = 0
+end)
