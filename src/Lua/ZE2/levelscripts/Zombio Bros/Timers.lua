@@ -24,7 +24,7 @@ ZE2:AddTimer("ZOMBIO_3", {
 
 ZE2:AddTimer("ZOMBIO_4", {
 	text = "Platform leaving",
-	time = 20*TICRATE,
+	time = 25*TICRATE,
 	on_end_tag = 103,
 	textcolor = SKINCOLOR_ORANGE,
 	lua_linedef_exec = "ZOMBIO4",
