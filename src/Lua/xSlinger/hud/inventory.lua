@@ -189,11 +189,13 @@ addHook("HUD", function(v, player)
 			local m1
 			local m2
 			
+			-- "Firerate"
 			if item_firerate_left and item_firerate then
 				m1 = item_firerate_left*FU
 				m2 = item_firerate*FU
 			end
 			
+			-- "Delay"
 			if xS.delay and selection == i then
 				m1 = xS.delay*FU
 				m2 = item_delay*FU
@@ -204,7 +206,6 @@ addHook("HUD", function(v, player)
 				firerate_square.patch = v.cachePatch("XSG_GREENSQUARE")
 
 				PositionSlot(i, firerate_square, slot_count, slot_gap)
-
 				
 				v.drawScaled(
 					firerate_square.x,
