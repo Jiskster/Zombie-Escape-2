@@ -79,8 +79,6 @@ return function(player) ---@param player player_t
 			end
 		end
 	end
-
-	ZE2.applyPlayerConfig(player)
 		
 	pv.lastJumped = (player.pflags & PF_JUMPED == PF_JUMPED)
 end

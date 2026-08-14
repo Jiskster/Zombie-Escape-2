@@ -22,7 +22,7 @@ local hook_names = {
 		"LatestCheckpoint";
 	};
 	TeamSwitch = {"MidgameJoin"};
-	PreThinkFrame = {"Movement"};
+	PreThinkFrame = {"ApplyPlayer", "Movement"};
 	ThinkFrame = {"WinHandler", "Intermission"};
 	PlayerThink = {
 		"Main";
