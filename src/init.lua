@@ -95,6 +95,7 @@ local function I_LoadItems(sp)
 	ze2file "energy_drink.lua"
 	ze2file "amys_heart.lua"
 	ze2file "accel_ring.lua"
+	ze2file "fist.lua"
 
 	-- Unused always at the end.
 

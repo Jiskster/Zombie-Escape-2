@@ -17,6 +17,7 @@ ZE2.ZombieConfig = {
 		inventory_limit = 1,
 		items = {
 			"insta_burst";
+			"fist";
 		},
 		special = {
 			button = 0, -- no button to disable
@@ -44,7 +45,7 @@ ZE2.ZombieConfig = {
 		inventory_limit = 1,
 		items = {
 			"insta_burst";
-			--ZE2:CopyItemFromID(ITEM_INSTA_BURST);
+			"fist";
 		},
 		special = {
 			button = BT_CUSTOM2,
