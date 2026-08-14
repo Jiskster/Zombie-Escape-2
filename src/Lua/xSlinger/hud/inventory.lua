@@ -183,21 +183,38 @@ addHook("HUD", function(v, player)
 		end
 
 		-- [Firing Animation] --
-		if item_firerate_left and item_firerate
-		and iteminfo.id ~= "" then
-			firerate_square.scale = FixedDiv(item_firerate_left*FU, item_firerate*FU)
-			firerate_square.patch = v.cachePatch("XSG_GREENSQUARE")
+		if iteminfo.id ~= "" then
+			local item_delay = iteminfo:getIndex("delay", player.mo.skin)
+			
+			local m1
+			local m2
+			
+			if item_firerate_left and item_firerate then
+				m1 = item_firerate_left*FU
+				m2 = item_firerate*FU
+			end
+			
+			if xS.delay and selection == i then
+				m1 = xS.delay*FU
+				m2 = item_delay*FU
+			end
+			
+			if m1 and m2 then
+				firerate_square.scale = FixedDiv(m1, m2)
+				firerate_square.patch = v.cachePatch("XSG_GREENSQUARE")
 
-			PositionSlot(i, firerate_square, slot_count, slot_gap)
+				PositionSlot(i, firerate_square, slot_count, slot_gap)
 
-			v.drawScaled(
-				firerate_square.x,
-				firerate_square.y,
-				max(0, firerate_square.scale),
-				firerate_square.patch,
-				firerate_square.flags|V_50TRANS,
-				v.getColormap(nil, SKINCOLOR_YELLOW)
-			)
+				
+				v.drawScaled(
+					firerate_square.x,
+					firerate_square.y,
+					max(0, firerate_square.scale),
+					firerate_square.patch,
+					firerate_square.flags|V_50TRANS,
+					v.getColormap(nil, SKINCOLOR_YELLOW)
+				)
+			end
 		end
 
 		do -- [Draw Ammo/Item Count] --
