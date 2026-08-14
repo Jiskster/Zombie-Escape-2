@@ -1,6 +1,9 @@
 freeslot("sfx_dsclwh", "sfx_dsclwm")
 freeslot("S_ZE2_FISTVFX")
 
+sfxinfo[sfx_dsclwh].caption = "Swosh"
+sfxinfo[sfx_dsclwm].caption = "Punch"
+
 states[S_ZE2_FISTVFX] = {
 	sprite = SPR_BARX,
 	frame = FF_TRANS90|FF_FULLBRIGHT,
