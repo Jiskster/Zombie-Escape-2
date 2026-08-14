@@ -230,7 +230,7 @@ function xSlinger.DoThinker(mobj)
 	end
 
 	if firing and not xS.delay and not xS.reload
-	and not itemdelay and not firerate_left and hand.id ~= "" then
+	and not firerate_left and hand.id ~= "" then
 		local missile
 
 		local queue_reload = false
