@@ -78,7 +78,7 @@ xSlinger.registerItem("insta_burst", {
 
 	icon = "ZMISHIND";
 
-	firerate = 34;
+	delay = 34;
 
 	sounds = {
 		use = {sfx_zish1, sfx_zish2, sfx_zish3};
