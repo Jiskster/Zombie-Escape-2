@@ -51,7 +51,7 @@ xSlinger.registerItem("red_ring", {
 	reload_time = 2*TICRATE;
 	
 	firerate = 3;
-	semifirerate = 8;
+	semifirerate = 5;
 
 	flags2 = 0; -- MF2_...
 
