@@ -215,26 +215,26 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 			P_SetObjectMomZ(mo, verticalknockback, true)
 		end
 	end
+	
+	local prop_skin = xSlinger.skin_properties[mo.skin]
+
+	if prop_skin and prop_skin.hurtsound
+	and not ignoreskinhurtsound then
+		local hs = prop_skin.hurtsound
+		if type(hs) == "table" then
+			local sound = hs[P_RandomRange(1,#hs)]
+
+			hurtsound = sound
+		elseif type(hs) == "number" then
+			hurtsound = hs
+		end
+	end
 
 	if player then
 		if xSlinger.teams[mo.team] and xSlinger.teams[mo.team].iframes ~= nil then
 			player.powers[pw_flashing] = xSlinger.teams[mo.team].iframes
 		else -- default iframes
 			player.powers[pw_flashing] = 4
-		end
-
-		local prop_skin = xSlinger.skin_properties[mo.skin]
-
-		if prop_skin and prop_skin.hurtsound
-		and not ignoreskinhurtsound then
-			local hs = prop_skin.hurtsound
-			if type(hs) == "table" then
-				local sound = hs[P_RandomRange(1,#hs)]
-
-				hurtsound = sound
-			elseif type(hs) == "number" then
-				hurtsound = hs
-			end
 		end
 
 		do
