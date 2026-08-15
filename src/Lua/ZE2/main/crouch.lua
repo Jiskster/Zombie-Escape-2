@@ -37,7 +37,6 @@ local function crouchcondition(player)
 	if not (player.mo and player.mo.valid) then return false end
 	
 	if multiplayer then
-		if (ZE2.game_ended) then return false end
 		if (ZE2.pregame_timeleft) then return false end
 		if (ZE2.zombie_releasetime and player.xSlinger.team == 2) then return false end
 	end
@@ -145,7 +144,6 @@ local crouchlerp = 0
 addHook("PostThinkFrame", function()
 	for player in players.iterate do
 		if not (player.mo and player.mo.valid) then continue end
-		if ZE2.game_ended then continue end
 		if ZE2.pregame_timeleft and multiplayer then continue end
 
 		if player.ze2.crouching and switchablestates[player.mo.state] then
