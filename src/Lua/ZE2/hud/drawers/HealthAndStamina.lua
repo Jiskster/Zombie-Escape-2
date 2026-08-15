@@ -101,6 +101,8 @@ local function DrawHealthAndStamina(v, player, x, y, flags)
     local zombieconfig = ZE2.ZombieConfig[ze2.zombie_type or ""]
     local special = zombieconfig.special
 
+    local maxhealth = mo.maxhealth or 0
+
     local staminamax = 100 * FU
     if (team == 2) and special and special and special.button then
         staminamax = special.cooldown * FU
@@ -128,14 +130,14 @@ local function DrawHealthAndStamina(v, player, x, y, flags)
     end
 
     v.drawScaled(x, y, FU / 2, health_icon, flags, v.getColormap(nil, health_color, nil))
-    if (mo.health <= (mo.maxhealth / 2)) then
+    if (mo.health <= (maxhealth / 2)) then
         local amount = FU - cos(leveltime * ANG10)
         local transparency = FadeAmount(amount)
         v.drawScaled(x, y, FU / 2, health_icon, flags|transparency, v.getColormap(nil, SKINCOLOR_RED, nil))
     end
 
     local health_text = 0
-    if (mo.health <= (mo.maxhealth / 2)) then
+    if (mo.health <= (maxhealth / 2)) then
         health_text = V_YELLOWMAP
     end
     v.drawString(x + (10 * FU), y, mo.health, flags|health_text, "fixed")
