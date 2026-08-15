@@ -49,6 +49,11 @@ local funcs = {
 	end;
 }
 
+-- alias
+funcs["get"] = funcs["getIndex"]
+funcs["set"] = funcs["setIndex"]
+funcs["change"] = funcs["changeIndex"]
+
 local mt = {
 	__index = function(a,k)
 		if funcs[k] then
