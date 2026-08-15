@@ -193,7 +193,10 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 	if mobjinfo[mo.type].npc_name then
 		if (not mo.target) and (inf or src.player) then --enemies wake up if you hit them from behind
 			mo.target = src
-			mo.state = mo.info.seestate
+			
+			if mo.info.seestate then
+				mo.state = mo.info.seestate
+			end
 		end
 
 		if mobjinfo[mo.type].painsound and mobjinfo[mo.type].painsound ~= sfx_None then
@@ -230,6 +233,8 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 		end
 	end
 
+	S_StartSound(mo, hurtsound)
+	
 	if player then
 		if xSlinger.teams[mo.team] and xSlinger.teams[mo.team].iframes ~= nil then
 			player.powers[pw_flashing] = xSlinger.teams[mo.team].iframes
@@ -246,8 +251,6 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 				end
 			end
 		end
-
-		S_StartSound(mo, hurtsound)
 	end
 
 	for i,effect in ipairs(mo.effects) do
