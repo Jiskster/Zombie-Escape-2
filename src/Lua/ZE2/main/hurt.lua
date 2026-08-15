@@ -84,7 +84,8 @@ function ZE2:AddDamageText(player, source, damage)
 		if (indicator.source ~= source) then continue end
 		if not indicator.text or not indicator.text.valid then continue end
 		indicator.text.cusval = indicator.text.cusval + damage
-		Lugent_ChangeWorldText(indicator.text, tostring(indicator.text.cusval), 1, TICRATE * 5, true)
+		ChangeWorldText(indicator.text, tostring(indicator.text.cusval), FU / 2, true)
+		indicator.text.fuse = TICRATE * 5
 		return
 	end
 
@@ -92,7 +93,7 @@ function ZE2:AddDamageText(player, source, damage)
 	local x = P_ReturnThrustX(source, direction, 64 * FU)
 	local y = P_ReturnThrustY(source, direction, 64 * FU)
 	local z = source.height * 2
-	local text = Lugent_SpawnWorldText(source.x + x, source.y + y, source.z + z, tostring(damage), 1, TICRATE * 5, true)
+	local text = SpawnWorldText(source.x + x, source.y + y, source.z + z, tostring(damage), FU / 2, true)
 	text.angle = direction - ANGLE_90
 	text.momx = source.momx
 	text.momy = source.momy
@@ -101,6 +102,7 @@ function ZE2:AddDamageText(player, source, damage)
 	text.oscale = source.scale
 	text.drawonlyforplayer = player
 	text.cusval = damage
+	text.fuse = TICRATE * 5
 	table.insert(player.ze2.damage_text, {text = text, source = source})
 end
 
