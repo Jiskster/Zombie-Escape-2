@@ -2,10 +2,11 @@ function ZE2.lockPlayer(player)
     if not player.mo then return end
 	if player.spectator then return end
 
+	local mo = player.mo
 	local ztype = player.ze2.zombie_type
 	local zc = ZE2.ZombieConfig
 
-	if player.xSlinger.team == 2 then
+	if mo.team == 2 then
 		local zskin = "zsonic"
 		if (ztype and zc[ztype]) then
 			zskin = zc[ztype].skin
@@ -14,7 +15,7 @@ function ZE2.lockPlayer(player)
 		if notzombie then
 			R_SetPlayerSkin(player, zskin)
 		end
-	elseif player.xSlinger.team == 1 then
+	elseif mo.team == 1 then
 		local currentskin = skins[player.skin].name
 		local badskin = (currentskin == "zsonic")
 		local selectedskin = player.ze2.selected_character
@@ -41,7 +42,7 @@ function ZE2.lockPlayer(player)
 		end
 	end
 
-	if (player.xSlinger.team == 2 and ztype and zc[ztype]) then
+	if (mo.team == 2 and ztype and zc[ztype]) then
 		player.mo.color = zc[ztype].skincolor or SKINCOLOR_ZOMBIE
 	end
 end

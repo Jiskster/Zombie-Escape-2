@@ -1,19 +1,7 @@
-local mt = userdataMetatable("mobj_t")
-local old_index = mt.__index
-
-mt.__index = function(mobj, key)
-	if key == "team" then
-		local team = old_index(mobj, key)
-		local player = mobj.player
-
-		if player and player.valid then
-			return player.xSlinger.team
-		end
-	end
-
-	return old_index(mobj, key)
-end
-
+-- TODO: Move file
 addHook("MobjSpawn", function(mobj)
+	if mobj.type == MT_PLAYER then 
+		return end;
+		
 	mobj.team = 0
 end)

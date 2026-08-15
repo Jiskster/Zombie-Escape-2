@@ -115,7 +115,7 @@ local function health(v,p,me,ze)
 	local health = me.health
 	local maxhealth = me.maxhealth
 	local zc = ZE2.ZombieConfig[p.ze2.zombie_type or ""]
-	local team = p.xSlinger.team
+	local team = me.team
 
 	if (health == nil) or (maxhealth == nil) then ResetInfos(); return end
 	if p.spectator then return end

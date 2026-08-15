@@ -214,7 +214,7 @@ addHook("MobjThinker", function(mobj)
 	for player in players.iterate do
 		if player.spectator then continue end
 		if not player.mo or not player.mo.valid then continue end
-		if (player.xSlinger.team ~= 1) then continue end
+		if (player.mo.team ~= 1) then continue end
 		if (player.ze2.cash >= player.ze2.cash_limit) then continue end
 
 		local mo = player.mo

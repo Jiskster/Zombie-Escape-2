@@ -1,6 +1,6 @@
 return function(player)
 	if not (player.mo and player.mo.valid) then return end
-	if not (player.xSlinger.team == 2) then return end
+	if not (player.mo.team == 2) then return end
 	if player.playerstate ~= PST_LIVE then return end
 
 	local special = ZE2.ZombieConfig[player.ze2.zombie_type].special

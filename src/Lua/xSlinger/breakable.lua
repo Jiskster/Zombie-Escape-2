@@ -154,7 +154,7 @@ xSlinger.addHook("ShouldDamage", function(mobj, inflictor, source, damage, damag
     if not player or not player.valid then return false end
 
     local xS = player.xSlinger
-    if not CheckBreakable(mobj, xS.team) then return false end
+    if not CheckBreakable(mobj, attacker.team) then return false end
 end, MT_XS_BREAKABLE)
 
 ---@param mobj mobj_t

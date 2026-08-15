@@ -94,7 +94,7 @@ local function DrawHealthAndStamina(v, player, x, y, flags)
     local mo = player.mo --[[@as mobj_t]]
 
     local xs = player.xSlinger
-    local team = xs.team
+    local team = mo.team
 
     local ze2 = player.ze2
 

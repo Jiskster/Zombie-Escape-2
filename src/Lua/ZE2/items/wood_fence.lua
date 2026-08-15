@@ -96,7 +96,7 @@ addHook("MobjMoveCollide", function(check, mobj)
 	if not (mobj.flags & MF_SOLID) then return false end
 	if not ZE2.ZCollide(check, mobj) then return false end
 	if mobj.player and mobj.player.valid then
-		if (mobj.player.xSlinger.team == check.target.player.xSlinger.team) then return false end
+		if (mobj.team == check.target.team) then return false end
 	end
 	return true
 end, MT_PROPCHECK)
@@ -221,7 +221,7 @@ xSlinger.registerItem("wood_fence", {
 
 local function TeamCheck(wood, tmo)
 	if tmo.player and tmo.player.valid
-	and (wood.team == tmo.player.xSlinger.team) then
+	and (wood.team == tmo.team) then
 		return true
 	end
 

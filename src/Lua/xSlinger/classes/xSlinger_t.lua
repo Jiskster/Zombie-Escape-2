@@ -5,7 +5,6 @@ local xSlinger_t = setmetatable({
 	reload = 0;
 	delay = 0;
 	inventory = {};
-	team = 0;
 	selected_interaction = nil; -- mobj_t
 	selected_interaction_timer = 0; -- tics
 	interaction_hold = 0; -- holding interaction button

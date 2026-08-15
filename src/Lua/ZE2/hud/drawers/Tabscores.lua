@@ -30,7 +30,7 @@ local function RenderPlayer(v, ypos, player, team) -- standard
 	DrawString(4 + 20, ypos + textspos, player.name, V_ALLOWLOWERCASE|textcolor|highlight, "small")
 
 	local visible_stats = false
-	if consoleplayer.spectator or (consoleplayer.xSlinger.team == team.id) then
+	if consoleplayer.spectator or (consoleplayer.realmo.team == team.id) then
 		visible_stats = true
 	end
 
@@ -43,7 +43,7 @@ local function RenderPlayer(v, ypos, player, team) -- standard
 			end
 			DrawString(BASEVIDWIDTH - (2 + 90), ypos + textspos, healthtext, V_ALLOWLOWERCASE|textcolor, "small-right")
 
-			if (player.xSlinger.team == 2) then
+			if (player.realmo.team == 2) then
 				local zombietype = "???"
 				if ZE2.ZombieConfig[player.ze2.zombie_type] and ZE2.ZombieConfig[player.ze2.zombie_type].name then
 					zombietype = ZE2.ZombieConfig[player.ze2.zombie_type].name
@@ -86,7 +86,7 @@ local function RenderPlayerSmall(v, ypos, player, team) -- compact
 	DrawString(4 + 10, ypos + textspos, player.name, V_ALLOWLOWERCASE|textcolor|highlight, "small")
 
 	local visible_stats = false
-	if consoleplayer.spectator or (consoleplayer.xSlinger.team == team.id) then
+	if consoleplayer.spectator or (consoleplayer.realmo.team == team.id) then
 		visible_stats = true
 	end
 
@@ -99,7 +99,7 @@ local function RenderPlayerSmall(v, ypos, player, team) -- compact
 			end
 			DrawString(BASEVIDWIDTH - (2 + 90), ypos + textspos, healthtext, V_ALLOWLOWERCASE|textcolor, "small-right")
 
-			if (player.xSlinger.team == 2) then
+			if (player.realmo.team == 2) then
 				local zombietype = "???"
 				if ZE2.ZombieConfig[player.ze2.zombie_type] and ZE2.ZombieConfig[player.ze2.zombie_type].name then
 					zombietype = ZE2.ZombieConfig[player.ze2.zombie_type].name
@@ -145,7 +145,7 @@ local function RenderPlayerSmaller(v, ypos, player, team) -- super compact
 	DrawString(4 + 5, ypos + textspos, player.name, V_ALLOWLOWERCASE|textcolor|highlight, "small")
 
 	local visible_stats = false
-	if consoleplayer.spectator or (consoleplayer.xSlinger.team == team.id) then
+	if consoleplayer.spectator or (consoleplayer.mo.team == team.id) then
 		visible_stats = true
 	end
 
@@ -158,7 +158,7 @@ local function RenderPlayerSmaller(v, ypos, player, team) -- super compact
 			end
 			DrawString(BASEVIDWIDTH - (2 + 90), ypos + textspos, healthtext, V_ALLOWLOWERCASE|textcolor, "small-right")
 
-			if (player.xSlinger.team == 2) then
+			if (player.realmo.team == 2) then
 				local zombietype = "???"
 				if ZE2.ZombieConfig[player.ze2.zombie_type] and ZE2.ZombieConfig[player.ze2.zombie_type].name then
 					zombietype = ZE2.ZombieConfig[player.ze2.zombie_type].name
@@ -196,7 +196,7 @@ local function RenderTeam(v, ypos, team, size)
 	DrawString(4, ypos, ChatColorToTextColor(textcolor) .. teamname .. "\x80" .. " - " .. ChatColorToTextColor(textcolor) .. #playerlist .. " " .. playersdisplay, V_ALLOWLOWERCASE, "small") -- team name
 
 	local visible_stats = false
-	if consoleplayer.spectator or (consoleplayer.xSlinger.team == team.id) then
+	if consoleplayer.spectator or (consoleplayer.mo.team == team.id) then
 		visible_stats = true
 	end
 

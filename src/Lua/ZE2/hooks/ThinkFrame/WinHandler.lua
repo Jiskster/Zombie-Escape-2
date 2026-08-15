@@ -26,9 +26,9 @@ return function()
 			player_count = $ + 1
 			
             if player.mo.health then
-                if player.xSlinger.team == 1 then
+                if player.mo.team == 1 then
                     survivors = $ + 1
-                elseif player.xSlinger.team == 2 then
+                elseif player.mo.team == 2 then
                     zombies = $ + 1
                 end
             end

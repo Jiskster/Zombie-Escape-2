@@ -6,7 +6,7 @@ local function DrawTooltips(v, player)
 	if not (player.mo and player.mo.valid) then
 		return end;
 
-	if (player.xSlinger.team ~= 1) then
+	if (player.mo.team ~= 1) then
 		return end;
 
 	if (ZE2.game_ended) then

@@ -30,7 +30,7 @@ states[S_MEGAHP] = {
 sfxinfo[sfx_maxhp].caption="Max HP increased"
 
 ZE2.HitMegaHP = function(special, toucher)
-	if toucher and toucher.valid and toucher.player and toucher.player.xSlinger.team then
+	if toucher and toucher.valid and toucher.player and toucher.team then
 		local player = toucher.player
 
 		toucher.health = toucher.maxhealth

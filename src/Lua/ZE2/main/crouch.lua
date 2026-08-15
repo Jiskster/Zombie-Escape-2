@@ -38,7 +38,7 @@ local function crouchcondition(player)
 	
 	if multiplayer then
 		if (ZE2.pregame_timeleft) then return false end
-		if (ZE2.zombie_releasetime and player.xSlinger.team == 2) then return false end
+		if (ZE2.zombie_releasetime and player.mo.team == 2) then return false end
 	end
 	
 	return true
