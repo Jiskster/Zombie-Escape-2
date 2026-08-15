@@ -46,7 +46,7 @@ function ZE2:StartWin(team, fromring)
 			if (player and player.valid and not player.spectator) then
 				local pv = player.ze2
 
-				if player.xSlinger.team ~= team then
+				if mobj.team ~= team then
 					if team == 2 then
 						player.ze2.karma = min($ + 200, ZE2.MaxKarma)
 					end
@@ -74,7 +74,8 @@ function ZE2:StartWin(team, fromring)
 
 	for player in players.iterate do
 		if player.spectator then continue end
-		if player.xSlinger.team ~= team then continue end
+		if not (player.mo and player.mo.valid) then continue end
+		if player.mo.team ~= team then continue end
 
 		if team == 1 then
 			player.ze2.karma = max(1, $ / 2)
@@ -234,7 +235,9 @@ addHook("ThinkFrame", function()
 					print(string.format("%s%s%s has risen from the dead!", "\x83", "\x83", player.name))
 				end
 
-				player.xSlinger.team = 2
+				if player.mo and player.mo.valid then
+					player.mo.team = 2
+				end
 			end
 		end
 
@@ -263,7 +266,7 @@ addHook("ThinkFrame", function()
 	end
 
 	for player in players.iterate do
-		if player.mo and player.mo.valid and (ZE2.game_ended or player.xSlinger.team == 2) then
+		if player.mo and player.mo.valid and (ZE2.game_ended or player.mo.team == 2) then
 			player.powers[pw_underwater] = 0
 		end
 	end

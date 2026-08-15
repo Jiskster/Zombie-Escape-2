@@ -268,14 +268,14 @@ addHook("MobjMoveCollide", function(tmthing, thing)
 		local olddist = R_PointToDist2(oldiobj.x, oldiobj.y, tmthing.x, tmthing.y)
 		local newdist = R_PointToDist2(thing.x, thing.y, tmthing.x, tmthing.y)
 
-		if (olddist < newdist) and not (oldiobj.interaction.cooldown) and checkInteraction(oldiobj, xS.team) then
+		if (olddist < newdist) and not (oldiobj.interaction.cooldown) and checkInteraction(oldiobj, pmo.team) then
 			xS.selected_interaction = oldiobj
 			xS.selected_interaction_timer = settime
-		elseif not (thing.interaction.cooldown) and checkInteraction(thing, xS.team) then
+		elseif not (thing.interaction.cooldown) and checkInteraction(thing, pmo.team) then
 			xS.selected_interaction = thing
 			xS.selected_interaction_timer = settime
 		end
-	elseif not (thing.interaction.cooldown) and checkInteraction(thing, xS.team) then
+	elseif not (thing.interaction.cooldown) and checkInteraction(thing, pmo.team) then
 		xS.selected_interaction = thing
 		xS.selected_interaction_timer = settime
 	end

@@ -45,7 +45,7 @@ function xSlinger.initPlayerSpawn(player)
 	xSlinger.initPlayer(player)
 	
 	local xS = player.xSlinger
-	xS.team = 1
+	player.mo.team = 1
 
 	xS.reload = 0
 
@@ -171,11 +171,11 @@ dofile "xSlinger/hud/tags"
 dofile "xSlinger/hud/inventory"
 dofile "xSlinger/hud/health"
 
-addHook("PlayerSpawn", function(player)
-	xSlinger.initPlayerSpawn(player)
-
-	--xS:slot_set(1, "red_ring")
-end)
+addHook("MobjSpawn", function(mobj)
+	if mobj.player and mobj.player.valid then
+		xSlinger.initPlayerSpawn(mobj.player)
+	end
+end, MT_PLAYER)
 
 addHook("PlayerThink", function(player)
 	if not (player.mo and player.mo.valid and player.mo.health) then

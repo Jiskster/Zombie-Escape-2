@@ -16,7 +16,7 @@ return function(player)
 		end
 		
 		if not (player.pflags & PF_JUMPDOWN) then
-			if player.xSlinger.team == 1 then
+			if player.mo.team == 1 then
 				player.ze2:ChangeStamina(-sprintloss)
 			end
 		end

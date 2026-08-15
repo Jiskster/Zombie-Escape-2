@@ -8,7 +8,7 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 	if mo.player and mo.player.valid then
 		local player = mo.player
 		local ztype = player.ze2.zombie_type
-		local team = player.xSlinger.team
+		local team = mo.team
 		local cash_award = 150
 		local killer -- will be valid if player
 
@@ -117,14 +117,14 @@ xSlinger.addHook("OnPlayerDamage", function(player, inf, src, dmg, damagetype)
 		attacker = inf
 	end
 
-	if player.xSlinger.team == 1 then
+	if player.mo.team == 1 then
 		if attacker and attacker.player and attacker.team == 2 then
 			player.ze2.karma = min($ + 3, ZE2.MaxKarma)
 			pV:ChangeStamina(-40*FRACUNIT)
 		end
 
 		pV:DamageFade(15)
-	elseif player.xSlinger.team == 2 then
+	elseif player.mo.team == 2 then
 		if attacker and attacker.player and attacker.team == 1 then
 			local found = player.mo:search_effect("alphazombie.rage")
 			if player.ze2.zombie_type == "alpha" and not #found then

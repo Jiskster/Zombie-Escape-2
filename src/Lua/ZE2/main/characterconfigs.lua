@@ -77,7 +77,6 @@ function ZE2.resetPlayerHealth(player, newskin)
 	local mo = player.mo
 	local ze2 = player.ze2
 	local xS = player.xSlinger
-	local team = xS.team
 	local ztype = ze2.zombie_type
 
 	local cc = ZE2.SurvivorConfig
@@ -85,6 +84,8 @@ function ZE2.resetPlayerHealth(player, newskin)
 
 	if not (mo and mo.valid) then
 		return end;
+	
+	local team = mo.team
 
 	local skin = newskin or mo.skin
 
@@ -170,7 +171,7 @@ function ZE2.applyPlayerConfig(player)
 	local ze2 = player.ze2
 	local cmd = player.cmd
 	local xS = player.xSlinger
-	local team = xS.team
+	local team = mo.team
 	local zc = ZE2.ZombieConfig
 	local cc = ZE2.SurvivorConfig
 	local ztype = ze2.zombie_type
@@ -300,9 +301,9 @@ function ZE2.setConfigInventory(player, newskin, noitems)
 	local zc = ZE2.ZombieConfig
 	local ztype = player.ze2.zombie_type
 	local mo = player.mo
-	local team = xS.team
-
+	
 	if mo and mo.valid then
+		local team = mo.team
 		local skin = newskin or mo.skin
 
 		if team == 1 and sc[skin] then

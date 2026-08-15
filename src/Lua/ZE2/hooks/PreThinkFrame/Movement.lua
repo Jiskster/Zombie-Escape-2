@@ -7,14 +7,15 @@ local SIDEMOVE_THRESHOLD = 28 -- So that players dont sideways sprint.
 
 ---@param player player_t
 local function HandleSprinting(player)
-	if (player.xSlinger.team ~= 1) then return end
+	
 	if player.climbing then return end
 
 	local cmd = player.cmd
 	local mobj = player.mo
 	local ze2 = player.ze2
 	if not mobj or not mobj.valid then return end
-
+	if (mobj.team ~= 1) then return end
+	
 	local ground = P_IsObjectOnGround(mobj)
 	local speed = FixedInt(abs(R_PointToDist2(0, 0, player.rmomx, player.rmomy)))
 	if (speed >= 18) then

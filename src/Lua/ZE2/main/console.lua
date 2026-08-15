@@ -58,7 +58,7 @@ ZE2.cv_debug = CV_RegisterVar({
 
 COM_AddCommand("z_changeztype", function(player, new_ztype)
 	if not (player.mo and player.mo.valid) then return end
-	if player.xSlinger.team ~= 2 then
+	if player.mo.team ~= 2 then
 		CONS_Printf(player,"You must be a zombie to run this command.")
 		return
 	end
@@ -93,10 +93,12 @@ COM_AddCommand("drophand", function(player)
 	if (ZE2.pregame_timeleft) then
 		return end;
 
+	local mo = player.mo
+
 	local droppeditem = xS:hand_drop()
 	if droppeditem and droppeditem.valid then
-		droppeditem.team = xS.team
+		droppeditem.team = mo.team
 		droppeditem.interaction.team_restrict = {enabled = true}
-		droppeditem.interaction.team_restrict[xS.team] = true
+		droppeditem.interaction.team_restrict[mo.team] = true
 	end
 end)

@@ -1,7 +1,9 @@
 return function(self, amount)
 	local player = self.player
 
-	if player.xSlinger.team ~= 1 then return end -- no zombi!!!
+	if not (player.mo and player.mo.valid) then return end
+
+	if player.mo.team ~= 1 then return end -- no zombi!!!
 
 	if not player.ze2.sprintdelay then
 		player.ze2.sprintmeter = $ + amount

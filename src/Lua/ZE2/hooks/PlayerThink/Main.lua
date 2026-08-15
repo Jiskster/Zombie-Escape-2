@@ -62,10 +62,10 @@ return function(player) ---@param player player_t
 
 		if player.playerstate == PST_DEAD then
 			if ZE2.round_active and not ZE2_game_ended and not player.ze2.respawntics then
-				if player.xSlinger.team == 1 then
+				if pmo.team == 1 then
 					player.ze2.respawntics = 10*TICRATE
 					player.ze2.outofgame = true
-				elseif player.xSlinger.team == 2 then
+				elseif pmo.team == 2 then
 					player.ze2.respawntics = 15*TICRATE
 				end
 			end

@@ -22,7 +22,9 @@ local function InitRound(map)
 	if map then
 		-- reset everyone
 		for player in players.iterate do
-			player.xSlinger.team = 1
+			if player.mo and player.mo.valid then
+				player.mo.team = 1
+			end
 			ZE2.lockPlayer(player) -- To make sure the player is the right skin for the team!
 			
 			player.ze2.selected_character = nil

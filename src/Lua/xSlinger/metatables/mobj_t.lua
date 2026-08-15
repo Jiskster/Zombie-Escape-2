@@ -1,19 +1,22 @@
-local mt = userdataMetatable("mobj_t")
-local old_index = mt.__index
+-- TODO: Move and rename file
 
-mt.__index = function(mobj, key)
-	if key == "team" then
-		local team = old_index(mobj, key)
-		local player = mobj.player
-
-		if player and player.valid then
-			return player.xSlinger.team
+local function validateTeam(player)
+	if player.realmo and player.realmo.valid then
+		if player.realmo.team == nil then
+			player.realmo.team = 1
 		end
 	end
-
-	return old_index(mobj, key)
 end
 
 addHook("MobjSpawn", function(mobj)
+	if mobj.type == MT_PLAYER then 
+		return end;
+	
 	mobj.team = 0
+end)
+
+addHook("PreThinkFrame", function(player)
+	for player in players.iterate do
+		validateTeam(player)
+	end
 end)

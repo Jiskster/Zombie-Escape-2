@@ -14,12 +14,12 @@ ZE2.ResetPlayer = function(player, set_team, resetinventory, noitems)
 		return end;
 
 	if set_team ~= nil then
-		xS.team = set_team
+		mo.team = set_team
 	end
 
 	ZE2.lockPlayer(player) -- To make sure the player is the right skin for the team!
 
-	local team = xS.team
+	local team = mo.team
 
 	local skin = mo.skin
 	local ztype = ze2.zombie_type

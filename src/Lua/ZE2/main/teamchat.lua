@@ -22,9 +22,10 @@ function ZE2.DoTeamChat(player, text, team)
 
 	for tplayer in players.iterate do
 		if tplayer.spectator then continue end
-		if tplayer == server and ZE2.server_showteamchat.value then return end
+		if tplayer == server and ZE2.server_showteamchat.value then continue end
+		if not (tplayer.mo and tplayer.mo.valid) then continue end
 
-		if tplayer.xSlinger.team == team then
+		if tplayer.mo.team == team then
 			chatprintf(tplayer, hexcolor.."[T]<"..prefixrole..player.name.."> "..text, true)
 		end
 	end
@@ -39,12 +40,12 @@ addHook("PlayerMsg", function(source, msgtype, target, msg)
 		return true
 	elseif (msg:sub(1,4) == "/tc ") and (msg:len() > 4)
 	and not source.ze2.teamchat_enabled then
-		ZE2.DoTeamChat(source, msg:gsub("/tc ", ""), source.xSlinger.team, 1)
+		ZE2.DoTeamChat(source, msg:gsub("/tc ", ""), source.mo.team, 1)
 		return true
 	end
 
 	if source.ze2.teamchat_enabled then
-		ZE2.DoTeamChat(source, msg, source.xSlinger.team)
+		ZE2.DoTeamChat(source, msg, source.mo.team)
 		return true
 	end
 end)

@@ -4,7 +4,10 @@ return function(player)
 	
 	if gametype ~= GT_ZE2 then 
 		if not multiplayer then
-			player.xSlinger.team = 1
+			if player.mo and player.mo.valid then
+				player.mo.team = 1
+			end
+
 			player.lives = 3 -- mainly for singleplayer
 		end
 		
@@ -19,7 +22,7 @@ return function(player)
 		local player_count = ZE2.PlayerCount()
 
 		if (ZE2.round_active and player_count > 1) then -- spawn midgame = zombie
-			player.xSlinger.team = 2
+			pmo.team = 2
 			player.ze2.zombie_type = "normal"
 
 			local chance = FU/8
@@ -49,12 +52,12 @@ return function(player)
 
 			P_SpawnMobj(pmo.x, pmo.y, pmo.z, MT_ZE2_TELEGFX)
 		else -- join before game = survivor
-			player.xSlinger.team = 1
+			pmo.team = 1
 		end
 
-		ZE2.ResetPlayer(player, nil, player.xSlinger.team == 2)
+		ZE2.ResetPlayer(player, nil, pmo.team == 2)
 
-		if player.xSlinger.team == 2 then
+		if pmo.team == 2 then
 			R_SetPlayerSkin(player, "zsonic")
 		end
 
