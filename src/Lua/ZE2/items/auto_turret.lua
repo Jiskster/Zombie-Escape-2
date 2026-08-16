@@ -96,6 +96,7 @@ end
 local MAX_POWERUP = 3*TICRATE
 local MAX_FIRING = 7*TICRATE
 local POWERUP_SOUND = sfx_trpowr
+local POWERUP_VOLUME = 95
 
 addHook("MobjThinker", function(turret)
 	if turret.health <= 0 then
@@ -125,7 +126,7 @@ addHook("MobjThinker", function(turret)
 		if not at.firing then
 			at.powerup = MAX_POWERUP
 			
-			S_StartSound(turret, POWERUP_SOUND)
+			S_StartSoundAtVolume(turret, POWERUP_SOUND, POWERUP_VOLUME)
 		end
 	end
 	
@@ -137,7 +138,7 @@ addHook("MobjThinker", function(turret)
 		if not (at.powerup) and not (at.firing) then
 			at.powerup = MAX_POWERUP
 
-			S_StartSound(turret, POWERUP_SOUND)
+			S_StartSoundAtVolume(turret, POWERUP_SOUND, POWERUP_VOLUME)
 		end
 		
 		turret.angle = angletotracer
@@ -161,7 +162,7 @@ addHook("MobjThinker", function(turret)
 		
 		at.powerup = MAX_POWERUP
 		
-		S_StartSound(turret, POWERUP_SOUND)
+		S_StartSoundAtVolume(turret, POWERUP_SOUND, POWERUP_VOLUME)
 	end
 end, MT_ZE2_AUTOTURRET)
 
