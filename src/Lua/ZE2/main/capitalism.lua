@@ -21,9 +21,6 @@ ZE2.currencydelay = CV_RegisterVar({
 
 function A_RubyDrop(actor, var1)
 	local amount = var1
-	if mapheaderinfo[gamemap].ze2_zombieswarm then
-		amount = amount / 2
-	end
 
 	for i = 1, amount do
 		local ruby = P_SpawnMobjFromMobj(actor, 0, 0, 10 * FU, MT_CRRUBY)
