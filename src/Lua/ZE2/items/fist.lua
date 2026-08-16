@@ -19,7 +19,7 @@ states[S_ZE2_FISTVFX] = {
 
 local missile_fist = 
 xSlinger.registerMissile("FIST", {
-	speed = 35*FRACUNIT,
+	speed = 60*FRACUNIT,
 	displayname = "Fist",
 	state = S_INVISIBLE,
 	deathstate = S_ZE2_FISTVFX,
