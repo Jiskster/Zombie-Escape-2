@@ -133,6 +133,7 @@ folder = "Westopolis";
 
 dofolder("Emerald");
 dofolder("Timers");
+dofolder("Path_Triggering");
 
 folder = "Egg Fortress"; dofolder("Timers");
 
