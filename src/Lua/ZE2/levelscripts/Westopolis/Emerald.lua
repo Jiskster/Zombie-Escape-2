@@ -38,26 +38,20 @@ local Emerald = {
     [6] = {color = SKINCOLOR_BLUEBELL, frame = G}
 }
 
---Replica of A_GoldMonitorSparkle but colorized and for advanced usage
---
---var1 = color
---var2 = radius
----@param actor mobj_t
----@param var1 skincolornum_t
----@param var2 fixed_t
-function A_GoldMonitorSparkleColor(actor, var1, var2)
-    if not actor or not actor.valid then return end
+-- Make the emerald sparkle
+local function EmeraldSparkles(mo, color)
+    if not mo or not mo.valid then return end
 
-    local angle = FixedAngle(((leveltime * 21) % 360) * FRACUNIT)
-    local offsetx = P_ReturnThrustX(actor, angle, var2 or actor.radius)
-    local offsety = P_ReturnThrustY(actor, angle, var2 or actor.radius)
-    for index = FRACUNIT, FRACUNIT * 2, FRACUNIT / 2 do
-        local sparkle = P_SpawnMobjFromMobj(actor, offsetx, offsety, 0, MT_BOXSPARKLE)
-        sparkle.colorized = true
-        sparkle.color = var1 or SKINCOLOR_GREEN
-        sparkle.renderflags = sparkle.renderflags | RF_FULLBRIGHT
-        P_SetObjectMomZ(sparkle, index, false)
-    end
+    local rad = mo.radius / 2
+    local x = P_RandomRange(- rad / FU, rad / FU)
+    local y = P_RandomRange(- rad / FU, rad / FU)
+    local z = P_RandomRange(0, (mo.height / FU) / 3 * 2)
+
+    local sparkle = P_SpawnMobjFromMobj(mo, x * FU, y * FU, z * FU, MT_BOXSPARKLE)
+    sparkle.colorized = true
+    sparkle.color = color or SKINCOLOR_GREEN
+    sparkle.renderflags = sparkle.renderflags | RF_FULLBRIGHT
+    P_SetObjectMomZ(sparkle, P_RandomRange(1, 3) * FU)
 end
 
 -- Set the emerald frame and sparkles color from desired thing arguments
@@ -79,10 +73,10 @@ end, MT_WESTOEMERALD)
 
 -- Spawn Emerald Sparkles if desired
 addHook("MobjThinker", function(mobj)
-    if ((leveltime % 10) ~= 0) then return end --run this thinker each 10 tics
+    if ((leveltime % 6) ~= 0) then return end --run this thinker each 10 tics
     if not mobj or not mobj.valid or (mobj.health <= 0) and (mobj.color == nil) then return end
 
-    A_GoldMonitorSparkleColor(mobj, mobj.color, mobj.radius/3)
+    EmeraldSparkles(mobj, mobj.color)
 end, MT_WESTOEMERALD)
 
 --Execute a linedef tag on death
