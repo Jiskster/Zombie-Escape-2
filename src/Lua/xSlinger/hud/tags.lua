@@ -25,7 +25,7 @@ xSlinger.HUD_TAGS = function(v, player)
 		local visible = false
 		if mobj.npc_visiblehealth and mobj.health then
 			visible = true
-		elseif mobj.info.npc_spawnhealth and mobj.health then
+		elseif (mobj.info.npc_name or mobj.info.npc_spawnhealth) and mobj.health then
 			visible = true
 		end
 
