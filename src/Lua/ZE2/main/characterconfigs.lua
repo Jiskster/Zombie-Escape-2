@@ -441,8 +441,8 @@ ZE2.AddSurvivor("metalsonic", {
 		"A good fragging character.";
 	};
 	items = {
-		"red_ring";
 		"explosion_ring";
+		"auto_turret";
 	};
 })
 
