@@ -37,7 +37,7 @@ xSlinger.registerItem("auto_turret", {
 	icon = "TURRETIND";
 	
 	firerate = 30*TICRATE;
-	turret_tics = 30*TICRATE; -- make same as firerate (or not idk)
+	turret_tics = 18*TICRATE;
 	
 	sounds = {
 		use = sfx_jshard;
