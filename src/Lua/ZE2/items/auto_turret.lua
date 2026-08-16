@@ -74,6 +74,9 @@ local function searchPlayers(turret)
 		if (pmo.team == turret.team) then
 			continue end;
 			
+		if not (pmo.health) then
+			continue end;
+			
 		if dist > 1536*FU then
 			continue end;
 			
