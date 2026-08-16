@@ -7,7 +7,7 @@ mobjinfo[MT_ZE2_AMYS_HEART] = {
 	deathsound = sfx_ncchip,
 	speed = 0,
 	radius = 32*FU,
-	height = 64*FU,
+	height = 80*FU,
 	flags = MF_SPECIAL,
 }
 
@@ -103,6 +103,10 @@ addHook("MobjThinker", function(mobj)
 		end
 		
 		if (player.spectator) then
+			continue
+		end
+
+		if not ZE2.ZCollide(mobj, player.mo) then
 			continue
 		end
 		
