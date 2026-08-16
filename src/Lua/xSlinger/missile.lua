@@ -64,6 +64,10 @@ function xSlinger.SpawnMissile(m_table)
 	th.state = missile_def.state
 
 	speed = missile_def.speed
+	
+	if m_table.damage then th.forcedamage = m_table.damage end
+	if m_table.forceknockback then th.forceknockback = m_table.forceknockback end
+	if m_table.relativeknockback then th.relativeknockback = true end
 
 	if missile_def then
 		local temp_missile_def = xSlinger.deepcopy(missile_def)
