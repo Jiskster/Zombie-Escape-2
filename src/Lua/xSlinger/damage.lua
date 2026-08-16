@@ -206,6 +206,10 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 
 	-- BOOM! Knockback!
 	if inf and inf.valid then
+		if inf.knockbacktics then
+			knockback_tics = inf.knockbacktics
+		end
+		
 		if not relativeknockback then
 			KB.addKnockback(mo, knockback_tics, inf.angle, knockback)
 		else
