@@ -94,7 +94,7 @@ local function searchPlayers(turret)
 end
 
 local MAX_POWERUP = 3*TICRATE
-local MAX_FIRING = 7*TICRATE
+local MAX_FIRING = 5*TICRATE
 local POWERUP_SOUND = sfx_trpowr
 local POWERUP_VOLUME = 95
 
