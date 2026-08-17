@@ -3,7 +3,7 @@ local LASER_KNOCKBACK = FRACUNIT
 freeslot("MT_ZE2_AUTOTURRET", "S_ZE2_AUTOTURRET")
 
 mobjinfo[MT_ZE2_AUTOTURRET] = {
-	spawnhealth = 150,
+	spawnhealth = 70,
 	spawnstate = S_ZE2_AUTOTURRET,
 	painsound = sfx_dmpain,
 	deathstate = S_RINGEXPLODE,
@@ -36,7 +36,7 @@ xSlinger.registerItem("auto_turret", {
 	
 	icon = "TURRETIND";
 	
-	firerate = 30*TICRATE;
+	firerate = 18*TICRATE;
 	turret_tics = 18*TICRATE;
 	
 	sounds = {
