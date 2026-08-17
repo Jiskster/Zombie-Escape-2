@@ -426,10 +426,6 @@ ZE2.AddSurvivor("fang", {
 	items = {
 		"red_ring";
 		"rail_ring";
-		"grenade_ring";
-		"grenade_ring";
-		"blue_spring";
-		"blue_spring";
 	};
 })
 
