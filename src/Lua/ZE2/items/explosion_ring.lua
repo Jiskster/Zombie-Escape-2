@@ -45,7 +45,7 @@ xSlinger.registerItem("explosion_ring", {
 
 	reload_time = 4*TICRATE;
 
-	knockback = 100*FRACUNIT;
+	knockback = 65*FRACUNIT;
 	knockback_tics = TICRATE;
 
 	hold_object = {
