@@ -9,11 +9,22 @@ local ty = CV_RegisterVar({
 	PossibleValue = CV_Unsigned,
 })
 
+local explosions = {}
+local function addExplosion(pos_x, pos_y)
+	explosions[#explosions + 1] = {
+		x = pos_x;
+		y = pos_y;
+		frame = 0;
+	}
+end
+
 local wtics2 = 0 -- for triangle animation
 
 return "Intermission", function(v, player)
+	local vote = ZE2.vote
 	if not ZE2.game_ended then
 		wtics2 = 0
+		explosions = {}
 		return
 	end
 
@@ -84,25 +95,117 @@ return "Intermission", function(v, player)
 	end
 
 	if ZE2.win_tics >= newroundframe + slideout_anim then
-		local newmap = ZE2.NextMapVoted
-		local newmap_anim_time = TICRATE/2
-		local newmap_diff = min(ZE2.win_tics - (newroundframe + slideout_anim), newmap_anim_time)
-		local newmap_div = FixedDiv(newmap_diff*FU, newmap_anim_time*FU)
-		local newmap_easescale = ease.inoutsine(newmap_div, 0, FU/2)
+		local slideintics = ZE2.win_tics - (newroundframe + slideout_anim)
+		
+		local elected_maps = vote.maps
+		
+		local top_text = ("\x82".."VOTE\x80".." to \x85\ELIMINATE\x80".." a map!")
+		v.drawString(160, 45, top_text, V_ALLOWLOWERCASE, "thin-center")
+		
+		local pvote = player.ze2.vote
+		
+		for i=1,#elected_maps do
+			local map = elected_maps[i]
 
-		local newmap_patch = v.cachePatch(G_BuildMapName(newmap).."P")
-		local newmap_name = (mapheaderinfo[newmap].lvlttl)
-		local newmap_x = 160*FU
-		local newmap_y = 100*FU
+			local patch = v.cachePatch(G_BuildMapName(map.num).."P")
+			local spread = (i-2)*100*FU
+			local scale = FU/2
+			local x = 160*FU + spread
+			local y = 100*FU
+			
+			x = $ - FixedMul(patch.width*FU, scale)/2
+			y = $ - FixedMul(patch.height*FU, scale)/2
+			
+			local monitor = v.cachePatch("MONITOR_MAP")
+			local x2 = x
+			local y2 = y
+			
+			-- trying to fit in monitor
+			x2 = $ + FixedMul(FU, scale)
+			y2 = $ + FixedMul(5*FU, scale)
+			
+			local mintics = 40
+			local ticoffset = 24
+			local div = FixedDiv(slideintics*FU, mintics*FU + (i-1)*FU*ticoffset)
+			div = min($, FU)
+			
+			local ese = ease.outquint(div, 300*FU, 0)
+			
+			local spatch = v.cachePatch("VOTE_SELECTION")
+			local x3 = x2
+			local y3 = y2
+			
+			if (pvote.selection == i) then
+				-- did this by eye
+				x3 = $ + 22*FU
+				y3 = $ - 16*FU
+				
+				y3 = $ + cos(FixedAngle(leveltime*FU*13))*2
+				
+				local HIT_ANIM_TIME = 12
+				if pvote.lasthit ~= nil then
+					local timesince = (leveltime - pvote.lasthit)
+					
+					if (timesince <= HIT_ANIM_TIME) then
+						local div_h = FixedDiv(timesince*FU, HIT_ANIM_TIME*FU)
+						local ese_h = ease.outquint(div_h, 14*FU, 0)
+						local timeleft = (HIT_ANIM_TIME - timesince)
+						
+						y3 = $ + ese_h
+						
+						x = $ + (timeleft/2) * (((leveltime % 2) == 0) and -1 or 1) * FU
+						x2 = $ + (timeleft/2) * (((leveltime % 2) == 0) and -1 or 1) * FU
+					end
+				end
+			end
+			
+			if map.health <= 0 and map.num ~= -1 and map.onscreen then
+				if (leveltime % 2) == 0 then
+					addExplosion(x2 + v.RandomRange(-10,85)*FU, 
+								 y2 + v.RandomRange(0,70)*FU)
+								 
+					S_StartSound(nil, sfx_pop, player)
+				end
+				
+				x = $ + (1) * (((leveltime % 2) == 0) and -1 or 1) * FU
+				x2 = $ + (1) * (((leveltime % 2) == 0) and -1 or 1) * FU
+			end
 
-		local top_text = "NEXT MAP: \x82"..newmap_name
-
-		newmap_x = $ - FixedMul(newmap_patch.width*FU, newmap_easescale)/2
-		newmap_y = $ - FixedMul(newmap_patch.height*FU, newmap_easescale)/2
-
-		v.drawScaled(newmap_x, newmap_y, newmap_easescale, newmap_patch)
-		v.drawString(160, 130, top_text, nil, "thin-center")
+			if map.onscreen then
+				v.drawScaled(x, y + ese, scale, monitor) -- monitor
+				v.drawScaled(x2, y2 + ese, scale, patch) -- level icon
+			end
+			
+			-- check again
+			if (pvote.selection == i) then
+				v.drawScaled(x3, y3, FU, spatch) -- evil arrow
+			end
+		end
+		
+		if #explosions then
+			for i=1,#explosions do
+				local explosion = explosions[i]
+				
+				if explosion then
+					local frame = explosion.frame -- 6 frames, starting from 0
+					
+					if frame < 6 then
+						local expl = v.getSpritePatch("BOM1", frame)
+						v.drawScaled(explosion.x, explosion.y, FU/2, expl)
+					end
+					
+					if (leveltime % 2) == 0 then
+						explosion.frame = $ + 1
+					end
+					
+					if explosion.frame >= 6 then
+						table.remove(explosions, i)
+					end
+				end
+			end
+		end
 	end
+
 
 	-- "Survivors Win" | "Zombies Win"
 	v.drawScaled(team_x, 100*FU, FU, team_patch)

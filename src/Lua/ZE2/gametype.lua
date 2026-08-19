@@ -14,6 +14,17 @@ ZE2.MaxKarma = 500
 
 ZE2.CharacterSlots = {}
 
+ZE2.vote_reset = function()
+	ZE2.vote = {
+		time_left = -1;
+		maps = {
+			{num = -1, health = 9999, onscreen = true, fuse = 0};
+			{num = -1, health = 9999, onscreen = true, fuse = 0};
+			{num = -1, health = 9999, onscreen = true, fuse = 0};
+		}
+	}
+end; ZE2.vote_reset()
+
 -- so it looks better by adding idk
 local newroundframe = 15*TICRATE
 local newmapframe = newroundframe + 8*TICRATE
@@ -24,7 +35,7 @@ ZE2.IntermissionVars = {
 	slideout_anim = 3*TICRATE/2;
 }
 
-ZE2.DEFAULT_ROUNDS = 2
+ZE2.DEFAULT_ROUNDS = 1
 ZE2.queuing_round = false
 ZE2.rounds_left = ZE2.DEFAULT_ROUNDS
 

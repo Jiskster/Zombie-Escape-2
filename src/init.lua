@@ -152,9 +152,9 @@ ze2file "variables/main"
 ze2file "enemies/vanilla.lua"
 ze2file "enemies/doom.lua"
 
-I_Main("main/")
-
 ze2file "hooks/main"
+
+I_Main("main/")
 
 I_LoadItems("items/")
 

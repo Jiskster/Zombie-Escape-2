@@ -15,6 +15,8 @@ local function InitRound(map)
 	ZE2.charsel_selection = 1
 	ZE2.charsel_prevselection = 1
 	ZE2.pregame_menu = 1
+	
+	ZE2.vote_reset()
 
 	xSlinger.visible_huds.health = false;
 	xSlinger.visible_huds.inventory = true;
@@ -29,6 +31,14 @@ local function InitRound(map)
 			
 			player.ze2.selected_character = nil
 			ZE2.ResetPlayer(player, 1, true, true)
+			
+			local pvote = player.ze2.vote
+			
+			pvote.selection = 1
+			pvote.lasthit = nil
+			pvote.lastside = 0
+			pvote.lastforward = 0
+			pvote.lastbuttons = 0
 		end
 
 		if ZE2.queuing_round then

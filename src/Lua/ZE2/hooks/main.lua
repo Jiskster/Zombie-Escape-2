@@ -22,8 +22,8 @@ local hook_names = {
 		"LatestCheckpoint";
 	};
 	TeamSwitch = {"MidgameJoin"};
-	PreThinkFrame = {"ApplyPlayer", "Movement"};
-	ThinkFrame = {"WinHandler", "Intermission"};
+	PreThinkFrame = {"Intermission", "ApplyPlayer", "Movement"};
+	ThinkFrame = {"WinHandler"};
 	PlayerThink = {
 		"Main";
 		"ReplaceJumpSound";

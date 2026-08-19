@@ -45,4 +45,15 @@ return {
 	zombie_next_type = nil,
 
 	teamchat_enabled = false,
+	
+	vote = {
+		selection = 1,
+		
+		lasthit = nil, -- the leveltime frame where they last hit a map
+		
+		-- The cmd from the previous frame
+		lastside = 0,
+		lastforward = 0,
+		lastbuttons = 0,
+	}
 }
