@@ -39,8 +39,6 @@ ZE2.DEFAULT_ROUNDS = 1
 ZE2.queuing_round = false
 ZE2.rounds_left = ZE2.DEFAULT_ROUNDS
 
-ZE2.PreviousMaps = {}
-
 ZE2.JumpSprintFatigue = 17*FRACUNIT
 
 ZE2.HUD = {}

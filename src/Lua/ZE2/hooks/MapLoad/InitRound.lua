@@ -47,19 +47,6 @@ local function InitRound(map)
 		else
 			ZE2.rounds_left = tonumber(mapheaderinfo[map].ze2_rounds) or ZE2.DEFAULT_ROUNDS
 
-			for i,v in pairs(ZE2.PreviousMaps) do
-				v.matches_ago = $ + 1
-
-				if v.matches_ago >= 8 then
-					ZE2.PreviousMaps[i] = nil
-				end
-			end
-
-			ZE2.PreviousMaps[map] = {
-				mapnum = map;
-				matches_ago = 0;
-			}
-
 			ZE2.queuing_round = false
 		end
 
