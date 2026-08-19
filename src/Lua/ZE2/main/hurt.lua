@@ -157,9 +157,10 @@ xSlinger.addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	elseif inf and inf.valid then
 		attacker = inf
 	end
+	
 
 	if player and player.valid
-	and (ZE2.pregame_timeleft or ((mo.team == 2) and ZE2.zombie_releasetime)) then
+	and (ZE2.game_ended or ZE2.pregame_timeleft or ((mo.team == 2) and ZE2.zombie_releasetime)) then
 		return false
 	end
 
