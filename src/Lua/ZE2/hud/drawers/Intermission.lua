@@ -199,7 +199,7 @@ return "Intermission", function(v, player)
 			
 			-- check again
 			if (pvote.selection == i) then
-				v.drawScaled(x3, y3, FU, spatch) -- evil arrow
+				v.drawScaled(x3, y3 - ese, FU, spatch) -- evil arrow
 			end
 		end
 	elseif ZE2.NextMapVoted then
