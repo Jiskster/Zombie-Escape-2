@@ -12,7 +12,6 @@ return function(net)
 	ZE2.zombie_releasetime = net($);
 	ZE2.queuing_round = net($);
 	ZE2.rounds_left = net($);
-	ZE2.PreviousMaps = net($);
 	ZE2.MaxKarma = net($);
 	ZE2.NextMapVoted = net($);
 	ZE2.vote = net($);
