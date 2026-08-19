@@ -232,7 +232,7 @@ return function()
 			end
 		end
 		
-		if vote.time_left > 0 then
+		if vote.time_left > 0 and not ZE2.NextMapVoted then
 			vote.time_left = $ - 1 
 			
 			if vote.time_left <= 0 then
