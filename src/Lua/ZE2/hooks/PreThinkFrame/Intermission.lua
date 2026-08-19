@@ -1,8 +1,86 @@
 local MAX_SELECTION = 3
 local MAX_MAP_HEALTH = 40
+local MAX_WARP_TIME = 4*TICRATE
+local MAX_VOTE_TIME = 30*TICRATE
+
+local function getMapsLeft(vote)
+	local mapsleft = 0
+	local maps = vote.maps
+	
+	for i=1,#maps do
+		local map = maps[i]
+		
+		if map then
+			if map.health > 0 and map.onscreen then
+				mapsleft = $ + 1
+			end
+		end
+	end
+	
+	return mapsleft
+end
+
+local function voteEnding(vote)
+	if getMapsLeft(vote) == 1 then
+		return true
+	end
+	
+	return false
+end
+
+local function getLastMap(vote)
+	if not voteEnding(vote) then
+		return false
+	end
+	
+	local maps = vote.maps
+	
+	for i=1,#maps do
+		local map = maps[i]
+		
+		if map and map.onscreen and map.health then
+			return map
+		end
+	end
+	
+	return false
+end
+
+local function chooseRandomMap(vote)
+	local maps = vote.maps
+	local elected_maps = {}
+	
+	for i=1,#maps do
+		local map = maps[i]
+		map.fuse = -1
+		
+		if map and map.onscreen and map.health then
+			table.insert(elected_maps, map.num)
+		end
+	end
+	
+	if not #elected_maps then
+		print("\x85\Uh oh! This isn't supposed to happen!! - Jisk")
+		return false
+	end
+	
+	ZE2.NextMapVoted = elected_maps[P_RandomRange(1, #elected_maps)]
+	S_StartSound(nil, sfx_s3kb3)
+	
+	vote.warp_time = MAX_WARP_TIME
+	
+	print("Map Selected: "..G_BuildMapTitle(ZE2.NextMapVoted).." (Selected By Random)")
+	
+	return true
+end
 
 local function VoteScreenThink(player, cmd, pvote)
 	local vote = ZE2.vote
+	
+	if voteEnding(vote) or ZE2.NextMapVoted then
+		return
+	end
+	
 	local attacked = not (pvote.lastbuttons & BT_JUMP) and (cmd.buttons & BT_JUMP)
 	local left = (pvote.lastside >= -40 and cmd.sidemove < -40)
 	local right = (pvote.lastside < 40 and cmd.sidemove >= 40)
@@ -18,13 +96,20 @@ local function VoteScreenThink(player, cmd, pvote)
 	local map = vote.maps[pvote.selection]
 	
 	if attacked then
-		if map.onscreen then
+		if map.onscreen and vote.active then
 			S_StartSound(nil, sfx_dmpain, player)
 			pvote.lasthit = leveltime
 			
-			map.health = $ - 1 
+			map.health = $ - 1
+			
 			if map.health <= 0 and not map.fuse then
+				local mapsleft = getMapsLeft(vote)
 				map.fuse = TICRATE
+				
+				-- last one standing...
+				if (mapsleft == 1) then
+					vote.active = false
+				end
 			end
 		else
 			S_StartSound(nil, sfx_lose, player)
@@ -85,7 +170,9 @@ return function()
 				end
 			end
 
-			S_StartSound(nil,sfx_s3kb3)
+			S_StartSound(nil, sfx_s3kb3)
+			
+			vote.time_left = MAX_VOTE_TIME
 		end
 
 		if ZE2.win_tics >= newroundframe + slideout_anim then
@@ -113,17 +200,45 @@ return function()
 						map.fuse = $ - 1
 						if not map.fuse then
 							map.onscreen = false
+							
+							if voteEnding(vote) then
+								local lastmap = getLastMap(vote)
+								
+								if lastmap ~= false then
+									ZE2.NextMapVoted = lastmap.num
+									
+									S_StartSound(nil, sfx_s3kb3)
+									
+									print("Map Selected: "..G_BuildMapTitle(ZE2.NextMapVoted))
+									
+									vote.warp_time = MAX_WARP_TIME
+								else
+									print("\x85\Uh oh! This isn't supposed to happen! - Jisk")
+								end
+							end
 						end
 					end
 				end
 			end
 		end
 
-		/*
-		if ZE2.win_tics == newmapframe and ZE2.NextMapVoted then
-			G_SetCustomExitVars(ZE2.NextMapVoted, 2)
-			G_ExitLevel()
+		if vote.warp_time > 0 then
+			vote.warp_time = $ - 1
+			
+			if vote.warp_time <= 0 then
+				G_SetCustomExitVars(ZE2.NextMapVoted, 2)
+				G_ExitLevel()
+				vote.warp_time = -1 
+			end
 		end
-		*/
+		
+		if vote.time_left > 0 then
+			vote.time_left = $ - 1 
+			
+			if vote.time_left <= 0 then
+				chooseRandomMap(vote)
+				vote.time_left = -1
+			end
+		end
 	end
 end

@@ -7,16 +7,18 @@ local function InitRound(map)
 	ZE2.team_won = 0;
 
 	ZE2.mapladdertag = nil;
+	
+	ZE2.NextMapVoted = nil;
 
 	ZE2.pregame_timeleft = ZE2.wait_time;
 	ZE2.zombie_releasetime = 0;
 
 	-- This is local
-	ZE2.charsel_selection = 1
-	ZE2.charsel_prevselection = 1
-	ZE2.pregame_menu = 1
+	ZE2.charsel_selection = 1;
+	ZE2.charsel_prevselection = 1;
+	ZE2.pregame_menu = 1;
 	
-	ZE2.vote_reset()
+	ZE2.vote_reset();
 
 	xSlinger.visible_huds.health = false;
 	xSlinger.visible_huds.inventory = true;
