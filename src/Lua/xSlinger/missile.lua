@@ -50,10 +50,12 @@ function xSlinger.SpawnMissile(m_table)
 		slope = sin(source.player.aiming)
 	end
 
+	local bulletheight = FixedMul(mobjinfo[MT_XS_MISSILE].height, source.scale)
 	if source.eflags & MFE_VERTICALFLIP then
-		z = source.z + 2*source.height/3 - FixedMul(mobjinfo[MT_XS_MISSILE].height, source.scale)
+		local realheight = source.z - (41 * source.height / 48) + bulletheight -- TODO: Test this correctly
+		z = realheight --source.z + 2*source.height/3 - FixedMul(mobjinfo[MT_XS_MISSILE].height, source.scale)
 	else
-		z = source.z + source.height/3
+		z = source.z + (41 * source.height / 48) - bulletheight
 	end
 
 	th = P_SpawnMobj(x, y, z, MT_XS_MISSILE)
