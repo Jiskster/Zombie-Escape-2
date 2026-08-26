@@ -347,11 +347,15 @@ addHook("LinedefExecute", function(line, mobj, sector)
 	end
 end, "ZE2CHECKPOINT")
 
-addHook("PlayerSpawn", function(player)
+addHook("MobjSpawn", function(mobj)
 	if not leveltime then return end
 	if not ZE2.isGametype() then return end
+	
+	local player = mobj.player
+	
+	if not (player and player.valid) then return end
 
-	if player.mo and player.mo.valid then
+	if mobj and mobj.valid then
 		ZE2.LatestCheckpointTeleport(player, true)
 	end
-end)
+end, MT_PLAYER)
