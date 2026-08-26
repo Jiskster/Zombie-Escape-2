@@ -141,10 +141,10 @@ local funcs = {
 			if iteminfo:getIndex("droppable", mo.skin)
 			or force == 2 then
 				local mobj = xSlinger.SpawnItemDrop(mo, iteminfo)
-				xS:slot_clear(slotnum, targetinv)
+				xS:slot_clear(slotnum, target_inv)
 				return mobj
 			elseif force == 1 then
-				xS:slot_clear(slotnum, targetinv)
+				xS:slot_clear(slotnum, target_inv)
 			end
 		end
 	end;

@@ -1,8 +1,8 @@
-local KB = xSlinger.Knockback
-
 xSlinger.KillMobj = P_KillMobj
 
 function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
+	local KB = xSlinger.Knockback
+	
 	dmg = $ or 0 -- Making sure we don't error!
 	damagetype = $ or 0
 
@@ -107,7 +107,7 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 			end
 		end
 
-		if inf.info.forcedamage then
+		if inf.info.forcedamage ~= nil then
 			dmg = inf.info.forcedamage
 		end
 

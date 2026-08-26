@@ -13,7 +13,7 @@ end
 -- isolated function
 local function set_effect(mobj, name, data, tics, additive, call_startfunc)
 	if (mobj.type == MT_XS_MISSILE) or (mobj.flags & MF_MISSILE) then
-		return 
+		return
 	end
 
 	local effectinfo = xSlinger.Effects[name]
@@ -30,7 +30,6 @@ local function set_effect(mobj, name, data, tics, additive, call_startfunc)
 	neweffect.fuse = tics
 	neweffect.mobj = mobj
 	neweffect.index = index
-	neweffect.global_index = global_index
 
 	local global_index = #globaleffects + 1
 	globaleffects[global_index] = neweffect
@@ -81,7 +80,6 @@ local function give_effect(self, name, data, tics, additive, recall_startfunc)
 			end
 		end
 	end
-	return neweffect
 end
 
 -- mobj_t method
@@ -89,7 +87,7 @@ local function remove_effect(self, effect, ignore_global_index_update)
 	if (self.type == MT_XS_MISSILE) or (self.flags & MF_MISSILE) then
 		return
 	end
-	
+
 	local mobj_effects = self.effects
 	table.remove(mobj_effects, effect.index)
 
@@ -134,7 +132,6 @@ addHook("MobjSpawn", function(mobj)
 	if (mobj.type == MT_XS_MISSILE) or (mobj.flags & MF_MISSILE) then
 		return
 	end
-	
 	mobj.effects = {}
 end)
 
@@ -144,7 +141,6 @@ end)
 
 addHook("ThinkFrame", function()
 	local removedelayed = {}
-	
 	for index, effect in ipairs(globaleffects) do
 		local mobj = effect.mobj
 		local name = effect.name
@@ -191,11 +187,11 @@ addHook("ThinkFrame", function()
 		end
 		effect.global_index = index -- update index again
 	end
-	
+
 	if #removedelayed then
 		for i = #removedelayed, 1, -1 do
 			local todo = removedelayed[i]
-			
+
 			table.remove(globaleffects, todo.key)
 		end
 	end

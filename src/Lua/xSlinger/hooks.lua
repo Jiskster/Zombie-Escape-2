@@ -138,9 +138,11 @@ xSlinger.tryRunHook = function(hooktype, v, ...)
 		)}
 	elseif (not v.errored) then
 		v.errored = true
-
-        xSlinger.berror("Hook " .. hooktype .. " handler #" .. v.id .. " error:", sfx_lose)
-		print(unpack(results))
+		
+		v.func(...) -- Force an error
+		
+        --xSlinger.berror("Hook " .. hooktype .. " handler #" .. v.id .. " error:", sfx_lose)
+		--print(unpack(results))
 	end
 
 	if override == nil then return nil; end

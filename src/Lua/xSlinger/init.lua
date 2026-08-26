@@ -45,8 +45,11 @@ function xSlinger.initPlayerSpawn(player)
 	xSlinger.initPlayer(player)
 	
 	local xS = player.xSlinger
-	player.mo.team = 1
-
+	
+	if player.mo and player.mo.valid then
+		player.mo.team = 1
+	end
+	
 	xS.reload = 0
 
 	xS:inv_add("main", 5)

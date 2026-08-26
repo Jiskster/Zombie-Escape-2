@@ -49,10 +49,10 @@ end
 addHook("ThinkFrame", function()
 	if gamestate ~= GS_LEVEL then
 		return end;
-		
+
 	--clean up
 	if #KB.list then
-		for k=#KB.list,1 do
+		for k = #KB.list, 1, -1 do
 			local mo = KB.list[k]
 
 			if not validKBMobj(mo) then
@@ -111,9 +111,9 @@ addHook("ThinkFrame", function()
 				-- give momentum so slidemove can work
 				mo.momx = thrust.x
 				mo.momy = thrust.y
-				
+
 				P_SlideMove(mo)
-				
+
 				-- we dont need momentum anymore since we werent already moving
 				mo.momx = 0
 				mo.momy = 0

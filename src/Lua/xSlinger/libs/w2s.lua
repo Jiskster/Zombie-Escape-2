@@ -112,7 +112,7 @@ rawset(_G, "xS_GetScreenCoords",function(vid,p,cam, point, props)
 
 	-- flipping
 	local targflip = (isMobj and point.eflags & MFE_VERTICALFLIP)
-	local srcflip = (p.pflags & PF_FLIPCAM) and (p.realmo.eflags & MFE_VERTICALFLIP)
+	local scrflip = (p.pflags & PF_FLIPCAM) and (p.realmo.eflags & MFE_VERTICALFLIP)
 
 	-- Y coordinate
 	-- getting the angle difference here is a bit more involved...
