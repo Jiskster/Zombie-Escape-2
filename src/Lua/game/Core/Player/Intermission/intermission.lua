@@ -202,7 +202,7 @@ addHook("PreThinkFrame", function()
 						if not map.fuse then
 							map.onscreen = false
 
-							if voteEnding(vote) then
+							if voteEnding(vote) and (vote.nextmapvoted == nil) then
 								local lastmap = getLastMap(vote)
 
 								if lastmap ~= false then
