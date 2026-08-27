@@ -107,7 +107,7 @@ return "Intermission", function(v, player)
 
 		if vote.time_left > 0 then
 			local timer_text = G_TicsToSeconds(vote.time_left).."."..G_TicsToCentiseconds(vote.time_left).."s"
-			v.drawString(160, 20, timer_text, V_SNAPTORIGHT|V_ALLOWLOWERCASE|V_50TRANS, "thin-center")
+			v.drawString(160, 20, timer_text, V_ALLOWLOWERCASE|V_50TRANS, "thin-center")
 		end
 
 		local pvote = player.ze2.vote
