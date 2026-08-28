@@ -23,6 +23,8 @@ xSlinger.registerItem("apple", {
 		use = sfx_eatapl;
 	};
 
+	single_drop = true;
+
 	count = 1;
 	maxcount = 16;
 

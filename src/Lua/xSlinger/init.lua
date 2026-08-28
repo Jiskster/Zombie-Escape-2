@@ -128,6 +128,7 @@ xSlinger.registered_items[-1] = {
 	};
 
 	droppable = true;
+	single_drop = false;
 
 	drop_on_death = true;
 }
