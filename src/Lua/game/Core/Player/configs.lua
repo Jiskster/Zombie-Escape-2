@@ -192,7 +192,8 @@ function ZE2.applyPlayerConfig(player)
 	if config.normalspeed then
 		player.normalspeed = config.normalspeed
 
-		if (player.speed/FU) > 12 and player.ze2.isRunning then
+		if (player.speed/FU) > 12 and player.ze2.isRunning 
+		and team == TEAM_SURVIVOR then
 			player.normalspeed = ($*4)/3
 		elseif ze2.crouching and P_IsObjectOnGround(mo) then
 			player.normalspeed = $ / 2

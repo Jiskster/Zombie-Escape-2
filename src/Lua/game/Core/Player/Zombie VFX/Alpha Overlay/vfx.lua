@@ -4,11 +4,11 @@
 local overlay_spritescale = FU * 9 / 8
 
 local function FalseSkinThinker(ov, p)
-	if not (p and p.mo and p.mo.valid) then return end
-	local pmo = p.mo
+    local pmo = p.mo
+	if not (p and pmo and pmo.valid) then return end
 
 	-- Sync up the main things of a skin. SPR_PLAY, Sprite2 and States
-	ov.skin = p.mo.skin
+	ov.skin = pmo.skin
 	ov.state = pmo.state
 
 	-- And now eeeverything visual related.
@@ -31,7 +31,7 @@ local function PostThink() -- PostThinkFrame for consistency
         if not (p.mo and p.mo.valid) then continue end
         local pmo = p.mo
 
-        if pmo.color == SKINCOLOR_ALPHAZOMBIE then -- Let's better make it skin color exclusive
+        if not (p.spectator or p.quittime) and pmo.color == SKINCOLOR_ALPHAZOMBIE -- Let's better make it skin color exclusive
             if not (pmo.alphaoverlay and pmo.alphaoverlay.valid) then
                 pmo.alphaoverlay = P_SpawnMobjFromMobj(pmo, 0, 0, 0, MT_OVERLAY)
                 pmo.alphaoverlay.target = pmo
@@ -47,6 +47,7 @@ local function PostThink() -- PostThinkFrame for consistency
             end
         elseif (pmo.alphaoverlay and pmo.alphaoverlay.valid) then
             P_RemoveMobj(pmo.alphaoverlay)
+            pmo.alphaoverlay = nil
         end
 
     end
