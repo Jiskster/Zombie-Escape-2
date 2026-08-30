@@ -1,3 +1,4 @@
+---@param player player_t
 local function ReplaceJumpSound(player)
 	local pmo = player.mo
 
@@ -10,18 +11,55 @@ local function ReplaceJumpSound(player)
 	end
 end
 
-local function NoclipSpectator(player)
+---@param player player_t
+---@param direction integer
+local function CycleSpectator(player, direction)
+	local MAXPLAYERS = 31
+	player.ze2.spectator_cycle = (player.ze2.spectator_cycle + direction) % MAXPLAYERS
+
+	local attempts = 64
+	while true do
+		attempts = attempts - 1
+		if (attempts <= 0) then break end
+
+		local selected = players[player.ze2.spectator_cycle]
+		if not selected or not selected.valid or selected.spectator or not selected.mo or not selected.mo.valid then
+			player.ze2.spectator_cycle = player.ze2.spectator_cycle + direction
+			if (player.ze2.spectator_cycle > MAXPLAYERS) then
+				player.ze2.spectator_cycle = 0
+			elseif (player.ze2.spectator_cycle < 0) then
+				player.ze2.spectator_cycle = MAXPLAYERS
+			end
+			continue
+		end
+
+		P_SetOrigin(player.realmo, selected.mo.x, selected.mo.y, selected.mo.z)
+		player.realmo.angle = selected.mo.angle
+		break
+	end
+end
+
+---@param player player_t
+local function SpectatorHandle(player)
 	if not player.realmo or not player.realmo.valid then return end
 	if not player.spectator then return end
 	if (player.playerstate ~= PST_LIVE) then return end
+
+	if (player.cmd.buttons & BT_CUSTOM2) and not (player.lastbuttons & BT_CUSTOM2) then
+		CycleSpectator(player, 1)
+	end
+
+	if (player.cmd.buttons & BT_CUSTOM1) and not (player.lastbuttons & BT_CUSTOM1) then
+		CycleSpectator(player, -1)
+	end
 
     player.realmo.flags = player.realmo.flags | (MF_NOCLIP|MF_NOCLIPHEIGHT|MF_NOCLIPTHING)
 end
 
 addHook("PlayerThink", function(player) ---@param player player_t
-	NoclipSpectator(player)
+	SpectatorHandle(player)
 	ReplaceJumpSound(player)
-	
+
 	local game = ZE2.Game
 	local pv = player.ze2
 	local pmo = player.mo
@@ -55,7 +93,7 @@ addHook("PlayerThink", function(player) ---@param player player_t
 		if pmo.team == 2 then
 			player.powers[pw_underwater] = 0
 		end
-	
+
 		local spd = FixedHypot(pmo.momx, pmo.momy)
 
 		if (player.pflags & PF_JUMPED) then
@@ -107,7 +145,7 @@ addHook("PlayerThink", function(player) ---@param player player_t
 			end
 		end
 	end
-		
+
 	pv.lastJumped = (player.pflags & PF_JUMPED == PF_JUMPED)
 end)
 
