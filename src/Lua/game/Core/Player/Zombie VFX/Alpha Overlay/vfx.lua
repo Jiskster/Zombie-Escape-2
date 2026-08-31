@@ -28,10 +28,9 @@ end
 
 local function PostThink() -- PostThinkFrame for consistency
     for p in players.iterate do
-        if not (p.mo and p.mo.valid) then continue end
         local pmo = p.mo
-
-        if not (p.spectator or p.quittime) and pmo.color == SKINCOLOR_ALPHAZOMBIE -- Let's better make it skin color exclusive
+        if not (pmo and pmo.valid) then continue end
+        if not (p.spectator or p.quittime) and (pmo.color == SKINCOLOR_ALPHAZOMBIE) then -- Let's better make it skin color exclusive
             if not (pmo.alphaoverlay and pmo.alphaoverlay.valid) then
                 pmo.alphaoverlay = P_SpawnMobjFromMobj(pmo, 0, 0, 0, MT_OVERLAY)
                 pmo.alphaoverlay.target = pmo
