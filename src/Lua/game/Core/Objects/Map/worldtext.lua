@@ -9,7 +9,7 @@ mobjinfo[MT_WORLDTEXT] = {
 	--$Angled true
 	--$WallSprite  true
 	--$StringArg0 "Text"
-	--$StringArg0ToolTip "The text to display"
+	--$StringArg0ToolTip "The text to display.\n\nUse |n to insert a newline.\nUse ^0 though ^f to change color (same as Lua/SOC color)."
 	--$Arg0 "Alignment"
 	--$Arg0Type 11
 	--$Arg0Default 0
