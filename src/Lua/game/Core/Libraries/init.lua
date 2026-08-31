@@ -5,6 +5,7 @@ local function Load(_folder, _path)
 end
 
 Load("Misc", "customhudlib.lua")
+Load("Misc", "hudstuff.lua")
 Load("Misc", "mobjlib.lua")
 Load("Misc", "mtime.lua")
 
