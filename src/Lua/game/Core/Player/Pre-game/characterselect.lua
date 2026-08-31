@@ -214,7 +214,7 @@ addHook("MapChange", function()
 			max = 1;
 		}
 	end
-	
+
 	ZE2.charsel_selection = 1;
 	ZE2.charsel_prevselection = 1;
 	ZE2.pregame_menu = 1;
