@@ -55,9 +55,11 @@ function ZE2.GetLatestCheckpoint(player)
 	if player.mo and player.mo.valid then
 		if player.mo.team == 1 then
 			return ZE2.LatestSurvivorCheckpoint
-		elseif player.mo.team == 2 then
+		else 
 			return ZE2.LatestZombieCheckpoint
 		end
+	else
+		return ZE2.LatestZombieCheckpoint
 	end
 end
 
@@ -358,7 +360,5 @@ addHook("MobjSpawn", function(mobj)
 	
 	if not (player and player.valid) then return end
 
-	if mobj and mobj.valid then
-		ZE2.LatestCheckpointTeleport(player, true)
-	end
+	ZE2.LatestCheckpointTeleport(player, true)
 end, MT_PLAYER)
