@@ -156,7 +156,7 @@ Lua.ze2_timelimit = 5
 Level 17
 Levelname = Grancolia
 Act = 0
-Music = ALGFZ1
+Music = FDEMO1
 Subtitle = Oddly Nostalgic
 TypeOfLevel = Escape
 SkyNum = 2
