@@ -193,7 +193,10 @@ local function ActivateCheckpoint(mobj, checkpoint)
 end
 
 addHook("MapLoad", function()
-	ZE2.Checkpoints = {}
+	for i,v in pairs(ZE2.Checkpoints) do
+		ZE2.Checkpoints[i] = nil
+	end
+	
 	ZE2.LatestSurvivorCheckpoint = 0
 	ZE2.LatestZombieCheckpoint = 0
 	ZE2.highest_checkpoint = 0
