@@ -14,6 +14,14 @@ local button_to_tooltip = {
     [BT_TOSSFLAG] = "TF",
 }
 
+local function FadeAmount(amount)
+    local value = ease.linear(amount, 10, 0)
+    if (value > 0) and (value < 10) then
+        return value << FF_TRANSSHIFT
+    end
+    return 0
+end
+
 ---@param v videolib
 ---@param player player_t
 ---@param x fixed_t
