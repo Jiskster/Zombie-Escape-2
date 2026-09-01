@@ -197,7 +197,7 @@ Level 23
 Levelname = Frozen Chaos
 Subtitle = ???
 Act = 0
-Music = FRCH
+Music = FHZ
 TypeOfLevel = Escape
 NextLevel = NX
 SkyNum = 1025
