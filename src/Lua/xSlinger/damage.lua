@@ -1,4 +1,6 @@
-xSlinger.KillMobj = P_KillMobj
+function xSlinger.KillMobj(...)
+	P_KillMobj(...)
+end
 
 function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 	local KB = xSlinger.Knockback
