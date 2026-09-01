@@ -39,7 +39,9 @@ addHook("NetVars", function(net)
 end)
 
 addHook("MapChange", function()
-	KB.list = {}
+	for i,v in pairs(KB.list) do
+		KB.list[i] = nil
+	end
 end)
 
 local function validKBMobj(mo)
