@@ -1,5 +1,9 @@
 addHook("PreThinkFrame", function(player)
 	for player in players.iterate do
+		if player.spectator then	
+			continue
+		end
+		
 		xSlinger.initPlayer(player)
 	end
 end)
