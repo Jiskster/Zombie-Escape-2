@@ -30,9 +30,12 @@ local function set_effect(mobj, name, data, tics, additive, call_startfunc)
 	neweffect.fuse = tics
 	neweffect.mobj = mobj
 	neweffect.index = index
-
+	
 	local global_index = #globaleffects + 1
 	globaleffects[global_index] = neweffect
+	
+	neweffect.global_index = global_index
+	
 	if effectinfo and call_startfunc then
 		if effectinfo.startfunc and mobj and mobj.valid then
 			effectinfo.startfunc(neweffect, mobj)
@@ -139,7 +142,7 @@ addHook("NetVars", function(net)
 	globaleffects = net(globaleffects)
 end)
 
-addHook("ThinkFrame", function()
+addHook("PreThinkFrame", function()
 	local removedelayed = {}
 	for index, effect in ipairs(globaleffects) do
 		local mobj = effect.mobj
@@ -154,7 +157,6 @@ addHook("ThinkFrame", function()
 			removedelayed[#removedelayed + 1] = {key = index}
 			continue
 		end
-		effect.global_index = index -- update index
 
 		if not mobj or not mobj.valid then
 			removedelayed[#removedelayed + 1] = {key = index}
@@ -185,7 +187,6 @@ addHook("ThinkFrame", function()
 			mobj:remove_effect(effect, true)
 			continue
 		end
-		effect.global_index = index -- update index again
 	end
 
 	if #removedelayed then
@@ -194,5 +195,12 @@ addHook("ThinkFrame", function()
 
 			table.remove(globaleffects, todo.key)
 		end
+	end
+	
+	for index, effect in ipairs(globaleffects) do
+		local mobj = effect.mobj
+		local name = effect.name
+		
+		effect.global_index = index -- update index
 	end
 end)

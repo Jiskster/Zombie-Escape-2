@@ -7,7 +7,7 @@ end)
 -- code by buggiethebug
 rawset(_G, "P_FlyTo", function(mo, fx, fy, fz, sped, addques) --A very useful command honestly.
     if mo.valid then
-        local flyto = P_AproxDistance(P_AproxDistance(fx - mo.x, fy - mo.y), fz - mo.z)
+        local flyto = FixedHypot(FixedHypot(fx - mo.x, fy - mo.y), fz - mo.z)
         if flyto < 1 then
             flyto = 1
         end
