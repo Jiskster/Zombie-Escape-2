@@ -142,7 +142,7 @@ xSlinger.registerItem("rail_ring", {
 
 	skin_override = {
 		["fang"] = {
-			reload_time = 3*TICRATE,
+			reload_time = 4*TICRATE,
 		}
 	};
 
