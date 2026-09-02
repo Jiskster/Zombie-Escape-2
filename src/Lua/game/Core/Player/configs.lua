@@ -1,4 +1,6 @@
 ZE2.StandardJumpFactor = FixedDiv(90*FU, 100*FU)
+ZE2.DefaultSurvivorInvSlots = 5
+ZE2.DefaultZombieInvSlots = 2
 
 -- TODO(?): Maybe each new entry added through modding could have a metatable applied to it
 --			so we can be sure there are no "holes" in them? Maybe `newentry.__index = ZE2.SurvivorConfig["default"]`
@@ -84,7 +86,7 @@ function ZE2.resetPlayerHealth(player, newskin)
 
 	if not (mo and mo.valid) then
 		return end;
-	
+
 	local team = mo.team
 
 	local skin = newskin or mo.skin
@@ -192,7 +194,7 @@ function ZE2.applyPlayerConfig(player)
 	if config.normalspeed then
 		player.normalspeed = config.normalspeed
 
-		if (player.speed/FU) > 12 and player.ze2.isRunning 
+		if (player.speed/FU) > 12 and player.ze2.isRunning
 		and team == TEAM_SURVIVOR then
 			player.normalspeed = ($*4)/3
 		elseif ze2.crouching and P_IsObjectOnGround(mo) then
@@ -288,24 +290,28 @@ function ZE2.setConfigInventory(player, newskin, noitems)
 	local zc = ZE2.ZombieConfig
 	local ztype = player.ze2.zombie_type
 	local mo = player.mo
-	
-	if mo and mo.valid then
-		local team = mo.team
-		local skin = newskin or mo.skin
+	if not mo or not mo.valid then return end
 
-		if team == 1 and sc[skin] then
-			xS:inv_add("survivor", 5) -- TODO: Don't magic number the slot count
-
-			if (not noitems) and (sc[skin].items) then
-				for i,item in ipairs(sc[skin].items) do
-					xS:give_item(item, nil, nil, nil, false, "survivor") -- being strict with the inventory
+	local team = mo.team
+	local skin = newskin or mo.skin
+	if (team == 1) and sc[skin] then
+		xS:inv_add("survivor", ZE2.DefaultSurvivorInvSlots)
+		if (not noitems) and (sc[skin].items) then
+			for i,item in ipairs(sc[skin].items) do
+				if (type(item) == "table") then
+					xS:give_item(item[1], item[2], nil, nil, false, "survivor") -- being strict with the inventory
+				else
+					xS:give_item(item, nil, nil, nil, false, "survivor")
 				end
 			end
-		elseif team == 2 and zc[ztype] then
-			xS:inv_add("zombie", 2) -- TODO: Don't magic number the slot count
-
-			if (not noitems) and (zc[ztype].items) then
-				for i,item in ipairs(zc[ztype].items) do
+		end
+	elseif (team == 2) and zc[ztype] then
+		xS:inv_add("zombie", ZE2.DefaultZombieInvSlots)
+		if (not noitems) and (zc[ztype].items) then
+			for i,item in ipairs(zc[ztype].items) do
+				if (type(item) == "table") then
+					xS:give_item(item[1], item[2], nil, nil, false, "zombie")
+				else
 					xS:give_item(item, nil, nil, nil, false, "zombie")
 				end
 			end
@@ -371,8 +377,7 @@ ZE2.AddSurvivor("tails", {
 	items = {
 		"flame_ring";
 		"scatter_ring";
-		"wood_fence";"wood_fence";"wood_fence";"wood_fence";"wood_fence"; -- fix this shit
-		"wood_fence";"wood_fence";"wood_fence";"wood_fence";"wood_fence";
+		{"wood_fence", 10};
 	};
 })
 
@@ -425,15 +430,14 @@ ZE2.AddSurvivor("metalsonic", {
 	};
 	items = {
 		"explosion_ring";
-		"auto_turret";"auto_turret";"auto_turret";"auto_turret";"auto_turret";"auto_turret"; -- fix this shit
-		"auto_turret";"auto_turret";"auto_turret";"auto_turret";"auto_turret";"auto_turret";
+		{"auto_turret", 12};
 	};
 })
 
 -- do not access player.ze2 here or it will error
 function xSlinger.initPlayerSpawn(player)
 	xSlinger.initPlayer(player)
-	
+
 	local xS = player.xSlinger
 
 	if not xS:inv_get("survivor") then
