@@ -2,7 +2,7 @@ addHook("PlayerThink", function(player)
 	if player.ze2.special_cooldown then
 		player.ze2.special_cooldown = max(0, $ - 1)
 	end
-	
+
 	if not (player.mo and player.mo.valid) then return end
 	if not (player.mo.team == 2) then return end
 	if player.playerstate ~= PST_LIVE then return end

@@ -43,7 +43,7 @@ local handler_snapany = {
 
 local handler_default = handler_snaptrue -- If no handler is given.
 
-local typefor_mobj = function(this_mobj, ...)
+local function typefor_mobj(this_mobj, ...)
 	local arg = {...}
 	local type = (#arg and arg[1] or nil)
 	if (type == nil) then
@@ -96,7 +96,7 @@ for event_name, event_t in pairs(events) do
 	end
 end
 
-xSlinger.addHook = function(hooktype, func, typefor)
+function xSlinger.addHook(hooktype, func, typefor)
 	local hook_okay = xSlinger.events[hooktype] ~= nil
 	local dep_t = nil
 	if not hook_okay then
@@ -123,7 +123,7 @@ xSlinger.addHook = function(hooktype, func, typefor)
 	end
 end
 
-xSlinger.tryRunHook = function(hooktype, v, ...)
+function xSlinger.tryRunHook(hooktype, v, ...)
 	local handler = xSlinger.events[hooktype].handler or handler_default
 	local override = handler.initial
 
@@ -151,7 +151,7 @@ xSlinger.tryRunHook = function(hooktype, v, ...)
 end
 
 local notvalid = {}
-xSlinger.findEvent = function(hooktype)
+function xSlinger.findEvent(hooktype)
 	local name = hooktype
 	local events = xSlinger.events[name]
 
@@ -171,7 +171,7 @@ xSlinger.findEvent = function(hooktype)
 	return events, name
 end
 
-xSlinger.bwarn = function(text, sound)
+function xSlinger.bwarn(text, sound)
     if sound and sound > 0 then
         S_StartSound(nil, sound)
     end
@@ -179,7 +179,7 @@ xSlinger.bwarn = function(text, sound)
     print("\x83"..xSlinger.internal_name..":\x82 WARNING:\x80 "..text)
 end
 
-xSlinger.berror = function(text, sound)
+function xSlinger.berror(text, sound)
     if sound and sound > 0 then
         S_StartSound(nil, sound)
     elseif sound ~= nil then

@@ -2,14 +2,14 @@ local KB = xSlinger.Knockback
 
 KB.list = {}
 
-KB.initKnockback = function(mo)
+function KB.initKnockback(mo)
 	mo.knockback = {
 		list = {},
 		thrust = {x=0,y=0}
 	}
 end
 
-KB.addKnockback = function(mo, tics, angle, thrust)
+function KB.addKnockback(mo, tics, angle, thrust)
 	if not mo.knockback then
 		KB.initKnockback(mo)
 	end

@@ -25,7 +25,7 @@ local function DoWhiteFade(v, patch, time)
 end
 
 --Main title screen thinker
-local MainTitle = function(v)
+local function MainTitle(v)
 	titletics = min($+1, 10*TICRATE) --start title screen timer. shouldn't keep counting after at least 10 seconds...
 	if getColormap == nil then getColormap = v.getColormap end
 	if cachePatch == nil then cachePatch = v.cachePatch end
@@ -46,7 +46,7 @@ local MainTitle = function(v)
 end
 
 --Reset title screen functionality when not on title screen
-local Reset = function(v)
+local function Reset(v)
 	if not titletics then return end
 	local alphachance = v.RandomChance(FU / 3)
 	zombie_color = (alphachance and SKINCOLOR_ALPHAZOMBIE) or SKINCOLOR_ZOMBIE

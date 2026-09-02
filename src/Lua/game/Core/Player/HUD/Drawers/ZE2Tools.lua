@@ -1,6 +1,6 @@
 local drawString
 
-local Tools_HUD = function(v, player)
+local function Tools_HUD(v, player)
 	if not ZE2.cv_debug.value then return end
 	if not IsPlayerAdmin(player) and (player ~= server) then return end
     if (drawString == nil) then drawString = v.drawString end

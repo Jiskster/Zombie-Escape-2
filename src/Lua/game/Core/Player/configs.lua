@@ -66,15 +66,6 @@ ZE2.ZombieConfig = {
 
 ZE2.SurvivorConfig = {}
 
-ZE2.MobjTouchingPolyObj = function(mobj)
-	for polyobj in polyobjects.iterate do
-		if polyobj:mobjTouching(mobj) or polyobj:pointInside(mobj.x, mobj.y) then
-			return true
-		end
-	end
-	return false
-end
-
 function ZE2.resetPlayerHealth(player, newskin)
 	local mo = player.mo
 	local ze2 = player.ze2

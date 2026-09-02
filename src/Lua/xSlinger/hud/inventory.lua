@@ -276,6 +276,6 @@ addHook("HUD", function(v, player)
 end)
 
 -- You can override this
-xSlinger.DRAW_held_itemname = function(v, x, y, text, color)
+function xSlinger.DRAW_held_itemname(v, x, y, text, color)
 	v.drawString(x, y, text, V_SNAPTOBOTTOM, "thin-fixed-center")
 end

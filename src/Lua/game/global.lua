@@ -19,7 +19,7 @@ ZE2.GS_FINISH = 3
 ZE2.Vote = {}
 ZE2.Game = {}
 
-ZE2.GameReset = function(map)
+function ZE2.GameReset(map)
 	local game = ZE2.Game
 	game.state_list = {"pregame", "game", "finish"}
 	game.state = 1
@@ -38,7 +38,7 @@ ZE2.GameReset = function(map)
 	game.releasetime = 0
 end
 
-ZE2.VoteReset = function()
+function ZE2.VoteReset()
 	local vote = ZE2.Vote
 	vote.time_left = -1
 	vote.warp_time = -1

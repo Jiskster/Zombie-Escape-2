@@ -1,4 +1,4 @@
-xSlinger.HUD_TAGS = function(v, player)
+function xSlinger.HUD_TAGS(v, player)
 	if not player["xSlinger[]"] then return end
 
 	local pmo = player.mo
