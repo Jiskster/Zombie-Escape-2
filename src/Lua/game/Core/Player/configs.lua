@@ -371,8 +371,8 @@ ZE2.AddSurvivor("tails", {
 	items = {
 		"flame_ring";
 		"scatter_ring";
-		"wood_fence";
-		"wood_fence";
+		"wood_fence";"wood_fence";"wood_fence";"wood_fence";"wood_fence"; -- fix this shit
+		"wood_fence";"wood_fence";"wood_fence";"wood_fence";"wood_fence";
 	};
 })
 
@@ -425,7 +425,8 @@ ZE2.AddSurvivor("metalsonic", {
 	};
 	items = {
 		"explosion_ring";
-		"auto_turret";
+		"auto_turret";"auto_turret";"auto_turret";"auto_turret";"auto_turret";"auto_turret"; -- fix this shit
+		"auto_turret";"auto_turret";"auto_turret";"auto_turret";"auto_turret";"auto_turret";
 	};
 })
 

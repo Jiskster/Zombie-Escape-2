@@ -116,7 +116,7 @@ xSlinger.registerItem("grenade_ring",  {
 
 	damage = 70;
 
-	count = 5;
+	count = 1;
 	maxcount = 10;
 
 	fuse = 2*TICRATE;

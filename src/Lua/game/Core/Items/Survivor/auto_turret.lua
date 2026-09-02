@@ -37,6 +37,9 @@ xSlinger.registerItem("auto_turret", {
 	
 	icon = "TURRETIND";
 	
+	count = 1;
+	maxcount = 12;
+	
 	firerate = 18*TICRATE;
 	turret_tics = 18*TICRATE;
 	
