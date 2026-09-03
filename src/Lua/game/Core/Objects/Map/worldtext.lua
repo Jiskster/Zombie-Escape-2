@@ -9,7 +9,7 @@ mobjinfo[MT_WORLDTEXT] = {
 	--$Angled true
 	--$WallSprite  true
 	--$StringArg0 "Text"
-	--$StringArg0ToolTip "The text to display.\n\nUse |n to insert a newline.\nUse ^0 though ^f to change color (same as Lua/SOC color)."
+	--$StringArg0ToolTip "The text to display.\n\nUse |n to insert a newline.\nUse ^0 though ^f to change color in a Lua/SOC way.\nUse |c[<color>] to change color to a skincolor. Ex.: |c[red]"
 	--$Arg0 "Alignment"
 	--$Arg0Type 11
 	--$Arg0Default 0
@@ -113,7 +113,38 @@ local NUMBER_TO_COLOR = {
 ---@param text string
 ---@return string, any
 local function ClearText(text)
-	return text:gsub("\x80", ""):gsub("\x81", ""):gsub("\x82", ""):gsub("\x83", ""):gsub("\x84", ""):gsub("\x85", ""):gsub("\x86", ""):gsub("\x87", ""):gsub("\x88", ""):gsub("\x89", ""):gsub("\x8A", ""):gsub("\x8B", ""):gsub("\x8C", ""):gsub("\x8D", ""):gsub("\x8E", ""):gsub("\x8F", "")
+	text = text:gsub("\x80", ""):gsub("\x81", ""):gsub("\x82", ""):gsub("\x83", ""):gsub("\x84", ""):gsub("\x85", ""):gsub("\x86", ""):gsub("\x87", ""):gsub("\x88", ""):gsub("\x89", ""):gsub("\x8A", ""):gsub("\x8B", ""):gsub("\x8C", ""):gsub("\x8D", ""):gsub("\x8E", ""):gsub("\x8F", "")
+
+	local realtext = ""
+	local index = 0
+	while true do
+		if (index > string.len(text)) then break end
+
+		local character = string.sub(text, index, index)
+		if (character == "|") then
+			local next = string.sub(text, index + 1, index + 2)
+			if (next == "c[") then
+				local start = index + 3
+				local name = "|c["
+				while true do
+					if (start > string.len(text)) then break end
+
+					local char = string.sub(text, start, start)
+					name = name .. char
+					if (char == "]") then
+						break
+					end
+					start = start + 1
+				end
+				text = string.sub(text, index + string.len(name))
+				index = 0
+				continue
+			end
+		end
+		realtext = realtext .. character
+		index = index + 1
+	end
+	return realtext
 end
 
 ---@param mobj mobj_t
@@ -149,7 +180,6 @@ local function OffsetText(mobj, parent)
 	mobj.alpha = parent.alpha
 end
 
----@param mobj mobj_t
 local function CreateText(mobj)
     if mobj.characters then
 		RemoveText(mobj)
@@ -169,13 +199,54 @@ local function CreateText(mobj)
 	for layer, line in ipairs(strings) do
 		local length = lengths[layer]
 		local offsetx = -FixedMul(length, mobj.textalign)
+		local skip = 0
 		for index = 1, #line, 1 do
+			if skip then
+				skip = skip - 1
+				continue
+			end
+
 			local text = string.sub(line, index, index)
 			if not text then continue end
 
 			if COLOR_TABLE[text] then
 				color = COLOR_TABLE[text]
 				continue
+			end
+
+			if (text == "|") then
+				local next = string.sub(line, index + 1, index + 2)
+				if (next == "c[") then
+					local start = index + 3
+					local name = ""
+					local ended = false
+					skip = 2
+					while true do
+						if (start > string.len(line)) then break end
+
+						local char = string.sub(line, start, start)
+						if (char == "]") then
+							skip = skip + 1
+							ended = true
+							break
+						end
+						name = name .. char
+						start = start + 1
+					end
+					skip = skip + string.len(name)
+
+					local disp = "|c[" .. name
+					if ended then
+						disp = disp .. "]"
+					end
+					lengths[layer] = lengths[layer] - CHARACTER_WIDTH * (#disp - 1)
+
+					local candidate = R_GetColorByName(name)
+					if candidate then
+						color = candidate
+					end
+					continue
+				end
 			end
 
 			local x = offsetx
