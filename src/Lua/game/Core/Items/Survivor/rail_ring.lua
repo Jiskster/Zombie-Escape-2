@@ -136,13 +136,13 @@ xSlinger.registerItem("rail_ring", {
 
 	color = SKINCOLOR_AZURE;
 
-	reload_time = 7*TICRATE;
+	reload_time = 6*TICRATE;
 
 	usefunc = trigger_func;
 
 	skin_override = {
 		["fang"] = {
-			reload_time = 3*TICRATE,
+			reload_time = 4*TICRATE,
 		}
 	};
 
