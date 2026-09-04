@@ -43,14 +43,14 @@ xSlinger.registerItem("fist", {
 	
 	color = SKINCOLOR_WHITE;
 	
-	damage = 16;
+	damage = 27;
 	
 	fuse = 1;
 	
 	velocity_precision = 2;
 	
-	knockback = 15*FRACUNIT;
-	knockback_time = 3;
+	knockback = 32*FRACUNIT;
+	knockback_time = 15;
 	
 	droppable = false;
 })
