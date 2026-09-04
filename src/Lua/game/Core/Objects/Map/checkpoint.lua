@@ -64,6 +64,20 @@ function ZE2.GetLatestCheckpoint(player)
 end
 
 function ZE2.LatestCheckpointTeleport(player, setcheckpoint)
+	local game = ZE2.Game
+	
+	if not (game.active) then
+		return
+	end
+	
+	if not (player.mo and player.mo.valid) then
+		return
+	end
+	
+	if not (leveltime) then
+		return
+	end
+	
 	if ZE2.GetLatestCheckpoint(player) and ZE2.Checkpoints[ZE2.GetLatestCheckpoint(player)] then
 		local latest_checkpoint = ZE2.GetLatestCheckpoint(player)
 		local info = ZE2.Checkpoints[latest_checkpoint]
@@ -80,7 +94,7 @@ function ZE2.LatestCheckpointTeleport(player, setcheckpoint)
 	else
 		local game = ZE2.Game
 		
-		if ZE2.cv_debug.value and game.active then
+		if ZE2.cv_debug.value then
 			print(player.name .. " failed checkpoint tp")
 		end
 	end
