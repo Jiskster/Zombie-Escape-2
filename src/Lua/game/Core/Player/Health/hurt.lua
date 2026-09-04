@@ -117,6 +117,11 @@ xSlinger.addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	and (game.ended or game.state == ZE2.GS_PREGAME or ((mo.team == 2) and game.releasetime)) then
 		return false
 	end
+	
+	if (player and player.valid) and (attacker.player and attacker.player.valid) 
+	and (mo.reactiontime or attacker.reactiontime) then
+		return false
+	end
 
 	if attacker and attacker.player and attacker.team == 2 and game.releasetime then
 		return false
