@@ -24,8 +24,8 @@ xSlinger.registerMissile("FIST", {
 	state = S_INVISIBLE,
 	deathstate = S_ZE2_FISTVFX,
 	deathsound = sfx_dsclwm,
-	radius = 32*FRACUNIT,
-	height = 32*FRACUNIT,
+	radius = 48*FRACUNIT,
+	height = 16*FRACUNIT,
 })
 
 xSlinger.registerItem("fist", {
