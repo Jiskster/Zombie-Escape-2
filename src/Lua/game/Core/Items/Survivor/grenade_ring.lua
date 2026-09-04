@@ -24,7 +24,7 @@ xSlinger.registerMissile("GRENADE_RING", {
 	speed = 25*FRACUNIT,
 	displayname = "Grenade Ring",
 	state = S_XS_GRENADERING,
-	deathstate = S_RINGEXPLODE,
+	deathstate = S_ZE2_RINGEXPLODE,
 	deathsound = sfx_pop,
 	delflags = MF_NOGRAVITY,
 	safeground = true,
