@@ -56,6 +56,8 @@ return {
 		lastforward = 0,
 		lastbuttons = 0,
 	},
+
+	spectator_cycle = 0,
 	
 	purchased = {},
 }
