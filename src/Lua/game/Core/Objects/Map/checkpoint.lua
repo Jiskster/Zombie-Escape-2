@@ -51,7 +51,7 @@ addHook("NetVars", function(net)
 	ZE2.highest_checkpoint = net($)
 end)
 
-function ZE2.GetLatestCheckpoint(player, respawn)
+function ZE2.GetLatestCheckpoint(player)
 	if player.mo and player.mo.valid then
 		if player.mo.team == 1 then
 			return ZE2.LatestSurvivorCheckpoint
