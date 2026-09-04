@@ -5,11 +5,25 @@ ZE2.charsel_prevselection = 1
 ZE2.charsel_anim = 0
 ZE2.charsel_setanim = 13
 
+ZE2.charsel_exit_anim = 0
+ZE2.charsel_set_exit_anim = 16
+
+ZE2.shop_selection = 1
+
+ZE2.shop_enter_anim = 0
+ZE2.shop_set_enter_anim = 16
+
+ZE2.shop_anim = 0
+ZE2.shop_set_anim = 2
+
+ZE2.shop_oncontinue = false
+
 -- 1: character select
--- 2: main menu
--- 3: shop
+-- 2: shop
+
 ZE2.pregame_menu = 1
 
+local lastforwardmove = 0
 local lastsidemove = 0
 local lastbuttons = 0
 
@@ -53,6 +67,7 @@ local function skinToNum(player, skin)
 end
 
 local function nullCmd(cmd)
+	lastforwardmove = cmd.forwardmove
 	lastsidemove = cmd.sidemove
 	lastbuttons = cmd.buttons
 
@@ -84,6 +99,23 @@ addHook("PlayerCmd", function(player, cmd)
 		ZE2.charsel_anim = $ - 1
 	end
 	
+	if ZE2.charsel_exit_anim > 0 then
+		ZE2.charsel_exit_anim = $ - 1
+	elseif ZE2.charsel_exit_anim < 0 then
+		ZE2.charsel_exit_anim = $ + 1
+	end
+	
+	if ZE2.shop_enter_anim > 0 then
+		ZE2.shop_enter_anim = $ - 1
+	elseif ZE2.shop_enter_anim < 0 then
+		ZE2.shop_enter_anim = $ + 1
+	end
+	
+	if ZE2.shop_anim then
+		ZE2.shop_anim = $ - 1
+	end
+	
+	-- TODO: Simplify this part
     if (ZE2.pregame_menu == 1) then
         if (not lastsidemove) and (cmd.sidemove) then
             if (cmd.sidemove < 0) then
@@ -113,7 +145,63 @@ addHook("PlayerCmd", function(player, cmd)
 
             COM_BufAddText(player, "_z_choosecharacter "..skinname)
         end
-    end
+    elseif (ZE2.pregame_menu == 2) then
+		if not ZE2.shop_oncontinue then
+			if (not lastsidemove) and (cmd.sidemove) then
+				local shop = ZE2.Shop
+				if (cmd.sidemove < 0) then
+					ZE2.shop_selection = $ - 1
+					ZE2.shop_selection = valWrap($, 1, #shop.stock)
+
+					S_StartSound(nil, sfx_menu1, player)
+					
+					ZE2.shop_anim = ZE2.shop_set_anim
+				elseif (cmd.sidemove > 0) then
+					ZE2.shop_selection = $ + 1
+					ZE2.shop_selection = valWrap($, 1, #shop.stock)
+
+					S_StartSound(nil, sfx_menu1, player)
+					
+					ZE2.shop_anim = ZE2.shop_set_anim
+				end
+			end
+			
+			if (not lastforwardmove) and (cmd.forwardmove < 0) then
+				ZE2.shop_oncontinue = true
+				ZE2.shop_anim = ZE2.shop_set_anim
+				S_StartSound(nil, sfx_menu1, player)
+			end
+			
+			if not (lastbuttons & BT_SPIN) and (cmd.buttons & BT_SPIN) then
+				S_StartSound(nil, sfx_adderr, player)
+				ZE2.charsel_exit_anim = -ZE2.charsel_set_exit_anim
+				ZE2.shop_enter_anim = -ZE2.shop_set_enter_anim 
+				ZE2.pregame_menu = 1
+				
+				COM_BufAddText(player, "_z_unselectcharacter 1")
+			elseif not (lastbuttons & BT_JUMP) and (cmd.buttons & BT_JUMP) then
+				COM_BufAddText(player, "_z_shopbuy "..ZE2.shop_selection)
+			end
+		elseif ZE2.shop_oncontinue then
+			if (not lastforwardmove) and (cmd.forwardmove > 0) then
+				ZE2.shop_oncontinue = false
+				ZE2.shop_anim = ZE2.shop_set_anim
+				S_StartSound(nil, sfx_menu1, player)
+			end
+			
+			if not (lastbuttons & BT_JUMP) and (cmd.buttons & BT_JUMP) then
+				S_StartSound(nil, sfx_drill1, player)
+				ZE2.shop_enter_anim = -ZE2.shop_set_enter_anim
+				ZE2.pregame_menu = 3
+			end
+		end
+	elseif (ZE2.pregame_menu == 3) then
+		if not (lastbuttons & BT_SPIN) and (cmd.buttons & BT_SPIN) then
+			S_StartSound(nil, sfx_adderr, player)
+			ZE2.shop_enter_anim = ZE2.shop_set_enter_anim 
+			ZE2.pregame_menu = 2
+		end
+	end
 
 	nullCmd(cmd)
 end)
@@ -143,7 +231,7 @@ addHook("ThinkFrame", function()
 end)
 
 -- Make this a global if you need it.
-local function unselectCharacter(player)
+local function unselectCharacter(player, refund)
 	if not (player and player.valid) then
 		return false end;
 
@@ -153,6 +241,11 @@ local function unselectCharacter(player)
 
 	if selchar and selcharslot then
 		selcharslot.count = $ - 1 -- give back character slot before getting another
+		player.ze2.selected_character = nil
+	end
+
+	if refund then
+		ZE2.RefundPlayer(player)
 	end
 
 	return true
@@ -173,14 +266,6 @@ COM_AddCommand("_z_choosecharacter", function(player, skinname)
     if (game.active) then
         return end;
 
-    if (ZE2.pregame_menu ~= 1) then
-        return end;
-
-    if (consoleplayer and consoleplayer.valid)
-    and (consoleplayer == player) then
-        --ZE2.pregame_menu = 2
-    end
-
     local skinnum = skinToNum(player, skinname)
     local chslot = ZE2.CharacterSlots[skinnum]
 
@@ -195,9 +280,65 @@ COM_AddCommand("_z_choosecharacter", function(player, skinname)
 		ZE2.setConfigInventory(player, skinname)
 		ZE2.resetPlayerHealth(player, skinname)
 
+		if P_IsLocalPlayer(player) then
+			ZE2.charsel_exit_anim = ZE2.charsel_set_exit_anim
+			ZE2.shop_enter_anim = ZE2.shop_set_enter_anim 
+			ZE2.pregame_menu = 2
+		end
+
 		S_StartSound(nil, sfx_s3k63, player)
 	else
 		S_StartSound(nil, sfx_lose, player)
+	end
+end)
+
+COM_AddCommand("_z_unselectcharacter", function(player, refund)
+	local game = ZE2.Game
+	
+    if not (player.mo and player.mo.valid and player.mo.health) then
+        return end;
+		
+    if (game.active) then
+        return end;
+	
+	unselectCharacter(player, refund)
+end)
+
+COM_AddCommand("_z_shopbuy", function(player, stocknum)
+	local game = ZE2.Game
+	
+	if not (player.mo and player.mo.valid and player.mo.health) then
+        return end;
+		
+    if (game.active) then
+        return end;
+		
+	if not (tonumber(stocknum)) then
+		return end;
+		
+	local shop = ZE2.Shop
+	local stockitem = shop.stock[tonumber(stocknum)] 
+	if stockitem then
+		local ze2 = player.ze2
+		local xS = player.xSlinger
+		
+		if stockitem.price <= ze2.cash then
+			ze2.cash = $ - stockitem.price
+			
+			table.insert(ze2.purchased, {
+				id = stockitem.id,
+				price = stockitem.price,
+			})
+			
+			xS:give_item(stockitem.id)
+			S_StartSound(nil, sfx_addfil, player)
+		else -- you broke as fuck
+			S_StartSound(nil, sfx_lose, player)
+		end
+		
+		if P_IsLocalPlayer(player) then
+			ZE2.shop_anim = ZE2.shop_set_anim
+		end
 	end
 end)
 
@@ -218,6 +359,13 @@ addHook("MapChange", function()
 	ZE2.charsel_selection = 1;
 	ZE2.charsel_prevselection = 1;
 	ZE2.pregame_menu = 1;
+	
+	ZE2.charsel_exit_anim = 0;
+	
+	ZE2.shop_enter_anim = 0;
+	ZE2.shop_selection = 1;
+	ZE2.shop_anim = 0;
+	ZE2.shop_oncontinue = false;
 end)
 
 addHook("NetVars", function(net)

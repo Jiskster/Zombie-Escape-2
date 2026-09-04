@@ -45,6 +45,7 @@ gamestatefuncs[ZE2.GS_PREGAME] = function()
 	
 	game.active = true
 	S_StartSound(nil, sfx_rstart)
+	
 	local playercount = ZE2.CountPlayers("ingame")
 	local denominator = 4*FU
 	local amountchoosing = FixedDiv(playercount*FU, denominator) -- lmao
@@ -131,6 +132,7 @@ gamestatefuncs[ZE2.GS_PREGAME] = function()
 
 			ZE2.ZombifyPlayer(player, newztype)
 			ZE2.PlayZombieSound(player, true)
+			ZE2.RefundPlayer(player)
 
 			player.ze2.karma = max(1, $ / 2)
 

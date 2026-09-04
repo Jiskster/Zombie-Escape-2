@@ -59,6 +59,10 @@ local function MapLoad(map)
 			player.ze2.injoinqueue = false
 			player.ze2.outofgame = false
 			player.ze2.respawntics = 0
+			
+			for i,v in ipairs(player.ze2.purchased) do
+				player.ze2.purchased[i] = nil
+			end
 		end
 	end
 end

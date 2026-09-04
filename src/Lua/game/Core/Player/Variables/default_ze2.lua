@@ -55,5 +55,7 @@ return {
 		lastside = 0,
 		lastforward = 0,
 		lastbuttons = 0,
-	}
+	},
+	
+	purchased = {},
 }

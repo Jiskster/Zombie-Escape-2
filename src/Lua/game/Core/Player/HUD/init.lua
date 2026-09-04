@@ -44,6 +44,8 @@ SetupHud "HudToggle"
 
 SetupHud "CharacterSelect"
 
+SetupHud "Shop"
+
 SetupHud "PlayerTags"
 
 SetupHud "DamageFade"

@@ -69,26 +69,38 @@ return "CharacterSelect", function(v, player)
 	if not (player.mo and player.mo.valid) then
 		return end;
 
-    if (consoleplayer and consoleplayer.valid)
-    and (player ~= consoleplayer) then
+    if not P_IsLocalPlayer(player) then
         return end;
 
-    if (ZE2.pregame_menu ~= 1) then
+    if not (ZE2.pregame_menu == 1 or ZE2.charsel_exit_anim) then
         return end;
 
     if (game.active) then
         return end;
-
-	drawFill(0, 0, 600, darkbgheight, darkbgcolor+(darkbgshift|V_SNAPTOLEFT|V_SNAPTOTOP))
-	for i=1,4 do
-		local darkbgtrans2 = ((darkbgtrans+i)<<V_ALPHASHIFT)
-		drawFill(0, 60+((i-1)*darkbgheight2), 600, darkbgheight2, (darkbgcolor)+(darkbgtrans2|V_SNAPTOLEFT|V_SNAPTOTOP))
+		
+	local yoffset = 0
+		
+	if ZE2.charsel_exit_anim then
+		local div = FU - FixedDiv(abs(ZE2.charsel_exit_anim), ZE2.charsel_set_exit_anim)
+		local ese = ease.outquint(div, 0, -150*FU)
+		
+		if ZE2.charsel_exit_anim < 0 then
+			ese = ease.outquint(div, -150*FU, 0)
+		end
+		
+		yoffset = $ + ese/FU
 	end
 
-	drawLevelTitle(10, 25, "Select A Character", V_SNAPTOTOP)
-	local x = 160*FU
-	local y = 100*FU
+	drawFill(0, 0 + yoffset, 600, darkbgheight, darkbgcolor+(darkbgshift|V_SNAPTOLEFT|V_SNAPTOTOP))
+	for i=1,4 do
+		local darkbgtrans2 = ((darkbgtrans+i)<<V_ALPHASHIFT)
+		drawFill(0, 60+((i-1)*darkbgheight2)+yoffset, 600, darkbgheight2, (darkbgcolor)+(darkbgtrans2|V_SNAPTOLEFT|V_SNAPTOTOP))
+	end
 
+	drawLevelTitle(10, 25+yoffset, "Select A Character", V_SNAPTOTOP)
+	local x = 160*FU
+	local y = 100*FU + yoffset*FU
+	
     if skinlist ~= ZE2.getSkinNums(player) then skinlist = ZE2.getSkinNums(player) end
 
     if not #skinlist then

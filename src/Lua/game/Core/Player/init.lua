@@ -4,7 +4,9 @@ local function dopath(_path)
 	dofile(PATH .. "/" .. _path)
 end
 
-dopath("Pre-game/characterselect.lua")
+dopath("shop.lua")
+
+dopath("pregame.lua")
 
 dopath("Intermission/intermission.lua")
 
