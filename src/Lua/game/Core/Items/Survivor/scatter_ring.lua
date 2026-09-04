@@ -59,7 +59,7 @@ xSlinger.registerItem("scatter_ring", {
 
 	autouse = false;
 
-	firerate = TICRATE;
+	firerate = 18;
 
 	flags2 = 0; -- MF2_...
 	
@@ -92,8 +92,9 @@ xSlinger.registerItem("scatter_ring", {
 
 	skin_override = {
 		["sonic"] = {
-			firerate = 18;
+			firerate = 15;
 			push_multi = (FU*3/4);
+			reload_time = 3*TICRATE;
 		}
 	};
 	

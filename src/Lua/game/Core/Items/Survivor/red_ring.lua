@@ -88,6 +88,7 @@ xSlinger.registerItem("red_ring", {
 
 	skin_override = {
 		["sonic"] = {
+			firerate = 2;
 			reload_time = 1*TICRATE;
 		};
 		["amy"] = {
