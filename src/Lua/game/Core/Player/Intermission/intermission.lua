@@ -95,7 +95,7 @@ local function VoteScreenThink(player, cmd, pvote)
 
 	local map = vote.maps[pvote.selection]
 
-	if attacked then
+	if map and attacked then
 		if map.onscreen and vote.active then
 			S_StartSound(nil, sfx_dmpain, player)
 			pvote.lasthit = leveltime
