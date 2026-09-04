@@ -341,7 +341,7 @@ addHook("PlayerThink", function(player)
 	if (pmo and pmo.valid) then
 		if not pmo.c_lastsector then
 			pmo.c_lastsector = pmo.subsector.sector
-		elseif pmo.momx and pmo.momy then
+		elseif (pmo.momx and pmo.momy) or (pmo.reactiontime) then
 			if (pmo.subsector.sector ~= pmo.c_lastsector) then -- if is new sector
 				checkpointCheck(pmo)
 			end
