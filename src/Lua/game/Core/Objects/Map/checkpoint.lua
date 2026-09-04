@@ -51,7 +51,7 @@ addHook("NetVars", function(net)
 	ZE2.highest_checkpoint = net($)
 end)
 
-function ZE2.GetLatestCheckpoint(player)
+function ZE2.GetLatestCheckpoint(player, respawn)
 	if player.mo and player.mo.valid then
 		if player.mo.team == 1 then
 			return ZE2.LatestSurvivorCheckpoint
@@ -76,6 +76,12 @@ function ZE2.LatestCheckpointTeleport(player, setcheckpoint)
 
 		if setcheckpoint then
 			player.ze2.checkpoint_number = latest_checkpoint
+		end
+	else
+		local game = ZE2.Game
+		
+		if ZE2.cv_debug.value and game.active then
+			print(player.name .. " failed checkpoint tp")
 		end
 	end
 end
@@ -352,13 +358,12 @@ addHook("LinedefExecute", function(line, mobj, sector)
 	end
 end, "ZE2CHECKPOINT")
 
-addHook("MobjSpawn", function(mobj)
-	if not leveltime then return end
+addHook("PlayerSpawn", function(player)
 	if not ZE2.isGametype() then return end
-	
-	local player = mobj.player
-	
-	if not (player and player.valid) then return end
 
-	ZE2.LatestCheckpointTeleport(player, true)
+	ZE2.LatestCheckpointTeleport(player)
+	
+	if ZE2.cv_debug.value then
+		print(player.name .. " attempted to respawn")
+	end
 end, MT_PLAYER)
