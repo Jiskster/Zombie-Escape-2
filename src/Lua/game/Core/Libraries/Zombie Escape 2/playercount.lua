@@ -24,7 +24,11 @@ function ZE2.CountPlayers(ptype)
 	local count = 0
 	
 	for player in players.iterate do
-		if ptype and type_table[ptype] and not type_table[ptype](player) then
+		if ptype and type(ptype) == "function" then
+			if ptype(player) then
+				count = $ + 1
+			end
+		elseif ptype and type_table[ptype] and not type_table[ptype](player) then
 			continue
 		end
 		
