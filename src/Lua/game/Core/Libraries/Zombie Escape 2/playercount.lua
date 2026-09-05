@@ -28,6 +28,7 @@ function ZE2.CountPlayers(ptype)
 			if ptype(player) then
 				count = $ + 1
 			end
+			continue
 		elseif ptype and type_table[ptype] and not type_table[ptype](player) then
 			continue
 		end
