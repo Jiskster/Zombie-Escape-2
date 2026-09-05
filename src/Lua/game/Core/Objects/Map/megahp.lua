@@ -42,6 +42,9 @@ function ZE2.HitMegaHP(special, toucher)
 			local xS = player.xSlinger
 			player.ze2.zombie_type = "alpha"
 			ZE2.ResetPlayer(player, 2, true)
+
+			local upgrade_sound = (P_RandomChance(FU/2) and sfx_zupg1 or sfx_zupg2)
+			S_StartSound(toucher, upgrade_sound)
 		end
 		player.ze2.karma = max(1, player.ze2.karma / 2)
 		ZE2:GivePlayerCash(toucher.player, cash_given)
