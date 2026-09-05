@@ -41,6 +41,7 @@ function ZE2.HitMegaHP(special, toucher)
 		elseif (toucher.team == 2) then
 			local xS = player.xSlinger
 			player.ze2.zombie_type = "alpha"
+			toucher.infectionfx = TICRATE * 3 / 2 -- infection_fx.lua
 			ZE2.ResetPlayer(player, 2, true)
 
 			local upgrade_sound = (P_RandomChance(FU/2) and sfx_zupg1 or sfx_zupg2)
