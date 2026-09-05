@@ -29,10 +29,10 @@ local function RenderPlayer(v, ypos, player, team) -- standard
 	local highlight = (player == consoleplayer) and V_YELLOWMAP or 0
 	DrawString(4 + 20, ypos + textspos, player.name, V_ALLOWLOWERCASE|textcolor|highlight, "small")
 
-	local visible_stats = false
-	if consoleplayer.spectator or (consoleplayer.realmo.team == team.id) then
+	local visible_stats = true
+	/*if consoleplayer.spectator or (consoleplayer.realmo.team == team.id) then
 		visible_stats = true
-	end
+	end*/
 
 	if visible_stats then
 		DrawString(BASEVIDWIDTH - (2 + 120), ypos + textspos, player.ze2.karma, V_ALLOWLOWERCASE|textcolor, "small-right")
@@ -85,10 +85,10 @@ local function RenderPlayerSmall(v, ypos, player, team) -- compact
 	local highlight = (player == consoleplayer) and V_YELLOWMAP or 0
 	DrawString(4 + 10, ypos + textspos, player.name, V_ALLOWLOWERCASE|textcolor|highlight, "small")
 
-	local visible_stats = false
-	if consoleplayer.spectator or (consoleplayer.realmo.team == team.id) then
+	local visible_stats = true
+	/*if consoleplayer.spectator or (consoleplayer.realmo.team == team.id) then
 		visible_stats = true
-	end
+	end*/
 
 	if visible_stats then
 		DrawString(BASEVIDWIDTH - (2 + 120), ypos + textspos, player.ze2.karma, V_ALLOWLOWERCASE|textcolor, "small-right")
@@ -144,10 +144,10 @@ local function RenderPlayerSmaller(v, ypos, player, team) -- super compact
 	local highlight = (player == consoleplayer) and V_YELLOWMAP or 0
 	DrawString(4 + 5, ypos + textspos, player.name, V_ALLOWLOWERCASE|textcolor|highlight, "small")
 
-	local visible_stats = false
-	if consoleplayer.spectator or (consoleplayer.mo.team == team.id) then
+	local visible_stats = true
+	/*if consoleplayer.spectator or (consoleplayer.mo.team == team.id) then
 		visible_stats = true
-	end
+	end*/
 
 	if visible_stats then
 		DrawString(BASEVIDWIDTH - (2 + 120), ypos + textspos, player.ze2.karma, V_ALLOWLOWERCASE|textcolor, "small-right")
