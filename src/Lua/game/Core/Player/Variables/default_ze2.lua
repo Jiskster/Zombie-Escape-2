@@ -42,8 +42,6 @@ return {
 	lower_hud_offset = 0,
 	special_cooldown = 0,
 
-	zombie_next_type = nil,
-
 	teamchat_enabled = false,
 	
 	vote = {

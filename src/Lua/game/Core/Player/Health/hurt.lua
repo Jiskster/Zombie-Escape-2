@@ -40,29 +40,12 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 			if ztype and ZE2.ZombieConfig[ztype] and ZE2.ZombieConfig[ztype].killaward then
 				local killaward = ZE2.ZombieConfig[ztype].killaward
 
-				local player_count = ZE2.CountPlayers("ingame")
-
-				local chance = FU/8
-
-				if player_count < 8 then
-					chance = FU/4
-				end
-
 				if killer and killer.valid then
 					A_RubyDrop(mo, killaward)
 				
 					killer.player.ze2.karma = max(1, $ - 120)
-
-					if P_RandomChance(chance) then
-						player.ze2.zombie_next_type = "alpha"
-					end
 				end
 			end
-		end
-
-		player.ze2.killedbysomething = not damagetype
-		if not (src and src.valid) then
-			player.ze2.killedbysomething = false
 		end
 	end
 
