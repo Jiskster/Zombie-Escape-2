@@ -8,6 +8,8 @@ dopath("shop.lua")
 
 dopath("pregame.lua")
 
+dopath("quit.lua")
+
 dopath("Intermission/intermission.lua")
 
 dopath("HUD/init.lua")
