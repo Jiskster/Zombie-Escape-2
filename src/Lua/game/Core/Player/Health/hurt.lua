@@ -118,11 +118,13 @@ xSlinger.addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		return false
 	end
 	
-	if (player and player.valid) and (attacker.player and attacker.player.valid) 
-	and (mo.reactiontime or attacker.reactiontime) then
-		return false
+	if attacker and attacker.valid then
+		if (player and player.valid) and (attacker.player and attacker.player.valid) 
+		and (mo.reactiontime or attacker.reactiontime) then
+			return false
+		end
 	end
-
+	
 	if attacker and attacker.player and attacker.team == 2 and game.releasetime then
 		return false
 	end
