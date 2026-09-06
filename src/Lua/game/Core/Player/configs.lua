@@ -2,6 +2,13 @@ ZE2.StandardJumpFactor = FixedDiv(90*FU, 100*FU)
 ZE2.DefaultSurvivorInvSlots = 5
 ZE2.DefaultZombieInvSlots = 2
 
+local item_blacklist = {
+	["apple"] = true,
+	["energy_drink"] = true,
+	["amys_heart"] = true,
+	["grenade_ring"] = true,
+}
+
 -- TODO(?): Maybe each new entry added through modding could have a metatable applied to it
 --			so we can be sure there are no "holes" in them? Maybe `newentry.__index = ZE2.SurvivorConfig["default"]`
 ZE2.ZombieConfig = {
@@ -290,8 +297,16 @@ function ZE2.setConfigInventory(player, newskin, noitems)
 		if (not noitems) and (sc[skin].items) then
 			for i,item in ipairs(sc[skin].items) do
 				if (type(item) == "table") then
+					if item[1] and item_blacklist[item[1]] then
+						continue
+					end
+					
 					xS:give_item(item[1], item[2], nil, nil, false, "survivor") -- being strict with the inventory
 				else
+					if item and item_blacklist[item] then
+						continue
+					end
+					
 					xS:give_item(item, nil, nil, nil, false, "survivor")
 				end
 			end
