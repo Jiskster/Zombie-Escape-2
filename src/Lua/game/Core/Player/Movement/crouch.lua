@@ -163,11 +163,22 @@ addHook("PostThinkFrame", function()
 				crouchlerp = max($-FRACUNIT/4, 0)
 			end
 
+			/*
 			local newheight = player.mo.z + player.viewheight - ease.inoutquad(crouchlerp, 0, FixedMul(player.height - player.spinheight, player.mo.scale))
 
 			if crouchlerp then
 				player.viewz = min($,newheight)
 			end
+			*/
+			
+			local curheight = player.mo.height
+			local newheight = player.mo.z+(41*curheight)/48
+			
+			if P_IsObjectOnGround(player.mo) then
+				newheight = $ + FixedMul(cos(leveltime*ANG15), player.bob/2)
+			end
+			
+			player.viewz = newheight
 		end
 	end
 end)
