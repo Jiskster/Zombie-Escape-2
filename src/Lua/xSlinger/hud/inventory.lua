@@ -21,6 +21,7 @@ hud.disable("weaponrings")
 local itemx, itemy = 0, 0
 local itemxo, itemyo = 0, 0
 local swingx, swingy = 0, 0
+local maxviewanim = 0
 addHook("HUD", function(v, player)
 	if (player) and not (player.mo) then
 		return
@@ -114,7 +115,7 @@ addHook("HUD", function(v, player)
 			local vy = (BASEVIDHEIGHT - 60) * FRACUNIT
 			local rmomx = player.rmomx
 			local rmomy = player.rmomy
-			local bob = min((FixedMul(rmomx, rmomx) + FixedMul(rmomy, rmomy)) >> 2, 8 * FRACUNIT)
+			local bob = player.bob/2 --min((FixedMul(rmomx, rmomx) + FixedMul(rmomy, rmomy)) >> 2, 8 * FRACUNIT)
 			local angle = ((256 * leveltime) & 8191) << 19
 			local swingx2, swingy2 = 0, 0
 
@@ -122,12 +123,27 @@ addHook("HUD", function(v, player)
 			angle = ((256 * leveltime) & 4095) << 19
 			swingy2 = FixedMul(bob, sin(angle))
 
+
+			if player.realmo and player.realmo.valid then
+				if not P_IsObjectOnGround(player.realmo) then
+					bob = player.bob/4
+				end
+			end
+
 			swingx = (swingx - swingx2) / 2
 			swingy = (swingy - swingy2) / 2
 
 			if xS.viewmobj_animation then
-				swingy = $ + (xS.viewmobj_animation*FU)
-				swingx = $ - (xS.viewmobj_animation*FU)
+				if xS.viewmobj_animation > maxviewanim then
+					maxviewanim = xS.viewmobj_animation
+				end
+				
+				local diff = maxviewanim - xS.viewmobj_animation
+				local ese = ease.outquart(FixedDiv(diff, maxviewanim), 42*FU, 0)
+				swingy = $ + ese
+				swingx = $ - ese/2
+			else
+				maxviewanim = 0
 			end
 
 			v.drawScaled(
