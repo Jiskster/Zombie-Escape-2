@@ -1,6 +1,6 @@
 addHook("JumpSpecial", function(player)
 	if player.mo and player.mo.valid and not (player.pflags & PF_THOKKED) and P_IsObjectOnGround(player.mo) then
-		if (player.mo.ceilingz - player.mo.floorz) < player.height + ZE2.playerheightoffset
+		if (player.mo.ceilingz - player.mo.floorz) < ZE2.PlayerHeight
 		and player.ze2.crouching then
 			return true
 		end

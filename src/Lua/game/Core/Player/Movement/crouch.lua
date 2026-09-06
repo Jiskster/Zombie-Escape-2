@@ -1,4 +1,5 @@
-ZE2.playerheightoffset = 16*FRACUNIT; local heightoffset = ZE2.playerheightoffset
+ZE2.PlayerHeight = 64*FRACUNIT
+ZE2.PlayerSpinHeight = 32*FRACUNIT
 
 freeslot("SPR2_ZECH")
 freeslot("S_PLAY_CROUCH_ZE2")
@@ -13,9 +14,9 @@ states[S_PLAY_CROUCH_ZE2] = {
 }
 
 local function CrouchHeightHook(player)
-    return (player.ze2.crouching or (player.mo.ceilingz-player.mo.floorz < player.height + heightoffset))
-	and (player.spinheight)
-	or player.height + heightoffset
+    return (player.ze2.crouching or player.mo.ceilingz-player.mo.floorz < ZE2.PlayerHeight)
+	and (ZE2.PlayerSpinHeight)-- spin height
+	or (ZE2.PlayerHeight) -- height
 end
 
 local function clamp(v, mx, mn)
@@ -83,7 +84,7 @@ addHook("PreThinkFrame", function()
 			end
 		else
 			-- if gap higher than player height
-			if (player.mo.ceilingz - player.mo.floorz) > player.height + heightoffset then
+			if (player.mo.ceilingz - player.mo.floorz) > ZE2.PlayerSpinHeight then
 				if player.ze2.crouching then
 					if P_IsObjectOnGround(player.mo) or (player.mo.eflags & MFE_JUSTHITFLOOR) then
 						if pmo.state == S_PLAY_CROUCH_ZE2 then
@@ -99,7 +100,7 @@ addHook("PreThinkFrame", function()
 						pmo.frame = A
 						pmo.state = S_PLAY_JUMP
 
-						if ZE2.sourcemovement.value then player.mo.z = clamp($ - FixedMul(player.height - player.spinheight, pmo.scale) * P_MobjFlip(pmo), pmo.floorz, pmo.ceilingz-P_GetPlayerHeight(player)+FixedMul(heightoffset, pmo.scale)) end
+						if ZE2.sourcemovement.value then player.mo.z = clamp($ - FixedMul(player.height - player.spinheight, pmo.scale) * P_MobjFlip(pmo), pmo.floorz, pmo.ceilingz-P_GetPlayerHeight(player)+FixedMul(8*FU, pmo.scale)) end
 					end
 
 					player.pflags = $ & ~PF_SPINNING
