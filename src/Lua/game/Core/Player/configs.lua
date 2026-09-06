@@ -5,7 +5,6 @@ ZE2.DefaultZombieInvSlots = 2
 local item_blacklist = {
 	["apple"] = true,
 	["energy_drink"] = true,
-	["amys_heart"] = true,
 	["grenade_ring"] = true,
 }
 
