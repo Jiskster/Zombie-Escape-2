@@ -8,7 +8,7 @@ dopath("shop.lua")
 
 dopath("pregame.lua")
 
-dopath("quit.lua")
+dopath("replacealpha.lua")
 
 dopath("Intermission/intermission.lua")
 

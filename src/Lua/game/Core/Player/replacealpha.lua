@@ -38,3 +38,12 @@ addHook("PlayerQuit", function(player)
 		end
 	end
 end)
+
+addHook("TeamSwitch", function(player, team)
+	if player.mo and player.mo.valid then
+		if player.mo.team == 2 and team == 0 then
+			player.ze2.zombie_type = "normal"
+			giveRandomAlpha(player)
+		end
+	end
+end)
