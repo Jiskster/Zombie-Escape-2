@@ -71,7 +71,7 @@ xSlinger.registerItem("red_ring", {
 
     hold_icon = "SPR_THOK"; -- Can be a normal graphic instead of a sprite too.
 
-    animation_time = TICRATE;
+    animation_time = TICRATE/2;
 
 	missile_tick = function(self, mo, missile)
 		local ghost = P_SpawnGhostMobj(missile)

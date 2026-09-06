@@ -99,7 +99,7 @@ xSlinger.registerItem("flame_ring", {
 
 	hold_icon = "SPR_THOK"; -- Can be a normal graphic instead of a sprite too.
 
-    animation_time = TICRATE;
+    animation_time = TICRATE/10;
 
 	ammo = 50;
 
