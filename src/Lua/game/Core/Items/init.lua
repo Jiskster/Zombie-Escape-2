@@ -8,6 +8,8 @@ function A_RingExplode2(actor, var1, var2)
     vfx.state = S_TNTBARREL_EXPL1
     vfx.fuse = TICRATE
     actor.state = S_INVISIBLE
+	actor.fuse = TICRATE
+	actor.flags = $ | MF_NOGRAVITY
 
     S_StartSound(actor, sfx_prloop)
 	P_StartQuake(64 * FU, 10, {x = vfx.x, y = vfx.y, z = vfx.z})
