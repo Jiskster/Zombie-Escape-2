@@ -389,11 +389,15 @@ addHook("MobjMoveBlocked", function(mov, mobj, line)
 end, MT_XS_MISSILE)
 
 addHook("MobjFuse", function(mobj)
-	if not mobj or not mobj.valid or (mobj.health <= 0) then return end
+	if not mobj or not mobj.valid then return end
+	
+	if (mobj.health <= 0) then
+		P_RemoveMobj(mobj)
+		return
+	end
 
 	xSlinger.KillMissile(mobj)
 end, MT_XS_MISSILE)
-
 
 addHook("MobjDeath", function(mobj)
 	if (mobj.health <= 0) then return end

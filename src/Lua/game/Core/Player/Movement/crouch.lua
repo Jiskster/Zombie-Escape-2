@@ -142,7 +142,17 @@ local switchablestates = {
 	[S_PLAY_EDGE] = true
 }
 
+local clientgametics = 0
 local crouchlerp = 0
+
+addHook("PlayerCmd", function(player, cmd)
+	if not leveltime then
+		clientgametics = 0
+	else
+		clientgametics = $ + 1
+	end
+end)
+
 addHook("PostThinkFrame", function()
 	local game = ZE2.Game
 
@@ -174,10 +184,9 @@ addHook("PostThinkFrame", function()
 			local curheight = player.mo.height
 			local newheight = player.mo.z+(41*curheight)/48
 			if P_IsObjectOnGround(player.mo) then
-				local angle = ((8191 / 20 * leveltime) & 8191) << 19
+				local angle = ((8191 / 20 * clientgametics) & 8191) << 19
 
 				local adjust = FixedMul(player.bob / 2, sin(angle))
-				print(FixedInt(adjust))
 				newheight = newheight + adjust
 			end
 			player.viewz = newheight

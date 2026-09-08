@@ -49,7 +49,6 @@ xSlinger.registerMissile("FLAME_RING", {
 	deathsound = sfx_s3k7e,
 	addflags = MF_SLIDEME,
 	radius = 24*FRACUNIT,
-	height = 48*FRACUNIT,
 	tick = function(pmo, mobj)
 		mobj.momx = $ * 85/100
 		mobj.momy = $ * 85/100

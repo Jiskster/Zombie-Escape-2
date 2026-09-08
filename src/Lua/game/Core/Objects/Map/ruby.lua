@@ -4,11 +4,11 @@ sfxinfo[sfx_rbyhit].caption = "Ruby"
 mobjinfo[MT_CRRUBY] = {
 	doomednum = -1,
 	spawnstate = S_CRRUBY,
-	spawnhealth = 1,
+	spawnhealth = 1000,
 	deathstate = S_SPRK1,
 	radius = 25 * FU,
 	height = 45 * FU,
-	flags = MF_SLIDEME|MF_SPECIAL|MF_RUNSPAWNFUNC,
+	flags = MF_SLIDEME|MF_SPECIAL,
 }
 
 states[S_CRRUBY] = {
