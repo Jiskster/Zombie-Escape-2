@@ -3,6 +3,7 @@ local STAMINA_LOW_RAMP = {79, 78, 77, 76, 75, 74, 73, 72, 83, 82, 81, 80}
 local STAMINA_OUT_RAMP = {39, 38, 37, 36, 35, 34, 33, 32}
 
 local stamina = 0
+local ability = 0
 local button_to_tooltip = {
     [BT_CUSTOM1] = "C1",
     [BT_CUSTOM2] = "C2",
@@ -46,11 +47,11 @@ local function DrawHealthAndStamina(v, player, x, y, flags)
     local maxhealth = mo.maxhealth or 0
 
     local staminamax = 100 * FU
+    local abilitymax = (team == 2) and special.cooldown * FU or 0
     if (team == 2) and special and special and special.button then
-        staminamax = special.cooldown * FU
-        stamina = ease.inquart(FU / 2, stamina, staminamax - (ze2.special_cooldown * FU))
+        ability = ease.linear(FU / 2, ability, abilitymax - (ze2.special_cooldown * FU))
     elseif (team == 1) then
-        stamina = ease.inquart(FU / 2, stamina, ze2.sprintmeter)
+        stamina = ease.linear(FU / 2, stamina, ze2.sprintmeter)
     end
 
     local bar_visible = false
@@ -92,6 +93,8 @@ local function DrawHealthAndStamina(v, player, x, y, flags)
         local fillamount = FixedMul(FixedDiv(stamina, staminamax), filltotalfrac)
         if (team == 1) then
             fillx = FixedInt(x) + 1
+        elseif (team == 2) then
+            fillamount = FixedMul(FixedDiv(ability, abilitymax), filltotalfrac)
         end
 
         v.drawFill(fillx - 1, filly - 1, filltotal + 2, 6, 31|flags|V_TRANSLUCENT)
