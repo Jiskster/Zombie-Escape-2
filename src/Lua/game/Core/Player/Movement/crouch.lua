@@ -19,6 +19,10 @@ local function CrouchHeightHook(player)
 	or (ZE2.PlayerHeight) -- height
 end
 
+local function FitGapHook(player)
+	return (player.ze2.crouching == true)
+end
+
 local function clamp(v, mx, mn)
 	return max(min(v,mn), mx)
 end
@@ -64,19 +68,9 @@ addHook("PreThinkFrame", function()
 				if ZE2.sourcemovement.value and not (P_IsObjectOnGround(player.mo) or (player.mo.eflags & MFE_JUSTHITFLOOR)) then
 					player.mo.z = clamp($ + FixedMul(player.height - player.spinheight, pmo.scale) * P_MobjFlip(pmo), pmo.floorz, pmo.ceilingz-P_GetPlayerSpinHeight(player))
 				end
-
-				-- mama luigi
-				if (P_IsObjectOnGround(player.mo) or (player.mo.eflags & MFE_JUSTHITFLOOR)) and player.speed > 10*FU and not player.ze2.isRunning then
-					L_SpeedCapXY(player.mo, limit) -- Halt ground movement
-				end
-
+				
 				player.ze2.crouching = true
 			else
-				-- mama luigi
-				if P_IsObjectOnGround(player.mo) and (player.mo.eflags & MFE_JUSTHITFLOOR) and not player.ze2.isRunning then
-					L_SpeedCapXY(player.mo, limit)
-				end
-
 				if not stateset then
 					stateset = true
 					SetCrouchState(pmo)
@@ -84,7 +78,7 @@ addHook("PreThinkFrame", function()
 			end
 		else
 			-- if gap higher than player height
-			if (player.mo.ceilingz - player.mo.floorz) > ZE2.PlayerSpinHeight then
+			if (player.mo.ceilingz - player.mo.floorz) > ZE2.PlayerHeight then
 				if player.ze2.crouching then
 					if P_IsObjectOnGround(player.mo) or (player.mo.eflags & MFE_JUSTHITFLOOR) then
 						if pmo.state == S_PLAY_CROUCH_ZE2 then
@@ -108,11 +102,11 @@ addHook("PreThinkFrame", function()
 
 				player.ze2.crouching = false
 			else
-				if player.ze2.crouching then
-					if not stateset then
-						stateset = true
-						SetCrouchState(pmo)
-					end
+				player.ze2.crouching = true
+				
+				if not stateset then
+					stateset = true
+					SetCrouchState(pmo)
 				end
 			end
 		end
@@ -195,4 +189,4 @@ addHook("PostThinkFrame", function()
 end)
 
 addHook("PlayerHeight", CrouchHeightHook)
-addHook("PlayerCanEnterSpinGaps", CrouchHeightHook)
+addHook("PlayerCanEnterSpinGaps", FitGapHook)
