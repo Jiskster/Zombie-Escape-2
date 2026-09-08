@@ -37,12 +37,12 @@ end
 local function crouchcondition(player)
 	local game = ZE2.Game
 	if not (player.mo and player.mo.valid) then return false end
-	
+
 	if multiplayer then
 		if (game.state == ZE2.GS_PREGAME) then return false end
 		if (game.releasetime and player.mo.team == 2) then return false end
 	end
-	
+
 	return true
 end
 
@@ -170,14 +170,16 @@ addHook("PostThinkFrame", function()
 				player.viewz = min($,newheight)
 			end
 			*/
-			
+
 			local curheight = player.mo.height
 			local newheight = player.mo.z+(41*curheight)/48
-			
 			if P_IsObjectOnGround(player.mo) then
-				newheight = $ + FixedMul(cos(leveltime*ANG15), player.bob/2)
+				local angle = ((8191 / 20 * leveltime) & 8191) << 19
+
+				local adjust = FixedMul(player.bob / 2, sin(angle))
+				print(FixedInt(adjust))
+				newheight = newheight + adjust
 			end
-			
 			player.viewz = newheight
 		end
 	end
