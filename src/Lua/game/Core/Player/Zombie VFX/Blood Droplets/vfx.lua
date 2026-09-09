@@ -67,9 +67,8 @@ local function Z_DoDroplet(mo, blood_quantity)
     end
 end
 
-local function zombie_dropblood(p, inf, src, dmg, damagetype)
+local function dropblood(p, inf, src, dmg, damagetype)
     if not (p.mo and p.mo.valid) then return end
-    if (p.mo.team ~= 2) then return end
     if dmg <= 4 then return end -- Yeah no I'll not let you spam it lol
     local pmo = p.mo
 
@@ -85,6 +84,6 @@ local function zombie_death(mo) -- Drop blood also on death duh
 end
 
 -- Now we hook everything
-xS_addHook("OnPlayerDamage", zombie_dropblood)
+xS_addHook("OnPlayerDamage", dropblood)
 addHook("MobjThinker", zombie_droplet_hitground, MT_ZOMB_DROPLET)
 addHook("MobjDeath", zombie_death, MT_PLAYER)
