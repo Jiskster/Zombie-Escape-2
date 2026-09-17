@@ -98,6 +98,19 @@ SelectHeading = Escape Maps
 Lua.ze2_timelimit = 7
 Lua.ze2_laddertag = 200
 
+Level 09
+Levelname = The Farland
+Subtitle = Far Far Away
+Act = 0
+Music = MP_FOR
+TypeOfLevel = Escape
+NextLevel = 01
+SkyNum = 40
+Weather = 0
+NoZone = True
+SelectHeading = Escape Maps
+Lua.ze2_timelimit = 5
+
 # Zombio Bros
 # Some textures from Mario Mode + from Team Springs
 Level 12
