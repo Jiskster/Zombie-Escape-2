@@ -144,7 +144,14 @@ end)
 
 addHook("PreThinkFrame", function()
 	local removedelayed = {}
-	for index, effect in ipairs(globaleffects) do
+	
+	for index = #globaleffects, 1, -1 do
+		local effect = globaleffects[index]
+		
+		if (effect == nil) then
+			continue
+		end
+		
 		local mobj = effect.mobj
 		local name = effect.name
 		if not (type(name) == "string") then
