@@ -47,7 +47,7 @@ local function DrawHealthAndStamina(v, player, x, y, flags)
     local maxhealth = mo.maxhealth or 0
 
     local staminamax = 100 * FU
-    local abilitymax = (team == 2) and special.cooldown * FU or 0
+    local abilitymax = (team == 2) and (special.cooldown or 0) * FU or 0
     if (team == 2) and special and special and special.button then
         ability = ease.linear(FU / 2, ability, abilitymax - (ze2.special_cooldown * FU))
     elseif (team == 1) then
