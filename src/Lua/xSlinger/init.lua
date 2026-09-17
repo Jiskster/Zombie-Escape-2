@@ -174,6 +174,7 @@ dofile "xSlinger/hud/interactions"
 dofile "xSlinger/hud/tags"
 dofile "xSlinger/hud/inventory"
 dofile "xSlinger/hud/health"
+dofile "xSlinger/hud/debug"
 
 addHook("MobjSpawn", function(mobj)
 	if mobj.player and mobj.player.valid then
