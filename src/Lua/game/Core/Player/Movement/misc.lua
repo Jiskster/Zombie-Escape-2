@@ -114,7 +114,7 @@ addHook("PlayerThink", function(player) ---@param player player_t
 
 		--lastJumped is shitty ik but i cant think of a good way to do this
 		--WITHOUT having to make a new variable in the ze2 table
-		if ZE2.landingfatigue.value and (pv.lastJumped) then
+		if ZE2.cv_landingfatigue.value and (pv.lastJumped) then
 			local bhopped = false
 
 			if (player.cmd.buttons & BT_JUMP) and not (player.lastbuttons & BT_JUMP) then

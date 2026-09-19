@@ -212,7 +212,7 @@ function ZE2.applyPlayerConfig(player)
 	player.charability2 = config.charability2 or CA2_NONE
 
 	-- thrustfactor doesn't need to be a config option by the way.
-	if ZE2.sourcemovement.value then
+	if ZE2.cv_sourcemovement.value then
 		player.thrustfactor = 0
 	else
 		if P_IsObjectOnGround(mo) or
@@ -235,7 +235,7 @@ function ZE2.applyPlayerConfig(player)
 	end
 
 	if ze2.sprintdelay then
-		if ZE2.sourcemovement.value then
+		if ZE2.cv_sourcemovement.value then
 			player.jumpfactor = 3*$/4
 		else
 			player.jumpfactor = $ / 2

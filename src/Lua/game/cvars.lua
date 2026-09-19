@@ -1,6 +1,5 @@
--- TODO: make it automatically add a cv_ prefix to the ZE2.varname
--- So that its ZE2.cv_varname
 local function addCvar(name, regtable)
+	name = string.format("cv_%s", name)
 	if ZE2[name] ~= nil then
 		error("ZE2 variable already exists; cannot add Cvar")
 		return false
@@ -58,7 +57,7 @@ addCvar("currencydelay", {
 	flags = CV_NETVAR,
 })
 
-addCvar("cv_debug", {
+addCvar("debug", {
 	name = "z_debug",
 	defaultvalue = "Off",
 	PossibleValue = CV_OnOff,

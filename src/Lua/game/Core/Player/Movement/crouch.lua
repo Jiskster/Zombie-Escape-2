@@ -65,7 +65,7 @@ addHook("PreThinkFrame", function()
 			local limit = 5*FU
 
 			if not player.ze2.crouching then
-				if ZE2.sourcemovement.value and not (P_IsObjectOnGround(player.mo) or (player.mo.eflags & MFE_JUSTHITFLOOR)) then
+				if ZE2.cv_sourcemovement.value and not (P_IsObjectOnGround(player.mo) or (player.mo.eflags & MFE_JUSTHITFLOOR)) then
 					player.mo.z = clamp($ + FixedMul(player.height - player.spinheight, pmo.scale) * P_MobjFlip(pmo), pmo.floorz, pmo.ceilingz-P_GetPlayerSpinHeight(player))
 				end
 				
@@ -94,7 +94,7 @@ addHook("PreThinkFrame", function()
 						pmo.frame = A
 						pmo.state = S_PLAY_JUMP
 
-						if ZE2.sourcemovement.value then player.mo.z = clamp($ - FixedMul(player.height - player.spinheight, pmo.scale) * P_MobjFlip(pmo), pmo.floorz, pmo.ceilingz-P_GetPlayerHeight(player)+FixedMul(8*FU, pmo.scale)) end
+						if ZE2.cv_sourcemovement.value then player.mo.z = clamp($ - FixedMul(player.height - player.spinheight, pmo.scale) * P_MobjFlip(pmo), pmo.floorz, pmo.ceilingz-P_GetPlayerHeight(player)+FixedMul(8*FU, pmo.scale)) end
 					end
 
 					player.pflags = $ & ~PF_SPINNING
@@ -111,7 +111,7 @@ addHook("PreThinkFrame", function()
 			end
 		end
 
-		if (P_IsObjectOnGround(player.mo) or ZE2.sourcemovement.value) and player.ze2.crouching then
+		if (P_IsObjectOnGround(player.mo) or ZE2.cv_sourcemovement.value) and player.ze2.crouching then
 			if not stateset then
 				stateset = true
 				SetCrouchState(pmo)
