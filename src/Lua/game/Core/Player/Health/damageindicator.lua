@@ -23,7 +23,7 @@ function ZE2:AddDamageText(player, source, damage)
 
 	local x = source.x
 	local y = source.y
-	local z = source.height * 2
+	local z = source.z + (source.height * 2)
 	table.insert(player.ze2.damage_text, {damage = damage, x = x, y = y, z = z, zmom = 0, time = 5 * TICRATE, source = source})
 end
 
