@@ -4,12 +4,15 @@ Creator:
 "Hammito" / "Sabl3" - Original zombie escape creator. No longer present in the community.
 "Jisk" - ZE2 creator and ZE1 Maintainer.
 
-Coders:
+Core Developers:
 "Jisk"
 "Luigi Budd/Epix" - Retired
 "GLide KS"
-"LeonardoTheMutant"
 "Lugent"
+
+Contributors:
+"xdf22"
+"LeonardoTheMutant" - Retired
 
 Spriters:
 "Luigi Budd/Epix"

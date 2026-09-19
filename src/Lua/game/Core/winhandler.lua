@@ -30,7 +30,7 @@ function ZE2:StartWin(team, fromring)
 				continue
 			end
 
-			if (mobj.flags & MF_ENEMY) and (ZE2.killenemiesonwin.value) then
+			if (mobj.flags & MF_ENEMY) and (ZE2.cv_killenemiesonwin.value) then
 				P_KillMobj(mobj)
 				continue
 			end

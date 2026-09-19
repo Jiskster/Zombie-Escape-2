@@ -136,7 +136,7 @@ gamestatefuncs[ZE2.GS_PREGAME] = function()
 
 			player.ze2.karma = max(1, $ / 2)
 
-			if ZE2.choosenotice.value then
+			if ZE2.cv_choosenotice.value then
 				print(string.format("%s%s%s has risen from the dead!", "\x83", "\x83", player.name))
 			end
 

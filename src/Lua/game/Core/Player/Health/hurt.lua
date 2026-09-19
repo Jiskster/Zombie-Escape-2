@@ -18,7 +18,7 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 
 		if team == 1 then
 			if killer and killer.valid then
-				if ZE2.instantinfection.value then
+				if ZE2.cv_instantinfection.value then
 					killing = false
 
 					ZE2.ZombifyPlayer(player)
