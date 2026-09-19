@@ -46,6 +46,8 @@ SetupHud "CharacterSelect"
 
 SetupHud "Shop"
 
+SetupHud "DamageText"
+
 SetupHud "PlayerTags"
 
 SetupHud "DamageFade"

@@ -10,33 +10,21 @@ end
 ---@param source mobj_t
 ---@param damage integer
 function ZE2:AddDamageText(player, source, damage)
-	if source.info and source.info.nodamagetext then return end
+	--if source.info and source.info.nodamagetext then return end
 
 	player.ze2.damage_text = player.ze2.damage_text or {}
 	for index, indicator in ipairs(player.ze2.damage_text) do
+		if not indicator.source or not indicator.source.valid then continue end
 		if (indicator.source ~= source) then continue end
-		if not indicator.text or not indicator.text.valid then continue end
-		indicator.text.cusval = indicator.text.cusval + damage
-		ChangeWorldText(indicator.text, tostring(indicator.text.cusval), FU / 2, true)
-		indicator.text.fuse = TICRATE * 5
+		indicator.damage = indicator.damage + damage
+		indicator.time = 5 * TICRATE
 		return
 	end
 
-	local direction = R_PointToAngle(source.x, source.y)
-	local x = P_ReturnThrustX(source, direction, 64 * FU)
-	local y = P_ReturnThrustY(source, direction, 64 * FU)
+	local x = source.x
+	local y = source.y
 	local z = source.height * 2
-	local text = SpawnWorldText(source.x + x, source.y + y, source.z + z, tostring(damage), FU / 2, true)
-	text.angle = direction - ANGLE_90
-	text.momx = source.momx
-	text.momy = source.momy
-	text.momz = source.momz
-	text.oradius = source.radius
-	text.oscale = source.scale
-	text.drawonlyforplayer = player
-	text.cusval = damage
-	text.fuse = TICRATE * 5
-	table.insert(player.ze2.damage_text, {text = text, source = source})
+	table.insert(player.ze2.damage_text, {damage = damage, x = x, y = y, z = z, zmom = 0, time = 5 * TICRATE, source = source})
 end
 
 xSlinger.addHook("MobjDamage", function(mobj, inf, src, dmg, damagetype)
@@ -55,52 +43,26 @@ end)
 addHook("PlayerThink", function(player)
 	player.ze2.damage_text = player.ze2.damage_text or {}
 	for index, indicator in ipairs(player.ze2.damage_text) do
-		local target = indicator.source
-		local text = indicator.text
-		if not text or not text.valid then
+		indicator.time = indicator.time - 1
+		if (indicator.time <= 0) then
 			table.remove(player.ze2.damage_text, index)
 			continue
 		end
 
+		local target = indicator.source --[[@as mobj_t?]]
 		if not target or not target.valid or (target.health <= 0) then
-			local direction = R_PointToAngle(text.x, text.y)
-			text.angle = direction - ANGLE_90
-			text.momx = 0
-			text.momy = 0
-			if (text.fuse <= TICRATE) then
-				text.momz = text.momz - (FU / 2)
-				text.alpha = FixedDiv(text.fuse * FU, TICRATE * FU)
-			else
-				text.momz = 0
+			if (indicator.time <= TICRATE) then
+				indicator.zmom = indicator.zmom - (FU / 2)
+				indicator.z = indicator.z + indicator.zmom
 			end
-
-			local scale = FixedDiv(R_PointToDist(text.x, text.y), text.oradius * 10)
-			scale = max(scale, text.oscale * 2)
-			scale = FixedMul(scale, GetFOV())
-			scale = scale / 2
-			text.scale = scale
 			continue
 		end
 
-		local direction = R_PointToAngle(target.x, target.y)
-		local x = P_ReturnThrustX(target, direction, 64 * FU)
-		local y = P_ReturnThrustY(target, direction, 64 * FU)
-		local z = target.height * 2
-		text.angle = direction - ANGLE_90
-		text.momx = target.momx
-		text.momy = target.momy
-		text.momz = target.momz
-		if (text.fuse <= TICRATE) then
-			text.alpha = FixedDiv(text.fuse * FU, TICRATE * FU)
-		end
-
-		local scale = FixedDiv(R_PointToDist(target.x, target.y), target.radius * 10)
-		scale = max(scale, target.scale * 2)
-		scale = FixedMul(scale, GetFOV())
-		scale = scale / 2
-		text.scale = scale
-		text.oradius = target.radius
-		text.oscale = target.scale
-		P_MoveOrigin(text, target.x + x, target.y + y, target.z + z)
+		local x = target.x
+		local y = target.y
+		local z = target.z + (target.height * 3)
+		indicator.x = x
+		indicator.y = y
+		indicator.z = z
 	end
 end)
