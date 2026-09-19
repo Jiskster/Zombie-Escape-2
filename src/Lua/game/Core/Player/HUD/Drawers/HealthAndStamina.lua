@@ -15,14 +15,6 @@ local button_to_tooltip = {
     [BT_TOSSFLAG] = "TF",
 }
 
-local function FadeAmount(amount)
-    local value = ease.linear(amount, 10, 0)
-    if (value > 0) and (value < 10) then
-        return value << FF_TRANSSHIFT
-    end
-    return 0
-end
-
 ---@param v videolib
 ---@param player player_t
 ---@param x fixed_t
@@ -75,7 +67,7 @@ local function DrawHealthAndStamina(v, player, x, y, flags)
     v.drawScaled(x, y, FU / 2, health_icon, flags, v.getColormap(nil, health_color, nil))
     if (mo.health <= (maxhealth / 2)) then
         local amount = FU - cos(leveltime * ANG10)
-        local transparency = FadeAmount(amount)
+        local transparency = L_FadeAmount(amount)
         v.drawScaled(x, y, FU / 2, health_icon, flags|transparency, v.getColormap(nil, SKINCOLOR_RED, nil))
     end
 
@@ -103,15 +95,15 @@ local function DrawHealthAndStamina(v, player, x, y, flags)
             if (ze2.special_cooldown > 0) then
                 color = 71
             end
-            V_DrawBar(v, fillx, filly, filltotal, 4, 0, FixedDiv(fillamount, filltotalfrac), color, flags|V_FLIP, FU)
+            L_DrawBar(v, fillx, filly, filltotal, 4, 0, FixedDiv(fillamount, filltotalfrac), color, flags|V_FLIP, FU)
         elseif ze2.sprintdelay then
             local alpha = FU - sin((leveltime * 2) * ANG10)
-            V_DrawBar(v, fillx, filly, filltotal, 4, 0, FU, STAMINA_OUT_RAMP, flags, alpha)
+            L_DrawBar(v, fillx, filly, filltotal, 4, 0, FU, STAMINA_OUT_RAMP, flags, alpha)
         else
-            V_DrawBar(v, fillx, filly, filltotal, 4, 0, FixedDiv(fillamount, filltotalfrac), STAMINA_RAMP, flags, FU)
+            L_DrawBar(v, fillx, filly, filltotal, 4, 0, FixedDiv(fillamount, filltotalfrac), STAMINA_RAMP, flags, FU)
             if (stamina < (30 * FU)) then
                 local alpha = FU - sin(leveltime * (ANG10 / 2))
-                V_DrawBar(v, fillx, filly, filltotal, 4, 0, FixedDiv(fillamount, filltotalfrac), STAMINA_LOW_RAMP, flags, alpha)
+                L_DrawBar(v, fillx, filly, filltotal, 4, 0, FixedDiv(fillamount, filltotalfrac), STAMINA_LOW_RAMP, flags, alpha)
             end
         end
 

@@ -11,13 +11,15 @@ local function TableReverse(target)
 	return result
 end
 
-local function FadeAmount(amount)
+---@param amount fixed_t
+---@return integer
+rawset(_G, "L_FadeAmount", function(amount)
     local value = ease.linear(amount, 10, 0)
     if (value > 0) and (value < 10) then
         return value << FF_TRANSSHIFT
     end
     return 0
-end
+end)
 
 ---@param v videolib
 ---@param x integer
@@ -29,7 +31,7 @@ end
 ---@param color integer|skincolor_t|table
 ---@param flags integer
 ---@param alpha fixed_t
-rawset(_G, "V_DrawBar", function(v, x, y, width, height, offset, amount, color, flags, alpha)
+rawset(_G, "L_DrawBar", function(v, x, y, width, height, offset, amount, color, flags, alpha)
 	local vertical
 	local reverse
 	local distorsion
@@ -101,7 +103,7 @@ rawset(_G, "V_DrawBar", function(v, x, y, width, height, offset, amount, color, 
 			fade = alpha
 		end
 
-        local transparency = FadeAmount(fade)
+        local transparency = L_FadeAmount(fade)
         local truecolor
         if (colortable ~= nil) then
 			local colorindex = index
