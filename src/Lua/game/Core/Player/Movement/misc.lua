@@ -17,13 +17,12 @@ local function CycleSpectator(player, direction)
 	local MAXPLAYERS = 31
 	player.ze2.spectator_cycle = (player.ze2.spectator_cycle + direction)
 	
-	if player.ze2.spectator_cycle < 0 then
-		player.ze2.spectator_cycle = MAXPLAYERS
-	elseif player.ze2.spectator_cycle > MAXPLAYERS then
+	if (player.ze2.spectator_cycle > MAXPLAYERS) then
 		player.ze2.spectator_cycle = 0
+	elseif (player.ze2.spectator_cycle < 0) then
+		player.ze2.spectator_cycle = MAXPLAYERS
 	end
-	
-	print(player.ze2.spectator_cycle)
+
 	local attempts = 64
 	while true do
 		attempts = attempts - 1
@@ -52,11 +51,9 @@ local function SpectatorHandle(player)
 	if not player.spectator then return end
 	if (player.playerstate ~= PST_LIVE) then return end
 
-	if (player.cmd.buttons & BT_CUSTOM2) and not (player.lastbuttons & BT_CUSTOM2) then
+	if (player.cmd.buttons & BT_WEAPONNEXT) and not (player.lastbuttons & BT_WEAPONNEXT) then
 		CycleSpectator(player, 1)
-	end
-
-	if (player.cmd.buttons & BT_CUSTOM1) and not (player.lastbuttons & BT_CUSTOM1) then
+	elseif (player.cmd.buttons & BT_WEAPONPREV) and not (player.lastbuttons & BT_WEAPONPREV) then
 		CycleSpectator(player, -1)
 	end
 
