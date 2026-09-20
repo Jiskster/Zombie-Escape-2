@@ -52,15 +52,20 @@ addHook("ViewpointSwitch", function(player, nextplayer, forced)
 		return
 	end
 
-	if player.spectator then
+	if player.spectator or nextplayer.spectator then
 		return
 	end
 
-	if nextplayer.mo and nextplayer.mo.valid and player.mo and player.mo.valid then
-		if nextplayer.mo.team ~= player.mo.team then
-			return false
-		end
+	if not (player.mo and player.mo.valid) 
+	or not (nextplayer.mo and nextplayer.mo.valid) then
+		return false
 	end
+
+	if nextplayer.mo.team ~= player.mo.team then
+		return false
+	end
+	
+	return true
 end)
 
 addHook("SeenPlayer", function()
