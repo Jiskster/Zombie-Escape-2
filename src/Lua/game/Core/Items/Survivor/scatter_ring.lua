@@ -49,12 +49,12 @@ xSlinger.registerItem("scatter_ring", {
 
 	spread = 4;
 
-	knockback = 21*FRACUNIT;
-	knockback_tics = 33;
+	knockback = 30*FRACUNIT;
+	knockback_tics = 17;
 
 	fuse = TICRATE/4;
 
-	ammo = 4;
+	ammo = 5;
 	reload_time = 4*TICRATE;
 
 	autouse = false;
@@ -92,7 +92,7 @@ xSlinger.registerItem("scatter_ring", {
 
 	skin_override = {
 		["sonic"] = {
-			firerate = 15;
+			firerate = 13;
 			push_multi = (FU*3/4);
 			reload_time = 3*TICRATE;
 		}
