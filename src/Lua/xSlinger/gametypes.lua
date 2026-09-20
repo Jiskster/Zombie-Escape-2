@@ -15,6 +15,15 @@ function xSlinger.registerGametype(gt, data)
 	registered[gt] = data
 end
 
+function xSlinger.getGametypeSettings(gtype)
+	local registered = xSlinger.registeredGametypes
+	return registered[gtype or gametype]
+end
+
+xSlinger.registerGametype(GT_COOP, {})
+
+xSlinger.registerGametype(GT_RACE, {})
+
 xSlinger.registerGametype(GT_MATCH, {
 	friendlyfire = true;
 })

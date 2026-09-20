@@ -221,13 +221,3 @@ dofile "xSlinger/itemdrop"
 addHook("NetVars", function(net)
 	xSlinger.visible_huds = net($)
 end)
-
--- separate into own file
-mobjinfo[MT_BLUECRAWLA].npc_name = "Blue Crawla"
-mobjinfo[MT_BLUECRAWLA].npc_spawnhealth = {120,230}
-mobjinfo[MT_BLUECRAWLA].npc_name_color = SKINCOLOR_BLUE
-mobjinfo[MT_BLUECRAWLA].rubydrop = {2,4}
-mobjinfo[MT_BLUECRAWLA].painsound = sfx_dmpain
-mobjinfo[MT_BLUECRAWLA].forcedamage = 10
-mobjinfo[MT_BLUECRAWLA].forceknockback = 10*FRACUNIT
-mobjinfo[MT_BLUECRAWLA].relativeknockback = true

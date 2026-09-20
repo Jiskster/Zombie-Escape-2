@@ -1,3 +1,5 @@
+local cv_friendlyfire = CV_FindVar("friendlyfire")
+
 function xSlinger.KillMobj(...)
 	P_KillMobj(...)
 end
@@ -20,6 +22,9 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 
 	local hurtsound = sfx_shldls
 	local ignoreskinhurtsound = false
+	
+	local gt_settings = xSlinger.getGametypeSettings()
+	local friendlyfire = (cv_friendlyfire.value or gt_settings.friendlyfire)
 
 	if inf and inf.valid and (inf.flags & MF_MISSILE) then
 		P_ExplodeMissile(inf)
@@ -30,8 +35,8 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 	end
 
 	-- Don't damage objects that are the same team.
-	if (inf and inf.valid) and (mo and mo.valid) then
-		if mo.team == inf.team then
+	if (inf and inf.valid) and (mo and mo.valid) and inf.team then
+		if mo.team == inf.team and not friendlyfire then
 			return false
 		end
 	end

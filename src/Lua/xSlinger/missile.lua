@@ -13,6 +13,8 @@ mobjinfo[MT_XS_MISSILE] = {
 	health = 1000,
 }
 
+local cv_friendlyfire = CV_FindVar("friendlyfire")
+
 function xSlinger.registerMissile(missile_id, r_table)
 	xSlinger.registered_missiles[missile_id] = r_table
 	r_table.id = missile_id
@@ -327,8 +329,14 @@ end, MT_XS_MISSILE)
 -- dont let teammates and teamate's weapons collide with your weapon
 addHook("MobjCollide", function(thing, tmthing)
 	if tmthing and tmthing.valid and thing and thing.valid then
-		if (tmthing.target and tmthing.isMissile and thing.team == tmthing.team) then
-			return false
+		local gt_settings = xSlinger.getGametypeSettings()
+		local friendlyfire = (cv_friendlyfire.value or gt_settings.friendlyfire)
+		
+		if thing.team then
+			if (tmthing.target and tmthing.isMissile) 
+			and (thing.team == tmthing.team and not friendlyfire) then 
+				return false
+			end
 		end
 	end
 end, MT_PLAYER)
