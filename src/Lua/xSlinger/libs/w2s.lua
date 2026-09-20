@@ -91,8 +91,15 @@ rawset(_G, "xS_GetScreenCoords",function(vid,p,cam, point, props)
 			camPos.z = viewoverride.z
 		end
 	end
-
-	x = camAngle - R_PointToAngle2(camPos.x,camPos.y, targx,targy)
+	
+	local angdiff = camAngle - R_PointToAngle2(camPos.x,camPos.y, targx,targy)
+	
+	-- Clean up illegal angle!
+	if (angdiff == INT32_MIN) then
+		angdiff = INT32_MAX
+	end
+	
+	x = angdiff
 
 	distfact = cos(x)
 	if distfact == 0 then distfact = 1; end
@@ -199,9 +206,10 @@ rawset(_G, "xS_GetScreenCoords",function(vid,p,cam, point, props)
 		x = $ - ((vid.width()/vid.dupx()) - BASEVIDWIDTH) << (FRACBITS - 1)
 		y = $ - ((vid.height()/vid.dupy()) - BASEVIDHEIGHT) << (FRACBITS - (splitscreen and 2 or 1))
 	end
+	
 	-- now clip in screenspace
 	if not dontclip then
-		if abs(camAngle - R_PointToAngle2(camPos.x,camPos.y, targx,targy)) > FixedAngle(my_fov) then
+		if abs(angdiff) > FixedAngle(my_fov) then
 			onscreen = false
 		end
 		if x < 0 or x > (2*xres) then
@@ -211,11 +219,11 @@ rawset(_G, "xS_GetScreenCoords",function(vid,p,cam, point, props)
 			onscreen = false
 		end
 	elseif anglecliponly then
-		if abs(camAngle - R_PointToAngle2(camPos.x,camPos.y, targx,targy)) > FixedAngle(my_fov) then
+		if abs(angdiff) > FixedAngle(my_fov) then
 			onscreen = false
 		end
 	end
-
+	
 	return {x = x, y = y, scale = scale, onscreen = onscreen,
 		camAngle = camAngle,
 		camAiming = camAiming,
