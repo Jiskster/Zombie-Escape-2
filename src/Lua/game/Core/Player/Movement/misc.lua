@@ -15,8 +15,15 @@ end
 ---@param direction integer
 local function CycleSpectator(player, direction)
 	local MAXPLAYERS = 31
-	player.ze2.spectator_cycle = (player.ze2.spectator_cycle + direction) % MAXPLAYERS
-
+	player.ze2.spectator_cycle = (player.ze2.spectator_cycle + direction)
+	
+	if player.ze2.spectator_cycle < 0 then
+		player.ze2.spectator_cycle = MAXPLAYERS
+	elseif player.ze2.spectator_cycle > MAXPLAYERS then
+		player.ze2.spectator_cycle = 0
+	end
+	
+	print(player.ze2.spectator_cycle)
 	local attempts = 64
 	while true do
 		attempts = attempts - 1
