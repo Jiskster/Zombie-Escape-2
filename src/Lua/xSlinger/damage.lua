@@ -266,20 +266,24 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 		end
 	end
 
-	for i,effect in ipairs(mo.effects) do
-		if effect.protection_multiplier then
-			dmg = FixedMul($*FU, effect.protection_multiplier)/FU
-		end
+	if mo.effects then
+		for i,effect in ipairs(mo.effects) do
+			if effect.protection_multiplier then
+				dmg = FixedMul($*FU, effect.protection_multiplier)/FU
+			end
 
-		if effect.knockback_multiplier then
-			knockback = FixedMul($, effect.knockback_multiplier)
+			if effect.knockback_multiplier then
+				knockback = FixedMul($, effect.knockback_multiplier)
+			end
 		end
 	end
 
 	if attacker and attacker.valid then
-		for i,effect in ipairs(attacker.effects) do
-			if effect.damage_multiplier then
-				dmg = FixedMul($*FU, effect.damage_multiplier)/FU
+		if attacker.effects then
+			for i,effect in ipairs(attacker.effects) do
+				if effect.damage_multiplier then
+					dmg = FixedMul($*FU, effect.damage_multiplier)/FU
+				end
 			end
 		end
 	end

@@ -6,208 +6,197 @@ local globaleffects = {}
 -- effectinfo_t
 xSlinger.Effects = {}
 
-function xSlinger.registerEffect(name, data)
-	xSlinger.Effects[name] = data or {}
+function xSlinger.registerEffect(id, data)
+	xSlinger.Effects[id] = data or {}
 end
 
--- isolated function
-local function set_effect(mobj, name, data, tics, additive, call_startfunc)
-	if (mobj.type == MT_XS_MISSILE) or (mobj.flags & MF_MISSILE) then
-		return
-	end
-
-	local effectinfo = xSlinger.Effects[name]
-	if effectinfo and (effectinfo.max_duration ~= nil) and (tics > effectinfo.max_duration) then
-		tics = effectinfo.max_duration
-	end
-
-	local effects = mobj.effects
-	local index = #effects + 1
-	effects[index] = data
-
-	local neweffect = effects[index]
-	neweffect.name = name
-	neweffect.fuse = tics
-	neweffect.mobj = mobj
-	neweffect.index = index
+local function addToGlobalEffects(mobj)
+	local has = false
 	
-	local global_index = #globaleffects + 1
-	globaleffects[global_index] = neweffect
-	
-	neweffect.global_index = global_index
-	
-	if effectinfo and call_startfunc then
-		if effectinfo.startfunc and mobj and mobj.valid then
-			effectinfo.startfunc(neweffect, mobj)
+	for i=1, #globaleffects do
+		local effect_list = globaleffects[i]
+		if effect_list == mobj.effects then
+			has = true
+			break
 		end
 	end
+	
+	if not has then
+		globaleffects[#globaleffects + 1] = mobj.effects
+	end
+	
+	return has
 end
 
 -- mobj_t method
-local function give_effect(self, name, data, tics, additive, recall_startfunc)
+local function give_effect(self, id, data, fusetics, additive)
 	if not self or not self.valid then -- redo sanity checks by using type()
 		return false, "mobj not valid"
 	end
 
-	if (self.type == MT_XS_MISSILE) or (self.flags & MF_MISSILE) then
-		return false, "mobj is a missile"
-	end
-
-	if (name == nil) then
-		return false, "no name"
+	if (id == nil) then
+		return false, "no id"
 	elseif (data == nil) then
 		return false, "no data"
-	elseif (tics == nil) then
-		return false, "no tics"
+	elseif (fusetics == nil) then
+		return false, "no fusetics"
 	end
-
-	local effectinfo = xSlinger.Effects[name]
-	local found = self:search_effect(name)
-	if (#found == 0) then
-		set_effect(self, name, data, tics, additive, true)
-	else
-		local found_effect = found[1]
-		if (additive == false) then
-			self:remove_effect(found_effect) -- delete previous effect
-			set_effect(self, name, data, tics, additive, recall_startfunc)
-		elseif (additive == true) then
-			for index, value in pairs(data) do -- keep most effect data, change those that are different
-				if (found_effect[index] ~= value) then
-					found_effect[index] = value
-				end
+	
+	local info = xSlinger.Effects[id]
+	
+	if not info then
+		return false, "invalid"
+	end
+	
+	local effects = self.effects
+	local new = false -- its true if there wasnt a self.effects before
+	
+	if not effects then
+		self.effects = {parent = self}
+		effects = self.effects
+		new = true
+	end
+	
+	if (additive and not new) then
+		local found
+		
+		for i=1, #effects do
+			local v = effects[i]
+			if v.id == id then
+				found = v
+				break
 			end
-
-			found_effect.fuse = found_effect.fuse + tics
-			if effectinfo and (effectinfo.max_duration ~= nil) and (found_effect.fuse > effectinfo.max_duration) then
-				found_effect.fuse = effectinfo.max_duration
+		end
+		
+		if found then
+			if info.max_duration then
+				found.fuse = min($ + fusetics, info.max_duration) 
+			else
+				found.fuse = ($ + fusetics)
 			end
+			
+			return
+		end
+	end
+	
+	effects[#effects + 1] = data
+	
+	local neweffect = effects[#effects]
+	neweffect.id = id
+	neweffect.fuse = fusetics
+	
+	if info.startfunc then
+		info.startfunc(info, self)
+	end
+	
+	addToGlobalEffects(self)
+end
+
+local function remove_effect(self, id)
+	local effects = self.effects
+	
+	for i=#effects, 1, -1 do
+		local effect = effects[i]
+		
+		if effect.id == id then
+			table.remove(effects, i)
 		end
 	end
 end
 
--- mobj_t method
-local function remove_effect(self, effect, ignore_global_index_update)
-	if (self.type == MT_XS_MISSILE) or (self.flags & MF_MISSILE) then
-		return
-	end
-
-	local mobj_effects = self.effects
-	table.remove(mobj_effects, effect.index)
-
-	for index, effect in ipairs(mobj_effects) do -- update indexes
-		effect.index = index
-	end
-	table.remove(globaleffects, effect.global_index)
-
-	if not ignore_global_index_update then
-		for index, effect in ipairs(globaleffects) do
-			effect.global_index = index
-		end
-	end
-end
-
--- mobj_t method
-local function search_effect(self, name)
-	local mobj_effects = self.effects
+local function search_effect(self, id)
+	local effects = self.effects
 	local found = {}
-	for index, effect in ipairs(mobj_effects) do
-		if (effect.name == name) then
+	
+	for i=#effects, 1, -1 do
+		local effect = effects[i]
+		
+		if effect.id == id then
 			found[#found + 1] = effect
 		end
 	end
+	
 	return found
 end
+
+local function effectThink(effectKey, effect, parent)
+	local awaitremove = {}
+	local info = xSlinger.Effects[effect.id]
+	local effects = parent.effects
+	
+	if (effect.fuse > 0) then
+		effect.fuse = max(0, $ - 1)
+		
+		info.tick(info, parent, effect.fuse)
+		
+		if not (parent and parent.valid) then
+			table.remove(effects, effectKey)
+			return false
+		end
+		
+		if not effect.fuse then
+			if parent and parent.valid then
+				if info.endfunc then
+					info.endfunc(info, parent)
+				end
+			end
+			
+			table.remove(effects, effectKey)
+			return false
+		end
+	else
+		table.remove(effects, effectKey)
+		return false
+	end
+	
+	return true
+end
+
+addHook("ThinkFrame", function()
+	local awaitremove = {}
+	for key = 1, #globaleffects do
+		local effects = globaleffects[key]
+		local parent = effects.parent
+		
+		if not (parent and parent.valid) then
+			awaitremove[#awaitremove] = key
+			continue
+		end
+		
+		for effectKey = #effects, 1, -1 do
+			local effect = effects[effectKey]
+			
+			effectThink(effectKey, effect, parent)
+			
+			if not #effects then
+				awaitremove[#awaitremove] = key
+				break 2
+			end	
+		end
+	end
+	
+	for i = #awaitremove, 1, -1 do
+		table.remove(globaleffects, awaitremove[i])
+	end
+end)
 
 mobj_mt.__index = function(mobj, key)
 	if (key == "give_effect") then
 		return give_effect
 	end
+	
 	if (key == "remove_effect") then
 		return remove_effect
 	end
+	
 	if (key == "search_effect") then
 		return search_effect
 	end
+	
 	return old_index(mobj, key)
 end
 
-addHook("MobjSpawn", function(mobj)
-	if (mobj.type == MT_XS_MISSILE) or (mobj.flags & MF_MISSILE) then
-		return
-	end
-	mobj.effects = {}
-end)
 
 addHook("NetVars", function(net)
 	globaleffects = net(globaleffects)
-end)
-
-addHook("PreThinkFrame", function()
-	local removedelayed = {}
-	
-	for index = #globaleffects, 1, -1 do
-		local effect = globaleffects[index]
-		
-		if (effect == nil) then
-			continue
-		end
-		
-		local mobj = effect.mobj
-		local name = effect.name
-		if not (type(name) == "string") then
-			removedelayed[#removedelayed + 1] = {key = index}
-			continue
-		end
-
-		local effectinfo = xSlinger.Effects[name]
-		if not (type(effectinfo) == "table") then
-			removedelayed[#removedelayed + 1] = {key = index}
-			continue
-		end
-
-		if not mobj or not mobj.valid then
-			removedelayed[#removedelayed + 1] = {key = index}
-			continue
-		end
-
-		local mobj_effects = mobj.effects
-		if (effect.fuse > 0) then
-			effect.fuse = effect.fuse - 1
-			if effectinfo.tick and mobj and mobj.valid then
-				effectinfo.tick(effect, mobj, effect.fuse)
-				if not mobj or not mobj.valid then
-					removedelayed[#removedelayed + 1] = {key = index}
-					continue
-				end
-			end
-			if not effect.fuse then
-				if effectinfo.endfunc and mobj and mobj.valid then
-					effectinfo.endfunc(effect, mobj)
-					if not mobj or not mobj.valid then
-						removedelayed[#removedelayed + 1] = {key = index}
-						continue
-					end
-				end
-				mobj:remove_effect(effect, true)
-			end
-		else
-			mobj:remove_effect(effect, true)
-			continue
-		end
-	end
-
-	if #removedelayed then
-		for i = #removedelayed, 1, -1 do
-			local todo = removedelayed[i]
-
-			table.remove(globaleffects, todo.key)
-		end
-	end
-	
-	for index, effect in ipairs(globaleffects) do
-		local mobj = effect.mobj
-		local name = effect.name
-		
-		effect.global_index = index -- update index
-	end
 end)

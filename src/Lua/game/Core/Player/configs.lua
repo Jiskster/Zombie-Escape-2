@@ -245,25 +245,27 @@ function ZE2.applyPlayerConfig(player)
 		player.normalspeed = $ / 2
 	end
 
-	for i,effect in ipairs(mo.effects) do
-		if effect.normalspeed then
-			player.normalspeed = effect.normalspeed
-		end
+	if mo.effects then
+		for i,effect in ipairs(mo.effects) do
+			if effect.normalspeed then
+				player.normalspeed = effect.normalspeed
+			end
 
-		if effect.actionspd then
-			player.actionspd = effect.actionspd
-		end
+			if effect.actionspd then
+				player.actionspd = effect.actionspd
+			end
 
-		if effect.charability then
-			player.charability = effect.charability
-		end
+			if effect.charability then
+				player.charability = effect.charability
+			end
 
-		if effect.normalspeed_multiplier then
-			player.normalspeed = FixedMul($, effect.normalspeed_multiplier)
-		end
+			if effect.normalspeed_multiplier then
+				player.normalspeed = FixedMul($, effect.normalspeed_multiplier)
+			end
 
-		if effect.actionspd_multiplier then
-			player.actionspd = FixedMul($, effect.actionspd_multiplier)
+			if effect.actionspd_multiplier then
+				player.actionspd = FixedMul($, effect.actionspd_multiplier)
+			end
 		end
 	end
 

@@ -13,15 +13,17 @@ addHook("HUD", function(v, player)
 	
 	local mo = player.mo
 	local x = 200
-	local y = 10 
-	for i,effect in pairs(mo.effects) do
-		v.drawString(x, y, "\x82" .. i .. " : ", V_SNAPTORIGHT, "small-thin-right")
-		
-		for index, value in pairs(effect) do
-			y = $ + 4
-			v.drawString(x, y, index .. " : " .. tostring(value), V_SNAPTORIGHT, "small-thin-right")
+	local y = 10
+	if mo.effects then
+		for i,effect in ipairs(mo.effects) do
+			v.drawString(x, y, "\x82" .. tostring(i) .. " : ", V_SNAPTORIGHT, "small-thin-right")
+			
+			for index, value in pairs(effect) do
+				y = $ + 4
+				v.drawString(x, y, tostring(index) .. " : " .. tostring(value), V_SNAPTORIGHT, "small-thin-right")
+			end
+			
+			y = $ + 8
 		end
-		
-		y = $ + 16
 	end
 end)
