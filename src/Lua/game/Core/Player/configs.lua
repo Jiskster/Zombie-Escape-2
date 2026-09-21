@@ -446,11 +446,11 @@ function xSlinger.initPlayerSpawn(player)
 	local xS = player.xSlinger
 
 	if not xS:inv_get("survivor") then
-		xS:inv_add("survivor", 5) -- TODO: Don't magic number the slot count
+		xS:inv_add("survivor", ZE2.DefaultSurvivorInvSlots)
 	end
 
 	if not xS:inv_get("zombie") then
-		xS:inv_add("zombie", 2) -- TODO: Don't magic number the slot count
+		xS:inv_add("zombie", ZE2.DefaultZombieInvSlots)
 	end
 
 	xS:inv_set("survivor")
