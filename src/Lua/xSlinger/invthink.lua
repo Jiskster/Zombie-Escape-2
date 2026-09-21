@@ -108,8 +108,8 @@ function xSlinger.DoThinker(mobj)
 		if autouse or (semiautouse and not semi_firerate_left) then
 			firing = (buttons & BT_ATTACK) > 0
 		end
-
-		player.weapondelay = 1
+		
+		player.pflags = $ | PF_ATTACKDOWN
 	end
 
 	if xS.delay then
