@@ -29,13 +29,6 @@ addCvar("choosenotice", {
 	flags = CV_NETVAR,
 })
 
-addCvar("killenemiesonwin", {
-	name = "z_killenemiessonwin",
-	defaultvalue = "Off",
-	PossibleValue = CV_OnOff,
-	flags = CV_NETVAR,
-})
-
 addCvar("landingfatigue", {
 	name = "z_landingfatigue",
 	defaultvalue = "Off",
