@@ -34,7 +34,7 @@ xSlinger.registerMissile("ACCEL_RING", {
 	state = S_ZE2_THROWNACCEL,
 	deathstate = S_SPRK1,
 	deathsound = sfx_rs_di2,
-	tick = function(pmo, mo)
+	tick = function(self, pmo, mo)
 		mo.momx = $ * 12/11
 		mo.momy = $ * 12/11
 		mo.momz = $ * 12/11
