@@ -380,7 +380,7 @@ function xSlinger.DoThinker(mobj)
 		local iteminfo = inv[i]
 
 		-- Clean up nil slots.
-		if iteminfo == nil then
+		if type(iteminfo) ~= "table" then
 			inv[i] = xSlinger.new("")
 			iteminfo = inv[i]
 		end
