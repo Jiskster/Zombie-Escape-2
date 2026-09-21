@@ -5,7 +5,7 @@ function ZE2:StartWin(team, fromring)
 	if (team == 1) then
 		S_ChangeMusic("SWIN", false)
 		mapmusname = "SWIN"
-	elseif (team == 2) then
+	else
 		S_ChangeMusic("ZWIN", false)
 		mapmusname = "ZWIN"
 	end
