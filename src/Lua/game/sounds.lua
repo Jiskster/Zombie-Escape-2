@@ -73,7 +73,7 @@ sfxinfo[sfx_zish3].caption = "Swoop"
 
 freeslot("sfx_rstart", "sfx_secret", "sfx_cleva1")
 sfxinfo[sfx_rstart].caption = "Zombies escaped..."
-sfxinfo[sfx_secret].caption =" Secret revealed!"
+sfxinfo[sfx_secret].caption = "Secret revealed!"
 sfxinfo[sfx_cleva1].caption = "\"Calling for evac. transport!\""
 
 freeslot("sfx_eatapl", "sfx_oyahx", "sfx_mnu1a")
