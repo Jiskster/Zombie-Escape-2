@@ -95,11 +95,13 @@ end
 local function remove_effect(self, id)
 	local effects = self.effects
 	
-	for i=#effects, 1, -1 do
-		local effect = effects[i]
-		
-		if effect.id == id then
-			table.remove(effects, i)
+	if effects then
+		for i=#effects, 1, -1 do
+			local effect = effects[i]
+			
+			if effect.id == id then
+				table.remove(effects, i)
+			end
 		end
 	end
 end
@@ -108,11 +110,13 @@ local function search_effect(self, id)
 	local effects = self.effects
 	local found = {}
 	
-	for i=#effects, 1, -1 do
-		local effect = effects[i]
-		
-		if effect.id == id then
-			found[#found + 1] = effect
+	if effects then
+		for i=#effects, 1, -1 do
+			local effect = effects[i]
+			
+			if effect.id == id then
+				found[#found + 1] = effect
+			end
 		end
 	end
 	
