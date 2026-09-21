@@ -289,7 +289,7 @@ addHook("MobjThinker", function(mobj)
 	-- TODO: give mobj.missileinfo a metatable
 	local missile_def = getMissileDef(mobj)
 	if missile_def and missile_def.tick and mobj.target then
-		missile_def.tick(mobj.target, mobj)
+		missile_def:tick(mobj.target, mobj)
 		if not mobj or not mobj.valid or (mobj.health <= 0) then return end
 	end
 
@@ -319,7 +319,7 @@ addHook("MobjThinker", function(mobj)
 			end
 
 			if missile_def and missile_def.subtick and mobj.target then
-				missile_def.subtick(mobj.target, mobj)
+				missile_def:subtick(mobj.target, mobj)
 			end
 		end
 	end
@@ -373,7 +373,7 @@ addHook("MobjMoveBlocked", function(mov, mobj, line)
 
 	if missile_def then
 		if missile_def.blocked then
-			override = missile_def.blocked(mov.target, mov, line)
+			override = missile_def:blocked(mov.target, mov, line)
 		end
 	end
 

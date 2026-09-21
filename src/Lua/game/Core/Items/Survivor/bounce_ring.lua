@@ -9,7 +9,7 @@ states[S_XS_BOUNCERING] = {
 	nextstate = S_XS_BOUNCERING,
 }
 
-local bounce_tick = function(pmo, mo)
+local bounce_tick = function(self, pmo, mo)
 	local prevmomz = mo.bouncering_prevmomz or 0
 	local floorhit = (mo.z <= mo.floorz)
 	local ceilinghit = (mo.z + mo.height == mo.ceilingz)
@@ -52,7 +52,7 @@ xSlinger.registerMissile("BOUNCE_RING", {
 	height = 32*FRACUNIT,
 	tick = bounce_tick,
 	subtick = bounce_tick,
-	blocked = function(pmo, mo, line)
+	blocked = function(self, pmo, mo, line)
 		if not line then
 			return end;
 		

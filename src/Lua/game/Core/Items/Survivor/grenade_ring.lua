@@ -28,7 +28,7 @@ xSlinger.registerMissile("GRENADE_RING", {
 	deathsound = sfx_pop,
 	delflags = MF_NOGRAVITY,
 	safeground = true,
-	tick = function(pmo, mo)
+	tick = function(self, pmo, mo)
 		local prevmomz = mo.grenade_prevmomz or 0
 		local floorhit = (mo.eflags & MFE_JUSTHITFLOOR) > 0
 		local ceilinghit = (mo.z + mo.height == P_CeilingzAtPos(mo.x, mo.y, mo.z, mo.height))
@@ -76,7 +76,7 @@ xSlinger.registerMissile("GRENADE_RING", {
 
 		mo.grenade_prevmomz = mo.momz
 	end,
-	blocked = function(pmo, mo, line)
+	blocked = function(self, pmo, mo, line)
 		if not line then
 			return end;
 
