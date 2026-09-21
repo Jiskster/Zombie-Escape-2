@@ -195,10 +195,12 @@ local function RenderTeam(v, ypos, team, size)
 	local playersdisplay = (#playerlist == 1) and "player" or "players"
 	DrawString(4, ypos, ChatColorToTextColor(textcolor) .. teamname .. "\x80" .. " - " .. ChatColorToTextColor(textcolor) .. #playerlist .. " " .. playersdisplay, V_ALLOWLOWERCASE, "small") -- team name
 
-	local visible_stats = false
+	local visible_stats = true
+	/*
 	if consoleplayer.spectator or (consoleplayer.mo.team == team.id) then
 		visible_stats = true
 	end
+	*/
 
 	if visible_stats then
 		DrawString(BASEVIDWIDTH - (2 + 120), ypos, "Karma", V_ALLOWLOWERCASE, "small-right")
