@@ -30,7 +30,7 @@ addHook("MobjThinker", function(drop)
 
 	local f -- flair mobj pointer
 	local flair_roll = FixedAngle(leveltime * FU * 3/2)
-	local flair_color = drop.color or drop.dropbgcolor 
+	local flair_color = drop.color or drop.dropbgcolor or SKINCOLOR_WHITE
 
 	---- LINE VFX
 		if (leveltime % 4 == 0) then
