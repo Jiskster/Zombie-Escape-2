@@ -15,6 +15,8 @@ local button_to_tooltip = {
     [BT_TOSSFLAG] = "TF",
 }
 
+local HUD_INPUT_POS = -9999
+
 ---@param v videolib
 ---@param player player_t
 ---@param x fixed_t
@@ -26,8 +28,8 @@ local function DrawHealthAndStamina(v, player, x, y, flags)
 	if (game.ended) then
 		return end;
 
-    if (hudinfo[HUD_INPUT].y ~= 128) then
-        hudinfo[HUD_INPUT].y = 128
+    if (hudinfo[HUD_INPUT].y ~= HUD_INPUT_POS) then
+        hudinfo[HUD_INPUT].y = HUD_INPUT_POS
     end
 
     local mo = player.mo --[[@as mobj_t]]
