@@ -26,6 +26,10 @@ local function DrawHealthAndStamina(v, player, x, y, flags)
 	if (game.ended) then
 		return end;
 
+    if (hudinfo[HUD_INPUT].y ~= 128) then
+        hudinfo[HUD_INPUT].y = 128
+    end
+
     local mo = player.mo --[[@as mobj_t]]
 
     local xs = player.xSlinger
