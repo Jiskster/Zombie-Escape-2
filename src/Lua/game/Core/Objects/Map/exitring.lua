@@ -1,4 +1,4 @@
-freeslot("MT_CRRING", "S_CRRING")
+freeslot("MT_CRRING", "S_CRRING", "SPR_GOALRING")
 
 mobjinfo[MT_CRRING] = {
 	//$Category Zombie Escape 2
@@ -15,7 +15,7 @@ mobjinfo[MT_CRRING] = {
 }
 
 states[S_CRRING] = {
-	sprite = SPR_RING,
+	sprite = SPR_GOALRING,
 	frame = FF_FULLBRIGHT|FF_ANIMATE|FF_ADD|A,
 	tics = -1,
 	var1 = 23,
