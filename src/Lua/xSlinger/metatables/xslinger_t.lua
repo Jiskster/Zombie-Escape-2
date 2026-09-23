@@ -276,54 +276,6 @@ local funcs = {
 			end
 		end
 		
-		/*
-		if not (hasCount) then
-			local full = true
-			local emptyslot
-			
-			for i = 1, #inv do
-				if inv[i].id == "" then
-					emptyslot = i
-					full = false
-					break
-				end
-			end
-	
-			if inv[slotnum].id ~= "" and full then -- if the slot is not empty
-				local thrownstack = inv[slotnum]
-				
-				-- Spawn item drop and clear slot
-				local itemdrop = xSlinger.SpawnItemDrop(mo, thrownstack)
-				xS:slot_clear(slotnum)
-				
-				-- Replace slot with new itemstack
-				inv[slotnum] = newstack
-									
-				return {newstack, dropped = itemdrop}
-			else -- if the slot is empty
-				if full then
-					inv[slotnum] = newstack
-				else
-					inv[emptyslot] = newstack
-				end
-				
-				return {newstack}
-			end
-		else
-			-- slotnum
-			
-			remainder = count or 1
-			
-			if remainder > 0 then
-				-- skip slotnum when iterating
-				
-				if inv[slotnum].id == newstack.id then
-					local diff = 
-				end
-			end
-		end
-		*/
-		
 		if remainder then
 			while remainder > maxcount do
 				local thrownstack = xSlinger.new(newstack.id)
