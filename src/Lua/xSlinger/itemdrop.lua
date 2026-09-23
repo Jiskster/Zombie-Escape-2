@@ -93,7 +93,7 @@ function xSlinger.SpawnItemDrop(data, item, nothrow)
 		holdtime = TICRATE/4;
 	}
 	i_obj.state = S_INVISIBLE
-	return i_obj
+	return dropmobj, i_obj
 end
 
 -- Make dropped items push eachother

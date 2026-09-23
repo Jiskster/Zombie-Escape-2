@@ -48,10 +48,10 @@ COM_AddCommand("drophand", function(player)
 
 	local mo = player.mo
 
-	local droppeditem = xS:hand_drop()
-	if droppeditem and droppeditem.valid then
-		droppeditem.team = mo.team
-		droppeditem.interaction.team_restrict = {enabled = true}
-		droppeditem.interaction.team_restrict[mo.team] = true
+	local droppeditem, i_obj = xS:hand_drop()
+	if i_obj and i_obj.valid then
+		i_obj.team = mo.team
+		i_obj.interaction.team_restrict = {enabled = true}
+		i_obj.interaction.team_restrict[mo.team] = true
 	end
 end)

@@ -302,13 +302,15 @@ function ZE2.setConfigInventory(player, newskin, noitems)
 						continue
 					end
 					
-					xS:give_item(item[1], item[2], nil, nil, false, "survivor") -- being strict with the inventory
+					print(item[1])
+					
+					xS:give_item(item[1], item[2], nil, "survivor") -- being strict with the inventory
 				else
 					if item and item_blacklist[item] then
 						continue
 					end
 					
-					xS:give_item(item, nil, nil, nil, false, "survivor")
+					xS:give_item(item, nil, nil, "survivor")
 				end
 			end
 		end
@@ -317,9 +319,9 @@ function ZE2.setConfigInventory(player, newskin, noitems)
 		if (not noitems) and (zc[ztype].items) then
 			for i,item in ipairs(zc[ztype].items) do
 				if (type(item) == "table") then
-					xS:give_item(item[1], item[2], nil, nil, false, "zombie")
+					xS:give_item(item[1], item[2], nil, "zombie")
 				else
-					xS:give_item(item, nil, nil, nil, false, "zombie")
+					xS:give_item(item, nil, nil, "zombie")
 				end
 			end
 		end

@@ -125,9 +125,10 @@ local funcs = {
 					xS:slot_clear(slotnum)
 				end
 
-				local mobj = xSlinger.SpawnItemDrop(mo, iteminfo.id)
-				mobj.target.iteminfo.count = 1
-				return mobj
+				local mobj, i_obj = xSlinger.SpawnItemDrop(mo, iteminfo.id)
+				mobj.iteminfo.count = 1
+				
+				return mobj, i_obj
 			end
 		end
 	end;
@@ -174,159 +175,168 @@ local funcs = {
 		end
 	end;
 
-	-- other
-
-	["find_empty_slot_number"] = function(self, target_inv)
+	["give_item"] = function(self, stack, count, slotnum, target_inv)
+		-- stack: itemstack_t / string
+		-- count: number
+		-- slotnum: number
+		-- target_inv: string
+		
+		-- TODO: Condense some of this code.
+	
 		local obj = getLambdaObject(self)
 		local xS = obj.xSlinger
 		local inv = xS:inv_get(target_inv)
-
-		for i = 1, inv.size do
-			if inv[i].id == "" then
-				return i
-			end
-		end
-	end;
-	["give_item"] = function(self, item_name, count, slotnum, newiteminfo, ispickup, target_inv)
-		local obj = getLambdaObject(self)
-		local xS = obj.xSlinger
-		local inv = xS:inv_get(target_inv)
-		local itemref = xSlinger.new(item_name)
 		local hand = xS:hand()
 		local mo = xS.mo
-
+		
 		local remainder = 0
-		local ranout = false
-
-		count = tonumber($)
-
-		if count ~= nil and count < 0 then
-			return
+		
+		if not stack then
+			error("missing argument 1")
 		end
-
-		if item_name == "" then
-			return
+		
+		local newstack 
+		
+		if type(stack) == "string" then
+			newstack = xSlinger.new(stack)
+		elseif type(stack) == "table" then
+			newstack = stack
+		else
+			error("invalid itemstack datatype")
 		end
-
-		if itemref.count ~= -1 and not count then
-			count = itemref.count
-		end
-
-		local set_item = newiteminfo or xSlinger.new(item_name)
-
-		remainder = count
-
-		if itemref.count ~= -1 then
-			local newitems = {}
-			-- fill existing slots
-			for i,slot in ipairs(inv) do
-				if (slot.id == itemref.id) and (slot.id ~= "") then
-					if slot.count == slot.maxcount then
-						continue
-					end
-
-					local slotcountleft = slot.maxcount - slot.count
-
-					if remainder <= slotcountleft then
-						slot.count = $ + remainder
-						remainder = 0
-						break
-					else
-						remainder = $ - slotcountleft
-						slot.count = slot.maxcount
-					end
-				end
-			end
-
-			-- fill empty slots
-			local empty_slot_num = xS:find_empty_slot_number(target_inv)
-			while empty_slot_num and remainder > 0 do
-				local slot
-				inv[empty_slot_num] = xSlinger.deepcopy(set_item)
-
-				slot = inv[empty_slot_num] -- set ref
-
-				newitems[#newitems + 1] = slot
-
-				slot.count = 0
-
-				if remainder > slot.maxcount then
-					remainder = $ - slot.maxcount
-					slot.count = slot.maxcount
-				else
-					slot.count = remainder
-					remainder = 0
+		
+		local maxcount = (newstack.maxcount)
+		local hasCount = (maxcount > -1)
+		if (not hasCount) then
+			local itemdrop
+			
+			-- Look for empty slots
+			local foundslot
+			local full = true
+			for i = 1, #inv do
+				if inv[i].id == "" then
+					full = false
+					foundslot = i
 					break
 				end
-
-				if slot.count then
-					empty_slot_num = xS:find_empty_slot_number(target_inv)
+			end
+			
+			if foundslot and not slotnum then
+				inv[foundslot] = newstack
+			else
+				if not slotnum then
+					itemdrop = xSlinger.SpawnItemDrop(mo, newstack)
 				else
-					inv[empty_slot_num] = xSlinger.deepcopy("")
+					if inv[slotnum].id ~= "" then -- not empty
+						itemdrop = xSlinger.SpawnItemDrop(mo, inv[slotnum])
+					end
+					
+					inv[slotnum] = newstack
 				end
 			end
-
-			if ispickup and hand.id ~= ""
-			and itemref.id ~= hand.id
-			and not empty_slot_num
-			and hand:getIndex("droppable", mo.skin) then -- Swap if theres no space
-				if remainder then
-					-- Drop hand
-					xSlinger.SpawnItemDrop(mo, hand, false)
-					xS:hand_clear()
-
-					-- Set new item in held slot
-					set_item.count = remainder
-					inv[xS.slot] = set_item
-				end
-			else
-				local remainder2 = remainder
-				local mx = itemref.maxcount
-
-				while remainder2 > 0 do
-					if remainder2 >= mx then
-						local newitem = xSlinger.new(item_name)
-
-						newitem:setIndex("count", mx)
-
-						remainder2 = $ - mx
-
-						xSlinger.SpawnItemDrop(mo, newitem, false)
-					else
-						local newitem = xSlinger.new(item_name)
-
-						newitem:setIndex("count", remainder2)
-
-						remainder2 = 0
-
-						xSlinger.SpawnItemDrop(mo, newitem, false)
+			
+			return {newstack, dropped = itemdrop}
+		else
+			remainder = count or 1
+			
+			if remainder > 0 then
+				for i = 1, #inv do
+					if inv[i].id == "" then
+						if remainder > maxcount then
+							inv[i] = xSlinger.new(newstack.id)
+							inv[i]:set("count", maxcount, mo.skin)
+							
+							remainder = $ - maxcount
+						else
+							inv[i] = xSlinger.new(newstack.id)
+							inv[i]:set("count", remainder, mo.skin)
+							
+							remainder = 0
+							break
+						end
+					elseif inv[i].id == newstack.id then
+						local slotcount = inv[i]:get("count", mo.skin)
+						
+						if slotcount < maxcount then
+							local diff = (maxcount - slotcount) -- how many count left
+							
+							if remainder > diff then
+								inv[i]:set("count", maxcount, mo.skin)
+								
+								remainder = $ - diff
+							else
+								inv[i]:change("count", remainder, mo.skin)
+								
+								remainder = 0
+								break
+							end
+						end
 					end
 				end
 			end
-
-			return newitems, remainder
-		else
-			local empty_slot_num = xS:find_empty_slot_number(target_inv)
-
-			if empty_slot_num then
-				inv[empty_slot_num] = set_item
-
-				return inv[empty_slot_num]
-			else
-				if ispickup and hand.id ~= ""
-				and hand:getIndex("droppable", mo.skin) then -- Swap
-					-- Drop hand
-					xSlinger.SpawnItemDrop(mo, hand, false)
-					xS:hand_clear()
-
-					-- Set new item in held slot
-					inv[xS.slot] = set_item
-				else -- Spit item back out
-					xSlinger.SpawnItemDrop(mo, set_item, false)
+		end
+		
+		/*
+		if not (hasCount) then
+			local full = true
+			local emptyslot
+			
+			for i = 1, #inv do
+				if inv[i].id == "" then
+					emptyslot = i
+					full = false
+					break
 				end
-
-				return false
 			end
+	
+			if inv[slotnum].id ~= "" and full then -- if the slot is not empty
+				local thrownstack = inv[slotnum]
+				
+				-- Spawn item drop and clear slot
+				local itemdrop = xSlinger.SpawnItemDrop(mo, thrownstack)
+				xS:slot_clear(slotnum)
+				
+				-- Replace slot with new itemstack
+				inv[slotnum] = newstack
+									
+				return {newstack, dropped = itemdrop}
+			else -- if the slot is empty
+				if full then
+					inv[slotnum] = newstack
+				else
+					inv[emptyslot] = newstack
+				end
+				
+				return {newstack}
+			end
+		else
+			-- slotnum
+			
+			remainder = count or 1
+			
+			if remainder > 0 then
+				-- skip slotnum when iterating
+				
+				if inv[slotnum].id == newstack.id then
+					local diff = 
+				end
+			end
+		end
+		*/
+		
+		if remainder then
+			while remainder > maxcount do
+				local thrownstack = xSlinger.new(newstack.id)
+				thrownstack:set("count", maxcount, obj.skin)
+				
+				xSlinger.SpawnItemDrop(mo, newstack.id)
+				
+				remainder = $ - maxcount
+			end
+			
+			local thrownstack = xSlinger.new(newstack.id)
+			thrownstack:set("count", remainder, obj.skin)
+			xSlinger.SpawnItemDrop(mo, newstack.id)
 		end
 	end;
 }
