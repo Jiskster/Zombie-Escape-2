@@ -302,8 +302,6 @@ function ZE2.setConfigInventory(player, newskin, noitems)
 						continue
 					end
 					
-					print(item[1])
-					
 					xS:give_item(item[1], item[2], nil, "survivor") -- being strict with the inventory
 				else
 					if item and item_blacklist[item] then
