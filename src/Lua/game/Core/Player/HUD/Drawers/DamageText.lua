@@ -17,6 +17,6 @@ return "DamageText", function(v, player)
         end
 
         local realalpha = L_FadeAmount(alpha)
-        v.drawString(result.x, result.y, indicator.damage, realalpha, "fixed-center")
+        v.drawString(result.x, result.y, indicator.damage, realalpha, "thin-fixed-center")
     end
 end
