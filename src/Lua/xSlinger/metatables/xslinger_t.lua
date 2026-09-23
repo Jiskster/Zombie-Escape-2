@@ -235,7 +235,7 @@ local funcs = {
 				end
 			end
 			
-			return {newstack, dropped = itemdrop}
+			return {newstack, dropped = {itemdrop}}
 		else
 			remainder = count or 1
 			
@@ -277,18 +277,25 @@ local funcs = {
 		end
 		
 		if remainder then
+			local dropped_items = {}
 			while remainder > maxcount do
 				local thrownstack = xSlinger.new(newstack.id)
 				thrownstack:set("count", maxcount, obj.skin)
 				
-				xSlinger.SpawnItemDrop(mo, newstack.id)
+				local drop = xSlinger.SpawnItemDrop(mo, newstack.id)
+				table.insert(dropped_items, drop)
 				
 				remainder = $ - maxcount
 			end
 			
 			local thrownstack = xSlinger.new(newstack.id)
 			thrownstack:set("count", remainder, obj.skin)
-			xSlinger.SpawnItemDrop(mo, newstack.id)
+			
+			local drop = xSlinger.SpawnItemDrop(mo, newstack.id)
+			
+			table.insert(dropped_items, drop)
+			
+			return {dropped = dropped_items}
 		end
 	end;
 }
