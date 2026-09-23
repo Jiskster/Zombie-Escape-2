@@ -28,9 +28,17 @@ addHook("MobjSpawn", function(mobj)
 	mobj.colorized = true
 	mobj.color = SKINCOLOR_CHROMA
 
-	mobj.corona = P_SpawnMobjFromMobj(mobj, 0, 0, 16*FU*P_MobjFlip(mobj), MT_CORONA)
+	mobj.corona = P_SpawnMobjFromMobj(mobj, 0, 0, 16*FU, MT_CORONA)
+	
+	mobj.lensflare = P_SpawnMobjFromMobj(mobj, 0,0, 16*FU, MT_PARTICLE)
+	mobj.lensflare.sprite = SPR_ZE2_DROPITEMVFX
+	mobj.lensflare.frame = 1|FF_FULLBRIGHT|FF_ADD
+	mobj.lensflare.dispoffset = -700
+	mobj.lensflare.spritexscale = FU / 2
+	mobj.lensflare.spriteyscale = mobj.lensflare.spritexscale
 end, MT_CRRING)
 
+local CORONA_DIST = 1024*FU
 addHook("MobjThinker", function(mobj)
 	if mobj.corona and mobj.corona.valid then
 		local corona = mobj.corona
@@ -39,6 +47,17 @@ addHook("MobjThinker", function(mobj)
 		corona.scale = FRACUNIT
 		corona.colorized = true
 		corona.dispoffset = 3
+	end
+	
+	if (mobj.lensflare and mobj.lensflare.valid) then
+		local f = mobj.lensflare
+		local fudge_dist = R_PointToDist(mobj.x, mobj.y)
+		local alpha = FU
+		if (fudge_dist < CORONA_DIST) then
+			alpha = FixedDiv(fudge_dist, CORONA_DIST)
+		end
+		f.scale = $ + FixedDiv(fudge_dist - CORONA_DIST/2, CORONA_DIST) / 2
+		f.alpha = alpha / 3
 	end
 end, MT_CRRING)
 
