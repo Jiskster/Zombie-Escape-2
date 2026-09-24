@@ -323,6 +323,8 @@ COM_AddCommand("_z_shopbuy", function(player, stocknum)
 		local xS = player.xSlinger
 		
 		if stockitem.price <= ze2.cash then
+			local isfull = false
+			
 			ze2.cash = $ - stockitem.price
 			
 			table.insert(ze2.purchased, {
@@ -330,8 +332,18 @@ COM_AddCommand("_z_shopbuy", function(player, stocknum)
 				price = stockitem.price,
 			})
 			
-			xS:give_item(stockitem.id)
-			S_StartSound(nil, sfx_addfil, player)
+			local t = xS:give_item(stockitem.id)
+			if t and t.dropped then
+				local dropmobj = t.dropped[1]
+				if dropmobj and dropmobj.valid then
+					ze2.cash = $ + stockitem.price
+					ze2.purchased[#ze2.purchased] = nil
+					P_RemoveMobj(dropmobj)
+					isfull = true
+				end
+			end
+			
+			S_StartSound(nil, isfull and sfx_lose or sfx_addfil, player)
 		else -- you broke as fuck
 			S_StartSound(nil, sfx_lose, player)
 		end
