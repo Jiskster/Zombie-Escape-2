@@ -47,6 +47,10 @@ xSlinger.registerItem("auto_turret", {
 		use = sfx_jshard;
 	};
 	
+	dropstate = S_ZE2_AUTOTURRET;
+	dropscale = (2*FU/3);
+	dropyoffset = 16*FU;
+	
 	usefunc = function(self, mo)
 		local x = mo.x + cos(mo.angle)*50
 		local y = mo.y + sin(mo.angle)*50
