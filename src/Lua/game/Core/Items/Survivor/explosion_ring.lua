@@ -35,7 +35,7 @@ xSlinger.registerItem("explosion_ring", {
 		drop = sfx_None;
 	};
 	
-	firerate = (TICRATE*3)/2;
+	firerate = (TICRATE*5)/3;
 
 	ammo = 3;
 
@@ -43,7 +43,7 @@ xSlinger.registerItem("explosion_ring", {
 
 	damage = 120;
 
-	reload_time = 4*TICRATE;
+	reload_time = 5*TICRATE;
 
 	knockback = 65*FRACUNIT;
 	knockback_tics = TICRATE;
