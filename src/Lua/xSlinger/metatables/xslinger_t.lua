@@ -191,6 +191,8 @@ local funcs = {
 		
 		local remainder = 0
 		
+		local dropped_items = {}
+		
 		if not stack then
 			error("missing argument 1")
 		end
@@ -205,7 +207,7 @@ local funcs = {
 			error("invalid itemstack datatype")
 		end
 		
-		local maxcount = (newstack.maxcount)
+		local maxcount = (newstack:get("maxcount", mo.skin))
 		local hasCount = (maxcount > -1)
 		if (not hasCount) then
 			local itemdrop
@@ -239,36 +241,72 @@ local funcs = {
 		else
 			remainder = count or 1
 			
-			if remainder > 0 then
-				for i = 1, #inv do
-					if inv[i].id == "" then
-						if remainder > maxcount then
-							inv[i] = xSlinger.new(newstack.id)
-							inv[i]:set("count", maxcount, mo.skin)
+			if remainder > 0 then -- ??? i guess ???
+				if slotnum then
+					if inv[slotnum].id ~= "" then
+						if inv[slotnum].id ~= newstack.id then
+							local drop = xSlinger.SpawnItemDrop(mo, inv[slotnum])
+							table.insert(dropped_items, drop)
+							inv[slotnum] = xSlinger.new(newstack.id)
 							
-							remainder = $ - maxcount
-						else
-							inv[i] = xSlinger.new(newstack.id)
-							inv[i]:set("count", remainder, mo.skin)
+							if remainder > maxcount then
+								inv[slotnum]:set("count", maxcount, mo.skin)
+								remainder = $ - maxcount
+							else
+								inv[slotnum]:set("count", remainder, mo.skin)
+								remainder = 0
+							end
+						else -- TODO: turn this into a function since this is repeated code from the inv loop
+							local slotcount = inv[slotnum]:get("count", mo.skin)
 							
-							remainder = 0
-							break
+							if slotcount < maxcount then
+								local diff = (maxcount - slotcount) -- how many count left
+								
+								if remainder > diff then
+									inv[slotnum]:set("count", maxcount, mo.skin)
+									
+									remainder = $ - diff
+								else
+									inv[slotnum]:change("count", remainder, mo.skin)
+									
+									remainder = 0
+								end
+							end
 						end
-					elseif inv[i].id == newstack.id then
-						local slotcount = inv[i]:get("count", mo.skin)
-						
-						if slotcount < maxcount then
-							local diff = (maxcount - slotcount) -- how many count left
-							
-							if remainder > diff then
+					end
+				end
+				
+				if remainder > 0 then
+					for i = 1, #inv do					
+						if inv[i].id == "" then
+							if remainder > maxcount then
+								inv[i] = xSlinger.new(newstack.id)
 								inv[i]:set("count", maxcount, mo.skin)
 								
-								remainder = $ - diff
+								remainder = $ - maxcount
 							else
-								inv[i]:change("count", remainder, mo.skin)
+								inv[i] = xSlinger.new(newstack.id)
+								inv[i]:set("count", remainder, mo.skin)
 								
 								remainder = 0
 								break
+							end
+						elseif inv[i].id == newstack.id then
+							local slotcount = inv[i]:get("count", mo.skin)
+							
+							if slotcount < maxcount then
+								local diff = (maxcount - slotcount) -- how many count left
+								
+								if remainder > diff then
+									inv[i]:set("count", maxcount, mo.skin)
+									
+									remainder = $ - diff
+								else
+									inv[i]:change("count", remainder, mo.skin)
+									
+									remainder = 0
+									break
+								end
 							end
 						end
 					end
@@ -277,7 +315,6 @@ local funcs = {
 		end
 		
 		if remainder then
-			local dropped_items = {}
 			while remainder > maxcount do
 				local thrownstack = xSlinger.new(newstack.id)
 				thrownstack:set("count", maxcount, obj.skin)
