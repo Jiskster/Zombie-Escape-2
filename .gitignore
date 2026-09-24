@@ -1,4 +1,5 @@
 /bin
+.build/
 *.dbs
 *.backup1
 *.backup2
