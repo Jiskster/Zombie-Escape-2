@@ -4,7 +4,7 @@ GIT_COMMIT_SHORT := $(shell echo "$(GIT_COMMIT)" | head -c 7)
 BUILD_NAME := ze2_build_$(GIT_COMMIT_SHORT).pk3
 BUILD_PATH := $(abspath bin/$(BUILD_NAME))
 
-.PHONY: build run
+.PHONY: build
 
 build:
 	rm -rf .build
