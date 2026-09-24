@@ -131,7 +131,7 @@ addHook("PlayerThink", function(player)
 
 					for i=1, #inv do
 						if inv[i].id == "" 
-						or (inv[i].id == iteminfo.id and itemcount < itemmaxcount) then
+						or (itemcount and inv[i].id == iteminfo.id and itemcount < itemmaxcount) then
 							full = false
 							break
 						end 
