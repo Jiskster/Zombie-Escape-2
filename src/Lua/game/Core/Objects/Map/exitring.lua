@@ -33,12 +33,17 @@ addHook("MobjSpawn", function(mobj)
 	mobj.lensflare = P_SpawnMobjFromMobj(mobj, 0,0, 16*FU, MT_PARTICLE)
 	mobj.lensflare.sprite = SPR_ZE2_DROPITEMVFX
 	mobj.lensflare.frame = 1|FF_FULLBRIGHT|FF_ADD
-	mobj.lensflare.dispoffset = -700
-	mobj.lensflare.spritexscale = FU / 2
+	mobj.lensflare.dispoffset = -400
+	mobj.lensflare.spritexscale = FU
 	mobj.lensflare.spriteyscale = mobj.lensflare.spritexscale
+	mobj.lensflare.fuse = -1
+	mobj.lensflare.tics = -1
+	mobj.lensflare.flags = $|MF_NOTHINK|MF_NOGRAVITY|MF_NOCLIP|MF_NOCLIPTHING
 end, MT_CRRING)
 
-local CORONA_DIST = 1024*FU
+local CORONA_DIST = 1024*FU * 2
+local CORONA_BASEALPHA = FU / 2
+local CORONA_MIDALPHA = (FU - CORONA_BASEALPHA) / 2
 addHook("MobjThinker", function(mobj)
 	if mobj.corona and mobj.corona.valid then
 		local corona = mobj.corona
@@ -56,8 +61,11 @@ addHook("MobjThinker", function(mobj)
 		if (fudge_dist < CORONA_DIST) then
 			alpha = FixedDiv(fudge_dist, CORONA_DIST)
 		end
-		f.scale = $ + FixedDiv(fudge_dist - CORONA_DIST/2, CORONA_DIST) / 2
-		f.alpha = alpha / 3
+		f.scale = FU + max(FixedDiv(fudge_dist, CORONA_DIST) / 2, 0)
+		
+		-- Lol
+		alpha = FixedMul($, CORONA_BASEALPHA + (CORONA_MIDALPHA + FixedMul(CORONA_MIDALPHA, cos(leveltime*ANG1*5))))
+		f.alpha = alpha
 	end
 end, MT_CRRING)
 
