@@ -67,8 +67,7 @@ xSlinger.registerItem("flame_ring", {
 	color = SKINCOLOR_ORANGE;
 
 	dropstate = S_ZE2_FLAMERING_DROP;
-	dropscale = 2*FU;
-	dropyoffset = 8*FU;
+	dropscale = FU;
 
 	autouse = true;
 
@@ -91,8 +90,8 @@ xSlinger.registerItem("flame_ring", {
 			z = -FU/3;
 		};
 		spritescale = {
-			x = 2*FU;
-			y = 2*FU;
+			x = FU;
+			y = FU;
 		}
 	};
 
