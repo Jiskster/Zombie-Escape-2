@@ -123,9 +123,25 @@ addHook("PlayerThink", function(player)
 
 					P_RemoveMobj(i_obj.target)
 					P_RemoveMobj(i_obj)
+					
+					local full = true
+					
+					local inv = xS:inv_get()
+					
+					-- TODO: Also check if same item id so that it fills in item count space
+					for i=1, #inv do
+						if inv[i].id == "" then
+							full = false
+							break
+						end 
+					end
 
 					if type(itemid) == "string" then
-						xS:give_item(itemid, itemcount, xS.slot)
+						if full then
+							xS:give_item(itemid, itemcount, xS.slot)
+						else
+							xS:give_item(itemid, itemcount)
+						end
 					end
 
 					xS.interaction_delay = 12
