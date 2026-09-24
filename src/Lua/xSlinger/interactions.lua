@@ -115,6 +115,7 @@ addHook("PlayerThink", function(player)
 					local iteminfo = i_obj.target.iteminfo
 					local itemid = iteminfo:getIndex("id")
 					local itemcount = iteminfo:getIndex("count")
+					local itemmaxcount = iteminfo:getIndex("maxcount")
 
 					-- If ammo based item, then dont give item count
 					if itemcount == -1 then
@@ -127,10 +128,10 @@ addHook("PlayerThink", function(player)
 					local full = true
 					
 					local inv = xS:inv_get()
-					
-					-- TODO: Also check if same item id so that it fills in item count space
+
 					for i=1, #inv do
-						if inv[i].id == "" then
+						if inv[i].id == "" 
+						or (inv[i].id == iteminfo.id and itemcount < itemmaxcount) then
 							full = false
 							break
 						end 
