@@ -278,12 +278,12 @@ local funcs = {
 					for i = 1, #inv do					
 						if inv[i].id == "" then
 							if remainder > maxcount then
-								inv[i] = xSlinger.new(newstack.id)
+								inv[i] = xSlinger.deepcopy(newstack)
 								inv[i]:set("count", maxcount, mo.skin)
 								
 								remainder = $ - maxcount
 							else
-								inv[i] = xSlinger.new(newstack.id)
+								inv[i] = xSlinger.deepcopy(newstack)
 								inv[i]:set("count", remainder, mo.skin)
 								
 								remainder = 0
