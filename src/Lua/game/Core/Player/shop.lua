@@ -49,8 +49,8 @@ function ZE2.RefundPlayer(player)
 	end
 end
 
+ZE2.Shop.listItem("grenade_ring", 105)
 ZE2.Shop.listItem("apple", 150)
-ZE2.Shop.listItem("grenade_ring", 160)
 ZE2.Shop.listItem("wood_fence", 350)
 ZE2.Shop.listItem("accel_ring", 375)
 ZE2.Shop.listItem("auto_ring", 450)
