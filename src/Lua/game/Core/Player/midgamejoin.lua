@@ -100,6 +100,8 @@ addHook("TeamSwitch", function(player, team, fromspectators, autobalance, scramb
 						return false
 					end
 					
+					player.ze2.zombie_type = "alpha"
+					
 					return true
 				else
 					toggleQueue(player)
