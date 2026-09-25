@@ -74,6 +74,10 @@ addHook("MobjRemoved", function(mobj)
 		if mobj.corona and mobj.corona.valid then
 			P_RemoveMobj(mobj.corona)
 		end
+		
+		if mobj.lensflare and mobj.lensflare.valid then
+			P_RemoveMobj(mobj.lensflare)
+		end
 	end
 end, MT_CRRING)
 
