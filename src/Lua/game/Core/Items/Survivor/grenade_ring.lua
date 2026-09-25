@@ -21,7 +21,7 @@ states[S_XS_GRENADERING_DROP] = {
 
 local missile_grenade_ring =
 xSlinger.registerMissile("GRENADE_RING", {
-	speed = 25*FRACUNIT,
+	speed = 40*FRACUNIT,
 	displayname = "Grenade Ring",
 	state = S_XS_GRENADERING,
 	deathstate = S_ZE2_RINGEXPLODE,
