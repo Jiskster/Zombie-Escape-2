@@ -137,7 +137,7 @@ xSlinger.registerItem("flame_ring", {
 			normalspeed_multiplier = FU/2,
 			actionspd_multiplier = 3*FU/2,
 			damage_multiplier = FU/2,
-		}, 9, true)
+		}, 10, true)
 
 		mo.flameringtarget = src
 	end;
