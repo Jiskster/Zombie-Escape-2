@@ -51,6 +51,7 @@ end
 
 ZE2.Shop.listItem("grenade_ring", 105)
 ZE2.Shop.listItem("apple", 150)
+ZE2.Shop.listItem("red_ring", 250)
 ZE2.Shop.listItem("wood_fence", 350)
 ZE2.Shop.listItem("accel_ring", 375)
 ZE2.Shop.listItem("auto_ring", 450)
