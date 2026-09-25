@@ -226,7 +226,7 @@ local funcs = {
 			if foundslot and not slotnum then
 				inv[foundslot] = newstack
 			else
-				if not slotnum then
+				if not slotnum or (slotnum and not inv[slotnum]:get("droppable", mo.skin)) then
 					itemdrop = xSlinger.SpawnItemDrop(mo, newstack)
 				else
 					if inv[slotnum].id ~= "" then -- not empty
@@ -242,35 +242,33 @@ local funcs = {
 			remainder = count or 1
 			
 			if remainder > 0 then -- ??? i guess ???
-				if slotnum then
-					if inv[slotnum].id ~= "" then
-						if inv[slotnum].id ~= newstack.id then
-							local drop = xSlinger.SpawnItemDrop(mo, inv[slotnum])
-							table.insert(dropped_items, drop)
-							inv[slotnum] = xSlinger.new(newstack.id)
+				if slotnum and inv[slotnum].id ~= "" and inv[slotnum]:get("droppable", mo.skin) then
+					if inv[slotnum].id ~= newstack.id then
+						local drop = xSlinger.SpawnItemDrop(mo, inv[slotnum])
+						table.insert(dropped_items, drop)
+						inv[slotnum] = xSlinger.new(newstack.id)
+						
+						if remainder > maxcount then
+							inv[slotnum]:set("count", maxcount, mo.skin)
+							remainder = $ - maxcount
+						else
+							inv[slotnum]:set("count", remainder, mo.skin)
+							remainder = 0
+						end
+					else -- TODO: turn this into a function since this is repeated code from the inv loop
+						local slotcount = inv[slotnum]:get("count", mo.skin)
+						
+						if slotcount < maxcount then
+							local diff = (maxcount - slotcount) -- how many count left
 							
-							if remainder > maxcount then
+							if remainder > diff then
 								inv[slotnum]:set("count", maxcount, mo.skin)
-								remainder = $ - maxcount
-							else
-								inv[slotnum]:set("count", remainder, mo.skin)
-								remainder = 0
-							end
-						else -- TODO: turn this into a function since this is repeated code from the inv loop
-							local slotcount = inv[slotnum]:get("count", mo.skin)
-							
-							if slotcount < maxcount then
-								local diff = (maxcount - slotcount) -- how many count left
 								
-								if remainder > diff then
-									inv[slotnum]:set("count", maxcount, mo.skin)
-									
-									remainder = $ - diff
-								else
-									inv[slotnum]:change("count", remainder, mo.skin)
-									
-									remainder = 0
-								end
+								remainder = $ - diff
+							else
+								inv[slotnum]:change("count", remainder, mo.skin)
+								
+								remainder = 0
 							end
 						end
 					end
