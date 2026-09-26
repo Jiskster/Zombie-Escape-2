@@ -354,7 +354,7 @@ addHook("MobjMoveCollide", function(mov, mobj)
 	local alivemissile = (mov.health > 0)
 	if ((mobj.flags & MF_SHOOTABLE) or (mobj.flags & MF_ENEMY)) 
 	and alivemissile and (mov.target and mov.target ~= mobj) 
-	and (friendlyfire or (mov.team and mov.team ~= mobj.team)) then
+	and (friendlyfire or (mov.team ~= mobj.team)) then
 		P_DamageMobj(mobj, mov, mov.target)
 		xSlinger.KillMissile(mov)
 	end
