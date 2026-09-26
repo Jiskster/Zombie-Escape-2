@@ -1,3 +1,4 @@
+---@diagnostic disable: inject-field, undefined-field
 -- Author: Lugent
 
 --Object definition
@@ -9,7 +10,9 @@ mobjinfo[MT_WORLDTEXT] = {
 	--$Angled true
 	--$WallSprite true
 	--$StringArg0 "String"
-	--$StringArg0ToolTip "The text to display.\n\nUse |n to insert a newline.\nUse ^0 though ^f to change color in a Lua/SOC way.\nUse |c[<color>] to change color to a skincolor (can be vanilla or custom). Ex.: |c[red]"
+	--$StringArg0ToolTip "The text to display.\n\nUse |n to insert a newline.\nUse ^0 through ^f to change color in a Lua/SOC way.\nUse |c[<color>] to change color to a skincolor (can be vanilla or custom). Ex.: |c[red]\nUse |f[<font>] to change the font in the middle of the text (may look bad)"
+	--$StringArg1 "Font"
+	--$StringArg1ToolTip "The font to use.\nDefault (or blank) is "normal"\n\nList of default fonts:\n- "normal"\n- "thin"\n\nSupports custom fonts (if defined) via RegisterWorldFont()"
 	--$Arg0 "Text Alignment"
 	--$Arg0Type 11
 	--$Arg0Default 0
@@ -40,7 +43,8 @@ mobjinfo[MT_WORLDTEXT_CHARACTER] = {
 	flags = MF_NOBLOCKMAP|MF_NOGRAVITY|MF_NOCLIPHEIGHT|MF_NOCLIPTHING|MF_NOCLIP
 }
 
-freeslot("SPR_LOWERCASE_CHARACTERS", "SPR_NUMBER_CHARACTERS", "SPR_SYMBOLS_CHARACTERS", "SPR_UPPERCASE_CHARACTERS")
+freeslot("SPR_NORMAL_LOWERCASE_CHARACTERS", "SPR_NORMAL_NUMBER_CHARACTERS", "SPR_NORMAL_SYMBOLS_CHARACTERS", "SPR_NORMAL_UPPERCASE_CHARACTERS")
+freeslot("SPR_THIN_LOWERCASE_CHARACTERS", "SPR_THIN_NUMBER_CHARACTERS", "SPR_THIN_SYMBOLS_CHARACTERS", "SPR_THIN_UPPERCASE_CHARACTERS")
 
 local CHARACTER_TABLE = {}
 local Characters = {
@@ -57,20 +61,38 @@ local Characters = {
 	"|", "}", "~", " "
 }
 
--- Capital and Lower letters
-for i = 1, 26  do
-	CHARACTER_TABLE[Characters[i]] = {sprite = SPR_UPPERCASE_CHARACTERS, frame = i-1}
-	CHARACTER_TABLE[string.lower(Characters[i])] = {sprite = SPR_LOWERCASE_CHARACTERS, frame = i-1}
+---@param font string
+---@param width number
+---@param height number
+---@param uppercase_sprite spritenum_t
+---@param lowercase_sprite spritenum_t
+---@param numbers_sprite spritenum_t
+---@param symbols_sprite spritenum_t
+local function RegisterWorldFont(font, width, height, uppercase_sprite, lowercase_sprite, numbers_sprite, symbols_sprite)
+	font = font:lower()
+	CHARACTER_TABLE[font] = {
+		width = width,
+		height = height
+	}
+
+	-- Capital and Lower letters
+	for i = 1, 26  do
+		CHARACTER_TABLE[font][Characters[i]] = {sprite = uppercase_sprite, frame = i - 1}
+		CHARACTER_TABLE[font][string.lower(Characters[i])] = {sprite = lowercase_sprite, frame = i - 1}
+	end
+
+	-- Digits
+	for i = 27, 36 do
+		CHARACTER_TABLE[font][Characters[i]] = {sprite = numbers_sprite, frame = i - 27}
+	end
+
+	-- Symbols
+	for i = 37, 69 do
+		CHARACTER_TABLE[font][Characters[i]] = {sprite = symbols_sprite, frame = i - 37}
+	end
 end
-
--- Digits
-for i = 27, 36 do CHARACTER_TABLE[Characters[i]] = {sprite = SPR_NUMBER_CHARACTERS, frame = i-27} end
-
--- Symbols
-for i = 37, 69 do CHARACTER_TABLE[Characters[i]] = {sprite = SPR_SYMBOLS_CHARACTERS, frame = i-37} end
-
-local CHARACTER_WIDTH = 8 * FU
-local CHARACTER_HEIGHT = 8 * FU
+RegisterWorldFont("normal", 8, 8, SPR_NORMAL_UPPERCASE_CHARACTERS, SPR_NORMAL_LOWERCASE_CHARACTERS, SPR_NORMAL_NUMBER_CHARACTERS, SPR_NORMAL_SYMBOLS_CHARACTERS)
+RegisterWorldFont("thin", 6, 7, SPR_THIN_UPPERCASE_CHARACTERS, SPR_THIN_LOWERCASE_CHARACTERS, SPR_THIN_NUMBER_CHARACTERS, SPR_THIN_SYMBOLS_CHARACTERS)
 
 local COLOR_TABLE = {
 	["\x80"] = SKINCOLOR_WHITE,
@@ -111,7 +133,7 @@ local NUMBER_TO_COLOR = {
 }
 
 ---@param text string
----@return string, any
+---@return string
 local function ClearText(text)
 	text = text:gsub("\x80", ""):gsub("\x81", ""):gsub("\x82", ""):gsub("\x83", ""):gsub("\x84", ""):gsub("\x85", ""):gsub("\x86", ""):gsub("\x87", ""):gsub("\x88", ""):gsub("\x89", ""):gsub("\x8A", ""):gsub("\x8B", ""):gsub("\x8C", ""):gsub("\x8D", ""):gsub("\x8E", ""):gsub("\x8F", "")
 
@@ -126,6 +148,22 @@ local function ClearText(text)
 			if (next == "c[") then
 				local start = index + 3
 				local name = "|c["
+				while true do
+					if (start > string.len(text)) then break end
+
+					local char = string.sub(text, start, start)
+					name = name .. char
+					if (char == "]") then
+						break
+					end
+					start = start + 1
+				end
+				text = string.sub(text, index + string.len(name))
+				index = 0
+				continue
+			elseif (next == "f[") then
+				local start = index + 3
+				local name = "|f["
 				while true do
 					if (start > string.len(text)) then break end
 
@@ -186,6 +224,10 @@ local function CreateText(mobj)
 	end
 	mobj.characters = {}
 
+	local font = mobj.font_text or "normal"
+	local CHARACTER_WIDTH = CHARACTER_TABLE[font].width * FU
+	local CHARACTER_HEIGHT = CHARACTER_TABLE[font].height * FU
+
 	local strings = {}
 	local lengths = {}
 	for line in string.gmatch(mobj.text, "[^\r\n]+") do
@@ -199,7 +241,6 @@ local function CreateText(mobj)
 	for layer, line in ipairs(strings) do
 		local length = lengths[layer]
 		local align = max(min(FU, mobj.align_text), 0)
-		print(align)
 		local offsetx = -FixedMul(length, align)
 		local skip = 0
 		for index = 1, #line, 1 do
@@ -248,6 +289,38 @@ local function CreateText(mobj)
 						color = candidate
 					end
 					continue
+				elseif (next == "f[") then
+					local start = index + 3
+					local name = ""
+					local ended = false
+					skip = 2
+					while true do
+						if (start > string.len(line)) then break end
+
+						local char = string.sub(line, start, start)
+						if (char == "]") then
+							skip = skip + 1
+							ended = true
+							break
+						end
+						name = name .. char
+						start = start + 1
+					end
+					skip = skip + string.len(name)
+
+					local disp = "|f[" .. name
+					if ended then
+						disp = disp .. "]"
+					end
+					lengths[layer] = lengths[layer] - CHARACTER_WIDTH * (#disp - 1)
+
+					local candidate = CHARACTER_TABLE[name]
+					if candidate then
+						font = name
+						CHARACTER_WIDTH = CHARACTER_TABLE[font].width * FU
+						CHARACTER_HEIGHT = CHARACTER_TABLE[font].height * FU
+					end
+					continue
 				end
 			end
 
@@ -256,7 +329,8 @@ local function CreateText(mobj)
 			local character = P_SpawnMobj(mobj.x, mobj.y, mobj.z, MT_WORLDTEXT_CHARACTER)
 			if not character or not character.valid then continue end
 
-			character.sprite, character.frame = CHARACTER_TABLE[text].sprite, CHARACTER_TABLE[text].frame
+			local data = CHARACTER_TABLE[font][text]
+			character.sprite, character.frame = data.sprite, data.frame
 			character.color = color
 			character.renderflags = RF_NOCOLORMAPS|RF_FULLBRIGHT|RF_PAPERSPRITE
 			character.flags = mobj.flags
@@ -288,6 +362,7 @@ addHook("MapThingSpawn", function (mobj, thing)
 	if not mobj or not mobj.valid then return end
 
 	local text = thing.stringargs[0]
+	local font = thing.stringargs[1] or "normal"
 	local align = thing.args[0]
 	local duration = thing.args[1]
 	local dynamic = thing.args[2]
@@ -334,6 +409,7 @@ addHook("MapThingSpawn", function (mobj, thing)
 	end
 
 	mobj.text = actual_text
+	mobj.font_text = font
 	mobj.align_text = align
 	mobj.dynamic_text = dynamic
 	if (duration > 0) then
@@ -367,10 +443,11 @@ end, MT_WORLDTEXT)
 ---@param y fixed_t
 ---@param z fixed_t
 ---@param text string
+---@param font string?
 ---@param align fixed_t?
 ---@param dynamic boolean?
 ---@return mobj_t?
-local function SpawnWorldText(x, y, z, text, align, dynamic)
+local function SpawnWorldText(x, y, z, text, font, align, dynamic)
 	if (x == nil) or (y == nil) or (z == nil) then
 		error("Attempted to spawn a world text without a valid position", 2)
 		return
@@ -383,6 +460,7 @@ local function SpawnWorldText(x, y, z, text, align, dynamic)
 
 	local mobj = P_SpawnMobj(x, y, z, MT_WORLDTEXT)
 	mobj.text = text
+	mobj.font_text = font or "normal"
 	mobj.align_text = align or 0
 	mobj.dynamic_text = dynamic or false
 	return mobj
