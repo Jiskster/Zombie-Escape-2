@@ -100,6 +100,8 @@ addHook("TeamSwitch", function(player, team, fromspectators, autobalance, scramb
 						return false
 					end
 					
+					player.ze2.zombie_type = "alpha"
+					
 					return true
 				else
 					toggleQueue(player)
@@ -124,9 +126,9 @@ addHook("TeamSwitch", function(player, team, fromspectators, autobalance, scramb
 		if game.active and not game.ended then
 			if player.mo and player.mo.valid then
 				if player.mo.team == 1 then
-					player.ze2.karma = min($ + 250, ZE2.MaxKarma)
+					player.ze2.karma = min($ + 450, ZE2.MaxKarma)
 				elseif player.mo.team == 2 then
-					player.ze2.karma = min($ + 380, ZE2.MaxKarma)
+					player.ze2.karma = min($ + 620, ZE2.MaxKarma)
 				end
 			end
 		end

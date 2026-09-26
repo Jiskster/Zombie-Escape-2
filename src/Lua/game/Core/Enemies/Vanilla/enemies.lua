@@ -5,6 +5,7 @@ mobjinfo[MT_BLUECRAWLA].rubydrop = {2,4}
 mobjinfo[MT_BLUECRAWLA].painsound = sfx_dmpain
 mobjinfo[MT_BLUECRAWLA].forcedamage = 10
 mobjinfo[MT_BLUECRAWLA].relativeknockback = true
+mobjinfo[MT_BLUECRAWLA].forceknockback = 17*FRACUNIT
 
 mobjinfo[MT_REDCRAWLA].npc_name = "Red Crawla"
 mobjinfo[MT_REDCRAWLA].npc_spawnhealth = {50,85}

@@ -21,8 +21,8 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 					ZE2.ZombifyPlayer(player)
 					ZE2.PlayZombieSound(player, true)
 				end
-				player.ze2.karma = min(player.ze2.karma + (ZE2.CountPlayers("survivors") * 22), ZE2.MaxKarma)
-				killer.player.ze2.karma = max(1, killer.player.ze2.karma - 22)
+				player.ze2.karma = min(player.ze2.karma + (ZE2.CountPlayers("survivors") * 28), ZE2.MaxKarma)
+				killer.player.ze2.karma = max(1, killer.player.ze2.karma - 150)
 
 				xSlinger.RemoveShieldFromMobj(mo)
 
@@ -81,7 +81,7 @@ xSlinger.addHook("OnPlayerDamage", function(player, inf, src, dmg, damagetype)
 
 	if (player.mo.team == 1) then
 		if attacker and attacker.player and (attacker.team == 2) then
-			player.ze2.karma = min(player.ze2.karma + 3, ZE2.MaxKarma)
+			player.ze2.karma = min(player.ze2.karma + 40, ZE2.MaxKarma)
 			pV:ChangeStamina(-40 * FRACUNIT)
 		end
 		pV:DamageFade(15)

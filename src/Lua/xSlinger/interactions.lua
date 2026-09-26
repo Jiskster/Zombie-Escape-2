@@ -137,12 +137,10 @@ addHook("PlayerThink", function(player)
 						end 
 					end
 
-					if type(itemid) == "string" then
-						if full then
-							xS:give_item(itemid, itemcount, xS.slot)
-						else
-							xS:give_item(itemid, itemcount)
-						end
+					if full then
+						xS:give_item(iteminfo, itemcount, xS.slot)
+					else
+						xS:give_item(iteminfo, itemcount)
 					end
 
 					xS.interaction_delay = 12

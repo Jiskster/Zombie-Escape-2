@@ -3,12 +3,13 @@ freeslot("S_ZE2_AMYS_HEART")
 
 mobjinfo[MT_ZE2_AMYS_HEART] = {
 	spawnstate = S_ZE2_AMYS_HEART,
-	spawnhealth = 100,
+	spawnhealth = 600,
+	painsound = sfx_dmpain,
 	deathsound = sfx_ncchip,
 	speed = 0,
 	radius = 32*FU,
 	height = 80*FU,
-	flags = MF_SPECIAL,
+	flags = MF_SPECIAL|MF_SHOOTABLE,
 }
 
 states[S_ZE2_AMYS_HEART] = {
@@ -17,6 +18,9 @@ states[S_ZE2_AMYS_HEART] = {
 	tics = -1,
 	nextstate = S_ZE2_AMYS_HEART,
 }
+
+mobjinfo[MT_ZE2_AMYS_HEART].npc_name = "Amy's Heart"
+mobjinfo[MT_ZE2_AMYS_HEART].antiknockback = true
 
 xSlinger.registerItem("amys_heart", {
 	displayname = "Amy's Heart";

@@ -348,8 +348,13 @@ addHook("MobjMoveCollide", function(mov, mobj)
 	if mobj.z > mov.height + mov.z then return end
 	if not mov.isMissile then return end -- To make sure you've already rescaled.
 
+	local gt_settings = xSlinger.getGametypeSettings()
+	local friendlyfire = (cv_friendlyfire.value or gt_settings.friendlyfire)
+
 	local alivemissile = (mov.health > 0)
-	if ((mobj.flags & MF_SHOOTABLE) or (mobj.flags & MF_ENEMY)) and alivemissile and (mov.target and mov.target ~= mobj) then
+	if ((mobj.flags & MF_SHOOTABLE) or (mobj.flags & MF_ENEMY)) 
+	and alivemissile and (mov.target and mov.target ~= mobj) 
+	and (friendlyfire or (mov.team ~= mobj.team)) then
 		P_DamageMobj(mobj, mov, mov.target)
 		xSlinger.KillMissile(mov)
 	end
