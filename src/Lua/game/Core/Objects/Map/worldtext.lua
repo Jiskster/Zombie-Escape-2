@@ -7,22 +7,22 @@ mobjinfo[MT_WORLDTEXT] = {
 	--$Sprite LETRAR
 	--$Category Utilities
 	--$Angled true
-	--$WallSprite  true
-	--$StringArg0 "Text"
-	--$StringArg0ToolTip "The text to display.\n\nUse |n to insert a newline.\nUse ^0 though ^f to change color in a Lua/SOC way.\nUse |c[<color>] to change color to a skincolor. Ex.: |c[red]"
-	--$Arg0 "Alignment"
+	--$WallSprite true
+	--$StringArg0 "String"
+	--$StringArg0ToolTip "The text to display.\n\nUse |n to insert a newline.\nUse ^0 though ^f to change color in a Lua/SOC way.\nUse |c[<color>] to change color to a skincolor (can be vanilla or custom). Ex.: |c[red]"
+	--$Arg0 "Text Alignment"
 	--$Arg0Type 11
 	--$Arg0Default 0
 	--$Arg0Tooltip "The type of text alignment"
 	--$Arg0Enum { 0 = "Left"; 1 = "Center"; 2 = "Right"; }
-	--$Arg1 "Duration"
+	--$Arg1 "Duration (Tics)"
 	--$Arg1Type 0
 	--$Arg1Default 0
 	--$Arg1Tooltip "Duration in tics before expiring\n 0 = infinite"
-	--$Arg2 "Moveable"
+	--$Arg2 "Dynamic?"
 	--$Arg2Type 11
 	--$Arg2Default 0
-	--$Arg2Tooltip "Allow the text to be manipulated by scripts?\n Both position, rotation and text via ChangeWorldText()"
+	--$Arg2Tooltip "Makes the text dynamic to allow Lua for changing the position, angle and/or text of this object?\n\nNOTICE: Do not have too many dynamic texts or it will slow down and/or crash the game"
 	--$Arg2Enum { 0 = "No"; 1 = "Yes"; }
 	doomednum = 9999,
 	spawnstate = S_INVISIBLE,
@@ -78,7 +78,7 @@ local COLOR_TABLE = {
 	["\x82"] = SKINCOLOR_YELLOW,
 	["\x83"] = SKINCOLOR_GREEN,
 	["\x84"] = SKINCOLOR_BLUE,
-	["\x85"] = SKINCOLOR_RED,
+	["\x85"] = SKINCOLOR_PEPPER,
 	["\x86"] = SKINCOLOR_GREY,
 	["\x87"] = SKINCOLOR_ORANGE,
 	["\x88"] = SKINCOLOR_SKY,
@@ -198,7 +198,9 @@ local function CreateText(mobj)
 	local color = SKINCOLOR_WHITE
 	for layer, line in ipairs(strings) do
 		local length = lengths[layer]
-		local offsetx = -FixedMul(length, mobj.textalign)
+		local align = max(min(FU, mobj.align_text), 0)
+		print(align)
+		local offsetx = -FixedMul(length, align)
 		local skip = 0
 		for index = 1, #line, 1 do
 			if skip then
@@ -288,10 +290,10 @@ addHook("MapThingSpawn", function (mobj, thing)
 	local text = thing.stringargs[0]
 	local align = thing.args[0]
 	local duration = thing.args[1]
-	local moveable = thing.args[2]
+	local dynamic = thing.args[2]
 
 	local index = 1
-	local actualtext = ""
+	local actual_text = ""
 	while true do
 		if (index > string.len(text)) then
 			break
@@ -301,27 +303,27 @@ addHook("MapThingSpawn", function (mobj, thing)
 		if (character == "^") then
 			local next = string.sub(text, index + 1, index + 1)
 			if (next == "^") then
-				actualtext = actualtext .. character
+				actual_text = actual_text .. character
 				index = index + 1
 				continue
 			elseif NUMBER_TO_COLOR[next:upper()] then
-				actualtext = actualtext .. NUMBER_TO_COLOR[next:upper()]
+				actual_text = actual_text .. NUMBER_TO_COLOR[next:upper()]
 				index = index + 2
 				continue
 			end
 		elseif (character == "|") then
 			local next = string.sub(text, index + 1, index + 1)
 			if (next == "|") then
-				actualtext = actualtext .. character
+				actual_text = actual_text .. character
 				index = index + 1
 				continue
 			elseif (next == "n") then
-				actualtext = actualtext .. "\n"
+				actual_text = actual_text .. "\n"
 				index = index + 2
 				continue
 			end
 		end
-		actualtext = actualtext .. character
+		actual_text = actual_text .. character
 		index = index + 1
 	end
 
@@ -331,9 +333,9 @@ addHook("MapThingSpawn", function (mobj, thing)
 		align = FU
 	end
 
-	mobj.text = actualtext
-	mobj.textalign = align
-	mobj.moveabletext = moveable
+	mobj.text = actual_text
+	mobj.align_text = align
+	mobj.dynamic_text = dynamic
 	if (duration > 0) then
 		mobj.fuse = duration
 	end
@@ -347,7 +349,7 @@ addHook("MobjThinker", function(mobj)
 		CreateText(mobj)
 	end
 
-	if mobj.moveabletext then
+	if mobj.dynamic_text then
 		MoveText(mobj)
 	end
 end, MT_WORLDTEXT)
@@ -365,12 +367,12 @@ end, MT_WORLDTEXT)
 ---@param y fixed_t
 ---@param z fixed_t
 ---@param text string
----@param align fixed_t
----@param moveable boolean?
+---@param align fixed_t?
+---@param dynamic boolean?
 ---@return mobj_t?
-local function SpawnWorldText(x, y, z, text, align, moveable)
+local function SpawnWorldText(x, y, z, text, align, dynamic)
 	if (x == nil) or (y == nil) or (z == nil) then
-		error("Attempted to spawn a world text without an valid position", 2)
+		error("Attempted to spawn a world text without a valid position", 2)
 		return
 	end
 
@@ -379,51 +381,10 @@ local function SpawnWorldText(x, y, z, text, align, moveable)
 		return
 	end
 
-	if (align == nil) or (tonumber(align) == nil) then
-		align = 0
-	end
-
-	if (align < 0) or (align > FU) then
-		error("Attempted to spawn a world text with an invalid alignment (0 = left, FRACUNIT / 2 = center, FRACUNIT = right)", 2)
-		return
-	end
-
-	if (moveable == nil) or (type(moveable) ~= "boolean") then
-		moveable = false
-	end
-
 	local mobj = P_SpawnMobj(x, y, z, MT_WORLDTEXT)
 	mobj.text = text
-	mobj.textalign = align
-	mobj.moveabletext = moveable
+	mobj.align_text = align or 0
+	mobj.dynamic_text = dynamic or false
 	return mobj
 end
 rawset(_G, "SpawnWorldText", SpawnWorldText)
-
----@param mobj mobj_t
----@param text string
----@param align fixed_t
----@param moveable boolean?
-local function ChangeWorldText(mobj, text, align, moveable)
-	if not mobj or not mobj.valid then return end
-
-	if not text or (string.len(text) <= 0) then
-		error("Attempted to change a world text without any text", 2)
-		return false
-	end
-
-	if (align ~= nil) and (tonumber(align) ~= nil) and ((align < 0) or (align > FU)) then
-		error("Attempted to change a world text with an invalid alignment (0 = left, FRACUNIT / 2 = center, FU = right)", 2)
-		return false
-	end
-
-	if (moveable == nil) or (type(moveable) ~= "boolean") then
-		moveable = false
-	end
-
-	mobj.text = text
-	mobj.textalign = align or mobj.textalign
-	mobj.moveabletext = moveable
-	return true
-end
-rawset(_G, "ChangeWorldText", ChangeWorldText)
