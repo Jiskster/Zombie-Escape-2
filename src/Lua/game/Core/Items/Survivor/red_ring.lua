@@ -40,7 +40,7 @@ xSlinger.registerItem("red_ring", {
 
 	velocity_precision = 5;
 
-	knockback = 23*FRACUNIT; -- fixed_t
+	knockback = 28*FRACUNIT; -- fixed_t
 	knockback_time = 4;
 
 	autouse = false;
@@ -95,7 +95,7 @@ xSlinger.registerItem("red_ring", {
 			reload_time = 1*TICRATE;
 		};
 		["fang"] = {
-			knockback = 32*FRACUNIT;
+			knockback = 33*FRACUNIT;
 			damage = 28;
 		};
 	};
