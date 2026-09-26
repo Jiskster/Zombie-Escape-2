@@ -52,5 +52,7 @@ xSlinger.registerItem("fist", {
 	knockback = 32*FRACUNIT;
 	knockback_time = 15;
 	
+	animation_time = 10;
+	
 	droppable = false;
 })
