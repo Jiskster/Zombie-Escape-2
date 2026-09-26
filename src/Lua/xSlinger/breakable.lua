@@ -1,3 +1,4 @@
+---@diagnostic disable: inject-field, undefined-field
 freeslot("MT_XS_BREAKABLE")
 
 mobjinfo[MT_XS_BREAKABLE] = {
@@ -10,41 +11,51 @@ mobjinfo[MT_XS_BREAKABLE] = {
 	--$Arg0Type 0
 	--$Arg0Tooltip The amount of health this breakable will initially have.
 
-    --$Arg1 Trigger Tag
+    --$Arg1 Death Trigger Tag
 	--$Arg1Default 0
 	--$Arg1Type 15
 	--$Arg1Tooltip The tag to be called when the breakable is destroyed.
 
-    --$Arg2 Respawneable
-    --$Arg2Default 0
-    --$Arg2Type 11
-    --$Arg2Tooltip If this breakable should respawn after being broken.
-    --$Arg2Enum { 0 = "No"; 1 = "Yes"; }
+    --$Arg2 Damage Trigger Tag
+	--$Arg2Default 0
+	--$Arg2Type 15
+	--$Arg2Tooltip The tag to be called when the breakable is damaged.
 
-    --$Arg3 Respawn Delay
-    --$Arg3Default 0
-	--$Arg3Type 0
-	--$Arg3Tooltip The amount of wait in tics before this breakable respawn (if enabled).
+    --$Arg3 Respawn Trigger Tag
+	--$Arg3Default 0
+	--$Arg3Type 15
+	--$Arg3Tooltip The tag to be called when the breakable is damaged.
 
-    --$Arg4 Team Restrict
-	--$Arg4Default 0
-	--$Arg4Type 12
-	--$Arg4Enum {1 = "Team 1"; 2 = "Team 2"; 4 = "Team 3"; 8 = "Team 4";}
-	--$Arg4Tooltip Which teams can see this interaction?
+    --$Arg4 Respawneable
+    --$Arg4Default 0
+    --$Arg4Type 11
+    --$Arg4Tooltip If this breakable should respawn after being broken.
+    --$Arg4Enum { 0 = "No"; 1 = "Yes"; }
 
-    --$Arg5 Radius
-    --$Arg5Default 64
-	--$Arg5Type 23
+    --$Arg5 Respawn Delay
+    --$Arg5Default 0
+	--$Arg5Type 0
+	--$Arg5Tooltip The amount of wait in tics before this breakable respawn (if enabled).
 
-    --$Arg6 Height
-    --$Arg6Default 64
-	--$Arg6Type 24
+    --$Arg6 Visible Health?
+    --$Arg6Default 0
+    --$Arg6Type 11
+    --$Arg6Tooltip If this breakable should display it's health on HUD.
+    --$Arg6Enum { 0 = "No"; 1 = "Yes"; }
 
-    --$Arg7 Visible Health?
-    --$Arg7Default 0
-    --$Arg7Type 11
-    --$Arg7Tooltip If this breakable should display it's health on HUD.
-    --$Arg7Enum { 0 = "No"; 1 = "Yes"; }
+    --$Arg7 Team Restrict
+	--$Arg7Default 0
+	--$Arg7Type 12
+	--$Arg7Enum {1 = "Team 1"; 2 = "Team 2"; 4 = "Team 3"; 8 = "Team 4";}
+	--$Arg7Tooltip Which teams can see this interaction?
+
+    --$Arg8 Radius
+    --$Arg8Default 32
+	--$Arg8Type 23
+
+    --$Arg9 Height
+    --$Arg9Default 64
+	--$Arg9Type 24
 
     --$StringArg0 Display Text
     --$StringArg0Tooltip If set, it will show it on HUD. Only visible when Visible Health is enabled.
@@ -80,14 +91,16 @@ addHook("MapThingSpawn", function(mobj, thing)
     mobj.breakable = {
         health = mobj.health,
         triggertag = thing.args[1],
-        respawneable = (thing.args[2] == 1) and true or false,
-        respawndelay = thing.args[3],
-        visiblehealth = (thing.args[7] == 1) and true or false,
+        damage_triggertag = thing.args[2],
+        respawn_triggertag = thing.args[3],
+        respawneable = (thing.args[4] == 1) and true or false,
+        respawn_delay = thing.args[5],
+        visible_health = (thing.args[6] == 1) and true or false,
         team_restrict = {enabled = false}
     }
 
     for index = 0, 3, 1 do
-		if (thing.args[4] & (1 << index)) then
+		if (thing.args[7] & (1 << index)) then
 			mobj.breakable.team_restrict[index + 1] = true
 			if not mobj.breakable.team_restrict.enabled then
 				mobj.breakable.team_restrict.enabled = true
@@ -95,10 +108,10 @@ addHook("MapThingSpawn", function(mobj, thing)
 		end
 	end
 
-    mobj.radius = thing.args[5] * FU
-    mobj.height = thing.args[6] * FU
+    mobj.radius = thing.args[8] * FU
+    mobj.height = thing.args[9] * FU
 
-    mobj.npc_visiblehealth = mobj.breakable.visiblehealth
+    mobj.npc_visiblehealth = mobj.breakable.visible_health
     if thing.stringargs[0] then
         mobj.npc_displayname = thing.stringargs[0]
     end
@@ -108,12 +121,30 @@ addHook("MapThingSpawn", function(mobj, thing)
     table.insert(xSlinger.breakables[mobj.breakable.triggertag], mobj)
 end, MT_XS_BREAKABLE)
 
+---@param mobj mobj_t
+local function RespawnLinkedBreakables(mobj) -- link the hp from other breakables with the same tag
+    local breakables = xSlinger.breakables[mobj.breakable.triggertag]
+    for index = #breakables, 1, -1 do
+        local other = breakables[index]
+        if (other == mobj) then continue end
+        if (other.breakable == nil) then continue end
+
+        other.health = mobj.health
+        other.npc_visiblehealth = mobj.npc_visiblehealth
+        other.flags = mobj.flags
+        other.fuse = mobj.fuse
+    end
+end
+
 addHook("MobjFuse", function (mobj) -- respawn
     mobj.health = mobj.breakable.health
     mobj.npc_visiblehealth = mobj.breakable.visiblehealth
-    mobj.flags = mobj.flags & ~(MF_NOCLIPTHING)
-    mobj.flags = mobj.flags | MF_SHOOTABLE
+    mobj.flags = mobj.info.flags
     mobj.fuse = 0
+    if (mobj.breakable.respawn_triggertag > 0) then
+        P_LinedefExecute(mobj.breakable.respawn_triggertag, nil, (mobj.subsector ~= nil) and mobj.subsector.sector or nil)
+    end
+    RespawnLinkedBreakables(mobj)
     return true
 end, MT_XS_BREAKABLE)
 
@@ -158,7 +189,7 @@ xSlinger.addHook("ShouldDamage", function(mobj, inflictor, source, damage, damag
 end, MT_XS_BREAKABLE)
 
 ---@param mobj mobj_t
-local function HandleLinkedBreakables(mobj) -- link the hp from other breakables with the same tag
+local function AlterLinkedBreakables(mobj) -- link the hp from other breakables with the same tag
     local breakables = xSlinger.breakables[mobj.breakable.triggertag]
     for index = #breakables, 1, -1 do
         local other = breakables[index]
@@ -178,23 +209,25 @@ xSlinger.addHook("MobjDamage", function(mobj, inflictor, source, damage, damaget
     if not mobj or not mobj.valid then return end
     if (mobj.type ~= MT_XS_BREAKABLE) then return end
 
-    HandleLinkedBreakables(mobj)
+    if (mobj.breakable.damage_triggertag > 0) then
+        P_LinedefExecute(mobj.breakable.damage_triggertag, source or inflictor, (mobj.subsector ~= nil) and mobj.subsector.sector or nil)
+    end
+    AlterLinkedBreakables(mobj)
 end)
 
 ---@param mobj mobj_t
-local function HandleLinkedBreakables(mobj) -- so like doors or windows or whatever can be a breakable with having several mobjs pointing to the same linedef
+local function RemoveLinkedBreakables(mobj) -- so like doors or windows or whatever can be a breakable with having several mobjs pointing to the same linedef
     local breakables = xSlinger.breakables[mobj.breakable.triggertag]
     for index = #breakables, 1, -1 do
         local other = breakables[index]
         if (other == mobj) then continue end
         if (other.breakable == nil) then continue end
 
-        other.flags = other.flags & ~(MF_SHOOTABLE)
-        other.flags = other.flags | MF_NOCLIPTHING
+        other.flags = MF_NOGRAVITY|MF_NOCLIPTHING
         if other.breakable.respawneable then
             other.health = 1
             other.npc_visiblehealth = false
-            other.fuse = other.breakable.respawndelay
+            other.fuse = other.breakable.respawn_delay
             continue
         end
         table.remove(breakables, index)
@@ -220,13 +253,12 @@ addHook("MobjDeath", function(mobj, inflictor, source, damagetype)
         P_LinedefExecute(mobj.breakable.triggertag, attacker, (mobj.subsector ~= nil) and mobj.subsector.sector or nil)
     end
 
-    mobj.flags = mobj.flags & ~(MF_SHOOTABLE)
-    mobj.flags = mobj.flags | MF_NOCLIPTHING
+    mobj.flags = MF_NOGRAVITY|MF_NOCLIPTHING
     if mobj.breakable.respawneable then
         mobj.health = 1
         mobj.npc_visiblehealth = false
-        mobj.fuse = mobj.breakable.respawndelay
-        HandleLinkedBreakables(mobj)
+        mobj.fuse = mobj.breakable.respawn_delay
+        RemoveLinkedBreakables(mobj)
         return true
     end
 
@@ -236,7 +268,7 @@ addHook("MobjDeath", function(mobj, inflictor, source, damagetype)
         table.remove(breakables, index)
         break
     end
-    HandleLinkedBreakables(mobj)
+    RemoveLinkedBreakables(mobj)
     P_RemoveMobj(mobj)
     return true
 end, MT_XS_BREAKABLE)
