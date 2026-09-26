@@ -27,7 +27,7 @@ mobjinfo[MT_FLOWEY1] = {
     deathstate = S_FLOWEY1, -- Optional, redundant unless it changes
     painstate = 0,
     painsound = 0,
-    deathsound = 0
+    deathsound = 0,
 }
 
 states[S_DTREE] = {
@@ -111,8 +111,10 @@ mobjinfo[MT_TORIEL].npc_name = "Toriel"
 mobjinfo[MT_TORIEL].npc_name_color = SKINCOLOR_WHITE
 mobjinfo[MT_TORIEL].npc_spawnhealth = {10000,20000}
 --mobjinfo[MT_TORIEL].rubydrop = {30,60}
-mobjinfo[MT_TORIEL].forcedamage = 10
+mobjinfo[MT_TORIEL].forcedamage = 12
 mobjinfo[MT_TORIEL].antiknockback = true
+mobjinfo[MT_TORIEL].forceknockback = 0
+mobjinfo[MT_TORIEL].relativeknockback = true
 
 states[S_TORI_STND] = {
 	sprite = SPR_TORI,

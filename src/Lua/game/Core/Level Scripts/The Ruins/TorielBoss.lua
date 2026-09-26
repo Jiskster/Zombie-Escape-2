@@ -4,26 +4,25 @@ addHook("MobjSpawn", function(mobj)
 	mobj.toriel_boss = {
 		state = "ready";
 		nextstate = "dash";
-		tics = 3*TICRATE;
+		tics = 2 * TICRATE;
 	}
-
 	mobj.toriel_boss.start_tics = mobj.toriel_boss.tics;
 end, MT_TORIEL)
 
 addHook("MobjThinker", function(mobj)
-	local boss = mobj.toriel_boss;
-
+	local boss = mobj.toriel_boss
+	mo:remove_effect("burning")
 	if not boss then
 		return
 	end
 
 	local switchstate = false;
 
-	if not P_LookForPlayers(mobj, 2048*FU, true) then return end
+	if not P_LookForPlayers(mobj, 4096*FU, true) then return end
 	if not mobj.health then return end
 
 	if boss.tics then
-		boss.tics = max(0, $ - 1);
+		boss.tics = max(0, boss.tics - 1);
 
 		if not boss.tics then
 			boss.state = boss.nextstate;
@@ -33,7 +32,7 @@ addHook("MobjThinker", function(mobj)
 	end
 
 	if switchstate == true then
-		if P_LookForPlayers(mobj, 2048*FU, true) and mobj.target and mobj.target.valid then
+		if P_LookForPlayers(mobj, 4096*FU, true) and mobj.target and mobj.target.valid then
 			local ang = R_PointToAngle2(mobj.x, mobj.y, mobj.target.x, mobj.target.y)
 			mobj.angle = ang
 		end
@@ -46,24 +45,20 @@ addHook("MobjThinker", function(mobj)
 			end
 
 			if mobj.health < mobj.maxhealth/4 then
-				boss.tics = 1*TICRATE
+				boss.tics = TICRATE / 2
 			else
-				boss.tics = 2*TICRATE
+				boss.tics = TICRATE
 			end
-		elseif boss.state == "attack1" then
-
-
+		elseif (boss.state == "attack1") then
 			boss.tics = 3*TICRATE/2
-
 			boss.nextstate = "ready"
-		elseif boss.state == "attack2" then
+		elseif (boss.state == "attack2") then
 			boss.tics = 3*TICRATE/2
 			for i=-4,4 do
 				local uhh = P_SPMAngle(mobj, MT_CYBRAKDEMON_NAPALM_BOMB_SMALL, mobj.angle+(ANG15*i))
-
 				uhh.momx = $ * 3
 				uhh.momy = $ * 3
-				uhh.forcedamage = 6
+				uhh.forcedamage = 12
 			end
 
 			boss.nextstate = "ready"
@@ -77,11 +72,11 @@ addHook("MobjThinker", function(mobj)
 			end
 
 			if mobj.health < mobj.maxhealth/4 then
-				if P_RandomChance(FU/6) then
+				if P_RandomChance(FU/4) then
 					boss.nextstate = "dash"
 				end
 			else
-				if P_RandomChance(FU/16) then
+				if P_RandomChance(FU/12) then
 					boss.nextstate = "dash"
 				end
 			end
@@ -95,7 +90,7 @@ addHook("MobjThinker", function(mobj)
 		switchstate = false;
 	end
 
-	if boss.state == "attack1" then
+	if (boss.state == "attack1") then
 		local diff = boss.start_tics - boss.tics
 		local anim = ease.linear(FixedDiv(diff, boss.start_tics), mobj.angle-(4*ANG15), mobj.angle+(4*ANG15))
 		local tx = P_ReturnThrustX(mobj, anim, mobj.radius)
@@ -104,15 +99,14 @@ addHook("MobjThinker", function(mobj)
 		thok.fuse = 2
 		thok.state = S_TORI_PAW
 		thok.dispoffset = 2
-
-		if ((leveltime) % 5) == 0 then
+		if ((leveltime % 5) == 0) then
 			local bullet = P_SPMAngle(mobj, MT_TORIELFIREBALL, anim)
 			P_SetOrigin(bullet, thok.x, thok.y, thok.z)
 			--bullet.colorized = true
 			--bullet.color = SKINCOLOR_WHITE
 			bullet.momx = $ * 2
 			bullet.momy = $ * 2
-			bullet.forcedamage = 10
+			bullet.forcedamage = 12
 		end
 	end
 end, MT_TORIEL)
