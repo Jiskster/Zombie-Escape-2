@@ -35,6 +35,7 @@ Mappers:
 "GLide KS"
 "Pyrodiac"
 "Lemerksdagaming"
+"tails13exe"
 
 Testers:
 "bullymaguire1991" - Chao's step father
