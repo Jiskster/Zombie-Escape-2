@@ -19,7 +19,7 @@ Unlockable 3
 
 Unlockable 23
 
-## SURVIVAL MAP START
+## ESCAPE MAPS ##
 
 Level 01
 Levelname = Stonewood
@@ -298,3 +298,16 @@ NoZone = True
 SelectHeading = Escape Maps
 Lua.ze2_timelimit = 5
 Lua.ze2_laddertag = 1000
+
+## PLAGUE MAPS ##
+
+Level 58
+Levelname = HIDE N SEEK
+Subtitle = Want to play with Zombies?
+Act = 0
+Music = HIDE
+TypeOfLevel = PLAGUE
+NextLevel = 58
+SkyNum = 501
+NoZone = True
+SelectHeading = Test
