@@ -272,6 +272,19 @@ Skynum = 10
 Weather = 1
 Lua.ze2_timelimit = 6
 
+Level 29
+Levelname = Deep Cavern
+Subtitle = So Retro that Never Existed
+Act = 0
+Music = DCZE2
+TypeOfLevel = Escape
+NextLevel = 8
+SkyNum = 20
+NoZone = True
+SelectHeading = Escape Maps
+Lua.ze2_timelimit = 6
+Lua.ze2_laddertag = 200
+
 Level 30
 Levelname = Stonewood Zero
 Subtitle = Back to the beginning...

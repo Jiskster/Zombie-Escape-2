@@ -166,3 +166,5 @@ dofolder("Map Mechs");
 dofolder("Objects");
 
 folder = "The Farland"; dofolder("Timers");
+
+folder = "Deep Cavern"; dofolder("Timers");

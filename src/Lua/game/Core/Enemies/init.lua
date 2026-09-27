@@ -6,3 +6,4 @@ end
 
 LoadEnemies("Vanilla")
 LoadEnemies("DOOM")
+LoadEnemies("Final Demo")
