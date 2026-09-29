@@ -19,6 +19,7 @@ mobjinfo[MT_OLDBLUECRAWLA].rubydrop = {2,4}
 mobjinfo[MT_OLDBLUECRAWLA].painsound = sfx_dmpain
 mobjinfo[MT_OLDBLUECRAWLA].forcedamage = 5
 mobjinfo[MT_OLDBLUECRAWLA].relativeknockback = true
+mobjinfo[MT_OLDBLUECRAWLA].forceknockback = 18*FRACUNIT
 
 states[S_OPOS_STND] = {SPR_OPOS, A, 5, A_Look, 0, 0, S_OPOS_STND}
 states[S_OPOS_RUN1] = {SPR_OPOS, A, 1, A_Chase, 0, 0, S_OPOS_RUN2}
