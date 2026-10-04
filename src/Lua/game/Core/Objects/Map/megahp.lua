@@ -47,7 +47,7 @@ function ZE2.HitMegaHP(special, toucher)
 			local upgrade_sound = (P_RandomChance(FU/2) and sfx_zupg1 or sfx_zupg2)
 			S_StartSound(toucher, upgrade_sound)
 		end
-		player.ze2.karma = max(1, player.ze2.karma / 2)
+		player.ze2.karma = max(1, $ - 200)
 		ZE2:GivePlayerCash(toucher.player, cash_given)
 		CONS_Printf(toucher.player, "\x83" .. "+ $" .. cash_given .. " cash bonus!")
 	else

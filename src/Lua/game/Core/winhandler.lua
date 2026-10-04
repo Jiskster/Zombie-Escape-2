@@ -28,7 +28,7 @@ function ZE2:StartWin(team, fromring)
 		end
 
 		if (team == 1) then
-			ze2.karma = max(1, ze2.karma / 2)
+			ze2.karma = max(1, $ - 200)
 		end
 
 		ZE2:GivePlayerCash(player, cash_award)
