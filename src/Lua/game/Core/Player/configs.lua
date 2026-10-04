@@ -1,4 +1,5 @@
 ZE2.StandardJumpFactor = FixedDiv(90*FU, 100*FU)
+ZE2.ZombieJumpFactor = FixedDiv(110*FU, 100*FU)
 ZE2.DefaultSurvivorInvSlots = 5
 ZE2.DefaultZombieInvSlots = 2
 
@@ -199,7 +200,12 @@ function ZE2.applyPlayerConfig(player)
 		end
 	end
 
-	player.jumpfactor = config.jumpfactor or ZE2.StandardJumpFactor
+	local defaultjumpfactor = ZE2.StandardJumpFactor
+	if team == TEAM_ZOMBIE then
+		defaultjumpfactor = ZE2.ZombieJumpFactor
+	end
+	
+	player.jumpfactor = config.jumpfactor or defaultjumpfactor
 
 	if config.actionspd then
 		player.actionspd = config.actionspd
