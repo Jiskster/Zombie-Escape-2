@@ -29,6 +29,7 @@ function xSlinger.SpawnMissile(m_table)
 	local source = m_table.source
 	local missile_id = m_table.type
 	local angle = m_table.angle
+	local aiming = m_table.aiming
 	local allow_aim = m_table.allow_aim
 	local flags2 = m_table.flags2
 	local iteminfo = m_table.iteminfo
@@ -184,7 +185,10 @@ function xSlinger.SpawnMissile(m_table)
 	th.momy = FixedMul(speed, sin(angle))
 
 	if allow_aim then
-		if source.player then
+		if aiming ~= nil then
+			th.momx = FixedMul(th.momx, cos(aiming))
+			th.momy = FixedMul(th.momy, cos(aiming))
+		elseif source.player then
 			th.momx = FixedMul(th.momx, cos(source.player.aiming))
 			th.momy = FixedMul(th.momy, cos(source.player.aiming))
 		elseif source.aiming then
