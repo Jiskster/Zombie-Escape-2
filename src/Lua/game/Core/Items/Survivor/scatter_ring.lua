@@ -123,17 +123,17 @@ xSlinger.registerItem("scatter_ring", {
 
 		-- Vertical
 		for i = -1, 1, 2 do
-			local prevaim = player.aiming
+			local aim = player.aiming + i * ANG1*spread
 
-			player.aiming = $ + i * ANG1*spread
 			local shot = xSlinger.SpawnMissile({
 				source = mo,
 				type = mt,
 				angle = mo.angle,
+				aiming = aim,
 				allow_aim = true,
 				iteminfo = self,
 			})
-			player.aiming = prevaim
+
 			if shot and shot.valid then
 				shot.momx = $ + mo.momx / 3
 				shot.momy = $ + mo.momy / 3
