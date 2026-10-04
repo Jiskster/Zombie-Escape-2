@@ -1,5 +1,5 @@
 ZE2.StandardJumpFactor = FixedDiv(90*FU, 100*FU)
-ZE2.ZombieJumpFactor = FixedDiv(110*FU, 100*FU)
+ZE2.ZombieJumpFactor = FixedDiv(100*FU, 100*FU)
 ZE2.DefaultSurvivorInvSlots = 5
 ZE2.DefaultZombieInvSlots = 2
 
