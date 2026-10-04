@@ -50,7 +50,11 @@ function xSlinger.SpawnMissile(m_table)
 	local missile_def = xSlinger.registered_missiles[missile_id]
 
 	if allow_aim then
-		slope = sin(source.player.aiming)
+		if aiming ~= nil then
+			slope = sin(aiming)
+		else
+			slope = sin(source.player.aiming)
+		end
 	end
 
 	local bulletheight = FixedMul(mobjinfo[MT_XS_MISSILE].height, source.scale)
