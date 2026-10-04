@@ -32,9 +32,7 @@ xSlinger.registerItem("auto_ring", {
 	displayname = "Automatic Ring";
 
 	icon = "XSG_AUTO";
-
-	missile = "AUTO_RING";
-
+	
 	dropstate = S_XS_AUTORING_DROP;
 
 	sounds = {
@@ -59,6 +57,31 @@ xSlinger.registerItem("auto_ring", {
 	reload_time = TICRATE*2;
 
 	firerate = 2;
+	
+	usefunc = function(self, mo)
+		local aim = 0
+		local ang = mo.angle
+		local speed = FixedHypot(FixedHypot(mo.momx, mo.momy), mo.momz)
+		if mo.player and mo.player.valid then
+			aim = mo.player.aiming
+		end
+		
+		if abs(speed) and (mo.momx or mo.momy) then
+			local s = abs(speed)/5
+			
+			ang = $ + FixedAngle(P_RandomRange(-s/FU, s/FU)*FU)
+			aim = $ + FixedAngle(P_RandomRange(-s/FU, s/FU)*FU)
+		end
+		
+		local ring = xSlinger.SpawnMissile({
+			source = mo,
+			type = "AUTO_RING",
+			angle = ang,
+			aiming = aim,
+			allow_aim = true,
+			iteminfo = self,
+		})
+	end,
 
 	skin_override = {
 		["knuckles"] = {
@@ -70,8 +93,6 @@ xSlinger.registerItem("auto_ring", {
 		}
 	},
 	
-	flags2 = MF2_AUTOMATIC,
-
 	hold_object = {
 		state = S_XS_AUTORING;
 		pos = {  -- at this pos, the object is at the right of your body
