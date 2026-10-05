@@ -130,6 +130,10 @@ function xSlinger.SpawnMissile(m_table)
 		if missile_def.antiknockback then
 			th.antiknockback = true
 		end
+		
+		if missile_def.externaldeathsound then
+			th.externaldeathsound = true
+		end
 
 		th.missileinfo = temp_missile_def -- give missileinfo
 	end
@@ -257,7 +261,19 @@ function xSlinger.KillMissile(mobj)
 		mobj.fuse = -1
 
 		if info.deathsound then
-			S_StartSound(mobj, info.deathsound)
+			if info.externaldeathsound then
+				local sndsrc = P_SpawnMobjFromMobj(mobj, 0, 0, 0, MT_THOK)
+				
+				if sndsrc and sndsrc.valid then
+					sndsrc.tics = -1
+					sndsrc.fuse = TICRATE*2
+					sndsrc.state = S_INVISIBLE
+					
+					S_StartSound(sndsrc, info.deathsound)
+				end
+			else
+				S_StartSound(mobj, info.deathsound)
+			end
 		end
 
 		if info.deathstate then
