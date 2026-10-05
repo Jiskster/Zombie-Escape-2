@@ -165,6 +165,9 @@ xSlinger.registerItem("splash_ring", {
 			normalspeed_multiplier = (FU*3)/4,
 			actionspd_multiplier = 3*FU/2,
 		}, TICRATE, true)
+		
+		mo.momx = $ * 7/10
+		mo.momy = $ * 7/10
 	end,
 	
 	animation_time = TICRATE,
