@@ -47,7 +47,7 @@ xSlinger.registerMissile("BLOOD_BOMB", {
 	displayname = "Blood Bomb",
 	state = S_BLOODBOMB,
 	deathstate = S_BLOODBOMB_DEATH,
-	deathsound = sfx_pumpkn,
+	deathsound = sfx_brakrx,
 	externaldeathsound = true,
 	radius = 30*FU,
 	height = 55*FU,
