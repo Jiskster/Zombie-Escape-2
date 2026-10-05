@@ -59,6 +59,7 @@ SurvivorItem "explosion_ring.lua"
 SurvivorItem "rail_ring.lua"
 SurvivorItem "flame_ring.lua"
 SurvivorItem "accel_ring.lua"
+SurvivorItem "splash_ring.lua"
 
 -- Misc
 SurvivorItem "blue_spring.lua"
