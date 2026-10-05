@@ -244,7 +244,8 @@ end
 
 function xSlinger.KillMissile(mobj)
 	local info = mobj.missileinfo
-
+	local nogravdeath = false
+	
 	if info and mobj.health then
 		mobj.alpha = FRACUNIT
 		mobj.fuse = -1
@@ -262,14 +263,20 @@ function xSlinger.KillMissile(mobj)
 		end
 
 		if info.nogravitydeath then
-			mobj.flags = $ | MF_NOGRAVITY
+			nogravdeath = true
 		end
 	end
+	
+	if mobj and mobj.valid then
+		if nogravdeath then
+			mobj.flags = $ | MF_NOGRAVITY
+		end
 
-	mobj.momx = 0
-	mobj.momy = 0
-	mobj.momz = 0
-	mobj.health = 0
+		mobj.momx = 0
+		mobj.momy = 0
+		mobj.momz = 0
+		mobj.health = 0
+	end
 end
 
 local function checkMissile(mobj, missileinfo)
