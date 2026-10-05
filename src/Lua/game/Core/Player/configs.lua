@@ -283,6 +283,7 @@ function ZE2.applyPlayerConfig(player)
 			player.thrustfactor = 0
 			player.jumpfactor = 0
 			player.powers[pw_nocontrol] = 1
+			xS.nofire = 1
 		end
 	end
 end

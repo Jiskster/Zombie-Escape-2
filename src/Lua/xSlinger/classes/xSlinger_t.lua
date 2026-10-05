@@ -4,6 +4,7 @@ local xSlinger_t = setmetatable({
 	slot = 1;
 	reload = 0;
 	delay = 0;
+	nofire = 0;
 	inventory = {};
 	selected_interaction = nil; -- mobj_t
 	selected_interaction_timer = 0; -- tics

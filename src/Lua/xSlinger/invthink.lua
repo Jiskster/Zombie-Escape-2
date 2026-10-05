@@ -109,11 +109,19 @@ function xSlinger.DoThinker(mobj)
 			firing = (buttons & BT_ATTACK) > 0
 		end
 		
+		if xS.nofire then
+			firing = false
+		end
+		
 		player.pflags = $ | PF_ATTACKDOWN
 	end
 
 	if xS.delay then
 		xS.delay = max(0, $ - 1)
+	end
+	
+	if xS.nofire then
+		xS.nofire = max(0, $ - 1)
 	end
 
 	-- To make sure slot is in valid spot:
