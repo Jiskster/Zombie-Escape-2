@@ -2,7 +2,7 @@
 
 local explode_radius = 400 * FU
 local health_cost = 100
-local bomb_health = 200
+local bomb_health = 100
 local blind_time = TICRATE * 7
 
 -- [[ The item itself ]] --
@@ -49,8 +49,8 @@ xSlinger.registerMissile("BLOOD_BOMB", {
 	deathstate = S_BLOODBOMB_DEATH,
 	deathsound = sfx_pumpkn,
 	externaldeathsound = true,
-	radius = 20*FU,
-	height = 40*FU,
+	radius = 30*FU,
+	height = 55*FU,
 	health = bomb_health,
 	antiknockback = true,
 	addflags = MF_SHOOTABLE,
