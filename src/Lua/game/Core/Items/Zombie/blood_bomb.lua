@@ -1,6 +1,6 @@
 -- [[ Item properties ]] --
 
-local explode_radius = 400 * FU
+local explode_radius = 225 * FU
 local health_cost = 100
 local bomb_health = 100
 local blind_time = TICRATE * 7
