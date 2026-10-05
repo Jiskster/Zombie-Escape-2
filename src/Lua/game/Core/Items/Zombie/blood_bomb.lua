@@ -26,6 +26,8 @@ states[S_BLOODBOMB_DEATH] = {SPR_NULL, A, 1, function(mo) -- Explode within a ra
 	end, mo,
 	mo.x - explode_radius, mo.x + explode_radius,
 	mo.y - explode_radius, mo.y + explode_radius)
+	
+	P_StartQuake(64 * FU, TICRATE, {x = mo.x, y = mo.y, z = mo.z})
 
 	A_OldRingExplode(mo, MT_DUST, 0) -- TODO: Change it to blood particles instead...? maybe adapt blood droplets for this.
 end, 0, 0, S_NULL}
@@ -46,6 +48,7 @@ xSlinger.registerMissile("BLOOD_BOMB", {
 	state = S_BLOODBOMB,
 	deathstate = S_BLOODBOMB_DEATH,
 	deathsound = sfx_pumpkn,
+	externaldeathsound = true,
 	radius = 20*FU,
 	height = 40*FU,
 	health = bomb_health,
