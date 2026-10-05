@@ -10,7 +10,7 @@ mobjinfo[MT_XS_MISSILE] = {
 	radius = 16*FRACUNIT,
 	height = 24*FRACUNIT,
 	flags = MF_NOBLOCKMAP|MF_NOGRAVITY,
-	health = 1000,
+	health = 1,
 }
 
 local cv_friendlyfire = CV_FindVar("friendlyfire")
@@ -113,6 +113,16 @@ function xSlinger.SpawnMissile(m_table)
 
 		if missile_def.delflags then
 			th.flags = $ & (~missile_def.delflags)
+		end
+		
+		if missile_def.health then
+			th.health = missile_def.health
+			th.maxhealth = missile_def.health
+			th.npc_visiblehealth = true
+		end
+		
+		if missile_def.antiknockback then
+			th.antiknockback = true
 		end
 
 		th.missileinfo = temp_missile_def -- give missileinfo

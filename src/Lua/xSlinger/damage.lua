@@ -193,7 +193,7 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 		end
 	end
 
-	if mo.info.antiknockback then
+	if mo.antiknockback or mo.info.antiknockback then
 		knockback = 0
 	end
 

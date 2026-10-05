@@ -10,6 +10,10 @@ function KB.initKnockback(mo)
 end
 
 function KB.addKnockback(mo, tics, angle, thrust)
+	if not thrust then
+		return
+	end
+
 	if not mo.knockback then
 		KB.initKnockback(mo)
 	end

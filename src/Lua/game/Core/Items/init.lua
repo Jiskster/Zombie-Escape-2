@@ -70,3 +70,4 @@ SurvivorItem "auto_turret.lua"
 
 ZombieItem "insta_burst.lua"
 ZombieItem "fist.lua"
+ZombieItem "blood_bomb.lua"

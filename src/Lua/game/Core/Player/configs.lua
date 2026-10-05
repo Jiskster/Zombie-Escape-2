@@ -23,7 +23,6 @@ ZE2.ZombieConfig = {
 		charability2 = CA2_NONE,
 		actionspd = 9*FRACUNIT,
 		killaward = 10,
-		inventory_limit = 1,
 		items = {
 			"insta_burst";
 			"fist";
@@ -51,10 +50,10 @@ ZE2.ZombieConfig = {
 		actionspd = 26*FRACUNIT,
 		scale = 11*FRACUNIT/10,
 		killaward = 30,
-		inventory_limit = 1,
 		items = {
 			"insta_burst";
 			"fist";
+			"blood_bomb"; 
 		},
 		special = {
 			button = BT_CUSTOM2,
@@ -319,8 +318,10 @@ function ZE2.setConfigInventory(player, newskin, noitems)
 			end
 		end
 	elseif (team == 2) and zc[ztype] then
-		xS:inv_add("zombie", ZE2.DefaultZombieInvSlots)
-		if (not noitems) and (zc[ztype].items) then
+		if (not noitems) and (zc[ztype].items) then -- slot count is automatic
+			local slotcount = #zc[ztype].items
+			xS:inv_add("zombie", slotcount)
+			
 			for i,item in ipairs(zc[ztype].items) do
 				if (type(item) == "table") then
 					xS:give_item(item[1], item[2], nil, "zombie")
