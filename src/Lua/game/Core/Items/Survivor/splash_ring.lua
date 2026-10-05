@@ -162,12 +162,12 @@ xSlinger.registerItem("splash_ring", {
 		if not mo and not mo.valid then return end
 		
 		mo:give_effect("bubble.float", {
-			normalspeed_multiplier = (FU*3)/4,
+			normalspeed_multiplier = (FU*85)/100,
 			actionspd_multiplier = 3*FU/2,
 		}, TICRATE, true)
 		
-		mo.momx = $ * 7/10
-		mo.momy = $ * 7/10
+		mo.momx = $ * 9/10
+		mo.momy = $ * 9/10
 	end,
 	
 	animation_time = TICRATE,
