@@ -57,6 +57,23 @@ xSlinger.registerMissile("BLOOD_BOMB", {
 	delflags = MF_NOGRAVITY|MF_NOBLOCKMAP,
 })
 
+local function spawnVFX(mo, color)
+	local x = P_RandomRange(- mo.radius / FU, mo.radius / FU)
+	local y = P_RandomRange(- mo.radius / FU, mo.radius / FU)
+	local z = P_RandomRange(0, (mo.height / FU) / 3 * 2)
+
+	local infectparticle = P_SpawnMobjFromMobj(mo, x * FU, y * FU, z * FU, MT_THOK)
+	infectparticle.state = S_SPINBOBERT_FIRE_TRAIL1
+	infectparticle.colorized = true
+	infectparticle.color = color or mo.color
+	infectparticle.blendmode = AST_SUBTRACT
+	infectparticle.renderflags = RF_FULLBRIGHT
+	infectparticle.tics = 10
+	P_SetObjectMomZ(infectparticle, P_RandomRange(2, 5) * FU)
+	
+	return infectparticle
+end
+
 xSlinger.registerItem("blood_bomb", {
 
 	-- HUD
@@ -93,19 +110,8 @@ xSlinger.registerItem("blood_bomb", {
 	missile_tick = function(self, mo, missile) -- Code of infection vfx.
 		if (leveltime % 3 == 0) then return end
 		if not (missile and missile.valid) then return end
-
-		local x = P_RandomRange(- missile.radius / FU, missile.radius / FU)
-		local y = P_RandomRange(- missile.radius / FU, missile.radius / FU)
-		local z = P_RandomRange(0, (missile.height / FU) / 3 * 2)
-
-		local infectparticle = P_SpawnMobjFromMobj(missile, x * FU, y * FU, z * FU, MT_THOK)
-		infectparticle.state = S_SPINBOBERT_FIRE_TRAIL1
-		infectparticle.colorized = true
-		infectparticle.color = missile.color
-		infectparticle.blendmode = AST_SUBTRACT
-		infectparticle.renderflags = RF_FULLBRIGHT
-		infectparticle.tics = 10
-		P_SetObjectMomZ(infectparticle, P_RandomRange(2, 5) * FU)
+		
+		spawnVFX(missile)
 	end;
 })
 
@@ -117,6 +123,12 @@ addHook("PlayerThink", function(p)
 	if not mo.bloodbomb_blindtime then return end
 
 	mo.bloodbomb_blindtime = $ - 1
+	
+	local infectparticle = spawnVFX(mo, SKINCOLOR_ALPHAZOMBIE)
+	if infectparticle and infectparticle.valid then
+		infectparticle.alpha = min(FixedDiv(mo.bloodbomb_blindtime, 3*TICRATE), FU)
+	end
+	
 	if not CV_FindVar("showhud").value then -- Nu uh cheater!
 		COM_BufInsertText(p, "showhud 1") -- we are calling it each tic yes, but we aren't filling the netxcmd buffer so.
 	end
