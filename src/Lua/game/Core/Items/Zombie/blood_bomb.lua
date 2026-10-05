@@ -70,7 +70,7 @@ xSlinger.registerItem("blood_bomb", {
 
 	color = SKINCOLOR_ALPHAZOMBIE; -- Originally was using player's color but should make sense to use a fixed red color instead.
 	missile = "BLOOD_BOMB",
-    firerate = 7 * TICRATE;
+    firerate = 15 * TICRATE;
 	damage = 10;
 	droppable = false;
 
