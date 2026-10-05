@@ -75,6 +75,12 @@ function xSlinger.SpawnMissile(m_table)
 	
 		z = source.z + (41 * h / 48) - bulletheight
 	end
+	
+	if m_table.origin and m_table.origin.valid then
+		x = m_table.origin.x
+		y = m_table.origin.y
+		z = m_table.origin.z
+	end
 
 	th = P_SpawnMobj(x, y, z, MT_XS_MISSILE)
 	if not (th and th.valid) then
@@ -246,7 +252,7 @@ function xSlinger.KillMissile(mobj)
 	local info = mobj.missileinfo
 	local nogravdeath = false
 	
-	if info and mobj.health then
+	if info and mobj.health and mobj and mobj.valid then
 		mobj.alpha = FRACUNIT
 		mobj.fuse = -1
 
@@ -403,7 +409,7 @@ addHook("MobjMoveBlocked", function(mov, mobj, line)
 
 	if missile_def then
 		if missile_def.blocked then
-			override = missile_def:blocked(mov.target, mov, line)
+			override = missile_def:blocked(mov.target, mov, line, mobj)
 		end
 	end
 
