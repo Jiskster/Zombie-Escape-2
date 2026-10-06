@@ -20,20 +20,26 @@ states[S_BLOODBOMB] = {SPR_DRAB, FF_FULLBRIGHT|D, -1, function(mo) -- Properties
 end, 0, 0, S_BLOODBOMB}
 
 states[S_BLOODBOMB_DEATH] = {SPR_NULL, A, 1, function(mo) -- Explode within a radius setted by explode_radius local
+	local xpld_radius = FixedMul(mo.scale, explode_radius)
+
 	searchBlockmap("objects", function(refmo, foundmobj)
+		if not (foundmobj.flags & MF_SHOOTABLE) then return end
+		if (foundmobj.team == mo.team) then return end
+
 		local dist = R_PointToDist2(mo.x, mo.y, foundmobj.x, foundmobj.y)
 		local distz = R_PointToDist2(mo.z, mo.z, foundmobj.z, foundmobj.z)
-		if (dist > explode_radius or distz > explode_radius) then return end
-		if not (foundmobj.health and foundmobj.player) then return end
+		if (dist > xpld_radius or distz > xpld_radius) then return end
 		if not P_CheckSight(mo, foundmobj) then return end
-		if foundmobj.team == mo.team then return end
 
-		foundmobj.bloodbomb_blindtime = blind_time
-		P_DamageMobj(foundmobj, mo, mo.target, 1, 0)
-		S_StartSound(nil, sfx_prloop, foundmobj.player)
+		if foundmobj.player then -- Blind players
+			foundmobj.bloodbomb_blindtime = blind_time
+			S_StartSound(nil, sfx_prloop, foundmobj.player)
+		end
+
+		P_DamageMobj(foundmobj, mo, mo.target, 1, 0) -- Damage any mobj around.
 	end, mo,
-	mo.x - explode_radius, mo.x + explode_radius,
-	mo.y - explode_radius, mo.y + explode_radius)
+	mo.x - xpld_radius, mo.x + xpld_radius,
+	mo.y - xpld_radius, mo.y + xpld_radius)
 
 	P_StartQuake(64 * FU, TICRATE, {x = mo.x, y = mo.y, z = mo.z})
 
