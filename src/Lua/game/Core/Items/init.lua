@@ -34,6 +34,95 @@ function A_TNTExplode(actor, var1, var2)
     end
 end
 
+-- The missile itself is invisible, you have to spawn a visible indicator when it stops on something.
+function ZE2.registerCrosshairGuide(refid)
+	local ref = xSlinger.registered_missiles[refid]
+	
+	if not ref then
+		error("invalid missile id")
+	end
+	
+	local m = xSlinger.registerMissile(refid.."_GUIDE", {
+		state = S_INVISIBLE,
+		speed = ref.speed,
+		displayname = ref.displayname,
+		radius = ref.radius,
+		height = ref.height,
+		addflags = MF_NOCLIPTHING,
+		delflags = MF_NOGRAVITY,
+	})
+	
+	return m
+end
+
+function ZE2.drawCrosshairGuide(mobj, id, alpha)
+	if mobj.player and mobj.player.valid then
+		local shot = xSlinger.SpawnMissile({
+			source = mobj,
+			type = id,
+			angle = mobj.angle,
+			aiming = mobj.player.aiming,
+			allow_aim = true,
+		})
+		
+		local x
+		local y
+		local z
+		local valid
+		
+		if shot and shot.valid then	
+			shot.fuse = 3
+
+			for i = 1, 128 do
+				P_XYMovement(shot)
+				
+				if not (shot and shot.valid) then
+					break
+				end
+				
+				P_ZMovement(shot)
+				
+				if not (shot and shot.valid) then
+					break
+				end
+				
+				x = shot.x
+				y = shot.y
+				z = shot.z
+				valid = true
+				
+				if (shot.z == shot.floorz) or (shot.z + shot.height) == shot.ceilingz then
+					shot.momx = 0
+					shot.momy = 0
+					shot.momz = 0
+					break
+				end
+			end
+			
+			if valid then
+				if not (mobj.crossguide and mobj.crossguide.valid) then
+					local t = P_SpawnMobj(x, y, z, MT_UNKNOWN)
+					t.sprite = SPR_TARG
+					t.fuse = 2
+					t.tics = -1
+					t.alpha = alpha or FU
+					t.drawonlyforplayer = mobj.player
+					
+					mobj.crossguide = t
+				else
+					local t = mobj.crossguide
+					t.fuse = 2
+					t.tics = -1
+					t.alpha = alpha or FU
+					t.drawonlyforplayer = mobj.player
+					
+					P_MoveOrigin(t, x, y, z)
+				end
+			end
+		end
+	end
+end
+
 states[S_ZE2_RINGEXPLODE] = {SPR_NULL, A, 1, A_RingExplode2, 0, 0, S_XPLD1, 0}
 
 local PATH = "game/Core/Items"

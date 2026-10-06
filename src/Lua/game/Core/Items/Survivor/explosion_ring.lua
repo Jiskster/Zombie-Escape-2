@@ -19,6 +19,9 @@ xSlinger.registerMissile("EXPLOSION_RING", {
 	delflags = MF_NOGRAVITY,
 })
 
+local missile_explosion_ring_guide = 
+ZE2.registerCrosshairGuide(missile_explosion_ring.id)
+
 xSlinger.registerItem("explosion_ring", {
 	displayname = "Explosion Ring";
 
@@ -47,6 +50,10 @@ xSlinger.registerItem("explosion_ring", {
 
 	knockback = 65*FRACUNIT;
 	knockback_tics = TICRATE;
+	
+	holdfunc = function(self, mobj)
+		ZE2.drawCrosshairGuide(mobj, missile_explosion_ring_guide.id, FU/4)
+	end,
 
 	hold_object = {
 		state = S_XS_EXPLOSIONRING;
