@@ -23,6 +23,7 @@ states[S_BLOODBOMB_DEATH] = {SPR_NULL, A, 1, function(mo) -- Explode within a ra
 	local xpld_radius = FixedMul(mo.scale, explode_radius)
 
 	searchBlockmap("objects", function(refmo, foundmobj)
+		if not foundmobj.health then return end
 		if not (foundmobj.flags & MF_SHOOTABLE) then return end
 		if (foundmobj.team == mo.team) then return end
 
