@@ -3,7 +3,7 @@
 local explode_radius = 315 * FU
 local health_cost = 600
 local bomb_health = 40
-local blind_time = TICRATE * 7
+local blind_time = TICRATE * 5
 
 -- [[ The item itself ]] --
 
