@@ -26,18 +26,11 @@ addHook("PlayerSpawn", function(player)
 		-- Spawn as zombie if you join midgame
 		if (game.active and player_count > 1) then 
 			pmo.team = 2
-			
-			local chance = FU/8
-
-			if player_count < 8 then
-				chance = FU/4
-			end
 
 			if game.active and player_count > 1 then
-				if player.ze2.zombie_type == "normal" then
-					if P_RandomChance(chance) then
-						player.ze2.zombie_type = "alpha"
-					end
+				if player.ze2.next_zombie_type then
+					player.ze2.zombie_type = player.ze2.next_zombie_type
+					player.ze2.next_zombie_type = nil
 				end
 			end
 

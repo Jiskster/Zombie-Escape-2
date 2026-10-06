@@ -32,6 +32,7 @@ return {
 	was_zombie = false,
 
 	zombie_type = "normal",
+	next_zombie_type = nil,
 
 	damage_fade = 0, -- tic_t
 	damage_fade_max = 0,

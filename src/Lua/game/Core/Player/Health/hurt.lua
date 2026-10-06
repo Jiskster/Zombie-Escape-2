@@ -14,7 +14,7 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 			killer = src
 		end
 
-		if (team == 1) then
+		if (team == 1) then -- victim is survivor
 			if killer and killer.valid then
 				if ZE2.cv_instantinfection.value then
 					killing = false
@@ -31,12 +31,17 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 				print(string.format("%s%s%s has been infected by %s%s", "\x84", player.name, "\x83", "\x85", killer.player.name))
 				CONS_Printf(killer.player, "\x83" .. "+ $" .. cash_award .. " cash gained from infecting a survivor!")
 			end
-		elseif (team == 2) then
+		elseif (team == 2) then -- victim is zombie
 			if ztype and ZE2.ZombieConfig[ztype] and ZE2.ZombieConfig[ztype].killaward then
 				local killaward = ZE2.ZombieConfig[ztype].killaward
 				if killer and killer.valid then
-					A_RubyDrop(mo, killaward)
+					if killaward then
+						A_RubyDrop(mo, killaward)
+					end
+					
 					killer.player.ze2.karma = max(1, killer.player.ze2.karma - 120)
+					
+					player.ze2.next_zombie_type = "alpha"
 				end
 			end
 		end
