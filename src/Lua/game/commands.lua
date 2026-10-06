@@ -39,7 +39,7 @@ end, COM_LOCAL)
 ZE2.MaxKarmaPLS = 999999
 COM_AddCommand("z_zombiepls", function(player, accept)
 	if player.ze2.zombiepls then
-		CONS_Printf(player, "\x85\ZombiePls has been disabled. Karma reset to MaxKarma")
+		CONS_Printf(player, "\x85\ZombiePls has been disabled. Karma reset to "..ZE2.MaxKarma)
 		player.ze2.zombiepls = false
 		player.ze2.karma = ZE2.MaxKarma
 		return
@@ -49,6 +49,7 @@ COM_AddCommand("z_zombiepls", function(player, accept)
 		player.ze2.zombiepls = true
 		player.ze2.karma = ZE2.MaxKarmaPLS
 		CONS_Printf(player, "\x84\ZombiePls has been enabled. Karma set to " .. ZE2.MaxKarmaPLS)
+		CONS_Printf(player, "\x82\Run the command again to disable.")
 	else
 		CONS_Printf(player, "This command maxes out your karma beyond its limits, are you sure?")
 		CONS_Printf(player, "\x82\If you are sure, then do 'z_zombiepls PLEASE' in console.")
