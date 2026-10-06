@@ -19,6 +19,7 @@ return "RespawnTimer", function(v, player)
 		v.drawString(160,100, text, V_50TRANS, "thin-center")
 		v.drawString(160,100+8, respawntics2.." seconds", V_50TRANS, "thin-center")
 		
+		-- TODO: Show real zombie type name instead.
 		if player.ze2.next_zombie_type then
 			local next_ztype = player.ze2.next_zombie_type
 			local ztype = player.ze2.zombie_type
