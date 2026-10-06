@@ -91,6 +91,9 @@ function ZE2.LatestCheckpointTeleport(player, setcheckpoint)
 		if setcheckpoint then
 			player.ze2.checkpoint_number = latest_checkpoint
 		end
+		
+		player.mo.momx = $/3
+		player.mo.momy = $/3
 	else
 		local game = ZE2.Game
 		
