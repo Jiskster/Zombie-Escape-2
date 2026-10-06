@@ -16,9 +16,10 @@ end, 0, 0, S_BLOODBOMB}
 states[S_BLOODBOMB_DEATH] = {SPR_NULL, A, 1, function(mo) -- Explode within a radius setted by explode_radius local
 	searchBlockmap("objects", function(mo, foundmobj)
 		local dist = R_PointToDist2(mo.x, mo.y, foundmobj.x, foundmobj.y)
-		if (dist > explode_radius) then return end
+		local distz = R_PointToDist2(mo.z, mo.z, foundmobj.z, foundmobj.z)
+		if (dist > explode_radius or distz > explode_radius) then return end
 		if not (foundmobj.health and foundmobj.player) then return end
-		if not ZE2.ZCollide(mo, foundmobj) then return end
+		if not P_CheckSight(mo, foundmobj) then return end
 		if foundmobj.team == mo.team then return end
 
 		foundmobj.bloodbomb_blindtime = blind_time
