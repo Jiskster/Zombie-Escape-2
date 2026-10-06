@@ -7,7 +7,13 @@ local blind_time = TICRATE * 7
 
 -- [[ The item itself ]] --
 
-freeslot("S_BLOODBOMB", "S_BLOODBOMB_DEATH")
+freeslot("S_BLOODBOMB", "S_BLOODBOMB_DEATH", "sfx_bbmis")
+
+sfxinfo[sfx_bbmis] = {
+    singular = true,
+    priority = 128,
+    flags = SF_X2AWAYSOUND|SF_NOMULTIPLESOUND
+}
 
 states[S_BLOODBOMB] = {SPR_DRAB, FF_FULLBRIGHT|D, -1, function(mo) -- Properties on spawn
 	mo.colorized = true
@@ -108,6 +114,10 @@ xSlinger.registerItem("blood_bomb", {
 		
 		spawnVFX(missile)
 	end;
+	
+	missile_spawn = function(self, mo, missile)
+		S_StartSound(missile, sfx_bbmis)
+	end,
 })
 
 -- [[ Explode blindness behavior ]] --
