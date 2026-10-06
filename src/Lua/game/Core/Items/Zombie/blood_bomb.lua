@@ -33,13 +33,6 @@ states[S_BLOODBOMB_DEATH] = {SPR_NULL, A, 1, function(mo) -- Explode within a ra
 	A_OldRingExplode(mo, MT_DUST, 0) -- TODO: Change it to blood particles instead...? maybe adapt blood droplets for this.
 end, 0, 0, S_NULL}
 
-/* -- TODO: implement this into xslinger's system. idk how. I want to make this item have hp. -GLide KS
-mobjinfo[MT_BLOODBOMB].npc_name = "Blood Bomb"
-mobjinfo[MT_BLOODBOMB].npc_spawnhealth = {bomb_health, bomb_health}
-mobjinfo[MT_BLOODBOMB].npc_name_color = SKINCOLOR_RED
-mobjinfo[MT_BLOODBOMB].antiknockback = true
-*/
-
 -- Register it
 
 local xsmissile_bloodbomb =
