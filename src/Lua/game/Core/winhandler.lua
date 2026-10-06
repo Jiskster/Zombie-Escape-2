@@ -25,9 +25,9 @@ function ZE2:StartWin(team, fromring)
 			ze2.karma = min(ze2.karma + 150, ZE2.MaxKarma)
 			P_KillMobj(player.mo)
 			continue
+		else
+			ze2.karma = max(1, $ - 75)
 		end
-
-		ze2.karma = max(1, $ - 75)
 
 		ZE2:GivePlayerCash(player, cash_award)
 		S_StartSound(player.mo, sfx_rbyhit)
