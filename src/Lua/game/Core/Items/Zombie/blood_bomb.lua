@@ -14,7 +14,7 @@ states[S_BLOODBOMB] = {SPR_DRAB, FF_FULLBRIGHT|D, -1, function(mo) -- Properties
 end, 0, 0, S_BLOODBOMB}
 
 states[S_BLOODBOMB_DEATH] = {SPR_NULL, A, 1, function(mo) -- Explode within a radius setted by explode_radius local
-	searchBlockmap("objects", function(mo, foundmobj)
+	searchBlockmap("objects", function(refmo, foundmobj)
 		local dist = R_PointToDist2(mo.x, mo.y, foundmobj.x, foundmobj.y)
 		local distz = R_PointToDist2(mo.z, mo.z, foundmobj.z, foundmobj.z)
 		if (dist > explode_radius or distz > explode_radius) then return end
@@ -23,11 +23,12 @@ states[S_BLOODBOMB_DEATH] = {SPR_NULL, A, 1, function(mo) -- Explode within a ra
 		if foundmobj.team == mo.team then return end
 
 		foundmobj.bloodbomb_blindtime = blind_time
+		P_DamageMobj(foundmobj, mo, mo.target, 1, 0)
 		S_StartSound(nil, sfx_prloop, foundmobj.player)
 	end, mo,
 	mo.x - explode_radius, mo.x + explode_radius,
 	mo.y - explode_radius, mo.y + explode_radius)
-	
+
 	P_StartQuake(64 * FU, TICRATE, {x = mo.x, y = mo.y, z = mo.z})
 
 	A_OldRingExplode(mo, MT_DUST, 0) -- TODO: Change it to blood particles instead...? maybe adapt blood droplets for this.
