@@ -2,18 +2,21 @@ freeslot("S_ZE2_THROWNSPLASH1", "S_ZE2_THROWNSPLASH2", "S_ZE2_SPLASH_DROP", "S_Z
 freeslot("sfx_rs_spl", "sfx_rs_sp2")
 
 local A_SplashBoom = function(mo)
+	if not (mo and mo.valid) then
+		return end;
+		
 	for j = 1, 3 do
 		local amtbubbles = 8 * j
 		for i = 0, amtbubbles do
 			local fa = i*(ANGLE_180/amtbubbles)*2
 			
 			local mobj = xSlinger.SpawnMissile({
-				source = mo.target,
+				source = mo,
 				type = "SPLASH_RING_AOE",
 				angle = 0,
 				aiming = 0,
 				iteminfo = mo.iteminfo,
-				origin = mo,
+				--origin = mo,
 				damage = 2,
 			})
 			
@@ -46,7 +49,9 @@ states[S_ZE2_THROWNSPLASH2] = {
 }
 
 states[S_ZE2_SPLASHBOOM] = {
-	tics = TICRATE,
+	nextstate = S_SPRK1,
+	sprite = SPR_RNGP,
+	tics = 1,
 	action = A_SplashBoom
 }
 
@@ -109,6 +114,7 @@ xSlinger.registerMissile("SPLASH_RING_AOE", {
 	state = S_THOK,
 	addflags = MF_SLIDEME,
 	safeground = true,
+	deathstate = S_INVISIBLE, -- TODO: if you remove this line, it errors for some reason, fix it.
 	tick = function(self, pmo, mo)
 		mo.momx = $ * 96/100
 		mo.momy = $ * 96/100
