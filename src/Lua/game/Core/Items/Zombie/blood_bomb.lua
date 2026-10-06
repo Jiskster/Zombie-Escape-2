@@ -1,8 +1,8 @@
 -- [[ Item properties ]] --
 
 local explode_radius = 315 * FU
-local health_cost = 350
-local bomb_health = 100
+local health_cost = 600
+local bomb_health = 40
 local blind_time = TICRATE * 7
 
 -- [[ The item itself ]] --
@@ -51,7 +51,7 @@ end, 0, 0, S_NULL}
 
 local xsmissile_bloodbomb =
 xSlinger.registerMissile("BLOOD_BOMB", {
-	speed = 52*FRACUNIT,
+	speed = 42*FRACUNIT,
 	displayname = "Blood Bomb",
 	state = S_BLOODBOMB,
 	deathstate = S_BLOODBOMB_DEATH,
@@ -98,7 +98,7 @@ xSlinger.registerItem("blood_bomb", {
 
 	color = SKINCOLOR_ALPHAZOMBIE; -- Originally was using player's color but should make sense to use a fixed red color instead.
 	missile = "BLOOD_BOMB",
-    firerate = 15 * TICRATE;
+    firerate = 24 * TICRATE;
 	damage = 10;
 	droppable = false;
 
