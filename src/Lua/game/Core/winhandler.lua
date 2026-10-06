@@ -27,9 +27,7 @@ function ZE2:StartWin(team, fromring)
 			continue
 		end
 
-		if (team == 1) then
-			ze2.karma = max(1, $ - 200)
-		end
+		ze2.karma = max(1, $ - 75)
 
 		ZE2:GivePlayerCash(player, cash_award)
 		S_StartSound(player.mo, sfx_rbyhit)
