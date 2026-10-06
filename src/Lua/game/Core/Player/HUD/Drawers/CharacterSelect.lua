@@ -164,4 +164,4 @@ return "CharacterSelect", function(v, player)
 	CURWEAP_Y = $ - FixedMul(CURWEAP.height*FU, CURWEAP_SCALE)/2
 
 	drawScaled(CURWEAP_X, CURWEAP_Y - 6*FU, CURWEAP_SCALE, CURWEAP, V_SNAPTOTOP)
-end, "game"
+end, "game", 50

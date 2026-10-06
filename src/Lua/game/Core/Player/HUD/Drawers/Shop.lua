@@ -88,4 +88,4 @@ return "Shop", function(v, player)
 	end
 	
 	v.drawString(160*FU - anim*FU, y + 48*FU, "DONE", finishmap, "fixed-center") -- price
-end, "game"
+end, "game", 50

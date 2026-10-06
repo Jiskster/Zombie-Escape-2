@@ -40,6 +40,8 @@ local function SetupHudNoLoad(filename)
 	dofile(PATH .. "/" .. path .. "/" .. filename)
 end
 
+SetupHud "PlayerTags"
+
 SetupHud "HudToggle"
 
 SetupHud "CharacterSelect"
@@ -47,8 +49,6 @@ SetupHud "CharacterSelect"
 SetupHud "Shop"
 
 SetupHud "DamageText"
-
-SetupHud "PlayerTags"
 
 SetupHud "DamageFade"
 
