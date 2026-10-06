@@ -1,6 +1,6 @@
 rawset(_G, "ZE2", {})
 
-ZE2.version = {0, 5, 0}
+ZE2.version = {0, 6, 0}
 ZE2.version.indev = true
 ZE2.version.commit = dofile("game/version.lua")
 
