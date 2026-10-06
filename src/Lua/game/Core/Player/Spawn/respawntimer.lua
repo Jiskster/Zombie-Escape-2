@@ -1,4 +1,6 @@
 addHook("PlayerThink", function(player)
+	local game = ZE2.Game
+	
 	if (player and not player.mo) then 
 		return 
 	end
@@ -28,6 +30,12 @@ addHook("PlayerThink", function(player)
 					end
 				end
 			end
+		end
+	end
+	
+	if game.ended then
+		if player.playerstate == PST_REBORN then
+			player.playerstate = PST_DEAD
 		end
 	end
 end)
