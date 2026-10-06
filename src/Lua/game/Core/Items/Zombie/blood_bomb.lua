@@ -64,6 +64,17 @@ xSlinger.registerMissile("BLOOD_BOMB", {
 	delflags = MF_NOGRAVITY|MF_NOBLOCKMAP,
 })
 
+local xsmissile_bloodbomb_guide =
+xSlinger.registerMissile("BLOOD_BOMB_GUIDE", {
+	state = S_THOK,
+	speed = xsmissile_bloodbomb.speed,
+	displayname = xsmissile_bloodbomb.displayname,
+	radius = xsmissile_bloodbomb.radius,
+	height = xsmissile_bloodbomb.height,
+	addflags = MF_NOCLIPTHING,
+	delflags = MF_NOGRAVITY,
+})
+
 local function spawnVFX(mo, color)
 	local x = P_RandomRange(- mo.radius / FU, mo.radius / FU)
 	local y = P_RandomRange(- mo.radius / FU, mo.radius / FU)
@@ -123,6 +134,74 @@ xSlinger.registerItem("blood_bomb", {
 	
 	missile_spawn = function(self, mo, missile)
 		S_StartSound(missile, sfx_bbmis)
+	end,
+	
+	holdfunc = function(self, mobj)
+		if mobj.player and mobj.player.valid then
+			local shot = xSlinger.SpawnMissile({
+				source = mobj,
+				type = "BLOOD_BOMB_GUIDE",
+				angle = mobj.angle,
+				aiming = mobj.player.aiming,
+				allow_aim = true,
+			})
+			
+			local x
+			local y
+			local z
+			local valid
+			
+			if shot and shot.valid then	
+				shot.fuse = 3
+
+				for i = 1, 128 do
+					P_XYMovement(shot)
+					
+					if not (shot and shot.valid) then
+						break
+					end
+					
+					P_ZMovement(shot)
+					
+					if not (shot and shot.valid) then
+						break
+					end
+					
+					x = shot.x
+					y = shot.y
+					z = shot.z
+					valid = true
+					
+					if (shot.z == shot.floorz) or (shot.z + shot.height) == shot.ceilingz then
+						shot.momx = 0
+						shot.momy = 0
+						shot.momz = 0
+						break
+					end
+				end
+				
+				if valid then
+					if not (mobj.crossguide and mobj.crossguide.valid) then
+						local t = P_SpawnMobj(x, y, z, MT_UNKNOWN)
+						t.sprite = SPR_TARG
+						t.fuse = 2
+						t.tics = -1
+						t.alpha = FU/2
+						t.drawonlyforplayer = mobj.player
+						
+						mobj.crossguide = t
+					else
+						local t = mobj.crossguide
+						t.fuse = 2
+						t.tics = -1
+						t.alpha = FU/2
+						t.drawonlyforplayer = mobj.player
+						
+						P_MoveOrigin(t, x, y, z)
+					end
+				end
+			end
+		end
 	end,
 })
 

@@ -154,10 +154,6 @@ function xSlinger.DoThinker(mobj)
 		local tpViewMobj = setorigin and P_SetOrigin or P_MoveOrigin
 
 		if holdobject then
-			if hand.holdfunc then
-				hand:holdfunc(mobj)
-			end
-
 			local radius = mobj.radius
 			local magnitude = (radius*5)/3
 
@@ -235,6 +231,10 @@ function xSlinger.DoThinker(mobj)
 			xS.viewmobj.state = holdobject.state or S_INVISIBLE
 			xS.viewmobj.dontdrawforviewmobj = mobj
 		end
+	end
+	
+	if hand.holdfunc then
+		hand:holdfunc(mobj, holdobject)
 	end
 
 	if firing and not xS.delay and not xS.reload
