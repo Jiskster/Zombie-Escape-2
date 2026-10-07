@@ -48,7 +48,7 @@ end, 0, 0, S_NULL}
 
 local xsmissile_bloodbomb =
 xSlinger.registerMissile("BLOOD_BOMB", {
-	speed = 42*FRACUNIT,
+	speed = 48*FRACUNIT,
 	displayname = "Blood Bomb",
 	state = S_BLOODBOMB,
 	deathstate = S_BLOODBOMB_DEATH,
