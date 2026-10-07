@@ -22,6 +22,8 @@ addHook("PlayerSpawn", function(player)
 
 	if player and pmo and pmo.valid then
 		local player_count = ZE2.CountPlayers("ingame")
+		
+		player.ze2.damagefromplayer = 0
 
 		-- Spawn as zombie if you join midgame
 		if (game.active and player_count > 1) then 

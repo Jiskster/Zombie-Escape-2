@@ -40,9 +40,13 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 					end
 					
 					killer.player.ze2.karma = max(1, killer.player.ze2.karma - 120)
-					
-					player.ze2.next_zombie_type = "alpha"
 				end
+			end
+			
+			local dmgtaken = player.ze2.damagefromplayer
+			local dmgreq = (mo.maxhealth*7)/10
+			if dmgtaken > dmgreq then
+				player.ze2.next_zombie_type = "alpha"
 			end
 		end
 	end
@@ -97,6 +101,10 @@ xSlinger.addHook("OnPlayerDamage", function(player, inf, src, dmg, damagetype)
 				player.mo:give_effect("alphazombie.rage_regen", {}, TICRATE, true)
 			end
 		end
+	end
+	
+	if attacker and attacker.player then
+		pV.damagefromplayer = $ + dmg
 	end
 end)
 

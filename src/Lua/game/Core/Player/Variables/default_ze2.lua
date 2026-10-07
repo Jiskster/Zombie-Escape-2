@@ -36,6 +36,8 @@ return {
 
 	damage_fade = 0, -- tic_t
 	damage_fade_max = 0,
+	
+	damagefromplayer = 0,
 
 	checkpoint_number = 0,
 	checkpoint_catchuptics = 0,
