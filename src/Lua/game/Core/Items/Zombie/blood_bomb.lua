@@ -15,10 +15,7 @@ sfxinfo[sfx_bbmis] = {
     flags = SF_X2AWAYSOUND|SF_NOMULTIPLESOUND
 }
 
-states[S_BLOODBOMB] = {SPR_DRAB, FF_FULLBRIGHT|D, -1, function(mo) -- Properties on spawn
-	mo.colorized = true
-end, 0, 0, S_BLOODBOMB}
-
+states[S_BLOODBOMB] = {SPR_DRAB, FF_FULLBRIGHT|D, -1, nil, 0, 0, S_BLOODBOMB}
 states[S_BLOODBOMB_DEATH] = {SPR_NULL, A, 1, function(mo) -- Explode within a radius setted by explode_radius local
 	local xpld_radius = FixedMul(mo.scale, explode_radius)
 
@@ -126,6 +123,7 @@ xSlinger.registerItem("blood_bomb", {
 	end;
 	
 	missile_spawn = function(self, mo, missile)
+		missile.colorized = true
 		S_StartSound(missile, sfx_bbmis)
 	end,
 	
