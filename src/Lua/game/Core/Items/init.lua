@@ -7,11 +7,8 @@ function A_RingExplode2(actor, var1, var2)
     vfx._override_tnt_explode = true
     vfx.state = S_TNTBARREL_EXPL1
     vfx.fuse = TICRATE
-    actor.state = S_INVISIBLE
-	actor.fuse = TICRATE
-	actor.flags = $ | MF_NOGRAVITY
-
-    S_StartSound(actor, sfx_prloop)
+	
+    S_StartSound(vfx, sfx_prloop)
 	P_StartQuake(64 * FU, 10, {x = vfx.x, y = vfx.y, z = vfx.z})
 
     local real_range = 256 * FU
@@ -26,6 +23,8 @@ function A_RingExplode2(actor, var1, var2)
         actor.flags2 = actor.flags2 | MF2_DEBRIS
         P_DamageMobj(foundmobj, actor, actor.target, 1, 0)
     end, actor, actor.x - bm_range, actor.x + bm_range, actor.y - bm_range, actor.y + bm_range)
+	
+	actor.health = 0
 end
 
 function A_TNTExplode(actor, var1, var2)
@@ -33,6 +32,8 @@ function A_TNTExplode(actor, var1, var2)
         super(actor, var1, var2)
     end
 end
+
+states[S_ZE2_RINGEXPLODE] = {SPR_NULL, A, 1, A_RingExplode2, 0, 0, S_XPLD1, 0}
 
 -- The missile itself is invisible, you have to spawn a visible indicator when it stops on something.
 function ZE2.registerCrosshairGuide(refid)
@@ -122,8 +123,6 @@ function ZE2.drawCrosshairGuide(mobj, id, alpha)
 		end
 	end
 end
-
-states[S_ZE2_RINGEXPLODE] = {SPR_NULL, A, 1, A_RingExplode2, 0, 0, S_XPLD1, 0}
 
 local PATH = "game/Core/Items"
 

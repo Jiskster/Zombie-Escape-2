@@ -30,6 +30,7 @@ xSlinger.registerMissile("SCATTER_RING", {
 	displayname = "Scatter Ring",
 	state = S_XS_SCATTERRING,
 	deathstate = S_SPRK1,
+	xdeathstate = S_SPRK1,
 	deathsound = sfx_rs_die,
 	height = 32*FRACUNIT,
 }) -- height 32

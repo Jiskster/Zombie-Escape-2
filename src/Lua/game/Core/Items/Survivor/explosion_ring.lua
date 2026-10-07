@@ -16,6 +16,7 @@ xSlinger.registerMissile("EXPLOSION_RING", {
 	state = S_THROWNEXPLOSION1,
 	deathstate = S_ZE2_RINGEXPLODE,
 	deathsound = sfx_pop,
+	externaldeathsound = true,
 	delflags = MF_NOGRAVITY,
 })
 

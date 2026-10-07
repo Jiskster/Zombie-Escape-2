@@ -98,6 +98,7 @@ xSlinger.registerMissile("SPLASH_RING", {
 	displayname = "Splash Ring",
 	state = S_ZE2_THROWNSPLASH1,
 	deathstate = S_ZE2_SPLASHBOOM,
+	xdeathstate = S_ZE2_SPLASHBOOM,
 	deathsound = sfx_rs_sp2,
 	externaldeathsound = true,
 	tick = function(self, pmo, mo)

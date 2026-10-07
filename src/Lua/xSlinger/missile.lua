@@ -5,13 +5,71 @@ local FixedMul = FixedMul
 local FixedDiv = FixedDiv
 
 freeslot("MT_XS_MISSILE")
+freeslot("S_XS_MISSILE_DEATHSTATE")
+freeslot("S_XS_MISSILE_XDEATHSTATE")
 
 mobjinfo[MT_XS_MISSILE] = {
 	radius = 16*FRACUNIT,
 	height = 24*FRACUNIT,
 	flags = MF_NOBLOCKMAP|MF_NOGRAVITY,
+	deathstate = S_XS_MISSILE_DEATHSTATE,
+	xdeathstate = S_XS_MISSILE_XDEATHSTATE,
 	health = 1,
 }
+
+local function doDeathSound(mobj, info)
+	if info.deathsound then
+		if info.externaldeathsound then
+			local sndsrc = P_SpawnMobjFromMobj(mobj, 0, 0, 0, MT_THOK)
+			
+			if sndsrc and sndsrc.valid then
+				sndsrc.tics = -1
+				sndsrc.fuse = TICRATE*2
+				sndsrc.state = S_INVISIBLE
+				
+				S_StartSound(sndsrc, info.deathsound)
+			end
+		else
+			S_StartSound(mobj, info.deathsound)
+		end
+	end
+end
+
+states[S_XS_MISSILE_DEATHSTATE] = {
+	tics = 1,
+	action = function(actor)
+		local info = actor.missileinfo
+		if info then
+			doDeathSound(actor, info)
+			
+			actor.momx = 0
+			actor.momy = 0
+			actor.momz = 0
+			
+			if info.deathstate then
+				actor.state = info.deathstate
+			end
+		end
+	end
+} 
+
+states[S_XS_MISSILE_XDEATHSTATE] = {
+	tics = 1,
+	action = function(actor)
+		local info = actor.missileinfo
+		if info then
+			doDeathSound(actor, info)
+			
+			actor.momx = 0
+			actor.momy = 0
+			actor.momz = 0
+			
+			if info.xdeathstate then
+				actor.state = info.xdeathstate
+			end
+		end
+	end
+} 
 
 local cv_friendlyfire = CV_FindVar("friendlyfire")
 
@@ -245,7 +303,7 @@ function xSlinger.CheckMissileSpawn(th)
 
 	if not P_TryMove(th, th.x, th.y, true) then
 		if (th and th.valid) then
-			xSlinger.KillMissile(th)
+			P_KillMobj(th)
 		end
 		return false
 	end
@@ -256,33 +314,9 @@ function xSlinger.KillMissile(mobj)
 	local info = mobj.missileinfo
 	local nogravdeath = false
 	
-	if info and mobj.health and mobj and mobj.valid then
+	if info and mobj and mobj.valid then
 		mobj.alpha = FRACUNIT
 		mobj.fuse = -1
-
-		if info.deathsound then
-			if info.externaldeathsound then
-				local sndsrc = P_SpawnMobjFromMobj(mobj, 0, 0, 0, MT_THOK)
-				
-				if sndsrc and sndsrc.valid then
-					sndsrc.tics = -1
-					sndsrc.fuse = TICRATE*2
-					sndsrc.state = S_INVISIBLE
-					
-					S_StartSound(sndsrc, info.deathsound)
-				end
-			else
-				S_StartSound(mobj, info.deathsound)
-			end
-		end
-
-		if info.deathstate then
-			if mobj.state ~= info.deathstate then
-				mobj.state = info.deathstate
-			end
-		else
-			mobj.state = S_NULL
-		end
 
 		if info.nogravitydeath then
 			nogravdeath = true
@@ -293,18 +327,13 @@ function xSlinger.KillMissile(mobj)
 		if nogravdeath then
 			mobj.flags = $ | MF_NOGRAVITY
 		end
-
-		mobj.momx = 0
-		mobj.momy = 0
-		mobj.momz = 0
-		mobj.health = 0
 	end
 end
 
 local function checkMissile(mobj, missileinfo)
 	if (mobj.z <= mobj.floorz or mobj.z + mobj.height >= mobj.ceilingz) then
 		if (missileinfo and not missileinfo.safeground) then
-			xSlinger.KillMissile(mobj)
+			P_KillMobj(mobj)
 		end
 
 		return false
@@ -357,7 +386,7 @@ addHook("MobjThinker", function(mobj)
 
 		if not P_TryMove(mobj, mobj.x, mobj.y, true) then
 			if (mobj and mobj.valid) then
-				xSlinger.KillMissile(mobj)
+				P_KillMobj(mobj)
 			end
 			break
 		else
@@ -403,7 +432,7 @@ addHook("MobjMoveCollide", function(mov, mobj)
 	and alivemissile and (mov.target and mov.target ~= mobj) 
 	and (friendlyfire or (mov.team ~= mobj.team)) then
 		P_DamageMobj(mobj, mov, mov.target)
-		xSlinger.KillMissile(mov)
+		P_KillMobj(mov, mobj)
 	end
 end, MT_XS_MISSILE)
 
@@ -444,23 +473,14 @@ addHook("MobjMoveBlocked", function(mov, mobj, line)
 	end
 
 	if (mov and mov.valid) then
-		xSlinger.KillMissile(mov)
+		if mobj and mobj.valid then
+			P_DamageMobj(mobj, mov, mov.target)
+		end
+		
+		P_KillMobj(mov)
 	end
-end, MT_XS_MISSILE)
-
-addHook("MobjFuse", function(mobj)
-	if not mobj or not mobj.valid then return end
-	
-	if (mobj.health <= 0) then
-		P_RemoveMobj(mobj)
-		return
-	end
-
-	xSlinger.KillMissile(mobj)
 end, MT_XS_MISSILE)
 
 addHook("MobjDeath", function(mobj)
-	if (mobj.health <= 0) then return end
-
 	xSlinger.KillMissile(mobj)
 end, MT_XS_MISSILE)

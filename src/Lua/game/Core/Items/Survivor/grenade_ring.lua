@@ -25,7 +25,9 @@ xSlinger.registerMissile("GRENADE_RING", {
 	displayname = "Grenade Ring",
 	state = S_XS_GRENADERING,
 	deathstate = S_ZE2_RINGEXPLODE,
+	xdeathstate = S_ZE2_RINGEXPLODE,
 	deathsound = sfx_pop,
+	externaldeathsound = true,
 	delflags = MF_NOGRAVITY,
 	safeground = true,
 	tick = function(self, pmo, mo)
@@ -73,7 +75,7 @@ xSlinger.registerMissile("GRENADE_RING", {
 				ghost.colorized = true
 			end
 		end
-
+		
 		mo.grenade_prevmomz = mo.momz
 	end,
 	blocked = function(self, pmo, mo, line)
