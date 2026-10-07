@@ -29,30 +29,28 @@ xSlinger.registerMissile("FIST", {
 })
 
 xSlinger.registerItem("fist", {
-	displayname = "Fist";
+
+	-- HUD
 	
-	icon = "FISTIND";
+	displayname = "Fist",
+	icon = "FISTIND",
+	animation_time = 10,
+	
+	-- Missile properties
 	
 	missile = "FIST";
+	color = SKINCOLOR_WHITE,
+	damage = 27,
+	fuse = 1,
+	velocity_precision = 2,
+	knockback = 32*FRACUNIT,
+	knockback_time = 15,
 	
-	delay = 18;
+	-- Item properties
 	
+	delay = 18,
+	droppable = false,
 	sounds = {
-		use = sfx_dsclwh;
-	};
-	
-	color = SKINCOLOR_WHITE;
-	
-	damage = 27;
-	
-	fuse = 1;
-	
-	velocity_precision = 2;
-	
-	knockback = 32*FRACUNIT;
-	knockback_time = 15;
-	
-	animation_time = 10;
-	
-	droppable = false;
+		use = sfx_dsclwh,
+	},
 })

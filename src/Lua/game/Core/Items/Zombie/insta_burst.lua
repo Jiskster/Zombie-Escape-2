@@ -74,21 +74,22 @@ addHook("MobjMoveCollide", function(instaburst, mobj)
 end, MT_INSTABURST)
 
 xSlinger.registerItem("insta_burst", {
-	displayname = "Insta Burst";
 
-	icon = "ZMISHIND";
+	-- HUD
+	
+	displayname = "Insta Burst",
+	icon = "ZMISHIND",
+	color = SKINCOLOR_RED,
+	
+	-- Item properties
 
-	delay = 34;
-
+	delay = 34,
+	damage = 40,
+	droppable = false,
 	sounds = {
-		use = {sfx_zish1, sfx_zish2, sfx_zish3};
-		hurt = {sfx_zbatk1, sfx_zbatk2, sfx_zbatk3};
-	};
-
-	damage = 40;
-
-	color = SKINCOLOR_RED;
-
+		use = {sfx_zish1, sfx_zish2, sfx_zish3},
+		hurt = {sfx_zbatk1, sfx_zbatk2, sfx_zbatk3},
+	},
 	usefunc = function(self, mo)
 		local instaburst = P_SpawnMobjFromMobj(mo, 0, 0, 0, MT_INSTABURST)
 
@@ -99,7 +100,5 @@ xSlinger.registerItem("insta_burst", {
 		instaburst.forcedamage = self.damage
 		instaburst.iteminfo = self
 		instaburst.ib_hitlist = {}
-	end;
-
-	droppable = false;
+	end,
 })

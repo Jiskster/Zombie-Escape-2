@@ -86,23 +86,24 @@ xSlinger.registerItem("blood_bomb", {
 
 	-- HUD
 
-	displayname = "Blood Bomb";
+	displayname = "Blood Bomb",
 	icon = "BLOODBOMBIND",
 	background_color = SKINCOLOR_CRIMSON,
-	animation_time = TICRATE/2;
+	animation_time = TICRATE/2,
 
 	-- Missile properties
 
-	color = SKINCOLOR_ALPHAZOMBIE; -- Originally was using player's color but should make sense to use a fixed red color instead.
+	color = SKINCOLOR_ALPHAZOMBIE, -- Originally was using player's color but should make sense to use a fixed red color instead.
 	missile = "BLOOD_BOMB",
-    firerate = 24 * TICRATE;
-	damage = 10;
-	droppable = false;
-
+    firerate = 24 * TICRATE,
+	damage = 10,
+	
+	-- Item properties
+	
+	droppable = false,
 	sounds = {
-		use = sfx_s1ae;
-	};
-
+		use = sfx_s1ae,
+	},
 	usefunc = function(self, mo)
 		if not mo and mo.valid then return end
 
@@ -113,20 +114,17 @@ xSlinger.registerItem("blood_bomb", {
 
 		mo.health = $ - health_cost -- Heh don't use this as a survivor lol
 		S_StartSound(mo, skins[mo.skin].soundsid[SKSPLPAN2] or sfx_none)
-	end;
-
+	end,
 	missile_tick = function(self, mo, missile) -- Code of infection vfx.
 		if (leveltime % 3 == 0) then return end
 		if not (missile and missile.valid) then return end
 		
 		spawnVFX(missile)
-	end;
-	
+	end,
 	missile_spawn = function(self, mo, missile)
 		missile.colorized = true
 		S_StartSound(missile, sfx_bbmis)
 	end,
-	
 	holdfunc = function(self, mobj)
 		ZE2.drawCrosshairGuide(mobj, xsmissile_bloodbomb_guide.id, FU/2)
 	end,
