@@ -52,6 +52,7 @@ local function MapLoad(map)
 		if player.ze2 then
 			player.ze2.ghostmode = false
 			player.ze2.checkpoint_number = 0
+			player.ze2.checkpoint_timer = 0
 			if player.ze2.outofgame or player.ze2.injoinqueue then
 				player.spectator = false
 				player.playerstate = PST_REBORN

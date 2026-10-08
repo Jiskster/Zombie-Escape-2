@@ -26,244 +26,155 @@ mobjinfo[MT_ZE2CHECKPOINT] = {
 	//$Arg4Default 2
 
 	doomednum = 5600,
-	spawnstate = S_INVISIBLE,
-	seestate = S_INVISIBLE,
-	painstate = S_INVISIBLE,
-	painsound = sfx_strpst,
-	spawnhealth = 1,
-	reactiontime = 8,
-	speed = 8,
+	spawnhealth = 1000,
 	radius = 64*FRACUNIT,
 	height = 80*FRACUNIT,
-	mass = 4,
-	flags = MF_NOBLOCKMAP|MF_NOCLIP|MF_NOGRAVITY|MF_NOCLIPHEIGHT,
+	
+	flags = MF_NOBLOCKMAP|MF_NOCLIPTHING,
 }
 
-ZE2.LatestSurvivorCheckpoint = 0
-ZE2.LatestZombieCheckpoint = 0
-ZE2.Checkpoints = {}
-ZE2.highest_checkpoint = 0
+local function ResetCheckpoints()
+	ZE2.LatestSurvivorCheckpoint = 0
+	ZE2.LatestZombieCheckpoint = 0
+	ZE2.Checkpoints = {}
+	ZE2.highest_checkpoint = 0
+end; ResetCheckpoints()
 
+-- leave this hook up here for readability
 addHook("NetVars", function(net)
-	ZE2.Checkpoints = net($)
 	ZE2.LatestSurvivorCheckpoint = net($)
 	ZE2.LatestZombieCheckpoint = net($)
+	ZE2.Checkpoints = net($)
 	ZE2.highest_checkpoint = net($)
 end)
 
+---@param player player_t
 function ZE2.GetLatestCheckpoint(player)
-	if player.mo and player.mo.valid then
-		if player.mo.team == 1 then
-			return ZE2.LatestSurvivorCheckpoint
-		else 
-			return ZE2.LatestZombieCheckpoint
-		end
-	else
+	if not (player.mo and player.mo.valid) then
+		return end;
+
+	if player.mo.team == 1 then
+		return ZE2.LatestSurvivorCheckpoint
+	else 
 		return ZE2.LatestZombieCheckpoint
 	end
 end
 
-function ZE2.LatestCheckpointTeleport(player, setcheckpoint)
+---@param player player_t
+---@param setcheckpoint boolean
+function ZE2.LatestCheckpointTeleport(player)
 	local game = ZE2.Game
 	
 	if not (game.active) then
-		return
-	end
+		return end;
 	
 	if not (player.mo and player.mo.valid) then
-		return
-	end
+		return end;
 	
 	if not (leveltime) then
+		return end;
+
+	local check = ZE2.GetLatestCheckpoint(player)
+	
+	if not (check and ZE2.Checkpoints[check]) then
+		return end;
+
+	local info = ZE2.Checkpoints[check]
+
+	P_SetOrigin(player.mo, info.x*FU, info.y*FU, info.z*FU)
+	P_SpawnMobj(player.mo.x, player.mo.y, player.mo.z, MT_ZE2_TELEGFX)
+	player.mo.angle = FixedAngle(info.angle*FRACUNIT)
+	player.ze2.checkpoint_number = check
+	player.mo.momx = $/3
+	player.mo.momy = $/3
+end
+
+---@param mobj mobj_t Player Object
+---@param cmobj mobj_t Checkpoint Object
+local function ActivateCheckpoint(mobj, checkpoint, cmobj)
+	local isvalid = mobj.player and mobj.player.valid
+					and cmobj and cmobj.valid
+
+	local player = mobj.player
+	
+	if not (isvalid) then
 		return
 	end
-	
-	if ZE2.GetLatestCheckpoint(player) and ZE2.Checkpoints[ZE2.GetLatestCheckpoint(player)] then
-		local latest_checkpoint = ZE2.GetLatestCheckpoint(player)
-		local info = ZE2.Checkpoints[latest_checkpoint]
 
-		P_SetOrigin(player.mo, info.x*FU, info.y*FU, info.z*FU)
-		P_SpawnMobj(player.mo.x, player.mo.y, player.mo.z, MT_ZE2_TELEGFX)
-		player.mo.angle = FixedAngle(info.angle*FRACUNIT)
+	local indiscriminate = checkpoint.indiscriminate
+	local checkpoint_num = checkpoint.number
+	local disable_catchup = checkpoint.disable_catchup
+	local catchup_timer = checkpoint.catchup_delay
+	local zombie_catchup_offset = checkpoint.zombie_catchup_offset
+	local isTeam = (mobj.team == 1 and checkpoint.survivor_checkpoint)
+				or (mobj.team == 2 and checkpoint.zombie_checkpoint)
 
-		player.mo.flags2 = $ & ~MF2_TWOD -- get out
-
-		if setcheckpoint then
-			player.ze2.checkpoint_number = latest_checkpoint
-		end
-		
-		player.mo.momx = $/3
-		player.mo.momy = $/3
-	else
-		local game = ZE2.Game
-		
-		if ZE2.cv_debug.value then
-			print(player.name .. " failed checkpoint tp")
-		end
+	if not (indiscriminate or isTeam) then
+		return
 	end
-end
 
-function ZE2.DeductCatchupTics(player, tics)
-	if player.ze2.checkpoint_catchuptics <= 0 then return end
-
-	if player.ze2.checkpoint_catchuptics - tics <= 0 then
-		player.ze2.checkpoint_catchuptics = 0
-		ZE2.LatestCheckpointTeleport(player)
-	else
-		player.ze2.checkpoint_catchuptics = $ - tics
+	if (player.ze2.checkpoint_number >= checkpoint_num) then
+		return
 	end
-end
 
-local function ActivateCheckpoint(mobj, checkpoint)
-	local isvalid = mobj.player and mobj.player.valid
-					and checkpoint and checkpoint.valid
-					and checkpoint.spawnpoint
-	local player = mobj.player
+	-- starpost animation/sound
+	S_StartSound(cmobj, sfx_strpst)
+	cmobj.state = S_STARPOST_STARTSPIN
 
-	if isvalid then
-		local checkpoint_number = checkpoint.spawnpoint.args[0]
-		local checkpoint_flags = checkpoint.spawnpoint.args[1]
-		local checkpoint_catchup_delay = checkpoint.spawnpoint.args[2]
-		local checkpoint_extra_flags = checkpoint.spawnpoint.args[3]
-		local checkpoint_zombie_catchup_offset = checkpoint.spawnpoint.args[4]
-		local SURVIVORFLAG, ZOMBIEFLAG = 1<<0, 1<<1
+	-- set player checkpoint
+	player.ze2.checkpoint_number = checkpoint_num
 
-		-- Indiscriminate Checkpoints (Triggering causes all teams to start the catch up routine)
-		local INDISCRIMINATE_FLAG = 1<<0
-		-- Disable catchup (Makes it so others dont have to catch up to you)
-		local DISABLECATCHUP_FLAG = 1<<1
+	local isCaughtUp = (mobj.team == 1 and checkpoint_num >= ZE2.LatestSurvivorCheckpoint)
+					or (mobj.team == 2 and checkpoint_num >= ZE2.LatestZombieCheckpoint)
+	if isCaughtUp then
+		ZE2.debugprint(player.name .. " caught up to checkpoint num " .. checkpoint_num)
+		player.ze2.checkpoint_timer = 0
+	end
 
-		if checkpoint_number then
-			if (checkpoint_flags & SURVIVORFLAG) and (mobj.team == 1 or (checkpoint_extra_flags & INDISCRIMINATE_FLAG)) then
-				if ZE2.LatestSurvivorCheckpoint < checkpoint_number then -- Is activating a newer checkpoint
-					ZE2.LatestSurvivorCheckpoint = checkpoint_number
-					player.ze2.checkpoint_number = ZE2.LatestSurvivorCheckpoint
+	-- set global checkpoints
+	if (mobj.team == 1 and ZE2.LatestSurvivorCheckpoint < player.ze2.checkpoint_number) or (indiscriminate) then
+		ZE2.LatestSurvivorCheckpoint = checkpoint_num
+		ZE2.debugprint("new survivor checkpoint: "..checkpoint_num)
+	end
+	if (mobj.team == 2 and ZE2.LatestZombieCheckpoint < player.ze2.checkpoint_number) or (indiscriminate) then
+		ZE2.LatestZombieCheckpoint = checkpoint_num
+		ZE2.debugprint("new zombie checkpoint: "..checkpoint_num)
+	end
 
-					--checkpoint.state = checkpoint.info.painstate
+	if (disable_catchup) or (not catchup_timer) then
+		return
+	end
 
-					if ZE2.cv_debug.value then
-						S_StartSound(mobj, checkpoint.info.painsound)
-						print("Checkpoint Activated: "..checkpoint_number)
-					end
+	-- set catchup timers for other players
+	for ctp in players.iterate do
+		if (ctp.spectator) then
+			ctp.ze2.checkpoint_timer = 0
+			continue
+		end
 
-					if not (checkpoint_extra_flags & DISABLECATCHUP_FLAG) then
-						for tplayer in players.iterate do
-							if tplayer.spectator then continue end
-							if player == tplayer then continue end
+		if (ctp == player) then continue end
 
-							if tplayer.ze2 and tplayer.mo.team == 1 and tplayer.ze2.checkpoint_number < checkpoint_number then
-								if tplayer.ze2.checkpoint_catchuptics then
-									ZE2.DeductCatchupTics(player, 5*TICRATE)
-									continue
-								end
+		local ctpmo = ctp.mo
 
-								tplayer.ze2.checkpoint_catchuptics = checkpoint_catchup_delay*TICRATE
-							end
-						end
-					end
-				elseif mobj.team == 1 then
-					if player.ze2.checkpoint_number < checkpoint_number and checkpoint_number ~= ZE2.GetLatestCheckpoint(player) then
-						ZE2.DeductCatchupTics(player, 5*TICRATE)
-						--print("Not same checkpoint number, deducting tics")
-					elseif checkpoint_number == ZE2.GetLatestCheckpoint(player) then
-						player.ze2.checkpoint_catchuptics = 0
-						player.ze2.checkpoint_number = ZE2.GetLatestCheckpoint(player)
-						--print("Equal checkpoints")
-					end
-				end
+		if not (ctpmo and ctpmo.valid) then continue end
+
+		local isCatchupTeam = (ctpmo.team == 1 and mobj.team == 1 and checkpoint.survivor_checkpoint) 
+							or (ctpmo.team == 2 and mobj.team == 2 and checkpoint.zombie_checkpoint)
+							or indiscriminate
+
+		if isCatchupTeam then
+			local newtime = catchup_timer
+			if ctpmo.team == 2 then
+				newtime = $ + zombie_catchup_offset
 			end
 
-			if (checkpoint_flags & ZOMBIEFLAG) and (mobj.team == 2 or (checkpoint_extra_flags & INDISCRIMINATE_FLAG)) then
-				if ZE2.LatestZombieCheckpoint < checkpoint_number then
-					ZE2.LatestZombieCheckpoint = checkpoint_number
-					player.ze2.checkpoint_number = ZE2.LatestZombieCheckpoint
-
-					--checkpoint.state = checkpoint.info.painstate
-
-					if ZE2.cv_debug.value then
-						S_StartSound(mobj, checkpoint.info.painsound)
-						print("Checkpoint Activated: "..checkpoint_number)
-					end
-
-					if not (checkpoint_extra_flags & DISABLECATCHUP_FLAG) then
-						for tplayer in players.iterate do
-							if tplayer.spectator then continue end
-							if player == tplayer then continue end
-							if not (tplayer.mo and tplayer.mo.valid) then continue end
-
-							if tplayer.ze2 and tplayer.mo.team == 2 and tplayer.ze2.checkpoint_number < checkpoint_number then
-								if tplayer.ze2.checkpoint_catchuptics then
-									ZE2.DeductCatchupTics(player, 5*TICRATE)
-									continue
-								end
-
-								tplayer.ze2.checkpoint_catchuptics = max(0, checkpoint_catchup_delay*TICRATE + checkpoint_zombie_catchup_offset*TICRATE)
-							end
-						end
-					end
-				elseif mobj.team == 2 then
-					if player.ze2.checkpoint_number < checkpoint_number and checkpoint_number ~= ZE2.GetLatestCheckpoint(player) then
-						player.ze2.checkpoint_number = checkpoint_number
-						ZE2.DeductCatchupTics(player, 5*TICRATE)
-						--print("Not same checkpoint number, deducting tics")
-					elseif checkpoint_number == ZE2.GetLatestCheckpoint(player) then
-						player.ze2.checkpoint_catchuptics = 0
-						player.ze2.checkpoint_number = ZE2.GetLatestCheckpoint(player)
-						--print("Equal checkpoints")
-					end
-				end
-			end
+			ctp.ze2.checkpoint_timer = newtime
 		end
 	end
 end
 
-addHook("MapLoad", function()
-	for i,v in pairs(ZE2.Checkpoints) do
-		ZE2.Checkpoints[i] = nil
-	end
-	
-	ZE2.LatestSurvivorCheckpoint = 0
-	ZE2.LatestZombieCheckpoint = 0
-	ZE2.highest_checkpoint = 0
-
-	local checkpoint_doomednum = mobjinfo[MT_ZE2CHECKPOINT].doomednum
-
-	for thing in mapthings.iterate do
-		local checkpoint_number = thing.args[0]
-		local checkpoint_flags = thing.args[1]
-		local checkpoint_catchup_delay = thing.args[2]
-		local checkpoint_extra_flags = thing.args[3]
-
-		local SURVIVORFLAG, ZOMBIEFLAG = 1<<0, 1<<1
-
-		-- Disable Auto Trigger (Disables the function where it auto triggers the checkpoint if you're in the same sector as it)
-		local DISABLEAUTOTRIGGER = 1<<2
-
-		if checkpoint_number and thing.type == checkpoint_doomednum then
-			ZE2.Checkpoints[checkpoint_number] = {
-				x = thing.x,
-				y = thing.y,
-				z = P_FloorzAtPos(thing.x*FU, thing.y*FU, thing.z*FU, mobjinfo[MT_ZE2CHECKPOINT].height)/FU,
-				angle = thing.angle,
-				subsector = R_PointInSubsectorOrNil(thing.x*FU, thing.y*FU),
-				mobj = thing.mobj,
-				thing = thing,
-				tag = thing.tag,
-				catchup_delay = checkpoint_catchup_delay*TICRATE,
-				zombie_checkpoint = (checkpoint_flags & ZOMBIEFLAG) > 0,
-				survivor_checkpoint = (checkpoint_flags & SURVIVORFLAG) > 0,
-				disable_autotrigger = (checkpoint_extra_flags & DISABLEAUTOTRIGGER) > 0,
-			}
-		end
-	end
-	
-	for checkpoint_num, checkpoint in pairs(ZE2.Checkpoints) do
-		if checkpoint_num > ZE2.highest_checkpoint then
-			ZE2.highest_checkpoint = checkpoint_num
-		end
-	end
-end)
-
+---@param mobj mobj_t
+---@param sector sector_t
 local function getMobjZSectorRange(mobj, sector)
 	local output = {
 		ceiling = sector.ceilingheight,
@@ -283,9 +194,10 @@ local function getMobjZSectorRange(mobj, sector)
 	return output
 end
 
-local function checkpointCheck(pmo)
+---@param mobj mobj_t the mobj of the player
+local function checkpointCheck(mobj)
 	local checkpoints = ZE2.Checkpoints
-	
+
 	for checkpoint_num=1, ZE2.highest_checkpoint do
 		local checkpoint = checkpoints[checkpoint_num]
 		
@@ -294,7 +206,7 @@ local function checkpointCheck(pmo)
 		end
 		
 		if checkpoint.mobj and checkpoint.mobj.valid then -- is checkpoint valid
-			if pmo.subsector.sector == checkpoint.subsector.sector -- if checkpoint sector is player sector
+			if mobj.subsector.sector == checkpoint.subsector.sector -- if checkpoint sector is player sector
 			and not checkpoint.disable_autotrigger then
 				local sector = checkpoint.subsector.sector
 				local cmo = checkpoint.mobj
@@ -302,18 +214,18 @@ local function checkpointCheck(pmo)
 				local zrange = getMobjZSectorRange(cmo, sector)
 
 				-- use our floor and height caps
-				if pmo.z < zrange.ceiling and pmo.z + pmo.height > zrange.floor then
-					ActivateCheckpoint(pmo, checkpoint.mobj)
+				if mobj.z < zrange.ceiling and mobj.z + mobj.height > zrange.floor then
+					ActivateCheckpoint(mobj, checkpoint, checkpoint.mobj)
 				end
 			end
 
 			if checkpoint.tag then
 				for sector in sectors.tagged(checkpoint.tag) do
-					if pmo.subsector.sector == sector then
-						local zrange = getMobjZSectorRange(pmo, sector)
+					if mobj.subsector.sector == sector then
+						local zrange = getMobjZSectorRange(mobj, sector)
 
-						if pmo.z < zrange.ceiling and pmo.z + pmo.height > zrange.floor then
-							ActivateCheckpoint(pmo, checkpoint.mobj)
+						if mobj.z < zrange.ceiling and mobj.z + mobj.height > zrange.floor then
+							ActivateCheckpoint(mobj, checkpoint, checkpoint.mobj)
 						end
 					end
 				end
@@ -322,36 +234,108 @@ local function checkpointCheck(pmo)
 	end
 end
 
--- Main checkpoint thinker.
-addHook("PlayerThink", function(player)
-	if player.ze2.checkpoint_catchuptics then
-		player.ze2.checkpoint_catchuptics = $ - 1
+addHook("MapThingSpawn", function(mobj, thing)
+	local checkpoint_number = thing.args[0] -- number
+	local checkpoint_flags = thing.args[1] -- flags
+	local checkpoint_catchup_delay = thing.args[2] --number
+	local checkpoint_extra_flags = thing.args[3] -- flags
+	local checkpoint_zombie_catchup_offset = thing.args[4] -- number
 
-		if not player.ze2.checkpoint_catchuptics then
-			ZE2.LatestCheckpointTeleport(player, true)
-		end
+	-- Flags [Args 1]
+
+	local SURVIVORFLAG, ZOMBIEFLAG = 1<<0, 1<<1 -- flags
+
+	-- Extra Flags [Args 3]
+
+	-- Indiscriminate Checkpoints (Triggering causes all teams to start the catch up routine)
+	local INDISCRIMINATE_FLAG = 1<<0
+	-- Disable catchup (Makes it so others dont have to catch up to you)
+	local DISABLECATCHUP_FLAG = 1<<1
+	-- Disable Auto Trigger (Disables the function where it auto triggers the checkpoint if you're in the same sector as it)
+	local DISABLEAUTOTRIGGER_FLAG = 1<<2
+
+	if not (checkpoint_number) then
+		print("\x85".."ERROR: ".."\x80".."Invalid Checkpoint At "..thing.x.." "..thing.y.." "..thing.z.. " [mapthing number: "..#thing.."]")
+		return true 
 	end
-	
-	if not #ZE2.Checkpoints then return end
-	
-	local highest_checkpoint = ZE2.highest_checkpoint
-	
-	local pmo = player.mo
 
-	-- this code checks if the player sector has been changed
-	-- if it changed then check if the theres a valid checkpoint in the new sector
-	-- i rewrote this so it wouldnt be laggy like last time (checked sector every frame lol)
-	if (pmo and pmo.valid) then
-		if not pmo.c_lastsector then
-			pmo.c_lastsector = pmo.subsector.sector
-		elseif (pmo.momx and pmo.momy) or (pmo.reactiontime) then
-			if (pmo.subsector.sector ~= pmo.c_lastsector) then -- if is new sector
-				checkpointCheck(pmo)
-			end
+	ZE2.debugprint("\x83".."NOTICE: ".."\x80".."New checkpoint ["..checkpoint_number.."]")
+
+	ZE2.Checkpoints[checkpoint_number] = {
+		x = thing.x,
+		y = thing.y,
+		z = P_FloorzAtPos(thing.x*FU, thing.y*FU, thing.z*FU, mobjinfo[MT_ZE2CHECKPOINT].height)/FU,
+		angle = thing.angle,
+		subsector = R_PointInSubsectorOrNil(thing.x*FU, thing.y*FU),
+		mobj = mobj,
+		thing = thing,
+		tag = thing.tag,
+
+		-- Args 0 [Checkpoint Number]
+
+		number = checkpoint_number, -- int
+
+		-- Args 1 [Team Flags]
+
+		zombie_checkpoint = (checkpoint_flags & ZOMBIEFLAG) > 0, -- flag 0
+		survivor_checkpoint = (checkpoint_flags & SURVIVORFLAG) > 0, -- flag 1
+
+		-- Args 2 [Catch Up Delay]
+
+		catchup_delay = checkpoint_catchup_delay*TICRATE, -- int [tics*TICRATE]
+
+		-- Args 3 [Extra Flags]
+
+		indiscriminate = (checkpoint_extra_flags & INDISCRIMINATE_FLAG) > 0, -- flag 0
+		disable_catchup = (checkpoint_extra_flags & DISABLECATCHUP_FLAG) > 0, -- flag 1
+		disable_autotrigger = (checkpoint_extra_flags & DISABLEAUTOTRIGGER_FLAG) > 0, -- flag 2
+
+		-- Args 4 [Zombie Catchup Offset]
+
+		zombie_catchup_offset = (checkpoint_zombie_catchup_offset or 0)*TICRATE, -- int [tics*TICRATE]
+	}
+
+	mobj.state = S_STARPOST_IDLE -- i have no clue why spawnstate for this state isnt working, so here.
+end, MT_ZE2CHECKPOINT)
+
+addHook("MapChange", function()
+	ResetCheckpoints()
+end)
+
+-- on mapload: reset variables, and calculate highest checkpoint number
+addHook("MapLoad", function()
+	-- set highest checkpoint number so ZE2.Checkpoints can be iterated from 1 to ZE2.highest_checkpoint
+	-- this is to keep logic deterministic i hope
+	for checkpoint_num, checkpoint in pairs(ZE2.Checkpoints) do
+		if checkpoint_num > ZE2.highest_checkpoint then
+			ZE2.highest_checkpoint = checkpoint_num
 		end
 	end
 end)
 
+-- Main checkpoint thinker.
+addHook("PlayerThink", function(player)	
+	if not #ZE2.Checkpoints then 
+		return end;
+
+	local mobj = player.mo
+
+	if not (mobj and mobj.valid) then
+		return end;
+
+	if player.ze2.checkpoint_timer then
+		player.ze2.checkpoint_timer = $ - 1
+
+		if not player.ze2.checkpoint_timer then
+			ZE2.LatestCheckpointTeleport(player)
+			ZE2.debugprint(player.name .. " initiated catch up.")
+		end
+	end
+
+	checkpointCheck(mobj)
+end)
+
+-- name one person that uses this... this is barely even tested...
 addHook("LinedefExecute", function(line, mobj, sector)
 	local checkpoint_doomednum = mobjinfo[MT_ZE2CHECKPOINT].doomednum
 
@@ -363,24 +347,19 @@ addHook("LinedefExecute", function(line, mobj, sector)
 				if mapthing.type ~= checkpoint_doomednum then continue end
 
 				foundcheckpoint = mapthing
-				--print("Found Checkpoint")
 				break;
 			end
 
 			if foundcheckpoint and foundcheckpoint.mobj and foundcheckpoint.mobj.valid then
-				--print("Valid checkpoint mobj")
 				ActivateCheckpoint(mobj, foundcheckpoint.mobj)
 			end
 		end
 	end
 end, "ZE2CHECKPOINT")
 
+-- teleport to latest checkpoint on spawn
 addHook("PlayerSpawn", function(player)
 	if not ZE2.isGametype() then return end
 
 	ZE2.LatestCheckpointTeleport(player)
-	
-	if ZE2.cv_debug.value then
-		print(player.name .. " attempted to respawn")
-	end
 end, MT_PLAYER)

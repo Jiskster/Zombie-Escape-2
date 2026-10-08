@@ -40,7 +40,7 @@ return {
 	damagefromplayer = 0,
 
 	checkpoint_number = 0,
-	checkpoint_catchuptics = 0,
+	checkpoint_timer = 0,
 
 	lower_hud_offset = 0,
 	special_cooldown = 0,

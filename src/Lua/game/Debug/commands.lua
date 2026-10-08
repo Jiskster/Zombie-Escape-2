@@ -14,6 +14,14 @@ ZE2.tools = { --Default values
     checkpoints_show = false
 }
 
+function ZE2.debugprint(str)
+    if not ZE2.cv_debug.value then
+        return
+    end
+
+    print(str)
+end
+
 addHook("NetVars", function(net)
 	ZE2.tools = net($)
 end)
@@ -46,24 +54,24 @@ end)
 --Teleport to checkpoint
 local function CheckpointTeleport(p, nextprev)
 	if not #ZE2.Checkpoints then return end
-    if p.mo.checkpoint_number == nil then p.mo.checkpoint_number = 0 end
+    if p.mo.debug_checkpoint == nil then p.mo.debug_checkpoint = 0 end
 
-    if (nextprev == 1 and p.mo.checkpoint_number == #ZE2.Checkpoints)
-    or (nextprev == -1 and (not p.mo.checkpoint_number or p.mo.checkpoint_number == 1)) then
-        p.mo.checkpoint_number = (nextprev == 1 and 1) or #ZE2.Checkpoints
+    if (nextprev == 1 and p.mo.debug_checkpoint == #ZE2.Checkpoints)
+    or (nextprev == -1 and (not p.mo.debug_checkpoint or p.mo.debug_checkpoint == 1)) then
+        p.mo.debug_checkpoint = (nextprev == 1 and 1) or #ZE2.Checkpoints
     else
-        p.mo.checkpoint_number = (nextprev == 1 and $+1) or $-1
+        p.mo.debug_checkpoint = (nextprev == 1 and $+1) or $-1
     end
 
     --Copied from catchup teleport
-    local info = ZE2.Checkpoints[p.mo.checkpoint_number]
+    local info = ZE2.Checkpoints[p.mo.debug_checkpoint]
     P_SetOrigin(p.mo, info.x*FU, info.y*FU, info.z*FU)
     P_SpawnMobj(p.mo.x, p.mo.y, p.mo.z, MT_ZE2_TELEGFX)
     S_StartSound(p.mo, sfx_telepo) -- make sure it plays the sound
     p.mo.angle = FixedAngle(info.angle*FRACUNIT)
     p.mo.flags2 = $ & ~MF2_TWOD -- get out
 
-    CONS_Printf(p, "\130Teleported to checkpoint number \128"..p.mo.checkpoint_number)
+    CONS_Printf(p, "\130Teleported to checkpoint number \128"..p.mo.debug_checkpoint)
 end
 
 AddDebug_CMD("nextcheckpoint", function(p)

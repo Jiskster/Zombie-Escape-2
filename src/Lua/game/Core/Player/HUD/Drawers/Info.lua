@@ -56,16 +56,6 @@ local function eventtimers(v,p,me,ze)
 	local y = 12
 	local flags = V_SNAPTOLEFT|V_SNAPTOTOP
 
-	if ze.checkpoint_catchuptics then
-		local catchup_tics = ze.checkpoint_catchuptics
-
-		customhud.CustomFontString(v, 160, 142, "Catching up in:", "TNYFC",
-		(V_SNAPTOBOTTOM|V_50TRANS), "center", nil, SKINCOLOR_CHERRY)
-
-		customhud.CustomFontString(v, 160, 150, tostring(catchup_tics/TICRATE), "TNYFC",
-		(V_SNAPTOBOTTOM|V_50TRANS), "center" , nil, SKINCOLOR_CHERRY)
-	end
-
 	for i,timer in ipairs(ZE2:GetActiveTimers()) do
 		local name = "* " .. (timer.text or ("Event " .. i))
 		local time = "  " .. G_TicsToMTIME(timer.time) .. ""

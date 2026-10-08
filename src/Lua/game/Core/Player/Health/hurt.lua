@@ -21,6 +21,10 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 					ZE2.ZombifyPlayer(player)
 					ZE2.PlayZombieSound(player, true)
 				end
+
+				player.ze2.checkpoint_number = killer.player.ze2.checkpoint_number
+				player.ze2.checkpoint_timer = killer.player.ze2.checkpoint_timer
+
 				player.ze2.karma = min(player.ze2.karma + (ZE2.CountPlayers("survivors") * 28), ZE2.MaxKarma)
 				killer.player.ze2.karma = max(1, killer.player.ze2.karma - 75)
 
