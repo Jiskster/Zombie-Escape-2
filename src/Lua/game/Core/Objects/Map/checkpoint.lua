@@ -300,6 +300,7 @@ addHook("MapThingSpawn", function(mobj, thing)
 	}
 
 	mobj.state = S_STARPOST_IDLE -- i have no clue why spawnstate for this state isnt working, so here.
+	P_SetScale(mobj, FRACUNIT, true)
 end, MT_ZE2CHECKPOINT)
 
 addHook("MapChange", function()
