@@ -238,6 +238,25 @@ local function checkpointCheck(mobj)
 	end
 end
 
+---@param mobj mobj_t the mobj of the checkpoint
+local function aboutToTeleportVFX(mobj, color)
+	local wind = P_SpawnMobj(mobj.x, mobj.y, mobj.z + (mobj.height*3)/2, MT_BOXSPARKLE)
+	wind.frame = wind.frame | FF_FULLBRIGHT
+	wind.renderflags = wind.renderflags | RF_FULLBRIGHT
+	
+	-- color
+	wind.color = color or SKINCOLOR_WHITE
+	wind.colorized = true
+	
+	-- trans people
+	wind.alpha = FU/4 + P_RandomRange(1, FU/2)
+	
+	-- momentum
+	wind.momx = P_RandomRange(-6,6)*FU
+	wind.momy = P_RandomRange(-6,6)*FU
+	P_SetObjectMomZ(wind, P_RandomRange(-3, 3) * FU)
+end
+
 addHook("MapThingSpawn", function(mobj, thing)
 	local checkpoint_number = thing.args[0] -- number
 	local checkpoint_flags = thing.args[1] -- flags
@@ -330,6 +349,24 @@ addHook("PlayerThink", function(player)
 
 	if player.ze2.checkpoint_timer then
 		player.ze2.checkpoint_timer = $ - 1
+		
+		if not (player.ze2.checkpoint_timer % 15) then
+			local latest_checkpoint_number = 0
+			local color = mobj.team == 1 and SKINCOLOR_BLUE or SKINCOLOR_RED
+			
+			if (mobj.team == 1) then
+				latest_checkpoint_number = ZE2.LatestSurvivorCheckpoint
+			else
+				latest_checkpoint_number = ZE2.LatestZombieCheckpoint
+			end
+			
+			local checkpoint = ZE2.Checkpoints[latest_checkpoint_number]
+			local cmobj = checkpoint.mobj
+			
+			if checkpoint and cmobj and cmobj.valid then
+				aboutToTeleportVFX(cmobj, color)
+			end
+		end
 
 		if not player.ze2.checkpoint_timer then
 			ZE2.LatestCheckpointTeleport(player)
