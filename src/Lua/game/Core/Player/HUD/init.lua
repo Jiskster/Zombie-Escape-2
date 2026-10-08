@@ -58,6 +58,8 @@ SetupHud "RespawnTimer"
 SetupHud "Intermission"
 SetupHud "Tabscores"
 SetupHud "Tooltips"
+SetupHud "Checkpoint"
+
 SetupHud "ZE2Tools"
 
 path = "Overrides"
