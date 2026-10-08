@@ -90,6 +90,7 @@ function ZE2.LatestCheckpointTeleport(player)
 end
 
 ---@param mobj mobj_t Player Object
+---@param checkpoint table Checkpoint Table
 ---@param cmobj mobj_t Checkpoint Object
 local function ActivateCheckpoint(mobj, checkpoint, cmobj)
 	local isvalid = mobj.player and mobj.player.valid
