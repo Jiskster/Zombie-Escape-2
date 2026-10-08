@@ -145,6 +145,8 @@ local function ActivateCheckpoint(mobj, checkpoint, cmobj)
 	if (disable_catchup) or (not catchup_timer) then
 		return
 	end
+	
+	local catchup_offset = 0
 
 	-- set catchup timers for other players
 	for ctp in players.iterate do
@@ -164,12 +166,13 @@ local function ActivateCheckpoint(mobj, checkpoint, cmobj)
 							or indiscriminate
 
 		if isCatchupTeam then
-			local newtime = catchup_timer
+			local newtime = catchup_timer + catchup_offset
 			if ctpmo.team == 2 then
 				newtime = $ + zombie_catchup_offset
 			end
 
 			ctp.ze2.checkpoint_timer = newtime
+			catchup_offset = $ + 2
 		end
 	end
 end
