@@ -172,7 +172,7 @@ local function ActivateCheckpoint(mobj, checkpoint, cmobj)
 			end
 
 			ctp.ze2.checkpoint_timer = newtime
-			catchup_offset = $ + 2
+			catchup_offset = $ + 3
 		end
 	end
 end
