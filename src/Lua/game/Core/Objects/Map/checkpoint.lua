@@ -81,6 +81,7 @@ function ZE2.LatestCheckpointTeleport(player)
 
 	local info = ZE2.Checkpoints[check]
 
+	P_SpawnMobj(player.mo.x, player.mo.y, player.mo.z, MT_ZE2_TELEGFX)
 	P_SetOrigin(player.mo, info.x*FU, info.y*FU, info.z*FU)
 	P_SpawnMobj(player.mo.x, player.mo.y, player.mo.z, MT_ZE2_TELEGFX)
 	player.mo.angle = FixedAngle(info.angle*FRACUNIT)
