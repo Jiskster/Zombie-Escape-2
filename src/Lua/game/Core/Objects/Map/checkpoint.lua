@@ -348,6 +348,12 @@ end)
 addHook("PlayerThink", function(player)	
 	if not #ZE2.Checkpoints then 
 		return end;
+		
+	local game = ZE2.Game
+	if game.ended then
+		player.ze2.checkpoint_timer = 0
+		return
+	end
 
 	local mobj = player.mo
 
