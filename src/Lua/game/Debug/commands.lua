@@ -81,27 +81,6 @@ AddDebug_CMD("prevcheckpoint", function(p)
 	if (p.mo and p.mo.valid) then CheckpointTeleport(p, -1) end
 end)
 
---Show/Hide Checkpoints
-addHook("MobjSpawn", function(mo)
-    local show = (ZE2.tools.checkpoints_show and SPR_TGFX) or SPR_NULL
-	if mo.sprite ~= show then mo.sprite = show end
-end, MT_ZE2CHECKPOINT)
-
-AddDebug_CMD("showcheckpoints", function(p)
-    if ZE2.tools.checkpoints_show then ZE2.tools.checkpoints_show = false
-    else ZE2.tools.checkpoints_show = true end
-
-    local show = (ZE2.tools.checkpoints_show and SPR_TGFX) or SPR_NULL
-    local status_text = (ZE2.tools.checkpoints_show and "enabled") or "disabled"
-    local status_color = (ZE2.tools.checkpoints_show and "\131") or "\133"
-
-	for mo in mobjs.iterate() do
-        if mo.type == MT_ZE2CHECKPOINT and mo.sprite ~= show then mo.sprite = show end
-    end
-
-	print(status_color.."Checkpoints visibility has been "..status_text)
-end)
-
 --Noclip command
 AddDebug_CMD("noclip", function(p)
 	if not (p.mo and p.mo.valid) then return end
