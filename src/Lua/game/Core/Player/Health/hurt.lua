@@ -23,6 +23,7 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 				end
 
 				player.ze2.checkpoint_number = killer.player.ze2.checkpoint_number
+				player.ze2.checkpoint_number_next = killer.player.ze2.checkpoint_number_next
 				player.ze2.checkpoint_timer = killer.player.ze2.checkpoint_timer
 
 				player.ze2.karma = min(player.ze2.karma + (ZE2.CountPlayers("survivors") * 28), ZE2.MaxKarma)
