@@ -133,15 +133,15 @@ local function ActivateCheckpoint(mobj, checkpoint, cmobj)
 	end
 
 	-- set global checkpoints
-	if (mobj.team == 1 and checkpoint.survivor_checkpoint) or (indiscriminate) then
-		if ZE2.LatestSurvivorCheckpoint < player.ze2.checkpoint_number then
+	if (checkpoint.survivor_checkpoint) and (indiscriminate or mobj.team == 1) then
+		if ZE2.LatestSurvivorCheckpoint < checkpoint_num then
 			ZE2.LatestSurvivorCheckpoint = checkpoint_num
 			ZE2.debugprint("new survivor checkpoint: "..checkpoint_num)
 		end
 	end
 	
-	if (mobj.team == 2 and checkpoint.zombie_checkpoint) or (indiscriminate) then
-		if ZE2.LatestZombieCheckpoint < player.ze2.checkpoint_number then
+	if (checkpoint.zombie_checkpoint) and (indiscriminate or mobj.team == 2) then
+		if ZE2.LatestZombieCheckpoint < checkpoint_num then
 			ZE2.LatestZombieCheckpoint = checkpoint_num
 			ZE2.debugprint("new zombie checkpoint: "..checkpoint_num)
 		end
@@ -168,7 +168,6 @@ local function ActivateCheckpoint(mobj, checkpoint, cmobj)
 
 		local isCatchupTeam = (ctpmo.team == 1 and mobj.team == 1 and checkpoint.survivor_checkpoint) 
 							or (ctpmo.team == 2 and mobj.team == 2 and checkpoint.zombie_checkpoint)
-							or indiscriminate
 
 		if isCatchupTeam and ctp.ze2.checkpoint_number < checkpoint_num then
 			local newtime = catchup_timer + catchup_offset
