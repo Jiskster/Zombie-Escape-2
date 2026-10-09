@@ -356,27 +356,31 @@ addHook("PlayerThink", function(player)
 	if player.ze2.checkpoint_timer then
 		player.ze2.checkpoint_timer = $ - 1
 		
-		if not (player.ze2.checkpoint_timer % 15) then
-			local latest_checkpoint_number = 0
-			local color = mobj.team == 1 and SKINCOLOR_BLUE or SKINCOLOR_RED
-			
-			if (mobj.team == 1) then
-				latest_checkpoint_number = ZE2.LatestSurvivorCheckpoint
-			else
-				latest_checkpoint_number = ZE2.LatestZombieCheckpoint
-			end
-			
-			local checkpoint = ZE2.Checkpoints[latest_checkpoint_number]
-			local cmobj = checkpoint.mobj
-			
-			if checkpoint and cmobj and cmobj.valid then
-				aboutToTeleportVFX(cmobj, color)
-			end
+		local latest_checkpoint_number = 0
+		if (mobj.team == 1) then
+			latest_checkpoint_number = ZE2.LatestSurvivorCheckpoint
+		else
+			latest_checkpoint_number = ZE2.LatestZombieCheckpoint
 		end
+		
+		if latest_checkpoint_number then
+			if not (player.ze2.checkpoint_timer % 15) then
+				local color = mobj.team == 1 and SKINCOLOR_BLUE or SKINCOLOR_RED
+				
+				local checkpoint = ZE2.Checkpoints[latest_checkpoint_number]
+				local cmobj = checkpoint.mobj
+				
+				if checkpoint and cmobj and cmobj.valid then
+					aboutToTeleportVFX(cmobj, color)
+				end
+			end
 
-		if not player.ze2.checkpoint_timer then
-			ZE2.LatestCheckpointTeleport(player)
-			ZE2.debugprint(player.name .. " initiated catch up.")
+			if not player.ze2.checkpoint_timer then
+				ZE2.LatestCheckpointTeleport(player)
+				ZE2.debugprint(player.name .. " initiated catch up.")
+			end
+		else
+			player.ze2.checkpoint_timer = 0
 		end
 	end
 
