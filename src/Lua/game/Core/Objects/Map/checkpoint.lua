@@ -166,8 +166,8 @@ local function ActivateCheckpoint(mobj, checkpoint, cmobj)
 
 		if not (ctpmo and ctpmo.valid and ctpmo.health) then continue end
 
-		local isCatchupTeam = (ctpmo.team == 1 and mobj.team == 1 and checkpoint.survivor_checkpoint) 
-							or (ctpmo.team == 2 and mobj.team == 2 and checkpoint.zombie_checkpoint)
+		local isCatchupTeam = (ctpmo.team == 1 and checkpoint.survivor_checkpoint) 
+							or (ctpmo.team == 2 and checkpoint.zombie_checkpoint)
 
 		if isCatchupTeam and ctp.ze2.checkpoint_number < checkpoint_num then
 			local newtime = catchup_timer + catchup_offset
