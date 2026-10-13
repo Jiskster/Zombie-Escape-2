@@ -63,13 +63,7 @@ local function CheckpointTeleport(p, nextprev)
         p.mo.debug_checkpoint = (nextprev == 1 and $+1) or $-1
     end
 
-    --Copied from catchup teleport
-    local info = ZE2.Checkpoints[p.mo.debug_checkpoint]
-    P_SetOrigin(p.mo, info.x*FU, info.y*FU, info.z*FU)
-    P_SpawnMobj(p.mo.x, p.mo.y, p.mo.z, MT_ZE2_TELEGFX)
-    S_StartSound(p.mo, sfx_s1c3) -- make sure it plays the sound
-    p.mo.angle = FixedAngle(info.angle*FRACUNIT)
-
+	ZE2.CheckPointTeleport(p, p.mo.debug_checkpoint)
     CONS_Printf(p, "\130Teleported to checkpoint number \128"..p.mo.debug_checkpoint)
 end
 

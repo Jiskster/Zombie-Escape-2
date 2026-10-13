@@ -61,8 +61,8 @@ function ZE2.GetLatestCheckpoint(player)
 end
 
 ---@param player player_t
----@param setcheckpoint boolean
-function ZE2.LatestCheckpointTeleport(player)
+---@param checkpoint_number number
+function ZE2.CheckPointTeleport(player, checkpoint_number)
 	local game = ZE2.Game
 	
 	if not (game.active) then
@@ -74,20 +74,36 @@ function ZE2.LatestCheckpointTeleport(player)
 	if not (leveltime) then
 		return end;
 
-	local check = ZE2.GetLatestCheckpoint(player)
-	
-	if not (check and ZE2.Checkpoints[check]) then
+	if not (checkpoint_number and ZE2.Checkpoints[checkpoint_number]) then
 		return end;
 
-	local info = ZE2.Checkpoints[check]
+	local info = ZE2.Checkpoints[checkpoint_number]
 
+	if not (info) then
+		return end;
+		
+	local cmobj = info.mobj
+	
+	if not (cmobj and cmobj.valid) then
+		return end;
+		
 	P_SpawnMobj(player.mo.x, player.mo.y, player.mo.z, MT_ZE2_TELEGFX)
-	P_SetOrigin(player.mo, info.x*FU, info.y*FU, info.z*FU)
+	P_SetOrigin(player.mo, cmobj.x, cmobj.y, cmobj.z)
 	P_SpawnMobj(player.mo.x, player.mo.y, player.mo.z, MT_ZE2_TELEGFX)
-	player.mo.angle = FixedAngle(info.angle*FRACUNIT)
-	player.ze2.checkpoint_number = check
+	player.mo.angle = cmobj.angle
+	player.ze2.checkpoint_number = checkpoint_number
 	player.mo.momx = $/3
 	player.mo.momy = $/3
+end
+
+---@param player player_t
+function ZE2.LatestCheckpointTeleport(player)
+	local check = ZE2.GetLatestCheckpoint(player)
+	
+	if not (check) then
+		return end;
+		
+	ZE2.CheckPointTeleport(player, check)
 end
 
 ---@param mobj mobj_t Player Object
@@ -292,9 +308,6 @@ addHook("MapThingSpawn", function(mobj, thing)
 	ZE2.debugprint("\x83".."NOTICE: ".."\x80".."New checkpoint ["..checkpoint_number.."]")
 
 	ZE2.Checkpoints[checkpoint_number] = {
-		x = thing.x,
-		y = thing.y,
-		z = P_FloorzAtPos(thing.x*FU, thing.y*FU, thing.z*FU, mobjinfo[MT_ZE2CHECKPOINT].height)/FU,
 		angle = thing.angle,
 		subsector = R_PointInSubsectorOrNil(thing.x*FU, thing.y*FU),
 		mobj = mobj,
