@@ -73,6 +73,28 @@ states[S_XS_MISSILE_XDEATHSTATE] = {
 
 local cv_friendlyfire = CV_FindVar("friendlyfire")
 
+local function checkMissile(mobj, missileinfo)
+	if (mobj.z <= mobj.floorz or mobj.z + mobj.height >= mobj.ceilingz) then
+		if (missileinfo and not missileinfo.safeground) then
+			P_KillMobj(mobj)
+		end
+
+		return false
+	end
+
+	return true
+end
+
+local function getMissileDef(mobj)
+	if mobj.missileinfo then
+		local missile_id = mobj.missileinfo.id
+
+		if missile_id then
+			return xSlinger.registered_missiles[missile_id]
+		end
+	end
+end
+
 function xSlinger.registerMissile(missile_id, r_table)
 	xSlinger.registered_missiles[missile_id] = r_table
 	r_table.id = missile_id
@@ -286,6 +308,7 @@ function xSlinger.SpawnMissile(m_table)
 	th.momz = FixedMul(th.momz, th.scale)
 
 	slope = xSlinger.CheckMissileSpawn(th)
+	print("step check", slope)
 
 	if slope then
 		return th
@@ -295,15 +318,39 @@ function xSlinger.SpawnMissile(m_table)
 end
 
 function xSlinger.CheckMissileSpawn(th)
+	-- Nudge it back a bit so it doesnt end up in a wall and stuff
+	local origin_x = th.x - P_ReturnThrustX(th.angle, 2*th.scale)
+	local origin_y = th.y - P_ReturnThrustY(th.angle, 2*th.scale)
+	local origin_z = th.z
+	
+	-- maybe make this a missile field? bounce rings will bug out and spawn inside
+	-- walls if this applies to them
 	if not (th.flags & MF_GRENADEBOUNCE) then -- From the Original: "hack: bad! should be a flag.""
-		P_SetOrigin(th, th.x + th.momx/2, th.y, th.z)
-		P_SetOrigin(th, th.x, th.y + th.momy/2, th.z)
-		P_SetOrigin(th, th.x, th.y, th.z + th.momz/2)
+		--P_SetOrigin(th, th.x + th.momx/2, th.y, th.z)
+		--P_SetOrigin(th, th.x, th.y + th.momy/2, th.z)
+		--P_SetOrigin(th, th.x, th.y, th.z + th.momz/2)
 	end
 
-	if not P_TryMove(th, th.x, th.y, true) then
+	local missile_def = getMissileDef(th)
+	if false --not P_TryMove(th, th.x, th.y, true) then
 		if (th and th.valid) then
-			P_KillMobj(th)
+			-- If this missile is allowed to collide with walls, don't
+			-- count this as a bad move.
+			if (th.missileinfo and th.missileinfo.safewall) or (th.flags & MF_SLIDEME) then
+				print("okay step")
+				return true
+			end
+			
+			-- Otherwise, check if the missiles blocked function
+			-- allows wall collisions.
+			if (missile_def and missile_def.blocked) then
+				--local override = missile_def:blocked(th.target, th, th.blockedline, nil)
+			end
+			
+			P_SetOrigin(th, origin_x,origin_y,origin_z)
+			P_CheckPosition(th, origin_x,origin_y,origin_z)
+			th.z = origin_z
+			--P_KillMobj(th)
 		end
 		return false
 	end
@@ -311,6 +358,7 @@ function xSlinger.CheckMissileSpawn(th)
 end
 
 function xSlinger.KillMissile(mobj)
+	error("killed", 5)
 	local info = mobj.missileinfo
 	local nogravdeath = false
 	
@@ -326,28 +374,6 @@ function xSlinger.KillMissile(mobj)
 	if mobj and mobj.valid then
 		if nogravdeath then
 			mobj.flags = $ | MF_NOGRAVITY
-		end
-	end
-end
-
-local function checkMissile(mobj, missileinfo)
-	if (mobj.z <= mobj.floorz or mobj.z + mobj.height >= mobj.ceilingz) then
-		if (missileinfo and not missileinfo.safeground) then
-			P_KillMobj(mobj)
-		end
-
-		return false
-	end
-
-	return true
-end
-
-local function getMissileDef(mobj)
-	if mobj.missileinfo then
-		local missile_id = mobj.missileinfo.id
-
-		if missile_id then
-			return xSlinger.registered_missiles[missile_id]
 		end
 	end
 end
@@ -447,7 +473,8 @@ end, MT_XS_MISSILE)
 addHook("MobjMoveBlocked", function(mov, mobj, line)
 	if not mov or not mov.valid then return end
 	if not mov.isMissile then return end
-
+	
+	print("BLOCKED")
 	local missile_def = getMissileDef(mov)
 
 	local override
