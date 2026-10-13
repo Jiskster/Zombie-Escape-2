@@ -118,7 +118,7 @@ rawset(_G, "xS_GetScreenCoords",function(vid,p,cam, point, props)
 	viewroll = (p and p.valid) and p.viewrollangle or 0
 
 	-- flipping
-	local targflip = (isMobj and point.eflags & MFE_VERTICALFLIP)
+	local targflip = (point.eflags and point.eflags & MFE_VERTICALFLIP)
 	local scrflip = (p.pflags & PF_FLIPCAM) and (p.realmo.eflags & MFE_VERTICALFLIP)
 
 	-- Y coordinate
@@ -126,7 +126,8 @@ rawset(_G, "xS_GetScreenCoords",function(vid,p,cam, point, props)
 	-- start by getting the height difference between the camera and target
 	y = camPos.z - targz
 	if (targflip) then
-		y = $ - ((point.height * 2) / 3)-- for some reason needs to be divided by "1.5" idk
+		local height = point.height or 0
+		y = $ - ((height * 2) / 3)-- for some reason needs to be divided by "1.5" idk
 	end
 	if (hofs) then
 		y = $ - (targflip and -hofs or hofs)
