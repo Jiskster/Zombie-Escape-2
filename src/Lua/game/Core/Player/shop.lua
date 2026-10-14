@@ -61,6 +61,7 @@ ZE2.Shop.listItem("auto_turret", 735)
 ZE2.Shop.listItem("splash_ring", 780)
 ZE2.Shop.listItem("flame_ring", 800)
 ZE2.Shop.listItem("explosion_ring", 900)
+ZE2.Shop.listItem("volt_ring", 1050)
 ZE2.Shop.listItem("energy_drink", 1200)
 ZE2.Shop.listItem("rail_ring", 1600)
 
