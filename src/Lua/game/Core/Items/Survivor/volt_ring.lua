@@ -15,10 +15,10 @@ end
 
 local function giveElectricEffect(mobj)
 	mobj:give_effect("volt_electric", {
-		normalspeed_multiplier = (FU*8)/10,
+		normalspeed_multiplier = 1,
 		knockback_multiplier = 3*FU,
-		actionspd_multiplier = FU/4,
-		damage_multiplier = FU*2,
+		actionspd_multiplier = FU/2,
+		damage_multiplier = 2*FU,
 	}, 4*TICRATE, true)
 end
 
