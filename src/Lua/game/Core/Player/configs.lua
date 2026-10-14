@@ -405,7 +405,7 @@ ZE2.AddSurvivor("knuckles", {
 	};
 	items = {
 		"auto_ring";
-		"bounce_ring";
+		"stone_ring";
 	};
 })
 

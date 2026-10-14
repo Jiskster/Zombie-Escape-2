@@ -21,6 +21,7 @@ Spriters:
 "GLide KS" - Updated Zombie Sprite and fence
 "Scarf" - Original Zombie Sprite
 "Anvil (discord: anvil2401)" - Made sans sprite 
+"RalphJeremy65" - Stone Ring from Ringslinger NEO
 
 Modelers:
 "Marilyn / Speccy"
