@@ -1,5 +1,6 @@
 freeslot(
 	"S_ZE2_THROWNSTONE1", "S_ZE2_THROWNSTONE2", "S_ZE2_THROWNSTONE3", "S_ZE2_THROWNSTONE4",
+	"S_ZE2_THROWNSTONE_DROP",
 	"S_ZE2_STONEBREAK", "S_ZE2_STONEDEBRIS"
 )
 freeslot("SPR_RNGK", "SPR_ROIQ")
@@ -70,6 +71,14 @@ states[S_ZE2_THROWNSTONE4] = {
 	--action = A_ThrownRing
 }
 
+states[S_ZE2_THROWNSTONE_DROP] = {
+	sprite = SPR_RNGK,
+	frame = FF_FULLBRIGHT|FF_ANIMATE,
+	tics = -1,
+	var1 = 3,
+	var2 = 3,
+}
+
 states[S_ZE2_STONEDEBRIS] = {
 	sprite = SPR_ROIQ,
 	frame = FF_FULLBRIGHT|FF_ANIMATE,
@@ -128,6 +137,7 @@ xSlinger.registerItem("stone_ring", {
 	
 	-- Item Properties
 	
+	dropstate = S_ZE2_THROWNSTONE_DROP;
 	damage = 150,
 	ammo = 6,
 	firerate = 18,
