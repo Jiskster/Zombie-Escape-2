@@ -210,25 +210,6 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 			S_StartSound(mo,mobjinfo[mo.type].painsound)
 		end
 	end
-
-	-- BOOM! Knockback!
-	if inf and inf.valid then
-		if inf.knockbacktics then
-			knockback_tics = inf.knockbacktics
-		end
-		
-		if not relativeknockback then
-			KB.addKnockback(mo, knockback_tics, inf.angle, knockback)
-		else
-			local r_angle = R_PointToAngle2(mo.x, mo.y, inf.x, inf.y)
-
-			KB.addKnockback(mo, knockback_tics, r_angle - ANGLE_180, knockback)
-		end
-
-		if verticalknockback then
-			P_SetObjectMomZ(mo, verticalknockback, true)
-		end
-	end
 	
 	if mo.type == MT_PLAYER or mo.playskinhurt then
 		local prop_skin = xSlinger.skin_properties[mo.skin]
@@ -285,6 +266,25 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 					dmg = FixedMul($*FU, effect.damage_multiplier)/FU
 				end
 			end
+		end
+	end
+	
+		-- BOOM! Knockback!
+	if inf and inf.valid then
+		if inf.knockbacktics then
+			knockback_tics = inf.knockbacktics
+		end
+		
+		if not relativeknockback then
+			KB.addKnockback(mo, knockback_tics, inf.angle, knockback)
+		else
+			local r_angle = R_PointToAngle2(mo.x, mo.y, inf.x, inf.y)
+
+			KB.addKnockback(mo, knockback_tics, r_angle - ANGLE_180, knockback)
+		end
+
+		if verticalknockback then
+			P_SetObjectMomZ(mo, verticalknockback, true)
 		end
 	end
 
