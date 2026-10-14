@@ -137,6 +137,7 @@ xSlinger.registerItem("volt_ring", {
 	
 	-- Item Properties
 	
+	damage = 180,
 	dropstate = S_ZE2_VOLTRING;
 	ammo = 2,
 	firerate = 6*TICRATE,
