@@ -116,6 +116,7 @@ end)
 -- Prevent early game damage to zombies and from zombies.
 xSlinger.addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 	local game = ZE2.Game
+	local settings = ZE2.getGametypeSettings()
 	local player = mo.player
 	local attacker
 
@@ -125,8 +126,13 @@ xSlinger.addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		attacker = inf
 	end
 
-	if player and player.valid and (game.ended or game.state == ZE2.GS_PREGAME or ((mo.team == 2) and game.zombie_release_time)) then
-		return false
+	if player and player.valid then
+		local pregame = (game.state == ZE2.GS_PREGAME) and (not settings.move_during_pregame)
+		local frozen_zombie = (mo.team == 2) and (game.zombie_release_time)
+		
+		if (game.ended) or (pregame) or (frozen_zombie) then
+			return false
+		end
 	end
 
 	if attacker and attacker.valid then

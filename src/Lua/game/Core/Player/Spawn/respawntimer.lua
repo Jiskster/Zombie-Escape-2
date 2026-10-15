@@ -7,12 +7,12 @@ addHook("PlayerThink", function(player)
 	end
 
 	if player.playerstate == PST_DEAD then
-		if game.active and not game.ended and not player.ze2.respawntics then
+		if not game.ended and not player.ze2.respawntics then
 			if player.mo.team == 1 then
 				player.ze2.respawntics = settings.respawn_time[1]
 				if not (settings.zombie_after_death) then
 					player.ze2.outofgame = true
-				else
+				elseif game.active then -- only give zombie if game is active
 					player.mo.team = 2
 				end
 			elseif player.mo.team == 2 then
