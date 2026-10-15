@@ -7,10 +7,10 @@ addHook("PlayerThink", function(player)
 
 	if player.playerstate == PST_DEAD then
 		if game.active and not game.ended and not player.ze2.respawntics then
-			if pmo.team == 1 then
+			if player.mo.team == 1 then
 				player.ze2.respawntics = 10*TICRATE
 				player.ze2.outofgame = true
-			elseif pmo.team == 2 then
+			elseif player.mo.team == 2 then
 				player.ze2.respawntics = 15*TICRATE
 			end
 		end
