@@ -4,6 +4,17 @@ addHook("PlayerThink", function(player)
 	if (player and not player.mo) then 
 		return 
 	end
+
+	if player.playerstate == PST_DEAD then
+		if game.active and not game.ended and not player.ze2.respawntics then
+			if pmo.team == 1 then
+				player.ze2.respawntics = 10*TICRATE
+				player.ze2.outofgame = true
+			elseif pmo.team == 2 then
+				player.ze2.respawntics = 15*TICRATE
+			end
+		end
+	end
 	
 	if player.ze2.respawntics then
 		local game = ZE2.Game
