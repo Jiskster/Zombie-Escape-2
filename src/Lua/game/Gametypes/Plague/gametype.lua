@@ -3,6 +3,7 @@ local gt = ZE2.AddGametype("Plague", -- Name
 	"A supervirus outbreak has occurred! Keep distance from your teammates, or you may be next... "
 )
 
+gt.default_rounds = 1
 gt.default_pregame_time = 30*TICRATE
 gt.respawn_time[2] = 5*TICRATE
 gt.default_winner = 1
