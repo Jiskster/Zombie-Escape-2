@@ -8,6 +8,8 @@ TitlePicsX = 25
 TitlePicsY = 10
 LoopTitle = true
 TitleScrollXSpeed = 9
+SStage_Start = Z0
+SMPStage_Start = Z0
 
 Clear All
 
@@ -301,12 +303,23 @@ Lua.ze2_laddertag = 1000
 
 ## PLAGUE MAPS ##
 
+Level 55
+Levelname = Summer Forest
+Act = 0
+Music = MP_MED
+TypeOfLevel = Plague
+NextLevel = 55
+SkyNum = 40
+NoZone = true
+Subtitle = It's a Forest!
+SelectHeading = Plague Maps
+
 Level 58
 Levelname = HIDE N SEEK
 Subtitle = Want to play with Zombies?
 Act = 0
 Music = HIDE
-TypeOfLevel = PLAGUE
+TypeOfLevel = Plague
 NextLevel = 58
 SkyNum = 501
 NoZone = True
