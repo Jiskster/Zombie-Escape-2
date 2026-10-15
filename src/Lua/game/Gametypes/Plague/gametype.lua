@@ -1,6 +1,6 @@
 local gt = ZE2.AddGametype("Plague", -- Name
 	-- Description
-	"TODO"
+	"A supervirus outbreak has occurred! Keep distance from your teammates, or you may be next... "
 )
 
 gt.default_pregame_time = 30*TICRATE
