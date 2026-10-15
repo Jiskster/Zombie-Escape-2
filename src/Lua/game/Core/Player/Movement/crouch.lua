@@ -150,10 +150,11 @@ end)
 
 addHook("PostThinkFrame", function()
 	local game = ZE2.Game
-
+	local settings = ZE2.getGametypeSettings()
+	
 	for player in players.iterate do
 		if not (player.mo and player.mo.valid) then continue end
-		if (game.state == ZE2.GS_PREGAME) and multiplayer then continue end
+		if (game.state == ZE2.GS_PREGAME) and (multiplayer) and not (settings.move_during_pregame) then continue end
 
 		if player.ze2.crouching and switchablestates[player.mo.state] then
 			if not (player.mo.state == S_PLAY_CROUCH_ZE2) then
