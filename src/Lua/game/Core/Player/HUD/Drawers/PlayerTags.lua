@@ -43,7 +43,7 @@ return "PlayerTags", function(v, player)
 
 		if not result or not result.onscreen then continue end
 
-		local ppsize = FU * 2
+		local ppsize = FU
 		local ppwidth = pointpatch.width*ppsize
 		local ppheight = pointpatch.height*ppsize
 		local fonttype = "thin-fixed-center"
@@ -61,7 +61,7 @@ return "PlayerTags", function(v, player)
 			ppsize = ppsize / 2 -- when no blaze
 			fonttype = "small-thin-fixed-center"
 			offset1 = offset1 / 2
-			offset2 = offset2 / 4
+			offset2 = offset2 / 2
 		end
 
 		if (plr.mo.maxhealth ~= nil) and (plr.mo.health <= (plr.mo.maxhealth / 2)) then
