@@ -10,4 +10,5 @@ gt.default_winner = 1
 gt.zombie_after_death = true
 gt.default_zombie_release_time = 0
 gt.move_during_pregame = true
+gt.fall_damage = true
 gt.force_loadout[1] = {"red_ring"}
