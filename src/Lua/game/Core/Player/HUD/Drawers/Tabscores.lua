@@ -11,6 +11,7 @@ local DrawFill
 local function RenderPlayerStats(v, ypos, player, team, spectator)
 	local textcolor = 0
 
+	local karmadisplay = player.ze2.karma
 	local karmacolor = "\x87"
 	if (player.ze2.karma <= (ZE2.MaxKarma / 2)) then
 		karmacolor = "\x82"
@@ -18,7 +19,12 @@ local function RenderPlayerStats(v, ypos, player, team, spectator)
 		karmacolor = "\x83"
 	end
 
-	DrawString(BASEVIDWIDTH - (2 + 120), ypos, karmacolor .. player.ze2.karma, V_ALLOWLOWERCASE|textcolor, "small-right")
+	if player.ze2.zombiepls then
+		karmacolor = ""
+		karmadisplay = ""
+	end
+
+	DrawString(BASEVIDWIDTH - (2 + 120), ypos, karmacolor .. karmadisplay, V_ALLOWLOWERCASE|textcolor, "small-right")
 	if not spectator then
 		local healthcolor = "\x83"
 		if (player.mo.health < (player.mo.maxhealth / 2)) then
@@ -252,18 +258,18 @@ return "Tabscores", function(v)
 
 	-- rounds and timer
 	if (time ~= nil) then
-		DrawString(BASEVIDWIDTH / 2, 5, time, V_ALLOWLOWERCASE, "thin-center")
+		DrawString(BASEVIDWIDTH - 4, 4, time, V_ALLOWLOWERCASE, "right")
 	end
-	DrawString(BASEVIDWIDTH - 4, 5, "Round " ..  game.round .. " of " .. game.maxrounds, V_ALLOWLOWERCASE, "thin-right")
+	DrawString(BASEVIDWIDTH - 4, 14, "Round " ..  game.round .. " of " .. game.maxrounds, V_ALLOWLOWERCASE, "right")
 
 	-- divider
-	DrawFill(2, 16, BASEVIDWIDTH - 4, 1, 64)
+	DrawFill(2, 26, BASEVIDWIDTH - 4, 1, 64)
 
 	local teams = GetTeams()
 	local size = GetListSize(teams)
 	local height = 0
 	for _, team in ipairs(teams) do
 		if (#team.playerlist <= 0) then continue end
-		height = height + RenderTeam(v, 20 + height, team, size)
+		height = height + RenderTeam(v, 34 + height, team, size)
 	end
 end, (hudtype)
