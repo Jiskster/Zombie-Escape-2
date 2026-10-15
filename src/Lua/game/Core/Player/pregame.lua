@@ -18,8 +18,12 @@ ZE2.shop_set_anim = 2
 
 ZE2.shop_oncontinue = false
 
+ZE2.pregame_nocontrol = 0
+ZE2.pregame_set_nocontrol = 10
+
 -- 1: character select
 -- 2: shop
+-- 3: done
 
 ZE2.pregame_menu = 1
 
@@ -76,25 +80,7 @@ local function nullCmd(cmd)
 	cmd.buttons = 0
 end
 
-addHook("PlayerCmd", function(player, cmd)
-	local game = ZE2.Game
-
-	if not multiplayer then
-		return
-	end
-	
-	if (player.spectator) then
-		return end;
-
-    if (game.active) then
-        return end;
-
-    if (displayplayer and displayplayer.valid)
-    and (player ~= displayplayer) then -- Don't activate when spectating someone else.
-		nullCmd(cmd)
-		return
-	end
-
+local function countdownTimers()
 	if ZE2.charsel_anim then
 		ZE2.charsel_anim = $ - 1
 	end
@@ -110,10 +96,39 @@ addHook("PlayerCmd", function(player, cmd)
 	elseif ZE2.shop_enter_anim < 0 then
 		ZE2.shop_enter_anim = $ + 1
 	end
-	
+
 	if ZE2.shop_anim then
 		ZE2.shop_anim = $ - 1
 	end
+end
+
+addHook("PlayerCmd", function(player, cmd)
+	local game = ZE2.Game
+	local settings = ZE2.getGametypeSettings()
+	local pregame_move = settings.move_during_pregame
+
+	if not multiplayer then
+		return
+	end
+	
+	if (player.spectator) then
+		return end;
+
+	if ZE2.pregame_nocontrol then
+		ZE2.pregame_nocontrol = max(0, $ - 1)
+		nullCmd(cmd)
+	end
+
+    if (game.active) then
+        return end;
+
+    if (displayplayer and displayplayer.valid)
+    and (player ~= displayplayer) then -- Don't activate when spectating someone else.
+		nullCmd(cmd)
+		return
+	end
+
+	countdownTimers()
 	
 	-- TODO: Simplify this part
     if (ZE2.pregame_menu == 1) then
@@ -172,14 +187,14 @@ addHook("PlayerCmd", function(player, cmd)
 				S_StartSound(nil, sfx_menu1, player)
 			end
 			
-			if not (lastbuttons & BT_SPIN) and (cmd.buttons & BT_SPIN) then
+			if not (lastbuttons & BT_SPIN) and (cmd.buttons & BT_SPIN) then -- go back to character select menu
 				S_StartSound(nil, sfx_adderr, player)
 				ZE2.charsel_exit_anim = -ZE2.charsel_set_exit_anim
 				ZE2.shop_enter_anim = -ZE2.shop_set_enter_anim 
 				ZE2.pregame_menu = 1
 				
 				COM_BufAddText(player, "_z_unselectcharacter 1")
-			elseif not (lastbuttons & BT_JUMP) and (cmd.buttons & BT_JUMP) then
+			elseif not (lastbuttons & BT_JUMP) and (cmd.buttons & BT_JUMP) then -- buy item
 				COM_BufAddText(player, "_z_shopbuy "..ZE2.shop_selection)
 			end
 		elseif ZE2.shop_oncontinue then
@@ -189,13 +204,19 @@ addHook("PlayerCmd", function(player, cmd)
 				S_StartSound(nil, sfx_menu1, player)
 			end
 			
-			if not (lastbuttons & BT_JUMP) and (cmd.buttons & BT_JUMP) then
+			if not (lastbuttons & BT_JUMP) and (cmd.buttons & BT_JUMP) then -- pressed continue button
 				S_StartSound(nil, sfx_drill1, player)
 				ZE2.shop_enter_anim = -ZE2.shop_set_enter_anim
 				ZE2.pregame_menu = 3
+
+				-- null controls for a bit after exiting pregame menu
+				if pregame_move then
+					nullCmd(cmd) -- null on this frame so that it doesnt make you jump
+					ZE2.pregame_nocontrol = ZE2.pregame_set_nocontrol
+				end
 			end
 		end
-	elseif (ZE2.pregame_menu == 3) then
+	elseif (ZE2.pregame_menu == 3 and not pregame_move) then -- activates only if you cant move during pregame
 		if not (lastbuttons & BT_SPIN) and (cmd.buttons & BT_SPIN) then
 			S_StartSound(nil, sfx_adderr, player)
 			ZE2.shop_enter_anim = ZE2.shop_set_enter_anim 
@@ -203,7 +224,9 @@ addHook("PlayerCmd", function(player, cmd)
 		end
 	end
 
-	nullCmd(cmd)
+	if not (ZE2.pregame_menu == 3 and pregame_move) then -- if you're not allowed to move during pregame
+		nullCmd(cmd)
+	end	
 end)
 
 addHook("ThinkFrame", function()

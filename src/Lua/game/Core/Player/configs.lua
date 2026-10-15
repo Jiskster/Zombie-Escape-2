@@ -178,6 +178,7 @@ function ZE2.applyPlayerConfig(player)
 	local TEAM_SURVIVOR = 1
 	local TEAM_ZOMBIE = 2
 	local game = ZE2.Game
+	local settings = ZE2.getGametypeSettings()
 
 	local config = (team == TEAM_SURVIVOR) and cc[skin] or zc[ztype]
 
@@ -278,7 +279,7 @@ function ZE2.applyPlayerConfig(player)
 		-- Remove player movement when game has not started.
 		-- Also remove player movement when player is zombie when zombies has not been released.
 		if (game.zombie_release_time > 0 and team == TEAM_ZOMBIE)
-		or (not game.active) then
+		or (not game.active and not settings.move_during_pregame) then
 			player.normalspeed = 0
 			player.thrustfactor = 0
 			player.jumpfactor = 0

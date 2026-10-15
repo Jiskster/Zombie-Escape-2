@@ -40,10 +40,11 @@ end
 
 local function crouchcondition(player)
 	local game = ZE2.Game
+	local settings = ZE2.getGametypeSettings()
 	if not (player.mo and player.mo.valid) then return false end
 
 	if multiplayer then
-		if (game.state == ZE2.GS_PREGAME) then return false end
+		if (game.state == ZE2.GS_PREGAME and not settings.move_during_pregame) then return false end
 		if (game.zombie_release_time and player.mo.team == 2) then return false end
 	end
 
