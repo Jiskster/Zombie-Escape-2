@@ -30,6 +30,7 @@ local function HandleFalldamage(player)
     local fall_damage = FixedMul(ZE2.FALL_DAMAGE_AMOUNT, FixedDiv(fall_distance, METER_UNIT))
     P_DamageMobj(player.mo, nil, nil, fall_damage, 6) -- DMG_FALLDAMAGE = 6
 
+    S_StopSound(player.mo)
     if (player.mo.health <= 0) then
         S_StartSound(player.mo, sfx_zfalld)
     else
