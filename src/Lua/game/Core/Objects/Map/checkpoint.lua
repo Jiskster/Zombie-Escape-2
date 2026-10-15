@@ -29,7 +29,7 @@ mobjinfo[MT_ZE2CHECKPOINT] = {
 	spawnhealth = 1000,
 	radius = 64*FRACUNIT,
 	height = 80*FRACUNIT,
-	
+
 	flags = MF_NOBLOCKMAP|MF_NOCLIPTHING,
 }
 
@@ -55,7 +55,7 @@ function ZE2.GetLatestCheckpoint(player)
 
 	if player.mo.team == 1 then
 		return ZE2.LatestSurvivorCheckpoint
-	else 
+	else
 		return ZE2.LatestZombieCheckpoint
 	end
 end
@@ -64,13 +64,13 @@ end
 ---@param checkpoint_number number
 function ZE2.CheckPointTeleport(player, checkpoint_number)
 	local game = ZE2.Game
-	
+
 	if not (game.active) then
 		return end;
-	
+
 	if not (player.mo and player.mo.valid) then
 		return end;
-	
+
 	if not (leveltime) then
 		return end;
 
@@ -81,12 +81,12 @@ function ZE2.CheckPointTeleport(player, checkpoint_number)
 
 	if not (info) then
 		return end;
-		
+
 	local cmobj = info.mobj
-	
+
 	if not (cmobj and cmobj.valid) then
 		return end;
-		
+
 	P_SpawnMobj(player.mo.x, player.mo.y, player.mo.z, MT_ZE2_TELEGFX)
 	P_SetOrigin(player.mo, cmobj.x, cmobj.y, cmobj.z)
 	P_SpawnMobj(player.mo.x, player.mo.y, player.mo.z, MT_ZE2_TELEGFX)
@@ -99,10 +99,10 @@ end
 ---@param player player_t
 function ZE2.LatestCheckpointTeleport(player)
 	local check = ZE2.GetLatestCheckpoint(player)
-	
+
 	if not (check) then
 		return end;
-		
+
 	ZE2.CheckPointTeleport(player, check)
 end
 
@@ -114,7 +114,7 @@ local function ActivateCheckpoint(mobj, checkpoint, cmobj)
 					and cmobj and cmobj.valid
 
 	local player = mobj.player
-	
+
 	if not (isvalid) then
 		return
 	end
@@ -156,7 +156,7 @@ local function ActivateCheckpoint(mobj, checkpoint, cmobj)
 			ZE2.debugprint("new survivor checkpoint: "..checkpoint_num)
 		end
 	end
-	
+
 	if (checkpoint.zombie_checkpoint) and (indiscriminate or mobj.team == 2) then
 		if ZE2.LatestZombieCheckpoint < checkpoint_num then
 			ZE2.LatestZombieCheckpoint = checkpoint_num
@@ -167,7 +167,7 @@ local function ActivateCheckpoint(mobj, checkpoint, cmobj)
 	if (disable_catchup) or (not catchup_timer) then
 		return
 	end
-	
+
 	local catchup_offset = 0
 
 	-- set catchup timers for other players
@@ -183,10 +183,10 @@ local function ActivateCheckpoint(mobj, checkpoint, cmobj)
 
 		if not (ctpmo and ctpmo.valid and ctpmo.health) then continue end
 
-		local isCatchupTeam = (ctpmo.team == 1 and (mobj.team == 1 or indiscriminate) and checkpoint.survivor_checkpoint) 
+		local isCatchupTeam = (ctpmo.team == 1 and (mobj.team == 1 or indiscriminate) and checkpoint.survivor_checkpoint)
 							or (ctpmo.team == 2 and (mobj.team == 2 or indiscriminate) and checkpoint.zombie_checkpoint)
 
-		if isCatchupTeam and ctp.ze2.checkpoint_number < checkpoint_num 
+		if isCatchupTeam and ctp.ze2.checkpoint_number < checkpoint_num
 		and ctp.ze2.checkpoint_number_next < checkpoint_num then
 			local newtime = catchup_timer + catchup_offset
 			if ctpmo.team == 2 then
@@ -227,11 +227,11 @@ local function checkpointCheck(mobj)
 
 	for checkpoint_num=1, ZE2.highest_checkpoint do
 		local checkpoint = checkpoints[checkpoint_num]
-		
+
 		if not checkpoints[checkpoint_num] then
 			continue
 		end
-		
+
 		if checkpoint.mobj and checkpoint.mobj.valid then -- is checkpoint valid
 			if mobj.subsector.sector == checkpoint.subsector.sector -- if checkpoint sector is player sector
 			and not checkpoint.disable_autotrigger then
@@ -266,14 +266,14 @@ local function aboutToTeleportVFX(mobj, color)
 	local wind = P_SpawnMobj(mobj.x, mobj.y, mobj.z + (mobj.height*3)/2, MT_BOXSPARKLE)
 	wind.frame = wind.frame | FF_FULLBRIGHT
 	wind.renderflags = wind.renderflags | RF_FULLBRIGHT
-	
+
 	-- color
 	wind.color = color or SKINCOLOR_WHITE
 	wind.colorized = true
-	
+
 	-- trans people
 	wind.alpha = FU/4 + P_RandomRange(1, FU/2)
-	
+
 	-- momentum
 	wind.momx = P_RandomRange(-6,6)*FU
 	wind.momy = P_RandomRange(-6,6)*FU
@@ -302,7 +302,7 @@ addHook("MapThingSpawn", function(mobj, thing)
 
 	if not (checkpoint_number) then
 		print("\x85".."ERROR: ".."\x80".."Invalid Checkpoint At "..thing.x.." "..thing.y.." "..thing.z.. " [mapthing number: "..#thing.."]")
-		return true 
+		return true
 	end
 
 	ZE2.debugprint("\x83".."NOTICE: ".."\x80".."New checkpoint ["..checkpoint_number.."]")
@@ -358,10 +358,10 @@ addHook("MapLoad", function()
 end)
 
 -- Main checkpoint thinker.
-addHook("PlayerThink", function(player)	
-	if not #ZE2.Checkpoints then 
+addHook("PlayerThink", function(player)
+	if not #ZE2.Checkpoints then
 		return end;
-		
+
 	local game = ZE2.Game
 	if game.ended then
 		player.ze2.checkpoint_timer = 0
@@ -375,21 +375,21 @@ addHook("PlayerThink", function(player)
 
 	if player.ze2.checkpoint_timer then
 		player.ze2.checkpoint_timer = $ - 1
-		
+
 		local latest_checkpoint_number = 0
 		if (mobj.team == 1) then
 			latest_checkpoint_number = ZE2.LatestSurvivorCheckpoint
 		else
 			latest_checkpoint_number = ZE2.LatestZombieCheckpoint
 		end
-		
+
 		if latest_checkpoint_number then
 			if not (player.ze2.checkpoint_timer % 15) then
 				local color = mobj.team == 1 and SKINCOLOR_BLUE or SKINCOLOR_RED
-				
+
 				local checkpoint = ZE2.Checkpoints[latest_checkpoint_number]
 				local cmobj = checkpoint.mobj
-				
+
 				if checkpoint and cmobj and cmobj.valid then
 					aboutToTeleportVFX(cmobj, color)
 				end
@@ -406,28 +406,6 @@ addHook("PlayerThink", function(player)
 
 	checkpointCheck(mobj)
 end)
-
--- name one person that uses this... this is barely even tested...
-addHook("LinedefExecute", function(line, mobj, sector)
-	local checkpoint_doomednum = mobjinfo[MT_ZE2CHECKPOINT].doomednum
-
-	if mobj and mobj.valid and mobj.player and mobj.player.valid then
-		if line.tag then
-			local foundcheckpoint
-
-			for mapthing in mapthings.tagged(line.tag) do
-				if mapthing.type ~= checkpoint_doomednum then continue end
-
-				foundcheckpoint = mapthing
-				break;
-			end
-
-			if foundcheckpoint and foundcheckpoint.mobj and foundcheckpoint.mobj.valid then
-				ActivateCheckpoint(mobj, foundcheckpoint.mobj)
-			end
-		end
-	end
-end, "ZE2CHECKPOINT")
 
 -- teleport to latest checkpoint on spawn
 addHook("PlayerSpawn", function(player)
