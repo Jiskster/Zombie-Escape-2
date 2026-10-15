@@ -69,7 +69,7 @@ end
 
 function ZE2.getGametypeSettings(_gt)
 	if (multiplayer or netgame) then
-		return settingslist[_gt or gametype]
+		return settingslist[_gt or gametype] or getDefaultSettings()
 	else
 		return getDefaultSettings()
 	end
