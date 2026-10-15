@@ -76,7 +76,11 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 			elseif inf and inf.valid then
 				print(string.format("%s%s%s has been killed by %s%s", playercolor, player.name, "\x83", "\x82", "Something"))
 			else
-				print(string.format("%s%s%s has died", playercolor, player.name, "\x83"))
+				if (damagetype == 8) then -- DMG_FALLDAMAGE
+					print(string.format("%s%s%s fell to their death", playercolor, player.name, "\x83"))
+				else
+					print(string.format("%s%s%s has died", playercolor, player.name, "\x83"))
+				end
 			end
 		end
 		P_KillMobj(mo, inf, src, damagetype)
