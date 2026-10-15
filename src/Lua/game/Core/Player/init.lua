@@ -21,13 +21,13 @@ dopath("Social/teamchat.lua")
 
 dopath("Movement/crouch.lua")
 dopath("Movement/ladder.lua")
-dopath("Movement/falldamage.lua")
 dopath("Movement/sprint.lua")
 dopath("Movement/applyconfig.lua")
 dopath("Movement/jumpfatigue.lua")
 dopath("Movement/sourcephys.lua")
 dopath("Movement/misc.lua")
 
+dopath("Health/falldamage.lua")
 dopath("Health/hurt.lua")
 dopath("Health/damageindicator.lua")
 
