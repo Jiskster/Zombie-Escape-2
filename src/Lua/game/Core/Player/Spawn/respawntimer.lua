@@ -10,7 +10,11 @@ addHook("PlayerThink", function(player)
 		if game.active and not game.ended and not player.ze2.respawntics then
 			if player.mo.team == 1 then
 				player.ze2.respawntics = settings.respawn_time[1]
-				player.ze2.outofgame = true
+				if not (settings.zombie_after_death) then
+					player.ze2.outofgame = true
+				else
+					player.mo.team = 2
+				end
 			elseif player.mo.team == 2 then
 				player.ze2.respawntics = settings.respawn_time[2]
 			end
