@@ -110,7 +110,7 @@ xSlinger.registerMissile("VOLT_RING", {
 	deathsound = sfx_s3k79,
 	externaldeathsound = true,
 	displayname = "Volt Ring",
-	speed = 15*FU,
+	speed = 55*FU,
 	delflags = MF_NOGRAVITY,
 	tick = function(self, pmo, missile)
 		P_SetObjectMomZ(missile, -3*FU, true)
@@ -160,7 +160,7 @@ xSlinger.registerItem("volt_ring", {
 		})
 		
 		if missile and missile.valid then
-			P_SetObjectMomZ(missile, 40*FU)
+			P_SetObjectMomZ(missile, 20*FU)
 		end
 	end,
 	onhit = function(self, src, mo, inf)
