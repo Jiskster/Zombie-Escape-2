@@ -125,3 +125,7 @@ rawset(_G, "L_DrawBar", function(v, x, y, width, height, offset, amount, color, 
 		end
     end
 end)
+
+rawset(_G, "L_ChatColorToTextColor", function(cflag)
+	return cflag and string.char(((cflag - V_MAGENTAMAP) >> 12) + 129) or "\x80"
+end)

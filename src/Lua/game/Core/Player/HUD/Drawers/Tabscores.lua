@@ -2,21 +2,81 @@ local hudtype = "scores"
 
 local servername = CV_FindVar("servername")
 
-local TableInsert = table.insert
-
 local GetColormap
 local GetSprite2Patch
 local DrawString
 local DrawScaled
 local DrawFill
 
-local function ChatColorToTextColor(cflag)
-	return cflag and string.char(((cflag - V_MAGENTAMAP) >> 12) + 129) or "\x80"
+local function RenderPlayerStats(v, ypos, player, team, spectator)
+	local textcolor = 0
+
+	local karmacolor = "\x87"
+	if (player.ze2.karma <= (ZE2.MaxKarma / 2)) then
+		karmacolor = "\x82"
+	elseif (player.ze2.karma <= (ZE2.MaxKarma / 4)) then
+		karmacolor = "\x83"
+	end
+
+	DrawString(BASEVIDWIDTH - (2 + 120), ypos, karmacolor .. player.ze2.karma, V_ALLOWLOWERCASE|textcolor, "small-right")
+	if not spectator then
+		local healthcolor = "\x83"
+		if (player.mo.health < (player.mo.maxhealth / 2)) then
+			healthcolor = "\x87"
+		end
+
+		local healthtext = healthcolor .. player.mo.health
+		if player.mo.shield_health then
+			healthtext = healthtext .. "\x80" .. "+" .. "\x88" .. player.mo.shield_health
+		end
+		DrawString(BASEVIDWIDTH - (2 + 90), ypos, healthtext, V_ALLOWLOWERCASE|textcolor, "small-right")
+
+		if (player.realmo.team == 2) then
+			local zombiecolor = "\x85"
+			local zombietype = "???"
+			if ZE2.ZombieConfig[player.ze2.zombie_type] and ZE2.ZombieConfig[player.ze2.zombie_type].name then
+				zombiecolor = L_ChatColorToTextColor(skincolors[ZE2.ZombieConfig[player.ze2.zombie_type].skincolor].chatcolor)
+				zombietype = ZE2.ZombieConfig[player.ze2.zombie_type].name
+			end
+			DrawString(BASEVIDWIDTH - (2 + 52), ypos, zombiecolor .. zombietype, V_ALLOWLOWERCASE|textcolor, "small-right")
+		else
+			DrawString(BASEVIDWIDTH - (2 + 52), ypos, "\x83" .. "$" .. "\x80" .. player.ze2.cash, V_ALLOWLOWERCASE|textcolor, "small-right")
+		end
+	elseif spectator then
+		if player.ze2.injoinqueue or player.ze2.outofgame then
+			local statustext = player.ze2.outofgame and ("\x85" .. "Out") or ("\x82" .. "Queued")
+			DrawString(BASEVIDWIDTH - (2 + 52), ypos, statustext, V_ALLOWLOWERCASE|textcolor, "small-right")
+		end
+	end
+
+	local latencycolor = "\x88"
+	if (player.ping > 256) then
+		latencycolor = "\x87"
+	elseif (player.ping > 128) then
+		latencycolor = "\x82"
+	elseif (player.ping > 64) then
+		latencycolor = "\x83"
+	end
+
+	local latencytext = player.ping .. "\x80" .. "ms"
+	if (player == server) then
+		latencycolor = "\x8C"
+		latencytext = "Host"
+	elseif (player.quittime > 0) then
+		latencycolor = "\x86"
+		latencytext = "D/C"
+	end
+	DrawString(BASEVIDWIDTH - (2 + 8), ypos, latencycolor .. latencytext, V_ALLOWLOWERCASE|textcolor, "small-right")
 end
 
+
 local function RenderPlayer(v, ypos, player, team) -- standard
+	if (player == consoleplayer) then
+		DrawFill(4, ypos, BASEVIDWIDTH - 8, 16, 73|V_TRANSLUCENT)
+	end
+
 	local spectator = team.spectator
-	local textcolor = 0 --skincolors[teamcolor].chatcolor
+	local textcolor = 0
 
 	local playerskin = player.realmo and player.realmo.skin or player.skin
 	local playercolor = player.realmo and player.realmo.color or player.skincolor
@@ -26,53 +86,20 @@ local function RenderPlayer(v, ypos, player, team) -- standard
 	DrawScaled(4 * FU, ypos * FU, playericonscale, playericon, 0, GetColormap(playerskin, playercolor, playertranslation))
 
 	local textspos = 6
-	local highlight = (player == consoleplayer) and V_YELLOWMAP or 0
+	local highlight = skincolors[player.skincolor].chatcolor
 	DrawString(4 + 20, ypos + textspos, player.name, V_ALLOWLOWERCASE|textcolor|highlight, "small")
 
-	local visible_stats = true
-	/*if consoleplayer.spectator or (consoleplayer.realmo.team == team.id) then
-		visible_stats = true
-	end*/
-
-	if visible_stats then
-		DrawString(BASEVIDWIDTH - (2 + 120), ypos + textspos, player.ze2.karma, V_ALLOWLOWERCASE|textcolor, "small-right")
-		if not spectator then
-			local healthtext = player.mo.health
-			if player.mo.shield_health then
-				healthtext = healthtext .. "+" .. player.mo.shield_health
-			end
-			DrawString(BASEVIDWIDTH - (2 + 90), ypos + textspos, healthtext, V_ALLOWLOWERCASE|textcolor, "small-right")
-
-			if (player.realmo.team == 2) then
-				local zombietype = "???"
-				if ZE2.ZombieConfig[player.ze2.zombie_type] and ZE2.ZombieConfig[player.ze2.zombie_type].name then
-					zombietype = ZE2.ZombieConfig[player.ze2.zombie_type].name
-				end
-				DrawString(BASEVIDWIDTH - (2 + 52), ypos + textspos, zombietype, V_ALLOWLOWERCASE|textcolor, "small-right")
-			else
-				DrawString(BASEVIDWIDTH - (2 + 52), ypos + textspos, "$" .. player.ze2.cash, V_ALLOWLOWERCASE|textcolor, "small-right")
-			end
-		elseif spectator then
-			if player.ze2.injoinqueue or player.ze2.outofgame then
-				local statustext = player.ze2.outofgame and "Out" or "Queued"
-				DrawString(BASEVIDWIDTH - (2 + 52), ypos + textspos, statustext, V_ALLOWLOWERCASE|textcolor, "small-right")
-			end
-		end
-	end
-
-	local latencytext = player.ping .. "ms"
-	if (player == server) then
-		latencytext = "Host"
-	elseif (player.quittime > 0) then
-		latencytext = "D/C"
-	end
-	DrawString(BASEVIDWIDTH - (2 + 8), ypos + textspos, latencytext, V_ALLOWLOWERCASE|textcolor, "small-right")
+	RenderPlayerStats(v, ypos + textspos, player, team, spectator)
 	return 16
 end
 
 local function RenderPlayerSmall(v, ypos, player, team) -- compact
+	if (player == consoleplayer) then
+		DrawFill(4, ypos, BASEVIDWIDTH - 8, 8, 73|V_TRANSLUCENT)
+	end
+
 	local spectator = team.spectator
-	local textcolor = 0 --skincolors[teamcolor].chatcolor
+	local textcolor = 0
 
 	local playerskin = player.realmo and player.realmo.skin or player.skin
 	local playercolor = player.realmo and player.realmo.color or player.skincolor
@@ -82,51 +109,18 @@ local function RenderPlayerSmall(v, ypos, player, team) -- compact
 	DrawScaled(4 * FU, ypos * FU, playericonscale, playericon, 0, GetColormap(playerskin, playercolor, playertranslation))
 
 	local textspos = 2
-	local highlight = (player == consoleplayer) and V_YELLOWMAP or 0
+	local highlight = skincolors[player.skincolor].chatcolor
 	DrawString(4 + 10, ypos + textspos, player.name, V_ALLOWLOWERCASE|textcolor|highlight, "small")
 
-	local visible_stats = true
-	/*if consoleplayer.spectator or (consoleplayer.realmo.team == team.id) then
-		visible_stats = true
-	end*/
-
-	if visible_stats then
-		DrawString(BASEVIDWIDTH - (2 + 120), ypos + textspos, player.ze2.karma, V_ALLOWLOWERCASE|textcolor, "small-right")
-		if not spectator then
-			local healthtext = player.mo.health
-			if player.mo.shield_health then
-				healthtext = healthtext .. "+" .. player.mo.shield_health
-			end
-			DrawString(BASEVIDWIDTH - (2 + 90), ypos + textspos, healthtext, V_ALLOWLOWERCASE|textcolor, "small-right")
-
-			if (player.realmo.team == 2) then
-				local zombietype = "???"
-				if ZE2.ZombieConfig[player.ze2.zombie_type] and ZE2.ZombieConfig[player.ze2.zombie_type].name then
-					zombietype = ZE2.ZombieConfig[player.ze2.zombie_type].name
-				end
-				DrawString(BASEVIDWIDTH - (2 + 52), ypos + textspos, zombietype, V_ALLOWLOWERCASE|textcolor, "small-right")
-			else
-				DrawString(BASEVIDWIDTH - (2 + 52), ypos + textspos, "$" .. player.ze2.cash, V_ALLOWLOWERCASE|textcolor, "small-right")
-			end
-		elseif spectator then
-			if player.ze2.injoinqueue or player.ze2.outofgame then
-				local statustext = player.ze2.outofgame and "Out" or "Queued"
-				DrawString(BASEVIDWIDTH - (2 + 52), ypos + textspos, statustext, V_ALLOWLOWERCASE|textcolor, "small-right")
-			end
-		end
-	end
-
-	local latencytext = player.ping .. "ms"
-	if (player == server) then
-		latencytext = "Host"
-	elseif (player.quittime > 0) then
-		latencytext = "D/C"
-	end
-	DrawString(BASEVIDWIDTH - (2 + 8), ypos + textspos, latencytext, V_ALLOWLOWERCASE|textcolor, "small-right")
+	RenderPlayerStats(v, ypos + textspos, player, team, spectator)
 	return 8
 end
 
 local function RenderPlayerSmaller(v, ypos, player, team) -- super compact
+	if (player == consoleplayer) then
+		DrawFill(4, ypos, BASEVIDWIDTH - 8, 4, 73|V_TRANSLUCENT)
+	end
+
 	local spectator = team.spectator
 	local textcolor = 0 --skincolors[teamcolor].chatcolor
 
@@ -141,47 +135,10 @@ local function RenderPlayerSmaller(v, ypos, player, team) -- super compact
 	end
 
 	local textspos = 0
-	local highlight = (player == consoleplayer) and V_YELLOWMAP or 0
+	local highlight = skincolors[player.skincolor].chatcolor --(player == consoleplayer) and V_YELLOWMAP or 0
 	DrawString(4 + 5, ypos + textspos, player.name, V_ALLOWLOWERCASE|textcolor|highlight, "small")
 
-	local visible_stats = true
-	/*if consoleplayer.spectator or (consoleplayer.mo.team == team.id) then
-		visible_stats = true
-	end*/
-
-	if visible_stats then
-		DrawString(BASEVIDWIDTH - (2 + 120), ypos + textspos, player.ze2.karma, V_ALLOWLOWERCASE|textcolor, "small-right")
-		if not spectator then
-			local healthtext = player.mo.health
-			if player.mo.shield_health then
-				healthtext = healthtext .. "+" .. player.mo.shield_health
-			end
-			DrawString(BASEVIDWIDTH - (2 + 90), ypos + textspos, healthtext, V_ALLOWLOWERCASE|textcolor, "small-right")
-
-			if (player.realmo.team == 2) then
-				local zombietype = "???"
-				if ZE2.ZombieConfig[player.ze2.zombie_type] and ZE2.ZombieConfig[player.ze2.zombie_type].name then
-					zombietype = ZE2.ZombieConfig[player.ze2.zombie_type].name
-				end
-				DrawString(BASEVIDWIDTH - (2 + 52), ypos + textspos, zombietype, V_ALLOWLOWERCASE|textcolor, "small-right")
-			else
-				DrawString(BASEVIDWIDTH - (2 + 52), ypos + textspos, "$" .. player.ze2.cash, V_ALLOWLOWERCASE|textcolor, "small-right")
-			end
-		else
-			if player.ze2.injoinqueue or player.ze2.outofgame then
-				local statustext = player.ze2.outofgame and "Out" or "Queued"
-				DrawString(BASEVIDWIDTH - (2 + 52), ypos + textspos, statustext, V_ALLOWLOWERCASE|textcolor, "small-right")
-			end
-		end
-	end
-
-	local latencytext = player.ping .. "ms"
-	if (player == server) then
-		latencytext = "Host"
-	elseif (player.quittime > 0) then
-		latencytext = "D/C"
-	end
-	DrawString(BASEVIDWIDTH - (2 + 8), ypos + textspos, latencytext, V_ALLOWLOWERCASE|textcolor, "small-right")
+	RenderPlayerStats(v, ypos + textspos, player, team, spectator)
 	return 4
 end
 
@@ -193,24 +150,15 @@ local function RenderTeam(v, ypos, team, size)
 	local fillcolor = skincolors[teamcolor].ramp[1]
 	local textcolor = skincolors[teamcolor].chatcolor
 	local playersdisplay = (#playerlist == 1) and "player" or "players"
-	DrawString(4, ypos, ChatColorToTextColor(textcolor) .. teamname .. "\x80" .. " - " .. ChatColorToTextColor(textcolor) .. #playerlist .. " " .. playersdisplay, V_ALLOWLOWERCASE, "small") -- team name
+	DrawString(4, ypos, L_ChatColorToTextColor(textcolor) .. teamname .. "\x80" .. " - " .. "\x82" .. #playerlist .. " " .. playersdisplay, V_ALLOWLOWERCASE, "small") -- team name
 
-	local visible_stats = true
-	/*
-	if consoleplayer.spectator or (consoleplayer.mo.team == team.id) then
-		visible_stats = true
-	end
-	*/
-
-	if visible_stats then
-		DrawString(BASEVIDWIDTH - (2 + 120), ypos, "Karma", V_ALLOWLOWERCASE, "small-right")
-		if not team.spectator then
-			DrawString(BASEVIDWIDTH - (2 + 90), ypos, "HP", V_ALLOWLOWERCASE, "small-right")
-			if (teamname == "Zombies") then
-				DrawString(BASEVIDWIDTH - (2 + 52), ypos, "Type", V_ALLOWLOWERCASE, "small-right")
-			else
-				DrawString(BASEVIDWIDTH - (2 + 52), ypos, "Money", V_ALLOWLOWERCASE, "small-right")
-			end
+	DrawString(BASEVIDWIDTH - (2 + 120), ypos, "Karma", V_ALLOWLOWERCASE, "small-right")
+	if not team.spectator then
+		DrawString(BASEVIDWIDTH - (2 + 90), ypos, "HP", V_ALLOWLOWERCASE, "small-right")
+		if (teamname == "Zombies") then
+			DrawString(BASEVIDWIDTH - (2 + 52), ypos, "Type", V_ALLOWLOWERCASE, "small-right")
+		else
+			DrawString(BASEVIDWIDTH - (2 + 52), ypos, "Money", V_ALLOWLOWERCASE, "small-right")
 		end
 	end
 	DrawString(BASEVIDWIDTH - (2 + 8), ypos, "Ping", V_ALLOWLOWERCASE, "small-right")
@@ -266,7 +214,7 @@ local function GetTeams()
 	local SpectatorList = {}
 	for player in players.iterate do
         if not player.spectator then continue end
-		TableInsert(SpectatorList, player)
+		table.insert(SpectatorList, player)
 	end
 
 	local spectators = {
