@@ -211,8 +211,8 @@ addHook("PlayerCmd", function(player, cmd)
 
 				-- null controls for a bit after exiting pregame menu
 				if pregame_move then
-					nullCmd(cmd) -- null on this frame so that it doesnt make you jump
 					ZE2.pregame_nocontrol = ZE2.pregame_set_nocontrol
+					nullCmd(cmd) -- null on this frame so that it doesnt make you jump
 				end
 			end
 		end
