@@ -4,8 +4,6 @@ local function dopath(_path)
 	dofile(PATH .. "/" .. _path)
 end
 
-dopath("shop.lua")
-
 dopath("pregame.lua")
 
 dopath("replacealpha.lua")

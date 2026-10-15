@@ -36,6 +36,9 @@ loadcore "clocks.lua"
 -- win handler
 loadcore "winhandler.lua"
 
+-- shop system
+loadcore "shop.lua"
+
 -- libraries
 loadcore "Libraries/init.lua"
 
