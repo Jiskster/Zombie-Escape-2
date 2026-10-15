@@ -44,7 +44,7 @@ local function crouchcondition(player)
 
 	if multiplayer then
 		if (game.state == ZE2.GS_PREGAME) then return false end
-		if (game.releasetime and player.mo.team == 2) then return false end
+		if (game.zombie_release_time and player.mo.team == 2) then return false end
 	end
 
 	return true

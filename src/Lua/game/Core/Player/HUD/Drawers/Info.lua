@@ -26,9 +26,9 @@ local function roundinfo(v,p,me,ze)
 	v.draw(160-(topwidth/2), 0, top, V_SNAPTOTOP|V_20TRANS)
 	v.drawString(160, 2, timestring, V_SNAPTOTOP, "center")
 	
-	if game.releasetime then
+	if game.zombie_release_time then
 		v.draw(160-(topwidth/2), 12, topzomb, V_SNAPTOTOP)
-		v.drawString(160, 15, game.releasetime/TICRATE, V_ORANGEMAP|V_SNAPTOTOP, "thin-center")
+		v.drawString(160, 15, game.zombie_release_time/TICRATE, V_ORANGEMAP|V_SNAPTOTOP, "thin-center")
 	end
 
 	if multiplayer then

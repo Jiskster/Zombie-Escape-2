@@ -277,7 +277,7 @@ function ZE2.applyPlayerConfig(player)
 	if multiplayer then
 		-- Remove player movement when game has not started.
 		-- Also remove player movement when player is zombie when zombies has not been released.
-		if (game.releasetime > 0 and team == TEAM_ZOMBIE)
+		if (game.zombie_release_time > 0 and team == TEAM_ZOMBIE)
 		or (not game.active) then
 			player.normalspeed = 0
 			player.thrustfactor = 0

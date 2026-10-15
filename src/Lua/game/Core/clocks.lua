@@ -39,6 +39,7 @@ local gamestatefuncs = {}
 
 gamestatefuncs[ZE2.GS_PREGAME] = function()
 	local game = ZE2.Game
+	local settings = ZE2.getGametypeSettings()
 	
 	if game.active then
 		return end;
@@ -150,12 +151,12 @@ gamestatefuncs[ZE2.GS_PREGAME] = function()
 		local input = tonumber(mapheaderinfo[gamemap].ze2_zombiereleasetime)
 
 		if input ~= nil then
-			game.releasetime = input*TICRATE
+			game.zombie_release_time = input*TICRATE
 		else
-			game.releasetime = 10*TICRATE -- TODO: Un magic-number this
+			game.zombie_release_time = settings.default_zombie_release_time
 		end
 	else
-		game.releasetime = 10*TICRATE
+		game.zombie_release_time = settings.default_zombie_release_time
 	end
 	
 	return game.time_limit
@@ -163,11 +164,12 @@ end
 
 gamestatefuncs[ZE2.GS_GAME] = function()
 	local game = ZE2.Game
-	
+	local settings = ZE2.getGametypeSettings()
+
 	if game.ended then
 		return end;
 		
-	ZE2:StartWin(2)
+	ZE2:StartWin(settings.default_winner)
 	
 	return 0
 end
@@ -198,10 +200,10 @@ addHook("ThinkFrame", function()
 		end
 	end
 	
-	if game.releasetime then
-		game.releasetime = max(0, $ - 1)
+	if game.zombie_release_time then
+		game.zombie_release_time = max(0, $ - 1)
 		
-		if not game.releasetime then
+		if not game.zombie_release_time then
 			S_StartSoundAtVolume(nil, sfx_zmrel, 128)
 		end
 	end

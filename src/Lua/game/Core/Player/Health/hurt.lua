@@ -125,7 +125,7 @@ xSlinger.addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		attacker = inf
 	end
 
-	if player and player.valid and (game.ended or game.state == ZE2.GS_PREGAME or ((mo.team == 2) and game.releasetime)) then
+	if player and player.valid and (game.ended or game.state == ZE2.GS_PREGAME or ((mo.team == 2) and game.zombie_release_time)) then
 		return false
 	end
 
@@ -135,7 +135,7 @@ xSlinger.addHook("ShouldDamage", function(mo, inf, src, dmg, damagetype)
 		end
 	end
 
-	if attacker and attacker.player and (attacker.team == 2) and game.releasetime then
+	if attacker and attacker.player and (attacker.team == 2) and game.zombie_release_time then
 		return false
 	end
 end)

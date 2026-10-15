@@ -1,10 +1,11 @@
 local function MapLoad(map)
 	local game = ZE2.Game
+	local settings = ZE2.getGametypeSettings()
 	
 	ZE2.GameReset(map)
 	ZE2.VoteReset()
 
-	game.state_tics = ZE2.WAIT_TIME
+	game.state_tics = settings.default_pregame_time
 
 	xSlinger.visible_huds.health = false;
 	xSlinger.visible_huds.inventory = true;
@@ -44,7 +45,7 @@ local function MapLoad(map)
 			local input = tonumber(mapheaderinfo[map].ze2_timelimit)
 			game.time_limit = input*60*TICRATE
 		else
-			game.time_limit = ZE2.DEFAULT_ROUND_TIME
+			game.time_limit = settings.default_round_time
 		end
 	end
 

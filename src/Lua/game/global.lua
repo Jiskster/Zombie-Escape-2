@@ -4,7 +4,7 @@ ZE2.version = {0, 6, 0}
 ZE2.version.indev = true
 ZE2.version.commit = dofile("game/version.lua")
 
-ZE2.WAIT_TIME = 15*TICRATE
+ZE2.DEFAULT_PREGAME_TIME = 15*TICRATE
 ZE2.DEFAULT_ROUNDS = 2
 ZE2.DEFAULT_ROUND_TIME = 5*60*TICRATE
 
@@ -18,41 +18,6 @@ ZE2.GS_FINISH = 3
 
 ZE2.Vote = {}
 ZE2.Game = {}
-
-function ZE2.GameReset(map)
-	local game = ZE2.Game
-	game.state_list = {"pregame", "game", "finish"}
-	game.state = 1
-	game.state_tics = 0
-	if not game.queueround then 
-		game.round = 1
-	end
-	game.maxrounds = tonumber(mapheaderinfo[map or gamemap].ze2_rounds) or ZE2.DEFAULT_ROUNDS
-	game.ended = false
-	game.active = false
-	if game.queueround == nil then
-		game.queueround = false
-	end
-	game.win_tics = 0
-	game.team_won = 0
-	game.releasetime = 0
-end
-
-function ZE2.VoteReset()
-	local vote = ZE2.Vote
-	vote.time_left = -1
-	vote.warp_time = -1
-	vote.maps = {
-		{num = -1, health = 9999, onscreen = true, fuse = 0},
-		{num = -1, health = 9999, onscreen = true, fuse = 0},
-		{num = -1, health = 9999, onscreen = true, fuse = 0},
-	}
-	vote.active = true
-	vote.nextmapvoted = nil
-end
-
-ZE2.GameReset()
-ZE2.VoteReset()
 
 -- so it looks better by adding idk
 local newroundframe = 15*TICRATE
