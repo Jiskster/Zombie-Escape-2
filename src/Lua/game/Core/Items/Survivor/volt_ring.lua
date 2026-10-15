@@ -141,7 +141,7 @@ xSlinger.registerItem("volt_ring", {
 	dropstate = S_ZE2_VOLTRING;
 	ammo = 2,
 	firerate = 6*TICRATE,
-	reload_time = 8*TICRATE,
+	reload_time = 10*TICRATE,
 	sounds = {
 		use = sfx_s3k45,
 		reload = {sfx_xsrel1, sfx_xsrel2},
