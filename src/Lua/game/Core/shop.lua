@@ -1,4 +1,4 @@
-local SHOP_MAX = 3
+ZE2.SHOP_MAX = 3 -- do you want to crash the stock market? change this value and go wild!
 
 ZE2.Shop = {
 	list = {}, -- items that have a chance to appear in shop (Don't Archive)
@@ -28,7 +28,7 @@ function ZE2.Shop.refreshStock()
 		untried[#untried + 1] = list[i]
 	end
 	
-	for i=1,SHOP_MAX do
+	for i=1,ZE2.SHOP_MAX do
 		local random_index = P_RandomRange(1, #untried)
 		local chosen_item = untried[random_index]
 		
