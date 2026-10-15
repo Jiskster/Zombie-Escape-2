@@ -300,10 +300,15 @@ function ZE2.setConfigInventory(player, newskin, noitems)
 
 	local team = mo.team
 	local skin = newskin or mo.skin
+	local settings = ZE2.getGametypeSettings()
+	local force_loadout = settings.force_loadout
+
 	if (team == 1) and sc[skin] then
+		local items = force_loadout[team] or sc[skin].items
 		xS:inv_add("survivor", ZE2.DefaultSurvivorInvSlots)
-		if (not noitems) and (sc[skin].items) then
-			for i,item in ipairs(sc[skin].items) do
+
+		if (not noitems) and (items) then
+			for i,item in ipairs(items) do
 				if (type(item) == "table") then
 					if item[1] and item_blacklist[item[1]] then
 						continue
@@ -320,11 +325,13 @@ function ZE2.setConfigInventory(player, newskin, noitems)
 			end
 		end
 	elseif (team == 2) and zc[ztype] then
-		if (not noitems) and (zc[ztype].items) then -- slot count is automatic
-			local slotcount = #zc[ztype].items
+		local items = force_loadout[team] or zc[ztype].items
+
+		if (not noitems) and (items) then -- slot count is automatic
+			local slotcount = #items
 			xS:inv_add("zombie", slotcount)
 			
-			for i,item in ipairs(zc[ztype].items) do
+			for i,item in ipairs(items) do
 				if (type(item) == "table") then
 					xS:give_item(item[1], item[2], nil, "zombie")
 				else

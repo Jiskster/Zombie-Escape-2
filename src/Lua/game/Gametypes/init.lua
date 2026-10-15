@@ -14,7 +14,10 @@ local function getDefaultSettings()
 		default_winner = 2, -- number (team)
 		shop = true, -- if disabled, then cash is disabled.
 		fall_damage = false, -- does this gametype have fall damage?
-		force_loadout = nil, -- table with items
+		force_loadout = { -- table with items
+			[1] = nil,
+			[2] = nil,
+		}, 
 		midgame_join = false, -- can players join midgame?
 		zombie_after_death = false, -- decides if survivors respawn as zombies after dying (not infecting)
 		move_during_pregame = false, -- can you move after you pressed done in pregame?
