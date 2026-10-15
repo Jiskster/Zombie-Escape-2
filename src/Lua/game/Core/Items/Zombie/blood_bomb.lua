@@ -131,6 +131,7 @@ xSlinger.registerItem("blood_bomb", {
 })
 
 -- [[ Explode blindness behavior ]] --
+local showhud = CV_FindVar("showhud")
 
 addHook("PlayerThink", function(p)
 	local mo = p.mo
@@ -144,7 +145,7 @@ addHook("PlayerThink", function(p)
 		infectparticle.alpha = min(FixedDiv(mo.bloodbomb_blindtime, 3*TICRATE), FU)
 	end
 	
-	if CV_FindVar("showhud") and not CV_FindVar("showhud").value then -- Nu uh cheater!
+	if not showhud.value then -- Nu uh cheater!
 		COM_BufInsertText(p, "showhud 1") -- we are calling it each tic yes, but we aren't filling the netxcmd buffer so.
 	end
 end)
