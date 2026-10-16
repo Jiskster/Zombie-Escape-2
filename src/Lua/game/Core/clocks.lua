@@ -129,6 +129,8 @@ gamestatefuncs[ZE2.GS_PREGAME] = function()
 				alphaspawned = true
 			elseif P_RandomChance(FU/8) then
 				newztype = "alpha"
+			elseif settings.zombie_chosen_always_alpha then
+				newztype = "alpha"
 			end
 
 			ZE2.ZombifyPlayer(player, newztype)
