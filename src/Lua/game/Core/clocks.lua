@@ -136,6 +136,7 @@ gamestatefuncs[ZE2.GS_PREGAME] = function()
 			ZE2.ZombifyPlayer(player, newztype)
 			ZE2.PlayZombieSound(player, true)
 			ZE2.RefundPlayer(player)
+			ZE2.dropSurvivorInventory(player)
 
 			player.ze2.karma = max(1, $ - 100)
 
