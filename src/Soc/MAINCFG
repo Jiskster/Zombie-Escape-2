@@ -329,7 +329,7 @@ Level 60
 Levelname = Virtual Arena
 Subtitle = Survive the Matrix.
 Act = 0
-Music = ZETUT
+Music = DATAZ
 TypeOfLevel = Plague
 NextLevel = 60
 SkyNum = 99
