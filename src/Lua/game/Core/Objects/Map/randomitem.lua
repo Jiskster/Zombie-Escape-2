@@ -10,6 +10,7 @@ local pool = {
 	"energy_drink",
 	"accel_ring",
 	"splash_ring",
+	"stone_ring",
 }
 
 
