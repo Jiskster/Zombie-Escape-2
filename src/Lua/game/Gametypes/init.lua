@@ -4,9 +4,12 @@ local DEFAULT_RULES = (GTR_TIMELIMIT|GTR_ALLOWEXIT|GTR_SPAWNENEMIES|GTR_CUTSCENE
 
 local gametypelist = {}
 local settingslist = {}
+local tol_list = {}
 
 local function getDefaultSettings()
 	return { -- These settings are Escape's settings to build from.
+		gametype_name = "???",
+		gametype_number = 7+1,
 		default_pregame_time = ZE2.DEFAULT_PREGAME_TIME, -- number (tics)
 		default_rounds = ZE2.DEFAULT_ROUNDS, -- number (rounds)
 		default_round_time = ZE2.DEFAULT_ROUND_TIME, -- number (tics)
@@ -45,11 +48,15 @@ function ZE2.AddGametype(name, description, rules)
 		headerrightcolor = 40,
 		description = description,
 	})
+	
+	tol_list[#tol_list + 1] = newTOL
 
 	local gt = constants["GT_"..name:upper()]
 	gametypelist[gt] = true
 	
 	settingslist[gt] = getDefaultSettings()
+	settingslist[gt].gametype_name = name
+	settingslist[gt].gametype_number = gt
 	
 	xSlinger.registerGametype(gt, {
 		teams = {
@@ -75,6 +82,15 @@ function ZE2.getGametypeSettings(_gt)
 		return settingslist[_gt or gametype] or getDefaultSettings()
 	else
 		return getDefaultSettings()
+	end
+end
+
+-- only gets first tol it finds, try not to have multiple TOLs in a map at the moment
+function ZE2.TOLtoGametypeName(tolbit)
+	for i=1,#tol_list do
+		if tolbit & tol_list[i] then
+			return ZE2.getGametypeSettings(7+i)
+		end
 	end
 end
 
@@ -146,4 +162,5 @@ function ZE2.VoteReset()
 	}
 	vote.active = true
 	vote.nextmapvoted = nil
+	vote.nextgtvoted = nil
 end; ZE2.VoteReset()
