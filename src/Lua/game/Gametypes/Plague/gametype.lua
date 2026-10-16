@@ -5,6 +5,7 @@ local gt = ZE2.AddGametype("Plague", -- Name
 
 gt.default_rounds = 1
 gt.default_pregame_time = 30*TICRATE
+gt.default_round_time = 4*60*TICRATE
 gt.respawn_time[2] = 5*TICRATE
 gt.default_winner = 1
 gt.zombie_after_death = true
