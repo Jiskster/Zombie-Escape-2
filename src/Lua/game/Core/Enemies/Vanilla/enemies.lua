@@ -71,6 +71,8 @@ mobjinfo[MT_CRUSHSTACEAN].painsound = sfx_dmpain
 mobjinfo[MT_CRUSHSTACEAN].forcedamage = 10
 mobjinfo[MT_CRUSHSTACEAN].relativeknockback = true
 mobjinfo[MT_CRUSHSTACEAN].forceknockback = 14*FRACUNIT
+mobjinfo[MT_CRUSHCLAW].forcedamage = 10
+mobjinfo[MT_CRUSHCLAW].forceknockback = 60*FRACUNIT
 
 mobjinfo[MT_SKIM].npc_name = "Skim"
 mobjinfo[MT_SKIM].npc_spawnhealth = {5,5}
@@ -131,6 +133,10 @@ mobjinfo[MT_BLUEGOOMBA].rubydrop = {2,2}
 mobjinfo[MT_BLUEGOOMBA].forcedamage = 10
 mobjinfo[MT_BLUEGOOMBA].relativeknockback = true
 mobjinfo[MT_BLUEGOOMBA].forceknockback = 22*FRACUNIT
+
+-- Hazards
+mobjinfo[MT_PROXIMITYTNT].relativeknockback = true
+mobjinfo[MT_PROXIMITYTNT].forceknockback = 60*FRACUNIT
 
 -- Turret
 mobjinfo[MT_TURRETLASER].forcedamage = 20
