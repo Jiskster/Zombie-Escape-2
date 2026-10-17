@@ -1,14 +1,15 @@
 local function getPlayersByDist(targetplr)
 	local output, dists = {}, {}
 	for player in players.iterate do
-		if not player.mo or not player.mo.valid then continue end
+		if not player.realmo or not player.realmo.valid then continue end
+		if player.spectator then continue end
 		if (player == targetplr) then continue end
 		output[#output + 1] = player
 	end
 
 	for i = 1, #output do
 		local player = output[i]
-		dists[output[i]] = R_PointToDist2(targetplr.mo.x, targetplr.mo.y, player.mo.x, player.mo.y)
+		dists[output[i]] = R_PointToDist2(targetplr.realmo.x, targetplr.realmo.y, player.realmo.x, player.realmo.y)
 	end
 
 	table.sort(output, function(a, b)
@@ -19,26 +20,28 @@ end
 
 return "PlayerTags", function(v, player)
 	local game = ZE2.Game
-	if not player.mo or not player.mo.valid then return end
+	if not player.realmo or not player.realmo.valid then return end
 	if game.ended then return end
 
 	local orderedPlayers = getPlayersByDist(player)
 	local pointpatch = v.cachePatch("Z_POINTTEAM")
 	for i = 1, #orderedPlayers do
 		local plr = orderedPlayers[i]
-		local sameteam = (plr.mo.team == player.mo.team)
+		if plr.spectator then continue end
+
+		local sameteam = player.spectator or (plr.realmo.team == player.realmo.team)
 		if not sameteam then
 			if not P_CheckSight(plr.mo, player.mo) then continue end
 
-			local dist = R_PointToDist2(player.mo.x, player.mo.y, plr.mo.x, plr.mo.y)
+			local dist = R_PointToDist2(player.realmo.x, player.realmo.y, plr.realmo.x, plr.realmo.y)
 			if (dist > (1024 * FU)) then continue end
 		end
 
 		local result = xS_GetScreenCoords(v, player, camera, {
-			x = plr.mo.x,
-			y = plr.mo.y,
-			z = plr.mo.z + plr.mo.height,
-			eflags = plr.mo.eflags
+			x = plr.realmo.x,
+			y = plr.realmo.y,
+			z = plr.realmo.z + plr.realmo.height,
+			eflags = plr.realmo.eflags
 		})
 
 		if not result or not result.onscreen then continue end
@@ -52,7 +55,7 @@ return "PlayerTags", function(v, player)
 		local healthmap = V_GREENMAP
 
 		local translucency = 0
-		local dist = R_PointToDist2(player.mo.x, player.mo.y, plr.mo.x, plr.mo.y)
+		local dist = R_PointToDist2(player.realmo.x, player.realmo.y, plr.realmo.x, plr.realmo.y)
 		if (dist > (1024 * FU)) then
 			translucency = V_TRANSLUCENT
 		end
@@ -64,7 +67,7 @@ return "PlayerTags", function(v, player)
 			offset2 = offset2 / 2
 		end
 
-		if (plr.mo.maxhealth ~= nil) and (plr.mo.health <= (plr.mo.maxhealth / 2)) then
+		if (plr.realmo.maxhealth ~= nil) and (plr.realmo.health <= (plr.realmo.maxhealth / 2)) then
 			healthmap = V_REDMAP
 		end
 
@@ -72,10 +75,10 @@ return "PlayerTags", function(v, player)
 			v.drawScaled(result.x + offset1, result.y, ppsize, pointpatch)
 		end
 
-		local namecolor = sameteam and V_AQUAMAP or V_REDMAP
+		local namecolor = (plr.realmo.team == 1) and V_AQUAMAP or V_REDMAP
 		v.drawString(result.x, result.y + offset2, plr.name, namecolor|V_ALLOWLOWERCASE|translucency, fonttype)
 		if sameteam then
-			v.drawString(result.x, result.y + (offset2 * 2), "+" .. (plr.mo.health + plr.mo.shield_health), healthmap|translucency, fonttype)
+			v.drawString(result.x, result.y + (offset2 * 2), "+" .. (plr.realmo.health + plr.realmo.shield_health), healthmap|translucency, fonttype)
 		end
 	end
 end, "game", 1
