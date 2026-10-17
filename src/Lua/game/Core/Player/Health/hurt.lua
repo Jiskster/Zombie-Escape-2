@@ -76,8 +76,26 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 			elseif inf and inf.valid then
 				print(string.format("%s%s%s has been killed by %s%s", playercolor, player.name, "\x83", "\x82", "Something"))
 			else
-				if (damagetype == 8) then -- DMG_FALLDAMAGE
+				if (damagetype == 6) then -- DMG_FALLDAMAGE
 					print(string.format("%s%s%s fell to their death", playercolor, player.name, "\x83"))
+				elseif (damagetype == DMG_WATER) then
+					print(string.format("%s%s%s dissolved in chemicals", playercolor, player.name, "\x83"))
+				elseif (damagetype == DMG_FIRE) then
+					print(string.format("%s%s%s burned into ashes", playercolor, player.name, "\x83"))
+				elseif (damagetype == DMG_ELECTRIC) then
+					print(string.format("%s%s%s electrocuted with high voltage", playercolor, player.name, "\x83"))
+				elseif (damagetype == DMG_SPIKE) then
+					print(string.format("%s%s%s was poked to death", playercolor, player.name, "\x83"))
+				elseif (damagetype == DMG_NUKE) then
+					print(string.format("%s%s%s got nuked", playercolor, player.name, "\x83"))
+				elseif (damagetype == DMG_DROWNED) then
+					print(string.format("%s%s%s drowned", playercolor, player.name, "\x83"))
+				elseif (damagetype == DMG_SPACEDROWN) then
+					print(string.format("%s%s%s couldn't breathe", playercolor, player.name, "\x83"))
+				elseif (damagetype == DMG_DEATHPIT) then
+					print(string.format("%s%s%s fell into a bottomless pit", playercolor, player.name, "\x83"))
+				elseif (damagetype == DMG_CRUSHED) then
+					print(string.format("%s%s%s was smashed", playercolor, player.name, "\x83"))
 				else
 					print(string.format("%s%s%s has died", playercolor, player.name, "\x83"))
 				end
