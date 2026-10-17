@@ -23,6 +23,7 @@ local wtics2 = 0 -- for triangle animation
 return "Intermission", function(v, player)
 	local game = ZE2.Game
 	local vote = ZE2.Vote
+	local settings = ZE2.getGametypeSettings()
 
 	if not game.ended then
 		wtics2 = 0
@@ -145,17 +146,23 @@ return "Intermission", function(v, player)
 			local y3 = y2
 
 			local maptitlecolor = "\x88"
+			local gametypecolor = "\x82"
 			if map.onscreen then
 				if map.fuse > 0 then
 					maptitlecolor = "\x85"
+					gametypecolor = "\x85"
 
 					if (map.fuse % 2) == 0 then
 						maptitle = ""
 						maptitlecolor = ""
+						gametypecolor = "\x82"
 					end
 				end
 
-				v.drawString(x, y+(58*FU)+ese, maptitlecolor..maptitle, nil, "thin-fixed")
+				v.drawString(x, y+(58*FU)+ese, maptitlecolor..(maptitle), nil, "thin-fixed")
+				if map.gametype_name and map.gametype_name ~= settings.gametype_name then
+					v.drawString(x, y+(58*FU)+ese+(8*FU), gametypecolor..(map.gametype_name), nil, "thin-fixed")
+				end
 			end
 
 			if (pvote.selection == i) then

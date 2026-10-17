@@ -5,12 +5,13 @@ sfxinfo[sfx_zfall2].caption = "Fall damage"
 sfxinfo[sfx_zfalld].caption = "Death"
 
 local METER_UNIT = 64 * FU
-ZE2.MIN_FALL_DISTANCE = 3 * METER_UNIT
+ZE2.MIN_FALL_DISTANCE = 5 * METER_UNIT
 ZE2.FALL_DAMAGE_AMOUNT = 2
 
 ---@param player player_t
 local function HandleFalldamage(player)
     if not player.mo or not player.mo.valid then return end
+	if not player.mo.health then return end
 
     if not player.ze2.isFalling then
         if (player.mo.momz > 0) then return end
@@ -23,6 +24,10 @@ local function HandleFalldamage(player)
     if not P_IsObjectOnGround(player.mo) then return end
 
     player.ze2.isFalling = false
+	
+	if (player.mo.eflags & MFE_TOUCHWATER) or (player.mo.eflags & MFE_UNDERWATER) then
+		return
+	end
 
     local fall_distance = (player.ze2.fall_height - player.mo.z)
     if (fall_distance <= ZE2.MIN_FALL_DISTANCE) then return end

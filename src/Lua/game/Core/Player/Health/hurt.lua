@@ -1,5 +1,27 @@
+function ZE2.dropSurvivorInventory(player, force)
+	local settings = ZE2.getGametypeSettings()
+	
+	if not settings.survivor_drop_inventory and not force then
+		return end;
+	
+	local xS = player.xSlinger
+	local inv = xS:inv_get("survivor")
+	
+	for i=1,#inv do
+		if inv[i].id ~= "red_ring" then
+			local drop = xS:slot_drop(i, nil, "survivor")
+			if drop and drop.valid then
+				drop.droprandomangle = P_RandomRange(-35,35)*ANG1
+			end
+		else
+			xS:slot_clear(i, "survivor")
+		end
+	end
+end
+
 -- Overwrite xSlinger function
 function xSlinger.KillMobj(mo, inf, src, damagetype)
+	local settings = ZE2.getGametypeSettings()
 	local killing = true
 	local deathdamagetype = (damagetype >= DMG_INSTAKILL and damagetype <= DMG_SPECTATOR)
 	if mo.player and mo.player.valid then
@@ -30,7 +52,9 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 				killer.player.ze2.karma = max(1, killer.player.ze2.karma - 75)
 
 				xSlinger.RemoveShieldFromMobj(mo)
-
+				
+				ZE2.dropSurvivorInventory(player)
+				
 				killer.player.ze2.cash = killer.player.ze2.cash + cash_award
 				S_StartSound(killer.player.mo, sfx_rbyhit)
 				print(string.format("%s%s%s has been infected by %s%s", "\x84", player.name, "\x83", "\x85", killer.player.name))
@@ -100,6 +124,8 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 					print(string.format("%s%s%s has died", playercolor, player.name, "\x83"))
 				end
 			end
+			
+			ZE2.dropSurvivorInventory(player)
 		end
 		P_KillMobj(mo, inf, src, damagetype)
 	end

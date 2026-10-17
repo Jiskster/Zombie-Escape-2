@@ -248,7 +248,7 @@ function ZE2.applyPlayerConfig(player)
 		end
 
 		player.actionspd = $ / 2
-		player.normalspeed = $ / 2
+		player.normalspeed = ($*8)/10
 	end
 
 	if mo.effects then

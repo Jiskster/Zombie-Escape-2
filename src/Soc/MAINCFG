@@ -324,3 +324,15 @@ NextLevel = 58
 SkyNum = 501
 NoZone = True
 SelectHeading = Plague Maps
+
+Level 60
+Levelname = Virtual Arena
+Subtitle = Survive the Matrix.
+Act = 0
+Music = DATAZ
+TypeOfLevel = Plague
+NextLevel = 60
+SkyNum = 99
+NoZone = True
+SelectHeading = Plague Maps
+

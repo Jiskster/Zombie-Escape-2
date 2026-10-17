@@ -55,7 +55,7 @@ local function chooseRandomMap(vote)
 		map.fuse = -1
 
 		if map and map.onscreen and map.health then
-			table.insert(elected_maps, map.num)
+			table.insert(elected_maps, map)
 		end
 	end
 
@@ -64,7 +64,9 @@ local function chooseRandomMap(vote)
 		return false
 	end
 
-	vote.nextmapvoted = elected_maps[P_RandomRange(1, #elected_maps)]
+	local elected_index = P_RandomRange(1, #elected_maps)
+	vote.nextmapvoted = elected_maps[elected_index].num
+	vote.nextgtvoted = elected_maps[elected_index].gametype_number
 	S_StartSound(nil, sfx_s3kb3)
 
 	vote.warp_time = MAX_WARP_TIME
@@ -151,9 +153,11 @@ addHook("PreThinkFrame", function()
 			-- local rejected_maps = {}
 
 			for i=1,1035 do
-				if mapheaderinfo[i] and (mapheaderinfo[i].typeoflevel & TOL_ESCAPE)
-				and not mapheaderinfo[i].ze2_hidden and i ~= gamemap then
-					table.insert(temp_maplist,i)
+				if mapheaderinfo[i] then
+					if (mapheaderinfo[i].typeoflevel & TOL_ESCAPE or mapheaderinfo[i].typeoflevel & TOL_PLAGUE)
+					and not mapheaderinfo[i].ze2_hidden and i ~= gamemap then
+						table.insert(temp_maplist,i)
+					end
 				end
 			end
 
@@ -161,7 +165,11 @@ addHook("PreThinkFrame", function()
 				local chosen = P_RandomRange(1, #temp_maplist)
 				vote.maps[i].health = MAX_MAP_HEALTH
 				vote.maps[i].num = temp_maplist[chosen]
-
+				local mapnum = vote.maps[i].num
+				local settings = ZE2.TOLtoGametypeName(mapheaderinfo[mapnum].typeoflevel)
+				vote.maps[i].gametype_name = settings.gametype_name 
+				vote.maps[i].gametype_number = settings.gametype_number 
+				
 				table.remove(temp_maplist, chosen)
 
 				-- Just in case there isn't enough maps.
@@ -207,6 +215,7 @@ addHook("PreThinkFrame", function()
 
 								if lastmap ~= false then
 									vote.nextmapvoted = lastmap.num
+									vote.nextgtvoted = lastmap.gametype_number
 
 									S_StartSound(nil, sfx_s3kb3)
 
@@ -227,7 +236,7 @@ addHook("PreThinkFrame", function()
 			vote.warp_time = $ - 1
 
 			if vote.warp_time <= 0 then
-				G_SetCustomExitVars(vote.nextmapvoted, 2)
+				G_SetCustomExitVars(vote.nextmapvoted, 2, vote.nextgtvoted)
 				G_ExitLevel()
 				vote.warp_time = -1
 			end
