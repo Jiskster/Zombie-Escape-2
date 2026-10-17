@@ -30,7 +30,7 @@ skincolors[SKINCOLOR_ALPHAZOMBIE] = {
     ramp = shallowcopy(alpha_ramp),
     invcolor = SKINCOLOR_GREEN,
     invshade = 9,
-    chatcolor = V_GREENMAP,
+    chatcolor = V_ORANGEMAP,
     accessible = false
 }
 
