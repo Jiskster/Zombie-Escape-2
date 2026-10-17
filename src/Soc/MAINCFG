@@ -315,13 +315,13 @@ Subtitle = It's a Forest!
 SelectHeading = Plague Maps
 
 Level 58
-Levelname = HIDE N SEEK
-Subtitle = Want to play with Zombies?
+Levelname = The Docks
+Subtitle = Hahaha!
 Act = 0
-Music = HIDE
+Music = TDCKS
 TypeOfLevel = Plague
 NextLevel = 58
-SkyNum = 501
+SkyNum = 11
 NoZone = True
 SelectHeading = Plague Maps
 
