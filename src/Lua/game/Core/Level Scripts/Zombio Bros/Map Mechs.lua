@@ -15,6 +15,7 @@ addHook("LinedefExecute", function(line, mo, sector)
         if not psector.taglist:has(line.args[0]) then continue end
 
         P_DoPlayerPain(p)
+        p.powers[pw_flashing] = 0
         P_SetObjectMomZ(pmo, 7 * FU, false)
         P_InstaThrust(pmo, angle, line.args[1] * FU)
     end
