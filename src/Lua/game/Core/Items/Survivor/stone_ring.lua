@@ -120,6 +120,9 @@ xSlinger.registerMissile("STONE_DEBRIS", {
 	end
 })
 
+local missile_stone_ring_guide = 
+ZE2.registerCrosshairGuide(missile_stone_ring.id)
+
 xSlinger.registerItem("stone_ring", {
 	
 	-- HUD
@@ -148,6 +151,11 @@ xSlinger.registerItem("stone_ring", {
 		pickup = sfx_None,
 		drop = sfx_None,
 	},
+
+	holdfunc = function(self, mobj)
+		ZE2.drawCrosshairGuide(mobj, missile_stone_ring_guide.id, FU/4)
+	end,
+
 	hold_object = {
 		state = S_ZE2_THROWNSTONE1;
 		pos = {  -- at this pos, the object is at the right of your body

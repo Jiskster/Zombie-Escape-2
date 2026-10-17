@@ -94,6 +94,9 @@ xSlinger.registerMissile("GRENADE_RING", {
 	end
 })
 
+local missile_grenade_ring_guide = 
+ZE2.registerCrosshairGuide(missile_grenade_ring.id)
+
 xSlinger.registerItem("grenade_ring",  {
 	displayname = "Grenade";
 
@@ -122,6 +125,10 @@ xSlinger.registerItem("grenade_ring",  {
 	maxcount = 10;
 
 	fuse = 2*TICRATE;
+
+	holdfunc = function(self, mobj)
+		ZE2.drawCrosshairGuide(mobj, missile_grenade_ring_guide.id, FU/4)
+	end,
 
 	hold_object = {
 		state = S_XS_GRENADERING;
