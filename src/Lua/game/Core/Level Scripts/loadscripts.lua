@@ -167,6 +167,9 @@ dofolder("Objects");
 
 folder = "The Farland"; dofolder("Timers");
 
-folder = "Deep Cavern"; dofolder("Timers");
+folder = "Deep Cavern";
+
+dofolder("Timers");
+dofolder("Teleport");
 
 folder = "The Docks"; dofolder("Objects");
