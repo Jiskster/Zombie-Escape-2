@@ -1,8 +1,22 @@
 freeslot("sfx_zfall1", "sfx_zfall2", "sfx_zfalld")
-
 sfxinfo[sfx_zfall1].caption = "Fall damage"
 sfxinfo[sfx_zfall2].caption = "Fall damage"
-sfxinfo[sfx_zfalld].caption = "Death"
+sfxinfo[sfx_zfalld].caption = "Dying"
+
+local function P_RandomFixedRange(a,b)
+	return a + FixedMul((b - a), P_RandomFixed())
+end
+
+local function P_3DThrust(mo, h_ang, v_ang, speed)
+	local t = {
+		x = FixedMul(cos(h_ang), cos(v_ang)),
+		y = FixedMul(sin(h_ang), cos(v_ang)),
+		z = sin(v_ang)
+	}
+	mo.momx = $ + FixedMul(speed, t.x)
+	mo.momy = $ + FixedMul(speed, t.y)
+	mo.momz = $ + FixedMul(speed, t.z)
+end
 
 local METER_UNIT = 64 * FU
 ZE2.MIN_FALL_DISTANCE = 5 * METER_UNIT
@@ -38,6 +52,25 @@ local function HandleFalldamage(player)
 
     local fall_damage = FixedMul(ZE2.FALL_DAMAGE_AMOUNT, FixedDiv(fall_distance, METER_UNIT))
     P_DamageMobj(player.mo, nil, nil, fall_damage, 6) -- DMG_FALLDAMAGE = 6
+	
+	local count = fall_damage / 3
+	local angstep = FixedDiv(360 * FRACUNIT, count * FRACUNIT)
+	local dist = FixedDiv(8 * player.mo.scale, 3*FU)
+	for OUTER = 1, 3 do
+		local d = dist * OUTER
+		
+		for i = 1, count do
+			local ha = FixedAngle(angstep * i)
+			local va = FixedAngle(P_RandomFixedRange(13 * OUTER * FRACUNIT, 28 * OUTER * FRACUNIT))
+			local b = P_SpawnMobjFromMobj(player.mo,
+				P_ReturnThrustX(ha, d),
+				P_ReturnThrustY(ha, d),
+				FRACUNIT, MT_ZOMB_DROPLET
+			)
+			b.scale = (b.scale * 3)/2
+			P_3DThrust(b, ha,va, FixedMul(P_RandomFixedRange(6*FU, 12*FU), player.mo.scale))
+		end
+	end
 
     S_StopSound(player.mo)
     if (player.mo.health <= 0) then
