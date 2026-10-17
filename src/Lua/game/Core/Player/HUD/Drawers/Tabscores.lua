@@ -92,7 +92,7 @@ local function RenderPlayer(v, ypos, player, team) -- standard
 	DrawScaled(4 * FU, ypos * FU, playericonscale, playericon, 0, GetColormap(playerskin, playercolor, playertranslation))
 
 	local textspos = 6
-	local highlight = skincolors[player.skincolor].chatcolor
+	local highlight = skincolors[player.skincolor or SKINCOLOR_WHITE].chatcolor
 	DrawString(4 + 20, ypos + textspos, player.name, V_ALLOWLOWERCASE|textcolor|highlight, "small")
 
 	RenderPlayerStats(v, ypos + textspos, player, team, spectator)
@@ -115,7 +115,7 @@ local function RenderPlayerSmall(v, ypos, player, team) -- compact
 	DrawScaled(4 * FU, ypos * FU, playericonscale, playericon, 0, GetColormap(playerskin, playercolor, playertranslation))
 
 	local textspos = 2
-	local highlight = skincolors[player.skincolor].chatcolor
+	local highlight = skincolors[player.skincolor or SKINCOLOR_WHITE].chatcolor
 	DrawString(4 + 10, ypos + textspos, player.name, V_ALLOWLOWERCASE|textcolor|highlight, "small")
 
 	RenderPlayerStats(v, ypos + textspos, player, team, spectator)
@@ -128,7 +128,7 @@ local function RenderPlayerSmaller(v, ypos, player, team) -- super compact
 	end
 
 	local spectator = team.spectator
-	local textcolor = 0 --skincolors[teamcolor].chatcolor
+	local textcolor = 0
 
 	local playercolor = player.realmo and player.realmo.color or player.skincolor
 	if (playercolor == SKINCOLOR_NONE) then
@@ -141,7 +141,7 @@ local function RenderPlayerSmaller(v, ypos, player, team) -- super compact
 	end
 
 	local textspos = 0
-	local highlight = skincolors[player.skincolor].chatcolor --(player == consoleplayer) and V_YELLOWMAP or 0
+	local highlight = skincolors[player.skincolor or SKINCOLOR_WHITE].chatcolor
 	DrawString(4 + 5, ypos + textspos, player.name, V_ALLOWLOWERCASE|textcolor|highlight, "small")
 
 	RenderPlayerStats(v, ypos + textspos, player, team, spectator)
