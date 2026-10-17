@@ -7,6 +7,7 @@ return {
 	isSprinting = false,
 	sprintdelay = 0, -- x > 0 = sprintmeter wont increase
 
+	isFalling = false,
 	isJumping = false,
 	isRunning = false,
 	isSprung = false,
@@ -36,7 +37,7 @@ return {
 
 	damage_fade = 0, -- tic_t
 	damage_fade_max = 0,
-	
+
 	damagefromplayer = 0,
 
 	checkpoint_number = 0,
@@ -47,12 +48,12 @@ return {
 	special_cooldown = 0,
 
 	teamchat_enabled = false,
-	
+
 	vote = {
 		selection = 1,
-		
+
 		lasthit = nil, -- the leveltime frame where they last hit a map
-		
+
 		-- The cmd from the previous frame
 		lastside = 0,
 		lastforward = 0,
@@ -60,6 +61,8 @@ return {
 	},
 
 	spectator_cycle = 0,
-	
+
 	purchased = {},
+
+	fall_height = 0
 }
