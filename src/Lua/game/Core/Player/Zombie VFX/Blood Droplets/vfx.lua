@@ -53,7 +53,7 @@ local function zombie_droplet_hitground(mo) -- MobjHitFloor my beloved where are
     end
 end
 
-local function Z_DoDroplet(mo, blood_quantity)
+rawset(_G, "Z_DoDroplet", function(mo, blood_quantity)
     local pradius = mo.radius / FU -- Idk, P_RandomRange throws a warning about big numbers so I had to divide by FU first
     local pheight = mo.height / FU
 
@@ -65,16 +65,15 @@ local function Z_DoDroplet(mo, blood_quantity)
 
         P_InstaThrust(droplt, (drop_rad * FU), FixedMul(P_RandomRange(2, 7) * FU, mo.scale))
     end
-end
+end)
 
 local function dropblood(p, inf, src, dmg, damagetype)
     if not (p.mo and p.mo.valid) then return end
-    if dmg <= 4 then return end -- Yeah no I'll not let you spam it lol
+    if (dmg <= 4) then return end -- Yeah no I'll not let you spam it lol
+
     local pmo = p.mo
-
-    local dmg_strenght = (dmg * 10) / 100
-    local blood_count = max(2, min(dmg_strenght, 30))
-
+    local dmg_strength = (dmg * 10) / 100
+    local blood_count = max(2, min(dmg_strength, 30))
     Z_DoDroplet(pmo, blood_count)
 end
 

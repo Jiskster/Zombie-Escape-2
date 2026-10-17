@@ -3,19 +3,14 @@ sfxinfo[sfx_zfall1].caption = "Fall damage"
 sfxinfo[sfx_zfall2].caption = "Fall damage"
 sfxinfo[sfx_zfalld].caption = "Dying"
 
-local function P_RandomFixedRange(a,b)
-	return a + FixedMul((b - a), P_RandomFixed())
-end
+local function dropblood(player, damage)
+    if not player.mo or not player.mo.valid then return end
+    if (damage <= 4) then return end -- Yeah no I'll not let you spam it lol
 
-local function P_3DThrust(mo, h_ang, v_ang, speed)
-	local t = {
-		x = FixedMul(cos(h_ang), cos(v_ang)),
-		y = FixedMul(sin(h_ang), cos(v_ang)),
-		z = sin(v_ang)
-	}
-	mo.momx = $ + FixedMul(speed, t.x)
-	mo.momy = $ + FixedMul(speed, t.y)
-	mo.momz = $ + FixedMul(speed, t.z)
+    local pmo = player.mo
+    local dmg_strength = (damage * 10) / 5
+    local blood_count = max(2, min(dmg_strength, 200))
+    Z_DoDroplet(pmo, blood_count)
 end
 
 local METER_UNIT = 64 * FU
@@ -52,25 +47,8 @@ local function HandleFalldamage(player)
 
     local fall_damage = FixedMul(ZE2.FALL_DAMAGE_AMOUNT, FixedDiv(fall_distance, METER_UNIT))
     P_DamageMobj(player.mo, nil, nil, fall_damage, 6) -- DMG_FALLDAMAGE = 6
-	
-	local count = fall_damage / 3
-	local angstep = FixedDiv(360 * FRACUNIT, count * FRACUNIT)
-	local dist = FixedDiv(8 * player.mo.scale, 3*FU)
-	for OUTER = 1, 3 do
-		local d = dist * OUTER
-		
-		for i = 1, count do
-			local ha = FixedAngle(angstep * i)
-			local va = FixedAngle(P_RandomFixedRange(13 * OUTER * FRACUNIT, 28 * OUTER * FRACUNIT))
-			local b = P_SpawnMobjFromMobj(player.mo,
-				P_ReturnThrustX(ha, d),
-				P_ReturnThrustY(ha, d),
-				FRACUNIT, MT_ZOMB_DROPLET
-			)
-			b.scale = (b.scale * 3)/2
-			P_3DThrust(b, ha,va, FixedMul(P_RandomFixedRange(6*FU, 12*FU), player.mo.scale))
-		end
-	end
+
+	dropblood(player, fall_damage)
 
     S_StopSound(player.mo)
     if (player.mo.health <= 0) then
