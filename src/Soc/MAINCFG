@@ -314,6 +314,19 @@ NoZone = true
 Subtitle = It's a Forest!
 SelectHeading = Plague Maps
 
+Level 57
+Levelname = UNKNWN
+Subtitle = The Mystery of Zumbi Blocks
+Act = 0
+Music = VOID1
+TypeOfLevel = Plague
+NextLevel = 57
+SkyNum = 20
+Weather = PRECIP_RAIN
+NoZone = True
+Lua.ze2_laddertag = 300
+SelectHeading = Plague Maps
+
 Level 58
 Levelname = The Docks
 Subtitle = Hahaha!
