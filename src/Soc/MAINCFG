@@ -349,3 +349,14 @@ SkyNum = 99
 NoZone = True
 SelectHeading = Plague Maps
 
+Level 51
+Levelname = Mellow Flower
+Subtitle = Meadow Match Ripoff frfr
+Act = 0
+Music = MP_RAI
+TypeOfLevel = Plague
+NextLevel = 60
+SkyNum = 20
+Weather = 1
+NoZone = True
+SelectHeading = Plague Maps
