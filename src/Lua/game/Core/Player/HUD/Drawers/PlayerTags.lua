@@ -77,7 +77,7 @@ return "PlayerTags", function(v, player)
 
 		local namecolor = (plr.realmo.team == 1) and V_AQUAMAP or V_REDMAP
 		v.drawString(result.x, result.y + offset2, plr.name, namecolor|V_ALLOWLOWERCASE|translucency, fonttype)
-		if sameteam then
+		if sameteam and (plr.realmo.shield_health ~= nil) then
 			v.drawString(result.x, result.y + (offset2 * 2), "+" .. (plr.realmo.health + plr.realmo.shield_health), healthmap|translucency, fonttype)
 		end
 	end

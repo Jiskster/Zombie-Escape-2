@@ -27,7 +27,7 @@ local function RenderPlayerStats(v, ypos, player, team, spectator)
 	DrawString(BASEVIDWIDTH - (2 + 120), ypos, karmacolor .. karmadisplay, V_ALLOWLOWERCASE|textcolor, "small-right")
 	if not spectator then
 		local healthcolor = "\x83"
-		if (player.mo.health < (player.mo.maxhealth / 2)) then
+		if (player.mo.maxhealth ~= nil) and (player.mo.health < (player.mo.maxhealth / 2)) then
 			healthcolor = "\x87"
 		end
 
