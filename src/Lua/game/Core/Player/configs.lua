@@ -206,6 +206,13 @@ function ZE2.applyPlayerConfig(player)
 	end
 	
 	player.jumpfactor = config.jumpfactor or defaultjumpfactor
+	
+	if ZE2.cv_newairphys.value then
+		if not P_IsObjectOnGround(mo) 
+		and not (player.pflags & PF_STARTJUMP) or mo.momz*P_MobjFlip(mo) < 0 then 
+			P_SetObjectMomZ(mo, -gravity, true)
+		end
+	end
 
 	if config.actionspd then
 		player.actionspd = config.actionspd

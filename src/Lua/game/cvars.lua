@@ -50,6 +50,13 @@ addCvar("currencydelay", {
 	flags = CV_NETVAR,
 })
 
+addCvar("newairphys", {
+	name = "z_newairphys",
+	defaultvalue = "Off",
+	PossibleValue = CV_OnOff,
+	flags = CV_NETVAR,
+})
+
 addCvar("debug", {
 	name = "z_debug",
 	defaultvalue = "Off",
