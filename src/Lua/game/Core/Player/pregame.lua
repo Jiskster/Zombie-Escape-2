@@ -11,7 +11,7 @@ ZE2.charsel_set_exit_anim = 16
 ZE2.shop_selection = 1
 
 ZE2.shop_enter_anim = 0
-ZE2.shop_set_enter_anim = 16
+ZE2.shop_set_enter_anim = 18
 
 ZE2.shop_anim = 0
 ZE2.shop_set_anim = 2
@@ -102,6 +102,20 @@ local function countdownTimers()
 	end
 end
 
+local function undoShopButton(player, cmd)
+	if not (lastbuttons & BT_SPIN) and (cmd.buttons & BT_SPIN) then -- go back to character select menu
+		S_StartSound(nil, sfx_adderr, player)
+		ZE2.charsel_exit_anim = -ZE2.charsel_set_exit_anim
+		ZE2.shop_enter_anim = -ZE2.shop_set_enter_anim 
+		ZE2.pregame_menu = 1
+		
+		COM_BufAddText(player, "_z_unselectcharacter 1")
+	elseif not (lastbuttons & BT_JUMP) and (cmd.buttons & BT_JUMP) 
+	and not ZE2.shop_oncontinue then -- buy item
+		COM_BufAddText(player, "_z_shopbuy "..ZE2.shop_selection)
+	end
+end
+
 addHook("PlayerCmd", function(player, cmd)
 	local game = ZE2.Game
 	local settings = ZE2.getGametypeSettings()
@@ -162,7 +176,7 @@ addHook("PlayerCmd", function(player, cmd)
         end
     elseif (ZE2.pregame_menu == 2) then
 		if not ZE2.shop_oncontinue then
-			if (not lastsidemove) and (cmd.sidemove) then
+			if (not lastsidemove) and (cmd.sidemove) then -- left/right on shop
 				local shop = ZE2.Shop
 				if (cmd.sidemove < 0) then
 					ZE2.shop_selection = $ - 1
@@ -186,22 +200,13 @@ addHook("PlayerCmd", function(player, cmd)
 				ZE2.shop_anim = ZE2.shop_set_anim
 				S_StartSound(nil, sfx_menu1, player)
 			end
-			
-			if not (lastbuttons & BT_SPIN) and (cmd.buttons & BT_SPIN) then -- go back to character select menu
-				S_StartSound(nil, sfx_adderr, player)
-				ZE2.charsel_exit_anim = -ZE2.charsel_set_exit_anim
-				ZE2.shop_enter_anim = -ZE2.shop_set_enter_anim 
-				ZE2.pregame_menu = 1
-				
-				COM_BufAddText(player, "_z_unselectcharacter 1")
-			elseif not (lastbuttons & BT_JUMP) and (cmd.buttons & BT_JUMP) then -- buy item
-				COM_BufAddText(player, "_z_shopbuy "..ZE2.shop_selection)
-			end
 		elseif ZE2.shop_oncontinue then
-			if (not lastforwardmove) and (cmd.forwardmove > 0) then
-				ZE2.shop_oncontinue = false
-				ZE2.shop_anim = ZE2.shop_set_anim
-				S_StartSound(nil, sfx_menu1, player)
+			if settings.shop then
+				if (not lastforwardmove) and (cmd.forwardmove > 0) then
+					ZE2.shop_oncontinue = false
+					ZE2.shop_anim = ZE2.shop_set_anim
+					S_StartSound(nil, sfx_menu1, player)
+				end
 			end
 			
 			if not (lastbuttons & BT_JUMP) and (cmd.buttons & BT_JUMP) then -- pressed continue button
@@ -216,6 +221,8 @@ addHook("PlayerCmd", function(player, cmd)
 				end
 			end
 		end
+		
+		undoShopButton(player, cmd)
 	elseif (ZE2.pregame_menu == 3 and not pregame_move) then -- activates only if you cant move during pregame
 		if not (lastbuttons & BT_SPIN) and (cmd.buttons & BT_SPIN) then
 			S_StartSound(nil, sfx_adderr, player)
@@ -276,6 +283,7 @@ end
 
 COM_AddCommand("_z_choosecharacter", function(player, skinname)
 	local game = ZE2.Game
+	local settings = ZE2.getGametypeSettings()
 	
     if not (player.mo and player.mo.valid and player.mo.health) then
         return end;
@@ -307,6 +315,9 @@ COM_AddCommand("_z_choosecharacter", function(player, skinname)
 			ZE2.charsel_exit_anim = ZE2.charsel_set_exit_anim
 			ZE2.shop_enter_anim = ZE2.shop_set_enter_anim 
 			ZE2.pregame_menu = 2
+			
+			
+			ZE2.shop_oncontinue = not settings.shop
 		end
 
 		S_StartSound(nil, sfx_s3k63, player)

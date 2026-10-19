@@ -15,7 +15,7 @@ local function getDefaultSettings()
 		default_round_time = ZE2.DEFAULT_ROUND_TIME, -- number (tics)
 		default_zombie_release_time = 10*TICRATE, -- number (tics)
 		default_winner = 2, -- number (team)
-		shop = true, -- if disabled, then cash is disabled.
+		shop = true, -- changes some text in pregame if its off
 		fall_damage = false, -- does this gametype have fall damage?
 		force_loadout = { -- table with items
 			[1] = nil,

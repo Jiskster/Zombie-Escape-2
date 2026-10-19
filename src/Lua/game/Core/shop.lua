@@ -16,9 +16,13 @@ function ZE2.Shop.listItem(itemname, cost)
 	list[#list + 1] = newlist
 end
 
-function ZE2.Shop.refreshStock()
+function ZE2.Shop.refreshStock(clear)
 	for i,v in pairs(ZE2.Shop.stock) do
 		ZE2.Shop.stock[i] = nil
+	end
+	
+	if (clear) then
+		return 
 	end
 	
 	local list = ZE2.Shop.list
@@ -70,5 +74,7 @@ addHook("NetVars", function(net)
 end)
 
 addHook("MapLoad", function(map)
-	ZE2.Shop.refreshStock()
+	local settings = ZE2.getGametypeSettings()
+	
+	ZE2.Shop.refreshStock(not settings.shop)
 end)
