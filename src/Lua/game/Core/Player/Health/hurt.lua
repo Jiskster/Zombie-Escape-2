@@ -52,6 +52,59 @@ local function GetAttackerNameAndColor(source)
 	return "\x82", "Something"
 end
 
+local DEATH_TYPES = {
+	[6] = "%s%s%s fell to their death",  -- DMG_FALLDAMAGE
+	[DMG_WATER] = "%s%s%s dissolved in chemicals",
+	[DMG_FIRE] = "%s%s%s burned into ashes",
+	[DMG_ELECTRIC] = "%s%s%s electrocuted with high voltage",
+	[DMG_SPIKE] = "%s%s%s was poked to death",
+	[DMG_NUKE] = "%s%s%s got nuked",
+	[DMG_DROWNED] = "%s%s%s drowned",
+	[DMG_SPACEDROWN] = "%s%s%s couldn't breathe",
+	[DMG_DEATHPIT] = "%s%s%s fell into a bottomless pit",
+	[DMG_CRUSHED] = "%s%s%s was smashed"
+}
+
+local function SendDeathMessage(player, inflictor, source, damagetype)
+	local assist = GetAssistant(player, source or inflictor)
+	local message = ""
+	local playercolor = (mo.team == 1) and "\x84" or "\x85"
+	if source and source.valid then
+		local sourcecolor, sourcename = GetAttackerNameAndColor(source)
+		message = string.format("%s%s%s has been killed by %s%s", playercolor, player.name, "\x83", sourcecolor, sourcename)
+		if assist and assist.valid then
+			local sourcecolor, sourcename = GetAttackerNameAndColor(source)
+			message = string.format("%s with help from %s%s", message, sourcecolor, sourcename)
+		end
+
+		if (source.flags & (MF_FIRE)) then
+			message = string.format("%s%s%s has been burned to death", playercolor, player.name, "\x83")
+			if assist and assist.valid then
+				local sourcecolor, sourcename = GetAttackerNameAndColor(source)
+				message = string.format("%s while trying to escape %s%s", message, sourcecolor, sourcename)
+			end
+		end
+	else
+		if DEATH_TYPES[damagetype] then
+			message = string.format(DEATH_TYPES[damagetype], playercolor, player.name, "\x83")
+			if assist and assist.valid then
+				local sourcecolor, sourcename = GetAttackerNameAndColor(source)
+				message = string.format("%s while trying to escape %s%s", message, sourcecolor, sourcename)
+			end
+		else
+			message = string.format("%s%s%s has died", playercolor, player.name, "\x83")
+			if assist and assist.valid then
+				local sourcecolor, sourcename = GetAttackerNameAndColor(source)
+				message = string.format("%s%s%s has been finished off by %s%s", playercolor, player.name, "\x83", sourcecolor, sourcename)
+			end
+		end
+	end
+
+	if (message:len() > 0) then
+		print(message)
+	end
+end
+
 -- Overwrite xSlinger function
 function xSlinger.KillMobj(mo, inf, src, damagetype)
 	local settings = ZE2.getGametypeSettings()
@@ -116,98 +169,7 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 	if killing then
 		local player = mo.player
 		if player and player.valid then
-			local assist = GetAssistant(player, src or inf)
-			local message = ""
-			local playercolor = (mo.team == 1) and "\x84" or "\x85"
-			if src and src.valid then
-				local sourcecolor, sourcename = GetAttackerNameAndColor(src)
-				message = string.format("%s%s%s has been killed by %s%s", playercolor, player.name, "\x83", sourcecolor, sourcename)
-				if assist and assist.valid then
-					local sourcecolor, sourcename = GetAttackerNameAndColor(src)
-					message = string.format("%s with help from %s%s", message, sourcecolor, sourcename)
-				end
-
-				if (src.flags & (MF_FIRE)) then
-					message = string.format("%s%s%s has been burned to death", playercolor, player.name, "\x83")
-					if assist and assist.valid then
-						local sourcecolor, sourcename = GetAttackerNameAndColor(src)
-						message = string.format("%s while trying to escape %s%s", message, sourcecolor, sourcename)
-					end
-				end
-			else
-				if (damagetype == 6) then -- DMG_FALLDAMAGE
-					message = string.format("%s%s%s fell to their death", playercolor, player.name, "\x83")
-					if assist and assist.valid then
-						local sourcecolor, sourcename = GetAttackerNameAndColor(src)
-						message = string.format("%s while trying to escape %s%s", message, sourcecolor, sourcename)
-					end
-				elseif (damagetype == DMG_WATER) then
-					message = string.format("%s%s%s dissolved in chemicals", playercolor, player.name, "\x83")
-					if assist and assist.valid then
-						local sourcecolor, sourcename = GetAttackerNameAndColor(src)
-						message = string.format("%s while trying to escape %s%s", message, sourcecolor, sourcename)
-					end
-				elseif (damagetype == DMG_FIRE) then
-					message = string.format("%s%s%s burned into ashes", playercolor, player.name, "\x83")
-					if assist and assist.valid then
-						local sourcecolor, sourcename = GetAttackerNameAndColor(src)
-						message = string.format("%s while trying to escape %s%s", message, sourcecolor, sourcename)
-					end
-				elseif (damagetype == DMG_ELECTRIC) then
-					message = string.format("%s%s%s electrocuted with high voltage", playercolor, player.name, "\x83")
-					if assist and assist.valid then
-						local sourcecolor, sourcename = GetAttackerNameAndColor(src)
-						message = string.format("%s while trying to escape %s%s", message, sourcecolor, sourcename)
-					end
-				elseif (damagetype == DMG_SPIKE) then
-					message = string.format("%s%s%s was poked to death", playercolor, player.name, "\x83")
-					if assist and assist.valid then
-						local sourcecolor, sourcename = GetAttackerNameAndColor(src)
-						message = string.format("%s while trying to escape %s%s", message, sourcecolor, sourcename)
-					end
-				elseif (damagetype == DMG_NUKE) then
-					message = string.format("%s%s%s got nuked", playercolor, player.name, "\x83")
-					if assist and assist.valid then
-						local sourcecolor, sourcename = GetAttackerNameAndColor(src)
-						message = string.format("%s while trying to escape %s%s", message, sourcecolor, sourcename)
-					end
-				elseif (damagetype == DMG_DROWNED) then
-					message = string.format("%s%s%s drowned", playercolor, player.name, "\x83")
-					if assist and assist.valid then
-						local sourcecolor, sourcename = GetAttackerNameAndColor(src)
-						message = string.format("%s while trying to escape %s%s", message, sourcecolor, sourcename)
-					end
-				elseif (damagetype == DMG_SPACEDROWN) then
-					message = string.format("%s%s%s couldn't breathe", playercolor, player.name, "\x83")
-					if assist and assist.valid then
-						local sourcecolor, sourcename = GetAttackerNameAndColor(src)
-						message = string.format("%s while trying to escape %s%s", message, sourcecolor, sourcename)
-					end
-				elseif (damagetype == DMG_DEATHPIT) then
-					message = string.format("%s%s%s fell into a bottomless pit", playercolor, player.name, "\x83")
-					if assist and assist.valid then
-						local sourcecolor, sourcename = GetAttackerNameAndColor(src)
-						message = string.format("%s while trying to escape %s%s", message, sourcecolor, sourcename)
-					end
-				elseif (damagetype == DMG_CRUSHED) then
-					message = string.format("%s%s%s was smashed", playercolor, player.name, "\x83")
-					if assist and assist.valid then
-						local sourcecolor, sourcename = GetAttackerNameAndColor(src)
-						message = string.format("%s while trying to escape %s%s", message, sourcecolor, sourcename)
-					end
-				else
-					if assist and assist.valid then
-						local sourcecolor, sourcename = GetAttackerNameAndColor(src)
-						message = string.format("%s%s%s has been finished off by %s%s", playercolor, player.name, "\x83", sourcecolor, sourcename)
-					else
-						message = string.format("%s%s%s has died", playercolor, player.name, "\x83")
-					end
-				end
-			end
-
-			if (message:len() > 0) then
-				print(message)
-			end
+			SendDeathMessage(player, inf, src, damagetype)
 
 			ZE2.dropSurvivorInventory(player)
 		end
