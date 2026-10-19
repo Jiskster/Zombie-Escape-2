@@ -15,4 +15,5 @@ gt.default_zombie_release_time = 0
 gt.survivor_drop_inventory = true
 gt.move_during_pregame = true
 gt.fall_damage = true
-gt.force_loadout[1] = {"red_ring"}
+gt.allow_pregame_drop = true
+gt.force_loadout[1] = {}

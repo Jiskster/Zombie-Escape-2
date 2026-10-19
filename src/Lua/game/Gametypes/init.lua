@@ -16,6 +16,7 @@ local function getDefaultSettings()
 		default_zombie_release_time = 10*TICRATE, -- number (tics)
 		default_winner = 2, -- number (team)
 		shop = true, -- changes some text in pregame if its off
+		allow_pregame_drop = false, -- does this gametype allow dropping in pregame?
 		fall_damage = false, -- does this gametype have fall damage?
 		force_loadout = { -- table with items
 			[1] = nil,

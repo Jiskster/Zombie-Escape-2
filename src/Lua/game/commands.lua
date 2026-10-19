@@ -65,12 +65,13 @@ end)
 
 COM_AddCommand("drophand", function(player)
 	local game = ZE2.Game
+	local settings = ZE2.getGametypeSettings()
 	local xS = player.xSlinger
 
 	if not (player.mo and player.mo.valid) then
 		return end;
 
-	if (game.state == ZE2.GS_PREGAME) then
+	if (game.state == ZE2.GS_PREGAME and not settings.allow_pregame_drop) then
 		return end;
 
 	local mo = player.mo
