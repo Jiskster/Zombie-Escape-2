@@ -31,7 +31,7 @@ local function GetAssistant(player, attacker)
 	for index = #pV.recent_attackers, 1, -1 do
 		local other = pV.recent_attackers[index]
 		if (leveltime > other.time) then continue end
-		if (attacker == other.source) then continue end
+		if (attacker ~= other.source) then continue end
 		return other.source
 	end
 	return
@@ -74,21 +74,21 @@ local function SendDeathMessage(player, inflictor, source, damagetype)
 			message = string.format("%s%s%s has been burned to death", playercolor, player.name, "\x83")
 			if assist and assist.valid then
 				local sourcecolor, sourcename = GetAttackerNameAndColor(source)
-				message = string.format("%s while trying to escape %s%s", message, sourcecolor, sourcename)
+				message = string.format("%s%s while trying to escape %s%s", message, "\x83", sourcecolor, sourcename)
 			end
 		else
 			local sourcecolor, sourcename = GetAttackerNameAndColor(source)
 			message = string.format("%s%s%s has been killed by %s%s", playercolor, player.name, "\x83", sourcecolor, sourcename)
 			if assist and assist.valid then
 				local sourcecolor, sourcename = GetAttackerNameAndColor(source)
-				message = string.format("%s with help from %s%s", message, sourcecolor, sourcename)
+				message = string.format("%s%s with help from %s%s", message, "\x83", sourcecolor, sourcename)
 			end
 		end
 	elseif DEATH_TYPES[damagetype] then
 		message = string.format(DEATH_TYPES[damagetype], playercolor, player.name, "\x83")
 		if assist and assist.valid then
 			local sourcecolor, sourcename = GetAttackerNameAndColor(source)
-			message = string.format("%s while trying to escape %s%s", message, sourcecolor, sourcename)
+			message = string.format("%s%s while trying to escape %s%s", message, "\x83", sourcecolor, sourcename)
 		end
 	else
 		message = string.format("%s%s%s has died", playercolor, player.name, "\x83")
