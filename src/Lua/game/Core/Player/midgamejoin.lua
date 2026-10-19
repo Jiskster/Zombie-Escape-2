@@ -1,6 +1,6 @@
 local holdtime = 0
 local holdtimedelay = 0
-local MAXHOLDTIME = TICRATE + 13
+local MAXHOLDTIME = 28
 local MAXHOLDTIMEDELAY = TICRATE
 
 local function showOutOfGameText(player)
@@ -42,7 +42,7 @@ addHook("HUD", function(v, player)
 	if holdtime then
 		flags = $ | V_50TRANS
 
-		v.drawStretched(text_x*FU - (holdtime2*FU)/2, text_y*FU + 10*FU, holdtime2*FU, FU, cyanpatch, barflags)
+		v.drawStretched(text_x*FU - (holdtime2*FU), text_y*FU + 10*FU, holdtime2*FU*2, FU, cyanpatch, barflags)
 	end
 	v.drawString(text_x, text_y, "Hold " .. "\x82" .. "FIRE" .. "\x80" .. " to join", flags, "thin-center")
 end)
