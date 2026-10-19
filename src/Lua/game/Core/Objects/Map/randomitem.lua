@@ -1,6 +1,6 @@
 freeslot("MT_ZE2_RANDOMITEM_SPAWN")
 
-local pool = {
+ZE2.RandomItemPool = {
 	"red_ring",
 	"auto_ring",
 	"bounce_ring",
@@ -40,7 +40,11 @@ addHook("MapThingSpawn", function(mobj, mapthing)
 		return end;
 	
 	if P_RandomChance(FU/2) then
-		local item_id = pool[P_RandomRange(1,#pool)]
+		local item_id = ZE2.RandomItemPool[P_RandomRange(1,#ZE2.RandomItemPool)]
 		xSlinger.SpawnItemDrop(mobj, item_id, true)
 	end
 end, MT_ZE2_RANDOMITEM_SPAWN)
+
+addHook("NetVars", function(net)
+	ZE2.RandomItemPool = net($)
+end)
