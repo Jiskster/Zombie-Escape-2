@@ -1,4 +1,4 @@
-ZE2.SHOP_MAX = 3 -- do you want to crash the stock market? change this value and go wild!
+ZE2.SHOP_MAX = 4 -- do you want to crash the stock market? change this value and go wild!
 
 ZE2.Shop = {
 	list = {}, -- items that have a chance to appear in shop (Don't Archive)

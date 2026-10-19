@@ -57,7 +57,7 @@ return "Shop", function(v, player)
 			local patch = v.cachePatch(icon)
 			
 			local colormap = v.getColormap(nil, nil, "AllBlack")
-			local x = 160*FU + (48*FU*(i-2))-(8*FU)
+			local x = 160*FU + (48*FU*(i-2))-(32*FU) -- TODO: it doesnt auto center so theres magic numbers here
 			
 			local scale = FU
 			
