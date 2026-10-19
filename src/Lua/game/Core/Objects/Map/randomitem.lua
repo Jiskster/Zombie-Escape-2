@@ -1,16 +1,20 @@
 freeslot("MT_ZE2_RANDOMITEM_SPAWN")
 
 local pool = {
+	"red_ring",
 	"auto_ring",
 	"bounce_ring",
 	"scatter_ring",
 	"explosion_ring",
 	"rail_ring",
 	"apple",
+	"wood_fence",
 	"energy_drink",
 	"accel_ring",
 	"splash_ring",
 	"stone_ring",
+	"flame_ring",
+	"volt_ring",
 }
 
 
