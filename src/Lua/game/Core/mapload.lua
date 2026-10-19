@@ -66,7 +66,6 @@ local function MapLoad(map)
 			player.ze2.next_zombie_type = nil
 			player.ze2.damagefromplayer = 0
 
-
 			for i, v in ipairs(player.ze2.recent_attackers) do
 				player.ze2.recent_attackers[i] = nil
 			end
