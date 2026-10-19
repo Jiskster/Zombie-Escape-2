@@ -209,8 +209,7 @@ function ZE2.applyPlayerConfig(player)
 	
 	if ZE2.cv_newairphys.value then
 		if not P_IsObjectOnGround(mo) 
-		and not (player.pflags & PF_STARTJUMP) or mo.momz*P_MobjFlip(mo) < 0
-		and not ze2.isSprung then 
+		and not (player.pflags & PF_STARTJUMP) or mo.momz*P_MobjFlip(mo) < 0 then 
 			P_SetObjectMomZ(mo, -gravity, true)
 		end
 	end
