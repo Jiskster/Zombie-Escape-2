@@ -35,7 +35,7 @@ addHook("MapThingSpawn", function(mobj, mapthing)
 	if not (mobj and mobj.valid) then
 		return end;
 	
-	if P_RandomChance(FU/4) then
+	if P_RandomChance(FU/3) then
 		local item_id = pool[P_RandomRange(1,#pool)]
 		xSlinger.SpawnItemDrop(mobj, item_id, true)
 	end
