@@ -64,5 +64,7 @@ return {
 
 	purchased = {},
 
+	recent_attackers = {},
+
 	fall_height = 0
 }
