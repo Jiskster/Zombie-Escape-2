@@ -7,6 +7,9 @@ local item_blacklist = {
 	["apple"] = true,
 	["energy_drink"] = true,
 	["grenade_ring"] = true,
+	["insta_burst"] = true,
+	["fist"] = true,
+	["blood_bomb"] = true,
 }
 
 -- TODO(?): Maybe each new entry added through modding could have a metatable applied to it
