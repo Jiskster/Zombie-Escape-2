@@ -1,18 +1,6 @@
 freeslot(
 	"MT_INSTABURST",
 	"S_INSTABURST",
-	"S_INSTABURST1A",
-	"S_INSTABURST1B",
-	"S_INSTABURST2A",
-	"S_INSTABURST2B",
-	"S_INSTABURST3A",
-	"S_INSTABURST3B",
-	"S_INSTABURST4A",
-	"S_INSTABURST4B",
-	"S_INSTABURST5A",
-	"S_INSTABURST5B",
-	"S_INSTABURST6A",
-	"S_INSTABURST6B",
 	"SPR_ZMSH"
 )
 
@@ -22,22 +10,17 @@ mobjinfo[MT_INSTABURST] = {
 	spawnstate = S_INSTABURST,
 	radius = 88*FRACUNIT,
 	height = 96*FRACUNIT,
-	flags = MF_NOGRAVITY
+	flags = MF_NOGRAVITY|MF_NOCLIPHEIGHT,
+	dispoffset = 3,
 }
 
-states[S_INSTABURST] = {SPR_NULL, 0, 1, A_CapeChase, 0, 0, S_INSTABURST1A}
-states[S_INSTABURST1A] = {SPR_ZMSH, 0|FF_FULLBRIGHT, 1, A_CapeChase, 0, 0, S_INSTABURST1B}
-states[S_INSTABURST1B] = {SPR_NULL, 0, 1, A_CapeChase, 0, 0, S_INSTABURST2A}
-states[S_INSTABURST2A] = {SPR_ZMSH, 1|FF_FULLBRIGHT, 1, A_CapeChase, 0, 0, S_INSTABURST2B}
-states[S_INSTABURST2B] = {SPR_NULL, 0, 1, A_CapeChase, 0, 0, S_INSTABURST3A}
-states[S_INSTABURST3A] = {SPR_ZMSH, 2|FF_FULLBRIGHT, 1, A_CapeChase, 0, 0, S_INSTABURST3B}
-states[S_INSTABURST3B] = {SPR_NULL, 0, 1, A_CapeChase, 0, 0, S_INSTABURST4A}
-states[S_INSTABURST4A] = {SPR_ZMSH, 3|FF_FULLBRIGHT, 1, A_CapeChase, 0, 0, S_INSTABURST4B}
-states[S_INSTABURST4B] = {SPR_NULL, 0, 1, A_CapeChase, 0, 0, S_INSTABURST5A}
-states[S_INSTABURST5A] = {SPR_ZMSH, 4|FF_FULLBRIGHT, 1, A_CapeChase, 0, 0, S_INSTABURST5B}
-states[S_INSTABURST5B] = {SPR_NULL, 0, 1, A_CapeChase, 0, 0, S_INSTABURST6A}
-states[S_INSTABURST6A] = {SPR_ZMSH, 5|FF_FULLBRIGHT, 1, A_CapeChase, 0, 0, S_INSTABURST6B}
-states[S_INSTABURST6B] = {SPR_NULL, 0, 1, A_CapeChase, 0, 0, S_NULL}
+states[S_INSTABURST] = {
+	sprite = SPR_ZMSH,
+	frame = A|FF_FULLBRIGHT|FF_ANIMATE,
+	tics = 17,
+	var1 = 6,
+	var2 = 1,
+}
 
 addHook("MobjMoveCollide", function(instaburst, mobj)
 	if (mobj.valid and (mobj.flags & MF_SHOOTABLE) or mobj.player) and instaburst.ib_hitlist then
@@ -73,6 +56,38 @@ addHook("MobjMoveCollide", function(instaburst, mobj)
 	end
 end, MT_INSTABURST)
 
+addHook("MobjThinker", function(instaburst)
+	local t = instaburst.target
+	
+	if t and t.valid then
+		P_MoveOrigin(instaburst, t.x, t.y, t.z)
+		
+		if not (leveltime % 2) then
+			local ghost = P_SpawnGhostMobj(t)
+			ghost.type = MT_OVERLAY
+			ghost.tics = 2
+			ghost.fuse = 2
+			ghost.blendmode = AST_SUBTRACT
+			ghost.dispoffset = 2
+			ghost.alpha = FU - FixedDiv(instaburst.tics, states[S_INSTABURST].tics)
+		end
+	end
+	
+	instaburst.blendmode = AST_SUBTRACT
+	instaburst.alpha = $ - ($/32)
+	instaburst.spritexscale = $ - ($/48)
+	instaburst.spriteyscale = $ - ($/48)
+
+	local ghost = P_SpawnGhostMobj(instaburst)
+	ghost.fuse = 7
+	ghost.blendmode = AST_TRANSLUCENT
+	ghost.alpha = $ - ($/4)
+	ghost.rollangle = P_RandomRange(0,360)*ANG1
+	ghost.momx = instaburst.momx
+	ghost.momy = instaburst.momy
+	ghost.momz = instaburst.momz
+end, MT_INSTABURST)
+
 xSlinger.registerItem("insta_burst", {
 
 	-- HUD
@@ -94,8 +109,8 @@ xSlinger.registerItem("insta_burst", {
 		local instaburst = P_SpawnMobjFromMobj(mo, 0, 0, 0, MT_INSTABURST)
 
 		instaburst.target = mo
-		instaburst.spritexscale = $*2
-		instaburst.spriteyscale = $*2
+		instaburst.spritexscale = ($*2)
+		instaburst.spriteyscale = ($*2)
 		instaburst.team = mo.team
 		instaburst.forcedamage = self.damage
 		instaburst.iteminfo = self

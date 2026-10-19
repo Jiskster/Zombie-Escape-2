@@ -57,6 +57,7 @@ Testers:
 Special Thanks:
 Venezuelan Power Outages
 Ringslinger Neo for their sprites, sounds and weapons. https://mb.srb2.org/addons/ringslinger-neo.3864/
+Battle Mod for the Insta Burst sprites.
 
 This mod is not open assets, it is encouraged to patch the mod via external addons.
 You will be credited for your contributions.
