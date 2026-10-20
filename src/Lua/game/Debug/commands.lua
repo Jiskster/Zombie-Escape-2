@@ -46,7 +46,7 @@ end)
 
 addHook("MapLoad", function() --directly skip pregame countdown on map load if zd_nocd is true
 	local game = ZE2.Game
-	if ZE2.tools.nocd and game.state == ZE2.GS_PREGAME then 
+	if ZE2.tools.nocd and game.state == ZE2.GS_PREGAME then
 		game.state_tics = -1
 	end
 end)
@@ -106,4 +106,44 @@ AddDebug_CMD("zombifyme", function(p, zombietype)
     if not p.mo.team == 2 then return end
 
     ZE2.ZombifyPlayer(p, zombietype or nil)
+end)
+
+-- Mind control from Lucario tools - Used for testing with bots
+AddDebug_CMD("mindcontrol", function(player, target)
+    if (target == nil) or (tonumber(target) == nil) then
+        player.controlling = nil
+        CONS_Printf(player, "\x83" .. "Controlling off")
+        return
+    end
+
+    target = max(min(31, target), 0)
+    target = players[target]
+    if not target or not target.valid then return end
+
+    player.controlling = target
+    CONS_Printf(player, "\x83" .. "Controlling player #" .. #target .. " - " .. target.name)
+end)
+
+addHook("PreThinkFrame", function()
+    if not ZE2.cv_debug.value then return end
+
+    for player in players.iterate do
+		if not player.controlling then continue end
+		if not player.controlling.valid then
+			player.controlling = nil
+			continue
+		end
+		player.powers[pw_nocontrol] = 2
+
+		player.controlling.cmd.forwardmove = player.cmd.forwardmove
+		player.controlling.cmd.sidemove = player.cmd.sidemove
+		player.controlling.cmd.angleturn = player.cmd.angleturn
+		player.controlling.cmd.aiming = player.cmd.aiming
+		player.controlling.cmd.buttons = player.cmd.buttons
+		player.cmd.buttons = 0
+
+		if (player == consoleplayer) then
+			displayplayer = player.controlling
+		end
+	end
 end)
