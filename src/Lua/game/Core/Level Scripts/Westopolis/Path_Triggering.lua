@@ -27,6 +27,10 @@ local function OpenAltPath(v, p)
 
         local openingpath = v.cachePatch("WSTPATH0"..anim)
         local zomb = v.getSprite2Patch(p.mo.skin, SPR2_WALK, false, C, 3)
+        if not zomb or not zomb.valid then
+            zomb = v.getSprite2Patch(p.mo.skin, SPR2_WALK, false, A, 3)
+        end
+
         local zomb_color = v.getColormap(p.skin, p.mo.color or SKINCOLOR_GREEN, p.mo.translation)
         local flags = V_SNAPTOTOP|V_PERPLAYER
 
