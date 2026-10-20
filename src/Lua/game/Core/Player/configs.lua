@@ -62,10 +62,9 @@ ZE2.ZombieConfig = {
 			button = BT_CUSTOM2,
 			effect = "alphazombie.rage",
 			effect_table = {
-				normalspeed_multiplier = (6*FU)/4,
-				damage_multiplier = (7*FU)/4,
-				knockback_multiplier = 3*FU,
-				thrustfactor = 20,
+				normalspeed_multiplier = 2*FU,
+				damage_multiplier = 2*FU,
+				knockback_multiplier = 2*FU,
 				charability = CA_JUMPTHOK,
 			},
 			effect_duration = 2*TICRATE,
