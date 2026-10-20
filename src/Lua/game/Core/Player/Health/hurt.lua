@@ -65,6 +65,10 @@ local DEATH_TYPES = {
 	[DMG_CRUSHED] = "%s%s%s was smashed"
 }
 
+local function ValidAssist(assist)
+	return assist and assist.valid and ((assist.player and assist.player.valid) or (assist.info and assist.info.npc_name))
+end
+
 local function SendDeathMessage(player, inflictor, source, damagetype)
 	local assist = GetAssistant(player, source or inflictor)
 	local message = ""
@@ -72,27 +76,33 @@ local function SendDeathMessage(player, inflictor, source, damagetype)
 	if source and source.valid then
 		if (source.flags & (MF_FIRE)) then
 			message = string.format("%s%s%s has been burned to death", playercolor, player.name, "\x83")
-			if assist and assist.valid then
+			if ValidAssist(assist) then
 				local sourcecolor, sourcename = GetAttackerNameAndColor(assist)
 				message = string.format("%s%s while trying to escape %s%s", message, "\x83", sourcecolor, sourcename)
 			end
-		else
+		elseif source.info and source.info.npc_name then
 			local sourcecolor, sourcename = GetAttackerNameAndColor(source)
 			message = string.format("%s%s%s has been killed by %s%s", playercolor, player.name, "\x83", sourcecolor, sourcename)
-			if assist and assist.valid then
+			if ValidAssist(assist) then
 				local sourcecolor, sourcename = GetAttackerNameAndColor(assist)
 				message = string.format("%s%s with help from %s%s", message, "\x83", sourcecolor, sourcename)
+			end
+		else
+			message = string.format("%s%s%s had died", playercolor, player.name, "\x83")
+			if ValidAssist(assist) then
+				local sourcecolor, sourcename = GetAttackerNameAndColor(assist)
+				message = string.format("%s%s%s while trying to escape %s%s", playercolor, player.name, "\x83", sourcecolor, sourcename)
 			end
 		end
 	elseif DEATH_TYPES[damagetype] then
 		message = string.format(DEATH_TYPES[damagetype], playercolor, player.name, "\x83")
-		if assist and assist.valid then
+		if ValidAssist(assist) then
 			local sourcecolor, sourcename = GetAttackerNameAndColor(assist)
 			message = string.format("%s%s while trying to escape %s%s", message, "\x83", sourcecolor, sourcename)
 		end
 	else
-		message = string.format("%s%s%s has died", playercolor, player.name, "\x83")
-		if assist and assist.valid then
+		message = string.format("%s%s%s had died", playercolor, player.name, "\x83")
+		if ValidAssist(assist) then
 			local sourcecolor, sourcename = GetAttackerNameAndColor(assist)
 			message = string.format("%s%s%s has been finished off by %s%s", playercolor, player.name, "\x83", sourcecolor, sourcename)
 		end
