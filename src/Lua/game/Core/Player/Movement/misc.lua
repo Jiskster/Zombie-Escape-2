@@ -69,6 +69,7 @@ addHook("PlayerThink", function(player) ---@param player player_t
 	local pmo = player.mo
 
 	player.charflags = SF_NOJUMPSPIN|SF_NOJUMPDAMAGE|SF_NOSKID -- Remove Vanilla Flags
+
 	player.pflags = $ & ~PF_DIRECTIONCHAR
 
 	if (player.pflags & PF_ANALOGMODE) then
@@ -94,6 +95,7 @@ addHook("PlayerThink", function(player) ---@param player player_t
 	end
 
 	if pmo and pmo.valid then
+		player.charflags = player.charflags | (skins[player.mo.skin].flags & SF_FASTEDGE)
 		if pmo.team == 2 then
 			player.powers[pw_underwater] = 0
 		end
