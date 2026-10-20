@@ -133,7 +133,7 @@ local key_positions = {
 }
 
 addHook("MapLoad", function(map)
-    if map != 58 then return end
+    if (map ~= 58) then return end
 
     local keypos = key_positions[P_RandomRange(1, #key_positions)]
 
