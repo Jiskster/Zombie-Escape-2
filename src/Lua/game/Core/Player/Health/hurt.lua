@@ -48,6 +48,10 @@ local function GetAttackerNameAndColor(source)
 		return sourcecolor, source.player.name
 	elseif source.info and source.info.npc_name then
 		return "\x82", source.info.npc_name
+	elseif source.iteminfo and source.iteminfo.displayname then
+		return "\x82", source.iteminfo.displayname
+	elseif source.missiledef and source.missiledef.displayname then
+		return "\x82", source.missiledef.displayname
 	end
 	return "\x82", "Something"
 end
@@ -73,22 +77,41 @@ local function SendDeathMessage(player, inflictor, source, damagetype)
 	local assist = GetAssistant(player, source or inflictor)
 	local message = ""
 	local playercolor = (player.mo.team == 1) and "\x84" or "\x85"
+
 	if source and source.valid then
 		if (source.flags & (MF_FIRE)) then
-			message = string.format("%s%s%s has been burned to death", playercolor, player.name, "\x83")
+			message = string.format("%s%s%s burned to death", playercolor, player.name, "\x83")
 			if ValidAssist(assist) then
 				local sourcecolor, sourcename = GetAttackerNameAndColor(assist)
-				message = string.format("%s%s while trying to escape %s%s", message, "\x83", sourcecolor, sourcename)
+				local oldmessage = message
+				message = string.format("%s%s while trying to escape %s%s", oldmessage, "\x83", sourcecolor, sourcename)
+			end
+		elseif (inflictor and inflictor.valid) and inflictor.info then
+			local sourcecolor, sourcename = GetAttackerNameAndColor(inflictor)
+			-- Check if this is someone's inflictor, and credit them too
+			if (source and source.valid)
+				local theircolor, theirname = GetAttackerNameAndColor(source)
+				if (theirname:len() > 0) then -- valid name
+					sourcename = theircolor..theirname .."'s ".. sourcecolor..sourcename
+				end
+			end
+
+			message = string.format("%s%s%s has been killed by %s%s", playercolor, player.name, "\x83", sourcecolor, sourcename)
+			if ValidAssist(assist) then
+				local sourcecolor, sourcename = GetAttackerNameAndColor(assist)
+				local oldmessage = message
+				message = string.format("%s%s with help from %s%s", oldmessage, "\x83", sourcecolor, sourcename)
 			end
 		elseif source.info and source.info.npc_name then
 			local sourcecolor, sourcename = GetAttackerNameAndColor(source)
 			message = string.format("%s%s%s has been killed by %s%s", playercolor, player.name, "\x83", sourcecolor, sourcename)
 			if ValidAssist(assist) then
 				local sourcecolor, sourcename = GetAttackerNameAndColor(assist)
-				message = string.format("%s%s with help from %s%s", message, "\x83", sourcecolor, sourcename)
+				local oldmessage = message
+				message = string.format("%s%s with help from %s%s", oldmessage, "\x83", sourcecolor, sourcename)
 			end
 		else
-			message = string.format("%s%s%s had died", playercolor, player.name, "\x83")
+			message = string.format("%s%s%s has died", playercolor, player.name, "\x83")
 			if ValidAssist(assist) then
 				local sourcecolor, sourcename = GetAttackerNameAndColor(assist)
 				message = string.format("%s%s%s while trying to escape %s%s", playercolor, player.name, "\x83", sourcecolor, sourcename)
@@ -98,7 +121,8 @@ local function SendDeathMessage(player, inflictor, source, damagetype)
 		message = string.format(DEATH_TYPES[damagetype], playercolor, player.name, "\x83")
 		if ValidAssist(assist) then
 			local sourcecolor, sourcename = GetAttackerNameAndColor(assist)
-			message = string.format("%s%s while trying to escape %s%s", message, "\x83", sourcecolor, sourcename)
+			local oldmessage = message
+			message = string.format("%s%s while trying to escape %s%s", oldmessage, "\x83", sourcecolor, sourcename)
 		end
 	else
 		message = string.format("%s%s%s had died", playercolor, player.name, "\x83")
