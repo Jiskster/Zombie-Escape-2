@@ -29,10 +29,10 @@ local function GetAssistant(player, attacker)
 	if (#pV.recent_attackers <= 0) then return end
 
 	for index = #pV.recent_attackers, 1, -1 do
-		local other = pV.recent_attackers[index]
-		if (leveltime > other.time) then continue end
-		if (attacker ~= other.source) then continue end
-		return other.source
+		local data = pV.recent_attackers[index]
+		if (leveltime > data.time) then continue end
+		if (attacker == data.source) then continue end
+		return data.source
 	end
 	return
 end
@@ -73,27 +73,27 @@ local function SendDeathMessage(player, inflictor, source, damagetype)
 		if (source.flags & (MF_FIRE)) then
 			message = string.format("%s%s%s has been burned to death", playercolor, player.name, "\x83")
 			if assist and assist.valid then
-				local sourcecolor, sourcename = GetAttackerNameAndColor(source)
+				local sourcecolor, sourcename = GetAttackerNameAndColor(assist)
 				message = string.format("%s%s while trying to escape %s%s", message, "\x83", sourcecolor, sourcename)
 			end
 		else
 			local sourcecolor, sourcename = GetAttackerNameAndColor(source)
 			message = string.format("%s%s%s has been killed by %s%s", playercolor, player.name, "\x83", sourcecolor, sourcename)
 			if assist and assist.valid then
-				local sourcecolor, sourcename = GetAttackerNameAndColor(source)
+				local sourcecolor, sourcename = GetAttackerNameAndColor(assist)
 				message = string.format("%s%s with help from %s%s", message, "\x83", sourcecolor, sourcename)
 			end
 		end
 	elseif DEATH_TYPES[damagetype] then
 		message = string.format(DEATH_TYPES[damagetype], playercolor, player.name, "\x83")
 		if assist and assist.valid then
-			local sourcecolor, sourcename = GetAttackerNameAndColor(source)
+			local sourcecolor, sourcename = GetAttackerNameAndColor(assist)
 			message = string.format("%s%s while trying to escape %s%s", message, "\x83", sourcecolor, sourcename)
 		end
 	else
 		message = string.format("%s%s%s has died", playercolor, player.name, "\x83")
 		if assist and assist.valid then
-			local sourcecolor, sourcename = GetAttackerNameAndColor(source)
+			local sourcecolor, sourcename = GetAttackerNameAndColor(assist)
 			message = string.format("%s%s%s has been finished off by %s%s", playercolor, player.name, "\x83", sourcecolor, sourcename)
 		end
 	end
@@ -168,6 +168,10 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 		if player and player.valid then
 			SendDeathMessage(player, inf, src, damagetype)
 			ZE2.dropSurvivorInventory(player)
+
+			for i, v in ipairs(player.ze2.recent_attackers) do
+				player.ze2.recent_attackers[i] = nil
+			end
 		end
 		P_KillMobj(mo, inf, src, damagetype)
 	end
