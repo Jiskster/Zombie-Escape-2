@@ -4,7 +4,6 @@ local gt = ZE2.AddGametype("Plague", -- Name
 )
 
 gt.shop = false
-gt.default_rounds = 1
 gt.default_pregame_time = 30*TICRATE
 gt.default_round_time = 4*60*TICRATE
 gt.respawn_time[2] = 5*TICRATE
