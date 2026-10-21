@@ -5,8 +5,8 @@ freeslot("MT_XS_DROPPEDITEM_SPAWN")
 
 mobjinfo[MT_XS_DROPPEDITEM] = {
 	spawnhealth = 1000,
-	radius = 32*FU,
-	height = 32*FU,
+	radius = 24*FU,
+	height = 24*FU,
 	spawnstate = S_XS_DROPPEDITEM,
 	deathstate = S_XS_DROPPEDITEM,
 	flags = MF_SPECIAL,
@@ -102,7 +102,7 @@ addHook("MobjMoveCollide", function(tmthing, thing)
 		return end;
 
 	local angle = R_PointToAngle2(tmthing.x, tmthing.y, thing.x, thing.y)
-	local push = FRACUNIT/4
+	local push = FRACUNIT/8
 
 	if tmthing.droprandomangle then
 		angle = $ + tmthing.droprandomangle
