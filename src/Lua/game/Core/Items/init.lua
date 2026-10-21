@@ -56,7 +56,7 @@ function ZE2.registerCrosshairGuide(refid)
 	return m
 end
 
-function ZE2.drawCrosshairGuide(mobj, id, alpha)
+function ZE2.drawCrosshairGuide(mobj, id, alpha, ticfunc, startfunc)
 	if mobj.player and mobj.player.valid then
 		local shot = xSlinger.SpawnMissile({
 			source = mobj,
@@ -72,9 +72,17 @@ function ZE2.drawCrosshairGuide(mobj, id, alpha)
 		local valid
 		
 		if shot and shot.valid then	
+			if startfunc then
+				startfunc(mobj, shot)
+			end
+			
 			shot.fuse = 3
-
+			
 			for i = 1, 128 do
+				if ticfunc then
+					ticfunc(mobj, shot)
+				end
+			
 				P_XYMovement(shot)
 				
 				if not (shot and shot.valid) then

@@ -1,4 +1,6 @@
 local explode_radius = 250 * FU
+local missile_jump = 20 * FU
+local missile_fall = -3 * FU
 
 freeslot("MT_ARAZ", "S_ARAZ", "SPR_ARAZ")
 freeslot("S_ZE2_VOLTRING", "S_ZE2_VOLTRING_DEATH", "SPR_RNGV")
@@ -113,7 +115,7 @@ xSlinger.registerMissile("VOLT_RING", {
 	speed = 55*FU,
 	delflags = MF_NOGRAVITY,
 	tick = function(self, pmo, missile)
-		P_SetObjectMomZ(missile, -3*FU, true)
+		P_SetObjectMomZ(missile, missile_fall, true)
 		
 		if not (leveltime % 3) then
 			local ghost = P_SpawnGhostMobj(missile)
@@ -122,6 +124,9 @@ xSlinger.registerMissile("VOLT_RING", {
 		end
 	end,
 })
+
+local missile_volt_ring_guide = 
+ZE2.registerCrosshairGuide(missile_volt_ring.id)
 
 xSlinger.registerItem("volt_ring", {
 	
@@ -160,8 +165,18 @@ xSlinger.registerItem("volt_ring", {
 		})
 		
 		if missile and missile.valid then
-			P_SetObjectMomZ(missile, 20*FU)
+			P_SetObjectMomZ(missile, missile_jump)
 		end
+	end,
+	holdfunc = function(self, mobj) -- TODO: Fix the crosshair disappearing on walls.
+		ZE2.drawCrosshairGuide(mobj, missile_volt_ring_guide.id, FU/4, 
+			function(pmo, missile)
+				P_SetObjectMomZ(missile, missile_fall, true)
+			end,
+			function(pmo, missile)
+				P_SetObjectMomZ(missile, missile_jump)
+			end
+		)
 	end,
 	onhit = function(self, src, mo, inf)
 		if not mo and not mo.valid then return end
