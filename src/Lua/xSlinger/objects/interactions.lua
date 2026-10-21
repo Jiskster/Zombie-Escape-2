@@ -42,7 +42,7 @@ mobjinfo[MT_XS_INTERACTION] = {
 	deathstate = S_UNKNOWN,
 	radius = 32*FU,
 	height = 64*FU,
-	flags = MF_NOGRAVITY|MF_SPECIAL,
+	flags = MF_NOGRAVITY|MF_SPECIAL|MF_NOCLIPHEIGHT,
 }
 
 mobjinfo[MT_XS_SELECTOR] = {
