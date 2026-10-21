@@ -14,5 +14,5 @@ build:
 	mkdir -p .build
 	cp -r src/* .build/
 	echo 'return "$(GIT_COMMIT)"' > .build/Lua/game/version.lua
-	cd .build && zip -r9 "$(BUILD_PATH)" * -x *.git* *.dbs* *.autosave* *.backup*
+	cd .build && touch -t 197010100001.00 . * && zip -FSr -r9 "$(BUILD_PATH)" * -X -x *.git* *.dbs* *.autosave* *.backup*
 	rm -rf .build
