@@ -234,7 +234,7 @@ function xSlinger.DoThinker(mobj)
 	end
 	
 	if hand.holdfunc then
-		hand:holdfunc(mobj, holdobject)
+		hand:holdfunc(mobj, xS.viewmobj)
 	end
 
 	if firing and not xS.delay and not xS.reload

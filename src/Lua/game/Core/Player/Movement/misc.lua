@@ -134,9 +134,9 @@ addHook("PlayerThink", function(player) ---@param player player_t
 
 		-- remove burning effect when underwater
 		if (pmo.eflags & MFE_TOUCHWATER) or (pmo.eflags & MFE_UNDERWATER) then
-			local found = pmo:search_effect("burning")
+			local found = xSlinger.search_effect(pmo, "burning")
 			if (#found ~= 0) then
-				pmo:remove_effect("burning")
+				xSlinger.remove_effect(pmo, "burning")
 			end
 		end
 	end

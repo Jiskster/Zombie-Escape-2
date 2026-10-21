@@ -37,6 +37,15 @@ function xSlinger.registerItem(itemid, itemtable)
 	return itemid, itemtable
 end
 
+function xSlinger.registerMissile(missile_id, r_table)
+	xSlinger.registered_missiles[missile_id] = r_table
+	r_table.id = missile_id
+
+	table.insert(xSlinger.registered_missiles_ordered, r_table)
+
+	return r_table
+end
+
 function xSlinger.new(itemid)
 	local item
 

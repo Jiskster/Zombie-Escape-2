@@ -73,15 +73,6 @@ states[S_XS_MISSILE_XDEATHSTATE] = {
 
 local cv_friendlyfire = CV_FindVar("friendlyfire")
 
-function xSlinger.registerMissile(missile_id, r_table)
-	xSlinger.registered_missiles[missile_id] = r_table
-	r_table.id = missile_id
-
-	table.insert(xSlinger.registered_missiles_ordered, r_table)
-
-	return r_table
-end
-
 -- A P_SPMAngle clone to fit the needs of xSlinger
 function xSlinger.SpawnMissile(m_table)
 	local source = m_table.source

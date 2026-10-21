@@ -149,7 +149,7 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 
 		if (inf.flags & MF_FIRE) then
 			if xSlinger.Effects["burning"] then
-				mo:give_effect("burning", {
+				xSlinger.give_effect(mo, "burning", {
 					normalspeed_multiplier = FU/2,
 					actionspd_multiplier = 3*FU/2,
 					damage_multiplier = FU/2,

@@ -171,7 +171,7 @@ xSlinger.registerItem("splash_ring", {
 	hitfunc = function(self, src, mo, inf)
 		if not mo and not mo.valid then return end
 		
-		mo:give_effect("bubble.float", {
+		xSlinger.give_effect(mo, "bubble.float", {
 			normalspeed_multiplier = (FU*85)/100,
 			actionspd_multiplier = 3*FU/2,
 		}, TICRATE, true)

@@ -22,7 +22,7 @@ end
 
 dofile "xSlinger/freeslots"
 
-dofile "xSlinger/hooks"
+dofile "xSlinger/events"
 
 xSlinger.Knockback = {}
 
@@ -72,7 +72,7 @@ xSlinger.METATABLES = {}
 
 dofile "xSlinger/metatables/mobj_t"
 dofile "xSlinger/metatables/xSlinger_t"
-dofile "xSlinger/metatables/iteminfo_t"
+dofile "xSlinger/metatables/itemstack_t"
 
 xSlinger.init = loadfile("xSlinger/classes/xslinger_t.lua")
 
@@ -157,7 +157,7 @@ xSlinger.registerItem("", {
 	drop_on_death = false;
 })
 
-dofile "xSlinger/missile" -- missile handling
+dofile "xSlinger/objects/missile" -- missile handling
 
 dofile "xSlinger/invthink" -- inventory thinkers
 
@@ -212,13 +212,13 @@ end, COM_ADMIN)
 
 dofile "xSlinger/health"
 
-dofile "xSlinger/shields"
+dofile "xSlinger/objects/shields"
 
-dofile "xSlinger/interactions"
+dofile "xSlinger/objects/interactions"
 
-dofile "xSlinger/breakable"
+dofile "xSlinger/objects/breakable"
 
-dofile "xSlinger/itemdrop"
+dofile "xSlinger/objects/itemdrop"
 
 addHook("NetVars", function(net)
 	xSlinger.visible_huds = net($)

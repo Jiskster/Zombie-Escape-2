@@ -1,6 +1,3 @@
-local mobj_mt = userdataMetatable("mobj_t")
-local old_index = mobj_mt.__index
-
 local globaleffects = {}
 
 -- effectinfo_t
@@ -29,8 +26,8 @@ local function addToGlobalEffects(mobj)
 end
 
 -- mobj_t method
-local function give_effect(self, id, data, fusetics, additive)
-	if not self or not self.valid then -- redo sanity checks by using type()
+local function give_effect(mobj, id, data, fusetics, additive)
+	if not mobj or not mobj.valid then -- redo sanity checks by using type()
 		return false, "mobj not valid"
 	end
 
@@ -48,12 +45,12 @@ local function give_effect(self, id, data, fusetics, additive)
 		return false, "invalid"
 	end
 	
-	local effects = self.effects
-	local new = false -- its true if there wasnt a self.effects before
+	local effects = mobj.effects
+	local new = false -- its true if there wasnt a mobj.effects before
 	
 	if not effects then
-		self.effects = {parent = self}
-		effects = self.effects
+		mobj.effects = {parent = mobj}
+		effects = mobj.effects
 		new = true
 	end
 	
@@ -86,14 +83,14 @@ local function give_effect(self, id, data, fusetics, additive)
 	neweffect.fuse = fusetics
 	
 	if info.startfunc then
-		info.startfunc(info, self)
+		info.startfunc(info, mobj)
 	end
 	
-	addToGlobalEffects(self)
+	addToGlobalEffects(mobj)
 end
 
-local function remove_effect(self, id)
-	local effects = self.effects
+local function remove_effect(mobj, id)
+	local effects = mobj.effects
 	
 	if effects then
 		for i=#effects, 1, -1 do
@@ -106,8 +103,8 @@ local function remove_effect(self, id)
 	end
 end
 
-local function search_effect(self, id)
-	local effects = self.effects
+local function search_effect(mobj, id)
+	local effects = mobj.effects
 	local found = {}
 	
 	if effects then
@@ -184,23 +181,10 @@ addHook("ThinkFrame", function()
 	end
 end)
 
-mobj_mt.__index = function(mobj, key)
-	if (key == "give_effect") then
-		return give_effect
-	end
-	
-	if (key == "remove_effect") then
-		return remove_effect
-	end
-	
-	if (key == "search_effect") then
-		return search_effect
-	end
-	
-	return old_index(mobj, key)
-end
-
-
 addHook("NetVars", function(net)
 	globaleffects = net(globaleffects)
 end)
+
+xSlinger.give_effect = give_effect
+xSlinger.remove_effect = remove_effect
+xSlinger.search_effect = search_effect

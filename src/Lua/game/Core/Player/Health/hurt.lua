@@ -108,9 +108,9 @@ xSlinger.addHook("OnPlayerDamage", function(player, inf, src, dmg, damagetype)
 		pV:DamageFade(15)
 	elseif (player.mo.team == 2) then
 		if attacker and attacker.player and attacker.team == 1 then
-			local found = player.mo:search_effect("alphazombie.rage")
+			local found = xSlinger.search_effect(player.mo, "alphazombie.rage")
 			if (pV.zombie_type == "alpha") and not #found then
-				player.mo:give_effect("alphazombie.rage_regen", {}, TICRATE, true)
+				xSlinger.give_effect(player.mo, "alphazombie.rage_regen", {}, TICRATE, true)
 			end
 		end
 	end

@@ -27,7 +27,7 @@ addHook("PlayerThink", function(player)
 						effect_table = special.effect_table
 					end
 
-					player.mo:give_effect(special.effect, effect_table, special.effect_duration)
+					xSlinger.give_effect(player.mo, special.effect, effect_table, special.effect_duration)
 				end
 			end
 		end

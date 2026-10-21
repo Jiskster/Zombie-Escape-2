@@ -34,7 +34,7 @@ ZE2.ZombieConfig = {
 			button = 0, -- no button to disable
 			/*
 			effect = string_t,
-			effect_table = table, (just whatever you plug into player.mo:give_effect(...)'s  2nd arg)
+			effect_table = table, (just whatever you plug into xSlinger.give_effect()'s  2nd arg)
 			effect_duration = tic_t,
 			cooldown = tic_t,
 			sound = sfx, (maybe make an ontrigger func?)

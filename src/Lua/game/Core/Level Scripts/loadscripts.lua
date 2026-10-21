@@ -71,7 +71,7 @@ addHook("LinedefExecute", function(line, mo)
 		return
 	end
 
-	mo:give_effect(effect_name, effect_attribs, effect_duration)
+	xSlinger.give_effect(mo, effect_name, effect_attribs, effect_duration)
 end, "ZE2_GIVEPLREFFECT")
 
 -- [ SET SECONDS ] -

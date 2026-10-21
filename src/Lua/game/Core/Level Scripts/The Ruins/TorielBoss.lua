@@ -11,7 +11,7 @@ end, MT_TORIEL)
 
 addHook("MobjThinker", function(mobj)
 	local boss = mobj.toriel_boss
-	mobj:remove_effect("burning")
+	xSlinger.remove_effect(mobj, "burning")
 	if not boss then
 		return
 	end

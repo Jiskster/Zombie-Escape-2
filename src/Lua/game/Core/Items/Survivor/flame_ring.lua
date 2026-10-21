@@ -133,7 +133,7 @@ xSlinger.registerItem("flame_ring", {
 	end;
 	hitfunc = function(self, src, mo, inf)
 		if not mo and not mo.valid then return end
-		mo:give_effect("burning", {
+		xSlinger.give_effect(mo, "burning", {
 			normalspeed_multiplier = FU/2,
 			actionspd_multiplier = 3*FU/2,
 			damage_multiplier = FU/2,
