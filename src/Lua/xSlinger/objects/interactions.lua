@@ -52,12 +52,12 @@ mobjinfo[MT_XS_SELECTOR] = {
 
 	spawnstate = S_INVISIBLE,
 	deathstate = S_INVISIBLE,
-	radius = 24*FU,
-	height = 24*FU,
+	radius = 42*FU,
+	height = 42*FU,
 	flags = MF_NOGRAVITY,
 }
 
-local seldist = 80*FU
+local seldist = 50*FU
 
 addHook("PlayerThink", function(player)
 	if not (player.mo and player.mo.valid) then
