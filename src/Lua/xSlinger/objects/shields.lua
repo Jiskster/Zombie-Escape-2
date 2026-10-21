@@ -9,7 +9,6 @@ xSlinger.ShieldDefinitions = {
 	[1] = {
 		name = "Pity",
 		health = 50,
-		efficiency = (FU * 3) / 4,
 		state = S_PITY1,
 		color = SKINCOLOR_MOSS,
 	},
@@ -18,7 +17,6 @@ xSlinger.ShieldDefinitions = {
 		health = 20,
 		state = S_WIND1,
 		color = SKINCOLOR_BONE,
-		--jumpfactor_multiplier = 3*FRACUNIT/2,
 	},
 	[3] = {
 		name = "Armageddon",
