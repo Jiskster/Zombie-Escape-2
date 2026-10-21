@@ -81,6 +81,7 @@ function ZE2.resetPlayerHealth(player, newskin)
 	local ze2 = player.ze2
 	local xS = player.xSlinger
 	local ztype = ze2.zombie_type
+	local settings = ZE2.getGametypeSettings()
 
 	local cc = ZE2.SurvivorConfig
 	local zc = ZE2.ZombieConfig
@@ -101,6 +102,11 @@ function ZE2.resetPlayerHealth(player, newskin)
 	if config and config.health then
 		mo.health = config.health
 		mo.maxhealth = config.health
+		
+		if (team == 2) and (settings.zombie_health_multi ~= FRACUNIT) then
+			mo.health = FixedMul($*FU, settings.zombie_health_multi)/FU
+			mo.maxhealth = mo.health
+		end
 	else
 		mo.health = 1
 		mo.maxhealth = 1

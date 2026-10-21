@@ -24,6 +24,7 @@ local function getDefaultSettings()
 		}, 
 		midgame_join = false, -- can players join midgame?
 		zombie_after_death = false, -- decides if survivors respawn as zombies after dying (not infecting)
+		zombie_health_multi = FRACUNIT,
 		move_during_pregame = false, -- can you move after you pressed done in pregame?
 		respawn_time = {
 			[1] = 10*TICRATE, -- survivors
