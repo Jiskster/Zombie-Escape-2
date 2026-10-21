@@ -62,7 +62,7 @@ addHook("MobjThinker", function(drop)
 
 		f.rollangle = flair_roll
 		f.color = flair_color
-		f.alpha = FU/3
+		f.alpha = FU/5
 		
 	----
 
@@ -79,7 +79,7 @@ addHook("MobjThinker", function(drop)
 
 		f.rollangle = -flair_roll
 		f.color = flair_color
-		f.alpha = FU/5
+		f.alpha = FU/8
 	----
 
 	-- LENS FLAIR
@@ -95,9 +95,9 @@ addHook("MobjThinker", function(drop)
 		if (fudge_dist < CORONA_DIST) then
 			alpha = FixedDiv(fudge_dist, CORONA_DIST)
 		end
-		f.scale = $ + FixedDiv(fudge_dist - CORONA_DIST/2, CORONA_DIST) / 2
+		f.scale = $ + FixedDiv(fudge_dist - CORONA_DIST/2, CORONA_DIST) / 4
 		f.spritexscale = FU/2
 		f.spriteyscale = FU/2
-		f.alpha = alpha / 3
+		f.alpha = alpha / 4
 	--
 end, MT_XS_DROPPEDITEM)
