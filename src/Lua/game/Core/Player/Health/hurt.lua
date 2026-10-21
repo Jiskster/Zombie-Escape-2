@@ -8,13 +8,9 @@ function ZE2.dropSurvivorInventory(player, force)
 	local inv = xS:inv_get("survivor")
 
 	for i=1,#inv do
-		if inv[i].id ~= "red_ring" then
-			local drop = xS:slot_drop(i, nil, "survivor")
-			if drop and drop.valid then
-				drop.droprandomangle = P_RandomRange(-35,35)*ANG1
-			end
-		else
-			xS:slot_clear(i, "survivor")
+		local drop = xS:slot_drop(i, nil, "survivor")
+		if drop and drop.valid then
+			drop.droprandomangle = P_RandomRange(-35,35)*ANG1
 		end
 	end
 end
