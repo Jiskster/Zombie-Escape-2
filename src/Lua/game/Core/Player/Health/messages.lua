@@ -63,6 +63,14 @@ function ZE2.SendDeathMessage(player, inflictor, source, damagetype)
 	local message = ""
 	local playercolor = (player.mo.team == 1) and "\x84" or "\x85"
 
+	if not (source.flags & (MF_BOSS|MF_ENEMY)) and not (source.player and source.player.valid) and source.target and source.target.valid then -- usually projectiles's target
+		local mysource = source.target
+		while (mysource.target and mysource.target.valid) do
+			mysource = mysource.target
+		end
+		source = (mysource and mysource.valid) and mysource or source
+	end
+
 	if source and source.valid then
 		if (source.flags & MF_FIRE) then
 			message = string.format("%s%s%s burned into ashes", playercolor, player.name, "\x83")
@@ -88,14 +96,14 @@ function ZE2.SendDeathMessage(player, inflictor, source, damagetype)
 			end
 		elseif source.info and source.info.npc_name then
 			local sourcecolor, sourcename = ZE2.GetMobjNameAndColor(source)
-			if inflictor and inflictor.valid and ((inflictor ~= source) or (inflictor.target and inflictor.target.valid)) then
+			if inflictor and inflictor.valid and ((inflictor ~= source) or (inflictor.target and inflictor.target.valid and not (inflictor.flags & (MF_BOSS|MF_ENEMY)))) then
 				local theircolor, theirname = ZE2.GetMobjNameAndColor(inflictor)
 				if (theirname:len() > 0) then -- valid name
 					sourcename = sourcecolor .. sourcename .. "\x83" .. "'s " .. theircolor .. theirname
 				end
 			end
 
-			if source.target and source.target.valid and source.target.player and source.target.player.valid then
+			if not (source.flags & (MF_BOSS|MF_ENEMY)) and not (source.player and source.player.valid) and source.target and source.target.valid and source.target.player and source.target.player.valid then
 				local theircolor, theirname = ZE2.GetMobjNameAndColor(source.target)
 				if (theirname:len() > 0) then -- valid name
 					sourcename = theircolor .. theirname .. "\x83" .. "'s " .. sourcecolor .. sourcename
