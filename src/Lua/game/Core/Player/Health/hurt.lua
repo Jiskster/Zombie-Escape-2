@@ -86,13 +86,12 @@ local function SendDeathMessage(player, inflictor, source, damagetype)
 				local oldmessage = message
 				message = string.format("%s%s while trying to escape %s%s", oldmessage, "\x83", sourcecolor, sourcename)
 			end
-		elseif (inflictor and inflictor.valid) and inflictor.info then
+		elseif inflictor and inflictor.valid and inflictor.info then -- Check if this is someone's inflictor, and credit them too
 			local sourcecolor, sourcename = GetAttackerNameAndColor(inflictor)
-			-- Check if this is someone's inflictor, and credit them too
-			if (source and source.valid)
+			if source and source.valid then
 				local theircolor, theirname = GetAttackerNameAndColor(source)
 				if (theirname:len() > 0) then -- valid name
-					sourcename = theircolor..theirname .."'s ".. sourcecolor..sourcename
+					sourcename = theircolor .. theirname .. "'s " .. sourcecolor .. sourcename
 				end
 			end
 
