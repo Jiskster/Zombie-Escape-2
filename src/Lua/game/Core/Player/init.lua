@@ -28,6 +28,7 @@ dopath("Movement/sourcephys.lua")
 dopath("Movement/misc.lua")
 
 dopath("Health/falldamage.lua")
+dopath("Health/messages.lua")
 dopath("Health/hurt.lua")
 dopath("Health/damageindicator.lua")
 

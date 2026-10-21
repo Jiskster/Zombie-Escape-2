@@ -19,172 +19,6 @@ function ZE2.dropSurvivorInventory(player, force)
 	end
 end
 
----@param player player_t
----@param attacker mobj_t
-local function GetAssistant(player, attacker)
-	if not attacker or not attacker.valid then return end
-
-	local pV = player.ze2
-	if (pV.recent_attackers == nil) then return end
-	if (#pV.recent_attackers <= 0) then return end
-
-	for index = #pV.recent_attackers, 1, -1 do
-		local data = pV.recent_attackers[index]
-		if (leveltime > data.time) then continue end
-		if (attacker == data.source) then continue end
-		return data.source
-	end
-	return
-end
-
----@param source mobj_t
-local function GetAttackerNameAndColor(source)
-	if not source or not source.valid then
-		return "", ""
-	end
-
-	if source.player and source.player.valid then
-		local sourcecolor = (source.team == 1) and "\x84" or "\x85"
-		return sourcecolor, source.player.name
-	elseif source.info and source.info.npc_name then
-		return "\x82", source.info.npc_name
-	elseif source.iteminfo and source.iteminfo.displayname then
-		return "\x82", source.iteminfo.displayname
-	elseif source.missiledef and source.missiledef.displayname then
-		return "\x82", source.missiledef.displayname
-	end
-	return "", ""
-end
-
-local DEATH_TYPES = {
-	[6] = "%s%s%s hit the ground too hard",  -- DMG_FALLDAMAGE
-	[DMG_WATER] = "%s%s%s dissolved in chemicals",
-	[DMG_FIRE] = "%s%s%s burned into ashes",
-	[DMG_ELECTRIC] = "%s%s%s electrocuted",
-	[DMG_SPIKE] = "%s%s%s spiked to death",
-	[DMG_NUKE] = "%s%s%s went nuclear",
-	[DMG_DROWNED] = "%s%s%s drowned",
-	[DMG_SPACEDROWN] = "%s%s%s couldn't breathe",
-	[DMG_DEATHPIT] = "%s%s%s fell into a bottomless pit",
-	[DMG_CRUSHED] = "%s%s%s was crushed"
-}
-
----@param assist mobj_t
----@return boolean
-local function ValidAssist(assist)
-	return (assist and assist.valid and ((assist.player and assist.player.valid) or (assist.info and assist.info.npc_name))) and true or false
-end
-
----@param player player_t
----@param inflictor mobj_t
----@param source mobj_t
----@param damagetype integer
-local function SendDeathMessage(player, inflictor, source, damagetype)
-	local assist = GetAssistant(player, source or inflictor)
-	local message = ""
-	local playercolor = (player.mo.team == 1) and "\x84" or "\x85"
-
-	if source and source.valid then
-		if (source.flags & MF_FIRE) then
-			message = string.format("%s%s%s burned into ashes", playercolor, player.name, "\x83")
-			if ValidAssist(assist) then
-				local sourcecolor, sourcename = GetAttackerNameAndColor(assist)
-				local oldmessage = message
-				message = string.format("%s%s while trying to escape %s%s", oldmessage, "\x83", sourcecolor, sourcename)
-			end
-		elseif source and source.player then
-			local sourcecolor, sourcename = GetAttackerNameAndColor(source)
-			if inflictor and inflictor.valid and ((inflictor ~= source) or (inflictor.target and inflictor.target.valid)) then
-				local theircolor, theirname = GetAttackerNameAndColor(inflictor)
-				if (theirname:len() > 0) then -- valid name
-					sourcename = sourcecolor .. sourcename .. "\x83" .. "'s " .. theircolor .. theirname
-				end
-			end
-
-			message = string.format("%s%s%s has been killed by %s%s", playercolor, player.name, "\x83", sourcecolor, sourcename)
-			if ValidAssist(assist) then
-				local sourcecolor, sourcename = GetAttackerNameAndColor(assist)
-				local oldmessage = message
-				message = string.format("%s%s with help from %s%s", oldmessage, "\x83", sourcecolor, sourcename)
-			end
-		elseif source.info and source.info.npc_name then
-			local sourcecolor, sourcename = GetAttackerNameAndColor(source)
-			if inflictor and inflictor.valid and ((inflictor ~= source) or (inflictor.target and inflictor.target.valid)) then
-				local theircolor, theirname = GetAttackerNameAndColor(inflictor)
-				if (theirname:len() > 0) then -- valid name
-					sourcename = sourcecolor .. sourcename .. "\x83" .. "'s " .. theircolor .. theirname
-				end
-			end
-
-			if source.target and source.target.valid and source.target.player and source.target.player.valid then
-				local theircolor, theirname = GetAttackerNameAndColor(source.target)
-				if (theirname:len() > 0) then -- valid name
-					sourcename = theircolor .. theirname .. "\x83" .. "'s " .. sourcecolor .. sourcename
-				end
-			end
-
-			message = string.format("%s%s%s has been killed by %s%s", playercolor, player.name, "\x83", sourcecolor, sourcename)
-			if ValidAssist(assist) then
-				local sourcecolor, sourcename = GetAttackerNameAndColor(assist)
-				local oldmessage = message
-				message = string.format("%s%s with help from %s%s", oldmessage, "\x83", sourcecolor, sourcename)
-			end
-		else
-			message = string.format("%s%s%s died", playercolor, player.name, "\x83")
-			if ValidAssist(assist) then
-				local sourcecolor, sourcename = GetAttackerNameAndColor(assist)
-				message = string.format("%s%s%s while trying to escape %s%s", playercolor, player.name, "\x83", sourcecolor, sourcename)
-			end
-		end
-	elseif DEATH_TYPES[damagetype] then
-		message = string.format(DEATH_TYPES[damagetype], playercolor, player.name, "\x83")
-		if ValidAssist(assist) then
-			local sourcecolor, sourcename = GetAttackerNameAndColor(assist)
-			local oldmessage = message
-			message = string.format("%s%s while trying to escape %s%s", oldmessage, "\x83", sourcecolor, sourcename)
-		end
-	elseif (player.mo.eflags & MFE_TOUCHLAVA) then
-		message = string.format("%s%s%s discovered the floor was lava", playercolor, player.name, "\x83")
-		if ValidAssist(assist) then
-			local sourcecolor, sourcename = GetAttackerNameAndColor(assist)
-			local oldmessage = message
-			message = string.format("%s%s while trying to escape %s%s", oldmessage, "\x83", sourcecolor, sourcename)
-		end
-	else
-		message = string.format("%s%s%s died", playercolor, player.name, "\x83")
-		if ValidAssist(assist) then
-			local sourcecolor, sourcename = GetAttackerNameAndColor(assist)
-			message = string.format("%s%s%s was finished off by %s%s", playercolor, player.name, "\x83", sourcecolor, sourcename)
-		end
-	end
-	if (message:len() <= 0) then return end
-
-	print(message)
-end
-
----@param player player_t
----@param inflictor mobj_t
----@param source mobj_t
-local function SendInfectionMessage(player, inflictor, source)
-	local message = ""
-	local playercolor = "\x84"
-	if source and source.valid and source.player and source.player.valid then
-		local sourcecolor, sourcename = GetAttackerNameAndColor(source)
-		if inflictor and inflictor.valid and ((inflictor ~= source) or (inflictor.target and inflictor.target.valid)) then
-			local theircolor, theirname = GetAttackerNameAndColor(inflictor)
-			if (theirname:len() > 0) then -- valid name
-				sourcename = sourcecolor .. sourcename .. "\x83" .. "'s " .. theircolor .. theirname
-			end
-		end
-		message = string.format("%s%s%s has been infected by %s%s", playercolor, player.name, "\x83", sourcecolor, sourcename)
-	else
-		message = string.format("%s%s%s has been infected", playercolor, player.name, "\x83")
-	end
-	if (message:len() <= 0) then return end
-
-	print(message)
-end
-
 -- Overwrite xSlinger function
 function xSlinger.KillMobj(mo, inf, src, damagetype)
 	local settings = ZE2.getGametypeSettings()
@@ -222,7 +56,7 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 				ZE2.dropSurvivorInventory(player)
 
 				killer.player.ze2.cash = killer.player.ze2.cash + cash_award
-				SendInfectionMessage(player, (inf == killer) and src or inf, killer)
+				ZE2.SendInfectionMessage(player, (inf == killer) and src or inf, killer)
 				CONS_Printf(killer.player, "\x83" .. "+ $" .. cash_award .. " cash gained from infecting a survivor!")
 				S_StartSound(killer.player.mo, sfx_rbyhit)
 			end
@@ -249,7 +83,7 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 	if killing then
 		local player = mo.player
 		if player and player.valid then
-			SendDeathMessage(player, inf, src, damagetype)
+			ZE2.SendDeathMessage(player, inf, src, damagetype)
 			ZE2.dropSurvivorInventory(player)
 
 			for i, v in ipairs(player.ze2.recent_attackers) do
