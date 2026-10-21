@@ -63,7 +63,7 @@ function ZE2.SendDeathMessage(player, inflictor, source, damagetype)
 	local message = ""
 	local playercolor = (player.mo.team == 1) and "\x84" or "\x85"
 
-	if not (source.flags & (MF_BOSS|MF_ENEMY)) and not (source.player and source.player.valid) and source.target and source.target.valid then -- usually projectiles's target
+	if source and source.valid and not (source.flags & (MF_BOSS|MF_ENEMY)) and not (source.player and source.player.valid) and source.target and source.target.valid then -- usually projectiles's target
 		local mysource = source.target
 		while (mysource.target and mysource.target.valid) do
 			mysource = mysource.target
