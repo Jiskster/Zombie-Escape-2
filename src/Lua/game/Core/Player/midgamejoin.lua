@@ -32,6 +32,8 @@ addHook("HUD", function(v, player)
 	if (not player.spectator) or (player.ze2.outofgame) then
 		return
 	end
+	
+	local game = ZE2.Game
 
 	local text_x = 160
 	local text_y = 170
@@ -40,11 +42,33 @@ addHook("HUD", function(v, player)
 	local holdtime2 = (holdtime*3)/2 -- holdtime2 is for changing length of bar
 	local cyanpatch = v.cachePatch("Z_CYANDOT")
 	if holdtime then
+		local offset = 0
 		flags = $ | V_50TRANS
+		
+		if player.ze2.injoinqueue then
+			offset = 8*FU
+		end
 
-		v.drawStretched(text_x*FU - (holdtime2*FU), text_y*FU + 10*FU, holdtime2*FU*2, FU, cyanpatch, barflags)
+		v.drawStretched(text_x*FU - (holdtime2*FU), text_y*FU + 10*FU + offset, holdtime2*FU*2, FU, cyanpatch, barflags)
 	end
-	v.drawString(text_x, text_y, "Hold " .. "\x82" .. "FIRE" .. "\x80" .. " to join", flags, "thin-center")
+	
+	local player_count = ZE2.CountPlayers("ingame")
+	
+	local last_words = " to join"
+	
+	if game.active and player_count > 1 then
+		last_words = " to queue"
+		
+		if player.ze2.injoinqueue then
+			last_words = " to unqueue"
+		end
+	end
+	
+	v.drawString(text_x, text_y, "Hold " .. "\x82" .. "FIRE" .. "\x80" .. last_words, flags, "thin-center")
+	
+	if player.ze2.injoinqueue then
+		v.drawString(text_x, text_y + 8, "You will join in the next round..", flags|V_50TRANS, "thin-center")
+	end
 end)
 
 addHook("PlayerCmd", function(player, cmd)
