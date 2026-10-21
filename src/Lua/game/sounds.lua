@@ -12,7 +12,7 @@ local ragesfxinfo = {
 freeslot("sfx_bstdn", "sfx_bstup")
 sfxinfo[sfx_bstdn] = zombiesfxinfo
 sfxinfo[sfx_bstdn].caption = "Zombie rage off"
-sfxinfo[sfx_bstdn] = zombiesfxinfo
+sfxinfo[sfx_bstup] = zombiesfxinfo
 sfxinfo[sfx_bstup].caption = "Zombie enrages"
 
 freeslot("sfx_zbatk1", "sfx_zbatk2", "sfx_zbatk3")
