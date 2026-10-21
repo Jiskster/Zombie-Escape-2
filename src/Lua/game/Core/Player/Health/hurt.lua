@@ -40,7 +40,7 @@ end
 ---@param source mobj_t
 local function GetAttackerNameAndColor(source)
 	if not source or not source.valid then
-		return "\x82", "Something"
+		return "", ""
 	end
 
 	if source.player and source.player.valid then
@@ -53,7 +53,7 @@ local function GetAttackerNameAndColor(source)
 	elseif source.missiledef and source.missiledef.displayname then
 		return "\x82", source.missiledef.displayname
 	end
-	return "\x82", "Something"
+	return "", ""
 end
 
 local DEATH_TYPES = {
@@ -86,12 +86,12 @@ local function SendDeathMessage(player, inflictor, source, damagetype)
 				local oldmessage = message
 				message = string.format("%s%s while trying to escape %s%s", oldmessage, "\x83", sourcecolor, sourcename)
 			end
-		elseif inflictor and inflictor.valid and inflictor.info then -- Check if this is someone's inflictor, and credit them too
-			local sourcecolor, sourcename = GetAttackerNameAndColor(inflictor)
-			if source and source.valid then
-				local theircolor, theirname = GetAttackerNameAndColor(source)
+		elseif source and source.player then
+			local sourcecolor, sourcename = GetAttackerNameAndColor(source)
+			if inflictor and inflictor.valid and ((inflictor ~= source) or (inflictor.target and inflictor.target.valid)) then
+				local theircolor, theirname = GetAttackerNameAndColor(inflictor)
 				if (theirname:len() > 0) then -- valid name
-					sourcename = theircolor .. theirname .. "'s " .. sourcecolor .. sourcename
+					sourcename = sourcecolor .. sourcename .. "'s " .. theircolor .. theirname
 				end
 			end
 
@@ -103,6 +103,20 @@ local function SendDeathMessage(player, inflictor, source, damagetype)
 			end
 		elseif source.info and source.info.npc_name then
 			local sourcecolor, sourcename = GetAttackerNameAndColor(source)
+			if inflictor and inflictor.valid and ((inflictor ~= source) or (inflictor.target and inflictor.target.valid)) then
+				local theircolor, theirname = GetAttackerNameAndColor(inflictor)
+				if (theirname:len() > 0) then -- valid name
+					sourcename = sourcecolor .. sourcename .. "'s " .. theircolor .. theirname
+				end
+			end
+
+			if source.target and source.target.valid and source.target.player and source.target.player.valid then
+				local theircolor, theirname = GetAttackerNameAndColor(source.target)
+				if (theirname:len() > 0) then -- valid name
+					sourcename = theircolor .. theirname .. "'s " .. sourcecolor .. sourcename
+				end
+			end
+
 			message = string.format("%s%s%s has been killed by %s%s", playercolor, player.name, "\x83", sourcecolor, sourcename)
 			if ValidAssist(assist) then
 				local sourcecolor, sourcename = GetAttackerNameAndColor(assist)
