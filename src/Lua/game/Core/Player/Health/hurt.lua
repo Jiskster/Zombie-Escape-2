@@ -69,10 +69,16 @@ local DEATH_TYPES = {
 	[DMG_CRUSHED] = "%s%s%s was crushed"
 }
 
+---@param assist mobj_t
+---@return boolean
 local function ValidAssist(assist)
-	return assist and assist.valid and ((assist.player and assist.player.valid) or (assist.info and assist.info.npc_name))
+	return (assist and assist.valid and ((assist.player and assist.player.valid) or (assist.info and assist.info.npc_name))) and true or false
 end
 
+---@param player player_t
+---@param inflictor mobj_t
+---@param source mobj_t
+---@param damagetype integer
 local function SendDeathMessage(player, inflictor, source, damagetype)
 	local assist = GetAssistant(player, source or inflictor)
 	local message = ""
@@ -156,6 +162,29 @@ local function SendDeathMessage(player, inflictor, source, damagetype)
 	print(message)
 end
 
+---@param player player_t
+---@param inflictor mobj_t
+---@param source mobj_t
+local function SendInfectionMessage(player, inflictor, source)
+	local message = ""
+	local playercolor = "\x84"
+	if source and source.valid and source.player and source.player.valid then
+		local sourcecolor, sourcename = GetAttackerNameAndColor(source)
+		if inflictor and inflictor.valid and ((inflictor ~= source) or (inflictor.target and inflictor.target.valid)) then
+			local theircolor, theirname = GetAttackerNameAndColor(inflictor)
+			if (theirname:len() > 0) then -- valid name
+				sourcename = sourcecolor .. sourcename .. "\x83" .. "'s " .. theircolor .. theirname
+			end
+		end
+		message = string.format("%s%s%s has been infected by %s%s", playercolor, player.name, "\x83", sourcecolor, sourcename)
+	else
+		message = string.format("%s%s%s has been infected", playercolor, player.name, "\x83")
+	end
+	if (message:len() <= 0) then return end
+
+	print(message)
+end
+
 -- Overwrite xSlinger function
 function xSlinger.KillMobj(mo, inf, src, damagetype)
 	local settings = ZE2.getGametypeSettings()
@@ -193,9 +222,9 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 				ZE2.dropSurvivorInventory(player)
 
 				killer.player.ze2.cash = killer.player.ze2.cash + cash_award
-				S_StartSound(killer.player.mo, sfx_rbyhit)
-				print(string.format("%s%s%s has been infected by %s%s", "\x84", player.name, "\x83", "\x85", killer.player.name))
+				SendInfectionMessage(player, (inf == killer) and src or inf, killer)
 				CONS_Printf(killer.player, "\x83" .. "+ $" .. cash_award .. " cash gained from infecting a survivor!")
+				S_StartSound(killer.player.mo, sfx_rbyhit)
 			end
 		elseif (team == 2) then -- victim is zombie
 			if ztype and ZE2.ZombieConfig[ztype] and ZE2.ZombieConfig[ztype].killaward then
