@@ -16,7 +16,7 @@ local A_SplashBoom = function(mo)
 				angle = 0,
 				aiming = 0,
 				iteminfo = mo.iteminfo,
-				--origin = mo,
+				forceknockback = 1,
 				damage = 2,
 			})
 			
@@ -164,6 +164,9 @@ xSlinger.registerItem("splash_ring", {
 	fuse = TICRATE,
 	
 	damage = 88,
+	
+	knockback = 92*FRACUNIT,
+	knockback_time = 3,
 	
 	hitfunc = function(self, src, mo, inf)
 		if not mo and not mo.valid then return end
