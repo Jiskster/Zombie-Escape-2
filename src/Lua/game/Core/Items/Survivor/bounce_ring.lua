@@ -4,8 +4,8 @@ states[S_XS_BOUNCERING] = {
 	sprite = SPR_RNGB,
 	frame = FF_ANIMATE|FF_FULLBRIGHT,
 	tics = -1,
-	var1 = 6,
-	var2 = 2,
+	var1 = 34,
+	var2 = 1,
 	nextstate = S_XS_BOUNCERING,
 }
 
