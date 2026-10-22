@@ -13,12 +13,6 @@ states[S_PLAY_CROUCH_ZE2] = {
     nextstate = S_PLAY_ROLL
 }
 
-local function CrouchHeightHook(player)
-    return (player.ze2.crouching or player.mo.ceilingz-player.mo.floorz < ZE2.PlayerHeight)
-	and (ZE2.PlayerSpinHeight)-- spin height
-	or (ZE2.PlayerHeight) -- height
-end
-
 local function FitGapHook(player)
 	return (player.ze2.crouching == true)
 end
@@ -154,7 +148,6 @@ addHook("PostThinkFrame", function()
 	
 	for player in players.iterate do
 		if not (player.mo and player.mo.valid) then continue end
-		if (game.state == ZE2.GS_PREGAME) and (multiplayer) and not (settings.move_during_pregame) then continue end
 
 		if player.ze2.crouching and switchablestates[player.mo.state] then
 			if not (player.mo.state == S_PLAY_CROUCH_ZE2) then
@@ -162,33 +155,20 @@ addHook("PostThinkFrame", function()
 			end
 		end
 
+		if player.ze2.crouching then
+			player.height = ZE2.PlayerSpinHeight 
+		else
+			player.height = ZE2.PlayerHeight
+		end
+
 		if player == displayplayer then
 			if player.ze2.crouching then
-				crouchlerp = min($+FRACUNIT/7, FRACUNIT)
+				player.viewheight = (41*ZE2.PlayerSpinHeight)/48
 			else
-				crouchlerp = max($-FRACUNIT/4, 0)
+				player.viewheight = (41*player.height)/48
 			end
-
-			/*
-			local newheight = player.mo.z + player.viewheight - ease.inoutquad(crouchlerp, 0, FixedMul(player.height - player.spinheight, player.mo.scale))
-
-			if crouchlerp then
-				player.viewz = min($,newheight)
-			end
-			*/
-
-			local curheight = player.mo.height
-			local newheight = player.mo.z+(41*curheight)/48
-			if P_IsObjectOnGround(player.mo) then
-				local angle = ((8191 / 20 * clientgametics) & 8191) << 19
-
-				local adjust = FixedMul(player.bob / 2, sin(angle))
-				newheight = newheight + adjust
-			end
-			player.viewz = newheight
 		end
 	end
 end)
 
-addHook("PlayerHeight", CrouchHeightHook)
 addHook("PlayerCanEnterSpinGaps", FitGapHook)

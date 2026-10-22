@@ -164,7 +164,7 @@ function xSlinger.DoThinker(mobj)
 			local x = holdobject.pos.x
 			local y = holdobject.pos.y
 			local z = holdobject.pos.z
-
+			
 			-- 0: Start | FRACUNIT: Finish
 			if (xS.reload > 0) then
 				anim = FixedDiv((reload_time - xS.reload) * FRACUNIT, reload_time * FRACUNIT)
@@ -191,7 +191,7 @@ function xSlinger.DoThinker(mobj)
 			-- apply rotation matrix
 			local xorigin = FixedMul(cos(a), px) - FixedMul(sin(a), py) -- (cos(a) * px) - (sin(a) * py)
 			local yorigin = FixedMul(sin(a), px) + FixedMul(cos(a), py) -- (sin(a) * px) + (cos(a) * py)
-			local zorigin = ih + pz
+			local zorigin = (ih + pz)
 
 			tpViewMobj(xS.viewmobj,
 						mobj.x + mobj.momx + xorigin,
@@ -202,6 +202,8 @@ function xSlinger.DoThinker(mobj)
 			xS.viewmobj.angle = mobj.angle
 			xS.viewmobj.spritexscale = FU
 			xS.viewmobj.spriteyscale = FU
+			xS.viewmobj.flags2 = ($ & ~MF2_OBJECTFLIP)|(mobj.flags2 & MF2_OBJECTFLIP)
+			xS.viewmobj.eflags = ($ & ~MFE_VERTICALFLIP)|(mobj.eflags & MFE_VERTICALFLIP)
 				
 			local spritescale = holdobject.spritescale
 			if spritescale then

@@ -112,17 +112,12 @@ function xSlinger.SpawnMissile(m_table)
 		bulletheight = FixedMul(missile_def.height, source.scale)
 	end
 	
-	if source.eflags & MFE_VERTICALFLIP then
-		local realheight = source.z - (41 * source.height / 48) + bulletheight -- TODO: Test this correctly
-		z = realheight --source.z + 2*source.height/3 - FixedMul(mobjinfo[MT_XS_MISSILE].height, source.scale)
-	else
+	do
 		local h = source.height
+
+		local newheight = (41 * h / 48)
 		
-		if source.player and source.player.valid then
-			h = source.height
-		end
-	
-		z = source.z + (41 * h / 48) - bulletheight
+		z = source.z + (newheight) - (bulletheight)
 	end
 	
 	if m_table.origin and m_table.origin.valid then
