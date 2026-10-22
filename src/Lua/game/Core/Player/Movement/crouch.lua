@@ -131,18 +131,7 @@ local switchablestates = {
 	[S_PLAY_EDGE] = true
 }
 
-local clientgametics = 0
-local crouchlerp = 0
-
-addHook("PlayerCmd", function(player, cmd)
-	if not leveltime then
-		clientgametics = 0
-	else
-		clientgametics = $ + 1
-	end
-end)
-
-addHook("PostThinkFrame", function()
+addHook("ThinkFrame", function()
 	local game = ZE2.Game
 	local settings = ZE2.getGametypeSettings()
 	
