@@ -22,6 +22,7 @@ ZE2.RandomItemPool = {
 mobjinfo[MT_ZE2_RANDOMITEM_SPAWN] = {
 	//$Category Zombie Escape 2
 	//$Name Random Item Spawn
+	//$sprite TVMYC0
 
 	//$StringArg0 Item ID
 
