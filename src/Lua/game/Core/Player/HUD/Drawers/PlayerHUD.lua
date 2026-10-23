@@ -135,6 +135,7 @@ local function DrawStaminaOrAbility(v, player, x, y, flags)
     local filltotalfrac = filltotal * FU
     if bar_visible then
         local header = "Stamina"
+        local infinite_stamina = (#xSlinger.search_effect(mo, "energy_drink") > 0)
         local fillamount = FixedMul(FixedDiv(stamina, staminamax), filltotalfrac)
         if (team == 2) then
             header = special.effect_name
@@ -155,7 +156,7 @@ local function DrawStaminaOrAbility(v, player, x, y, flags)
             L_DrawBar(v, fillx, filly, filltotal, fillh, 0, FU, STAMINA_OUT_RAMP, flags, alpha)
         else
             local color = STAMINA_RAMP
-            if #xSlinger.search_effect(mo, "energy_drink") then
+            if infinite_stamina then
                 color = STAMINA_INFINITE_RAMP
             end
 
@@ -170,7 +171,11 @@ local function DrawStaminaOrAbility(v, player, x, y, flags)
             v.drawString((fillx * FU) + (filltotalfrac / 2), filly * FU, "Exhausted", flags|V_YELLOWMAP|V_ALLOWLOWERCASE, "small-fixed-center")
         else
             local percent = FixedInt(FixedCeil(FixedDiv(fillamount, filltotalfrac) * 100))
-            v.drawString(fillx + filltotal, filly, percent .. "%", flags, "small-right")
+            local display = percent .. "%"
+            if infinite_stamina then
+                display = "\x16"
+            end
+            v.drawString(fillx + filltotal, filly, display, flags, "small-right")
         end
     end
 
