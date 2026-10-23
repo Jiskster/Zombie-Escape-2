@@ -36,13 +36,6 @@ addCvar("landingfatigue", {
 	flags = CV_NETVAR,
 })
 
-addCvar("sourcemovement", {
-	name = "z_sourcemovement",
-	defaultvalue = "Off",
-	PossibleValue = CV_OnOff,
-	flags = CV_NETVAR,
-})
-
 addCvar("currencydelay", {
 	name = "z_currencydelay",
 	defaultvalue = "1",
