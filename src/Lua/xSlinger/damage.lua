@@ -152,7 +152,7 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 				xSlinger.give_effect(mo, "burning", {
 					normalspeed_multiplier = FU/2,
 					actionspd_multiplier = 3*FU/2,
-					damage_multiplier = FU/2,
+					out_damage_multiplier = FU/2,
 				}, 18, true)
 			end
 		end
@@ -249,12 +249,12 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 
 	if mo.effects then
 		for i,effect in ipairs(mo.effects) do
-			if effect.protection_multiplier then
-				dmg = FixedMul($*FU, effect.protection_multiplier)/FU
+			if effect.in_damage_multiplier then
+				dmg = FixedMul($*FU, effect.in_damage_multiplier)/FU
 			end
 
-			if effect.knockback_multiplier then
-				knockback = FixedMul($, effect.knockback_multiplier)
+			if effect.in_knockback_multiplier then
+				knockback = FixedMul($, effect.in_knockback_multiplier)
 			end
 		end
 	end
@@ -262,8 +262,12 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 	if attacker and attacker.valid then
 		if attacker.effects then
 			for i,effect in ipairs(attacker.effects) do
-				if effect.damage_multiplier then
-					dmg = FixedMul($*FU, effect.damage_multiplier)/FU
+				if effect.out_damage_multiplier then
+					dmg = FixedMul($*FU, effect.out_damage_multiplier)/FU
+				end
+
+				if effect.out_knockback_multiplier then
+					knockback = FixedMul($, effect.out_knockback_multiplier)
 				end
 			end
 		end

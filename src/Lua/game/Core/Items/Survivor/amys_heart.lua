@@ -125,7 +125,7 @@ addHook("MobjThinker", function(mobj)
 		if (player.mo.team == 2) then
 			xSlinger.give_effect(player.mo, "amys_love", {
 				normalspeed_multiplier = (FU*3)/5,
-				damage_multiplier = (FU*3)/4,
+				out_damage_multiplier = (FU*3)/4,
 			}, 7, true)
 		end
 	end

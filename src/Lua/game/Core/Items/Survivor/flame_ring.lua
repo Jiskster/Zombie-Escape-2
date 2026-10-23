@@ -136,7 +136,7 @@ xSlinger.registerItem("flame_ring", {
 		xSlinger.give_effect(mo, "burning", {
 			normalspeed_multiplier = FU/2,
 			actionspd_multiplier = 3*FU/2,
-			damage_multiplier = FU/2,
+			out_damage_multiplier = FU/2,
 		}, 10, true)
 
 		mo.flameringtarget = src

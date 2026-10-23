@@ -50,8 +50,8 @@ xSlinger.registerItem("energy_drink", {
 	usefunc = function(self, mobj)
 		xSlinger.give_effect(mobj, "energy_drink", {
 			normalspeed_multiplier = 10*FRACUNIT/7,
-			damage_multiplier = 2*FRACUNIT,
-			knockback_multiplier = 5*FRACUNIT,
+			out_damage_multiplier = 2*FRACUNIT,
+			out_knockback_multiplier = 5*FRACUNIT,
 		}, 6*TICRATE, true)
 	end;
 

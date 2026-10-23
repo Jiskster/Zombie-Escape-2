@@ -18,9 +18,9 @@ end
 local function giveElectricEffect(mobj)
 	xSlinger.give_effect(mobj, "volt_electric", {
 		normalspeed_multiplier = 1,
-		knockback_multiplier = 3*FU,
+		in_knockback_multiplier = 3*FU,
 		actionspd_multiplier = FU/2,
-		damage_multiplier = 2*FU,
+		out_damage_multiplier = 2*FU,
 	}, 4*TICRATE, true)
 end
 

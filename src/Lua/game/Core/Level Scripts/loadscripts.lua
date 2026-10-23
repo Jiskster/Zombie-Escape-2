@@ -26,7 +26,7 @@ end
 
 	argument 6: charability
 
-	argument 7: damage multiplier (in fixed)
+	argument 7: attacking damage multiplier (in fixed)
 	argument 8: knockback multiplier (in fixed)
 
 */
@@ -37,8 +37,8 @@ local index_to_attrib = {
 	[3] = "actionspd",
 	[4] = "actionspd_multiplier",
 	[5] = "charability",
-	[6] = "damage_multiplier",
-	[7] = "knockback_multiplier"
+	[6] = "out_damage_multiplier",
+	[7] = "out_knockback_multiplier"
 }
 
 local index_mul = {

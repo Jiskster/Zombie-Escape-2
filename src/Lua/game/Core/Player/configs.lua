@@ -64,8 +64,8 @@ ZE2.ZombieConfig = {
 			effect_name = "Rage",
 			effect_table = {
 				normalspeed_multiplier = 2*FU,
-				damage_multiplier = 2*FU,
-				knockback_multiplier = 2*FU,
+				out_damage_multiplier = 2*FU,
+				in_knockback_multiplier = 2*FU,
 				charability = CA_JUMPTHOK,
 			},
 			effect_duration = 2*TICRATE + TICRATE/2,
