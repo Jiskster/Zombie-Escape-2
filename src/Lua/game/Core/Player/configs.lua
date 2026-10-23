@@ -68,8 +68,8 @@ ZE2.ZombieConfig = {
 				knockback_multiplier = 2*FU,
 				charability = CA_JUMPTHOK,
 			},
-			effect_duration = 2*TICRATE,
-			cooldown = 40*TICRATE,
+			effect_duration = 2*TICRATE + TICRATE/2,
+			cooldown = 50*TICRATE,
 			sound = sfx_bstup,
 		}
 	},
