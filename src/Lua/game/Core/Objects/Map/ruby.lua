@@ -108,7 +108,7 @@ addHook("MobjThinker", function(mobj)
 
 	if mobj.rubymap then
 		local offset = (leveltime + FixedInt(FixedHypot(mobj.x, mobj.y))) * (ANG10 / 2)
-		mobj.spriteyoffset = (2 * FU) + FixedMul(4 * FU, cos(offset))
+		mobj.spriteyoffset = (12 * FU) + FixedMul(4 * FU, cos(offset))
 		mobj.shadowscale = FU / 2
 		return
 	end
