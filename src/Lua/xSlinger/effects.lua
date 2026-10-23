@@ -135,7 +135,7 @@ local function effectThink(effectKey, effect, parent)
 			return false
 		end
 		
-		if not effect.fuse then
+		if (effect.fuse <= 0) then
 			if parent and parent.valid then
 				if info.endfunc then
 					info.endfunc(info, parent)
