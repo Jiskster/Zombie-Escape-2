@@ -114,10 +114,13 @@ function xSlinger.SpawnMissile(m_table)
 	
 	do
 		local h = source.height
-
 		local newheight = (41 * h / 48)
 		
-		z = source.z + (newheight) - (bulletheight)
+		if source.eflags & MFE_VERTICALFLIP then
+			z = source.z + h - newheight
+		else
+			z = source.z + newheight - bulletheight
+		end
 	end
 	
 	if m_table.origin and m_table.origin.valid then
