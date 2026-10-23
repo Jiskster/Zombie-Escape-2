@@ -59,7 +59,7 @@ addHook("TouchSpecial", function(special, toucher)
 	end
 
 	ZE2:GivePlayerCash(toucher.player, 5)
-	toucher.player.ze2:ChangeStamina(5 * FRACUNIT)
+	toucher.player.ze2:ChangeStamina(15 * FRACUNIT)
 	toucher.player.ze2.currencydelay = ZE2.cv_currencydelay.value
 	S_StartSound(toucher, sfx_rbyhit)
 end, MT_CRRUBY)
