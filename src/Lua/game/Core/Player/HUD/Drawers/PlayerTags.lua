@@ -24,7 +24,7 @@ return "PlayerTags", function(v, player)
 	if game.ended then return end
 
 	local orderedPlayers = getPlayersByDist(player)
-	local pointpatch = v.cachePatch("Z_POINTTEAM")
+	local pointpatch = v.cachePatch("Z_POINTTEAMC")
 	for i = 1, #orderedPlayers do
 		local plr = orderedPlayers[i]
 		if plr.spectator then continue end
@@ -72,10 +72,11 @@ return "PlayerTags", function(v, player)
 		end
 
 		if sameteam then
-			v.drawScaled(result.x + offset1, result.y, ppsize, pointpatch)
+			local pointcolor = (plr.realmo.team == 1) and SKINCOLOR_BLUE or SKINCOLOR_RED
+			v.drawScaled(result.x + offset1, result.y, ppsize, pointpatch, 0, v.getColormap(nil, pointcolor, nil))
 		end
 
-		local namecolor = (plr.realmo.team == 1) and V_AQUAMAP or V_REDMAP
+		local namecolor = (plr.realmo.team == 1) and V_BLUEMAP or V_REDMAP
 		v.drawString(result.x, result.y + offset2, plr.name, namecolor|V_ALLOWLOWERCASE|translucency, fonttype)
 		if sameteam and (plr.realmo.shield_health ~= nil) then
 			v.drawString(result.x, result.y + (offset2 * 2), "+" .. (plr.realmo.health + plr.realmo.shield_health), healthmap|translucency, fonttype)
