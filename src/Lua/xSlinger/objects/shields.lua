@@ -103,7 +103,8 @@ function xSlinger.GiveShieldToMobj(mobj, shieldid)
 	end
 	mobj.shield_efficiency = mobj.shield_def.efficiency or 0
 
-	mobj.shield_orb = P_SpawnMobj(mobj.x, mobj.y, mobj.z, MT_XSLINGER_SHIELD)
+	local z = mobj.z + ((4 * FU) * P_MobjFlip(mobj))
+	mobj.shield_orb = P_SpawnMobj(mobj.x, mobj.y, z, MT_XSLINGER_SHIELD)
 
 	if mobj.shield_def.state then
 		mobj.shield_orb.state = mobj.shield_def.state
@@ -169,7 +170,7 @@ addHook("ThinkFrame", function()
 			if shield and shield.valid then -- srb2 being bad, so another check here
 				local tx = shield.target.x
 				local ty = shield.target.y
-				local tz = shield.target.z
+				local tz = shield.target.z + ((4 * FU) * P_MobjFlip(shield.target))
 
 				P_MoveOrigin(shield, tx, ty, tz)
 

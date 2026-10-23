@@ -61,6 +61,7 @@ ZE2.ZombieConfig = {
 		special = {
 			button = BT_CUSTOM2,
 			effect = "alphazombie.rage",
+			effect_name = "Rage",
 			effect_table = {
 				normalspeed_multiplier = 2*FU,
 				damage_multiplier = 2*FU,
