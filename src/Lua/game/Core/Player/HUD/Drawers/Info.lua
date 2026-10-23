@@ -46,7 +46,7 @@ local function cashinfo(v,p,me,ze)
 	if ze.cash ~= nil then
 		local left_offset = 2
 
-		v.draw(320-greenwidth, 0, green, V_SNAPTOTOP|V_SNAPTORIGHT|V_20TRANS)
+		--v.draw(320-greenwidth, 0, green, V_SNAPTOTOP|V_SNAPTORIGHT|V_20TRANS)
 		v.drawString(320-left_offset, 2, "$"..ze.cash, V_GREENMAP|V_SNAPTOTOP|V_SNAPTORIGHT, "thin-right")
 	end
 end
