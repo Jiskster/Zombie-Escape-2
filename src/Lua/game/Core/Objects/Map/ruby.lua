@@ -2,7 +2,11 @@ freeslot("MT_CRRUBY","S_CRRUBY","SPR_RBY1", "sfx_rbyhit")
 sfxinfo[sfx_rbyhit].caption = "Ruby"
 
 mobjinfo[MT_CRRUBY] = {
-	doomednum = -1,
+	//$Category Zombie Escape 2
+	//$Name Ruby
+	//$Sprite RBY1A0
+	//$NotAngled true
+	doomednum = 864,
 	spawnstate = S_CRRUBY,
 	spawnhealth = 1000,
 	deathstate = S_SPRK1,
@@ -20,6 +24,10 @@ states[S_CRRUBY] = {
 	tics = -1,
 	nextstate = S_CRRUBY,
 }
+
+addHook("MapThingSpawn", function(mobj, thing)
+	mobj.rubymap = true
+end, MT_CRRUBY)
 
 addHook("PlayerThink", function(player)
 	if (player.ze2 == nil) then return end
@@ -97,6 +105,13 @@ addHook("MobjThinker", function(mobj)
 		end
 	end
 	mobj.lastmomz = mobj.momz
+
+	if mobj.rubymap then
+		local offset = (leveltime + FixedInt(FixedHypot(mobj.x, mobj.y))) * (ANG10 / 2)
+		mobj.spriteyoffset = (2 * FU) + FixedMul(4 * FU, cos(offset))
+		mobj.shadowscale = FU / 2
+		return
+	end
 
 	if (mobj.fuse < (3 * TICRATE)) then
 		mobj.flags2 = mobj.flags2 ^^ MF2_DONTDRAW
