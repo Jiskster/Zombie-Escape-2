@@ -1,7 +1,7 @@
 function xSlinger.HUD_TAGS(v, player)
 	if not player["xSlinger[]"] then return end
 
-	local pmo = player.mo
+	local pmo = player.realmo
 	if not pmo or not pmo.valid then return end
 
 	local found = {}
