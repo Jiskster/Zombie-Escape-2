@@ -127,7 +127,7 @@ addHook("ThinkFrame", function()
 
 				P_SlideMove(mo)
 
-				-- we dont need momentum anymore since we werent already moving
+				-- bring back old momentum
 				mo.momx = old_momx
 				mo.momy = old_momy
 			end
