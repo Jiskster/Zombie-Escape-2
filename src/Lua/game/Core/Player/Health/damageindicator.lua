@@ -60,7 +60,7 @@ addHook("PlayerThink", function(player)
 
 		local x = target.x
 		local y = target.y
-		local z = target.z + (target.height * 3)
+		local z = target.z + (target.height)
 		indicator.x = x
 		indicator.y = y
 		indicator.z = z
