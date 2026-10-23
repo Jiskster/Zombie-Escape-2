@@ -47,6 +47,19 @@ local darkbgcolor = 31
 local darkbgshift = (darkbgtrans<<V_ALPHASHIFT)
 local skinlist
 
+local SPEED_NAMES = {
+	[10] = "Molases",
+	[9] = "Slowestest",
+	[8] = "Slowest",
+	[7] = "Slower",
+	[6] = "Slow",
+	[5] = "Normal",
+	[4] = "Fast",
+	[3] = "Faster",
+	[2] = "Fastest",
+	[1] = "Fastestest"
+}
+
 return "CharacterSelect", function(v, player)
 	local game = ZE2.Game
 	
@@ -164,4 +177,21 @@ return "CharacterSelect", function(v, player)
 	CURWEAP_Y = $ - FixedMul(CURWEAP.height*FU, CURWEAP_SCALE)/2
 
 	drawScaled(CURWEAP_X, CURWEAP_Y - 6*FU, CURWEAP_SCALE, CURWEAP, V_SNAPTOTOP)
+
+	--- TODO: make it look better
+	local realnum = convertCharacterSelection(selection, player)
+	local realskindata = skins[skinlist[realnum]]
+	local sconfig = ZE2.SurvivorConfig[realskindata.name]
+	local sx = 80
+	drawString((BASEVIDWIDTH / 2) - 16, (BASEVIDHEIGHT - sx) + yoffset, ZE2.weightToHealth(sconfig.weight) .. " HP", V_SNAPTOBOTTOM|V_ALLOWLOWERCASE, "small-center")
+	drawString((BASEVIDWIDTH / 2) + 16, (BASEVIDHEIGHT - sx) + yoffset, SPEED_NAMES[sconfig.weight], V_SNAPTOBOTTOM|V_ALLOWLOWERCASE, "small-center")
+
+	sx = sx - 12
+	if (sconfig.description == nil) then
+		drawString(BASEVIDWIDTH / 2, (BASEVIDHEIGHT - sx) + yoffset, "<missing string>", V_SNAPTOBOTTOM|V_ALLOWLOWERCASE, "small-center")
+	else
+		for index = 1, #sconfig.description, 1 do
+			drawString(BASEVIDWIDTH / 2, (BASEVIDHEIGHT - sx) + yoffset + (6 * (index - 1)), sconfig.description[index], V_SNAPTOBOTTOM|V_ALLOWLOWERCASE, "small-center")
+		end
+	end
 end, "game", 50

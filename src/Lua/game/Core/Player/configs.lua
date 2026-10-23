@@ -154,19 +154,19 @@ local acceleration_lookup = {
 	[10] = 15;
 }
 
-local function weightToHealth(weight)
+function ZE2.weightToHealth(weight)
 	weight = max(1, min($, 10))
 
 	return health_lookup[weight]
 end
 
-local function weightToSpeed(weight)
+function ZE2.weightToSpeed(weight)
 	weight = max(1, min($, 10))
 
 	return (speed_lookup[weight][1]*FU + FixedDiv(speed_lookup[weight][2]*FU, 10*FU))
 end
 
-local function weightToAcceleration(weight)
+function ZE2.weightToAcceleration(weight)
 	weight = max(1, min($, 10))
 
 	return acceleration_lookup[weight]
@@ -377,9 +377,9 @@ function ZE2.AddSurvivor(skinname, input_table)
 		return
 	end
 
-	input_table.health = weightToHealth(weight)
-	input_table.normalspeed = weightToSpeed(weight)
-	input_table.acceleration = weightToAcceleration(weight)
+	input_table.health = ZE2.weightToHealth(weight)
+	input_table.normalspeed = ZE2.weightToSpeed(weight)
+	input_table.acceleration = ZE2.weightToAcceleration(weight)
 	input_table.charability = CA_NONE
 	input_table.charability2 = CA2_NONE
 	input_table.jumpfactor = ZE2.StandardJumpFactor
@@ -403,7 +403,6 @@ ZE2.AddSurvivor("sonic", {
 	weight = 2;
 	description = {
 		"Fast hedgehog, born to speed.";
-		"Has Low HP, and High Speed";
 		"A character for players who want a challenge.";
 	};
 	items = {
@@ -416,7 +415,6 @@ ZE2.AddSurvivor("tails", {
 	weight = 5;
 	description = {
 		"Has the brains. Without the plane.";
-		"Has Average HP, and Average Speed.";
 		"A character for beginners.";
 	};
 	items = {
@@ -430,7 +428,6 @@ ZE2.AddSurvivor("knuckles", {
 	weight = 8;
 	description = {
 		"No time to chuckle.";
-		"Has High HP, and Low Speed.";
 		"A character for good defenders.";
 	};
 	items = {
@@ -443,7 +440,6 @@ ZE2.AddSurvivor("amy", {
 	weight = 4;
 	description = {
 		"Don't be fooled, she's fierce.";
-		"Has Low HP, and Average Speed.";
 		"A character for good healers.";
 	};
 	health_penalty = 40;
@@ -457,7 +453,6 @@ ZE2.AddSurvivor("fang", {
 	weight = 6;
 	description = {
 		"Pesky bounty hunter.";
-		"Has Above Average HP, and Average Speed.";
 		"A character with unique weapon combat.";
 	};
 	items = {
@@ -470,7 +465,6 @@ ZE2.AddSurvivor("metalsonic", {
 	weight = 7;
 	description = {
 		"The real sonic.";
-		"Has Above Average HP, and Average Speed.";
 		"A good fragging character.";
 	};
 	items = {
