@@ -191,7 +191,14 @@ function xSlinger.DoThinker(mobj)
 			-- apply rotation matrix
 			local xorigin = FixedMul(cos(a), px) - FixedMul(sin(a), py) -- (cos(a) * px) - (sin(a) * py)
 			local yorigin = FixedMul(sin(a), px) + FixedMul(cos(a), py) -- (sin(a) * px) + (cos(a) * py)
-			local zorigin = (ih + pz)
+			local zorigin
+			if P_MobjFlip(mobj) == 1 then
+				-- Normal gravity.
+				zorigin = (ih + pz)
+			else
+				-- Flipped gravity.
+				zorigin = h - (ih + pz) - xS.viewmobj.height
+			end
 
 			tpViewMobj(xS.viewmobj,
 						mobj.x + mobj.momx + xorigin,
