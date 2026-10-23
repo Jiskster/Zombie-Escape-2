@@ -84,8 +84,9 @@ addHook("ThinkFrame", function()
 		local k = mo.knockback
 
 		-- Clean up inactive knockback tables.
-		for id,t in ipairs(k.list) do
-			if not t.tics then table.remove(k.list, id); end
+		for id = 1, #k.list do
+			local t = k.list[id]
+			if (t.tics <= 0) then table.remove(k.list, id); end
 		end
 
 		for id,t in ipairs(k.list) do
