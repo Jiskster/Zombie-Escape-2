@@ -123,7 +123,7 @@ local function DrawStaminaOrAbility(v, player, x, y, flags)
 
     if bar_visible then
         local bg_width = 44
-        local bg_height = 5
+        local bg_height = 11
         v.drawFill(FixedInt(x), FixedInt(y), bg_width, bg_height, 31|flags|V_TRANSLUCENT)
     end
 
@@ -154,7 +154,7 @@ local function DrawStaminaOrAbility(v, player, x, y, flags)
             L_DrawBar(v, fillx, filly, filltotal, fillh, 0, FU, STAMINA_OUT_RAMP, flags, alpha)
         else
             L_DrawBar(v, fillx, filly, filltotal, fillh, 0, FixedDiv(fillamount, filltotalfrac), STAMINA_RAMP, flags, FU)
-            if (stamina < (30 * FU)) then
+            if (stamina <= (50 * FU)) then
                 local alpha = FU - sin(leveltime * (ANG10 / 2))
                 L_DrawBar(v, fillx, filly, filltotal, fillh, 0, FixedDiv(fillamount, filltotalfrac), STAMINA_LOW_RAMP, flags, alpha)
             end
@@ -164,7 +164,7 @@ local function DrawStaminaOrAbility(v, player, x, y, flags)
             v.drawString((fillx * FU) + (filltotalfrac / 2), filly * FU, "Exhausted", flags|V_YELLOWMAP|V_ALLOWLOWERCASE, "small-fixed-center")
         else
             local percent = FixedInt(FixedCeil(FixedDiv(fillamount, filltotalfrac) * 100))
-            v.drawString(fillx, filly, percent .. "%", flags, "small")
+            v.drawString(fillx + filltotal, filly, percent .. "%", flags, "small-right")
         end
     end
 
