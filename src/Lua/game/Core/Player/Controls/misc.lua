@@ -118,20 +118,6 @@ addHook("PlayerThink", function(player) ---@param player player_t
 			pv.isSprung = false
 		end
 
-		--lastJumped is shitty ik but i cant think of a good way to do this
-		--WITHOUT having to make a new variable in the ze2 table
-		if ZE2.cv_landingfatigue.value and (pv.lastJumped) then
-			local bhopped = false
-
-			if (player.cmd.buttons & BT_JUMP) and not (player.lastbuttons & BT_JUMP) then
-				bhopped = true
-			end
-
-			if (pmo.eflags & MFE_JUSTHITFLOOR) and not bhopped then
-				pmo:speedCapXY(5*FU)
-			end
-		end
-
 		-- remove burning effect when underwater
 		if (pmo.eflags & MFE_TOUCHWATER) or (pmo.eflags & MFE_UNDERWATER) then
 			local found = xSlinger.search_effect(pmo, "burning")
