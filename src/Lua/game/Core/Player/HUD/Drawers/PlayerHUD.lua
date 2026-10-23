@@ -76,6 +76,7 @@ end
 
 
 local STAMINA_RAMP = {135, 134, 133, 132, 131, 130, 129, 128}
+local STAMINA_INFINITE_RAMP = {115, 114, 113, 112}
 local STAMINA_LOW_RAMP = {79, 78, 77, 76, 75, 74, 73, 72, 83, 82, 81, 80}
 local STAMINA_OUT_RAMP = {39, 38, 37, 36, 35, 34, 33, 32}
 
@@ -153,7 +154,12 @@ local function DrawStaminaOrAbility(v, player, x, y, flags)
             local alpha = FU - sin((leveltime * 2) * ANG10)
             L_DrawBar(v, fillx, filly, filltotal, fillh, 0, FU, STAMINA_OUT_RAMP, flags, alpha)
         else
-            L_DrawBar(v, fillx, filly, filltotal, fillh, 0, FixedDiv(fillamount, filltotalfrac), STAMINA_RAMP, flags, FU)
+            local color = STAMINA_RAMP
+            if #xSlinger.search_effect(mo, "energy_drink") then
+                color = STAMINA_INFINITE_RAMP
+            end
+
+            L_DrawBar(v, fillx, filly, filltotal, fillh, 0, FixedDiv(fillamount, filltotalfrac), color, flags, FU)
             if (stamina <= (50 * FU)) then
                 local alpha = FU - sin(leveltime * (ANG10 / 2))
                 L_DrawBar(v, fillx, filly, filltotal, fillh, 0, FixedDiv(fillamount, filltotalfrac), STAMINA_LOW_RAMP, flags, alpha)
