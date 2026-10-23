@@ -62,7 +62,7 @@ xSlinger.registerMissile("BLOOD_BOMB", {
 	delflags = MF_NOGRAVITY|MF_NOBLOCKMAP,
 })
 
-local xsmissile_bloodbomb_guide = 
+local xsmissile_bloodbomb_guide =
 ZE2.registerCrosshairGuide(xsmissile_bloodbomb.id)
 
 local function spawnVFX(mo, color)
@@ -78,7 +78,7 @@ local function spawnVFX(mo, color)
 	infectparticle.renderflags = RF_FULLBRIGHT
 	infectparticle.tics = 10
 	P_SetObjectMomZ(infectparticle, P_RandomRange(2, 5) * FU)
-	
+
 	return infectparticle
 end
 
@@ -97,9 +97,9 @@ xSlinger.registerItem("blood_bomb", {
 	missile = "BLOOD_BOMB",
     firerate = 24 * TICRATE,
 	damage = 10,
-	
+
 	-- Item properties
-	
+
 	droppable = false,
 	sounds = {
 		use = sfx_s1ae,
@@ -107,18 +107,12 @@ xSlinger.registerItem("blood_bomb", {
 	usefunc = function(self, mo)
 		if not mo and mo.valid then return end
 
-		if mo.health <= health_cost then -- Kill the zombie directly if they throw the bomb with less than required.
-			P_KillMobj(mo)
-			return
-		end
-
-		mo.health = $ - health_cost -- Heh don't use this as a survivor lol
-		S_StartSound(mo, skins[mo.skin].soundsid[SKSPLPAN2] or sfx_none)
+		P_DamageMobj(mo, nil, nil, health_cost, 0) -- Heh don't use this as a survivor lol
 	end,
 	missile_tick = function(self, mo, missile) -- Code of infection vfx.
 		if (leveltime % 3 == 0) then return end
 		if not (missile and missile.valid) then return end
-		
+
 		spawnVFX(missile)
 	end,
 	missile_spawn = function(self, mo, missile)
@@ -139,12 +133,12 @@ addHook("PlayerThink", function(p)
 	if not mo.bloodbomb_blindtime then return end
 
 	mo.bloodbomb_blindtime = $ - 1
-	
+
 	local infectparticle = spawnVFX(mo, SKINCOLOR_ALPHAZOMBIE)
 	if infectparticle and infectparticle.valid then
 		infectparticle.alpha = min(FixedDiv(mo.bloodbomb_blindtime, 3*TICRATE), FU)
 	end
-	
+
 	if showhud and not showhud.value then -- Nu uh cheater!
 		COM_BufInsertText(p, "showhud 1") -- we are calling it each tic yes, but we aren't filling the netxcmd buffer so.
 	end
