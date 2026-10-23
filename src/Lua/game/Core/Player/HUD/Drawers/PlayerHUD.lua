@@ -44,7 +44,8 @@ local function DrawArmor(v, player, x, y, flags)
     local mo = player.mo --[[@as mobj_t]]
     local team = mo.team
     if (team ~= 1) then return end
-
+	if (mo.shield_def == nil) then return end
+	
     local bg_width = 28
     local bg_height = 10
     v.drawFill(FixedInt(x), FixedInt(y), bg_width, bg_height, 31|flags|V_TRANSLUCENT)
@@ -52,29 +53,25 @@ local function DrawArmor(v, player, x, y, flags)
     local shield_scale = (FU / 2) - (FU / 8)
     local shield_icon = v.cachePatch("Z_SHIELDSICO")
     local shield_x, shield_y = x + (5 * FU), y + (5 * FU)
-    if (mo.shield_def ~= nil) then
-        local shield = mo.shield_def
-        local shield_color = (shield.color or SKINCOLOR_WHITE)
-        local shield_percentage = FixedDiv(mo.shield_health, shield.health)
+	local shield = mo.shield_def
+	local shield_color = (shield.color or SKINCOLOR_WHITE)
+	local shield_percentage = FixedDiv(mo.shield_health, shield.health)
 
-        local shield_y_text = shield_y - (3 * FU)
+	local shield_y_text = shield_y - (3 * FU)
 
-        local crop_height = (shield_icon.height * FU) - FixedMul(shield_icon.height * FU, shield_percentage)
-        crop_height = max(crop_height, 0)
+	local crop_height = (shield_icon.height * FU) - FixedMul(shield_icon.height * FU, shield_percentage)
+	crop_height = max(crop_height, 0)
 
-        if (shield_percentage ~= FU) then
-            v.drawCropped(shield_x, shield_y, shield_scale, shield_scale, shield_icon, flags|V_REVERSESUBTRACT, v.getColormap(nil, SKINCOLOR_CARBON, "Grayscale"), 0, 0, shield_icon.width * FU, crop_height)
-        end
+	if (shield_percentage ~= FU) then
+		v.drawCropped(shield_x, shield_y, shield_scale, shield_scale, shield_icon, flags|V_REVERSESUBTRACT, v.getColormap(nil, SKINCOLOR_CARBON, "Grayscale"), 0, 0, shield_icon.width * FU, crop_height)
+	end
 
-        v.drawCropped(shield_x, shield_y + FixedMul(crop_height, shield_scale), shield_scale, shield_scale, shield_icon, flags|V_ADD|V_30TRANS, v.getColormap(nil, shield_color, nil), 0, crop_height, shield_icon.width * FU, shield_icon.height * FU)
+	v.drawCropped(shield_x, shield_y + FixedMul(crop_height, shield_scale), shield_scale, shield_scale, shield_icon, flags|V_ADD|V_30TRANS, v.getColormap(nil, shield_color, nil), 0, crop_height, shield_icon.width * FU, shield_icon.height * FU)
 
-        v.drawString(shield_x + (6 * FU), shield_y_text, mo.shield_health, flags|V_10TRANS, "thin-fixed")
-        if (mo.shield_efficiency > 0) then
-            v.drawString(shield_x, shield_y_text + (1 * FU), FixedInt(FixedDiv(mo.shield_efficiency, FU) * 100) .. "%", flags|V_10TRANS, "small-thin-fixed-center")
-        end
-    else
-        v.drawScaled(shield_x, shield_y, shield_scale, shield_icon, flags|V_REVERSESUBTRACT, v.getColormap(nil, SKINCOLOR_CARBON, "Grayscale"))
-    end
+	v.drawString(shield_x + (6 * FU), shield_y_text, mo.shield_health, flags|V_10TRANS, "thin-fixed")
+	if (mo.shield_efficiency > 0) then
+		v.drawString(shield_x, shield_y_text + (1 * FU), FixedInt(FixedDiv(mo.shield_efficiency, FU) * 100) .. "%", flags|V_10TRANS, "small-thin-fixed-center")
+	end
 end
 
 
