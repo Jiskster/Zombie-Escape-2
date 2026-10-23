@@ -36,33 +36,6 @@ COM_AddCommand("z_listkarma", function(player)
 	end
 end, COM_LOCAL)
 
-ZE2.MaxKarmaPLS = 999999
-COM_AddCommand("z_zombiepls", function(player, accept)
-	if player.ze2.zombiepls then
-		CONS_Printf(player, "\x85ZombiePls has been disabled. Karma reset to "..ZE2.MaxKarma)
-		player.ze2.zombiepls = false
-		player.ze2.karma = ZE2.MaxKarma
-		return
-	end	
-
-	if (accept == "PLEASE") then
-		player.ze2.zombiepls = true
-		player.ze2.karma = ZE2.MaxKarmaPLS
-		CONS_Printf(player, "\x84ZombiePls has been enabled. Karma set to " .. ZE2.MaxKarmaPLS)
-		CONS_Printf(player, "\x82Run the command again to disable.")
-	else
-		CONS_Printf(player, "This command maxes out your karma beyond its limits, are you sure?")
-		CONS_Printf(player, "\x82If you are sure, then do 'z_zombiepls PLEASE' in console.")
-	end
-end)
-
--- Thinker for ZombiePls
-addHook("PlayerThink", function(player)
-	if player.ze2.zombiepls then
-		player.ze2.karma = ZE2.MaxKarmaPLS
-	end
-end)
-
 COM_AddCommand("drophand", function(player)
 	local game = ZE2.Game
 	local settings = ZE2.getGametypeSettings()

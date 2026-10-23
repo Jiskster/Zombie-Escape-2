@@ -19,11 +19,6 @@ local function RenderPlayerStats(v, ypos, player, team, spectator)
 		karmacolor = "\x83"
 	end
 
-	if player.ze2.zombiepls then
-		karmacolor = ""
-		karmadisplay = ""
-	end
-
 	DrawString(BASEVIDWIDTH - (2 + 120), ypos, karmacolor .. karmadisplay, V_ALLOWLOWERCASE|textcolor, "small-right")
 	if not spectator then
 		local healthcolor = "\x83"
