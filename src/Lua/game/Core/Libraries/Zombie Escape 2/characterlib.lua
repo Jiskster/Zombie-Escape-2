@@ -121,6 +121,7 @@ function ZE2.ResetPlayer(player, set_team, resetinventory, noitems)
 	end
 
 	ZE2.resetPlayerHealth(player)
+	xSlinger.clear_effects(mo)
 
 	if resetinventory then
 		ZE2.setConfigInventory(player, false, noitems)
