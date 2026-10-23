@@ -72,7 +72,8 @@ addHook("ThinkFrame", function()
 	end
 
 	--iterate
-	for k,mo in ipairs(KB.list) do
+	for k = #KB.list, 1, -1 do
+		local mo = KB.list[k]
 		local thrust = {x = 0; y = 0}
 		local knocked = false
 
@@ -84,9 +85,11 @@ addHook("ThinkFrame", function()
 		local k = mo.knockback
 
 		-- Clean up inactive knockback tables.
-		for id = 1, #k.list do
+		for id = #k.list, 1, -1 do
 			local t = k.list[id]
-			if (t.tics <= 0) then table.remove(k.list, id); end
+			if (t.tics <= 0) then 
+				table.remove(k.list, id); 
+			end
 		end
 
 		for id,t in ipairs(k.list) do
@@ -137,6 +140,6 @@ addHook("ThinkFrame", function()
 				mo.momx = P_ReturnThrustX(nil,ang,newspeed)
 				mo.momy = P_ReturnThrustY(nil,ang,newspeed)
 			end
-		end
+		end		
 	end
 end)
