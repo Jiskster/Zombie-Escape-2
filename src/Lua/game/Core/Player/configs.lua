@@ -59,7 +59,7 @@ ZE2.ZombieConfig = {
 			"blood_bomb"; 
 		},
 		special = {
-			button = BT_CUSTOM1,
+			button = BT_CUSTOM2,
 			effect = "alphazombie.rage",
 			effect_name = "Rage",
 			effect_table = {
