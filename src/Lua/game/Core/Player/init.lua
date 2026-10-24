@@ -25,7 +25,7 @@ dopath("Controls/sprint.lua")
 dopath("Controls/applyconfig.lua")
 dopath("Controls/jumpfatigue.lua")
 dopath("Controls/misc.lua")
-dopath("Controls/alphazombie.lua")
+dopath("Controls/zombiespecial.lua")
 
 dopath("Health/falldamage.lua")
 dopath("Health/messages.lua")
