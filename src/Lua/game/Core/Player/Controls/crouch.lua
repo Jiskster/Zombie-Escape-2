@@ -29,6 +29,8 @@ local function crouchcondition(player)
 	local game = ZE2.Game
 	local settings = ZE2.getGametypeSettings()
 	if not (player.mo and player.mo.valid) then return false end
+	-- Don't crouch when you're dead, you look weird, and not necessarily because of the crouching.
+	if not (player.mo.health) then return false end
 
 	if multiplayer then
 		if (game.state == ZE2.GS_PREGAME and not settings.move_during_pregame) then return false end
