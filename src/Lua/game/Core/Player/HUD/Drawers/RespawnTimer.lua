@@ -4,14 +4,14 @@ return "RespawnTimer", function(v, player) -- Also a timer for survivors to turn
 
 	if player.playerstate == PST_DEAD and not player.spectator then
 		local respawntics = player.ze2.respawntics
-		local respawntics2 = G_TicsToSeconds(respawntics) .. "." .. G_TicsToCentiseconds(respawntics)
+		local respawnstring = string.format("%d.%.2d", G_TicsToSeconds(respawntics), G_TicsToCentiseconds(respawntics))
 		local text = "Respawning in:"
 		if player.ze2.outofgame then
 			text = "Spectator in:"
 		end
 
 		v.drawString(160, 100, text, V_50TRANS|V_ALLOWLOWERCASE, "thin-center")
-		v.drawString(160, 100 + 8, respawntics2 .. " seconds", V_50TRANS|V_ALLOWLOWERCASE, "thin-center")
+		v.drawString(160, 100 + 8, respawnstring .. " seconds", V_50TRANS|V_ALLOWLOWERCASE, "thin-center")
 
 		local next_ztype = ZE2.ZombieConfig[player.ze2.next_zombie_type] and ZE2.ZombieConfig[player.ze2.next_zombie_type].name or player.ze2.next_zombie_type
 		local ztype = ZE2.ZombieConfig[player.ze2.zombie_type] and ZE2.ZombieConfig[player.ze2.zombie_type].name or player.ze2.zombie_type
