@@ -198,7 +198,7 @@ function xSlinger.ShouldDamage(mo, inf, src, dmg, damagetype)
 	end
 
 	if mobjinfo[mo.type].npc_name then
-		if (not mo.target) and (inf or src.player) then --enemies wake up if you hit them from behind
+		if (not mo.target) and (inf or (src and src.player)) then --enemies wake up if you hit them from behind
 			mo.target = src
 			
 			if mo.info.seestate then
