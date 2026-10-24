@@ -43,6 +43,13 @@ addCvar("newairphys", {
 	flags = CV_NETVAR,
 })
 
+addCvar("damageindicator_position", {
+	name = "z_damageindicator_position",
+	defaultvalue = "Right",
+	PossibleValue = {["Top"] = 0, ["Left"] = 1, ["Right"] = 2},
+	flags = 0,
+})
+
 addCvar("debug", {
 	name = "z_debug",
 	defaultvalue = "Off",
