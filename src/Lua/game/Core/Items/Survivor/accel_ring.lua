@@ -60,6 +60,7 @@ xSlinger.registerItem("accel_ring", {
 	reload_time = 3*TICRATE;
 	
 	color = SKINCOLOR_AQUA;
+	ignorecolor = false;
 	
 	dropstate = S_ZE2_THROWNACCEL2;
 	
@@ -103,6 +104,7 @@ xSlinger.registerItem("accel_ring", {
 					allow_aim = true,
 					iteminfo = self,
 				})
+				shot.color = SKINCOLOR_AQUA
 				
 				if shot and shot.valid then
 					shot.scale = FRACUNIT * 4/5
