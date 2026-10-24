@@ -101,7 +101,7 @@ addHook("MobjThinker", function(mobj)
 			mobj.momz = 0
 		else
 			S_StartSoundAtVolume(mobj, sfx_tink, mobj.landvolume or 200)
-			mobj.landvolume = min(mobj.landvolume + 30, 200)
+			mobj.landvolume = min(((mobj.landvolume or 200) + 30), 200)
 		end
 	end
 	mobj.lastmomz = mobj.momz
@@ -110,6 +110,7 @@ addHook("MobjThinker", function(mobj)
 		local offset = (leveltime + FixedInt(FixedHypot(mobj.x, mobj.y))) * (ANG10 / 2)
 		mobj.spriteyoffset = (12 * FU) + FixedMul(4 * FU, cos(offset))
 		mobj.shadowscale = FU / 2
+		mobj.flags = $ | MF_NOGRAVITY
 		return
 	end
 
