@@ -59,7 +59,7 @@ xSlinger.registerItem("accel_ring", {
 	
 	reload_time = 3*TICRATE;
 	
-	color = SKINCOLOR_CHARTREUSE;
+	color = SKINCOLOR_AQUA;
 	
 	dropstate = S_ZE2_THROWNACCEL2;
 	
