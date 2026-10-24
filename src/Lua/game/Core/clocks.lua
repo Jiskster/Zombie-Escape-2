@@ -147,6 +147,11 @@ gamestatefuncs[ZE2.GS_PREGAME] = function()
 			if player.mo and player.mo.valid then
 				player.mo.team = 2
 			end
+
+			local special = ZE2.ZombieConfig[player.ze2.zombie_type].special
+			if special and special.button then
+				player.ze2.special_cooldown = special.cooldown
+			end
 		end
 	end
 
