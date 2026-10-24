@@ -10,7 +10,7 @@ mobjinfo[MT_CRRUBY] = {
 	spawnstate = S_CRRUBY,
 	spawnhealth = 1000,
 	deathstate = S_SPRK1,
-	radius = 25 * FU,
+	radius = 32 * FU,
 	height = 45 * FU,
 	flags = MF_SLIDEME|MF_SPECIAL,
 }
@@ -27,6 +27,7 @@ states[S_CRRUBY] = {
 
 addHook("MapThingSpawn", function(mobj, thing)
 	mobj.rubymap = true
+	mobj.z = $ + (18*FU)*P_MobjFlip(mobj)
 end, MT_CRRUBY)
 
 addHook("PlayerThink", function(player)
@@ -107,9 +108,11 @@ addHook("MobjThinker", function(mobj)
 	mobj.lastmomz = mobj.momz
 
 	if mobj.rubymap then
-		local offset = (leveltime + FixedInt(FixedHypot(mobj.x, mobj.y))) * (ANG10 / 2)
-		mobj.spriteyoffset = (12 * FU) + FixedMul(4 * FU, cos(offset))
+		local offset = ((leveltime) * (ANG10 / 2)) + FixedAngle(FixedHypot(mobj.x, mobj.y))*15
+		mobj.spriteyoffset = FixedMul(4 * FU, cos(offset))
 		mobj.shadowscale = FU / 2
+		mobj.spritexscale = (FU*3)/2
+		mobj.spriteyscale = (FU*3)/2
 		mobj.flags = $ | MF_NOGRAVITY
 		return
 	end
