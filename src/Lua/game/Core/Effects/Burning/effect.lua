@@ -47,7 +47,7 @@ xSlinger.registerEffect("burning", {
 					damage = 2
 				end
 
-				P_DamageMobj(mobj, nil, mobj.flameringtarget, damage)
+				P_DamageMobj(mobj, nil, mobj.flameringtarget, damage, DMG_FIRE)
 				if not mobj or not mobj.valid then return end
 
 				S_StartSoundAtVolume(nil, sfx_s248, 127, mobj.player)
