@@ -104,7 +104,7 @@ xSlinger.registerItem("accel_ring", {
 					allow_aim = true,
 					iteminfo = self,
 				})
-				shot.color = SKINCOLOR_AQUA
+				shot.color = self.color
 				
 				if shot and shot.valid then
 					shot.scale = FRACUNIT * 4/5
