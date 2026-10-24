@@ -104,9 +104,9 @@ xSlinger.registerItem("accel_ring", {
 					allow_aim = true,
 					iteminfo = self,
 				})
-				shot.color = self.color
 				
 				if shot and shot.valid then
+					shot.color = self.color
 					shot.scale = FRACUNIT * 4/5
 					shot.momx = $ * (2+i)/2
 					shot.momy = $ * (2+i)/2
