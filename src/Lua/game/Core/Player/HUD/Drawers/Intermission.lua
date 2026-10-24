@@ -107,7 +107,7 @@ return "Intermission", function(v, player)
 		v.drawString(160, 45, top_text, V_ALLOWLOWERCASE, "thin-center")
 
 		if vote.time_left > 0 then
-			local timer_text = G_TicsToSeconds(vote.time_left).."."..G_TicsToCentiseconds(vote.time_left).."s"
+			local timer_text = string.format("%d.%.2ds", G_TicsToSeconds(vote.time_left), G_TicsToCentiseconds(vote.time_left))
 			v.drawString(160, 20, timer_text, V_ALLOWLOWERCASE|V_50TRANS, "thin-center")
 		end
 
