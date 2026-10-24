@@ -183,7 +183,7 @@ return "CharacterSelect", function(v, player)
 	local realskindata = skins[skinlist[realnum]]
 	local sconfig = ZE2.SurvivorConfig[realskindata.name]
 	local sx = 80
-	drawString((BASEVIDWIDTH / 2) - 16, (BASEVIDHEIGHT - sx) + yoffset, ZE2.weightToHealth(sconfig.weight) .. " HP", V_SNAPTOBOTTOM|V_ALLOWLOWERCASE, "small-center")
+	drawString((BASEVIDWIDTH / 2) - 16, (BASEVIDHEIGHT - sx) + yoffset, sconfig.health .. " HP", V_SNAPTOBOTTOM|V_ALLOWLOWERCASE, "small-center")
 	drawString((BASEVIDWIDTH / 2) + 16, (BASEVIDHEIGHT - sx) + yoffset, SPEED_NAMES[sconfig.weight], V_SNAPTOBOTTOM|V_ALLOWLOWERCASE, "small-center")
 
 	sx = sx - 12
