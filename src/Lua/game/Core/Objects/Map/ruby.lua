@@ -108,7 +108,7 @@ addHook("MobjThinker", function(mobj)
 	mobj.lastmomz = mobj.momz
 
 	if mobj.rubymap then
-		local offset = ((leveltime) * (ANG10 / 2)) + FixedAngle(FixedHypot(mobj.x, mobj.y))*15
+		local offset = (leveltime + FixedInt(R_PointToDist2(0,0, mobj.x/2, mobj.y/2))) * (ANG10 / 2)
 		mobj.spriteyoffset = FixedMul(4 * FU, cos(offset))
 		mobj.shadowscale = FU / 2
 		mobj.spritexscale = (FU*3)/2
