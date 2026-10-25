@@ -145,8 +145,10 @@ addHook("PlayerThink", function(p)
 end)
 
 customhud.SetupItem("blood_bombfade", "zombie_tweaks", function(v)
-	if consoleplayer.mo and consoleplayer.mo.bloodbomb_blindtime then
-		local mo = consoleplayer.mo
-		v.fadeScreen(42, min(10, 12 * mo.bloodbomb_blindtime / blind_time))
-	end
+	if not consoleplayer or not consoleplayer.valid then return end
+	if not consoleplayer.mo or not consoleplayer.mo.valid then return end
+	if not consoleplayer.mo.bloodbomb_blindtime then return end
+
+	local mo = consoleplayer.mo
+	v.fadeScreen(42, min(10, 12 * mo.bloodbomb_blindtime / blind_time))
 end, "gameandscores") -- Love you customhud lib for allowing game and scores drawing at the same time.
