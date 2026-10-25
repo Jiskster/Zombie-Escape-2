@@ -56,7 +56,7 @@ SetupHud "Info"
 SetupHud "PlayerHUD"
 SetupHud "RespawnTimer"
 SetupHud "Intermission"
-SetupHud "Tabscores"
+SetupHud "Scoreboard"
 SetupHud "Tooltips"
 SetupHud "Checkpoint"
 

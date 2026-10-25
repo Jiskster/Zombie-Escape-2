@@ -12,23 +12,33 @@ local function RenderPlayerStats(v, ypos, player, team, spectator)
 	local textcolor = 0
 
 	local karmadisplay = player.ze2.karma
-	local karmacolor = "\x87"
-	if (player.ze2.karma <= (ZE2.MaxKarma / 2)) then
-		karmacolor = "\x82"
-	elseif (player.ze2.karma <= (ZE2.MaxKarma / 4)) then
+	local karmaactual = max(player.ze2.karma - ZE2.MinKarma, 0)
+	local karmamax = ZE2.MaxKarma - ZE2.MinKarma
+	local karmacolor = "\x85"
+	if (karmaactual <= (karmamax / 4)) then
 		karmacolor = "\x83"
+	elseif (karmaactual <= (karmamax / 2)) then
+		karmacolor = "\x82"
 	end
 
 	DrawString(BASEVIDWIDTH - (2 + 120), ypos, karmacolor .. karmadisplay, V_ALLOWLOWERCASE|textcolor, "small-right")
 	if not spectator then
 		local healthcolor = "\x83"
-		if (player.mo.maxhealth ~= nil) and (player.mo.health < (player.mo.maxhealth / 2)) then
-			healthcolor = "\x87"
+		if (player.mo.maxhealth ~= nil) then
+			if (player.mo.health < (player.mo.maxhealth / 2)) then
+				healthcolor = "\x82"
+			elseif (player.mo.health < (player.mo.maxhealth / 4)) then
+				healthcolor = "\x85"
+			end
 		end
 
 		local healthtext = healthcolor .. player.mo.health
 		if player.mo.shield_health then
 			healthtext = healthtext .. "\x80" .. "+" .. "\x88" .. player.mo.shield_health
+		end
+
+		if (player.mo.health <= 0) or (player.playerstate == PST_DEAD) then
+			healthtext = "\x85" .. "Dead"
 		end
 		DrawString(BASEVIDWIDTH - (2 + 90), ypos, healthtext, V_ALLOWLOWERCASE|textcolor, "small-right")
 
@@ -229,7 +239,7 @@ local function GetTeams()
 end
 
 ---@param v videolib
-return "Tabscores", function(v)
+return "Scoreboard", function(v)
 	local game = ZE2.Game
 	local time = G_TicsToMTIME(game.state_tics)
 
