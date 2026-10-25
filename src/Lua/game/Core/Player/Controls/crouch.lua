@@ -17,6 +17,14 @@ local function FitGapHook(player)
 	return (player.ze2.crouching == true)
 end
 
+local function HeightHook(player)
+	if player.ze2.crouching then
+		return ZE2.PlayerSpinHeight
+	else
+		return ZE2.PlayerHeight
+	end
+end
+
 local function clamp(v, mx, mn)
 	return max(min(v,mn), mx)
 end
@@ -141,3 +149,4 @@ addHook("ThinkFrame", function()
 end)
 
 addHook("PlayerCanEnterSpinGaps", FitGapHook)
+addHook("PlayerHeight", HeightHook)
