@@ -36,7 +36,7 @@ COM_AddCommand("z_listkarma", function(player)
 	end
 end, COM_LOCAL)
 
-COM_AddCommand("drophand", function(player)
+function xSlinger.COM_DropHand(player)
 	local game = ZE2.Game
 	local settings = ZE2.getGametypeSettings()
 	local xS = player.xSlinger
@@ -55,4 +55,4 @@ COM_AddCommand("drophand", function(player)
 		i_obj.interaction.team_restrict = {enabled = true}
 		i_obj.interaction.team_restrict[mo.team] = true
 	end
-end)
+end
