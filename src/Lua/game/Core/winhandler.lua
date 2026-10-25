@@ -22,11 +22,11 @@ function ZE2:StartWin(team, fromring)
 
 		local ze2 = player.ze2
 		if (player.mo.team ~= team) then
-			ze2.karma = min(ze2.karma + 150, ZE2.MaxKarma)
+			ze2:ChangeKarma(150)
 			P_KillMobj(player.mo)
 			continue
 		else
-			ze2.karma = max(1, $ - 75)
+			ze2:ChangeKarma(-75)
 		end
 
 		ZE2:GivePlayerCash(player, cash_award)

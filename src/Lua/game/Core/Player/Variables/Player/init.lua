@@ -8,6 +8,7 @@ local ze2_funcs_path = "game/Core/Player/Variables/Player/Functions/"
 local ze2_funcs = {
 	["DamageFade"] = ZE2.Require(ze2_funcs_path + "DamageFade");
 	["ChangeStamina"] = ZE2.Require(ze2_funcs_path + "ChangeStamina");
+	["ChangeKarma"] = ZE2.Require(ze2_funcs_path + "ChangeKarma");
 }
 
 local ze2_mt = { -- Metatable for the player_t.ze2 table.

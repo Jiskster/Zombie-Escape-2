@@ -44,8 +44,8 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 				player.ze2.checkpoint_number_next = killer.player.ze2.checkpoint_number_next
 				player.ze2.checkpoint_timer = killer.player.ze2.checkpoint_timer
 
-				player.ze2.karma = min(player.ze2.karma + (ZE2.CountPlayers("survivors") * 28), ZE2.MaxKarma)
-				killer.player.ze2.karma = max(1, killer.player.ze2.karma - 75)
+				player.ze2:ChangeKarma(ZE2.CountPlayers("survivors") * 28)
+				killer.player.ze2:ChangeKarma(-75)
 
 				xSlinger.RemoveShieldFromMobj(mo)
 
@@ -64,7 +64,7 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 						A_RubyDrop(mo, killaward)
 					end
 
-					killer.player.ze2.karma = max(1, killer.player.ze2.karma - 120)
+					killer.player.ze2:ChangeKarma(-120)
 				end
 			end
 
@@ -102,7 +102,7 @@ xSlinger.addHook("OnPlayerDamage", function(player, inf, src, dmg, damagetype)
 
 	if (player.mo.team == 1) then
 		if attacker and attacker.player and (attacker.team == 2) then
-			pV.karma = min(pV.karma + 40, ZE2.MaxKarma)
+			pV:ChangeKarma(40)
 			pV:ChangeStamina(-40 * FRACUNIT)
 		end
 		pV:DamageFade(15)

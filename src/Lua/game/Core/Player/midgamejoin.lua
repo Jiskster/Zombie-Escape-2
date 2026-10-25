@@ -150,9 +150,9 @@ addHook("TeamSwitch", function(player, team, fromspectators, autobalance, scramb
 		if game.active and not game.ended then
 			if player.mo and player.mo.valid then
 				if player.mo.team == 1 then
-					player.ze2.karma = min($ + 450, ZE2.MaxKarma)
+					player.ze2:ChangeKarma(450)
 				elseif player.mo.team == 2 then
-					player.ze2.karma = min($ + 620, ZE2.MaxKarma)
+					player.ze2:ChangeKarma(620)
 				end
 			end
 		end

@@ -138,7 +138,7 @@ gamestatefuncs[ZE2.GS_PREGAME] = function()
 			ZE2.RefundPlayer(player)
 			ZE2.dropSurvivorInventory(player)
 
-			player.ze2.karma = max(1, $ - 100)
+			player.ze2:ChangeKarma(-100)
 
 			if ZE2.cv_choosenotice.value then
 				print(string.format("%s%s%s has risen from the dead!", "\x85", player.name, "\x83"))
