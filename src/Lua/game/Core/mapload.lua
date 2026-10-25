@@ -13,6 +13,8 @@ local function MapLoad(map)
 	if map then
 		-- reset everyone
 		for player in players.iterate do
+			local xS = player.xSlinger
+			
 			if player.mo and player.mo.valid then
 				player.mo.team = 1
 			end
@@ -21,6 +23,7 @@ local function MapLoad(map)
 			
 			player.ze2.selected_character = nil
 			ZE2.ResetPlayer(player, 1, true, true)
+			xS:inv_clear("survivor")
 			
 			local pvote = player.ze2.vote
 			
