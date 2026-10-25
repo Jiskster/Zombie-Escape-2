@@ -325,6 +325,9 @@ SkyNum = 20
 Weather = PRECIP_RAIN
 NoZone = True
 Lua.ze2_laddertag = 300
+SkyboxScaleX = -4
+SkyboxScaleY = -4
+SkyboxScaleZ = 0.9
 SelectHeading = Plague Maps
 
 Level 58
