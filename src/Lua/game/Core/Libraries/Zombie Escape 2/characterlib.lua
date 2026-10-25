@@ -83,6 +83,10 @@ function ZE2.ResetPlayer(player, set_team, resetinventory, noitems)
 	local cc = ZE2.SurvivorConfig
 	local zc = ZE2.ZombieConfig
 
+	if resetinventory then
+		xS:inv_clear("survivor")
+	end
+
 	local mo = player.mo
 
 	if not (mo and mo.valid) then
