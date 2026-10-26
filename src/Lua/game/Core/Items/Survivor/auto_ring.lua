@@ -82,6 +82,18 @@ xSlinger.registerItem("auto_ring", {
 			iteminfo = self,
 		})
 	end,
+	
+	missile_tick = function(self, mo, missile)
+		local ghost = P_SpawnGhostMobj(missile)
+		ghost.tics = 3
+		
+		ghost.momx = missile.momx/2
+		ghost.momy = missile.momy/2
+		ghost.momz = missile.momz/2
+		ghost.blendmode = AST_ADD
+		
+		P_SetOrigin(ghost, missile.x, missile.y, missile.z)
+	end,
 
 	skin_override = {
 		["knuckles"] = {
