@@ -42,7 +42,14 @@ addHook("MapThingSpawn", function(mobj, mapthing)
 	
 	if P_RandomChance(FU/2) then
 		local item_id = ZE2.RandomItemPool[P_RandomRange(1,#ZE2.RandomItemPool)]
-		xSlinger.SpawnItemDrop(mobj, item_id, true)
+		local drop = xSlinger.SpawnItemDrop(mobj, item_id, true)
+		local iteminfo = drop.iteminfo
+		local count = iteminfo:get("count")
+		local maxcount = iteminfo:get("maxcount")
+		if (count ~= -1) and (maxcount ~= -1) then
+			local newcount = P_RandomRange(1, maxcount)
+			iteminfo:set("count", newcount)
+		end
 	end
 end, MT_ZE2_RANDOMITEM_SPAWN)
 
