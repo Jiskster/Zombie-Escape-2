@@ -49,15 +49,22 @@ local zombiesfxinfo = {
     flags = SF_X4AWAYSOUND|SF_X8AWAYSOUND|SF_NOMULTIPLESOUND
 }
 
-freeslot("sfx_inf1", "sfx_inf2", "sfx_inf3", "sfx_inf4", "sfx_pipe")
+-- TODO: These freeslot names for infection and spawning are problematic... Change them...
+freeslot("sfx_inf1", "sfx_inf2", "sfx_inf3", "sfx_inf4", "sfx_inf5", "sfx_pipe")
+-- Spawning
 sfxinfo[sfx_inf1] = zombiesfxinfo
 sfxinfo[sfx_inf1].caption="\"The zombies will be back\""
 sfxinfo[sfx_inf2] = zombiesfxinfo
 sfxinfo[sfx_inf2].caption="\"We've been enslaved\""
+sfxinfo[sfx_inf5] = zombiesfxinfo
+sfxinfo[sfx_inf5].caption="\"The zombies will return\"" -- IDE text color acting up here
+
+-- Infection
 sfxinfo[sfx_inf3] = zombiesfxinfo
-sfxinfo[sfx_inf2].caption = "Infection"
+sfxinfo[sfx_inf3].caption = "Infection"
 sfxinfo[sfx_inf4] = zombiesfxinfo
 sfxinfo[sfx_inf4].caption = "Infection"
+
 sfxinfo[sfx_pipe].caption = "Metal pipe"
 
 freeslot("sfx_zdi1","sfx_zdi2")

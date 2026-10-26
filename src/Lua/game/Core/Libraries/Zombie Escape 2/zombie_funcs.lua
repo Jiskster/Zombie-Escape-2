@@ -19,7 +19,7 @@ function ZE2.PlayZombieSound(player, being_infected)
 	local infection_sounds
 
 	if not being_infected then
-		infection_sounds = {sfx_inf1, sfx_inf2}
+		infection_sounds = {sfx_inf1, sfx_inf2, sfx_inf5}
 	else
 		infection_sounds = {sfx_inf3, sfx_inf4}
 	end
