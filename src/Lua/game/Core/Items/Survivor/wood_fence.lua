@@ -103,7 +103,7 @@ addHook("MobjMoveCollide", function(check, mobj)
 end, MT_PROPCHECK)
 
 ---@param mobj mobj_t
-local function FenceCheck(mobj)
+local function FenceCheck(self, mobj)
 	if not P_IsObjectOnGround(mobj) then return false end
 
 	local distance = 128 * FU
@@ -112,8 +112,8 @@ local function FenceCheck(mobj)
 	local z = mobj.z
 	local check = P_SpawnMobj(x, y, z, MT_PROPCHECK)
 	check.target = mobj
-	check.height = mobjinfo[MT_PROPWOOD].height
-	check.radius = mobjinfo[MT_PROPWOOD].radius
+	check.height = mobjinfo[self.placetype].height
+	check.radius = mobjinfo[self.placetype].radius
 	check.scale = FU
 	check.flags2 = MF2_DONTDRAW
 	check.alpha = 0
@@ -140,9 +140,9 @@ local function FenceVisual(self, mobj)
 		mobj.visual_fence = visual
 	end
 
-	local valid = FenceCheck(mobj)
-	visual.height = mobjinfo[MT_PROPWOOD].height
-	visual.radius = mobjinfo[MT_PROPWOOD].radius
+	local valid = FenceCheck(self, mobj)
+	visual.height = mobjinfo[self.placetype].height
+	visual.radius = mobjinfo[self.placetype].radius
 	visual.momx = mobj.momx
 	visual.momy = mobj.momy
 	visual.momz = mobj.momz
@@ -173,17 +173,17 @@ xSlinger.registerItem("wood_fence", {
 	count = 1;
 	maxcount = 10;
 	
-	placemobj = MT_PROPWOOD,
+	placetype = MT_PROPWOOD,
 
 	color = SKINCOLOR_BROWN;
 	holdfunc = FenceVisual;
 
 	usefunc = function(self, mo)
-		if not FenceCheck(mo) then return true end
+		if not FenceCheck(self, mo) then return true end
 
 		local wood = P_SpawnMobj(mo.x+FixedMul(128*FRACUNIT, cos(mo.angle)),
 					             mo.y+FixedMul(128*FRACUNIT, sin(mo.angle)),
-								 mo.z, self.placemobj)
+								 mo.z, self.placetype)
 		wood.angle = mo.angle+ANGLE_90
 		S_StartSound(mo, sfx_jshard)
 		wood.renderflags = $|RF_PAPERSPRITE
