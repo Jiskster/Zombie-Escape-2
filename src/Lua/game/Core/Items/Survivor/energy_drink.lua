@@ -45,7 +45,7 @@ xSlinger.registerItem("energy_drink", {
 	};
 
 	count = 1;
-	maxcount = 4;
+	maxcount = 2;
 
 	usefunc = function(self, mobj)
 		xSlinger.give_effect(mobj, "energy_drink", {
