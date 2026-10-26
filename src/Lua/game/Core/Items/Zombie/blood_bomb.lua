@@ -18,6 +18,8 @@ sfxinfo[sfx_bbmis] = {
 states[S_BLOODBOMB] = {SPR_DRAB, FF_FULLBRIGHT|D, -1, nil, 0, 0, S_BLOODBOMB}
 states[S_BLOODBOMB_DEATH] = {SPR_NULL, A, 1, function(mo) -- Explode within a radius setted by explode_radius local
 	local xpld_radius = FixedMul(mo.scale, explode_radius)
+	
+	ZE2.vfx_glowradius(mo, 32, 48, SKINCOLOR_ZOMBIE)
 
 	searchBlockmap("objects", function(refmo, foundmobj)
 		if not foundmobj.health then return end
