@@ -172,6 +172,8 @@ xSlinger.registerItem("wood_fence", {
 
 	count = 1;
 	maxcount = 10;
+	
+	placemobj = MT_PROPWOOD,
 
 	color = SKINCOLOR_BROWN;
 	holdfunc = FenceVisual;
@@ -181,7 +183,7 @@ xSlinger.registerItem("wood_fence", {
 
 		local wood = P_SpawnMobj(mo.x+FixedMul(128*FRACUNIT, cos(mo.angle)),
 					             mo.y+FixedMul(128*FRACUNIT, sin(mo.angle)),
-								 mo.z, MT_PROPWOOD)
+								 mo.z, self.placemobj)
 		wood.angle = mo.angle+ANGLE_90
 		S_StartSound(mo, sfx_jshard)
 		wood.renderflags = $|RF_PAPERSPRITE
