@@ -1,4 +1,4 @@
-local LASER_KNOCKBACK = FRACUNIT
+local LASER_KNOCKBACK = 12*FRACUNIT
 
 freeslot("MT_ZE2_AUTOTURRET", "S_ZE2_AUTOTURRET")
 
@@ -183,7 +183,7 @@ local function searchPlayers(turret)
 end
 
 local MAX_POWERUP = 3*TICRATE
-local MAX_FIRING = 5*TICRATE
+local MAX_FIRING = 3*TICRATE
 local POWERUP_SOUND = sfx_trpowr
 local POWERUP_VOLUME = 95
 
@@ -230,8 +230,6 @@ addHook("MobjThinker", function(turret)
 			S_StartSoundAtVolume(turret, POWERUP_SOUND, POWERUP_VOLUME)
 		end
 
-		turret.angle = angletotracer
-
 		if at.firing > 0 then
 			if (leveltime % 2) == 0 then
 				local shot = xSlinger.SpawnMissile({
@@ -244,6 +242,8 @@ addHook("MobjThinker", function(turret)
 				})
 
 				S_StartSound(turret, sfx_trfire)
+				
+				turret.angle = angletotracer + P_RandomRange(-6, 6)*ANG1
 			end
 		end
 	elseif not at.powerup then
