@@ -3,7 +3,7 @@ freeslot("S_ZE2_AMYS_HEART")
 
 mobjinfo[MT_ZE2_AMYS_HEART] = {
 	spawnstate = S_ZE2_AMYS_HEART,
-	spawnhealth = 600,
+	spawnhealth = 225,
 	painsound = sfx_dmpain,
 	deathsound = sfx_ncchip,
 	speed = 0,
@@ -45,7 +45,7 @@ xSlinger.registerItem("amys_heart", {
 		local heart = P_SpawnMobj(x, y, z, MT_ZE2_AMYS_HEART)
 		heart.target = mo
 		heart.team = mo.team
-		heart.heart_cooldown = TICRATE
+		heart.heart_cooldown = 2*TICRATE
 	end;
 	
 	droppable = false;
@@ -124,8 +124,8 @@ addHook("MobjThinker", function(mobj)
 		
 		if (player.mo.team == 2) then
 			xSlinger.give_effect(player.mo, "amys_love", {
-				normalspeed_multiplier = (FU*3)/5,
-				out_damage_multiplier = (FU*3)/4,
+				normalspeed_multiplier = (FU*4)/5,
+				out_damage_multiplier = FU/3,
 			}, 7, true)
 		end
 	end
