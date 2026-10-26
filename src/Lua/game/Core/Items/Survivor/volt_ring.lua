@@ -5,14 +5,16 @@ local missile_fall = -3 * FU
 freeslot("MT_ARAZ", "S_ARAZ", "SPR_ARAZ")
 freeslot("S_ZE2_VOLTRING", "S_ZE2_VOLTRING_DEATH", "SPR_RNGV")
 
-local function spawnLine(mobj, angle, dist)
+local function spawnLine(mobj, angle, dist, color)
 	local t = P_SpawnMobjFromMobj(mobj, cos(angle)*dist, sin(angle)*dist, 0, MT_ARAZ)
 	t.angle = angle + ANGLE_90
 	t.momx = cos(angle)*48
 	t.momy = sin(angle)*48
 	
 	t.blendmode = AST_ADD
-	t.color = SKINCOLOR_BLUE
+	t.color = color or 0
+	
+	return t
 end
 
 local function giveElectricEffect(mobj)
@@ -22,6 +24,14 @@ local function giveElectricEffect(mobj)
 		actionspd_multiplier = FU/2,
 		out_damage_multiplier = 2*FU,
 	}, 4*TICRATE, true)
+end
+
+function ZE2.vfx_glowradius(mo, linecount, dist, color)
+	for i=1,linecount do
+		local a = mo.angle + FixedAngle(FixedDiv(360, linecount)*i)
+		
+		spawnLine(mo, a, 32, color)
+	end
 end
 
 mobjinfo[MT_ARAZ] = {
@@ -49,12 +59,7 @@ states[S_ZE2_VOLTRING_DEATH] = {
 	sprite = SPR_NULL,
 	tics = 10,
 	action = function(mo)
-		local linecount = 32
-		for i=1,linecount do
-			local a = mo.angle + FixedAngle(FixedDiv(360, linecount)*i)
-			
-			spawnLine(mo, a, 32)
-		end
+		ZE2.vfx_glowradius(mo, 32, 32, SKINCOLOR_BLUE)
 		
 		local xpld_radius = FixedMul(mo.scale, explode_radius)
 		searchBlockmap("objects", function(refmo, foundmobj)
