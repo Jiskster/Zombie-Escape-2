@@ -171,5 +171,7 @@ folder = "Deep Cavern";
 
 dofolder("Timers");
 dofolder("Teleport");
+dofolder("SurvTeleport");
+dofolder("ZombTeleport");
 
 folder = "The Docks"; dofolder("Objects");

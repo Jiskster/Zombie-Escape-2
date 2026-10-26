@@ -8,7 +8,7 @@ ZE2:AddTimer("DEEP_CAVERN_1", {
 
 ZE2:AddTimer("DEEP_CAVERN_2", {
 	text = "Break Through The Temple",
-	time = 20*TICRATE,
+	time = 15*TICRATE,
 	on_end_tag = 92,
 	textcolor = SKINCOLOR_EMERALD,
 	lua_linedef_exec = "DEEPCAVEN2",
@@ -16,7 +16,7 @@ ZE2:AddTimer("DEEP_CAVERN_2", {
 
 ZE2:AddTimer("DEEP_CAVERN_3", {
 	text = "Clear Debris",
-	time = 40*TICRATE,
+	time = 35*TICRATE,
 	on_end_tag = 112,
 	textcolor = SKINCOLOR_AQUA,
 	lua_linedef_exec = "DEEPCAVEN3",
