@@ -55,7 +55,10 @@ gamestatefuncs[ZE2.GS_PREGAME] = function()
 	amountchoosing = FixedCeil($)/FU -- simpler than ze1's rng for sure.
 
 	for player in players.iterate do
-		if player.spectator then continue end
+		if player.spectator then
+			player.ze2.was_zombie = false
+			continue 
+		end
 
 		local karma = player.ze2.karma
 		if player.ze2.was_zombie then
