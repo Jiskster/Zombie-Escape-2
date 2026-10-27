@@ -57,10 +57,16 @@ gamestatefuncs[ZE2.GS_PREGAME] = function()
 	for player in players.iterate do
 		if player.spectator then continue end
 
+		local karma = player.ze2.karma
+		if player.ze2.was_zombie then
+			player.ze2.was_zombie = false
+			karma = 1 -- lets pretend karma is 1, so you aren't zombie twice 99% of the time
+		end
+		
 		-- Put player in zombie picking list.
 		table.insert(pickingtable, {
 			player = player;
-			weight = player.ze2.karma;
+			weight = karma;
 		})
 		
 		-- Code to assign a character slot to players that have not selected a chracter yet.
@@ -133,6 +139,7 @@ gamestatefuncs[ZE2.GS_PREGAME] = function()
 				newztype = "alpha"
 			end
 
+			player.ze2.was_zombie = true
 			ZE2.ZombifyPlayer(player, newztype)
 			ZE2.PlayZombieSound(player, true)
 			ZE2.RefundPlayer(player)
