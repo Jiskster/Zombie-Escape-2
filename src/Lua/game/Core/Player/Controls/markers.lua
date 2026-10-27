@@ -37,7 +37,7 @@ local function Tick(self, source, target)
 				local player = source.player
 				if not player.spectator then
 					player.ze2.marker_x, player.ze2.marker_y, player.ze2.marker_z = target.x, target.y, target.z
-					player.ze2.marker_tics = 20 * TICRATE
+					player.ze2.marker_tics = 15 * TICRATE
 				end
 				P_KillMobj(target)
 				break
@@ -64,7 +64,7 @@ xSlinger.registerMissile("MARKER_CAST", {
 	tick = Tick
 })
 
-addHook("PlayerThink", function(player) ---@param player player_t
+local function PlayerThink(player)
 	if player.spectator then return end
 
 	local game = ZE2.Game
@@ -88,6 +88,15 @@ addHook("PlayerThink", function(player) ---@param player player_t
 			allow_aim = true,
 			flags2 = MF2_DONTDRAW,
 		})
+		
 		marker.flags = marker.flags | MF_NOCLIPTHING
+		player.lastbuttons = $|BT_ATTACK
+		player.cmd.buttons = $ & ~BT_ATTACK
+	end
+end
+
+addHook("PreThinkFrame", function() ---@param player player_t
+	for player in players.iterate do
+		PlayerThink(player)
 	end
 end)

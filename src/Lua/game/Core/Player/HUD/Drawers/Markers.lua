@@ -16,8 +16,13 @@ return "Markers", function(v, player)
 
 		if not result or not result.onscreen then continue end
 
-        local patch = v.cachePatch("Z_PMARKER")
-        v.drawScaled(result.x, result.y, FU / 2, patch, 0, nil)
-        --v.drawString(result.x, result.y, "Marker!", V_ALLOWLOWERCASE, "fixed-center")
+        local patch = v.cachePatch("Z_POINTTEAMC")
+		local colormap = v.getColormap(nil, SKINCOLOR_WHITE)
+		local scale = FU/2
+		local xoffset = FixedMul(-(patch.width*FU/2), scale) 
+		local ystringoffset = FixedMul(-8*FU, scale)
+        --
+        v.drawString(result.x, result.y + ystringoffset, "Defend Here!", V_ALLOWLOWERCASE|V_50TRANS, "small-thin-fixed-center")
+		v.drawScaled(result.x + xoffset, result.y, scale, patch, V_50TRANS, colormap)
     end
 end
