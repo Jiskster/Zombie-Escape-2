@@ -53,6 +53,7 @@ SetupHud "DamageText"
 SetupHud "DamageFade"
 
 SetupHud "Info"
+SetupHud "Markers"
 SetupHud "PlayerHUD"
 SetupHud "RespawnTimer"
 SetupHud "Intermission"

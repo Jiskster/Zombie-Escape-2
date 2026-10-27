@@ -44,7 +44,6 @@ return {
 	checkpoint_number_next = 0,
 	checkpoint_timer = 0,
 
-	lower_hud_offset = 0,
 	special_cooldown = 0,
 
 	teamchat_enabled = false,
@@ -66,5 +65,10 @@ return {
 
 	recent_attackers = {},
 
-	fall_height = 0
+	fall_height = 0,
+
+	marker_tics = 0,
+	marker_x = 0,
+	marker_y = 0,
+	marker_z = 0
 }

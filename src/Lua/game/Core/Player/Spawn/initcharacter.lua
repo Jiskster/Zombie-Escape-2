@@ -1,8 +1,9 @@
 addHook("PlayerSpawn", function(player)
 	local game = ZE2.Game
 	
-	player.ze2.lower_hud_offset = 0
 	player.ze2.special_cooldown = 0
+	player.ze2.marker_tics = 0
+	player.ze2.marker_x, player.ze2.marker_y, player.ze2.marker_z = 0, 0, 0
 	
 	if not ZE2.isGametype() then 
 		if not multiplayer then

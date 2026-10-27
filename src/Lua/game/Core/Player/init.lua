@@ -27,6 +27,7 @@ dopath("Controls/jumpfatigue.lua")
 dopath("Controls/misc.lua")
 dopath("Controls/dropbutton.lua")
 dopath("Controls/zombiespecial.lua")
+dopath("Controls/markers.lua")
 
 dopath("Health/falldamage.lua")
 dopath("Health/messages.lua")
