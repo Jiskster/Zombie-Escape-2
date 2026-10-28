@@ -2,7 +2,8 @@
 ---@param player player_t
 return "Markers", function(v, player)
     if player.spectator then return end
-
+	if not (player.mo and player.mo.valid) then return end
+	
     for other in players.iterate do
         if other.spectator then continue end
 		if not (other.mo and other.mo.valid) then continue end
