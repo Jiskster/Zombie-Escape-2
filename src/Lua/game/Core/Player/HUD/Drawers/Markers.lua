@@ -5,6 +5,7 @@ return "Markers", function(v, player)
 
     for other in players.iterate do
         if other.spectator then continue end
+		if not (other.mo and other.mo.valid) then continue end
         if (other.mo.team ~= player.mo.team) then continue end
         if (other.ze2.marker_tics <= 0) then continue end
 

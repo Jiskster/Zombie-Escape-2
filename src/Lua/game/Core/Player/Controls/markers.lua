@@ -89,7 +89,10 @@ local function PlayerThink(player)
 			flags2 = MF2_DONTDRAW,
 		})
 		
-		marker.flags = marker.flags | MF_NOCLIPTHING
+		if marker and marker.valid then
+			marker.flags = marker.flags | MF_NOCLIPTHING
+		end
+		
 		player.lastbuttons = $|BT_ATTACK
 		player.cmd.buttons = $ & ~BT_ATTACK
 	end
