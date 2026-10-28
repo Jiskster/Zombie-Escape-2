@@ -168,7 +168,7 @@ xSlinger.registerItem("wood_fence", {
 	dropscale = 2*FU;
 	dropyoffset = 8*FU;
 
-	firerate = TICRATE*25;
+	firerate = TICRATE*10;
 
 	count = 1;
 	maxcount = 10;
@@ -192,7 +192,7 @@ xSlinger.registerItem("wood_fence", {
 	end;
 	skin_override = {
 		["tails"] = {
-			firerate = TICRATE*20,
+			firerate = TICRATE*5,
 			background_color = SKINCOLOR_ORANGE,
 		}
 	};
