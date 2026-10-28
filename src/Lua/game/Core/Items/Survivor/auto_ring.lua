@@ -50,7 +50,7 @@ xSlinger.registerItem("auto_ring", {
 	
 	velocity_precision = 2;
 
-	knockback = 5*FRACUNIT;
+	knockback = 9*FRACUNIT;
 
 	ammo = 50;
 
@@ -100,7 +100,7 @@ xSlinger.registerItem("auto_ring", {
 			maxammo = 100;
 			ammo = 100;
 
-			knockback = 7*FRACUNIT;
+			knockback = 11*FRACUNIT;
 			reload_time = TICRATE*3;
 		}
 	},
