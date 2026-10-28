@@ -146,7 +146,7 @@ local function FenceVisual(self, mobj)
 	visual.momx = mobj.momx
 	visual.momy = mobj.momy
 	visual.momz = mobj.momz
-	visual.sprite = SPR_WPRP
+	visual.sprite = self.visplacesprite or SPR_WPRP
 	visual.frame = 0|FF_ADD
 	visual.angle = mobj.angle + ANGLE_90
 	P_MoveOrigin(visual, x, y, z)

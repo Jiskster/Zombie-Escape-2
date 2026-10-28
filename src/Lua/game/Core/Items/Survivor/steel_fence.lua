@@ -1,8 +1,7 @@
-freeslot("MT_PROPSTEEL")
+freeslot("MT_PROPSTEEL", "S_STEELPROP", "SPR_SPRP")
 
 mobjinfo[MT_PROPSTEEL] = {
-    sprite = SPR_WPRP,
-	spawnstate = S_PROP1,
+	spawnstate = S_STEELPROP,
 	painstate = S_PROP1_PAIN,
 	painsound = sfx_dmpain,
 	deathstate = S_PROP1_BREAK,
@@ -12,6 +11,19 @@ mobjinfo[MT_PROPSTEEL] = {
 	radius = 140*FRACUNIT,
 	height = 138*FRACUNIT,
 	flags = MF_SHOOTABLE|MF_SOLID|MF_SPECIAL,
+}
+
+states[S_STEELPROP] = {
+	tics = 1,
+	sprite = SPR_SPRP,
+	frame = FF_FULLBRIGHT|FF_PAPERSPRITE,
+	nextstate = S_STEELPROP,
+	action = function(mo)
+		--Crush the fence if its getting crushed (duh)
+		if ((mo.ceilingz - mo.floorz) < mo.height) then
+			P_KillMobj(mo, nil, nil, DMG_CRUSHED)
+		end
+	end
 }
 
 mobjinfo[MT_PROPSTEEL].npc_name = "Steel Fence"
@@ -38,6 +50,7 @@ xSlinger.registerItem("steel_fence", {
 	placetype = MT_PROPSTEEL,
 	placehealth = 2250,
 	placedye = SKINCOLOR_BONE, -- remove when you have new sprites
+	visplacesprite = SPR_SPRP,
 
 	color = SKINCOLOR_BONE,
 	holdfunc = item_wood_fence.holdfunc,
