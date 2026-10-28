@@ -15,6 +15,7 @@ ZE2.RandomItemPool = {
 	"stone_ring",
 	"flame_ring",
 	"volt_ring",
+	"steel_fence",
 }
 
 
