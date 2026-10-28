@@ -73,20 +73,6 @@ NoZone = True
 NextLevel = J1
 Lua.ze2_timelimit = 6
 
-Level 05
-Levelname = Secret Lab
-Subtitle = Zombie Escape
-Subtitle = Through the SCP Lab
-Act = 0
-Music = SCP1
-TypeOfLevel = Escape
-NextLevel = 43
-SkyNum = 21
-NoZone = True
-SelectHeading = Escape Maps
-Lua.ze2_zombiereleasetime = 9
-Lua.ze2_timelimit = 6
-
 Level 08
 Levelname = Minecraft
 Subtitle = Watch for creepers!
@@ -254,26 +240,6 @@ NoZone = true
 SelectHeading = Escape Maps
 Lua.ze2_timelimit = 6
 
-Level 27
-Levelname = Azure Sanctuary
-Subtitle = Far underground, mostly flooded.
-Nozone = true
-Music = KIRWAT
-TypeOfLevel = Escape
-SkyNum = 101
-SelectHeading = Escape Maps
-Lua.ze2_timelimit = 6
-
-Level 28
-Levelname = Egg Fortress
-Subtitle = Deep in Eggman's Territory
-TypeOfLevel = Escape
-SelectHeading = Escape Maps
-Music = CEZ1
-Skynum = 10
-Weather = 1
-Lua.ze2_timelimit = 6
-
 Level 29
 Levelname = Deep Cavern
 Subtitle = So Retro that Never Existed
@@ -286,20 +252,6 @@ NoZone = True
 SelectHeading = Escape Maps
 Lua.ze2_timelimit = 6
 Lua.ze2_laddertag = 200
-
-Level 30
-Levelname = Stonewood Zero
-Subtitle = Back to the beginning...
-Act = 0
-Music = SWZEM
-TypeOfLevel = Escape
-NextLevel = J0
-SkyNum = 11
-Weather = 1
-NoZone = True
-SelectHeading = Escape Maps
-Lua.ze2_timelimit = 5
-Lua.ze2_laddertag = 1000
 
 ## PLAGUE MAPS ##
 
