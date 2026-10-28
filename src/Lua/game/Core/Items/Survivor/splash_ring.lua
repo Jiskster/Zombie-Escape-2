@@ -165,7 +165,7 @@ xSlinger.registerItem("splash_ring", {
 	
 	damage = 88,
 	
-	knockback = 92*FRACUNIT,
+	knockback = 125*FRACUNIT,
 	knockback_time = 3,
 	
 	hitfunc = function(self, src, mo, inf)
