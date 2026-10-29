@@ -138,7 +138,7 @@ local function DrawStaminaOrAbility(v, player, x, y, flags)
         local infinite_stamina = (#xSlinger.search_effect(mo, "energy_drink") > 0)
         local fillamount = FixedMul(FixedDiv(stamina, staminamax), filltotalfrac)
         if (team == 2) then
-            header = special.effect_name
+            header = special.effect_name or "Ability"
             fillamount = FixedMul(FixedDiv(ability, abilitymax), filltotalfrac)
         end
 
