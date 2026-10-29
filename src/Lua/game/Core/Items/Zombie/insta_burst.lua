@@ -125,8 +125,9 @@ xSlinger.registerItem("insta_burst", {
 		instaburst.ib_hitlist = {}
 	end,
 	hitfunc = function(self, src, mo, instaburst)
-		if not mo and not mo.valid then return end
-		
+		if not mo or not mo.valid then return end
+		if not mo.player or not mo.player.valid then return end -- only hit players
+
 		if instaburst.target and instaburst.target.valid
 		and instaburst.target.player and instaburst.target.player.valid then
 			increaseRage(instaburst.target.player, 15*TICRATE)
