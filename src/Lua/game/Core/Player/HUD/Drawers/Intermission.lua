@@ -36,7 +36,7 @@ return "Intermission", function(v, player)
 	local wtics = game.win_tics
 	local team_won = game.team_won
 
-	local shadow_colormap = v.getColormap(TC_RAINBOW, SKINCOLOR_BLACK, nil)
+	local shadow_colormap = v.getColormap(nil, nil, "AllBlack")
 	local team_patch = v.cachePatch("Z_SURVIVORS")
 	local win_patch = v.cachePatch("Z_WIN")
 	local lower_patch = v.cachePatch("Z_BANG_LOWER_BLUE")
