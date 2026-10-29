@@ -29,28 +29,32 @@ addHook("NetVars", function(net)
 end)
 
 --Pregame countdown to zero
+
+local function skip_pregame()
+    if gamestate != GS_LEVEL then return end
+    local game = ZE2.Game
+
+    if game.state == ZE2.GS_PREGAME then
+		game.state_tics = -1
+	end
+end
+
 AddDebug_CMD("nocd", function(p, arg)
-	local game = ZE2.Game
     local yes = (arg == "true" or arg == "yes" or arg == "1" or arg == "on")
     local no = (arg == "false" or arg == "no" or arg == "0" or arg == "off")
 
 	if yes then --if true, always skip the pregame on map load
 		ZE2.tools.nocd = true
-		if game.state == ZE2.GS_PREGAME then
-			game.state_tics = -1
-		end
+		skip_pregame()
 	elseif no then --if false, doesn't skip the pregame anymore
 		ZE2.tools.nocd = false
-	elseif game.state == ZE2.GS_PREGAME then --if no argument, skips the current pregame countdown
-		game.state_tics = -1
+	else -- If no argument, skips the current pregame countdown
+		skip_pregame()
 	end
 end)
 
 addHook("MapLoad", function() --directly skip pregame countdown on map load if zd_nocd is true
-	local game = ZE2.Game
-	if ZE2.tools.nocd and game.state == ZE2.GS_PREGAME then
-		game.state_tics = -1
-	end
+	if ZE2.tools.nocd then skip_pregame() end
 end)
 
 --Teleport to checkpoint
