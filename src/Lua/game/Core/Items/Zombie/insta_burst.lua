@@ -22,6 +22,14 @@ states[S_INSTABURST] = {
 	var2 = 1,
 }
 
+local function increaseRage(player, change)
+	player.ze2.special_cooldown = player.ze2.special_cooldown - change
+
+	if (player.ze2.special_cooldown < 0) then
+		player.ze2.special_cooldown = 0
+	end
+end
+
 addHook("MobjMoveCollide", function(instaburst, mobj)
 	if (mobj.valid and (mobj.flags & MF_SHOOTABLE) or mobj.player) and instaburst.ib_hitlist then
 		local range = instaburst.radius
@@ -52,6 +60,11 @@ addHook("MobjMoveCollide", function(instaburst, mobj)
 		or dist < range) and not alreadyhit then
 			xSlinger.ShouldDamage(mobj, instaburst, instaburst.target, instaburst.forcedamage)
 			table.insert(instaburst.ib_hitlist, mobj)
+
+			if instaburst.target and instaburst.target.valid
+			and instaburst.target.player and instaburst.target.player.valid then
+				increaseRage(instaburst.target.player, 15*TICRATE)
+			end
 		end
 	end
 end, MT_INSTABURST)
