@@ -116,6 +116,7 @@ addHook("PlayerThink", function(player)
 					local itemid = iteminfo:getIndex("id")
 					local itemcount = iteminfo:getIndex("count")
 					local itemmaxcount = iteminfo:getIndex("maxcount")
+					local itemfirerateleft = i_obj.target.firerate_left or 0
 
 					-- If ammo based item, then dont give item count
 					if itemcount == -1 then
@@ -139,6 +140,7 @@ addHook("PlayerThink", function(player)
 
 					if full then
 						xS:give_item(iteminfo, itemcount, xS.slot)
+						xS:slot_get(xS.slot):setIndex("firerate_left", itemfirerateleft, player.mo.skin)
 					else
 						xS:give_item(iteminfo, itemcount)
 					end
