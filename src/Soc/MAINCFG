@@ -255,6 +255,18 @@ Lua.ze2_laddertag = 200
 
 ## PLAGUE MAPS ##
 
+Level 51
+Levelname = Mellow Flower
+Subtitle = Meadow Match Ripoff frfr
+Act = 0
+Music = MP_RAI
+TypeOfLevel = Plague
+NextLevel = 60
+SkyNum = 20
+Weather = 1
+NoZone = True
+SelectHeading = Plague Maps
+
 Level 55
 Levelname = Summer Forest
 Act = 0
@@ -304,14 +316,13 @@ SkyNum = 99
 NoZone = True
 SelectHeading = Plague Maps
 
-Level 51
-Levelname = Mellow Flower
-Subtitle = Meadow Match Ripoff frfr
+Level 61
+Levelname = Green Blade
 Act = 0
-Music = MP_RAI
+Music = GFZALT
+Subtitle = Survive the tunnels.
 TypeOfLevel = Plague
-NextLevel = 60
-SkyNum = 20
-Weather = 1
-NoZone = True
+SkyNum = 1
 SelectHeading = Plague Maps
+NoZone = True
+NextLevel = 61

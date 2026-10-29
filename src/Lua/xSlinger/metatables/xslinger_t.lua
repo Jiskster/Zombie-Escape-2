@@ -230,7 +230,10 @@ local funcs = {
 					itemdrop = xSlinger.SpawnItemDrop(mo, newstack)
 				else
 					if inv[slotnum].id ~= "" then -- not empty
+						local firerate_left = inv[slotnum]:get("firerate_left", mo.skin)
 						itemdrop = xSlinger.SpawnItemDrop(mo, inv[slotnum])
+						itemdrop.firerate_left = firerate_left
+						xS.reload = 0
 					end
 					
 					inv[slotnum] = newstack
