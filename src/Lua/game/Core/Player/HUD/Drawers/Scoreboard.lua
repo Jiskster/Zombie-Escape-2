@@ -25,10 +25,10 @@ local function RenderPlayerStats(v, ypos, player, team, spectator)
 	if not spectator then
 		local healthcolor = "\x83"
 		if (player.mo.maxhealth ~= nil) then
-			if (player.mo.health < (player.mo.maxhealth / 2)) then
-				healthcolor = "\x82"
-			elseif (player.mo.health < (player.mo.maxhealth / 4)) then
+			if (player.mo.health < (player.mo.maxhealth / 4)) then
 				healthcolor = "\x85"
+			elseif (player.mo.health < (player.mo.maxhealth / 2)) then
+				healthcolor = "\x82"
 			end
 		end
 
