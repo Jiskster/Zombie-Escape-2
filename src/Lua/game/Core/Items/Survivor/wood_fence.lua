@@ -192,6 +192,7 @@ xSlinger.registerItem("wood_fence", {
 		wood.target = mo
 		wood.health = self.placehealth or 10
 		wood.maxhealth = wood.health
+		wood.isfence = true
 		
 		if self.placedye ~= nil then
 			wood.colorized = true
