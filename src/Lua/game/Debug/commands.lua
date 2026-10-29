@@ -148,6 +148,36 @@ AddDebug_CMD("skin", function(p, surv_skin)
 	ZE2.resetPlayerHealth(p, skin)
 end)
 
+-- Resets any Reload/Firerate/Special cooldown the player is carrying on.
+AddDebug_CMD("resetcooldowns", function(p)
+    if not p.ze2 then return end
+    if not (p.valid and p.mo and p.mo.valid and p.mo.health) then return end
+
+    local mo = p.mo
+    local xS = p.xSlinger or mo.xSlinger
+    if not xS then return end -- Just in case...
+
+    xS.reload = 1 -- Set reload to 1 so we give margin to xSlinger to reload the item completely.
+
+    -- Reset firerate on every item in the inventory
+    local inv = xS:inv_get()
+    if not inv then return end
+
+    for i = 1, inv.size do
+        local item = inv[i]
+        if item and item.id != "" then
+            item:setIndex("firerate_left", 0)
+            item:setIndex("semi_firerate_left", 0)
+        end
+    end
+
+    -- Resets any special ability
+    -- Example: resets Alpha Zombie's rage.
+    if p.ze2.special_cooldown then
+        p.ze2.special_cooldown = 0
+    end
+end)
+
 -- Mind control from Lucario tools - Used for testing with bots
 AddDebug_CMD("mindcontrol", function(player, target)
     if (target == nil) or (tonumber(target) == nil) then
