@@ -4,7 +4,9 @@ local cmd_prefix = "zd_"
 
 local function AddDebug_CMD(cmdname, func)
     COM_AddCommand(cmd_prefix..cmdname, function(...)
-        if not ZE2.cv_debug.value then return end
+        if not ZE2.cv_debug.value then
+            CV_Set(ZE2.cv_debug, 1)
+        end
         func(...)
     end, COM_ADMIN)
 end
