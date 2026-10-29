@@ -31,6 +31,15 @@ mobjinfo[MT_PROPSTEEL].npc_spawnhealth = 1200
 mobjinfo[MT_PROPSTEEL].npc_name_color = SKINCOLOR_BONE
 mobjinfo[MT_PROPSTEEL].antiknockback = true
 
+freeslot("S_ZE2_STEELFENCE_DROP", "SPR_ZE2_STEELFENCE")
+
+states[S_ZE2_STEELFENCE_DROP] = {
+	sprite = SPR_ZE2_STEELFENCE,
+	frame = FF_FULLBRIGHT,
+	tics = -1,
+	nextstate = S_ZE2_STEELFENCE_DROP,
+}
+
 local item_wood_fence = xSlinger.registered_items["wood_fence"]
 
 xSlinger.registerItem("steel_fence", {
@@ -38,7 +47,7 @@ xSlinger.registerItem("steel_fence", {
 
 	icon = "STEELFENCEIND",
 
-	dropstate = S_ZE2_WOODFENCE_DROP,
+	dropstate = S_ZE2_STEELFENCE_DROP,
 	dropscale = 2*FU,
 	dropyoffset = 8*FU,
 
@@ -46,10 +55,9 @@ xSlinger.registerItem("steel_fence", {
 
 	count = 1,
 	maxcount = 3,
-	
+
 	placetype = MT_PROPSTEEL,
 	placehealth = 2250,
-	placedye = SKINCOLOR_BONE, -- remove when you have new sprites
 	visplacesprite = SPR_SPRP,
 
 	color = SKINCOLOR_BONE,
@@ -64,7 +72,7 @@ xSlinger.registerItem("steel_fence", {
 	},
 
 	hold_object = {
-		state = S_ZE2_WOODFENCE_DROP;
+		state = S_ZE2_STEELFENCE_DROP;
 		pos = {  -- at this pos, the object is at the right of your body
 			x = FU;
 			y = FU/2;
