@@ -119,7 +119,7 @@ freeslot(
 "sfx_ogbeep"
 )
 
-sfxinfo[sfx_ogbeep].caption = "old annoying beep"
+sfxinfo[sfx_ogbeep].caption = "Old annoying beep"
 
 mobjinfo[MT_OLDBIGMINE].npc_name = "Big Floating Mine"
 mobjinfo[MT_OLDBIGMINE].npc_spawnhealth = 1
