@@ -60,12 +60,6 @@ addHook("MobjMoveCollide", function(instaburst, mobj)
 		or dist < range) and not alreadyhit then
 			xSlinger.ShouldDamage(mobj, instaburst, instaburst.target, instaburst.forcedamage)
 			table.insert(instaburst.ib_hitlist, mobj)
-
-			if instaburst.target and instaburst.target.valid
-			and instaburst.target.player and instaburst.target.player.valid 
-			and instaburst.team ~= mobj then
-				increaseRage(instaburst.target.player, 15*TICRATE)
-			end
 		end
 	end
 end, MT_INSTABURST)
@@ -130,4 +124,12 @@ xSlinger.registerItem("insta_burst", {
 		instaburst.iteminfo = self
 		instaburst.ib_hitlist = {}
 	end,
+	hitfunc = function(self, src, mo, instaburst)
+		if not mo and not mo.valid then return end
+		
+		if instaburst.target and instaburst.target.valid
+		and instaburst.target.player and instaburst.target.player.valid then
+			increaseRage(instaburst.target.player, 15*TICRATE)
+		end
+	end
 })
