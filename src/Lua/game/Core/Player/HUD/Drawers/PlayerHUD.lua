@@ -142,7 +142,9 @@ local function DrawStaminaOrAbility(v, player, x, y, flags)
             fillamount = FixedMul(FixedDiv(ability, abilitymax), filltotalfrac)
         end
 
-        v.drawString(fillx, filly - 5, header, flags|V_ALLOWLOWERCASE, "small")
+        if (header ~= nil) and (header:len() > 0) then
+            v.drawString(fillx, filly - 5, header, flags|V_ALLOWLOWERCASE, "small")
+        end
 
         v.drawFill(fillx - 1, filly - 1, filltotal + 2, fillh + 2, 31|flags|V_TRANSLUCENT)
         if (team == 2) then
