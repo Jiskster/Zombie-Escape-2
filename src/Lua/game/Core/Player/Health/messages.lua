@@ -51,7 +51,8 @@ local function GetSourceNameWithInflictor(source, inflictor)
 end
 
 local DEATH_TYPES = {
-	[6] = "%s%s%s hit the ground too hard",  -- DMG_FALLDAMAGE
+	[ZE2.DMG_BLOODBOMB] = "%s%s%s ran out of blood",
+	[ZE2.DMG_FALLDAMAGE] = "%s%s%s hit the ground too hard",
 	[DMG_WATER] = "%s%s%s dissolved in chemicals",
 	[DMG_FIRE] = "%s%s%s burned into ashes",
 	[DMG_ELECTRIC] = "%s%s%s electrocuted",

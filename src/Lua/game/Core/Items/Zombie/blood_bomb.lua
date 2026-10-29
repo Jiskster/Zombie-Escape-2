@@ -109,7 +109,7 @@ xSlinger.registerItem("blood_bomb", {
 	usefunc = function(self, mo)
 		if not mo and mo.valid then return end
 
-		P_DamageMobj(mo, nil, nil, health_cost, 0) -- Heh don't use this as a survivor lol
+		P_DamageMobj(mo, nil, nil, health_cost, ZE2.DMG_BLOODBOMB) -- Heh don't use this as a survivor lol
 	end,
 	missile_tick = function(self, mo, missile) -- Code of infection vfx.
 		if (leveltime % 3 == 0) then return end

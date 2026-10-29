@@ -96,7 +96,7 @@ local function HandleFalldamage(player)
 	end
 
 	HandleFallExhaust(player, player.mo, distance, false)
-    P_DamageMobj(player.mo, nil, nil, fall_damage, 6) -- DMG_FALLDAMAGE = 6
+    P_DamageMobj(player.mo, nil, nil, fall_damage, ZE2.DMG_FALLDAMAGE)
 	DropBlood(player, fall_damage)
 	FallDamageSound(player.mo)
 end

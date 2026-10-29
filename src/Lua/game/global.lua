@@ -17,6 +17,10 @@ ZE2.GS_PREGAME = 1
 ZE2.GS_GAME = 2
 ZE2.GS_FINISH = 3
 
+--- idk where to properly put these, used for custom death messages
+ZE2.DMG_FALLDAMAGE = 6
+ZE2.DMG_BLOODBOMB = 7
+
 ZE2.Vote = {}
 ZE2.Game = {}
 
