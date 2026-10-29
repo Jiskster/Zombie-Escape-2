@@ -62,7 +62,8 @@ addHook("MobjMoveCollide", function(instaburst, mobj)
 			table.insert(instaburst.ib_hitlist, mobj)
 
 			if instaburst.target and instaburst.target.valid
-			and instaburst.target.player and instaburst.target.player.valid then
+			and instaburst.target.player and instaburst.target.player.valid 
+			and instaburst.team ~= mobj then
 				increaseRage(instaburst.target.player, 15*TICRATE)
 			end
 		end
