@@ -57,6 +57,16 @@ addHook("MapLoad", function() --directly skip pregame countdown on map load if z
 	if ZE2.tools.nocd then skip_pregame() end
 end)
 
+addHook("ThinkFrame", function() -- Skip the zombie release time as well if any.
+    if not ZE2.tools.nocd then return end
+    if gamestate != GS_LEVEL then return end
+    local game = ZE2.Game
+
+    if game.zombie_release_time then
+        game.zombie_release_time = 0
+    end
+end)
+
 --Teleport to checkpoint
 local function CheckpointTeleport(p, nextprev)
 	if not #ZE2.Checkpoints then return end
