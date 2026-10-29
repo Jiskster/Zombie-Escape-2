@@ -111,7 +111,7 @@ xSlinger.registerItem("insta_burst", {
 	
 	-- Item properties
 
-	delay = 34,
+	delay = TICRATE + 5,
 	damage = 40,
 	droppable = false,
 	sounds = {
