@@ -114,6 +114,26 @@ AddDebug_CMD("zombifyme", function(p, zombietype)
     ZE2.ZombifyPlayer(p, zombietype or nil)
 end)
 
+-- Become a survivor and switch to a skin!
+AddDebug_CMD("skin", function(p, surv_skin)
+    if not (p.mo and p.mo.valid and p.mo.health) then return end
+    local skin = surv_skin or p.ze2.selected_character or "sonic"
+
+    if not ZE2.SurvivorConfig[skin] then -- Must be a survivor skin defined in ZE2
+        CONS_Printf(p, "The given skin is not valid or is not defined as a survivor for Zombie Escape 2.")
+        return
+    end
+
+    if p.mo.team == 2 then
+        ZE2.ResetPlayer(p, 1, true) -- Necessary if the player is a Zombie.
+    end
+
+    p.ze2.selected_character = skin
+    ZE2.switchCharacter(p, skin)
+	ZE2.setConfigInventory(p, skin)
+	ZE2.resetPlayerHealth(p, skin)
+end)
+
 -- Mind control from Lucario tools - Used for testing with bots
 AddDebug_CMD("mindcontrol", function(player, target)
     if (target == nil) or (tonumber(target) == nil) then
