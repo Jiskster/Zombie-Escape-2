@@ -183,7 +183,7 @@ xSlinger.registerItem("volt_ring", {
 			end
 		)
 	end,
-	onhit = function(self, src, mo, inf)
+	hitfunc = function(self, src, mo, inf)
 		if not mo and not mo.valid then return end
 		giveElectricEffect(mo)
 	end,
