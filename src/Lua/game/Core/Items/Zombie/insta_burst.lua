@@ -22,6 +22,14 @@ states[S_INSTABURST] = {
 	var2 = 1,
 }
 
+local function increaseRage(player, change)
+	player.ze2.special_cooldown = player.ze2.special_cooldown - change
+
+	if (player.ze2.special_cooldown < 0) then
+		player.ze2.special_cooldown = 0
+	end
+end
+
 addHook("MobjMoveCollide", function(instaburst, mobj)
 	if (mobj.valid and (mobj.flags & MF_SHOOTABLE) or mobj.player) and instaburst.ib_hitlist then
 		local range = instaburst.radius
@@ -98,7 +106,7 @@ xSlinger.registerItem("insta_burst", {
 	
 	-- Item properties
 
-	delay = 34,
+	delay = TICRATE + 5,
 	damage = 40,
 	droppable = false,
 	sounds = {
@@ -116,4 +124,12 @@ xSlinger.registerItem("insta_burst", {
 		instaburst.iteminfo = self
 		instaburst.ib_hitlist = {}
 	end,
+	hitfunc = function(self, src, mo, instaburst)
+		if not mo and not mo.valid then return end
+		
+		if instaburst.target and instaburst.target.valid
+		and instaburst.target.player and instaburst.target.player.valid then
+			increaseRage(instaburst.target.player, 15*TICRATE)
+		end
+	end
 })

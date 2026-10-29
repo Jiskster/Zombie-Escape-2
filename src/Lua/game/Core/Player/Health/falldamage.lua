@@ -1,6 +1,6 @@
 freeslot("sfx_zfall1", "sfx_zfall2", "sfx_zfalld")
-sfxinfo[sfx_zfall1].caption = "Fall damage"
-sfxinfo[sfx_zfall2].caption = "Fall damage"
+sfxinfo[sfx_zfall1].caption = "Falling damage"
+sfxinfo[sfx_zfall2].caption = "Falling damage"
 sfxinfo[sfx_zfalld].caption = "Dying"
 
 local METER_UNIT = 64 * FU

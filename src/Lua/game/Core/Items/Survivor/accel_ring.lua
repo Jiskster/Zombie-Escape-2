@@ -1,6 +1,7 @@
 freeslot("S_ZE2_THROWNACCEL", "S_ZE2_THROWNACCEL2", "S_ZE2_THROWNACCEL_HOLD")
 freeslot("SPR_RNGC")
 freeslot("sfx_rs_cro")
+sfxinfo[sfx_rs_cro].caption = "Shooting"
 
 states[S_ZE2_THROWNACCEL] = {
 	sprite = SPR_RNGC,
@@ -92,8 +93,6 @@ xSlinger.registerItem("accel_ring", {
     animation_time = TICRATE;
 	
 	usefunc = function(self, mo)
-		S_StartSound(mo, sfx_thok)
-		
 		local mt = "ACCEL_RING"
 		for j = -1, 1 do
 			for i = 0, 2 do
@@ -111,6 +110,9 @@ xSlinger.registerItem("accel_ring", {
 					shot.momx = $ * (2+i)/2
 					shot.momy = $ * (2+i)/2
 					shot.momz = $ * (2+i)/2
+					if (j == 0) then
+						S_StartSound(shot, sfx_thok)
+					end
 				end
 			end
 		end

@@ -26,7 +26,7 @@ xSlinger.registerItem("apple", {
 	single_drop = true;
 
 	count = 1;
-	maxcount = 16;
+	maxcount = 6;
 
 	usefunc = function(self, mobj)
 		xSlinger.ChangeHealth(mobj, 20)

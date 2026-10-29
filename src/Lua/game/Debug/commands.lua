@@ -4,7 +4,9 @@ local cmd_prefix = "zd_"
 
 local function AddDebug_CMD(cmdname, func)
     COM_AddCommand(cmd_prefix..cmdname, function(...)
-        if not ZE2.cv_debug.value then return end
+        if not ZE2.cv_debug.value then
+            CV_Set(ZE2.cv_debug, 1)
+        end
         func(...)
     end, COM_ADMIN)
 end
@@ -27,28 +29,46 @@ addHook("NetVars", function(net)
 end)
 
 --Pregame countdown to zero
+
+local function skip_pregame()
+    if gamestate != GS_LEVEL then return end
+    local game = ZE2.Game
+
+    if game.state == ZE2.GS_PREGAME then
+		game.state_tics = -1
+	end
+
+    if game.zombie_release_time then
+        game.zombie_release_time = 0
+    end
+end
+
 AddDebug_CMD("nocd", function(p, arg)
-	local game = ZE2.Game
     local yes = (arg == "true" or arg == "yes" or arg == "1" or arg == "on")
     local no = (arg == "false" or arg == "no" or arg == "0" or arg == "off")
 
 	if yes then --if true, always skip the pregame on map load
 		ZE2.tools.nocd = true
-		if game.state == ZE2.GS_PREGAME then
-			game.state_tics = -1
-		end
+		skip_pregame()
 	elseif no then --if false, doesn't skip the pregame anymore
 		ZE2.tools.nocd = false
-	elseif game.state == ZE2.GS_PREGAME then --if no argument, skips the current pregame countdown
-		game.state_tics = -1
+	else -- If no argument, skips the current pregame countdown
+		skip_pregame()
 	end
 end)
 
 addHook("MapLoad", function() --directly skip pregame countdown on map load if zd_nocd is true
-	local game = ZE2.Game
-	if ZE2.tools.nocd and game.state == ZE2.GS_PREGAME then
-		game.state_tics = -1
-	end
+	if ZE2.tools.nocd then skip_pregame() end
+end)
+
+addHook("ThinkFrame", function() -- Skip the zombie release time as well if any.
+    if not ZE2.tools.nocd then return end
+    if gamestate != GS_LEVEL then return end
+    local game = ZE2.Game
+
+    if game.zombie_release_time then
+        game.zombie_release_time = 0
+    end
 end)
 
 --Teleport to checkpoint
@@ -106,6 +126,56 @@ AddDebug_CMD("zombifyme", function(p, zombietype)
     if not p.mo.team == 2 then return end
 
     ZE2.ZombifyPlayer(p, zombietype or nil)
+end)
+
+-- Become a survivor and switch to a skin!
+AddDebug_CMD("skin", function(p, surv_skin)
+    if not (p.mo and p.mo.valid and p.mo.health) then return end
+    local skin = surv_skin or p.ze2.selected_character or "sonic"
+
+    if not ZE2.SurvivorConfig[skin] then -- Must be a survivor skin defined in ZE2
+        CONS_Printf(p, "The given skin is not valid or is not defined as a survivor for Zombie Escape 2.")
+        return
+    end
+
+    if p.mo.team == 2 then
+        ZE2.ResetPlayer(p, 1, true) -- Necessary if the player is a Zombie.
+    end
+
+    p.ze2.selected_character = skin
+    ZE2.switchCharacter(p, skin)
+	ZE2.setConfigInventory(p, skin)
+	ZE2.resetPlayerHealth(p, skin)
+end)
+
+-- Resets any Reload/Firerate/Special cooldown the player is carrying on.
+AddDebug_CMD("resetcooldowns", function(p)
+    if not p.ze2 then return end
+    if not (p.valid and p.mo and p.mo.valid and p.mo.health) then return end
+
+    local mo = p.mo
+    local xS = p.xSlinger or mo.xSlinger
+    if not xS then return end -- Just in case...
+
+    xS.reload = 1 -- Set reload to 1 so we give margin to xSlinger to reload the item completely.
+
+    -- Reset firerate on every item in the inventory
+    local inv = xS:inv_get()
+    if not inv then return end
+
+    for i = 1, inv.size do
+        local item = inv[i]
+        if item and item.id != "" then
+            item:setIndex("firerate_left", 0)
+            item:setIndex("semi_firerate_left", 0)
+        end
+    end
+
+    -- Resets any special ability
+    -- Example: resets Alpha Zombie's rage.
+    if p.ze2.special_cooldown then
+        p.ze2.special_cooldown = 0
+    end
 end)
 
 -- Mind control from Lucario tools - Used for testing with bots

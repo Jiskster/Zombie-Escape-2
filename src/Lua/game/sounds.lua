@@ -38,7 +38,7 @@ sfxinfo[sfx_ctwo].caption = "Two"
 sfxinfo[sfx_cone].caption = "One"
 
 freeslot("sfx_zmrel")
-sfxinfo[sfx_zmrel].caption = "Evil Laugh"
+sfxinfo[sfx_zmrel].caption = "Evil laugh"
 
 freeslot("sfx_oldrad")
 sfxinfo[sfx_oldrad].caption = "Notification"
@@ -77,9 +77,9 @@ sfxinfo[sfx_zpa2].caption = "Zombie pains"
 
 freeslot("sfx_zupg1", "sfx_zupg2")
 sfxinfo[sfx_zupg1] = zombiesfxinfo
-sfxinfo[sfx_zupg1].caption = "Zombie Upgraded"
+sfxinfo[sfx_zupg1].caption = "Zombie upgraded"
 sfxinfo[sfx_zupg2] = zombiesfxinfo
-sfxinfo[sfx_zupg2].caption = "Zombie Upgraded"
+sfxinfo[sfx_zupg2].caption = "Zombie upgraded"
 
 freeslot("sfx_zish1","sfx_zish2","sfx_zish3")
 sfxinfo[sfx_zish1].caption = "Swoop"
@@ -89,7 +89,7 @@ sfxinfo[sfx_zish3].caption = "Swoop"
 freeslot("sfx_rstart", "sfx_secret", "sfx_cleva1")
 sfxinfo[sfx_rstart].caption = "Zombies escaped..."
 sfxinfo[sfx_secret].caption = "Secret revealed!"
-sfxinfo[sfx_cleva1].caption = "\"Calling for evac. transport!\""
+sfxinfo[sfx_cleva1].caption = "\"Called for evac. transport!\""
 
 freeslot("sfx_eatapl", "sfx_oyahx", "sfx_mnu1a")
 sfxinfo[sfx_eatapl].caption = "Num num num!"

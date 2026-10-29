@@ -5,7 +5,15 @@ I based this script on their code and reused the sound resources.
 
 --Edited by GLide KS for minecraft map
 
-freeslot(
+local function freeslotSteps(...)
+	local table = {...}
+	for index, name in ipairs(table) do
+		local info = freeslot(name)
+		sfxinfo[info].caption = "Footsteps"
+	end
+end
+
+freeslotSteps(
 //Minecraft
 "sfx_migr1", "sfx_migr2", "sfx_migr3", "sfx_migr4", "sfx_migr5", "sfx_migr6",
 "sfx_mico1", "sfx_mico2", "sfx_mico3", "sfx_mico4", "sfx_mico5", "sfx_mico6",
