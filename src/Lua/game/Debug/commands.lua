@@ -37,6 +37,10 @@ local function skip_pregame()
     if game.state == ZE2.GS_PREGAME then
 		game.state_tics = -1
 	end
+
+    if game.zombie_release_time then
+        game.zombie_release_time = 0
+    end
 end
 
 AddDebug_CMD("nocd", function(p, arg)
