@@ -20,6 +20,8 @@ end
 
 local wtics2 = 0 -- for triangle animation
 
+---@param v videolib
+---@param player player_t
 return "Intermission", function(v, player)
 	local game = ZE2.Game
 	local vote = ZE2.Vote
@@ -34,17 +36,18 @@ return "Intermission", function(v, player)
 	local wtics = game.win_tics
 	local team_won = game.team_won
 
+	local shadow_colormap = v.getColormap(TC_RAINBOW, SKINCOLOR_BLACK, nil)
 	local team_patch = v.cachePatch("Z_SURVIVORS")
 	local win_patch = v.cachePatch("Z_WIN")
 	local lower_patch = v.cachePatch("Z_BANG_LOWER_BLUE")
 	local upper_patch = v.cachePatch("Z_BANG_UPPER_BLUE")
-	local bg_patch = v.cachePatch("Z_BG_BLUE")
+	local bg_color = 158
 
-	if team_won == 2 then
+	if (team_won == 2) then
 		team_patch = v.cachePatch("Z_ZOMBIES")
 		lower_patch = v.cachePatch("Z_BANG_LOWER_RED")
 		upper_patch = v.cachePatch("Z_BANG_UPPER_RED")
-		bg_patch = v.cachePatch("Z_BG_RED")
+		bg_color = 47
 	end
 
 	local end_goals = { -- fixed x values
@@ -62,7 +65,7 @@ return "Intermission", function(v, player)
 	-- Animations for when the triangles appear
 	local anim_time2 = 3*TICRATE/2
 	local div2 = FixedDiv(min(wtics2*FU,anim_time2*FU), anim_time2*FU)
-	local triangle_y = ease.inoutsine(div2, upper_patch.height*FU, 0)
+	local triangle_y = ease.inoutsine(div2, (upper_patch.height + 2) * FU, 0)
 	local bg_ease = ease.inoutsine(div2, 9*FU, 4*FU)
 
 	local newroundframe = ZE2.IntermissionVars.newroundframe
@@ -80,20 +83,25 @@ return "Intermission", function(v, player)
 	end
 
 	-- Colored Background
-	if wtics >= 100 then
-		wtics2 = $ + 1
-		v.drawScaled(-500*FU,-500*FU, FU*1000, bg_patch, (bg_ease/FU)<<V_ALPHASHIFT)
+	if (wtics >= 100) then
+		wtics2 = min(wtics2 + 1, anim_time)
+
+		local fade = 10 - (bg_ease/FU)
+		v.fadeScreen(bg_color, fade)
 	end
 
 	-- Triangle Thingies
-	for i=-2,2 do
+	for i = -2, 2 do
 		local x_movement = ((leveltime*FU)%(lower_patch.width*FU))
 		local bottom_x = i*(lower_patch.width*FU) + x_movement
 		local bottom_y = ((200*FU)-lower_patch.height*FU) + triangle_y
 		local top_x = i*(upper_patch.width*FU) - x_movement
-		local top_y = 0 - triangle_y -- could do -triangle_y but this is visually better
+		local top_y = -triangle_y
 
+		v.drawScaled(top_x + (2 * FU), top_y + (2 * FU), FU, upper_patch, V_SNAPTOTOP, shadow_colormap)
 		v.drawScaled(top_x, top_y, FU, upper_patch, V_SNAPTOTOP)
+
+		v.drawScaled(bottom_x - (2 * FU), bottom_y - (2 * FU), FU, lower_patch, V_SNAPTOBOTTOM, shadow_colormap)
 		v.drawScaled(bottom_x, bottom_y, FU, lower_patch, V_SNAPTOBOTTOM)
 	end
 
@@ -263,6 +271,9 @@ return "Intermission", function(v, player)
 	end
 
 	-- "Survivors Win" | "Zombies Win"
+	v.drawScaled(team_x + (2 *  FU), (100 + 2) * FU, FU, team_patch, 0, shadow_colormap)
 	v.drawScaled(team_x, 100*FU, FU, team_patch)
+
+	v.drawScaled(win_x + (2 * FU), (100 + 2) * FU, FU, win_patch, 0, shadow_colormap)
 	v.drawScaled(win_x, 100*FU, FU, win_patch)
 end
