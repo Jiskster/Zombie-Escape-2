@@ -112,8 +112,13 @@ function ZE2.SendDeathMessage(player, inflictor, source, damagetype)
 					message = string.format("%s%s while trying to escape %s%s", oldmessage, "\x83", sourcecolor, sourcename)
 				end
 			else
+				local placeholder = "%s%s%s has been killed by %s%s"
+				if (source.team == player.mo.team) then
+					 placeholder = "%s%s%s has been betrayed by %s%s"
+				end
+
 				local sourcecolor, sourcename = GetSourceNameWithInflictor(source, inflictor)
-				message = string.format("%s%s%s has been killed by %s%s", playercolor, player.name, "\x83", sourcecolor, sourcename)
+				message = string.format(placeholder, playercolor, player.name, "\x83", sourcecolor, sourcename)
 				if ValidAssist(assist) then
 					local sourcecolor, sourcename = ZE2.GetMobjNameAndColor(assist)
 					local oldmessage = message
