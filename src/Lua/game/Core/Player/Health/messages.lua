@@ -96,12 +96,29 @@ function ZE2.SendDeathMessage(player, inflictor, source, damagetype)
 				message = string.format("%s%s while trying to escape %s%s", oldmessage, "\x83", sourcecolor, sourcename)
 			end
 		elseif source and source.player then
-			local sourcecolor, sourcename = GetSourceNameWithInflictor(source, inflictor)
-			message = string.format("%s%s%s has been killed by %s%s", playercolor, player.name, "\x83", sourcecolor, sourcename)
-			if ValidAssist(assist) then
-				local sourcecolor, sourcename = ZE2.GetMobjNameAndColor(assist)
-				local oldmessage = message
-				message = string.format("%s%s with help from %s%s", oldmessage, "\x83", sourcecolor, sourcename)
+			if (source.player == player) then
+				message = string.format("%s%s%s has commited suicide", playercolor, player.name, "\x83")
+				if inflictor and inflictor.valid and ((inflictor ~= source) or (inflictor.target and inflictor.target.valid and not (inflictor.flags & (MF_BOSS|MF_ENEMY)))) then
+					local theircolor, theirname = ZE2.GetMobjNameAndColor(inflictor)
+					if (theirname:len() > 0) then -- valid name
+						local oldmessage = message
+						message = string.format("%s%s with their own %s%s", oldmessage, "\x83", theircolor, theirname)
+					end
+				end
+
+				if ValidAssist(assist) then
+					local sourcecolor, sourcename = ZE2.GetMobjNameAndColor(assist)
+					local oldmessage = message
+					message = string.format("%s%s while trying to escape %s%s", oldmessage, "\x83", sourcecolor, sourcename)
+				end
+			else
+				local sourcecolor, sourcename = GetSourceNameWithInflictor(source, inflictor)
+				message = string.format("%s%s%s has been killed by %s%s", playercolor, player.name, "\x83", sourcecolor, sourcename)
+				if ValidAssist(assist) then
+					local sourcecolor, sourcename = ZE2.GetMobjNameAndColor(assist)
+					local oldmessage = message
+					message = string.format("%s%s with help from %s%s", oldmessage, "\x83", sourcecolor, sourcename)
+				end
 			end
 		elseif source.info and source.info.npc_name then
 			local sourcecolor, sourcename = GetSourceNameWithInflictor(source, inflictor)
