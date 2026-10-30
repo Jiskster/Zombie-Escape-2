@@ -31,7 +31,7 @@ end)
 --Pregame countdown to zero
 
 local function skip_pregame()
-    if gamestate != GS_LEVEL then return end
+    if (gamestate ~= GS_LEVEL) then return end
     local game = ZE2.Game
 
     if game.state == ZE2.GS_PREGAME then
@@ -63,7 +63,7 @@ end)
 
 addHook("ThinkFrame", function() -- Skip the zombie release time as well if any.
     if not ZE2.tools.nocd then return end
-    if gamestate != GS_LEVEL then return end
+    if (gamestate ~= GS_LEVEL) then return end
     local game = ZE2.Game
 
     if game.zombie_release_time then
@@ -165,7 +165,7 @@ AddDebug_CMD("resetcooldowns", function(p)
 
     for i = 1, inv.size do
         local item = inv[i]
-        if item and item.id != "" then
+        if item and (item.id ~= "") then
             item:setIndex("firerate_left", 0)
             item:setIndex("semi_firerate_left", 0)
         end
