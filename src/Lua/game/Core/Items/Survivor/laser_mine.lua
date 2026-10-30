@@ -93,7 +93,7 @@ states[S_ZE2_LASERMINE] = {
 	nextstate = S_ZE2_LASERMINE
 }
 mobjinfo[MT_ZE2_LASERMINE] = {
-	spawnhealth = 100,
+	spawnhealth = 25,
 	spawnstate = S_ZE2_LASERMINE,
 	painsound = sfx_dmpain,
 	painchance = 192*FRACUNIT,
