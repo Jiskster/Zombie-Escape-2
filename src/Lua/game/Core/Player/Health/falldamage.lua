@@ -82,7 +82,6 @@ local function HandleFalldamage(player)
     if not P_IsObjectOnGround(player.mo) then return end
 
     player.ze2.isFalling = false
-	if (player.mo.eflags & MFE_TOUCHWATER) or (player.mo.eflags & MFE_UNDERWATER) then return end
 
     local distance = (player.ze2.fall_height - player.mo.z)
     if (distance <= ZE2.MIN_FALL_DISTANCE) then
@@ -93,6 +92,10 @@ local function HandleFalldamage(player)
     local fall_damage = FixedMul(ZE2.FALL_DAMAGE_AMOUNT, FixedDiv(distance, METER_UNIT))
 	if (player.mo.team == 2) then
 		fall_damage = fall_damage * 8
+	end
+
+	if (player.mo.eflags & MFE_TOUCHWATER) or (player.mo.eflags & MFE_UNDERWATER) then
+		fall_damage = fall_damage / 3
 	end
 
 	HandleFallExhaust(player, player.mo, distance, false)
