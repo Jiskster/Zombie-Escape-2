@@ -65,7 +65,7 @@ return {
 
 	recent_attackers = {},
 
-	fall_height = 0,
+	fall_speed = 0,
 
 	marker_tics = 0,
 	marker_x = 0,
