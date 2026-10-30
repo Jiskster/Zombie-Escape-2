@@ -48,25 +48,25 @@ local function P_ClosestPointOnLine3D(p, lstart, lend)
 	local t,d
 	local V = Vec3.Sub(lend, lstart)
 	local c = Vec3.Sub(p, lstart)
-	
+
 	-- d = R_PointToDist2(0, lend.z, R_PointToDist2(lend.x, lend.y, lstart.x, lstart.y), lstart.z)
 	d = R_PointTo3DDist(lstart.x,lstart.y,lstart.z, lend.x,lend.y,lend.z)
 	local n = Vec3.Div(Vec3.New(V.x, V.y, V.z), d)
 	t = Vec3.Dot(n, c)
-	
+
 	if t <= 0 then
 		return lstart
 	elseif t >= d then
 		return lend
 	end
-	
+
 	n = $ * t
 	return Vec3.Add(lstart, n)
 end
 local function MobjIntersectsRay(start,dest, radius,height, mo)
 	local intersect = P_ClosestPointOnLine3D(Vec3.MobjPosToVec(mo), start, dest)
 	intersect = Vec3.New(intersect.x, intersect.y, intersect.z - height/2)
-	
+
 	if abs(intersect.x - mo.x) <= mo.radius + radius
 	and abs(intersect.y - mo.y) <= mo.radius + radius
 	and (
@@ -117,7 +117,7 @@ states[S_ZE2_LMINEHIT] = {
 	var2 = 2,
 	tics = 6 * 2
 }
-addHook("TouchSpecial", do return true; end, MT_ZE2_LASERMINE)
+addHook("TouchSpecial", function(mobj) return true end, MT_ZE2_LASERMINE)
 
 freeslot("MT_LMINE_CHECK")
 
@@ -137,13 +137,17 @@ addHook("MobjMoveCollide", function(check, mobj)
 end, MT_LMINE_CHECK)
 
 ---- Raycast definition
-local function Raycast_SetDest() end -- prototype
+---@param source mobj_t
+---@param x fixed_t
+---@param y fixed_t
+---@param z fixed_t
+local function Raycast_SetDest(source, x, y, z) end -- prototype
 
 local function BlockedCollision(self, source, target, line, mobj)
 	if not (target and target.valid) then return end
 	if not (source and source.valid and source.type == MT_ZE2_LASERMINE) then return end
 	if not (source.zmine) then return end
-	
+
 	Raycast_SetDest(source, target.x,target.y,target.z)
 	P_KillMobj(target)
 end
@@ -165,19 +169,19 @@ local function Tick(self, source, target)
 		newx = target.x
 		newy = target.y
 		newz = target.z
-		
+
 		if (target.z <= target.floorz or target.z + target.height >= target.ceilingz)
 		or (target.eflags & MFE_JUSTSTEPPEDDOWN) then
 			break
 		end
-		
+
 		if (x == target.x and y == target.y and z == target.z) then
 			break
 		end
 	end
-	
+
 	Raycast_SetDest(source, newx,newy,newz)
-	if (target and target.valid)
+	if (target and target.valid) then
 		P_KillMobj(target)
 	end
 end
@@ -187,26 +191,26 @@ local function Raycast_SendRay(mine)
 		x = mine.x, y = mine.y, z = mine.z
 	}
 	mine.zmine.endpoint = nil
-	
+
 	local sec = mine.subsector.sector
 	local slope = sec.f_slope
 	local slopeaim = 0
-	if false --(bomb.ceilingmode) then
+	if false then --(bomb.ceilingmode) then
 		slope = sec.c_slope
 	end
 	if slope then
 		slopeaim = FixedMul(slope.zangle, cos(mine.angle))
-		if false --bomb.ceilingmode
+		if false then --bomb.ceilingmode
 			slopeaim = -$
 		end
 	end
-	
+
 	local aimangle = 0
 	if (mine.lasermode == LMODE_VERTICAL) then
 		aimangle = ANGLE_90
 	--elseif (mine.lasermode == LMODE_HORIZONTAL) then
 	end
-	
+
 	local marker = xSlinger.SpawnMissile({
 		source = mine,
 		type = "LMINE_CAST",
@@ -215,11 +219,11 @@ local function Raycast_SendRay(mine)
 		allow_aim = true,
 		flags2 = MF2_DONTDRAW,
 	})
-	
+
 	if (marker and marker.valid) then
 		marker.flags = $|MF_NOCLIPTHING|MF_NOTHINK
 		marker.isMissile = true
-		
+
 		local missileinfo
 		if marker.missileinfo then
 			local missile_id = marker.missileinfo.id
@@ -227,13 +231,13 @@ local function Raycast_SendRay(mine)
 				missileinfo = xSlinger.registered_missiles[missile_id]
 			end
 		end
-		
+
 		while (marker and marker.valid and marker.health > 0) do
 			Tick(missileinfo, mine, marker)
 		end
 		if (marker and marker.valid) then P_RemoveMobj(marker); end
 	end
-	
+
 	-- convert to vectors
 	local start = mine.zmine.startpoint
 	local dest = mine.zmine.endpoint
@@ -242,7 +246,7 @@ local function Raycast_SendRay(mine)
 		P_KillMobj(mine)
 		return false
 	end
-	
+
 	mine.zmine.startVector = Vec3.New(start.x, start.y, start.z + (41*mine.height/48))
 	mine.zmine.endVector = Vec3.New(dest.x, dest.y, dest.z)
 	mine.zmine.rayangle = mine.angle
@@ -300,7 +304,7 @@ local function TelegraphFirstFire(mine)
 		t.flags = $|MF_NOBLOCKMAP
 		t.color = mine.teamcolor
 		t.alpha = P_Lerp(timefrac, FU/10, FU)
-		if (zm.setup % flashtime == 0)
+		if (zm.setup % flashtime == 0) then
 			t.scale = $ * 2
 		end
 	end
@@ -314,7 +318,7 @@ local function SetupVFX(mine)
 	local dest = zm.endVector
 	local dist = R_PointTo3DDist(start.x,start.y,start.z, dest.x,dest.y,dest.z)
 	local dirvector = Vec3.SphereToCartesian(zm.rayangle, zm.rayaiming)
-	
+
 	if (mine.lasermode == LMODE_HORIZONTAL) then
 		zm.bounds = {
 			minx = min(start.x, dest.x),
@@ -330,12 +334,12 @@ local function SetupVFX(mine)
 			maxy = start.y + mine.radius,
 		}
 	end
-	
+
 	local count = 0
 	local offset = LASER_WIDTH / 2
 	zm.vfxmobjs = {}
 	zm.raydist = dist
-	
+
 	while (dist > 0) do
 		count = $ + 1
 		local v = P_SpawnMobjFromMobj(mine, 0,0,0, MT_PARTICLE)
@@ -348,7 +352,7 @@ local function SetupVFX(mine)
 		v.rollangle = zm.rayaiming
 		v.radius = 11*mine.scale
 		v.height = v.radius*2
-		
+
 		P_SetOrigin(v,
 			mine.x + FixedMul(dirvector.x, offset),
 			mine.y + FixedMul(dirvector.y, offset),
@@ -357,10 +361,10 @@ local function SetupVFX(mine)
 		v.originalpos = {
 			x = v.x, y = v.y, z = v.z, angle = v.angle
 		}
-		
+
 		v.color = mine.teamcolor
 		v.colorized = true
-		
+
 		zm.vfxmobjs[count] = v
 		offset = $ + LASER_WIDTH
 		dist = $ - LASER_WIDTH
@@ -375,7 +379,7 @@ local function DestroyVFX(mine)
 		local mo = zm.vfxmobjs[i]
 		if (mo and mo.valid) then P_RemoveMobj(mo); end
 	end
-	
+
 	if (zm.clientsfx and zm.clientsfx.valid) then
 		P_RemoveMobj(zm.clientsfx)
 	end
@@ -384,7 +388,7 @@ local function UpdateVFX(mine)
 	local zm = mine.zmine
 	if not zm then return end
 	if not zm.totalvfx then return end
-	
+
 	local lgrow = (FU/20) * zm.shootvfx
 	local lastlaser
 	for i = 1, zm.totalvfx do
@@ -395,19 +399,19 @@ local function UpdateVFX(mine)
 		v.spriteyscale = P_RandomRange(FU*9/10, FU*11/10) + lgrow
 		v.alpha = P_RandomRange(FU/2, FU)
 		v.angle = v.originalpos.angle
-		
+
 		if (mine.lasermode == LMODE_VERTICAL) then
 			v.angle = R_PointToAngle(mine.x, mine.y) + ANGLE_90
 		end
 		v.mirrored = P_RandomChance(FU/2)
-		
+
 		local extra = lgrow * 50
 		local offset = P_RandomFixedRange(-8*mine.scale - extra, 8*mine.scale + extra)
 		local zoffset = 0
 		if (extra > 0) then
 			zoffset = P_RandomFixedRange(-extra, extra)
 		end
-		
+
 		local opos = v.originalpos
 		P_SetOrigin(v,
 			opos.x + P_ReturnThrustX(nil, opos.angle + ANGLE_90, offset),
@@ -418,10 +422,10 @@ local function UpdateVFX(mine)
 		and (mine.lasermode == LMODE_HORIZONTAL) then
 			lastlaser.angle = R_PointToAngle2(lastlaser.x,lastlaser.y, v.x,v.y)
 		end
-		
+
 		lastlaser = v
 	end
-	
+
 	local randoffset = 11*mine.scale
 	local angle = zm.rayangle
 	local dist = FixedDiv(zm.raydist, zm.totalvfx*FU) / 2
@@ -437,13 +441,13 @@ local function UpdateVFX(mine)
 		newposition.x = $ + P_RandomFixedRange(-randoffset, randoffset)
 		newposition.y = $ + P_RandomFixedRange(-randoffset, randoffset)
 		newposition.z = $ + P_RandomFixedRange(0, 3*randoffset)
-		
+
 		local v = P_SpawnMobj(newposition.x,newposition.y,newposition.z, MT_SUPERSPARK)
 		v.scale = FixedMul(mine.scale / 2, P_RandomRange(FU*8/10, FU))
 		v.blendmode = AST_SUBTRACT
 		v.colorized = true
 		v.color = SKINCOLOR_COBALT
-		
+
 		local speed = FixedMul(dist, P_RandomRange(FU/2,FU*3/4))
 		v.momx = $ + FixedMul(anglevector.x, speed)
 		v.momy = $ + FixedMul(anglevector.y, speed)
@@ -451,7 +455,7 @@ local function UpdateVFX(mine)
 		work = $ - 1
 	end
 	if zm.shootvfx then zm.shootvfx = $ - 1; end
-	
+
 	-- impacts at the destination point
 	local lineoffset = 4*mine.scale
 	local angle = FixedAngle(360 * P_RandomFixed())
@@ -465,7 +469,7 @@ local function UpdateVFX(mine)
 	p.spriteyscale = p.spritexscale
 	p.destscale = 0
 	p.flags = $ &~MF_NOGRAVITY
-	
+
 	randoffset = $ / 2
 	if (mine.lasermode == LMODE_HORIZONTAL) then
 		P_InstaThrustEvenIn2D(p, zm.rayangle + ANGLE_90, FixedMul(cos(angle), randoffset))
@@ -481,7 +485,7 @@ local function UpdateSFXTelegraph(mine)
 	local mo = play.realmo
 	if not (mo and mo.valid) then return end
 	local zm = mine.zmine
-	
+
 	local sfx = zm.clientsfx
 	if not (sfx and sfx.valid) then
 		local new = P_SpawnMobjFromMobj(mine, 0,0,0, MT_THOK)
@@ -494,10 +498,10 @@ local function UpdateSFXTelegraph(mine)
 		zm.clientsfx = new
 		sfx = new
 	end
-	
+
 	local linepoint = P_ClosestPointOnLine3D(Vec3.MobjPosToVec(mo), zm.startVector, zm.endVector)
 	P_MoveOrigin(sfx, linepoint.x,linepoint.y,linepoint.z - sfx.radius)
-	
+
 	if not S_SoundPlaying(sfx, sfx_laser) then
 		S_StartSound(sfx, sfx_laser)
 	end
@@ -505,7 +509,7 @@ end
 
 addHook("MobjThinker", function(mine)
 	if (mine.health <= 0) then DestroyVFX(mine); return end
-	
+
 	-- shoot out the ray!
 	if not mine.zmine then
 		mine.zmine = {}
@@ -516,7 +520,7 @@ addHook("MobjThinker", function(mine)
 	local zm = mine.zmine
 	local teamcolor = mine.teamcolor
 	local aimvector = Vec3.SphereToCartesian(zm.rayangle, zm.rayaiming)
-	
+
 	-- the ray is technically already fired at this point,
 	-- but we wait to actually do anything with it first
 	if zm.setup then
@@ -525,7 +529,7 @@ addHook("MobjThinker", function(mine)
 		if (zm.setup == 0) then
 			local start = zm.startVector
 			local dest = zm.endVector
-			
+
 			local dist = mine.radius
 			local vfx = P_SpawnMobj(
 				start.x + FixedMul(aimvector.x, dist),
@@ -537,7 +541,7 @@ addHook("MobjThinker", function(mine)
 			vfx.scale = $ * 2
 			vfx.color = teamcolor
 			vfx.blendmode = AST_SUBTRACT
-			
+
 			-- again for the end...
 			vfx = P_SpawnMobj(
 				dest.x - FixedMul(aimvector.x, dist),
@@ -548,15 +552,15 @@ addHook("MobjThinker", function(mine)
 			vfx.state = S_ZE2_LMINEHIT
 			vfx.scale = $ * 2
 			vfx.color = teamcolor
-			vfx.blendmode = AST_SUBTRACT	
-			
+			vfx.blendmode = AST_SUBTRACT
+
 			SetupVFX(mine)
 			zm.shootvfx = 16
 			S_StartSound(mine, sfx_zlmf)
 		end
 		return
 	end
-	
+
 	-- in case the mine moved, reshoot the ray...
 	if (mine.x ~= zm.startpoint.x)
 	or (mine.y ~= zm.startpoint.y)
@@ -576,11 +580,11 @@ addHook("MobjThinker", function(mine)
 		SetupVFX(mine)
 		return
 	end
-	
+
 	UpdateVFX(mine)
 	UpdateSFXTelegraph(mine)
 	--TraceRay(zm.startVector, zm.endVector)
-	
+
 	-- using searchBlockmap would allow us to hit nonplayers
 	-- with the ray, but if the ray isnt orthongonal, we'd be
 	-- searching a huge area... in the interest of performance,
@@ -594,30 +598,30 @@ addHook("MobjThinker", function(mine)
 		local mo = play.mo
 		if not (mo and mo.valid and mo.health) then continue end
 		if (mo.team == mine.team and not cv_friendlyfire.value) then continue end
-		
+
 		-- bounding box check
 		if (mo.x + mo.radius < bounds.minx) then continue end
 		if (mo.x - mo.radius > bounds.maxx) then continue end
 		if (mo.y + mo.radius < bounds.miny) then continue end
 		if (mo.y - mo.radius > bounds.maxy) then continue end
-		
+
 		local hits, inter = MobjIntersectsRay(zm.startVector, zm.endVector, rayRad,rayHei, mo)
 		if not hits then continue end
-		
+
 		local vfxoffset = -mo.radius * 3/2
 		local temp = P_SpawnMobj(
 			FixedMul(aimvector.x, vfxoffset) + P_RandomRange(-20,20)*FU + inter.x,
 			FixedMul(aimvector.y, vfxoffset) + P_RandomRange(-20,20)*FU + inter.y,
 			FixedMul(aimvector.z, vfxoffset) + P_RandomRange(-20,20)*FU + inter.z, MT_PARTICLE
 		)
-		
+
 		local damage = 3
 		if (mo.team == 2) then
 			damage = $ * 30
 		end
-		
+
 		P_DamageMobj(mo, temp, mine.target, damage)
-		
+
 		if (leveltime % 4 == 0) then
 			local sfx = P_RandomRange(sfx_zlmh0, sfx_zlmh3)
 			S_StartSound(nil, sfx, play)
@@ -629,7 +633,7 @@ addHook("MobjThinker", function(mine)
 		else
 			P_RemoveMobj(temp)
 		end
-		
+
 		xSlinger.give_effect(mo, "volt_electric", {
 			normalspeed_multiplier = FU/8,
 			in_knockback_multiplier = 3*FU,
@@ -654,8 +658,8 @@ local function FenceCheck(self, mobj)
 	check.fuse = 2
 	check.momx = FixedMul(distance, cos(mobj.angle))
 	check.momy = FixedMul(distance, sin(mobj.angle))
-	
-	for i = 0,6
+
+	for i = 0, 6 do
 		if not P_CheckPosition(check, x, y) then return false, check end
 		P_XYMovement(check)
 	end
@@ -671,7 +675,7 @@ local function StickToWall(self,mo,cmobj, x,y,z)
 	local line_ang = mo.angle
 	local moveoffset = FixedMul(mobjinfo[self.placetype].radius + 2*FU, mo.scale)
 	local bline = cmobj.blockingline
-	if (bline and bline.valid)
+	if (bline and bline.valid) then
 		local cx,cy = P_ClosestPointOnLine(x, y, bline)
 		local minx = min(bline.v1.x, bline.v2.x)
 		local maxx = max(bline.v1.x, bline.v2.x)
@@ -685,7 +689,7 @@ local function StickToWall(self,mo,cmobj, x,y,z)
 		line_ang = R_PointToAngle2(
 			bline.v1.x, bline.v1.y, bline.v2.x, bline.v2.y
 		) + ANGLE_90*(lineside and 1 or -1)
-		
+
 		x = clamp(minx, cx, maxx) + P_ReturnThrustX(nil, line_ang, moveoffset)
 		y = clamp(miny, cy, maxy) + P_ReturnThrustY(nil, line_ang, moveoffset)
 		z = $ + 6*mo.scale
@@ -699,7 +703,7 @@ local function FenceVisual(self, mobj)
 	local y = mobj.y + FixedMul(distance, sin(mobj.angle))
 	local z = mobj.z
 	local angle = mobj.angle
-	
+
 	local visual = mobj.visual_fence
 	if not visual or not visual.valid then
 		visual = P_SpawnMobj(x, y, z, MT_ZVISUAL)
@@ -722,9 +726,9 @@ local function FenceVisual(self, mobj)
 	visual.drawonlyforplayer = mobj.player
 	visual.alpha = FU / 2
 	visual.fuse = 3
-	
+
 	x,y,z,angle = StickToWall(self,mobj,cmobj, x,y,z)
-	
+
 	visual.angle = angle
 	P_MoveOrigin(visual, x, y, z)
 	return cmobj
@@ -743,7 +747,7 @@ xSlinger.registerItem("laser_mine", {
 
 	count = 1;
 	maxcount = 10;
-	
+
 	placetype = MT_ZE2_LASERMINE;
 	color = SKINCOLOR_BROWN;
 	holdfunc = FenceVisual;
@@ -751,7 +755,7 @@ xSlinger.registerItem("laser_mine", {
 	usefunc = function(self, mo)
 		local valid, cmobj = FenceCheck(self, mo)
 		if not valid then return true end
-		
+
 		local lmode = LMODE_VERTICAL
 		local line_ang = mo.angle
 		local x = mo.x + cos(mo.angle)*128
@@ -762,7 +766,7 @@ xSlinger.registerItem("laser_mine", {
 		if (stuck) then
 			lmode = LMODE_HORIZONTAL
 		end
-		
+
 		local turret = P_SpawnMobj(x, y, z, self.placetype)
 		turret.team = mo.team
 		turret.angle = line_ang
