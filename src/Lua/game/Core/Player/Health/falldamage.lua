@@ -107,7 +107,6 @@ local function HandleFalldamage(player)
 	if (player.mo.eflags & MFE_TOUCHWATER) or (player.mo.eflags & MFE_UNDERWATER) then
 		fall_damage = fall_damage / 3
 	end
-	print(string.format("%d", fall_damage))
 
 	HandleFallExhaust(player, player.mo, speed, false)
     P_DamageMobj(player.mo, nil, nil, fall_damage, ZE2.DMG_FALLDAMAGE)
