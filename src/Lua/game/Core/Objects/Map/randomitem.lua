@@ -15,8 +15,8 @@ ZE2.RandomItemPool = {
 	"stone_ring",
 	"flame_ring",
 	"volt_ring",
+	"laser_mine",
 }
-
 
 -- Mapthing
 mobjinfo[MT_ZE2_RANDOMITEM_SPAWN] = {

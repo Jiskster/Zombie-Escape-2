@@ -8,6 +8,7 @@ Load("Misc", "customhudlib.lua")
 Load("Misc", "hudstuff.lua")
 Load("Misc", "mobjlib.lua")
 Load("Misc", "mtime.lua")
+Load("Misc", "vector3.lua")
 
 Load("Zombie Escape 2", "require.lua")
 Load("Zombie Escape 2", "copy.lua")
