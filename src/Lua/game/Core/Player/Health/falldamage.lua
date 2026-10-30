@@ -3,10 +3,10 @@ sfxinfo[sfx_zfall1].caption = "Falling damage"
 sfxinfo[sfx_zfall2].caption = "Falling damage"
 sfxinfo[sfx_zfalld].caption = "Dying"
 
-ZE2.MIN_FALL_SPEED = 16 * FU -- speed where you take damage
+ZE2.MIN_FALL_SPEED = 20 * FU -- speed where you take damage
 ZE2.FALL_DAMAGE_AMOUNT = 6
 
-ZE2.MIN_FALL_SPEED_EXHAUST = 12 * FU -- speed where it takes all your stamina
+ZE2.MIN_FALL_SPEED_EXHAUST = 17 * FU -- speed where it takes all your stamina
 ZE2.FALL_EXHAUST_AMOUNT = 90 * FU
 
 ---@param player player_t
