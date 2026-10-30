@@ -67,8 +67,12 @@ return "PlayerTags", function(v, player)
 			offset2 = offset2 / 2
 		end
 
-		if (plr.realmo.maxhealth ~= nil) and (plr.realmo.health <= (plr.realmo.maxhealth / 2)) then
-			healthmap = V_REDMAP
+		if (plr.realmo.maxhealth ~= nil) then
+			if (plr.realmo.health <= (plr.realmo.maxhealth / 4)) then
+				healthmap = V_REDMAP
+			elseif (plr.realmo.health <= (plr.realmo.maxhealth / 2)) then
+				healthmap = V_YELLOWMAP
+			end
 		end
 
 		if sameteam then
