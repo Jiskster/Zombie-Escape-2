@@ -166,6 +166,7 @@ SurvivorItem "apple.lua"
 SurvivorItem "energy_drink.lua"
 SurvivorItem "amys_heart.lua"
 SurvivorItem "auto_turret.lua"
+SurvivorItem "laser_mine.lua"
 
 ZombieItem "insta_burst.lua"
 ZombieItem "fist.lua"
