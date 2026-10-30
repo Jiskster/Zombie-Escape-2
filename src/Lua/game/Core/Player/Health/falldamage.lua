@@ -98,10 +98,21 @@ local function HandleFalldamage(player)
 		return
 	end
 
-
 	local fall_damage = FixedMul(ZE2.FALL_DAMAGE_AMOUNT, FixedDiv(speed - ZE2.MIN_FALL_SPEED, FU))
 	if (player.mo.team == 2) then
-		fall_damage = fall_damage * 8
+		local multiplier = 8 * FU
+		local config = ZE2.ZombieConfig[player.ze2.zombie_type]
+		if (config.falldamage_multiplier ~= nil) then
+			multiplier = config.falldamage_multiplier
+		end
+		fall_damage = FixedMul(fall_damage, multiplier)
+	else
+		local multiplier = FU
+		local config = ZE2.SurvivorConfig[player.mo.skin]
+		if (config.falldamage_multiplier ~= nil) then
+			multiplier = config.falldamage_multiplier
+		end
+		fall_damage = FixedMul(fall_damage, multiplier)
 	end
 
 	if (player.mo.eflags & MFE_TOUCHWATER) or (player.mo.eflags & MFE_UNDERWATER) then
