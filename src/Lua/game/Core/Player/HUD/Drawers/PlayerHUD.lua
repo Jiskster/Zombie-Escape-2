@@ -29,7 +29,9 @@ local function DrawHealth(v, player, x, y, flags)
     end
 
     local health_text = 0
-    if (mo.health <= (maxhealth / 2)) then
+    if (mo.health <= (maxhealth / 4)) then
+        health_text = V_REDMAP
+    elseif (mo.health <= (maxhealth / 2)) then
         health_text = V_YELLOWMAP
     end
     v.drawString(health_x + (10 * FU), health_y, mo.health, flags|health_text, "fixed")
@@ -45,7 +47,7 @@ local function DrawArmor(v, player, x, y, flags)
     local team = mo.team
     if (team ~= 1) then return end
 	if (mo.shield_def == nil) then return end
-	
+
     local bg_width = 28
     local bg_height = 10
     v.drawFill(FixedInt(x), FixedInt(y), bg_width, bg_height, 31|flags|V_TRANSLUCENT)
