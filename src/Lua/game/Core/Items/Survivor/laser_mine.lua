@@ -11,83 +11,77 @@ local LMODE_VERTICAL = 1
 local LMODE_HORIZONTAL = 2
 local L_SETUPTIME = 2 * TICRATE
 
----- Functions
+---@param frac fixed_t
+---@param from fixed_t
+---@param to fixed_t
 local function P_Lerp(frac, from, to)
 	return from + FixedMul(to - from, frac)
 end
 
-local function R_PointTo3DDist(x1,y1,z1, x2,y2,z2)
+---@param x1 fixed_t
+---@param y1 fixed_t
+---@param z1 fixed_t
+---@param x2 fixed_t
+---@param y2 fixed_t
+---@param z2 fixed_t
+---@return fixed_t
+local function R_PointTo3DDist(x1, y1, z1, x2, y2, z2)
 	return FixedHypot(FixedHypot(x2 - x1, y2 - y1), z2 - z1)
 end
 
+---@param a fixed_t
+---@param b fixed_t
+---@return fixed_t
 local function P_RandomFixedRange(a,b)
 	return a + FixedMul((b - a), P_RandomFixed())
 end
-local function clamp(minimum,value,maximum)
-	return max(minimum,min(maximum,value))
+
+---@param minimum number
+---@param value number
+---@param maximum number
+local function clamp(minimum, value, maximum)
+	return max(minimum, min(maximum, value))
 end
 
-local function TraceRay(lstart,lend)
-	for i = 0,256 do
-		local frac = FixedDiv(i*FU, 256*FU)
-		local t = P_SpawnMobj(
-			P_Lerp(frac, lstart.x, lend.x),
-			P_Lerp(frac, lstart.y, lend.y),
-			P_Lerp(frac, lstart.z, lend.z),
-			MT_THOK
-		)
-		t.scale = $ / 3
-		t.fuse = 2
-		t.tics = t.fuse
-		t.blendmode = AST_ADD
-		t.flags = $|MF_NOBLOCKMAP
-	end
-end
+local function P_ClosestPointOnLine3D(p, length_start, length_end)
+	local dot, distance
+	local vector_length = Vec3.Sub(length_end, length_start)
+	local vector_length2 = Vec3.Sub(p, length_start)
+	distance = R_PointTo3DDist(length_start.x, length_start.y, length_start.z, length_end.x, length_end.y, length_end.z)
 
-local function P_ClosestPointOnLine3D(p, lstart, lend)
-	local t,d
-	local V = Vec3.Sub(lend, lstart)
-	local c = Vec3.Sub(p, lstart)
+	local vector3 = Vec3.Div(Vec3.New(vector_length.x, vector_length.y, vector_length.z), distance)
+	dot = Vec3.Dot(vector3, vector_length2)
 
-	-- d = R_PointToDist2(0, lend.z, R_PointToDist2(lend.x, lend.y, lstart.x, lstart.y), lstart.z)
-	d = R_PointTo3DDist(lstart.x,lstart.y,lstart.z, lend.x,lend.y,lend.z)
-	local n = Vec3.Div(Vec3.New(V.x, V.y, V.z), d)
-	t = Vec3.Dot(n, c)
-
-	if t <= 0 then
-		return lstart
-	elseif t >= d then
-		return lend
+	if (dot <= 0) then
+		return length_start
+	elseif (dot >= distance) then
+		return length_end
 	end
 
-	n = $ * t
-	return Vec3.Add(lstart, n)
+	vector3 = vector3 * dot
+	return Vec3.Add(length_start, vector3)
 end
-local function MobjIntersectsRay(start,dest, radius,height, mo)
-	local intersect = P_ClosestPointOnLine3D(Vec3.MobjPosToVec(mo), start, dest)
-	intersect = Vec3.New(intersect.x, intersect.y, intersect.z - height/2)
-
-	if abs(intersect.x - mo.x) <= mo.radius + radius
-	and abs(intersect.y - mo.y) <= mo.radius + radius
+local function MobjIntersectsRay(start, destination, radius, height, mobj)
+	local intersect = P_ClosestPointOnLine3D(Vec3.MobjPosToVec(mobj), start, destination)
+	intersect = Vec3.New(intersect.x, intersect.y, intersect.z - height / 2)
+	if (abs(intersect.x - mobj.x) <= (mobj.radius + radius))
+	and (abs(intersect.y - mobj.y) <= (mobj.radius + radius))
 	and (
-		mo.z <= intersect.z + height -- check overhead
-		and mo.z+mo.height >= intersect.z -- check underhead
+		(mobj.z <= (intersect.z + height)) -- check overhead
+		and ((mobj.z + mobj.height) >= intersect.z) -- check underhead
 	) then
 		return true, intersect
 	end
 	return false, nil
 end
-----
 
-sfxinfo[freeslot("sfx_zlmp")].caption = "Laser mine primes"
-sfxinfo[freeslot("sfx_zlmf")] = {
-	flags = SF_X2AWAYSOUND,
-	caption = "Laser mine fires"
-}
--- OUCH!
-for i = 0,3 do
-	sfxinfo[freeslot("sfx_zlmh"..i)].caption = "Electrocution"
-end
+freeslot("sfx_zlmp", "sfx_zlmf", "sfx_zlmh0", "sfx_zlmh1", "sfx_zlmh2", "sfx_zlmh3")
+sfxinfo[sfx_zlmp].caption = "Laser mine primes"
+sfxinfo[sfx_zlmf] = {flags = SF_X2AWAYSOUND, caption = "Laser mine fires"}
+sfxinfo[sfx_zlmh0].caption = "Electrocution"
+sfxinfo[sfx_zlmh1].caption = "Electrocution"
+sfxinfo[sfx_zlmh2].caption = "Electrocution"
+sfxinfo[sfx_zlmh3].caption = "Electrocution"
 
 freeslot("S_ZE2_LASERMINE", "MT_ZE2_LASERMINE")
 states[S_ZE2_LASERMINE] = {
@@ -124,6 +118,7 @@ freeslot("MT_LMINE_CHECK")
 addHook("MobjMoveBlocked", function(check, _, line)
 	check.blockingline = line
 end, MT_LMINE_CHECK)
+
 addHook("MobjMoveCollide", function(check, mobj)
 	if not check or not check.valid then return end
 	if (mobj.type == MT_ZE2CHECKPOINT) then return true end
@@ -136,12 +131,13 @@ addHook("MobjMoveCollide", function(check, mobj)
 	return true
 end, MT_LMINE_CHECK)
 
----- Raycast definition
 ---@param source mobj_t
 ---@param x fixed_t
 ---@param y fixed_t
 ---@param z fixed_t
-local function Raycast_SetDest(source, x, y, z) end -- prototype
+local function Raycast_SetDest(source, x, y, z)
+	source.zmine.endpoint = {x = x, y = y, z = z}
+end
 
 local function BlockedCollision(self, source, target, line, mobj)
 	if not (target and target.valid) then return end
@@ -151,6 +147,7 @@ local function BlockedCollision(self, source, target, line, mobj)
 	Raycast_SetDest(source, target.x,target.y,target.z)
 	P_KillMobj(target)
 end
+
 local function Tick(self, source, target)
 	if not target or not target.valid then return end
 	if not (source and source.valid and source.type == MT_ZE2_LASERMINE) then
@@ -159,55 +156,53 @@ local function Tick(self, source, target)
 	end
 
 	local x, y, z = target.x, target.y, target.x
-	local newx, newy, newz = x,y,z
-	local hit = false
+	local newx, newy, newz = x, y, z
 	while (target and target.valid and target.health > 0) do
 		P_XYMovement(target)
-		if not (target.valid) then break end
+
+		if not target.valid then break end
 		P_ZMovement(target)
-		if not (target.valid) then break end
+
+		if not target.valid then break end
 		newx = target.x
 		newy = target.y
 		newz = target.z
 
-		if (target.z <= target.floorz or target.z + target.height >= target.ceilingz)
-		or (target.eflags & MFE_JUSTSTEPPEDDOWN) then
+		if (target.z <= target.floorz) or ((target.z + target.height) >= target.ceilingz) or (target.eflags & MFE_JUSTSTEPPEDDOWN) then
 			break
 		end
 
-		if (x == target.x and y == target.y and z == target.z) then
+		if (x == target.x) and (y == target.y) and (z == target.z) then
 			break
 		end
 	end
 
-	Raycast_SetDest(source, newx,newy,newz)
+	Raycast_SetDest(source, newx, newy, newz)
 	if (target and target.valid) then
 		P_KillMobj(target)
 	end
 end
 
 local function Raycast_SendRay(mine)
-	mine.zmine.startpoint = {
-		x = mine.x, y = mine.y, z = mine.z
-	}
+	mine.zmine.startpoint = {x = mine.x, y = mine.y, z = mine.z}
 	mine.zmine.endpoint = nil
 
-	local sec = mine.subsector.sector
-	local slope = sec.f_slope
-	local slopeaim = 0
+	local sector = mine.subsector.sector
+	local slope = sector.f_slope
+	local slope_aim = 0
 	if false then --(bomb.ceilingmode) then
-		slope = sec.c_slope
+		slope = sector.c_slope
 	end
 	if slope then
-		slopeaim = FixedMul(slope.zangle, cos(mine.angle))
+		slope_aim = FixedMul(slope.zangle, cos(mine.angle))
 		if false then --bomb.ceilingmode
-			slopeaim = -$
+			slope_aim = -slope_aim
 		end
 	end
 
-	local aimangle = 0
+	local aim_angle = 0
 	if (mine.lasermode == LMODE_VERTICAL) then
-		aimangle = ANGLE_90
+		aim_angle = ANGLE_90
 	--elseif (mine.lasermode == LMODE_HORIZONTAL) then
 	end
 
@@ -215,13 +210,13 @@ local function Raycast_SendRay(mine)
 		source = mine,
 		type = "LMINE_CAST",
 		angle = mine.angle,
-		aiming = aimangle,
+		aiming = aim_angle,
 		allow_aim = true,
 		flags2 = MF2_DONTDRAW,
 	})
 
-	if (marker and marker.valid) then
-		marker.flags = $|MF_NOCLIPTHING|MF_NOTHINK
+	if marker and marker.valid then
+		marker.flags = marker.flags | (MF_NOCLIPTHING|MF_NOTHINK)
 		marker.isMissile = true
 
 		local missileinfo
@@ -235,29 +230,23 @@ local function Raycast_SendRay(mine)
 		while (marker and marker.valid and marker.health > 0) do
 			Tick(missileinfo, mine, marker)
 		end
-		if (marker and marker.valid) then P_RemoveMobj(marker); end
+		if (marker and marker.valid) then P_RemoveMobj(marker) end
 	end
 
 	-- convert to vectors
 	local start = mine.zmine.startpoint
-	local dest = mine.zmine.endpoint
+	local destination = mine.zmine.endpoint
 	-- Uh oh!!!!!!
-	if not dest then
+	if not destination then
 		P_KillMobj(mine)
 		return false
 	end
 
 	mine.zmine.startVector = Vec3.New(start.x, start.y, start.z + (41*mine.height/48))
-	mine.zmine.endVector = Vec3.New(dest.x, dest.y, dest.z)
+	mine.zmine.endVector = Vec3.New(destination.x, destination.y, destination.z)
 	mine.zmine.rayangle = mine.angle
-	mine.zmine.rayaiming = aimangle
+	mine.zmine.rayaiming = aim_angle
 	return true
-end
-
-Raycast_SetDest = function(source, x,y,z)
-	source.zmine.endpoint = {
-		x = x, y = y, z = z
-	}
 end
 
 local raycast_missile = xSlinger.registerMissile("LMINE_CAST", {
@@ -277,35 +266,35 @@ local raycast_missile = xSlinger.registerMissile("LMINE_CAST", {
 local cv_friendlyfire = CV_FindVar("friendlyfire")
 local ease_inquint = ease.inquint
 local function TelegraphFirstFire(mine)
-	local zm = mine.zmine
-	local start = zm.startVector
-	local dest = zm.endVector
-	local timefrac = ease_inquint(FU - FixedDiv(zm.setup*FU, L_SETUPTIME*FU), 0, FU)
-	local dist = R_PointTo3DDist(start.x,start.y,start.z, dest.x,dest.y,dest.z)
-	local nummobjs = 30 + (dist / 60)/FU
-	local randoffset = 8 * mine.scale
-	local flashtime = 1 << (zm.setup * 3/5)
-	flashtime = $ * 3/5
-	flashtime = min(8, max($ >> 4, 2))
-	for i = 0,nummobjs do
-		local frac = FixedMul(FixedDiv(i*FU, nummobjs*FU), timefrac)
-		local t = P_SpawnMobj(
-			P_Lerp(frac, start.x, dest.x) + P_RandomFixedRange(-randoffset, randoffset),
-			P_Lerp(frac, start.y, dest.y) + P_RandomFixedRange(-randoffset, randoffset),
-			P_Lerp(frac, start.z, dest.z) + P_RandomFixedRange(-randoffset, randoffset),
+	local zmine = mine.zmine
+	local start = zmine.startVector
+	local destination = zmine.endVector
+	local time_fraction = ease_inquint(FU - FixedDiv(zmine.setup*FU, L_SETUPTIME*FU), 0, FU)
+	local distance = R_PointTo3DDist(start.x,start.y,start.z, destination.x,destination.y,destination.z)
+	local num_mobjs = 30 + (distance / 60)/FU
+	local random_offset = 8 * mine.scale
+	local flash_time = 1 << (zmine.setup * 3/5)
+	flash_time = flash_time * 3/5
+	flash_time = min(8, max(flash_time >> 4, 2))
+	for i = 0, num_mobjs, 1 do
+		local fraction = FixedMul(FixedDiv(i*FU, num_mobjs*FU), time_fraction)
+		local visual = P_SpawnMobj(
+			P_Lerp(fraction, start.x, destination.x) + P_RandomFixedRange(-random_offset, random_offset),
+			P_Lerp(fraction, start.y, destination.y) + P_RandomFixedRange(-random_offset, random_offset),
+			P_Lerp(fraction, start.z, destination.z) + P_RandomFixedRange(-random_offset, random_offset),
 			MT_PARTICLE
 		)
-		t.sprite = SPR_THOK
-		t.scale = $ / 6
-		t.fuse = 2
-		t.tics = t.fuse
-		t.renderflags = $|RF_FULLBRIGHT
-		t.blendmode = AST_ADD
-		t.flags = $|MF_NOBLOCKMAP
-		t.color = mine.teamcolor
-		t.alpha = P_Lerp(timefrac, FU/10, FU)
-		if (zm.setup % flashtime == 0) then
-			t.scale = $ * 2
+		visual.sprite = SPR_THOK
+		visual.scale = visual.scale / 6
+		visual.fuse = 2
+		visual.tics = visual.fuse
+		visual.renderflags = visual.renderflags | RF_FULLBRIGHT
+		visual.blendmode = AST_ADD
+		visual.flags = visual.flags | MF_NOBLOCKMAP
+		visual.color = mine.teamcolor
+		visual.alpha = P_Lerp(time_fraction, FU / 10, FU)
+		if (zmine.setup % flash_time == 0) then
+			visual.scale = visual.scale * 2
 		end
 	end
 end
@@ -313,21 +302,21 @@ end
 -- width of the sprite, not the actual ray
 local LASER_WIDTH = 128*FU
 local function SetupVFX(mine)
-	local zm = mine.zmine
-	local start = zm.startVector
-	local dest = zm.endVector
-	local dist = R_PointTo3DDist(start.x,start.y,start.z, dest.x,dest.y,dest.z)
-	local dirvector = Vec3.SphereToCartesian(zm.rayangle, zm.rayaiming)
+	local zmine = mine.zmine
+	local start = zmine.startVector
+	local destination = zmine.endVector
+	local distance = R_PointTo3DDist(start.x,start.y,start.z, destination.x,destination.y,destination.z)
+	local direction_vector = Vec3.SphereToCartesian(zmine.rayangle, zmine.rayaiming)
 
 	if (mine.lasermode == LMODE_HORIZONTAL) then
-		zm.bounds = {
-			minx = min(start.x, dest.x),
-			maxx = max(start.x, dest.x),
-			miny = min(start.y, dest.y),
-			maxy = max(start.y, dest.y)
+		zmine.bounds = {
+			minx = min(start.x, destination.x),
+			maxx = max(start.x, destination.x),
+			miny = min(start.y, destination.y),
+			maxy = max(start.y, destination.y)
 		}
 	else
-		zm.bounds = {
+		zmine.bounds = {
 			minx = start.x - mine.radius,
 			maxx = start.x + mine.radius,
 			miny = start.y - mine.radius,
@@ -337,170 +326,179 @@ local function SetupVFX(mine)
 
 	local count = 0
 	local offset = LASER_WIDTH / 2
-	zm.vfxmobjs = {}
-	zm.raydist = dist
+	zmine.vfxmobjs = {}
+	zmine.raydist = distance
 
-	while (dist > 0) do
-		count = $ + 1
-		local v = P_SpawnMobjFromMobj(mine, 0,0,0, MT_PARTICLE)
-		v.sprite = SPR_SHCK
-		v.frame = C|FF_ADD|FF_PAPERSPRITE|FF_FULLBRIGHT
-		v.tics = -1
-		v.fuse = -1
-		v.angle = mine.angle
-		v.spritexscale = $ * 6/5
-		v.rollangle = zm.rayaiming
-		v.radius = 11*mine.scale
-		v.height = v.radius*2
+	while (distance > 0) do
+		count = count + 1
+		local particle = P_SpawnMobjFromMobj(mine, 0,0,0, MT_PARTICLE)
+		particle.sprite = SPR_SHCK
+		particle.frame = C|FF_ADD|FF_PAPERSPRITE|FF_FULLBRIGHT
+		particle.tics = -1
+		particle.fuse = -1
+		particle.angle = mine.angle
+		particle.spritexscale = particle.spritexscale * 6/5
+		particle.rollangle = zmine.rayaiming
+		particle.radius = 11*mine.scale
+		particle.height = particle.radius*2
 
-		P_SetOrigin(v,
-			mine.x + FixedMul(dirvector.x, offset),
-			mine.y + FixedMul(dirvector.y, offset),
-			mine.z + FixedMul(dirvector.z, offset) + 7*mine.scale
+		P_SetOrigin(particle,
+			mine.x + FixedMul(direction_vector.x, offset),
+			mine.y + FixedMul(direction_vector.y, offset),
+			mine.z + FixedMul(direction_vector.z, offset) + 7*mine.scale
 		)
-		v.originalpos = {
-			x = v.x, y = v.y, z = v.z, angle = v.angle
-		}
+		particle.originalpos = {x = particle.x, y = particle.y, z = particle.z, angle = particle.angle}
 
-		v.color = mine.teamcolor
-		v.colorized = true
+		particle.color = mine.teamcolor
+		particle.colorized = true
 
-		zm.vfxmobjs[count] = v
-		offset = $ + LASER_WIDTH
-		dist = $ - LASER_WIDTH
+		zmine.vfxmobjs[count] = particle
+		offset = offset + LASER_WIDTH
+		distance = distance - LASER_WIDTH
 	end
-	zm.totalvfx = count
+	zmine.totalvfx = count
 end
+
 local function DestroyVFX(mine)
-	local zm = mine.zmine
-	if not zm then return end
-	if not zm.totalvfx then return end
-	for i = 1, zm.totalvfx do
-		local mo = zm.vfxmobjs[i]
-		if (mo and mo.valid) then P_RemoveMobj(mo); end
+	local zmine = mine.zmine
+	if not zmine then return end
+	if not zmine.totalvfx then return end
+	for index = 1, zmine.totalvfx, 1 do
+		local visual = zmine.vfxmobjs[index]
+		if visual and visual.valid then
+			P_RemoveMobj(visual)
+		end
 	end
 
-	if (zm.clientsfx and zm.clientsfx.valid) then
-		P_RemoveMobj(zm.clientsfx)
+	if zmine.clientsfx and zmine.clientsfx.valid then
+		P_RemoveMobj(zmine.clientsfx)
 	end
 end
-local function UpdateVFX(mine)
-	local zm = mine.zmine
-	if not zm then return end
-	if not zm.totalvfx then return end
 
-	local lgrow = (FU/20) * zm.shootvfx
-	local lastlaser
-	for i = 1, zm.totalvfx do
-		local v = zm.vfxmobjs[i]
-		if not (v and v.valid) then continue end -- !?
-		v.frame = ($ &~FF_FRAMEMASK)|P_RandomRange(A, H)
-		v.spritexscale = FU + lgrow
-		v.spriteyscale = P_RandomRange(FU*9/10, FU*11/10) + lgrow
-		v.alpha = P_RandomRange(FU/2, FU)
-		v.angle = v.originalpos.angle
+local function UpdateVFX(mine)
+	local zmine = mine.zmine
+	if not zmine then return end
+	if not zmine.totalvfx then return end
+
+	local length_grow = (FU/20) * zmine.shootvfx
+	local last_laser
+	for index = 1, zmine.totalvfx, 1 do
+		local visual = zmine.vfxmobjs[index]
+		if not visual or not visual.valid then continue end -- !?
+
+		visual.frame = (visual.frame & ~FF_FRAMEMASK)|P_RandomRange(A, H)
+		visual.spritexscale = FU + length_grow
+		visual.spriteyscale = P_RandomRange(FU*9/10, FU*11/10) + length_grow
+		visual.alpha = P_RandomRange(FU/2, FU)
+		visual.angle = visual.originalpos.angle
 
 		if (mine.lasermode == LMODE_VERTICAL) then
-			v.angle = R_PointToAngle(mine.x, mine.y) + ANGLE_90
+			visual.angle = R_PointToAngle(mine.x, mine.y) + ANGLE_90
 		end
-		v.mirrored = P_RandomChance(FU/2)
+		visual.mirrored = P_RandomChance(FU/2)
 
-		local extra = lgrow * 50
+		local extra = length_grow * 50
 		local offset = P_RandomFixedRange(-8*mine.scale - extra, 8*mine.scale + extra)
 		local zoffset = 0
 		if (extra > 0) then
 			zoffset = P_RandomFixedRange(-extra, extra)
 		end
 
-		local opos = v.originalpos
-		P_SetOrigin(v,
-			opos.x + P_ReturnThrustX(nil, opos.angle + ANGLE_90, offset),
-			opos.y + P_ReturnThrustY(nil, opos.angle + ANGLE_90, offset),
-			opos.z + zoffset
+		local original_position = visual.originalpos
+		P_SetOrigin(visual,
+			original_position.x + P_ReturnThrustX(nil, original_position.angle + ANGLE_90, offset),
+			original_position.y + P_ReturnThrustY(nil, original_position.angle + ANGLE_90, offset),
+			original_position.z + zoffset
 		)
-		if (lastlaser and lastlaser.valid)
+		if (last_laser and last_laser.valid)
 		and (mine.lasermode == LMODE_HORIZONTAL) then
-			lastlaser.angle = R_PointToAngle2(lastlaser.x,lastlaser.y, v.x,v.y)
+			last_laser.angle = R_PointToAngle2(last_laser.x,last_laser.y, visual.x,visual.y)
 		end
 
-		lastlaser = v
+		last_laser = visual
 	end
 
-	local randoffset = 11*mine.scale
-	local angle = zm.rayangle
-	local dist = FixedDiv(zm.raydist, zm.totalvfx*FU) / 2
-	local work = max(1, zm.totalvfx / 10)
-	local anglevector = Vec3.SphereToCartesian(zm.rayangle, zm.rayaiming)
-	while (work) do
+	local random_offset = 11*mine.scale
+	local angle = zmine.rayangle
+	local distance = FixedDiv(zmine.raydist, zmine.totalvfx*FU) / 2
+	local work = max(1, zmine.totalvfx / 10)
+	local angle_vector = Vec3.SphereToCartesian(zmine.rayangle, zmine.rayaiming)
+	while work do
 		local progress = P_RandomFixed()
-		local newposition = {
-			x = P_Lerp(progress, zm.startVector.x, zm.endVector.x),
-			y = P_Lerp(progress, zm.startVector.y, zm.endVector.y),
-			z = P_Lerp(progress, zm.startVector.z, zm.endVector.z) - 2*randoffset
+		local new_position = {
+			x = P_Lerp(progress, zmine.startVector.x, zmine.endVector.x),
+			y = P_Lerp(progress, zmine.startVector.y, zmine.endVector.y),
+			z = P_Lerp(progress, zmine.startVector.z, zmine.endVector.z) - 2*random_offset
 		}
-		newposition.x = $ + P_RandomFixedRange(-randoffset, randoffset)
-		newposition.y = $ + P_RandomFixedRange(-randoffset, randoffset)
-		newposition.z = $ + P_RandomFixedRange(0, 3*randoffset)
+		new_position.x = new_position.x + P_RandomFixedRange(-random_offset, random_offset)
+		new_position.y = new_position.y + P_RandomFixedRange(-random_offset, random_offset)
+		new_position.z = new_position.z + P_RandomFixedRange(0, 3*random_offset)
 
-		local v = P_SpawnMobj(newposition.x,newposition.y,newposition.z, MT_SUPERSPARK)
-		v.scale = FixedMul(mine.scale / 2, P_RandomRange(FU*8/10, FU))
-		v.blendmode = AST_SUBTRACT
-		v.colorized = true
-		v.color = SKINCOLOR_COBALT
+		local spark = P_SpawnMobj(new_position.x,new_position.y,new_position.z, MT_SUPERSPARK)
+		spark.scale = FixedMul(mine.scale / 2, P_RandomRange(FU*8/10, FU))
+		spark.blendmode = AST_SUBTRACT
+		spark.colorized = true
+		spark.color = SKINCOLOR_COBALT
 
-		local speed = FixedMul(dist, P_RandomRange(FU/2,FU*3/4))
-		v.momx = $ + FixedMul(anglevector.x, speed)
-		v.momy = $ + FixedMul(anglevector.y, speed)
-		v.momz = $ + FixedMul(anglevector.z, speed)
-		work = $ - 1
+		local speed = FixedMul(distance, P_RandomRange(FU/2,FU*3/4))
+		spark.momx = spark.momx + FixedMul(angle_vector.x, speed)
+		spark.momy = spark.momy + FixedMul(angle_vector.y, speed)
+		spark.momz = spark.momz + FixedMul(angle_vector.z, speed)
+		work = work - 1
 	end
-	if zm.shootvfx then zm.shootvfx = $ - 1; end
+
+	if zmine.shootvfx then
+		zmine.shootvfx = zmine.shootvfx - 1
+	end
 
 	-- impacts at the destination point
-	local lineoffset = 4*mine.scale
+	local line_offset = 4*mine.scale
 	local angle = FixedAngle(360 * P_RandomFixed())
-	local p = P_SpawnMobj(
-		zm.endVector.x - FixedMul(anglevector.x, lineoffset),
-		zm.endVector.y - FixedMul(anglevector.y, lineoffset),
-		zm.endVector.z - FixedMul(anglevector.z, lineoffset),
+	local spark = P_SpawnMobj(
+		zmine.endVector.x - FixedMul(angle_vector.x, line_offset),
+		zmine.endVector.y - FixedMul(angle_vector.y, line_offset),
+		zmine.endVector.z - FixedMul(angle_vector.z, line_offset),
 		MT_SUPERSPARK
 	)
-	p.spritexscale = $ * 3/4
-	p.spriteyscale = p.spritexscale
-	p.destscale = 0
-	p.flags = $ &~MF_NOGRAVITY
 
-	randoffset = $ / 2
+	spark.spritexscale = spark.spritexscale * 3/4
+	spark.spriteyscale = spark.spritexscale
+	spark.destscale = 0
+	spark.flags = spark.flags & ~(MF_NOGRAVITY)
+
+	random_offset = random_offset / 2
 	if (mine.lasermode == LMODE_HORIZONTAL) then
-		P_InstaThrustEvenIn2D(p, zm.rayangle + ANGLE_90, FixedMul(cos(angle), randoffset))
-		p.momz = FixedMul(sin(angle), randoffset)
+		P_InstaThrustEvenIn2D(spark, zmine.rayangle + ANGLE_90, FixedMul(cos(angle), random_offset))
+		spark.momz = FixedMul(sin(angle), random_offset)
 	else
-		P_InstaThrustEvenIn2D(p, angle, randoffset)
+		P_InstaThrustEvenIn2D(spark, angle, random_offset)
 	end
 end
--- Clientside!!!!!!
-local function UpdateSFXTelegraph(mine)
-	local play = displayplayer
-	if not (play and play.valid) then return end
-	local mo = play.realmo
-	if not (mo and mo.valid) then return end
-	local zm = mine.zmine
 
-	local sfx = zm.clientsfx
+local function UpdateSFXTelegraph(mine) -- Clientside!!!!!!
+	local player = displayplayer
+	if not (player and player.valid) then return end
+
+	local mo = player.realmo
+	if not (mo and mo.valid) then return end
+
+	local zmine = mine.zmine
+
+	local sfx = zmine.clientsfx
 	if not (sfx and sfx.valid) then
-		local new = P_SpawnMobjFromMobj(mine, 0,0,0, MT_THOK)
-		new.flags2 = $|MF2_DONTDRAW
-		new.tics = -1
-		new.fuse = -1
-		new.flags = $|MF_NOTHINK
-		new.radius = 11*mine.scale
-		new.height = new.radius * 2
-		zm.clientsfx = new
-		sfx = new
+		local visual = P_SpawnMobjFromMobj(mine, 0,0,0, MT_THOK)
+		visual.flags2 = visual.flags2 | MF2_DONTDRAW
+		visual.tics = -1
+		visual.fuse = -1
+		visual.flags = visual.flags | MF_NOTHINK
+		visual.radius = 11*mine.scale
+		visual.height = visual.radius * 2
+		zmine.clientsfx = visual
+		sfx = visual
 	end
 
-	local linepoint = P_ClosestPointOnLine3D(Vec3.MobjPosToVec(mo), zm.startVector, zm.endVector)
-	P_MoveOrigin(sfx, linepoint.x,linepoint.y,linepoint.z - sfx.radius)
+	local line_point = P_ClosestPointOnLine3D(Vec3.MobjPosToVec(mo), zmine.startVector, zmine.endVector)
+	P_MoveOrigin(sfx, line_point.x,line_point.y,line_point.z - sfx.radius)
 
 	if not S_SoundPlaying(sfx, sfx_laser) then
 		S_StartSound(sfx, sfx_laser)
@@ -508,7 +506,7 @@ local function UpdateSFXTelegraph(mine)
 end
 
 addHook("MobjThinker", function(mine)
-	if (mine.health <= 0) then DestroyVFX(mine); return end
+	if (mine.health <= 0) then DestroyVFX(mine) return end
 
 	-- shoot out the ray!
 	if not mine.zmine then
@@ -517,64 +515,67 @@ addHook("MobjThinker", function(mine)
 		S_StartSound(mine, sfx_zlmp)
 		if not Raycast_SendRay(mine) then return end
 	end
-	local zm = mine.zmine
-	local teamcolor = mine.teamcolor
-	local aimvector = Vec3.SphereToCartesian(zm.rayangle, zm.rayaiming)
+
+	local zmine = mine.zmine
+	local team_color = mine.teamcolor
+	local aim_vector = Vec3.SphereToCartesian(zmine.rayangle, zmine.rayaiming)
 
 	-- the ray is technically already fired at this point,
 	-- but we wait to actually do anything with it first
-	if zm.setup then
+	if zmine.setup then
 		TelegraphFirstFire(mine)
-		zm.setup = $ - 1
-		if (zm.setup == 0) then
-			local start = zm.startVector
-			local dest = zm.endVector
+		zmine.setup = zmine.setup - 1
+		if (zmine.setup == 0) then
+			local start = zmine.startVector
+			local destination = zmine.endVector
 
 			local dist = mine.radius
-			local vfx = P_SpawnMobj(
-				start.x + FixedMul(aimvector.x, dist),
-				start.y + FixedMul(aimvector.y, dist),
-				start.z + FixedMul(aimvector.z, dist),
+			local particle = P_SpawnMobj(
+				start.x + FixedMul(aim_vector.x, dist),
+				start.y + FixedMul(aim_vector.y, dist),
+				start.z + FixedMul(aim_vector.z, dist),
 				MT_PARTICLE
 			)
-			vfx.state = S_ZE2_LMINEHIT
-			vfx.scale = $ * 2
-			vfx.color = teamcolor
-			vfx.blendmode = AST_SUBTRACT
+			particle.state = S_ZE2_LMINEHIT
+			particle.scale = particle.scale * 2
+			particle.color = team_color
+			particle.blendmode = AST_SUBTRACT
 
 			-- again for the end...
-			vfx = P_SpawnMobj(
-				dest.x - FixedMul(aimvector.x, dist),
-				dest.y - FixedMul(aimvector.y, dist),
-				dest.z - FixedMul(aimvector.z, dist),
+			particle = P_SpawnMobj(
+				destination.x - FixedMul(aim_vector.x, dist),
+				destination.y - FixedMul(aim_vector.y, dist),
+				destination.z - FixedMul(aim_vector.z, dist),
 				MT_PARTICLE
 			)
-			vfx.state = S_ZE2_LMINEHIT
-			vfx.scale = $ * 2
-			vfx.color = teamcolor
-			vfx.blendmode = AST_SUBTRACT
+
+			particle.state = S_ZE2_LMINEHIT
+			particle.scale = particle.scale * 2
+			particle.color = team_color
+			particle.blendmode = AST_SUBTRACT
 
 			SetupVFX(mine)
-			zm.shootvfx = 16
+			zmine.shootvfx = 16
 			S_StartSound(mine, sfx_zlmf)
 		end
 		return
 	end
 
 	-- in case the mine moved, reshoot the ray...
-	if (mine.x ~= zm.startpoint.x)
-	or (mine.y ~= zm.startpoint.y)
-	or (mine.z ~= zm.startpoint.z) then
+	if (mine.x ~= zmine.startpoint.x)
+	or (mine.y ~= zmine.startpoint.y)
+	or (mine.z ~= zmine.startpoint.z) then
 		DestroyVFX(mine)
 		if not Raycast_SendRay(mine) then return end
 		SetupVFX(mine)
 	end
+
 	-- ...then wait for the ray to hit something
-	if (zm.endpoint ~= nil and zm.endVector == nil) then
-		local dest = zm.endpoint
-		zm.endVector = Vec3.New(dest.x, dest.y, dest.z)
+	if (zmine.endpoint ~= nil) and (zmine.endVector == nil) then
+		local dest = zmine.endpoint
+		zmine.endVector = Vec3.New(dest.x, dest.y, dest.z)
 		SetupVFX(mine)
-	elseif (zm.endpoint == nil) then
+	elseif (zmine.endpoint == nil) then
 		DestroyVFX(mine)
 		if not Raycast_SendRay(mine) then return end
 		SetupVFX(mine)
@@ -583,58 +584,61 @@ addHook("MobjThinker", function(mine)
 
 	UpdateVFX(mine)
 	UpdateSFXTelegraph(mine)
-	--TraceRay(zm.startVector, zm.endVector)
 
 	-- using searchBlockmap would allow us to hit nonplayers
 	-- with the ray, but if the ray isnt orthongonal, we'd be
 	-- searching a huge area... in the interest of performance,
 	-- we're better off using a player iterator instead
-	local rayRad = 11*mine.scale
-	local rayHei = rayRad * 2
-	local bounds = zm.bounds
-	if mine.team == 2 then teamcolor = SKINCOLOR_KETCHUP; end
-	for play in players.iterate do
-		if play.spectator then continue end
-		local mo = play.mo
-		if not (mo and mo.valid and mo.health) then continue end
-		if (mo.team == mine.team and not cv_friendlyfire.value) then continue end
+	local ray_radius = 11*mine.scale
+	local ray_height = ray_radius * 2
+	local bounds = zmine.bounds
+	if (mine.team == 2) then
+		team_color = SKINCOLOR_KETCHUP
+	end
+
+	for player in players.iterate do
+		if player.spectator then continue end
+
+		local mobj = player.mo
+		if not (mobj and mobj.valid and mobj.health) then continue end
+		if (mobj.team == mine.team and not cv_friendlyfire.value) then continue end
 
 		-- bounding box check
-		if (mo.x + mo.radius < bounds.minx) then continue end
-		if (mo.x - mo.radius > bounds.maxx) then continue end
-		if (mo.y + mo.radius < bounds.miny) then continue end
-		if (mo.y - mo.radius > bounds.maxy) then continue end
+		if (mobj.x + mobj.radius < bounds.minx) then continue end
+		if (mobj.x - mobj.radius > bounds.maxx) then continue end
+		if (mobj.y + mobj.radius < bounds.miny) then continue end
+		if (mobj.y - mobj.radius > bounds.maxy) then continue end
 
-		local hits, inter = MobjIntersectsRay(zm.startVector, zm.endVector, rayRad,rayHei, mo)
+		local hits, intersect = MobjIntersectsRay(zmine.startVector, zmine.endVector, ray_radius,ray_height, mobj)
 		if not hits then continue end
 
-		local vfxoffset = -mo.radius * 3/2
-		local temp = P_SpawnMobj(
-			FixedMul(aimvector.x, vfxoffset) + P_RandomRange(-20,20)*FU + inter.x,
-			FixedMul(aimvector.y, vfxoffset) + P_RandomRange(-20,20)*FU + inter.y,
-			FixedMul(aimvector.z, vfxoffset) + P_RandomRange(-20,20)*FU + inter.z, MT_PARTICLE
+		local visual_offset = -mobj.radius * 3/2
+		local particle = P_SpawnMobj(
+			FixedMul(aim_vector.x, visual_offset) + P_RandomRange(-20,20)*FU + intersect.x,
+			FixedMul(aim_vector.y, visual_offset) + P_RandomRange(-20,20)*FU + intersect.y,
+			FixedMul(aim_vector.z, visual_offset) + P_RandomRange(-20,20)*FU + intersect.z, MT_PARTICLE
 		)
 
 		local damage = 3
-		if (mo.team == 2) then
-			damage = $ * 30
+		if (mobj.team == 2) then
+			damage = damage * 30
 		end
 
-		P_DamageMobj(mo, temp, mine.target, damage)
+		P_DamageMobj(mobj, particle, mine.target, damage)
 
-		if (leveltime % 4 == 0) then
+		if ((leveltime % 4) == 0) then
 			local sfx = P_RandomRange(sfx_zlmh0, sfx_zlmh3)
-			S_StartSound(nil, sfx, play)
-			S_StartSoundAtVolume(nil, sfx, 255 * 3/4, play)
-			temp.state = S_ZE2_LMINEHIT
-			temp.scale = FixedMul($, P_RandomRange(FU*7/10, FU))
-			temp.color = teamcolor
-			temp.blendmode = AST_SUBTRACT
+			S_StartSound(nil, sfx, player)
+			S_StartSoundAtVolume(nil, sfx, 255 * 3/4, player)
+			particle.state = S_ZE2_LMINEHIT
+			particle.scale = FixedMul(particle.scale, P_RandomRange(FU*7/10, FU))
+			particle.color = team_color
+			particle.blendmode = AST_SUBTRACT
 		else
-			P_RemoveMobj(temp)
+			P_RemoveMobj(particle)
 		end
 
-		xSlinger.give_effect(mo, "volt_electric", {
+		xSlinger.give_effect(mobj, "volt_electric", {
 			normalspeed_multiplier = FU/8,
 			in_knockback_multiplier = 3*FU,
 			actionspd_multiplier = FU/2,
@@ -659,42 +663,42 @@ local function FenceCheck(self, mobj)
 	check.momx = FixedMul(distance, cos(mobj.angle))
 	check.momy = FixedMul(distance, sin(mobj.angle))
 
-	for i = 0, 6 do
+	for times = 0, 6, 1 do
 		if not P_CheckPosition(check, x, y) then return false, check end
 		P_XYMovement(check)
 	end
-	--if (check.floorz < (mobj.z - check.height)) then return false, check end
-	--if (check.floorz > (mobj.z + mobj.height)) then return false, check end
-	--if (check.ceilingz < (check.z + check.height)) then return false, check end
+
 	if not P_IsObjectOnGround(mobj) and not check.blockingline then return false, check end
 	return true, check
 end
 
 local function StickToWall(self,mo,cmobj, x,y,z)
 	-- im going to cry
-	local line_ang = mo.angle
-	local moveoffset = FixedMul(mobjinfo[self.placetype].radius + 2*FU, mo.scale)
-	local bline = cmobj.blockingline
-	if (bline and bline.valid) then
-		local cx,cy = P_ClosestPointOnLine(x, y, bline)
-		local minx = min(bline.v1.x, bline.v2.x)
-		local maxx = max(bline.v1.x, bline.v2.x)
-		local miny = min(bline.v1.y, bline.v2.y)
-		local maxy = max(bline.v1.y, bline.v2.y)
+	-- mee too :'<
+	local line_angle = mo.angle
+	local move_offset = FixedMul(mobjinfo[self.placetype].radius + 2*FU, mo.scale)
+	local blocking_line = cmobj.blockingline
+	if (blocking_line and blocking_line.valid) then
+		local cx, cy = P_ClosestPointOnLine(x, y, blocking_line)
+		local minx = min(blocking_line.v1.x, blocking_line.v2.x)
+		local maxx = max(blocking_line.v1.x, blocking_line.v2.x)
+		local miny = min(blocking_line.v1.y, blocking_line.v2.y)
+		local maxy = max(blocking_line.v1.y, blocking_line.v2.y)
 		local lineside = P_PointOnLineSide(
-			cx - P_ReturnThrustX(nil, mo.angle, 2*FU),
-			cy - P_ReturnThrustY(nil, mo.angle, 2*FU),
-			bline
+			cx - P_ReturnThrustX(nil, mo.angle, 2 * FU),
+			cy - P_ReturnThrustY(nil, mo.angle, 2 * FU),
+			blocking_line
 		)
-		line_ang = R_PointToAngle2(
-			bline.v1.x, bline.v1.y, bline.v2.x, bline.v2.y
-		) + ANGLE_90*(lineside and 1 or -1)
 
-		x = clamp(minx, cx, maxx) + P_ReturnThrustX(nil, line_ang, moveoffset)
-		y = clamp(miny, cy, maxy) + P_ReturnThrustY(nil, line_ang, moveoffset)
-		z = $ + 6*mo.scale
+		line_angle = R_PointToAngle2(
+			blocking_line.v1.x, blocking_line.v1.y, blocking_line.v2.x, blocking_line.v2.y
+		) + ANGLE_90 * (lineside and 1 or -1)
+
+		x = clamp(minx, cx, maxx) + P_ReturnThrustX(nil, line_angle, move_offset)
+		y = clamp(miny, cy, maxy) + P_ReturnThrustY(nil, line_angle, move_offset)
+		z = z + 6 * mo.scale
 	end
-	return x,y,z,line_ang, (bline and bline.valid)
+	return x, y, z, line_angle, (blocking_line and blocking_line.valid)
 end
 
 local function FenceVisual(self, mobj)
@@ -709,8 +713,8 @@ local function FenceVisual(self, mobj)
 		visual = P_SpawnMobj(x, y, z, MT_ZVISUAL)
 		mobj.visual_fence = visual
 	end
-	local spawnstate = states[mobjinfo[self.placetype].spawnstate]
 
+	local spawnstate = states[mobjinfo[self.placetype].spawnstate]
 	local valid, cmobj = FenceCheck(self, mobj)
 	visual.height = mobjinfo[self.placetype].height
 	visual.radius = mobjinfo[self.placetype].radius
@@ -727,7 +731,7 @@ local function FenceVisual(self, mobj)
 	visual.alpha = FU / 2
 	visual.fuse = 3
 
-	x,y,z,angle = StickToWall(self,mobj,cmobj, x,y,z)
+	x, y, z, angle = StickToWall(self,mobj,cmobj, x,y,z)
 
 	visual.angle = angle
 	P_MoveOrigin(visual, x, y, z)
@@ -763,7 +767,7 @@ xSlinger.registerItem("laser_mine", {
 		local z = mo.z
 		local stuck = false
 		x,y,z,line_ang,stuck = StickToWall(self,mo,cmobj, x,y,z)
-		if (stuck) then
+		if stuck then
 			lmode = LMODE_HORIZONTAL
 		end
 
@@ -772,11 +776,14 @@ xSlinger.registerItem("laser_mine", {
 		turret.angle = line_ang
 		turret.target = mo
 		if (lmode == LMODE_HORIZONTAL) then
-			turret.flags = $|MF_NOGRAVITY|MF_NOCLIP|MF_NOCLIPHEIGHT
+			turret.flags = turret.flags | (MF_NOGRAVITY|MF_NOCLIP|MF_NOCLIPHEIGHT)
 			turret.antiknockback = true
 		end
+
 		local teamcolor = SKINCOLOR_COBALT
-		if turret.team == 2 then teamcolor = SKINCOLOR_KETCHUP; end
+		if (turret.team == 2) then
+			teamcolor = SKINCOLOR_KETCHUP
+		end
 		turret.teamcolor = teamcolor
 		turret.lasermode = lmode
 		S_StartSound(turret, sfx_s3k76)
