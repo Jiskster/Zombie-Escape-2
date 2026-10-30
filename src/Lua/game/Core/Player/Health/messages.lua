@@ -61,7 +61,10 @@ local DEATH_TYPES = {
 	[DMG_DROWNED] = "%s%s%s drowned",
 	[DMG_SPACEDROWN] = "%s%s%s couldn't breathe",
 	[DMG_DEATHPIT] = "%s%s%s fell into a bottomless pit",
-	[DMG_CRUSHED] = "%s%s%s was crushed"
+	[DMG_CRUSHED] = "%s%s%s was crushed",
+
+	[DMG_SPECTATOR] = "%s%s%s went AWOL",
+	[DMG_INSTAKILL] = "%s%s%s has been killed by " .. "\x8C" .. "The Guardians"
 }
 
 ---@param assist mobj_t
