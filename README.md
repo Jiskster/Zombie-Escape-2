@@ -14,7 +14,7 @@ It's a SRB2 gametype inspired on a gamemode plugin from Counter Strike by the sa
 ## Plague
 ***There is no escape...***
 - Survivors wins by surviving until the round ends.
-    - Everyone starts with Red Ring.
+    - Everyone starts with no items, find them scattered around the map.
 - Zombies wins by infecting all survivors.
     - Even survivors that dies without being infected becomes a zombie.
 - Fall damage is enabled, be careful of heights.
