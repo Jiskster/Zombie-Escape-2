@@ -36,7 +36,7 @@ addHook("PlayerThink", function(player)
 
 				if not player.ze2.respawntics then
 					player.ze2.isFalling = false
-					player.ze2.fall_height = 0
+					player.ze2.fall_speed = 0
 					if player.mo.team == 1 then
 						if not (settings.zombie_after_death) then
 							player.ze2.outofgame = true
