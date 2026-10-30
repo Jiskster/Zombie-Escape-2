@@ -15,7 +15,7 @@ mobjinfo[MT_PROPWOOD] = {
 }
 
 mobjinfo[MT_PROPWOOD].npc_name = "Wood Fence"
-mobjinfo[MT_PROPWOOD].npc_spawnhealth = {150,250}
+mobjinfo[MT_PROPWOOD].npc_spawnhealth = 200
 mobjinfo[MT_PROPWOOD].npc_name_color = SKINCOLOR_BROWN
 
 states[S_PROP1] = {
@@ -146,7 +146,7 @@ local function FenceVisual(self, mobj)
 	visual.momx = mobj.momx
 	visual.momy = mobj.momy
 	visual.momz = mobj.momz
-	visual.sprite = SPR_WPRP
+	visual.sprite = self.visplacesprite or SPR_WPRP
 	visual.frame = 0|FF_ADD
 	visual.angle = mobj.angle + ANGLE_90
 	P_MoveOrigin(visual, x, y, z)
@@ -174,6 +174,7 @@ xSlinger.registerItem("wood_fence", {
 	maxcount = 10;
 	
 	placetype = MT_PROPWOOD,
+	placehealth = 200,
 
 	color = SKINCOLOR_BROWN;
 	holdfunc = FenceVisual;
@@ -189,6 +190,14 @@ xSlinger.registerItem("wood_fence", {
 		wood.renderflags = $|RF_PAPERSPRITE
 		wood.team = mo.team
 		wood.target = mo
+		wood.health = self.placehealth or 10
+		wood.maxhealth = wood.health
+		wood.isfence = true
+		
+		if self.placedye ~= nil then
+			wood.colorized = true
+			wood.color = self.placedye
+		end
 	end;
 	skin_override = {
 		["tails"] = {
