@@ -98,10 +98,10 @@ return "Intermission", function(v, player)
 		local top_x = i*(upper_patch.width*FU) - x_movement
 		local top_y = -triangle_y
 
-		v.drawScaled(top_x + (2 * FU), top_y + (2 * FU), FU, upper_patch, V_SNAPTOTOP, shadow_colormap)
+		v.drawScaled(top_x + (1 * FU), top_y + (1 * FU), FU, upper_patch, V_SNAPTOTOP|V_50TRANS, shadow_colormap) -- shadow
 		v.drawScaled(top_x, top_y, FU, upper_patch, V_SNAPTOTOP)
 
-		v.drawScaled(bottom_x - (2 * FU), bottom_y - (2 * FU), FU, lower_patch, V_SNAPTOBOTTOM, shadow_colormap)
+		v.drawScaled(bottom_x - (1 * FU), bottom_y - (1 * FU), FU, lower_patch, V_SNAPTOBOTTOM|V_50TRANS, shadow_colormap) -- shadow
 		v.drawScaled(bottom_x, bottom_y, FU, lower_patch, V_SNAPTOBOTTOM)
 	end
 
@@ -271,9 +271,9 @@ return "Intermission", function(v, player)
 	end
 
 	-- "Survivors Win" | "Zombies Win"
-	v.drawScaled(team_x + (2 *  FU), (100 + 2) * FU, FU, team_patch, 0, shadow_colormap)
+	v.drawScaled(team_x + (1 *  FU), (100 + 1) * FU, FU, team_patch, V_50TRANS, shadow_colormap) -- shadow
 	v.drawScaled(team_x, 100*FU, FU, team_patch)
 
-	v.drawScaled(win_x + (2 * FU), (100 + 2) * FU, FU, win_patch, 0, shadow_colormap)
+	v.drawScaled(win_x + (1 * FU), (100 + 1) * FU, FU, win_patch, V_50TRANS, shadow_colormap) -- shadow
 	v.drawScaled(win_x, 100*FU, FU, win_patch)
 end
