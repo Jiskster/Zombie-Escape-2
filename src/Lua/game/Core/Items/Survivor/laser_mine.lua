@@ -84,6 +84,10 @@ sfxinfo[freeslot("sfx_zlmf")] = {
 	flags = SF_X2AWAYSOUND,
 	caption = "Laser mine fires"
 }
+-- OUCH!
+for i = 0,3 do
+	sfxinfo[freeslot("sfx_zlmh"..i)].caption = "Electrocution"
+end
 
 freeslot("S_ZE2_LASERMINE", "MT_ZE2_LASERMINE")
 states[S_ZE2_LASERMINE] = {
@@ -615,6 +619,9 @@ addHook("MobjThinker", function(mine)
 		P_DamageMobj(mo, temp, mine.target, damage)
 		
 		if (leveltime % 4 == 0) then
+			local sfx = P_RandomRange(sfx_zlmh0, sfx_zlmh3)
+			S_StartSound(nil, sfx, play)
+			S_StartSoundAtVolume(nil, sfx, 255 * 3/4, play)
 			temp.state = S_ZE2_LMINEHIT
 			temp.scale = FixedMul($, P_RandomRange(FU*7/10, FU))
 			temp.color = teamcolor
