@@ -624,7 +624,7 @@ addHook("MobjThinker", function(mine)
 			damage = damage * 30
 		end
 
-		P_DamageMobj(mobj, particle, mine.target, damage)
+		P_DamageMobj(mobj, mine, mine.target, damage)
 
 		if ((leveltime % 4) == 0) then
 			local sfx = P_RandomRange(sfx_zlmh0, sfx_zlmh3)
