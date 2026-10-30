@@ -162,7 +162,6 @@ SurvivorItem "volt_ring.lua"
 -- Misc
 SurvivorItem "blue_spring.lua"
 SurvivorItem "wood_fence.lua"
-SurvivorItem "steel_fence.lua" -- must load after wood fence
 SurvivorItem "apple.lua"
 SurvivorItem "energy_drink.lua"
 SurvivorItem "amys_heart.lua"

@@ -16,7 +16,6 @@ ZE2.RandomItemPool = {
 	"flame_ring",
 	"volt_ring",
 	"laser_mine",
-	"steel_fence",
 }
 
 -- Mapthing

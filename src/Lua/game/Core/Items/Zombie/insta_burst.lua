@@ -44,7 +44,7 @@ addHook("MobjMoveCollide", function(instaburst, mobj)
 		end
 
 		-- Just pretend we can see the fences
-		local cansee = (mobj.isfence == true) and true or P_CheckSight(mobj, instaburst)
+		local cansee = mobj.type == MT_PROPWOOD and true or P_CheckSight(mobj, instaburst)
 		if not cansee then return end
 
 		-- Check if you hit this individual before in another frame
@@ -56,7 +56,7 @@ addHook("MobjMoveCollide", function(instaburst, mobj)
 
 		local dist = R_PointToDist2(mobj.x, mobj.y, instaburst.x, instaburst.y)
 
-		if ((mobj.isfence and dist <= (mobj.radius * 2)) --only extend the range for fences
+		if ((mobj.type == MT_PROPWOOD and dist <= 200*FU) --only extend the range for fences
 		or dist < range) and not alreadyhit then
 			xSlinger.ShouldDamage(mobj, instaburst, instaburst.target, instaburst.forcedamage)
 			table.insert(instaburst.ib_hitlist, mobj)
