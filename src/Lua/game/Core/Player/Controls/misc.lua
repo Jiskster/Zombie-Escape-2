@@ -127,6 +127,10 @@ addHook("PlayerThink", function(player) ---@param player player_t
 		end
 	end
 
+	if (player.quittime > 0) then
+		player.powers[pw_flashing] = 0
+	end
+
 	pv.lastJumped = (player.pflags & PF_JUMPED == PF_JUMPED)
 end)
 
