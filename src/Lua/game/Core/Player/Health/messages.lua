@@ -64,7 +64,7 @@ local DEATH_TYPES = {
 	[DMG_CRUSHED] = "%s%s%s was crushed",
 
 	[DMG_SPECTATOR] = "%s%s%s went AWOL",
-	[DMG_INSTAKILL] = "%s%s%s has been killed by " .. "\x8C" .. "The Guardians"
+	[DMG_INSTAKILL] = "%s%s%s has been killed by " .. "\x8F" .. "Something"
 }
 
 ---@param assist mobj_t
@@ -151,6 +151,10 @@ function ZE2.SendDeathMessage(player, inflictor, source, damagetype)
 			end
 		end
 	elseif DEATH_TYPES[damagetype] then
+		if player.spectator then
+			damagetype = DMG_SPECTATOR
+		end
+
 		message = string.format(DEATH_TYPES[damagetype], playercolor, player.name, "\x83")
 		if ValidAssist(assist) then
 			local sourcecolor, sourcename = ZE2.GetMobjNameAndColor(assist)
