@@ -95,6 +95,8 @@ local button_to_tooltip = {
     [BT_TOSSFLAG] = "TF",
 }
 
+local infstaminatics = 0 -- max limit
+local curinfstaminatics = 0 -- current duration
 ---@param v videolib
 ---@param player player_t
 ---@param x fixed_t
@@ -137,12 +139,29 @@ local function DrawStaminaOrAbility(v, player, x, y, flags)
     local filltotalfrac = filltotal * FU
     if bar_visible then
         local header = "Stamina"
-        local infinite_stamina = (#xSlinger.search_effect(mo, "energy_drink") > 0)
         local fillamount = FixedMul(FixedDiv(stamina, staminamax), filltotalfrac)
         if (team == 2) then
             header = special.effect_name or "Ability"
             fillamount = FixedMul(FixedDiv(ability, abilitymax), filltotalfrac)
         end
+		local energyeffects = xSlinger.search_effect(mo, "energy_drink")
+        local infinite_stamina = (#energyeffects > 0)
+		
+		if infinite_stamina then
+			-- i know effects have a maximum duration, but sometimes
+			-- effects arent applied with that duration, and/or are additive.
+			curinfstaminatics = 0
+			for i = 1, #energyeffects do
+				local effect = energyeffects[i]
+				infstaminatics = max(infstaminatics, effect.fuse)
+				curinfstaminatics = max(curinfstaminatics, effect.fuse)
+			end
+			
+			fillamount = FixedMul(FixedDiv(curinfstaminatics, infstaminatics), filltotalfrac)
+		else
+			infstaminatics = 0
+			curinfstaminatics = 0
+		end
 
         if (header ~= nil) and (header:len() > 0) then
             v.drawString(fillx, filly - 5, header, flags|V_ALLOWLOWERCASE, "small")
@@ -177,7 +196,7 @@ local function DrawStaminaOrAbility(v, player, x, y, flags)
             local percent = FixedInt(FixedCeil(FixedDiv(fillamount, filltotalfrac) * 100))
             local display = percent .. "%"
             if infinite_stamina then
-                display = "\x16"
+                display = "\x16%"
             end
             v.drawString(fillx + filltotal, filly, display, flags, "small-right")
         end
