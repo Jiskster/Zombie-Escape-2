@@ -6,7 +6,7 @@
 local function DrawHealth(v, player, x, y, flags)
     local mo = player.mo --[[@as mobj_t]]
 
-    local maxhealth = mo.maxhealth or 0
+    local max_health = mo.maxhealth or 0
 
     local bg_width = 44
     local bg_height = 10
@@ -22,16 +22,16 @@ local function DrawHealth(v, player, x, y, flags)
     local health_y = y + (1 * FU)
     local health_scale = FU / 2
     v.drawScaled(health_x, health_y, health_scale, health_icon, flags, v.getColormap(nil, health_color, nil))
-    if (mo.health <= (maxhealth / 2)) then
+    if (mo.health <= (max_health / 2)) then
         local amount = FU - cos(leveltime * ANG10)
         local transparency = L_FadeAmount(amount)
         v.drawScaled(health_x, health_y, health_scale, health_icon, flags|transparency, v.getColormap(nil, SKINCOLOR_RED, nil))
     end
 
     local health_text = 0
-    if (mo.health <= (maxhealth / 4)) then
+    if (mo.health <= (max_health / 4)) then
         health_text = V_REDMAP
-    elseif (mo.health <= (maxhealth / 2)) then
+    elseif (mo.health <= (max_health / 2)) then
         health_text = V_YELLOWMAP
     end
     v.drawString(health_x + (10 * FU), health_y, mo.health, flags|health_text, "fixed")
@@ -95,8 +95,8 @@ local button_to_tooltip = {
     [BT_TOSSFLAG] = "TF",
 }
 
-local infstaminatics = 0 -- max limit
-local curinfstaminatics = 0 -- current duration
+local infinite_stamina_max = 0 -- max limit
+local infinite_stamina_current = 0 -- current duration
 ---@param v videolib
 ---@param player player_t
 ---@param x fixed_t
@@ -110,13 +110,13 @@ local function DrawStaminaOrAbility(v, player, x, y, flags)
 
     local ze2 = player.ze2
 
-    local zombieconfig = ZE2.ZombieConfig[ze2.zombie_type or ""]
-    local special = zombieconfig.special
+    local zombie_config = ZE2.ZombieConfig[ze2.zombie_type or ""]
+    local special = zombie_config.special
 
-    local staminamax = 100 * FU
-    local abilitymax = (team == 2) and (special.cooldown or 0) * FU or 0
+    local stamina_max = 100 * FU
+    local ability_max = (team == 2) and (special.cooldown or 0) * FU or 0
     if (team == 2) and special and special and special.button then
-        ability = ease.linear(FU / 2, ability, abilitymax - (ze2.special_cooldown * FU))
+        ability = ease.linear(FU / 2, ability, ability_max - (ze2.special_cooldown * FU))
     elseif (team == 1) then
         stamina = ease.linear(FU / 2, stamina, ze2.sprintmeter)
     end
@@ -132,73 +132,72 @@ local function DrawStaminaOrAbility(v, player, x, y, flags)
         v.drawFill(FixedInt(x), FixedInt(y), bg_width, bg_height, 31|flags|V_TRANSLUCENT)
     end
 
-    local fillx = FixedInt(x) + 1
-    local filly = FixedInt(y) + 6
-    local fillh = 4
-    local filltotal = 42
-    local filltotalfrac = filltotal * FU
+    local fill_x = FixedInt(x) + 1
+    local fill_y = FixedInt(y) + 6
+    local fill_height = 4
+    local fill_total = 42
+    local fill_total_fixed = fill_total * FU
     if bar_visible then
         local header = "Stamina"
-        local fillamount = FixedMul(FixedDiv(stamina, staminamax), filltotalfrac)
+        local fill_amount = FixedMul(FixedDiv(stamina, stamina_max), fill_total_fixed)
         if (team == 2) then
             header = special.effect_name or "Ability"
-            fillamount = FixedMul(FixedDiv(ability, abilitymax), filltotalfrac)
+            fill_amount = FixedMul(FixedDiv(ability, ability_max), fill_total_fixed)
         end
-		local energyeffects = xSlinger.search_effect(mo, "energy_drink")
-        local infinite_stamina = (#energyeffects > 0)
-		
+
+		local energy_effects = xSlinger.search_effect(mo, "energy_drink")
+        local infinite_stamina = (#energy_effects > 0)
 		if infinite_stamina then
 			-- i know effects have a maximum duration, but sometimes
 			-- effects arent applied with that duration, and/or are additive.
-			curinfstaminatics = 0
-			for i = 1, #energyeffects do
-				local effect = energyeffects[i]
-				infstaminatics = max(infstaminatics, effect.fuse)
-				curinfstaminatics = max(curinfstaminatics, effect.fuse)
+			infinite_stamina_current = 0
+			for index = 1, #energy_effects do
+				local effect = energy_effects[index]
+				infinite_stamina_max = max(infinite_stamina_max, effect.fuse)
+				infinite_stamina_current = max(infinite_stamina_current, effect.fuse)
 			end
-			
-			fillamount = FixedMul(FixedDiv(curinfstaminatics, infstaminatics), filltotalfrac)
+			fill_amount = FixedMul(FixedDiv(infinite_stamina_current, infinite_stamina_max), fill_total_fixed)
 		else
-			infstaminatics = 0
-			curinfstaminatics = 0
+			infinite_stamina_max = 0
+			infinite_stamina_current = 0
 		end
 
         if (header ~= nil) and (header:len() > 0) then
-            v.drawString(fillx, filly - 5, header, flags|V_ALLOWLOWERCASE, "small")
+            v.drawString(fill_x, fill_y - 5, header, flags|V_ALLOWLOWERCASE, "small")
         end
 
-        v.drawFill(fillx - 1, filly - 1, filltotal + 2, fillh + 2, 31|flags|V_TRANSLUCENT)
+        v.drawFill(fill_x - 1, fill_y - 1, fill_total + 2, fill_height + 2, 31|flags|V_TRANSLUCENT)
         if (team == 2) then
             local color = skincolors[SKINCOLOR_ALPHAZOMBIE].ramp
             if (ze2.special_cooldown > 0) then
                 color = 71
             end
-            L_DrawBar(v, fillx, filly, filltotal, fillh, 0, FixedDiv(fillamount, filltotalfrac), color, flags|V_FLIP, FU)
+            L_DrawBar(v, fill_x, fill_y, fill_total, fill_height, 0, FixedDiv(fill_amount, fill_total_fixed), color, flags|V_FLIP, FU)
         elseif ze2.sprintdelay then
             local alpha = FU - sin((leveltime * 2) * ANG10)
-            L_DrawBar(v, fillx, filly, filltotal, fillh, 0, FU, STAMINA_OUT_RAMP, flags, alpha)
+            L_DrawBar(v, fill_x, fill_y, fill_total, fill_height, 0, FU, STAMINA_OUT_RAMP, flags, alpha)
         else
             local color = STAMINA_RAMP
             if infinite_stamina then
                 color = STAMINA_INFINITE_RAMP
             end
 
-            L_DrawBar(v, fillx, filly, filltotal, fillh, 0, FixedDiv(fillamount, filltotalfrac), color, flags, FU)
+            L_DrawBar(v, fill_x, fill_y, fill_total, fill_height, 0, FixedDiv(fill_amount, fill_total_fixed), color, flags, FU)
             if (stamina <= (50 * FU)) then
                 local alpha = FU - sin(leveltime * (ANG10 / 2))
-                L_DrawBar(v, fillx, filly, filltotal, fillh, 0, FixedDiv(fillamount, filltotalfrac), STAMINA_LOW_RAMP, flags, alpha)
+                L_DrawBar(v, fill_x, fill_y, fill_total, fill_height, 0, FixedDiv(fill_amount, fill_total_fixed), STAMINA_LOW_RAMP, flags, alpha)
             end
         end
 
         if ze2.sprintdelay then
-            v.drawString((fillx * FU) + (filltotalfrac / 2), filly * FU, "Exhausted", flags|V_YELLOWMAP|V_ALLOWLOWERCASE, "small-fixed-center")
+            v.drawString((fill_x * FU) + (fill_total_fixed / 2), fill_y * FU, "Exhausted", flags|V_YELLOWMAP|V_ALLOWLOWERCASE, "small-fixed-center")
         else
-            local percent = FixedInt(FixedCeil(FixedDiv(fillamount, filltotalfrac) * 100))
+            local percent = FixedInt(FixedCeil(FixedDiv(fill_amount, fill_total_fixed) * 100))
             local display = percent .. "%"
             if infinite_stamina then
-                display = "\x16%"
+                display = "\x16" .. "%"
             end
-            v.drawString(fillx + filltotal, filly, display, flags, "small-right")
+            v.drawString(fill_x + fill_total, fill_y, display, flags, "small-right")
         end
     end
 
@@ -209,7 +208,7 @@ local function DrawStaminaOrAbility(v, player, x, y, flags)
             if (ze2.special_cooldown > 0) then
                 transparency = V_TRANSLUCENT
             end
-            v.drawScaled(x + filltotalfrac + (4 * FU), y + (2 * FU), FU / 2, v.cachePatch(buttonpatch), flags|transparency, nil)
+            v.drawScaled(x + fill_total_fixed + (4 * FU), y + (2 * FU), FU / 2, v.cachePatch(buttonpatch), flags|transparency, nil)
         end
     end
 end
