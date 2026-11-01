@@ -13,7 +13,7 @@ Core Developers:
 Contributors:
 "xdf22"
 "LeonardoTheMutant" - Retired
-"bypigs2" - Did many music fixes.
+"bypigs2" - Did many music fixes, and made the blank level pic
 
 Spriters:
 "Luigi Budd/Epix"
