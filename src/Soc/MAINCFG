@@ -112,7 +112,6 @@ SelectHeading = Escape Maps
 NoZone = True
 NextLevel = J1
 Lua.ze2_timelimit = 6
-Lua.ze2_laddertag = 300
 
 Level 14
 Levelname = Doomed Corp
