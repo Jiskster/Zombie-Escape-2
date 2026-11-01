@@ -100,6 +100,10 @@ local function HandleFalldamage(player)
 	end
 
 	local fall_damage = FixedMul(ZE2.FALL_DAMAGE_AMOUNT, FixedDiv(speed - ZE2.MIN_FALL_SPEED, FU))
+	if (player.mo.team == 2) then -- since zombies has so much HP, this would balance it
+		fall_damage = fall_damage * 8
+	end
+
 	HandleFallExhaust(player, player.mo, speed, false)
     P_DamageMobj(player.mo, nil, nil, fall_damage, ZE2.DMG_FALLDAMAGE)
 	DropBlood(player, fall_damage)
