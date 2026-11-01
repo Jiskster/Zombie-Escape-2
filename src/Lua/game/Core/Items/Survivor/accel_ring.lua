@@ -110,7 +110,7 @@ xSlinger.registerItem("accel_ring", {
 					shot.momx = $ * (2+i)/2
 					shot.momy = $ * (2+i)/2
 					shot.momz = $ * (2+i)/2
-					if (j == 0) then
+					if (j == 0 and i == 0) then
 						S_StartSound(shot, sfx_thok)
 					end
 				end
