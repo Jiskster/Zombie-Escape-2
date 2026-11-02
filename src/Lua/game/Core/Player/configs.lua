@@ -1,6 +1,6 @@
 ZE2.StandardJumpFactor = FixedDiv(90*FU, 100*FU)
 ZE2.ZombieJumpFactor = FixedDiv(100*FU, 100*FU)
-ZE2.DefaultSurvivorInvSlots = 5
+ZE2.DefaultSurvivorInvSlots = 3
 ZE2.DefaultZombieInvSlots = 2
 
 local item_blacklist = {
