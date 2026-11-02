@@ -319,7 +319,7 @@ function ZE2.setConfigInventory(player, newskin, noitems)
 
 	if (team == 1) and sc[skin] then
 		local items = force_loadout[team] or sc[skin].items
-		xS:inv_add("survivor", ZE2.DefaultSurvivorInvSlots)
+		xS:inv_add("survivor", settings.survivor_inv_slots or ZE2.DefaultSurvivorInvSlots)
 
 		if (not noitems) and (items) then
 			for i,item in ipairs(items) do

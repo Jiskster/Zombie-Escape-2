@@ -22,6 +22,7 @@ local function getDefaultSettings()
 			[1] = nil,
 			[2] = nil,
 		}, 
+		survivor_inv_slots = nil, -- how many slots survivors have
 		midgame_join = false, -- can players join midgame?
 		zombie_after_death = false, -- decides if survivors respawn as zombies after dying (not infecting)
 		zombie_health_multi = FRACUNIT,

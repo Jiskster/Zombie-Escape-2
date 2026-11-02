@@ -13,6 +13,7 @@ gt.zombie_chosen_always_alpha = true
 gt.zombie_health_multi = FU/2
 gt.default_zombie_release_time = 0
 gt.survivor_drop_inventory = true
+gt.survivor_inv_slots = 3
 gt.move_during_pregame = true
 gt.fall_damage = true
 gt.allow_pregame_drop = true
