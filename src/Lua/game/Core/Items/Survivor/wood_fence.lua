@@ -61,6 +61,9 @@ states[S_PROP1_BREAK] = {
 			plank.frame = $|FF_PAPERSPRITE
 
 			plank.flags = MF_NOCLIP|MF_NOCLIPHEIGHT
+			
+			plank.colorized = mo.colorized
+			plank.color = mo.color
 
 			plank.angle = fa + P_RandomRange(-180,180)*ANG1
 			plank.rollangle = FixedAngle(P_RandomRange(0,359)*FU+P_RandomFixed())

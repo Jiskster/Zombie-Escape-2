@@ -1,4 +1,4 @@
-freeslot("MT_PROPSTEEL", "S_STEELPROP", "SPR_SPRP")
+freeslot("MT_PROPSTEEL", "S_STEELPROP", "S_STEELPROP_BREAK", "SPR_SPRP")
 
 mobjinfo[MT_PROPSTEEL] = {
 	spawnstate = S_STEELPROP,
@@ -24,6 +24,19 @@ states[S_STEELPROP] = {
 			P_KillMobj(mo, nil, nil, DMG_CRUSHED)
 		end
 	end
+}
+
+states[S_STEELPROP_BREAK] = {
+	nextstate = S_NULL,
+	sprite = SPR_WPRP,
+	action = function(mo)
+		mo.colorized = true
+		mo.color = SKINCOLOR_WHITE
+		
+		states[S_PROP1_BREAK].action(mo)
+	end,
+	frame = B,
+	tics = TICRATE
 }
 
 mobjinfo[MT_PROPSTEEL].npc_name = "Steel Fence"
