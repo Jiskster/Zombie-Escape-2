@@ -53,7 +53,7 @@ local function zombie_droplet_hitground(mo) -- MobjHitFloor my beloved where are
     end
 end
 
-rawset(_G, "Z_DoDroplet", function(mo, blood_quantity)
+function ZE2.DoDroplet(mo, blood_quantity)
     local pradius = mo.radius / FU -- Idk, P_RandomRange throws a warning about big numbers so I had to divide by FU first
     local pheight = mo.height / FU
 
@@ -65,7 +65,7 @@ rawset(_G, "Z_DoDroplet", function(mo, blood_quantity)
 
         P_InstaThrust(droplt, (drop_rad * FU), FixedMul(P_RandomRange(2, 7) * FU, mo.scale))
     end
-end)
+end
 
 local function dropblood(p, inf, src, dmg, damagetype)
     if not (p.mo and p.mo.valid) then return end
@@ -74,12 +74,12 @@ local function dropblood(p, inf, src, dmg, damagetype)
     local pmo = p.mo
     local dmg_strength = (dmg * 10) / 100
     local blood_count = max(2, min(dmg_strength, 30))
-    Z_DoDroplet(pmo, blood_count)
+    ZE2.DoDroplet(pmo, blood_count)
 end
 
 local function zombie_death(mo) -- Drop blood also on death duh
     if (mo.team ~= 2) then return end
-    Z_DoDroplet(mo, 20)
+    ZE2.DoDroplet(mo, 20)
 end
 
 -- Now we hook everything

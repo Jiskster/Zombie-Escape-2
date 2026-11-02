@@ -43,7 +43,7 @@ states[S_BLOODBOMB_DEATH] = {SPR_NULL, A, 1, function(mo) -- Explode within a ra
 
 	P_StartQuake(64 * FU, TICRATE, {x = mo.x, y = mo.y, z = mo.z})
 
-	A_OldRingExplode(mo, MT_DUST, 0) -- TODO: Change it to blood particles instead...? maybe adapt blood droplets for this.
+	ZE2.DoDroplet(mo, 32)
 end, 0, 0, S_NULL}
 
 -- Register it

@@ -18,7 +18,7 @@ local function DropBlood(player, damage)
     local pmo = player.mo
     local dmg_strength = (damage * 10) / 5
     local blood_count = max(2, min(dmg_strength, 200))
-    Z_DoDroplet(pmo, blood_count)
+    ZE2.DoDroplet(pmo, blood_count)
 end
 
 ---@param mobj mobj_t
