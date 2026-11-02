@@ -94,13 +94,22 @@ function ZE2.drawCrosshairGuide(mobj, id, alpha, ticfunc, startfunc)
 				if not (shot and shot.valid) then
 					break
 				end
+
+				local moving = true
+				if (shot.z == shot.floorz) or ((shot.z + shot.height) == shot.ceilingz) then
+					moving = false
+				end
+
+				if (x == shot.x) and (y == shot.y) and (z == shot.z) then
+					moving = false
+				end
 				
 				x = shot.x
 				y = shot.y
 				z = shot.z
 				valid = true
 				
-				if (shot.z == shot.floorz) or (shot.z + shot.height) == shot.ceilingz then
+				if not moving then
 					shot.momx = 0
 					shot.momy = 0
 					shot.momz = 0

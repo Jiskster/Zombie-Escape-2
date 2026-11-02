@@ -74,7 +74,7 @@ states[S_ZE2_VOLTRING_DEATH] = {
 
 			giveElectricEffect(foundmobj)
 
-			P_DamageMobj(foundmobj, mo, mo.target, 1, 0) -- Damage any mobj around.
+			P_DamageMobj(foundmobj, mo, mo.target, 1, DMG_ELECTRIC) -- Damage any mobj around.
 		end, mo,
 		mo.x - xpld_radius, mo.x + xpld_radius,
 		mo.y - xpld_radius, mo.y + xpld_radius)
@@ -173,7 +173,7 @@ xSlinger.registerItem("volt_ring", {
 			P_SetObjectMomZ(missile, missile_jump)
 		end
 	end,
-	holdfunc = function(self, mobj) -- TODO: Fix the crosshair disappearing on walls.
+	holdfunc = function(self, mobj)
 		ZE2.drawCrosshairGuide(mobj, missile_volt_ring_guide.id, FU/4, 
 			function(pmo, missile)
 				P_SetObjectMomZ(missile, missile_fall, true)
