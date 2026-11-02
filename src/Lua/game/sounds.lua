@@ -104,3 +104,13 @@ sfxinfo[sfx_type].caption = "Button Press"
 freeslot("sfx_rs_die", "sfx_rs_di2")
 sfxinfo[sfx_rs_die].caption = "Bullet Death"
 sfxinfo[sfx_rs_di2].caption = "Bullet Death..."
+
+local marksfxinfo = {
+    singular = false,
+    priority = 128,
+    flags = SF_X2AWAYSOUND|SF_X4AWAYSOUND|SF_X8AWAYSOUND
+}
+
+freeslot("sfx_marklc")
+sfxinfo[sfx_marklc] = marksfxinfo
+sfxinfo[sfx_marklc].caption = "Location Marked"

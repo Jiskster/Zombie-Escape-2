@@ -24,7 +24,7 @@ return "Markers", function(v, player)
 		local xoffset = FixedMul(-(patch.width*FU/2), scale) 
 		local ystringoffset = FixedMul(-8*FU, scale)
         --
-        v.drawString(result.x, result.y + ystringoffset, "Defend Here!", V_ALLOWLOWERCASE|V_50TRANS, "small-thin-fixed-center")
+        v.drawString(result.x, result.y + ystringoffset, "Over Here!", V_ALLOWLOWERCASE|V_50TRANS, "small-thin-fixed-center")
 		v.drawScaled(result.x + xoffset, result.y, scale, patch, V_50TRANS, colormap)
     end
 end

@@ -7,7 +7,7 @@ local function BlockedCollision(self, source, target, line, mobj)
 	if player.spectator then return end
 
 	player.ze2.marker_x, player.ze2.marker_y, player.ze2.marker_z = target.x, target.y, target.z
-	player.ze2.marker_tics = 20 * TICRATE
+	player.ze2.marker_tics = 7 * TICRATE
 end
 
 local function Tick(self, source, target)
@@ -37,7 +37,7 @@ local function Tick(self, source, target)
 				local player = source.player
 				if not player.spectator then
 					player.ze2.marker_x, player.ze2.marker_y, player.ze2.marker_z = target.x, target.y, target.z
-					player.ze2.marker_tics = 15 * TICRATE
+					player.ze2.marker_tics = 7 * TICRATE
 				end
 				P_KillMobj(target)
 				break
@@ -70,6 +70,7 @@ local function PlayerThink(player)
 	local game = ZE2.Game
 	local pv = player.ze2
 	local pmo = player.mo
+	local xS = player.xSlinger
     if not pmo or not pmo.valid then return end
 
 	if (player.ze2.marker_tics > 0) then
@@ -80,21 +81,36 @@ local function PlayerThink(player)
 		end
 	end
 
-    if (player.cmd.buttons & BT_CUSTOM3) and (player.cmd.buttons & BT_ATTACK) and not (player.lastbuttons & BT_ATTACK) then
-		local marker = xSlinger.SpawnMissile({
-			source = pmo,
-			type = "MARKER_CAST",
-			angle = pmo.angle,
-			allow_aim = true,
-			flags2 = MF2_DONTDRAW,
-		})
-		
-		if marker and marker.valid then
-			marker.flags = marker.flags | MF_NOCLIPTHING
+    if (player.cmd.buttons & BT_CUSTOM3) and (player.cmd.buttons & BT_ATTACK) then
+		if not (player.lastbuttons & BT_ATTACK) then
+			local marker = xSlinger.SpawnMissile({
+				source = pmo,
+				type = "MARKER_CAST",
+				angle = pmo.angle,
+				allow_aim = true,
+				flags2 = MF2_DONTDRAW,
+			})
+			
+			if marker and marker.valid then
+				marker.flags = marker.flags | MF_NOCLIPTHING
+				
+				local sndthok = P_SpawnMobjFromMobj(marker, 0, 0, 0, MT_THOK)
+				sndthok.fuse = 16
+				sndthok.state = S_INVISIBLE
+				
+				if sndthok and sndthok.valid then
+					if displayplayer and displayplayer.valid
+					and displayplayer.mo and displayplayer.mo.valid
+					and displayplayer.mo.team == pmo.team then
+						S_StartSound(sndthok, sfx_marklc)
+					end
+				end
+			end
 		end
 		
-		player.lastbuttons = $|BT_ATTACK
-		player.cmd.buttons = $ & ~BT_ATTACK
+		if not xS.nofire then
+			xS.nofire = 2
+		end
 	end
 end
 
