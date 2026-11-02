@@ -43,25 +43,27 @@ local color = color
 local FU = FU
 local anim_speed = 1024
 
--- TODO: precalculate ramps
-addHook("ThinkFrame", function()
-    local percent = cos(leveltime*FU*anim_speed)
+local ALPHACOLOR_ANIMATION = {}
+for time = 0, 64, 1 do
+    ALPHACOLOR_ANIMATION[time] = {}
 
-    for i=1,16 do
-        local index = zombie_ramp[i]
-        local alpha_index = alpha_ramp[i]
-
-        local r, g, b = color.paletteToRgb(index)
-
+    local percent = sin(time * FU * anim_speed)
+    for index = 1, 16 do
+        local normal_index = zombie_ramp[index]
+        local alpha_index = alpha_ramp[index]
+        local r, g, b = color.paletteToRgb(normal_index)
         local ar, ag, ab = color.paletteToRgb(alpha_index)
-
         ar = ease.linear(percent, r, ar)
         ag = ease.linear(percent, g, ag)
         ab = ease.linear(percent, b, ab)
+        alpha_index = color.rgbToPalette(max(0, min(ar, 255)), max(0, min(ag, 255)), max(0, min(ab, 255)))
+        ALPHACOLOR_ANIMATION[time][index - 1] = alpha_index
+    end
+end
 
-        alpha_index = color.rgbToPalette(max(0,min(ar,255)),
-                                        max(0,min(ag,255)),
-                                        max(0,min(ab,255)))
-        skincolors[SKINCOLOR_ALPHAZOMBIE].ramp[i-1] = alpha_index
+addHook("ThinkFrame", function()
+    for index = 0, 15 do
+        local color_index = ALPHACOLOR_ANIMATION[leveltime % #ALPHACOLOR_ANIMATION]
+        skincolors[SKINCOLOR_ALPHAZOMBIE].ramp[index] = color_index[index]
     end
 end)
