@@ -1,6 +1,6 @@
 ZE2.StandardJumpFactor = FixedDiv(90*FU, 100*FU)
 ZE2.ZombieJumpFactor = FixedDiv(100*FU, 100*FU)
-ZE2.DefaultSurvivorInvSlots = 3
+ZE2.DefaultSurvivorInvSlots = 5
 ZE2.DefaultZombieInvSlots = 2
 
 local item_blacklist = {
@@ -319,7 +319,7 @@ function ZE2.setConfigInventory(player, newskin, noitems)
 
 	if (team == 1) and sc[skin] then
 		local items = force_loadout[team] or sc[skin].items
-		xS:inv_add("survivor", ZE2.DefaultSurvivorInvSlots)
+		xS:inv_add("survivor", settings.survivor_inv_slots or ZE2.DefaultSurvivorInvSlots)
 
 		if (not noitems) and (items) then
 			for i,item in ipairs(items) do
