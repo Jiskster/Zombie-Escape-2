@@ -11,6 +11,7 @@ local function GetAssistant(player, attacker)
 		local data = pV.recent_attackers[index]
 		if (leveltime > data.time) then continue end
 		if (attacker == data.source) then continue end
+		if (attacker.team == player.mo.team) then continue end
 		return data.source
 	end
 	return
