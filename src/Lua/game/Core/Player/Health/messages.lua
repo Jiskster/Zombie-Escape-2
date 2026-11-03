@@ -186,7 +186,7 @@ end
 ---@param source mobj_t
 function ZE2.SendInfectionMessage(player, inflictor, source)
 	local message = ""
-	local playercolor = "\x84"
+	local playercolor = (player.mo.team == 1) and "\x84" or "\x85"
 	if source and source.valid and source.player and source.player.valid then
 		if (source.player == player) then -- this is imposible to get but, would be funny
 			message = string.format("%s%s%s has been infected by themselves", playercolor, player.name, "\x83")
@@ -199,6 +199,10 @@ function ZE2.SendInfectionMessage(player, inflictor, source)
 			end
 		else
 			local placeholder = "%s%s%s has been infected by %s%s"
+			if (source.team == player.mo.team) then
+				placeholder = "%s%s%s has been betrayed and infected by %s%s"
+			end
+
 			local sourcecolor, sourcename = ZE2.GetMobjNameAndColor(source)
 			if inflictor and inflictor.valid and ((inflictor ~= source) or (inflictor.target and inflictor.target.valid)) then
 				local theircolor, theirname = ZE2.GetMobjNameAndColor(inflictor)

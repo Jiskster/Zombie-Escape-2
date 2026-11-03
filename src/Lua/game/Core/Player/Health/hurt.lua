@@ -34,6 +34,7 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 
 		if (team == 1) then -- victim is survivor
 			if killer and killer.valid then
+				ZE2.SendInfectionMessage(player, (inf == killer) and src or inf, killer)
 				if ZE2.cv_instantinfection.value then
 					killing = false
 
@@ -59,7 +60,6 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 				ZE2.dropSurvivorInventory(player)
 
 				killer.player.ze2.cash = killer.player.ze2.cash + cash_award
-				ZE2.SendInfectionMessage(player, (inf == killer) and src or inf, killer)
 				CONS_Printf(killer.player, "\x83" .. "+ $" .. cash_award .. " cash gained from infecting a survivor!")
 				S_StartSound(killer.player.mo, sfx_rbyhit)
 			end
