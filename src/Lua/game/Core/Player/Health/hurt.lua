@@ -81,6 +81,7 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 				local next_zombie_type = "alpha"
 				for index, zname in ipairs(ZE2.registered_zombies) do
 					local config = ZE2.ZombieConfig[zname]
+					if not config then continue end
 					if not config.upgradeable then continue end
 					if not P_RandomChance(config.chance) then continue end
 					next_zombie_type = zname
