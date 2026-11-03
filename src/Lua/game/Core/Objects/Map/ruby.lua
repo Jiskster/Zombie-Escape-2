@@ -106,11 +106,11 @@ addHook("MobjThinker", function(mobj)
 		end
 	end
 	mobj.lastmomz = mobj.momz
+	mobj.shadowscale = FU / 2
 
 	if mobj.rubymap then
 		local offset = (leveltime + FixedInt(R_PointToDist2(0,0, mobj.x/2, mobj.y/2))) * (ANG10 / 2)
 		mobj.spriteyoffset = FixedMul(4 * FU, cos(offset))
-		mobj.shadowscale = FU / 2
 		mobj.spritexscale = (FU*3)/2
 		mobj.spriteyscale = (FU*3)/2
 		mobj.flags = $ | MF_NOGRAVITY
