@@ -36,7 +36,14 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 			if killer and killer.valid then
 				if ZE2.cv_instantinfection.value then
 					killing = false
-					ZE2.ZombifyPlayer(player)
+
+					local new_type
+					local killer_ztype = killer.player.ze2.zombie_type
+					if ZE2.ZombieConfig[killer_ztype] and ZE2.ZombieConfig[killer_ztype].infection_transform then
+						new_type = killer_ztype
+					end
+
+					ZE2.ZombifyPlayer(player, new_type)
 					ZE2.PlayZombieSound(player, true)
 				end
 

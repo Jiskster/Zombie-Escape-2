@@ -60,6 +60,7 @@ ZE2.ZombieConfig = {
 		},
 		chance = FU / 8, -- 12,5% chance -- if defined, it would we added to the random pool for custom zombies, value from 0 to FU
 		--upgradeable = true, -- if true, it would be added to the random pool for zombie upgrades after taking 70% from survivor damage
+		--infection_transform = true, -- if true, it would transform infected players with this zombie type by a zombie player of the same type
 		special = {
 			button = BT_CUSTOM2,
 			effect = "alphazombie.rage",
