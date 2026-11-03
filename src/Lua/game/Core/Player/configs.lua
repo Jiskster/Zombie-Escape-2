@@ -68,6 +68,7 @@ ZE2.AddZombie("alpha", {
 			"fist";
 			"blood_bomb"; 
 		},
+		--infection_transform = true, -- if true, it would transform infected players with this zombie type by a zombie player of the same type
 		special = {
 			button = BT_CUSTOM2,
 			effect = "alphazombie.rage",
