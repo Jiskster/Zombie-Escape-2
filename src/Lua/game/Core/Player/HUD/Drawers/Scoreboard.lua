@@ -7,6 +7,7 @@ local GetSprite2Patch
 local DrawString
 local DrawScaled
 local DrawFill
+local StringWidth
 
 local function RenderPlayerStats(v, ypos, player, team, spectator)
 	local textcolor = 0
@@ -149,6 +150,12 @@ local function RenderPlayerSmaller(v, ypos, player, team) -- super compact
 	local highlight = skincolors[player.skincolor or SKINCOLOR_WHITE].chatcolor
 	DrawString(4 + 5, ypos + textspos, player.name, V_ALLOWLOWERCASE|textcolor|highlight, "small")
 
+	if (player.realmo.team == 1) then
+		--local offset = StringWidth(player.name, 0, "small")
+		highlight = skincolors[skins[player.realmo.skin or "sonic"].prefcolor or SKINCOLOR_WHITE].chatcolor
+		DrawString(4 + 96, ypos + textspos, skins[player.realmo.skin].realname, V_ALLOWLOWERCASE|textcolor|highlight, "small")
+	end
+
 	RenderPlayerStats(v, ypos + textspos, player, team, spectator)
 	return 4
 end
@@ -248,6 +255,7 @@ return "Scoreboard", function(v)
 	if (DrawFill == nil) then DrawFill = v.drawFill end
 	if (DrawScaled == nil) then DrawScaled = v.drawScaled end
 	if (DrawString == nil) then DrawString = v.drawString end
+	if (StringWidth == nil) then StringWidth = v.stringWidth end
 
     -- background
 	DrawFill(1, 1, BASEVIDWIDTH - 1, BASEVIDHEIGHT - 1, 31|V_TRANSLUCENT)
