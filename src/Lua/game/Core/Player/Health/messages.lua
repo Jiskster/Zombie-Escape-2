@@ -199,10 +199,6 @@ function ZE2.SendInfectionMessage(player, inflictor, source)
 			end
 		else
 			local placeholder = "%s%s%s has been infected by %s%s"
-			if (source.team == player.mo.team) then
-				placeholder = "%s%s%s has been betrayed and infected by %s%s"
-			end
-
 			local sourcecolor, sourcename = ZE2.GetMobjNameAndColor(source)
 			if inflictor and inflictor.valid and ((inflictor ~= source) or (inflictor.target and inflictor.target.valid)) then
 				local theircolor, theirname = ZE2.GetMobjNameAndColor(inflictor)
