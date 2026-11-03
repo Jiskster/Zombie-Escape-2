@@ -139,7 +139,9 @@ gamestatefuncs[ZE2.GS_PREGAME] = function()
 			elseif settings.zombie_chosen_always_alpha then
 				newztype = "alpha"
 			else
-				for zname, config in pairs(ZE2.ZombieConfig) do
+				for index, zname in ipairs(ZE2.registered_zombies) do
+					local config = ZE2.ZombieConfig[zname]
+					if not config then continue end
 					if not config.chance then continue end
 					if not P_RandomChance(config.chance) then continue end
 					newztype = zname
