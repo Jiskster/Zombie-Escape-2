@@ -55,7 +55,7 @@ addHook("TouchSpecial", function(special, toucher)
 	if (special.heart_cooldown)
 	or (special.target == toucher)
 	or (special.team ~= toucher.team) 
-	or xSlinger.MobjHasShield(special) then
+	or xSlinger.MobjHasShield(toucher) then
 		return true
 	end
 	
