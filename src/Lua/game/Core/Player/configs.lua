@@ -58,6 +58,8 @@ ZE2.ZombieConfig = {
 			"fist";
 			"blood_bomb"; 
 		},
+		chance = FU / 8, -- 12,5% chance -- if defined, it would we added to the random pool for custom zombies, value from 0 to FU
+		--upgradeable = true, -- if true, it would be added to the random pool for zombie upgrades after taking 70% from survivor damage
 		special = {
 			button = BT_CUSTOM2,
 			effect = "alphazombie.rage",

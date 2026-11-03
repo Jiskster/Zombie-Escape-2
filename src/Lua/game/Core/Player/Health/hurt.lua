@@ -70,8 +70,23 @@ function xSlinger.KillMobj(mo, inf, src, damagetype)
 
 			local dmgtaken = player.ze2.damagefromplayer
 			local dmgreq = (mo.maxhealth*7)/10
-			if dmgtaken > dmgreq then
-				player.ze2.next_zombie_type = "alpha"
+			if dmgtaken > dmgreq then -- TODO: this code is bad xd
+				local next_zombie_type = "alpha"
+				local count = 0
+				for _, config in pairs(ZE2.ZombieConfig) do
+					if not config.upgradeable then continue end
+					count = count + 1
+				end
+
+				if (count > 0) then
+					for zname, config in pairs(ZE2.ZombieConfig) do
+						if not config.upgradeable then continue end
+						if not P_RandomChance(config.chance) then continue end
+						next_zombie_type = zname
+						break
+					end
+				end
+				player.ze2.next_zombie_type = next_zombie_type
 			end
 		end
 	end

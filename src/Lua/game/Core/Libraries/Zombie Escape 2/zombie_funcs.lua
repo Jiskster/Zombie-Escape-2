@@ -16,16 +16,24 @@ function ZE2.ZombifyPlayer(player, ztype)
 end
 
 function ZE2.PlayZombieSound(player, being_infected)
+	local config = ZE2.ZombieConfig[player.ze2.zombie_type]
 	local infection_sounds
-
-	if not being_infected then
-		infection_sounds = {sfx_inf1, sfx_inf2, sfx_inf5}
+	if config.sounds and config.sounds.infected and config.sounds.spawn then
+		if not being_infected then
+			infection_sounds = config.sounds.spawn
+		else
+			infection_sounds = config.sounds.infected
+		end
 	else
-		infection_sounds = {sfx_inf3, sfx_inf4}
+		if not being_infected then
+			infection_sounds = {sfx_inf1, sfx_inf2, sfx_inf5}
+		else
+			infection_sounds = {sfx_inf3, sfx_inf4}
+		end
 	end
 
 	if player.mo and player.mo.valid then
 		local soundrng = P_RandomRange(1,#infection_sounds)
-		S_StartSound(player.mo,infection_sounds[soundrng])
+		S_StartSound(player.mo, infection_sounds[soundrng])
 	end
 end
