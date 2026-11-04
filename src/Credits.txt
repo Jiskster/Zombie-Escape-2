@@ -61,5 +61,5 @@ Battle Mod for the Insta Burst sprites.
 
 This mod is not open assets, it is encouraged to patch the mod via external addons.
 You will be credited for your contributions.
-Github: https://github.com/Jiskster/SRBZ
+Github: https://github.com/Jiskster/Zombie-Escape-2
 Revoid Discord Server: https://discord.com/invite/NVP2PUV7yk 
