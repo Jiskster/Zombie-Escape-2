@@ -120,7 +120,10 @@ local function effectThink(effectKey, effect, parent)
 	local effects = parent.effects
 	if (effect.fuse > 0) then
 		effect.fuse = max(0, effect.fuse - 1)
-		info.tick(info, parent, effect.fuse)
+		if info.tick then
+			info.tick(info, parent, effect.fuse)
+		end
+
 		if not (parent and parent.valid) then
 			table.remove(effects, effectKey)
 			return false
