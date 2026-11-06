@@ -70,7 +70,6 @@ end
 
 xSlinger.METATABLES = {}
 
-dofile "xSlinger/metatables/mobj_t"
 dofile "xSlinger/metatables/xSlinger_t"
 dofile "xSlinger/metatables/itemstack_t"
 
