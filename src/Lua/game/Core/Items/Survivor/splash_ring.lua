@@ -1,5 +1,7 @@
 freeslot("S_ZE2_THROWNSPLASH1", "S_ZE2_THROWNSPLASH2", "S_ZE2_SPLASH_DROP", "S_ZE2_SPLASHBOOM", "SPR_RNGP")
 freeslot("sfx_rs_spl", "sfx_rs_sp2")
+sfxinfo[sfx_rs_spl].caption = "Firing"
+sfxinfo[sfx_rs_sp2].caption = "Splash"
 
 local A_SplashBoom = function(mo)
 	if not (mo and mo.valid) then
@@ -115,7 +117,6 @@ xSlinger.registerMissile("SPLASH_RING_AOE", {
 	state = S_THOK,
 	addflags = MF_SLIDEME,
 	safeground = true,
-	deathstate = S_INVISIBLE, -- TODO: if you remove this line, it errors for some reason, fix it.
 	tick = function(self, pmo, mo)
 		mo.momx = $ * 96/100
 		mo.momy = $ * 96/100

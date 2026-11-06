@@ -5,6 +5,7 @@ freeslot(
 )
 freeslot("SPR_RNGK", "SPR_ROIQ")
 freeslot("sfx_rs_sto")
+sfxinfo[sfx_rs_sto].caption = "Firing"
 
 local function A_StoneBreak(mo)
 	for i = -2, 2 do
@@ -103,7 +104,6 @@ xSlinger.registerMissile("STONE_DEBRIS", {
 	speed = 23*FRACUNIT,
 	displayname = "Stone Debris",
 	state = S_ZE2_STONEDEBRIS,
-	deathstate = S_INVISIBLE, -- TODO: if you remove this line, it errors for some reason, fix it.
 	radius = 32*FRACUNIT,
 	height = 48*FRACUNIT,
 	addflags = MF_BOUNCE|MF_GRENADEBOUNCE,
