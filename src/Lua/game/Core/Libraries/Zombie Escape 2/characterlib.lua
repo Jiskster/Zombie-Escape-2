@@ -135,11 +135,11 @@ ZE2.registered_skins = {}
 
 -- dont blacklist a registered skin or else the game dies
 function ZE2.blacklist_skin(skinname)
+	if ZE2.blacklisted_characters[skinname] then return end -- already exists
+
 	ZE2.blacklisted_characters[skinname] = true
 	table.insert(ZE2.blacklisted_characters, skinname)
 end
-
-ZE2.blacklist_skin("zsonic")
 
 function ZE2.getSkinNames(player, getunlockables)
     local list = {}

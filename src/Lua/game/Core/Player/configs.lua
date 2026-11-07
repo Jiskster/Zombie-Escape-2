@@ -17,10 +17,11 @@ local item_blacklist = {
 ZE2.registered_zombies = {}
 ZE2.ZombieConfig = {}
 
-function ZE2.AddZombie(skinname, input_table)
-	ZE2.ZombieConfig[skinname] = input_table
-	table.insert(ZE2.registered_zombies, skinname)
-	print("Added zombie config: ".. skinname)
+function ZE2.AddZombie(zombiename, input_table)
+	ZE2.ZombieConfig[zombiename] = input_table
+	table.insert(ZE2.registered_zombies, zombiename)
+	ZE2.blacklist_skin(input_table.skin)
+	print("Added zombie config: ".. zombiename)
 end
 
 ZE2.AddZombie("normal", {
