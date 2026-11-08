@@ -4,6 +4,8 @@ local PATH = "game/Core/Player/HUD"
 local path = "Drawers"
 local namespace = "ZE2:"
 
+customhud.SetupFont("VN0FC", -1, 4)
+
 customhud.SetupFont("STCFC", -1, 4)
 customhud.SetupFont("TNYFC", -1, 4)
 customhud.SetupFont("DSTCF", -1, 4)
