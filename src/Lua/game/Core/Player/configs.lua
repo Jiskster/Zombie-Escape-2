@@ -241,8 +241,10 @@ function ZE2.applyPlayerConfig(player)
 		player.actionspd = config.actionspd
 	end
 
-	player.accelstart = config.accelstart or 128 -- survivors and zombies should have the same accelstart
-	player.acceleration = config.acceleration or 17
+	local default_accelstart = (team == TEAM_SURVIVOR) and 64 or 128
+	player.accelstart = config.accelstart or default_accelstart
+	local default_acceleration = 17
+	player.acceleration = config.acceleration or default_acceleration
 
 	player.charability = config.charability or CA_NONE
 	player.charability2 = config.charability2 or CA2_NONE
