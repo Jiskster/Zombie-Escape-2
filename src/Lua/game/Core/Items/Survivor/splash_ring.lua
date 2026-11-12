@@ -13,13 +13,14 @@ local A_SplashBoom = function(mo)
 			local fa = i*(ANGLE_180/amtbubbles)*2
 			
 			local mobj = xSlinger.SpawnMissile({
-				source = mo,
+				source = mo.target or mo,
 				type = "SPLASH_RING_AOE",
 				angle = 0,
 				aiming = 0,
 				iteminfo = mo.iteminfo,
 				forceknockback = 1,
 				damage = 2,
+				origin = mo
 			})
 			
 			if mobj and mobj.valid then
