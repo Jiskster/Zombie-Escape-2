@@ -241,7 +241,7 @@ function ZE2.applyPlayerConfig(player)
 		player.actionspd = config.actionspd
 	end
 
-	local default_accelstart = (team == TEAM_SURVIVOR) and 64 or 128
+	local default_accelstart = 128
 	player.accelstart = config.accelstart or default_accelstart
 	local default_acceleration = 17
 	player.acceleration = config.acceleration or default_acceleration
