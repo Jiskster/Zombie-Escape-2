@@ -70,7 +70,7 @@ xSlinger.registerItem("steel_fence", {
 	maxcount = 3,
 
 	placetype = MT_PROPSTEEL,
-	placehealth = 1750,
+	placehealth = 800,
 	visplacesprite = SPR_SPRP,
 
 	color = SKINCOLOR_BONE,
