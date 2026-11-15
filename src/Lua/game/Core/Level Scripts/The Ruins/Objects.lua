@@ -109,9 +109,9 @@ mobjinfo[MT_TORIEL] = {
 
 mobjinfo[MT_TORIEL].npc_name = "Toriel"
 mobjinfo[MT_TORIEL].npc_name_color = SKINCOLOR_WHITE
-mobjinfo[MT_TORIEL].npc_spawnhealth = {10000,20000}
+mobjinfo[MT_TORIEL].npc_spawnhealth = {8000,16000}
 --mobjinfo[MT_TORIEL].rubydrop = {30,60}
-mobjinfo[MT_TORIEL].forcedamage = 12
+mobjinfo[MT_TORIEL].forcedamage = 8
 mobjinfo[MT_TORIEL].antiknockback = true
 mobjinfo[MT_TORIEL].forceknockback = 0
 mobjinfo[MT_TORIEL].relativeknockback = true
@@ -186,7 +186,7 @@ mobjinfo[MT_TORIELFIREBALLTRAIL] = {
 	reactiontime = 8,
 	radius = 16 * FRACUNIT,
 	height = 16 * FRACUNIT,
-	damage = 6,
+	damage = 4,
 	flags = MF_NOBLOCKMAP|MF_NOGRAVITY|MF_NOCLIP|MF_RUNSPAWNFUNC
 }
 
@@ -198,7 +198,7 @@ mobjinfo[MT_TORIELFIREBALL] = {
 	radius = 4 * FRACUNIT,
 	height = 8 * FRACUNIT,
 	mass = DMG_FIRE,
-	damage = 6,
+	damage = 4,
 	flags = MF_FIRE|MF_BOUNCE
 }
 

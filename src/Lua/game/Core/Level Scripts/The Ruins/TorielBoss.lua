@@ -106,7 +106,7 @@ addHook("MobjThinker", function(mobj)
 			--bullet.color = SKINCOLOR_WHITE
 			bullet.momx = $ * 2
 			bullet.momy = $ * 2
-			bullet.forcedamage = 12
+			bullet.forcedamage = 8
 		end
 	end
 end, MT_TORIEL)

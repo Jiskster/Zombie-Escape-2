@@ -118,13 +118,6 @@ ZE2:AddTimer("THERUINSUT_5", {
 				elseif (player.mo.team == 2) then
 					P_LinedefExecute(116, player.mo)
 				end
-
-				player.mo.health = 10
-				player.mo.maxhealth = 10
-				if player.mo.shield_health then
-					player.mo.shield_health = 10
-					player.mo.shield_efficiency = 0
-				end
 			end
 		end
 	end,
