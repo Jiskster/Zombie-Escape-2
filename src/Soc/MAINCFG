@@ -73,6 +73,19 @@ NoZone = True
 NextLevel = J1
 Lua.ze2_timelimit = 6
 
+Level 06
+Levelname = Frost Mountain
+Subtitle = Up High Cold
+Act = 0
+Music = MP_ICE
+TypeOfLevel = Escape
+NextLevel = 01
+SkyNum = 6
+Weather = 2
+NoZone = True
+SelectHeading = Escape Maps
+Lua.ze2_timelimit = 5
+
 Level 08
 Levelname = Minecraft
 Subtitle = Watch for creepers!
