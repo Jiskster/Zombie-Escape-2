@@ -144,6 +144,7 @@ addHook("ThinkFrame", function()
 			else
 				player.viewheight = (41 * player.height) / 48
 			end
+			player.deltaviewheight = 0 -- so the camera doesn't moves slowly due to P_CalcHeight
 		end
 	end
 end)
