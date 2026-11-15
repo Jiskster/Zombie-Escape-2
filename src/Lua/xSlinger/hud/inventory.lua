@@ -113,22 +113,17 @@ addHook("HUD", function(v, player)
 		if (selection == i) and slot.patch and not camera.chase then
 			local vx = (BASEVIDWIDTH - 100) * FRACUNIT
 			local vy = (BASEVIDHEIGHT - 60) * FRACUNIT
-			local rmomx = player.rmomx
-			local rmomy = player.rmomy
-			local bob = player.bob/2 --min((FixedMul(rmomx, rmomx) + FixedMul(rmomy, rmomy)) >> 2, 8 * FRACUNIT)
-			local angle = ((256 * leveltime) & 8191) << 19
+			local bob = player.bob / 2
+			local angle = (leveltime * ANG10)
 			local swingx2, swingy2 = 0, 0
-
-			swingx2 = FixedMul(bob, cos(angle))
-			angle = ((256 * leveltime) & 4095) << 19
-			swingy2 = FixedMul(bob, sin(angle))
-
-
 			if player.realmo and player.realmo.valid then
 				if not P_IsObjectOnGround(player.realmo) then
-					bob = player.bob/4
+					bob = player.bob / 4
 				end
 			end
+
+			swingy2 = FixedMul(bob / 2, -abs(sin(angle)))
+			swingx2 = FixedMul(bob / 2, cos(angle))
 
 			swingx = (swingx - swingx2) / 2
 			swingy = (swingy - swingy2) / 2
