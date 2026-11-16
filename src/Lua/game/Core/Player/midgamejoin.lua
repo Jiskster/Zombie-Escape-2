@@ -104,20 +104,25 @@ end)
 
 addHook("TeamSwitch", function(player, team, fromspectators, autobalance, scramble)
 	local game = ZE2.Game
+	local settings = ZE2.getGametypeSettings()
 	
 	if fromspectators then
-		local player_count = 0
-
-		for p in players.iterate do
-			if p.mo and p.mo.valid and p.mo.health and not p.spectator then
-				player_count = $ + 1
-			end
-		end
+		local ingame_count = ZE2.CountPlayers("ingame")
+		local zombie_count = ZE2.CountPlayers("zombies")
 
 		player.ze2.was_spectating = true -- Disable special zombie types when unspectating
+		
+		if settings.allow_midgame_joins then
+			if zombie_count == 0 then
+				player.ze2.zombie_type = "alpha"
+			else
+				player.ze2.zombie_type = "normal"
+			end
+			return true
+		end
 
 		if game.active then
-			if player_count == 1 then
+			if ingame_count == 1 then
 				if not game.ended then
 					if player.ze2.outofgame then
 						showOutOfGameText(player)
@@ -131,10 +136,14 @@ addHook("TeamSwitch", function(player, team, fromspectators, autobalance, scramb
 					toggleQueue(player)
 					return false
 				end
-			elseif player_count > 0 then
-				toggleQueue(player)
-				
-				return false
+			elseif ingame_count > 0 then
+				if zombie_count == 0 then
+					player.ze2.zombie_type = "alpha"
+					return true
+				else
+					toggleQueue(player)
+					return false
+				end
 			elseif not roundresetting then -- reset whole match
 				roundresetting = true
 				player.ze2.injoinqueue = true

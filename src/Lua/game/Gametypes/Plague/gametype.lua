@@ -18,3 +18,4 @@ gt.move_during_pregame = true
 gt.fall_damage = true
 gt.allow_pregame_drop = true
 gt.force_loadout[1] = {}
+gt.allow_midgame_joins = true
