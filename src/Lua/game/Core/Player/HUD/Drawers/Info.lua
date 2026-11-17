@@ -20,23 +20,19 @@ local function roundinfo(v,p,me,ze)
 	local timestring = getTimeString()
 	local zombie_count = ZE2.CountPlayers("zombies")
 	local survivor_count = ZE2.CountPlayers("survivors")
-
+	local hud_y = 12
 	local spread = 40
 
-	v.draw(160-(topwidth/2), 0, top, V_SNAPTOTOP|V_20TRANS) -- Time BG
-	v.drawString(160, 2, timestring, V_SNAPTOTOP, "center") -- Time String
+	v.drawString(160, hud_y, timestring, V_SNAPTOTOP, "thin-center") -- Time String
 	
 	if game.zombie_release_time then
-		v.draw(160-(topwidth/2), 12, topzomb, V_SNAPTOTOP) -- Zombie Release BG
-		v.drawString(160, 15, game.zombie_release_time/TICRATE, V_ORANGEMAP|V_SNAPTOTOP, "thin-center") -- Zombie Release String
+		v.draw(160-(topwidth/2), hud_y+10, topzomb, V_SNAPTOTOP) -- Zombie Release BG
+		v.drawString(160, hud_y+13, game.zombie_release_time/TICRATE, V_ORANGEMAP|V_SNAPTOTOP, "thin-center") -- Zombie Release String
 	end
 
-	if multiplayer then
-		v.draw(160-(topredwidth/2) -spread, 0, topred , V_SNAPTOTOP|V_20TRANS) -- Zombie BG
-		v.draw(160-(topbluewidth/2) +spread, 0, topblue, V_SNAPTOTOP|V_20TRANS) -- Survivor BG
-		
-		v.drawString(160-spread, 2, zombie_count, V_REDMAP|V_SNAPTOTOP, "center") -- Zombies Alive
-		v.drawString(160+spread, 2, survivor_count, V_BLUEMAP|V_SNAPTOTOP, "center") -- Survivors Alive
+	if multiplayer then	
+		v.drawString(160-spread, hud_y, survivor_count, V_BLUEMAP|V_SNAPTOTOP, "center") -- Survivors Alive
+		v.drawString(160+spread, hud_y, zombie_count, V_REDMAP|V_SNAPTOTOP, "center") -- Zombies Alive
 	end
 end
 
