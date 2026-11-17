@@ -35,6 +35,7 @@ xSlinger.settings = {}
 xSlinger.visible_huds = {
 	health = true;
 	inventory = true;
+	viewmodel = true;
 }
 
 xSlinger.skin_properties = {}
@@ -173,7 +174,9 @@ dofile "xSlinger/hud/interactions"
 dofile "xSlinger/hud/tags"
 dofile "xSlinger/hud/inventory"
 dofile "xSlinger/hud/health"
+dofile "xSlinger/hud/viewmodel"
 dofile "xSlinger/hud/debug"
+
 
 addHook("MobjSpawn", function(mobj)
 	if mobj.player and mobj.player.valid then
