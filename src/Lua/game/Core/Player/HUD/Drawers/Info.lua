@@ -6,6 +6,10 @@ local function GetTimeString()
 	return G_TicsToMTIME(game.state_tics)
 end
 
+---@param v videolib
+---@param player player_t
+---@param mobj mobj_t
+---@param ze2 ze2_t
 local function RoundInformation(v, player, mobj, ze2)
 	local game = ZE2.Game
 	local top = v.cachePatch("Z_TOP")
@@ -30,6 +34,10 @@ local function RoundInformation(v, player, mobj, ze2)
 	v.drawString(160 + spread, hud_y, zombie_count, V_REDMAP|V_SNAPTOTOP, "center") -- Zombies Alive (Team 2)
 end
 
+---@param v videolib
+---@param player player_t
+---@param mobj mobj_t
+---@param ze2 ze2_t
 local function MoneyInformation(v, player, mobj, ze2)
 	if (ze2.cash == nil) then return end
 
@@ -37,20 +45,27 @@ local function MoneyInformation(v, player, mobj, ze2)
 	v.drawString(320 - offset, 2, "$" .. ze2.cash, V_GREENMAP|V_SNAPTOTOP|V_SNAPTORIGHT, "thin-right")
 end
 
+---@param v videolib
+---@param player player_t
+---@param mobj mobj_t
+---@param ze2 ze2_t
 local function EventTimers(v, player, mobj, ze2)
 	local x = 5
 	local y = 12
-	local flags = V_SNAPTOLEFT|V_SNAPTOTOP
+	local flags = V_SNAPTOLEFT|V_SNAPTOTOP|V_ALLOWLOWERCASE
 	for index, timer in ipairs(ZE2:GetActiveTimers()) do
 		local name = "* " .. (timer.text or ("Event " .. index))
 		local time = "  " .. G_TicsToMTIME(timer.time + TICRATE) .. ""
 		local color = timer.textcolor or SKINCOLOR_TEAL
-		customhud.CustomFontString(v, x, y, name, "TNYFC", flags, "left" , nil, color)
-		customhud.CustomFontString(v, x, y + 8, time, "TNYFC", flags, "left" , nil, SKINCOLOR_WHITE)
+		color = skincolors[color].chatcolor
+		v.drawString(x, y + 1, name, flags|color, "thin")
+		v.drawString(x, y + 9, time, flags, "thin")
 		y = y + 16
 	end
 end
 
+---@param v videolib
+---@param player player_t
 return "GameInfo", function(v, player)
 	local game = ZE2.Game
 	if game.ended then return end

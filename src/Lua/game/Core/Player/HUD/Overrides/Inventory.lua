@@ -1,4 +1,4 @@
 function xSlinger.DRAW_held_itemname(v, x, y, text, color)
-	customhud.CustomFontString(v, x, y, text, "TNYFC",
-	(V_SNAPTOBOTTOM), "center" , FRACUNIT, color)
+	color = skincolors[color].chatcolor
+	v.drawString(x, y + FU, text, V_SNAPTOBOTTOM|V_ALLOWLOWERCASE|color, "thin-fixed-center")
 end
