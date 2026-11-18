@@ -4,6 +4,9 @@ local PATH = "game/Core/Player/HUD"
 local path = "Drawers"
 local namespace = "ZE2:"
 
+customhud.SetupFont("VNOFN", 0, 4)
+customhud.SetupFont("VTNFN", 0, 4)
+
 ZE2.HUD = {}
 
 local function SetupHud(filename)

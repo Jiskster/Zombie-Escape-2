@@ -52,14 +52,16 @@ end
 local function EventTimers(v, player, mobj, ze2)
 	local x = 5
 	local y = 12
-	local flags = V_SNAPTOLEFT|V_SNAPTOTOP|V_ALLOWLOWERCASE
+	local flags = V_SNAPTOLEFT|V_SNAPTOTOP
 	for index, timer in ipairs(ZE2:GetActiveTimers()) do
 		local name = "* " .. (timer.text or ("Event " .. index))
 		local time = "  " .. G_TicsToMTIME(timer.time + TICRATE) .. ""
 		local color = timer.textcolor or SKINCOLOR_TEAL
-		color = skincolors[color].chatcolor
-		v.drawString(x, y + 1, name, flags|color, "thin")
-		v.drawString(x, y + 9, time, flags, "thin")
+		--color = skincolors[color].chatcolor
+		customhud.CustomFontString(v, x, y + 1, name, "VTNFN", flags, "left", nil, color)
+		customhud.CustomFontString(v, x, y + 9, time, "VTNFN", flags, "left", nil, SKINCOLOR_WHITE)
+		--v.drawString(x, y + 1, name, flags|color, "thin")
+		--v.drawString(x, y + 9, time, flags, "thin")
 		y = y + 16
 	end
 end
