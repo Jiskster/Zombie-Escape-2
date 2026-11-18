@@ -19,7 +19,7 @@ local function RoundInformation(v, player, mobj, ze2)
 	local zombie_count = ZE2.CountPlayers("zombies")
 	local survivor_count = ZE2.CountPlayers("survivors")
 	local hud_y = 12
-	local spread = 40
+	local spread = 30
 
 	v.drawString(160, hud_y + 1, timestring, V_SNAPTOTOP, "thin-center") -- Time String
 
@@ -30,7 +30,20 @@ local function RoundInformation(v, player, mobj, ze2)
 
 	if not multiplayer then	return end
 
+	local box_height = 10
+	for times = 0, box_height, 1 do
+		local fade = FU - FixedDiv(times + 1, box_height + 2)
+		local alpha = L_FadeAmount(fade)
+		v.drawFill(160 - spread - 10, hud_y + times, 20, 1, 152|V_SNAPTOTOP|alpha)
+	end
 	v.drawString(160 - spread, hud_y, survivor_count, V_BLUEMAP|V_SNAPTOTOP, "center") -- Survivors Alive (Team 1)
+
+
+	for times = 0, box_height, 1 do
+		local fade = FU - FixedDiv(times + 1, box_height + 2)
+		local alpha = L_FadeAmount(fade)
+		v.drawFill(160 + spread - 10, hud_y + times, 20, 1, 35|V_SNAPTOTOP|alpha)
+	end
 	v.drawString(160 + spread, hud_y, zombie_count, V_REDMAP|V_SNAPTOTOP, "center") -- Zombies Alive (Team 2)
 end
 
