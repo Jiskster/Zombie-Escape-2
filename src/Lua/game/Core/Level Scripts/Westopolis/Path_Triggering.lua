@@ -35,7 +35,7 @@ local function OpenAltPath(v, p)
         local flags = V_SNAPTOTOP|V_PERPLAYER
 
         local posx = 140
-        local posy = 57
+        local posy = 75
         local scale = FixedMul(FU / 2, skins[p.skin].highresscale)
         drawString(posx+22, (posy-40), "Path unlocked!", flags|V_YELLOWMAP, "center")
         drawScaled(posx*FU, posy*FU, scale, zomb, flags|V_FLIP, zomb_color)
