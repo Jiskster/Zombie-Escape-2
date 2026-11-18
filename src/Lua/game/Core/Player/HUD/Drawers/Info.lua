@@ -57,11 +57,8 @@ local function EventTimers(v, player, mobj, ze2)
 		local name = "* " .. (timer.text or ("Event " .. index))
 		local time = "  " .. G_TicsToMTIME(timer.time + TICRATE) .. ""
 		local color = timer.textcolor or SKINCOLOR_TEAL
-		--color = skincolors[color].chatcolor
 		customhud.CustomFontString(v, x, y + 1, name, "VTNFN", flags, "left", nil, color)
 		customhud.CustomFontString(v, x, y + 9, time, "VTNFN", flags, "left", nil, SKINCOLOR_WHITE)
-		--v.drawString(x, y + 1, name, flags|color, "thin")
-		--v.drawString(x, y + 9, time, flags, "thin")
 		y = y + 16
 	end
 end
