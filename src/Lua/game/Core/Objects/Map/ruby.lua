@@ -169,7 +169,7 @@ addHook("MobjThinker", function(mobj)
 	end
 	if not pmofound or not pmofound.valid then return end
 
-	P_FlyTo(mobj, pmofound.x,pmofound.y,pmofound.z, 4 * FRACUNIT, true)
+	P_FlyTo(mobj, pmofound.x,pmofound.y,pmofound.z, 12 * FRACUNIT, true)
 	local ghost = P_SpawnGhostMobj(mobj)
 	ghost.fuse = 7
 	ghost.renderflags = ghost.renderflags | RF_FULLBRIGHT
