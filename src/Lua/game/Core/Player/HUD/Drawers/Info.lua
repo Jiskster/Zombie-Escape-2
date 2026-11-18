@@ -64,14 +64,17 @@ end
 ---@param ze2 ze2_t
 local function EventTimers(v, player, mobj, ze2)
 	local x = 5
-	local y = 12
+	local y = 24
 	local flags = V_SNAPTOLEFT|V_SNAPTOTOP
 	for index, timer in ipairs(ZE2:GetActiveTimers()) do
 		local name = "* " .. (timer.text or ("Event " .. index))
 		local time = "  " .. G_TicsToMTIME(timer.time + TICRATE) .. ""
 		local color = timer.textcolor or SKINCOLOR_TEAL
-		customhud.CustomFontString(v, x, y + 1, name, "VTNFN", flags, "left", nil, color)
-		customhud.CustomFontString(v, x, y + 9, time, "VTNFN", flags, "left", nil, SKINCOLOR_WHITE)
+		local name_font = "VTNFN"
+		local time_font = "VTNFN"
+		
+		customhud.CustomFontString(v, x, y + 1, name, name_font, flags, "left", nil, color)
+		customhud.CustomFontString(v, x, y + 9, time, time_font, flags, "left", nil, SKINCOLOR_WHITE)
 		y = y + 16
 	end
 end
