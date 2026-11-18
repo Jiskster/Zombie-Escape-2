@@ -26,8 +26,8 @@ local function RoundInformation(v, player, mobj, ze2)
 
 	if not multiplayer then	return end
 
-	v.drawString(160 - spread, hud_y, zombie_count, V_REDMAP|V_SNAPTOTOP, "center") -- Zombies Alive
-	v.drawString(160 + spread, hud_y, survivor_count, V_BLUEMAP|V_SNAPTOTOP, "center") -- Survivors Alive
+	v.drawString(160 - spread, hud_y, survivor_count, V_BLUEMAP|V_SNAPTOTOP, "center") -- Survivors Alive (Team 1)
+	v.drawString(160 + spread, hud_y, zombie_count, V_REDMAP|V_SNAPTOTOP, "center") -- Zombies Alive (Team 2)
 end
 
 local function MoneyInformation(v, player, mobj, ze2)
