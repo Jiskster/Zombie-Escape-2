@@ -1,3 +1,4 @@
+-- jisk for lucario's sake, this is a sprite, not a model wtf
 local itemx, itemy = 0, 0
 local itemxo, itemyo = 0, 0
 local swingx, swingy = 0, 0
@@ -42,7 +43,7 @@ addHook("HUD", function(v, player)
 		end
 	end
 
-	swingy2 = FixedMul(bob / 2, -abs(sin(angle)))
+	swingy2 = FixedMul(bob / 2, abs(sin(angle)))
 	swingx2 = FixedMul(bob / 2, cos(angle))
 
 	swingx = (swingx - swingx2) / 2
