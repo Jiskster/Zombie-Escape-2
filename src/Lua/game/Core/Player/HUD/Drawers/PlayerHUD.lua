@@ -12,7 +12,7 @@ local function DrawHealth(v, player, x, y, flags)
     local bg_height = 10
     v.drawFill(FixedInt(x), FixedInt(y), bg_width, bg_height, 31|flags|V_TRANSLUCENT)
 
-    local health_icon = v.cachePatch("Z_HP_ICON2")
+    local health_icon = v.cachePatch("Z_HEALTH_ICON")
     local health_color = SKINCOLOR_GREEN
     if player.mo and player.mo.valid then
         health_color = player.mo.color
@@ -53,7 +53,7 @@ local function DrawArmor(v, player, x, y, flags)
     v.drawFill(FixedInt(x), FixedInt(y), bg_width, bg_height, 31|flags|V_TRANSLUCENT)
 
     local shield_scale = (FU / 2) - (FU / 8)
-    local shield_icon = v.cachePatch("Z_SHIELDSICO")
+    local shield_icon = v.cachePatch("Z_SHIELD_ICON")
     local shield_x, shield_y = x + (5 * FU), y + (5 * FU)
 	local shield = mo.shield_def
 	local shield_color = (shield.color or SKINCOLOR_WHITE)

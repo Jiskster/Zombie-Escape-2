@@ -12,9 +12,7 @@ end
 ---@param ze2 ze2_t
 local function RoundInformation(v, player, mobj, ze2)
 	local game = ZE2.Game
-	local top = v.cachePatch("Z_TOP")
-	local topwidth = top.width
-	local topzomb = v.cachePatch("Z_TOP_ZOMB")
+	local warning_bangs = v.cachePatch("Z_WARNING_BANGS")
 	local timestring = GetTimeString()
 	local zombie_count = ZE2.CountPlayers("zombies")
 	local survivor_count = ZE2.CountPlayers("survivors")
@@ -24,7 +22,7 @@ local function RoundInformation(v, player, mobj, ze2)
 	v.drawString(160, hud_y + 1, timestring, V_SNAPTOTOP, "thin-center") -- Time String
 
 	if game.zombie_release_time then
-		v.draw(160 - (topwidth / 2), hud_y + 10, topzomb, V_SNAPTOTOP) -- Zombie Release BG
+		v.draw(160 - (warning_bangs.width / 2), hud_y + 10, warning_bangs, V_SNAPTOTOP) -- Zombie Release BG
 		v.drawString(160, hud_y + 13, game.zombie_release_time / TICRATE, V_ORANGEMAP|V_SNAPTOTOP, "thin-center") -- Zombie Release String
 	end
 
