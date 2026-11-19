@@ -50,7 +50,7 @@ SetupHud "DamageText"
 
 SetupHud "DamageFade"
 
-SetupHud "Info"
+SetupHud "RoundHUD"
 SetupHud "Markers"
 SetupHud "PlayerHUD"
 SetupHud "RespawnTimer"
