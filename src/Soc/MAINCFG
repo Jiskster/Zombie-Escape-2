@@ -316,6 +316,16 @@ SkyNum = 11
 NoZone = True
 SelectHeading = Plague Maps
 
+Level 59
+Levelname = Empty Lab
+Subtitle = What were they planning?
+Act = 0
+Music = SCP87B
+TypeOfLevel = Plague
+NextLevel = 59
+NoZone = True
+SelectHeading = Plague Maps
+
 Level 60
 Levelname = Virtual Arena
 Subtitle = Survive the Matrix.
