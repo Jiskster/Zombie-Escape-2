@@ -1,4 +1,3 @@
--- jisk for lucario's sake, this is a sprite, not a model wtf
 local itemx, itemy = 0, 0
 local itemxo, itemyo = 0, 0
 local swingx, swingy = 0, 0
